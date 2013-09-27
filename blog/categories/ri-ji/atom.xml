@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 日記 | r9y9::blog]]></title>
+  <link href="http://r9y9.github.io/blog/categories/ri-ji/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-09-28T01:34:12+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[start using octopress]]></title>
+    <link href="http://r9y9.github.io/blog/2013/09/28/start-using-octopress/"/>
+    <updated>2013-09-28T00:33:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/09/28/start-using-octopress</id>
+    <content type="html"><![CDATA[<h1>使い始めました</h1>
+
+<p>テスト</p>
+
+<h2>code</h2>
+
+<p>```c++</p>
+
+<h1>include <iostream></h1>
+
+<p>using namespace std;</p>
+
+<p>int main()
+{
+  cout &lt;&lt; &ldquo;Hello octopress&rdquo; &lt;&lt; endl;
+  return 0;
+}
+```</p>
+
+<h2>Math</h2>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+X(\omega) = \int_{&ndash;\infty}^{\infty} x(t) e^{-i\omega t} dt.
+\end{align}
+</script></p>
+
+<h2>Text</h2>
+
+<p>こんにちは。octopressを使い始めた。Hello Octpress!</p>
+]]></content>
+  </entry>
+  
+</feed>

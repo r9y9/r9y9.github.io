@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://r9y9.github.io/sitemap.xml 

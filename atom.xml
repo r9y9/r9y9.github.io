@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[r9y9::blog]]></title>
+  <link href="http://r9y9.github.io/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-09-28T01:34:12+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[start using octopress]]></title>
+    <link href="http://r9y9.github.io/blog/2013/09/28/start-using-octopress/"/>
+    <updated>2013-09-28T00:33:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/09/28/start-using-octopress</id>
+    <content type="html"><![CDATA[<h1>使い始めました</h1>
+
+<p>テスト</p>
+
+<h2>code</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello octopress&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Math</h2>
+
+<script type="math/tex; mode=display">
+\begin{align}
+X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
+\end{align}
+</script>
+
+
+<h2>Text</h2>
+
+<p>こんにちは。octopressを使い始めた。Hello Octpress!</p>
+]]></content>
+  </entry>
+  
+</feed>
