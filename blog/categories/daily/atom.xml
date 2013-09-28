@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Daily | R9Y9::BLOG]]></title>
   <link href="http://r9y9.github.io/blog/categories/daily/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-09-29T00:38:45+09:00</updated>
+  <updated>2013-09-29T00:57:56+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -20,7 +20,11 @@
     <id>http://r9y9.github.io/blog/2013/09/28/start-using-octopress</id>
     <content type="html"><![CDATA[<h1>使い始めました</h1>
 
-<p>テスト</p>
+<p>テストです</p>
+
+<h2>Text</h2>
+
+<p>こんにちは。octopressを使い始めた。Hello Octopress!</p>
 
 <h2>code</h2>
 
@@ -45,9 +49,7 @@ X(\omega) = \int_{&ndash;\infty}^{\infty} x(t) e^{-i\omega t} dt.
 \end{align}
 </script></p>
 
-<h2>Text</h2>
-
-<p>こんにちは。octopressを使い始めた。Hello Octpress!</p>
+<p>なかなかいい。Let&rsquo;s enjoy with Octopress!</p>
 ]]></content>
   </entry>
   
