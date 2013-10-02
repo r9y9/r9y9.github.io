@@ -4,7 +4,7 @@
   <title><![CDATA[NOTE @r9y9]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-03T01:28:38+09:00</updated>
+  <updated>2013-10-03T01:44:12+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -469,7 +469,7 @@ apt-cache search --names-only ^emacs24$
 
 <p>あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。</p>
 
-<p><a href="">導出編→Naive Bayesの復習（導出編）</a></p>
+<p><a href="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/">導出編→Naive Bayesの復習（導出編）</a></p>
 
 <h2>参考</h2>
 
@@ -935,7 +935,7 @@ G &=  \sum_{n=1}^{N}\Bigl[ \log \pi_{y_{n}} \notag \\
 
 <p>これで終わり。予想以上に書くのに時間かかった…。今日logistic regressionを見直してて、ふとnaive bayesやったことないなーと思って、まぁ試すだけならscipy使えば一瞬なんだろうけどちょっと導出までやってみようと思った。</p>
 
-<p>実装編→<a href="">Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a></p>
+<p>実装編→<a href="http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/">Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a></p>
 
 <h2>参考</h2>
 
@@ -1347,7 +1347,7 @@ NMFのアルゴリズムは、この更新式を目的関数が収束するま�
 <p>とりあえず、行ったのは以下の通り。変更の度にこの投稿に追加するかも</p>
 
 <ul>
-<li><a href="">Mathjaxの導入</a></li>
+<li><a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxの導入</a></li>
 <li>syntax highlighterの導入</li>
 <li>google-code-prettyyの導入</li>
 <li>CSSの修正</li>
@@ -1357,7 +1357,7 @@ NMFのアルゴリズムは、この更新式を目的関数が収束するま�
 
 <h2>Mathjax</h2>
 
-<p>別記事にまとめた→ <a href="">Mathjaxを使ってBloggerで数式を書く</a></p>
+<p>別記事にまとめた→ <a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxを使ってBloggerで数式を書く</a></p>
 
 <h2>Syntax Highlighter</h2>
 

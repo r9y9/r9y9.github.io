@@ -4,7 +4,7 @@
   <title><![CDATA[Category: blogger | NOTE @r9y9]]></title>
   <link href="http://r9y9.github.io/blog/categories/blogger/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-03T01:28:38+09:00</updated>
+  <updated>2013-10-03T01:44:12+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -117,7 +117,7 @@ y = \argmax_y p(y|x)
 <p>とりあえず、行ったのは以下の通り。変更の度にこの投稿に追加するかも</p>
 
 <ul>
-<li><a href="">Mathjaxの導入</a></li>
+<li><a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxの導入</a></li>
 <li>syntax highlighterの導入</li>
 <li>google-code-prettyyの導入</li>
 <li>CSSの修正</li>
@@ -127,7 +127,7 @@ y = \argmax_y p(y|x)
 
 <h2>Mathjax</h2>
 
-<p>別記事にまとめた→ <a href="">Mathjaxを使ってBloggerで数式を書く</a></p>
+<p>別記事にまとめた→ <a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxを使ってBloggerで数式を書く</a></p>
 
 <h2>Syntax Highlighter</h2>
 

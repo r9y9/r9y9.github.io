@@ -4,7 +4,7 @@
   <title><![CDATA[Category: machine-learning | NOTE @r9y9]]></title>
   <link href="http://r9y9.github.io/blog/categories/machine-learning/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-03T01:28:38+09:00</updated>
+  <updated>2013-10-03T01:44:12+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -74,7 +74,7 @@ $ python mnist_digit_recognition.py
 
 <p>あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。</p>
 
-<p><a href="">導出編→Naive Bayesの復習（導出編）</a></p>
+<p><a href="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/">導出編→Naive Bayesの復習（導出編）</a></p>
 
 <h2>参考</h2>
 
@@ -264,7 +264,7 @@ G &amp;=  \sum<em>{n=1}^{N}\Bigl[ \log \pi</em>{y<em>{n}} \notag \
 
 <p>これで終わり。予想以上に書くのに時間かかった…。今日logistic regressionを見直してて、ふとnaive bayesやったことないなーと思って、まぁ試すだけならscipy使えば一瞬なんだろうけどちょっと導出までやってみようと思った。</p>
 
-<p>実装編→<a href="">Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a></p>
+<p>実装編→<a href="http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/">Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a></p>
 
 <h2>参考</h2>
 

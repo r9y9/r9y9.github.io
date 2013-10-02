@@ -4,7 +4,7 @@
   <title><![CDATA[Category: digit-recognition | NOTE @r9y9]]></title>
   <link href="http://r9y9.github.io/blog/categories/digit-recognition/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-03T01:28:38+09:00</updated>
+  <updated>2013-10-03T01:44:12+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -74,7 +74,7 @@ $ python mnist_digit_recognition.py
 
 <p>あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。</p>
 
-<p><a href="">導出編→Naive Bayesの復習（導出編）</a></p>
+<p><a href="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/">導出編→Naive Bayesの復習（導出編）</a></p>
 
 <h2>参考</h2>
 
