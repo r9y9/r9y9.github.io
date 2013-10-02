@@ -1,16 +1,80 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://r9y9.github.io/blog/2013/07/27/blogger-custom/</loc>
+        <lastmod>2013-10-03T01:22:58+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/07/27/mig-ricty-font-install/</loc>
+        <lastmod>2013-10-03T01:19:58+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/07/27/nlp-ime-book-read/</loc>
+        <lastmod>2013-10-03T01:20:08+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</loc>
+        <lastmod>2013-10-03T01:20:19+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</loc>
+        <lastmod>2013-10-03T01:20:28+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</loc>
+        <lastmod>2013-10-03T01:20:47+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/</loc>
+        <lastmod>2013-10-03T01:21:00+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</loc>
+        <lastmod>2013-10-03T01:21:08+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/08/11/emacs-24-for-ubuntu12-04/</loc>
+        <lastmod>2013-10-03T01:21:24+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/08/12/bash-check-commend-existence/</loc>
+        <lastmod>2013-10-03T01:21:47+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/08/12/apt-commend-check/</loc>
+        <lastmod>2013-10-03T01:21:32+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/08/12/numpy-scipy-for-ubuntu/</loc>
+        <lastmod>2013-10-03T01:21:55+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/09/07/math-eng-ml-programming/</loc>
+        <lastmod>2013-10-03T01:22:03+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/09/14/hpss/</loc>
+        <lastmod>2013-10-03T01:23:49+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</loc>
+        <lastmod>2013-10-03T01:22:21+09:00</lastmod>
+    </url>
+    <url>
         <loc>http://r9y9.github.io/blog/2013/09/28/start-using-octopress/</loc>
-        <lastmod>2013-10-01T00:21:30+09:00</lastmod>
+        <lastmod>2013-10-03T00:45:12+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://r9y9.github.io/blog/2013/10/03/blogger-to-github-pages/</loc>
+        <lastmod>2013-10-03T01:28:33+09:00</lastmod>
     </url>
     <url>
         <loc>http://r9y9.github.io/work/</loc>
-        <lastmod>2013-10-01T00:21:30+09:00</lastmod>
+        <lastmod>2013-10-02T00:22:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://r9y9.github.io/archives/</loc>
-        <lastmod>2013-10-01T00:21:30+09:00</lastmod>
+        <lastmod>2013-10-03T01:28:33+09:00</lastmod>
     </url>
     <url>
         <loc>http://r9y9.github.io/search.html</loc>
@@ -18,11 +82,11 @@
     </url>
     <url>
         <loc>http://r9y9.github.io/</loc>
-        <lastmod>2013-10-01T00:21:30+09:00</lastmod>
+        <lastmod>2013-10-03T01:28:33+09:00</lastmod>
     </url>
     <url>
         <loc>http://r9y9.github.io/blog/archives/</loc>
-        <lastmod>2013-10-01T00:21:30+09:00</lastmod>
+        <lastmod>2013-10-03T01:28:33+09:00</lastmod>
     </url>
     <url>
         <loc>http://r9y9.github.io/robots.txt</loc>
@@ -30,10 +94,10 @@
     </url>
     <url>
         <loc>http://r9y9.github.io/todo/</loc>
-        <lastmod>2013-10-01T00:21:30+09:00</lastmod>
+        <lastmod>2013-10-02T00:22:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://r9y9.github.io/about/</loc>
-        <lastmod>2013-10-01T00:21:30+09:00</lastmod>
+        <lastmod>2013-10-02T00:22:43+09:00</lastmod>
     </url>
 </urlset>

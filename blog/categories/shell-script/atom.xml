@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: shell-script | NOTE @r9y9]]></title>
+  <link href="http://r9y9.github.io/blog/categories/shell-script/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-03T01:28:38+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Bashでコマンドの存在チェック]]></title>
+    <link href="http://r9y9.github.io/blog/2013/08/12/bash-check-commend-existence/"/>
+    <updated>2013-08-12T00:30:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/08/12/bash-check-commend-existence</id>
+    <content type="html"><![CDATA[<p>素晴らしいまとめ→ <a href="http://qiita.com/kawaz/items/1b61ee2dd4d1acc7cc94">コマンドの存在チェックはwhichよりhashの方が良いかも→いやtypeが最強 &ndash; qiita</a></p>
+
+<p>いつもwhichを使っていたのだけど、typeの方がよさげ。</p>
+
+<p>今までこう書いてた</p>
+
+<p>```bash
+if [ -x which &ldquo;何かコマンド&rdquo; ]
+then</p>
+
+<pre><code>コマンドが存在した場合の処理
+</code></pre>
+
+<p>fi
+```</p>
+
+<p>コマンドが実行可能かどうかをwhichを使って判定する。少なくとも自分のubuntu 12.04では期待した通りに動く。だた環境によっては、指定したコマンドがない場合に、</p>
+
+<p><code>
+/usr/bin/which: no hogehoge
+</code></p>
+
+<p>みたいに表示されて、おそらくwhichが実行可能なバイナリだから、if文がtrueで通っちゃうことがある。これは困る。で、ググってたらtypeやhashがあることを知って、typeが良さそうということで試したら期待通りの動作になったのでハッピー。bash組み込みらしいね</p>
+
+<h2>書き方</h2>
+
+<p>```
+if type &ldquo;コマンド&rdquo; > /dev/null 2>&amp;1
+then</p>
+
+<pre><code>コマンドが存在した場合の処理
+</code></pre>
+
+<p>fi
+```</p>
+
+<p>bash組み込みのコマンドを使って存在判定するので、速いらしい（割りとどうでもいいけど）。標準エラー出力は意外とうっとしいということがわかったので、今回書いてたスクリプトでは捨てるようにした。</p>
+
+<p>これからはtype使おう。［］も書かなくても済むしコードもすっきりする</p>
+]]></content>
+  </entry>
+  
+</feed>

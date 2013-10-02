@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: emacs | NOTE @r9y9]]></title>
+  <link href="http://r9y9.github.io/blog/categories/emacs/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-03T01:28:38+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[emacs24をUbuntu12.04 にインストールする方法]]></title>
+    <link href="http://r9y9.github.io/blog/2013/08/11/emacs-24-for-ubuntu12-04/"/>
+    <updated>2013-08-11T00:26:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/08/11/emacs-24-for-ubuntu12-04</id>
+    <content type="html"><![CDATA[<h2>コマンド</h2>
+
+<p><code>bash
+sudo add-apt-repository ppa:cassou/emacs
+sudo apt-get update
+sudo apt-get install emacs24
+</code></p>
+
+<p>ググればすぐ解決するんだけど、過去何回も調べててアホみたいなので自分でもスクリプト書いたよ。といってもレポジトリ追加してapt-getするだけだけど。</p>
+
+<p><a href="https://github.com/r9y9/install/blob/master/install_emacs.sh">https://github.com/r9y9/install/blob/master/install_emacs.sh</a></p>
+
+<p>emacsがサーバに入ってないとしにたみることが判明したので、もうサーバにもemacs入れておくようにしたい。</p>
+
+<p>ちなみに24以降だと、パッケージ管理システムがデフォでちゃんとしてたり、color-themeがデフォであったりするので、24以降の方がいい</p>
+
+<h2>参考</h2>
+
+<p><a href="http://d.hatena.ne.jp/going-around/20130120/1358693301">emacs24 &ndash; Ubuntu的日常</a></p>
+]]></content>
+  </entry>
+  
+</feed>

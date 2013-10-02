@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Category: Daily - NOTE @r9y9</title>
+	<title>Category: daily - NOTE @r9y9</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Category: Daily">
+	<meta name="description" content="Category: daily">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -34,12 +34,23 @@
 <!-- mathjax config similar to math.stackexchange -->
 
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$$','$$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
+    MathJax.Hub.Config({
+        HTML: ["input/TeX","output/HTML-CSS"],
+        TeX: {
+               Macros: {
+                        bm: ["\\boldsymbol{#1}", 1],
+                        argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                        argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+               extensions: ["AMSmath.js","AMSsymbols.js"], 
+               equationNumbers: { autoNumber: "AMS" } },
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                   displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                   processEscapes: true },
+        "HTML-CSS": { availableFonts: ["TeX"],
+                      linebreaks: { automatic: true } }
+    });
 </script>
 
 <script type="text/x-mathjax-config">
@@ -123,18 +134,60 @@
 	<section class="archives"><h1 class="year">2013</h1>
 
 <article>
+  <h2 class="title"><a href="/blog/2013/10/03/blogger-to-github-pages/">BloggerからGithub Pagesに引越しした</a></h2>
+	<div class="meta">
+		<span class="date">Oct  3</span>
+		<span class="tags">
+
+
+	<a class='category' href='/blog/categories/daily/'>daily</a>
+
+
+</span>
+	    
+	    <span class="comments"><a href="/blog/2013/10/03/blogger-to-github-pages/#disqus_thread">Comments</a></span>
+	    
+	</div>
+</article>
+
+
+	
+
+
+<article>
   <h2 class="title"><a href="/blog/2013/09/28/start-using-octopress/">Start Using Octopress</a></h2>
 	<div class="meta">
 		<span class="date">Sep 28</span>
 		<span class="tags">
 
 
-	<a class='category' href='/blog/categories/daily/'>Daily</a>
+	<a class='category' href='/blog/categories/daily/'>daily</a>
 
 
 </span>
 	    
 	    <span class="comments"><a href="/blog/2013/09/28/start-using-octopress/#disqus_thread">Comments</a></span>
+	    
+	</div>
+</article>
+
+
+	
+
+
+<article>
+  <h2 class="title"><a href="/blog/2013/09/07/math-eng-ml-programming/">数学と英語と機械学習とプログラミング</a></h2>
+	<div class="meta">
+		<span class="date">Sep  7</span>
+		<span class="tags">
+
+
+	<a class='category' href='/blog/categories/daily/'>daily</a>
+
+
+</span>
+	    
+	    <span class="comments"><a href="/blog/2013/09/07/math-eng-ml-programming/#disqus_thread">Comments</a></span>
 	    
 	</div>
 </article>

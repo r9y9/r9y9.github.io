@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Daily | NOTE @r9y9]]></title>
+  <title><![CDATA[Category: daily | NOTE @r9y9]]></title>
   <link href="http://r9y9.github.io/blog/categories/daily/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-01T21:25:40+09:00</updated>
+  <updated>2013-10-03T01:28:38+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[BloggerからGithub Pagesに引越しした]]></title>
+    <link href="http://r9y9.github.io/blog/2013/10/03/blogger-to-github-pages/"/>
+    <updated>2013-10-03T01:24:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/10/03/blogger-to-github-pages</id>
+    <content type="html"><![CDATA[<p>これからは、こちらで書いてく。</p>
+
+<p>気まぐれなのでまた変わるかもしれないけど、ぼちぼちメモっていこうと思う</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[start using octopress]]></title>
@@ -50,6 +61,25 @@ X(\omega) = \int_{&ndash;\infty}^{\infty} x(t) e^{-i\omega t} dt.
 </script></p>
 
 <p>なかなかいい。Let&rsquo;s enjoy with Octopress!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[数学と英語と機械学習とプログラミング]]></title>
+    <link href="http://r9y9.github.io/blog/2013/09/07/math-eng-ml-programming/"/>
+    <updated>2013-09-07T23:32:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/09/07/math-eng-ml-programming</id>
+    <content type="html"><![CDATA[<p>タイトルに上げたものは、僕がやりたい or やるべきと思っていることで、まぁ思い始めて数年立つんだけど未だにまったく出来ていない。どうにかしないとヤバイ</p>
+
+<ul>
+<li>数学：算数すら危うい</li>
+<li>英語：話せない</li>
+<li>機械学習：あぁカーネルトリックね（全然わかってない</li>
+<li>プログラミング：c++わからん</li>
+</ul>
+
+
+<p>がんばろう。ただの日記</p>
 ]]></content>
   </entry>
   

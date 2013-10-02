@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: machine-learning | NOTE @r9y9]]></title>
+  <link href="http://r9y9.github.io/blog/categories/machine-learning/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-03T01:28:38+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識]]></title>
+    <link href="http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/"/>
+    <updated>2013-08-06T23:08:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist</id>
+    <content type="html"><![CDATA[<p>前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…</p>
+
+<p>そもそもナイーブベイズやろうとしてたのも、MNISTのdigit recognitionがやりたかったからなので、実際にやってみた。</p>
+
+<p>コードはgithubに置いた <a href="https://github.com/r9y9/naive_bayes">https://github.com/r9y9/naive_bayes</a></p>
+
+<p>結果だけ知りたい人へ：正解率  76 %くらいでした。まぁこんなもんですね</p>
+
+<h2>手書き数字認識</h2>
+
+<p>手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。</p>
+
+<p>今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→<a href="http://yann.lecun.com/exdb/mnist/">THE MNIST DATABASE of handwritten digits</a>
+ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（<a href="http://deeplearning.net/tutorial/gettingstarted.html#gettingstarted">ここ</a>）、pythonのcPickleから読める形式に変換されているデータを使った。感謝</p>
+
+<h2>とりあえずやってみる</h2>
+
+<p><code>bash
+$ git clone https://github.com/r9y9/naive_bayes
+$ cd naive_bayes
+$ python mnist_digit_recognition.py
+</code></p>
+
+<p>プログラムの中身は以下のようになってる。</p>
+
+<ul>
+<li>MNISTデータセットのダウンロード</li>
+<li>モデルの学習</li>
+<li>テスト</li>
+</ul>
+
+
+<p>実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。</p>
+
+<h2>学習されたGaussianの平均</h2>
+
+<p><img class="center" src="/images/mnist_mean_of_gaussian.png" title="&ldquo;gaussian means&rdquo;" ></p>
+
+<p>学習されたGaussianの平均をプロットしたもの。上のコードを実行すると表示される。</p>
+
+<p>それっぽい。学習データは50000サンプル</p>
+
+<h2>認識結果</h2>
+
+<p>時間がかかるけど、テストデータ10000個に対してやってみると、結果は以下のようになった。</p>
+
+<p><code>0.7634 (7634/10000)</code></p>
+
+<p>まぁナイーブベイズなんてこんなもん。もちろん、改善のしようはいくらでもあるけれども。ちなみにDeep learningのチュートリアルで使われてたDBN.pyだと0.987くらいだった。</p>
+
+<h2>感想</h2>
+
+<p>相関が強い特徴だと上手くいかんのは当たり前で、ピクセル毎にGaussianなんて作らずに（ピクセル間の相関を無視せずに）、少しまともな特徴抽出をかませば、8割りは超えるんじゃないかなぁと思う。</p>
+
+<p>あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。</p>
+
+<p><a href="">導出編→Naive Bayesの復習（導出編）</a></p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://www.slideshare.net/shima__shima/python-13349162">機械学習のPythonとの出会い（１）：単純ベイズ基礎編 &ndash; slideshare</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Naive Bayesの復習（導出編）]]></title>
+    <link href="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/"/>
+    <updated>2013-07-28T22:24:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation</id>
+    <content type="html"><![CDATA[<p>すぐ忘れるのでメモ。ナイーブベイズの学習アルゴリズムの導出とか、そもそもナイーブベイズが定番過ぎて意外とやったことなかった気もするので、復習がてらやってみた。</p>
+
+<p>ちょっと修正 2013/07/30</p>
+
+<ul>
+<li>ナイーブベイズについて整理</li>
+<li>学習アルゴリズムの導出</li>
+</ul>
+
+
+<h2>Naive bayes （ナイーブベイズ）</h2>
+
+<p>スパムフィルタで使われたことで有名な確率モデルで、シンプルだけどそこそこ実用的なのが良い所。Naive bayesという名前は、特徴ベクトル間に条件付き独立性を仮定してることにある（実際は相関あることが多いけど、まぁ簡単のためって感じ）。具体的に例を挙げて言うと、例えば文書分類タスクの場合、各単語は独立に生起するという仮定を置くことに相当する。</p>
+
+<p>まずはモデルを書き下す。入力データを$\mathbf{x}$（D次元）、ラベルを$y$（離散値）とすると、ナイーブベイズでは以下のように同時確率をモデル化する。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+p(\mathbf{x}, y) &amp;= p(y)p(\mathbf{x}|y)\
+&amp;= p(y)p(x<em>{1}, x</em>{2}, \dots, x<em>{D}|y)\
+&amp;= p(y)\prod</em>{d=1}^{D} p(x_{d}|y)
+\end{align}
+</script></p>
+
+<p>カンタン。基本的にdは次元に対するインデックス、nはデータに対するインデックスとして書く。</p>
+
+<p>ポイントは特徴ベクトル間に条件付き独立性の仮定を置いていること（二度目）で、それによってパラメータの数が少なくて済む。</p>
+
+<h2>分類</h2>
+
+<p>一番確率の高いラベルを選べばいい。数式で書くと以下のようになる。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+\hat{y} &amp;= \argmax<em>{y} [p(y|\mathbf{x})]\
+ &amp;= \argmax</em>{y} [p(\mathbf{x}, y)]\
+ &amp;= \argmax<em>{y} \Bigl[ p(y)\prod</em>{d=1}^{D} p(x_{d}|y)\Bigr]
+\end{align}
+</script></p>
+
+<p>argmaxを取る上では、$y$に依存しない項は無視していいので、事後確率の最大化は、同時確率の最大化に等しくなる。</p>
+
+<h2>学習アルゴリズムの導出</h2>
+
+<p>ここからが本番。学習データを$X = {\mathbf{x}_{n}}_{n=1}^{N}$、対応する正解ラベルを<script type="math/tex">Y = {y_n}_{n=1}^{N} </script>として、最尤推定により学習アルゴリズムを導出する。実際はMAP推定をすることが多いけど、今回は省略。拡張は簡単。</p>
+
+<h3>尤度関数</h3>
+
+<p>各サンプルが独立に生起したと仮定すると、尤度関数は以下のように書ける。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+L(X,Y; \mathbf{\theta}) &amp;= \prod<em>{n=1}^{N}p(y</em>{n})p(\mathbf{x<em>{n}}|y</em>{n})\
+&amp;= \prod<em>{n=1}^{N} \Bigl[ p(y</em>{n})\prod<em>{d=1}^{D}p(x</em>{nd}|y_{n})\Bigr]
+\end{align}
+</script></p>
+
+<p>対数を取って、
+<script type="math/tex; mode=display">
+\begin{align}
+\log L(X,Y; \mathbf{\theta}) =  \sum<em>{n=1}^{N}\Bigl[\log p(y</em>{n}) + \sum<em>{d=1}^{D}\log p(x</em>{nd}|y_{n})\Bigr]
+\end{align}
+</script>
+学習アルゴリズムは、この関数の最大化として導くことができる。</p>
+
+<h3>ところで</h3>
+
+<p>特徴ベクトルにどのような分布を仮定するかでアルゴリズムが少し変わるので、今回は以下の二つをやってみる。</p>
+
+<ul>
+<li>ベルヌーイ分布</li>
+<li>正規分布</li>
+</ul>
+
+
+<p>前者は、binary featureを使う場合で、後者は、continuous featureを使う場合を想定してる。画像のピクセル値とか連続値を扱いたい場合は、正規分布が無難。その他、多項分布を使うこともあるけど、ベルヌーイ分布の場合とほとんど一緒なので今回は省略</p>
+
+<p>ラベルに対する事前分布は、ラベルが離散値なので多項分布（間違ってた）categorical distributionとする。日本語でなんて言えばいいのか…<a href="http://en.wikipedia.org/wiki/Categorical_distribution">wikipedia</a> 参考</p>
+
+<h2>Bernoulli naive bayes</h2>
+
+<p>特徴ベクトルにベルヌーイ分布を仮定する場合。0 or 1のbinary featureを使う場合にはこれでおｋ．ベルヌーイ分布は以下</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+p(x;q) = q^{x}(1-q)^{1-x}
+\end{align}
+</script></p>
+
+<p>特徴ベクトルに対するパラメータは、ラベル数×特徴ベクトルの次元数（L×D）個ある。対数尤度関数（Gとする）は、以下のように書ける。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+G &amp;=  \sum<em>{n=1}^{N}\Bigl[ \log \pi</em>{y<em>{n}} \notag \
+ &amp;+ \sum</em>{d=1}^{D} \bigl[ x<em>{nd} \log q</em>{y<em>{n}d} + (1-x</em>{nd}) \log (1-q<em>{y</em>{n}d}) \bigr] \Bigr]
+\end{align}
+</script>
+ここで、<script type="math/tex">\pi_{y_{n}}</script> はcategorical distributionのパラメータ。</p>
+
+<h3>微分方程式を解く</h3>
+
+<p>あとは微分してゼロ。ラベルに対するインデックスをl 、学習データ中のラベルlが出現する回数を$N_{l} = \sum_{n=1}^{N} \delta(y_{n}= l)$、さらにその中で<script type="math/tex">x_{nd}=1 </script>となる回数を<script type="math/tex">N_{ld} = \sum_{n=1}^{N} \delta(y_{n}= l) \cdot x_{nd} </script>とすると、</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial G}{\partial q<em>{ld}} &amp;= \frac{N</em>{ld}}{q<em>{ld}} &ndash; \frac{N</em>{l} &ndash; N<em>{ld}}{1-q</em>{ld}}  = 0
+\end{align}
+</script></p>
+
+<p>よって、
+<script type="math/tex; mode=display">
+\begin{align}
+q<em>{ld} = \frac{N</em>{ld}}{N_{l}} \label{eq:naive1}
+\end{align}
+</script></p>
+
+<p>できました。厳密に数式で書こうとするとめんどくさい。日本語で書くと、
+<script type="math/tex; mode=display">
+\begin{align}
+パラメータ = \frac{特徴ベクトルの出現回数}{ラベルの出現回数}
+\end{align}
+</script></p>
+
+<p>って感じでしょうか。</p>
+
+<p>categoricalのパラメータについては、めんどくさくなってきたのでやらないけど、もう直感的に以下。ラグランジュの未定定数法でおｋ
+<script type="math/tex; mode=display">
+\begin{align}
+\pi<em>{l} = \frac{N</em>{l}}{N} \label{eq:naive2}
+\end{align}
+</script></p>
+
+<p>学習は、式 ($\ref{eq:naive1}$)、($\ref{eq:naive2}$) を計算すればおｋ．やっと終わった。。。長かった。</p>
+
+<h2>Gaussian naive bayes</h2>
+
+<p>次。$x$が連続変数で、その分布に正規分布（Gaussian）を仮定する場合。まず、正規分布は以下のとおり。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+p(x; \mu, \sigma^{2}) = \frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\Bigl{&ndash;\frac{(x-\mu)^{2}}{2\sigma^{2}}\Bigr}
+\end{align}
+</script></p>
+
+<p>正規分布を使う場合、特徴ベクトルに対するパラメータは、ラベル数×特徴ベクトルの次元数×2個ある。×2となっているのは、平均と分散の分。対数尤度関数は、以下のようになる
+<script type="math/tex; mode=display">
+\begin{align}
+G &amp;=  \sum<em>{n=1}^{N}\Bigl[ \log \pi</em>{y<em>{n}} \notag \
+ &amp;+ \sum</em>{d=1}^{D} \bigl[ &ndash;\frac{1}{2}\log 2\pi &ndash; \log\sigma<em>{y</em>{n}d} &ndash;  \frac{(x<em>{nd}&ndash;\mu</em>{y<em>{n}d})<sup>2</sup>}{2\sigma</em>{y_{n}d}} \bigr] \Bigr]
+\end{align}
+</script></p>
+
+<h3>微分方程式を解く</h3>
+
+<p>計算は省略するけど、偏微分してゼロと置けば、結果は以下のようになる。式が若干煩雑だけど、基本的には正規分布の最尤推定をしてるだけ。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+\mu<em>{ld} = \frac{1}{N</em>{l}} \sum<em>{n=1}^{N} x</em>{nd} \cdot \delta(y<em>{n} =l) = \frac{N</em>{ld}}{N_{l}} \label{eq:naive3}
+\end{align}
+</script></p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+\sigma<em>{ld} = \frac{1}{N</em>{l}} \sum<em>{n=1}^{N} (x</em>{nd}&ndash;\mu<em>{ld})^{2} \cdot \delta (y</em>{n}= l) \label{eq:naive4}
+\end{align}
+</script></p>
+
+<p>学習では、式 ($\ref{eq:naive2}$)、($\ref{eq:naive3}$)、($\ref{eq:naive4}$)を計算すればおｋ．式 ($\ref{eq:naive3}$)は式 ($\ref{eq:naive1}$)と一緒なんだけど、正規分布の場合はxが連続値なので注意。分散が特徴ベクトルの次元によらず一定とすれば、パラメータの数をぐっと減らすこともできる。</p>
+
+<h2>おわりに</h2>
+
+<p>これで終わり。予想以上に書くのに時間かかった…。今日logistic regressionを見直してて、ふとnaive bayesやったことないなーと思って、まぁ試すだけならscipy使えば一瞬なんだろうけどちょっと導出までやってみようと思った。</p>
+
+<p>実装編→<a href="">Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a></p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://d.hatena.ne.jp/saket/20130212/1360678478">scikit.learn手法徹底比較！ ナイーブベイズ編Add Star &ndash; Risky Dune</a></li>
+<li><a href="http://www.cs.cmu.edu/~epxing/Class/10701-10s/Lecture/lecture5.pdf">Gaussian Naïve Bayes, andLogistic Regression</a></li>
+<li><a href="http://aidiary.hatenablog.com/entry/20100613/1276389337">ナイーブベイズを用いたテキスト分類 &ndash; 人工知能に関する断創録</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[NMFアルゴリズムの導出（ユークリッド距離版）]]></title>
+    <link href="http://r9y9.github.io/blog/2013/07/27/nmf-euclid/"/>
+    <updated>2013-07-27T23:30:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/07/27/nmf-euclid</id>
+    <content type="html"><![CDATA[<h2>はじめに</h2>
+
+<p>シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。
+音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。
+実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。</p>
+
+<p>と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。</p>
+
+<h2>NMFの問題設定</h2>
+
+<p>NMFとは、与えられた行列を非負という制約の元で因子分解する方法のこと。
+音楽の場合、対象はスペクトログラムで、式で書くとわかりやすい。
+スペクトログラムを <script type="math/tex"> \mathbf{Y}: [\Omega \times T] </script>
+とすると、
+<script type="math/tex; mode=display">
+\begin{align}
+\mathbf{Y} \simeq \mathbf{H} \mathbf{U}
+\end{align}
+</script></p>
+
+<p>となる、<script type="math/tex">\mathbf{H}: [\Omega \times K]、\mathbf{U}: [K \times T]</script>を求めるのがNMFの問題。
+ここで、Hが基底、Uがアクティビティ行列に相当する。
+NMFは、元の行列Yと分解後の行列の距離の最小化問題として定式化できる。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+\mathbf{H}, \mathbf{U} = \mathop{\rm arg~min}\limits<em>{\mathbf{H}, \mathbf{U}} D (\mathbf{Y}|\mathbf{H}\mathbf{U}), \hspace{3mm} {\rm subect\ to} \hspace{3mm} H</em>{\omega,k}, U_{k, t} > 0
+\end{align}
+</script></p>
+
+<p>すごくシンプル。Dは距離関数で色んなものがある。ユークリッド距離、KLダイバージェンス、板倉斎藤距離、βダイバージェンスとか。</p>
+
+<h2>ユークリッド距離の最小化</h2>
+
+<p>ここではユークリッド距離（Frobeniusノルムともいう）として、二乗誤差最小化問題を解くことにする。
+一番簡単なので。最小化すべき目的関数は次のようになる。
+<script type="math/tex; mode=display">
+\begin{align}
+D (\mathbf{Y}|\mathbf{H}\mathbf{U}) =&amp; || \mathbf{Y}&ndash;\mathbf{HU}||<em>{F} \
+=&amp; \sum</em>{\omega, k}|Y<em>{\omega,t} &ndash; \sum</em>{k}H<em>{\omega, k}U</em>{k, t}|^{2}
+\end{align}
+</script></p>
+
+<p>行列同士の二乗誤差の最小化は、要素毎の二乗誤差の和の最小化ということですね。展開すると、次のようになる。
+<script type="math/tex; mode=display">
+\begin{align}
+\sum<em>{\omega, k}|Y</em>{\omega,t} &ndash; \sum<em>{k}H</em>{\omega, k}U<em>{k, t}|^{2}
+= \sum</em>{\omega, t}(|Y<em>{\omega, t}|^2 -2Y</em>{\omega, t} \sum<em>{k}H</em>{\omega, k}U<em>{k, t} + |\sum</em>{k}H<em>{\omega, k}U</em>{k, t}|^2)
+\end{align}
+</script>
+微分してゼロ！としたいところだけど、3つ目の項を見ると、絶対値の中に和が入っているので、そうはいかない。
+なので、補助関数法を使う。
+基本的なアイデアは、目的関数の直接の最適化が難しい場合には、上界関数を立てることで間接的に最小化するということ。</p>
+
+<p>3項目に対してイェンセンの不等式を適応すると、
+<script type="math/tex; mode=display">
+\begin{align}
+|\sum<em>{k}H</em>{\omega,k}U<em>{k,t}|^{2} \le \sum</em>{k} \frac{H<em>{\omega,k}^{2}U</em>{k, t}^{2}}{\lambda_{k, \omega, t}}
+\end{align}
+</script></p>
+
+<p>これで、右辺は <script type="math/tex"> H_{\omega,k}, U_{k, t} </script> について二次関数になったので、微分できてはっぴー。
+上の不等式を使えば、実際に最小化する目的関数は、次のようになる。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+G := \sum<em>{\omega, t}(|Y</em>{\omega, t}|^2 -2Y<em>{\omega, t} \sum</em>{k}H<em>{\omega, k}U</em>{k, t} + \sum<em>{k} \frac{H</em>{\omega,k}^{2}U<em>{k, t}^{2}}{\lambda</em>{k, \omega, t}})
+\end{align}
+</script>
+Gを最小化すれば、間接的に元の目的関数も小さくなる。</p>
+
+<h2>更新式の導出</h2>
+
+<p>あとは更新式を導出するだけ。
+まず、目的関数を上から押さえるイメージで、イェンセンの不等式の等号条件から補助変数の更新式を求める。
+この場合、kに関して和が1になることに注意して、</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+\lambda<em>{k,\omega,t} = \frac{H</em>{\omega, k}U<em>{k, t}}{\sum</em>{k'}H<em>{\omega, k'}U</em>{k', t}}
+\end{align}
+</script></p>
+
+<p>次に、目的関数Gを<script type="math/tex">H_{\omega,k}, U_{k,t} </script>で偏微分する。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial G}{\partial H<em>{\omega,k}} &amp;= \sum</em>{t} (-2 Y<em>{\omega,t}U</em>{k,t} + 2 \frac{H<em>{\omega, k}U</em>{k, t}^2}{\lambda<em>{k,\omega,t}}) &amp;= 0\
+\frac{\partial G}{\partial U</em>{k, t}} &amp;= \sum<em>{\omega} (-2 Y</em>{\omega,t}H<em>{\omega,k} + 2 \frac{H</em>{\omega, k}^2U<em>{k, t}}{\lambda</em>{k,\omega,t}}) &amp;= 0
+\end{align}
+</script></p>
+
+<p>少し変形すれば、以下の式を得る。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+H<em>{\omega,k} = \frac{\sum</em>{t}Y<em>{\omega,t}U</em>{k,t}}{\sum<em>{t}\frac{U</em>{k, t}^2}{\lambda<em>{k,\omega,t}}}, \hspace{3mm}
+U</em>{k,t} = \frac{\sum<em>{\omega}Y</em>{\omega,t}H<em>{\omega,k}}{\sum</em>{\omega}\frac{H<em>{\omega, k}^2}{\lambda</em>{k,\omega,t}}}
+\end{align}
+</script></p>
+
+<p>補助変数を代入すれば、出来上がり。
+<script type="math/tex; mode=display">
+\begin{align}
+H<em>{\omega,k} = H</em>{\omega,k} \frac{\sum<em>{t}Y</em>{\omega,t}U<em>{k,t}}{\sum</em>{t}U<em>{k, t}\sum</em>{k'}H<em>{\omega, k'}U</em>{k', t}}, \hspace{3mm}
+U<em>{k,t} = U</em>{k,t}\frac{\sum<em>{\omega}Y</em>{\omega,t}H<em>{\omega,k}}{\sum</em>{\omega}H<em>{\omega, k}\sum</em>{k'}H<em>{\omega, k'}U</em>{k', t}}
+\end{align}
+</script></p>
+
+<h2>行列表記で</h2>
+
+<p>これで終わり…ではなく、もう少しスマートに書きたい。
+ここで、少し実装を意識して行列表記を使って書きなおす。
+行列の積は、AB（A: [m x n] 行列、B: [n x l] 行列）のようにAの列数とBの行数が等しくなることに注意して、
+ほんの少し変形すれば最終的には次のように書ける。</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+H<em>{\omega,k} &amp;= H</em>{\omega,k} \frac{[\mathbf{Y}\mathbf{U}^{\mathrm{T}}]<em>{\omega,k}}{[\mathbf{H}\mathbf{U}\mathbf{U}^{\mathrm{T}}]</em>{\omega,k}}, \
+U<em>{k,t} &amp;= U</em>{k,t}\frac{[\mathbf{H}^{\mathrm{T}}\mathbf{Y}]<em>{k, t}}{[\mathbf{H}^{\mathrm{T}}\mathbf{H}\mathbf{U}]</em>{k,t}}
+\end{align}
+</script></p>
+
+<p>乗法更新式というやつですね。
+元々の行列の要素が非負なら、掛けても非負のままですよってこと。
+NMFのアルゴリズムは、この更新式を目的関数が収束するまで計算するだけ、簡単。Pythonなら数行で書ける。</p>
+
+<h2>メモ</h2>
+
+<p>自分で導出していて思ったことをメモっておこうと思う。</p>
+
+<ul>
+<li>更新式は、行列の要素毎に独立して求められるんだなぁということ。
+
+<ul>
+<li>まぁ要素毎に偏微分して等式立ててるからそうなんだけど。更新の順番によって、収束する値、速度が変わるといったことはないんだろうか。</li>
+</ul>
+</li>
+<li>行列演算とスカラー演算が同じ式に同時に含まれていることがあるので注意。例えば、最終的な更新式の割り算は、要素毎のスカラー演算で、行列演算ではない。</li>
+<li>何かいっぱいシグマがあるけど、めげない。計算ミスしやすい、つらい。</li>
+<li>NMFという名前から行列操作を意識してしまうけど、更新式の導出の過程に行列の微分とか出てこない。更新式の導出は、行列の要素個々に対して行うイメージ。</li>
+</ul>
+
+
+<p>NMFなんて簡単、と言われますが（要出典）、実際にやってみると結構めんどくさいなー、と思いました（小並感</p>
+]]></content>
+  </entry>
+  
+</feed>

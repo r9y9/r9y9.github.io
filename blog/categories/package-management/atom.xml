@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: package-management | NOTE @r9y9]]></title>
+  <link href="http://r9y9.github.io/blog/categories/package-management/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-03T01:28:38+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[apt-getでコマンドがインストールできるか確認する方法]]></title>
+    <link href="http://r9y9.github.io/blog/2013/08/12/apt-commend-check/"/>
+    <updated>2013-08-12T00:33:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/08/12/apt-commend-check</id>
+    <content type="html"><![CDATA[<p>apt-cacheを使えばいい、なんてことは誰でも知ってると思うけど、apt-cache search ってすると、コマンド名だけじゃなくコマンドの説明文も一緒に検索されてしまって、都合が悪い場合がある。</p>
+
+<p>そんな時には以下のようにする。</p>
+
+<p><code>
+apt-cache search --names-only ^emacs24$
+</code></p>
+
+<p>これで、指定したコマンドがインストールできるかを確認できる。</p>
+
+<h3>ポイント1</h3>
+
+<p><code>--names-only</code> オプションを付ける。これで名前のみから検索してくれる。</p>
+
+<h3>ポイント2</h3>
+
+<p>正規表現を使う。これで柔軟性の高い検索ができる。</p>
+
+<p>以上。</p>
+
+<p>ちなみにyumだともうちょっとめんどくさい。yum listかyum searchを使えば似たようなことができる。yum listは、名前のみ検索、yum searchは名前と説明文を検索。</p>
+
+<p>どうでもいいけどyum使いづらい。apt-get最高</p>
+]]></content>
+  </entry>
+  
+</feed>

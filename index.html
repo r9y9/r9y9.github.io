@@ -6,16 +6,7 @@
 	<title>NOTE @r9y9</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Sep 28th, 2013 Tags: Daily 使い始めました テストです Text こんにちは。octopressを使い始めた。Hello Octopress! code 1
-2
-3
-4
-5
-6
-7
-8
-9
-#include &lt;iostream&gt; &hellip;">
+	<meta name="description" content=" Published on: Oct 3rd, 2013 Tags: daily これからは、こちらで書いてく。 気まぐれなのでまた変わるかもしれないけど、ぼちぼちメモっていこうと思う Comments ">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -43,12 +34,23 @@
 <!-- mathjax config similar to math.stackexchange -->
 
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$$','$$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
+    MathJax.Hub.Config({
+        HTML: ["input/TeX","output/HTML-CSS"],
+        TeX: {
+               Macros: {
+                        bm: ["\\boldsymbol{#1}", 1],
+                        argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                        argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+               extensions: ["AMSmath.js","AMSsymbols.js"], 
+               equationNumbers: { autoNumber: "AMS" } },
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                   displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                   processEscapes: true },
+        "HTML-CSS": { availableFonts: ["TeX"],
+                      linebreaks: { automatic: true } }
+    });
 </script>
 
 <script type="text/x-mathjax-config">
@@ -129,6 +131,52 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2013/10/03/blogger-to-github-pages/">
+		
+			BloggerからGithub Pagesに引越しした</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-03T01:24:00+09:00" pubdate data-updated="true">Oct 3<span>rd</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/daily/'>daily</a>
+
+
+</div>
+    </div>
+		<p>これからは、こちらで書いてく。</p>
+
+<p>気まぐれなのでまた変わるかもしれないけど、ぼちぼちメモっていこうと思う</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/10/03/blogger-to-github-pages//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2013/09/28/start-using-octopress/">
 		
 			Start Using Octopress</a>
@@ -151,7 +199,7 @@
       <div class="tags">Tags: 
 
 
-	<a class='category' href='/blog/categories/daily/'>Daily</a>
+	<a class='category' href='/blog/categories/daily/'>daily</a>
 
 
 </div>
@@ -209,8 +257,697 @@ X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
 </div>
 </article>
 
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/09/23/mlsa-filter-wakaran/">
+		
+			MLSA フィルタの実装</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-23T23:51:00+09:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>, <a class='category' href='/blog/categories/speech-synthesis/'>speech-synthesis</a>
+
+
+</div>
+    </div>
+		<p>音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ</p>
+
+<p>と、前置きはさておき、MLSAフィルタの実装を見つけたのでメモ。ここ最近ちょくちょく調べているが、SPTK以外で初めて見つけた。</p>
+
+<p><a href="http://simple4all.org/wp-content/uploads/2013/05/Jiunn.pdf">Realisation and Simulation of the Mel Log Spectrum Approximation Filter | Simple4All Internship Report</a></p>
+
+<p>Simple4Allという音声技術系のコミュニティの、学生さんのインターンの成果らしい。ちらっと調べてたら山岸ｾﾝｾｲも参加してる（た？）っぽい。ｺﾞｺﾞｺﾞｺﾞｺﾞ</p>
+
+<p>上のreportで引用されているように、MLSA filterの実現方法については、益子さんのD論に詳しく書いてあることがわかった。今井先生の論文と併せて読んでみようと思う。</p>
+
+<p><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.3623&amp;rep=rep1&amp;type=pdf">T. Masuko, &ldquo;HMM-Based Speech Synthesis and Its Applications&rdquo;, Ph.D Thesis, 2002.</a></p>
+
+<p>もう正直わからんしブラックボックスでもいいから既存のツール使うかーと諦めかけていたところで割りと丁寧な実装付き解説を見つけたので、もう一度勉強して実装してみようと思い直した。</p>
+
+<p>機械学習にかまけて信号処理をちゃんと勉強していなかったつけがきている。LMA filterもMLSA filterも、本当にわからなくてツライ……orz</p>
+
+<p>(実はそんなに難しくなく、理解できた 2013/09後半)</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/09/23/mlsa-filter-wakaran//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/09/14/hpss/">
+		
+			調波打楽器音分離（HPSS）を試す</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-14T23:34:00+09:00" pubdate data-updated="true">Sep 14<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/matrix-factorization/'>matrix-factorization</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/source-separation/'>source-separation,</a>
+
+
+</div>
+    </div>
+		<h2>HPSSとは（一行説明）</h2>
+
+<p>HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ</p>
+
+<p>アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる</p>
+
+<h2>実装</h2>
+
+<p>調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ</p>
+
+<script type="math/tex; mode=display">
+\begin{align}
+|H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
+\end{align}
+</script>
+
+
+
+
+<script type="math/tex; mode=display">
+\begin{align}
+|P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
+\end{align}
+</script>
+
+
+<p>ただし</p>
+
+<script type="math/tex; mode=display">
+\begin{align}
+|W_{t,k}| = |H_{t,k}| + |P_{t,k}|
+\end{align}
+</script>
+
+
+<p>絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。</p>
+
+<p>HPSSの論文はたくさんあるけど、日本語でかつ丁寧な <a href="http://ci.nii.ac.jp/naid/110007997346">&ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;</a> を参考にした。</p>
+
+<p>H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ</p>
+
+<p>一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。</p>
+
+<h2>結果</h2>
+
+<p>フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、<a href="http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html">歌もの音楽素材：歌入り素材系のフリー音楽素材一覧</a> から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
+18秒目くらいからを比較すると効果がわかりやすいです</p>
+
+<h3>元音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442" width="100%"></iframe>
+
+
+<h3>Hのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534" width="100%"></iframe>
+
+
+<h3>Pのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599" width="100%"></iframe>
+
+
+<p>それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</p>
+
+<p>コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ</p>
+
+<p>詳しくは論文へ（僕のじゃないけど</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://ci.nii.ac.jp/naid/110007997346">橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/09/14/hpss//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/09/07/math-eng-ml-programming/">
+		
+			数学と英語と機械学習とプログラミング</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-07T23:32:00+09:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/daily/'>daily</a>
+
+
+</div>
+    </div>
+		<p>タイトルに上げたものは、僕がやりたい or やるべきと思っていることで、まぁ思い始めて数年立つんだけど未だにまったく出来ていない。どうにかしないとヤバイ</p>
+
+<ul>
+<li>数学：算数すら危うい</li>
+<li>英語：話せない</li>
+<li>機械学習：あぁカーネルトリックね（全然わかってない</li>
+<li>プログラミング：c++わからん</li>
+</ul>
+
+
+<p>がんばろう。ただの日記</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/09/07/math-eng-ml-programming//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/12/numpy-scipy-for-ubuntu/">
+		
+			UbuntuでNumpy, Scipyをソースからインストール</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-12T00:35:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
+
+
+</div>
+    </div>
+		<p><img class="center" src="/images/numpy_scipy_version_terminal.png"></p>
+
+<p>apt-getを使う場合→<a href="http://d.hatena.ne.jp/sat0yu/20130302/1362172589">ubuntuにnumpy, scipy, matplotlib環境を構築 &ndash; sat0yuの日記</a>
+ただやっぱり最新版を使いたいということがある。というわけでメモ。
+Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインストールできると思う）。</p>
+
+<h2>準備</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install python python-dev gcc gfortran g++
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Numpyのインストール</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/numpy/numpy
+</span><span class='line'><span class="nb">cd </span>numpy
+</span><span class='line'>python setup.py build
+</span><span class='line'>sudo python setup.py install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>かんたん</p>
+
+<h2>Scipyのインストール</h2>
+
+<p>これがちょっとめんどい。numpyのようには行かなかった。2013/08/12</p>
+
+<h3>前準備</h3>
+
+<p>以下をインストール</p>
+
+<ul>
+<li>numpy （上の通りでおｋ）</li>
+<li>blas/lapack</li>
+<li>cython</li>
+</ul>
+
+
+<h2>cythonのインストール</h2>
+
+<p>これ、apt-get install cython でも入るんだけど、バージョンが古いって怒られた。なので、cythonもソースからいれる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/cython/cython
+</span><span class='line'><span class="nb">cd </span>cython
+</span><span class='line'>python setup.py build
+</span><span class='line'>sudo python setup.py install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>かんたん</p>
+
+<h2>blas/lapackのインストール</h2>
+
+<p>これはapt-getから入れればおｋ</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install libblas-dev liblapack-dev
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>scipyのINSTALL.txt （リンク）を見るに、libatlas3-base-devをインストールすれば良さそうだけど、ubuntu 12.04じゃ見つからんかった（2013/08/12時点で）。で、何となく試してたら、libblas-devとliblapack-devで行けた。</p>
+
+<h2>Scipyのインストール！</h2>
+
+<p>これでやっとインストールできる</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/scipy/scipy
+</span><span class='line'><span class="nb">cd </span>scipy
+</span><span class='line'>python setup.py build
+</span><span class='line'>sudo python setup.py install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>終わり。</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/08/12/numpy-scipy-for-ubuntu//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/12/apt-commend-check/">
+		
+			Apt-getでコマンドがインストールできるか確認する方法</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-12T00:33:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/package-management/'>package-management</a>
+
+
+</div>
+    </div>
+		<p>apt-cacheを使えばいい、なんてことは誰でも知ってると思うけど、apt-cache search ってすると、コマンド名だけじゃなくコマンドの説明文も一緒に検索されてしまって、都合が悪い場合がある。</p>
+
+<p>そんな時には以下のようにする。</p>
+
+<p><code>
+apt-cache search --names-only ^emacs24$
+</code></p>
+
+<p>これで、指定したコマンドがインストールできるかを確認できる。</p>
+
+<h3>ポイント1</h3>
+
+<p><code>--names-only</code> オプションを付ける。これで名前のみから検索してくれる。</p>
+
+<h3>ポイント2</h3>
+
+<p>正規表現を使う。これで柔軟性の高い検索ができる。</p>
+
+<p>以上。</p>
+
+<p>ちなみにyumだともうちょっとめんどくさい。yum listかyum searchを使えば似たようなことができる。yum listは、名前のみ検索、yum searchは名前と説明文を検索。</p>
+
+<p>どうでもいいけどyum使いづらい。apt-get最高</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/08/12/apt-commend-check//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/12/bash-check-commend-existence/">
+		
+			Bashでコマンドの存在チェック</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-12T00:30:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/shell-script/'>shell-script</a>
+
+
+</div>
+    </div>
+		<p>素晴らしいまとめ→ <a href="http://qiita.com/kawaz/items/1b61ee2dd4d1acc7cc94">コマンドの存在チェックはwhichよりhashの方が良いかも→いやtypeが最強 &ndash; qiita</a></p>
+
+<p>いつもwhichを使っていたのだけど、typeの方がよさげ。</p>
+
+<p>今までこう書いてた</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="k">if</span> <span class="o">[</span> -x which <span class="s2">&quot;何かコマンド&quot;</span> <span class="o">]</span>
+</span><span class='line'><span class="k">then</span>
+</span><span class='line'>    コマンドが存在した場合の処理
+</span><span class='line'><span class="k">fi</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>コマンドが実行可能かどうかをwhichを使って判定する。少なくとも自分のubuntu 12.04では期待した通りに動く。だた環境によっては、指定したコマンドがない場合に、</p>
+
+<p><code>
+/usr/bin/which: no hogehoge
+</code></p>
+
+<p>みたいに表示されて、おそらくwhichが実行可能なバイナリだから、if文がtrueで通っちゃうことがある。これは困る。で、ググってたらtypeやhashがあることを知って、typeが良さそうということで試したら期待通りの動作になったのでハッピー。bash組み込みらしいね</p>
+
+<h2>書き方</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="k">if </span><span class="nb">type</span> <span class="s2">&quot;コマンド&quot;</span> &gt; /dev/null 2&gt;&amp;1
+</span><span class='line'><span class="k">then</span>
+</span><span class='line'>    コマンドが存在した場合の処理
+</span><span class='line'><span class="k">fi</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bash組み込みのコマンドを使って存在判定するので、速いらしい（割りとどうでもいいけど）。標準エラー出力は意外とうっとしいということがわかったので、今回書いてたスクリプトでは捨てるようにした。</p>
+
+<p>これからはtype使おう。［］も書かなくても済むしコードもすっきりする</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/08/12/bash-check-commend-existence//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/11/emacs-24-for-ubuntu12-04/">
+		
+			emacs24をUbuntu12.04 にインストールする方法</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-11T00:26:00+09:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/emacs/'>emacs</a>
+
+
+</div>
+    </div>
+		<h2>コマンド</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo add-apt-repository ppa:cassou/emacs
+</span><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install emacs24
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ググればすぐ解決するんだけど、過去何回も調べててアホみたいなので自分でもスクリプト書いたよ。といってもレポジトリ追加してapt-getするだけだけど。</p>
+
+<p><a href="https://github.com/r9y9/install/blob/master/install_emacs.sh">https://github.com/r9y9/install/blob/master/install_emacs.sh</a></p>
+
+<p>emacsがサーバに入ってないとしにたみることが判明したので、もうサーバにもemacs入れておくようにしたい。</p>
+
+<p>ちなみに24以降だと、パッケージ管理システムがデフォでちゃんとしてたり、color-themeがデフォであったりするので、24以降の方がいい</p>
+
+<h2>参考</h2>
+
+<p><a href="http://d.hatena.ne.jp/going-around/20130120/1358693301">emacs24 &ndash; Ubuntu的日常</a></p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/08/11/emacs-24-for-ubuntu12-04//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/06/naive-bayes-mnist/">
+		
+			Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-06T23:08:00+09:00" pubdate data-updated="true">Aug 6<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/digit-recognition/'>digit-recognition</a>, <a class='category' href='/blog/categories/machine-learning/'>machine-learning</a>
+
+
+</div>
+    </div>
+		<p>前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…</p>
+
+<p>そもそもナイーブベイズやろうとしてたのも、MNISTのdigit recognitionがやりたかったからなので、実際にやってみた。</p>
+
+<p>コードはgithubに置いた <a href="https://github.com/r9y9/naive_bayes">https://github.com/r9y9/naive_bayes</a></p>
+
+<p>結果だけ知りたい人へ：正解率  76 %くらいでした。まぁこんなもんですね</p>
+
+<h2>手書き数字認識</h2>
+
+<p>手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。</p>
+
+<p>今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→<a href="http://yann.lecun.com/exdb/mnist/">THE MNIST DATABASE of handwritten digits</a>
+ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（<a href="http://deeplearning.net/tutorial/gettingstarted.html#gettingstarted">ここ</a>）、pythonのcPickleから読める形式に変換されているデータを使った。感謝</p>
+
+<h2>とりあえずやってみる</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/r9y9/naive_bayes
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>naive_bayes
+</span><span class='line'><span class="nv">$ </span>python mnist_digit_recognition.py
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>プログラムの中身は以下のようになってる。</p>
+
+<ul>
+<li>MNISTデータセットのダウンロード</li>
+<li>モデルの学習</li>
+<li>テスト</li>
+</ul>
+
+
+<p>実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。</p>
+
+<h2>学習されたGaussianの平均</h2>
+
+<p><img class="center" src="/images/mnist_mean_of_gaussian.png" title="&#34;gaussian means&#34;" alt="&#34;gaussian means&#34;"></p>
+
+<p>学習されたGaussianの平均をプロットしたもの。上のコードを実行すると表示される。</p>
+
+<p>それっぽい。学習データは50000サンプル</p>
+
+<h2>認識結果</h2>
+
+<p>時間がかかるけど、テストデータ10000個に対してやってみると、結果は以下のようになった。</p>
+
+<p><code>0.7634 (7634/10000)</code></p>
+
+<p>まぁナイーブベイズなんてこんなもん。もちろん、改善のしようはいくらでもあるけれども。ちなみにDeep learningのチュートリアルで使われてたDBN.pyだと0.987くらいだった。</p>
+
+<h2>感想</h2>
+
+<p>相関が強い特徴だと上手くいかんのは当たり前で、ピクセル毎にGaussianなんて作らずに（ピクセル間の相関を無視せずに）、少しまともな特徴抽出をかませば、8割りは超えるんじゃないかなぁと思う。</p>
+
+<p>あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。</p>
+
+<p><a href="">導出編→Naive Bayesの復習（導出編）</a></p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://www.slideshare.net/shima__shima/python-13349162">機械学習のPythonとの出会い（１）：単純ベイズ基礎編 &ndash; slideshare</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/08/06/naive-bayes-mnist//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
 <nav id="pagenavi">
     
+    
+        <a href="/blog/page/2/" class="next">Next</a>
     
     <div class="center"><a href="/blog/archives">Blog Archives</a></div>
 </nav>

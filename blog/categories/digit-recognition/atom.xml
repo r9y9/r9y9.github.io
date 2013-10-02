@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: digit-recognition | NOTE @r9y9]]></title>
+  <link href="http://r9y9.github.io/blog/categories/digit-recognition/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-03T01:28:38+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識]]></title>
+    <link href="http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/"/>
+    <updated>2013-08-06T23:08:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist</id>
+    <content type="html"><![CDATA[<p>前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…</p>
+
+<p>そもそもナイーブベイズやろうとしてたのも、MNISTのdigit recognitionがやりたかったからなので、実際にやってみた。</p>
+
+<p>コードはgithubに置いた <a href="https://github.com/r9y9/naive_bayes">https://github.com/r9y9/naive_bayes</a></p>
+
+<p>結果だけ知りたい人へ：正解率  76 %くらいでした。まぁこんなもんですね</p>
+
+<h2>手書き数字認識</h2>
+
+<p>手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。</p>
+
+<p>今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→<a href="http://yann.lecun.com/exdb/mnist/">THE MNIST DATABASE of handwritten digits</a>
+ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（<a href="http://deeplearning.net/tutorial/gettingstarted.html#gettingstarted">ここ</a>）、pythonのcPickleから読める形式に変換されているデータを使った。感謝</p>
+
+<h2>とりあえずやってみる</h2>
+
+<p><code>bash
+$ git clone https://github.com/r9y9/naive_bayes
+$ cd naive_bayes
+$ python mnist_digit_recognition.py
+</code></p>
+
+<p>プログラムの中身は以下のようになってる。</p>
+
+<ul>
+<li>MNISTデータセットのダウンロード</li>
+<li>モデルの学習</li>
+<li>テスト</li>
+</ul>
+
+
+<p>実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。</p>
+
+<h2>学習されたGaussianの平均</h2>
+
+<p><img class="center" src="/images/mnist_mean_of_gaussian.png" title="&ldquo;gaussian means&rdquo;" ></p>
+
+<p>学習されたGaussianの平均をプロットしたもの。上のコードを実行すると表示される。</p>
+
+<p>それっぽい。学習データは50000サンプル</p>
+
+<h2>認識結果</h2>
+
+<p>時間がかかるけど、テストデータ10000個に対してやってみると、結果は以下のようになった。</p>
+
+<p><code>0.7634 (7634/10000)</code></p>
+
+<p>まぁナイーブベイズなんてこんなもん。もちろん、改善のしようはいくらでもあるけれども。ちなみにDeep learningのチュートリアルで使われてたDBN.pyだと0.987くらいだった。</p>
+
+<h2>感想</h2>
+
+<p>相関が強い特徴だと上手くいかんのは当たり前で、ピクセル毎にGaussianなんて作らずに（ピクセル間の相関を無視せずに）、少しまともな特徴抽出をかませば、8割りは超えるんじゃないかなぁと思う。</p>
+
+<p>あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。</p>
+
+<p><a href="">導出編→Naive Bayesの復習（導出編）</a></p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://www.slideshare.net/shima__shima/python-13349162">機械学習のPythonとの出会い（１）：単純ベイズ基礎編 &ndash; slideshare</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

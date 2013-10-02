@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: python | NOTE @r9y9]]></title>
+  <link href="http://r9y9.github.io/blog/categories/python/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-03T01:28:38+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[UbuntuでNumpy, Scipyをソースからインストール]]></title>
+    <link href="http://r9y9.github.io/blog/2013/08/12/numpy-scipy-for-ubuntu/"/>
+    <updated>2013-08-12T00:35:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/08/12/numpy-scipy-for-ubuntu</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/numpy_scipy_version_terminal.png"></p>
+
+<p>apt-getを使う場合→<a href="http://d.hatena.ne.jp/sat0yu/20130302/1362172589">ubuntuにnumpy, scipy, matplotlib環境を構築 &ndash; sat0yuの日記</a>
+ただやっぱり最新版を使いたいということがある。というわけでメモ。
+Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインストールできると思う）。</p>
+
+<h2>準備</h2>
+
+<p><code>bash
+sudo apt-get install python python-dev gcc gfortran g++
+</code></p>
+
+<h2>Numpyのインストール</h2>
+
+<p><code>bash
+git clone https://github.com/numpy/numpy
+cd numpy
+python setup.py build
+sudo python setup.py install
+</code></p>
+
+<p>かんたん</p>
+
+<h2>Scipyのインストール</h2>
+
+<p>これがちょっとめんどい。numpyのようには行かなかった。2013/08/12</p>
+
+<h3>前準備</h3>
+
+<p>以下をインストール</p>
+
+<ul>
+<li>numpy （上の通りでおｋ）</li>
+<li>blas/lapack</li>
+<li>cython</li>
+</ul>
+
+
+<h2>cythonのインストール</h2>
+
+<p>これ、apt-get install cython でも入るんだけど、バージョンが古いって怒られた。なので、cythonもソースからいれる</p>
+
+<p><code>
+git clone https://github.com/cython/cython
+cd cython
+python setup.py build
+sudo python setup.py install
+</code></p>
+
+<p>かんたん</p>
+
+<h2>blas/lapackのインストール</h2>
+
+<p>これはapt-getから入れればおｋ</p>
+
+<p><code>bash
+sudo apt-get install libblas-dev liblapack-dev
+</code></p>
+
+<p>scipyのINSTALL.txt （リンク）を見るに、libatlas3-base-devをインストールすれば良さそうだけど、ubuntu 12.04じゃ見つからんかった（2013/08/12時点で）。で、何となく試してたら、libblas-devとliblapack-devで行けた。</p>
+
+<h2>Scipyのインストール！</h2>
+
+<p>これでやっとインストールできる</p>
+
+<p><code>
+git clone https://github.com/scipy/scipy
+cd scipy
+python setup.py build
+sudo python setup.py install
+</code></p>
+
+<p>終わり。</p>
+]]></content>
+  </entry>
+  
+</feed>

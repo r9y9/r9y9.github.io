@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: source-separation, | NOTE @r9y9]]></title>
+  <link href="http://r9y9.github.io/blog/categories/source-separation/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-03T01:28:38+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[調波打楽器音分離（HPSS）を試す]]></title>
+    <link href="http://r9y9.github.io/blog/2013/09/14/hpss/"/>
+    <updated>2013-09-14T23:34:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/09/14/hpss</id>
+    <content type="html"><![CDATA[<h2>HPSSとは（一行説明）</h2>
+
+<p>HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ</p>
+
+<p>アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる</p>
+
+<h2>実装</h2>
+
+<p>調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+|H<em>{t, k}| = \frac{w</em>{H}^2 (|H<em>{t+1,k}| + |H</em>{t-1,k}|)<sup>2</sup> |W<em>{t,k}|}{w</em>{H}^2 (|H<em>{t+1,k}| + |H</em>{t-1,k}|)<sup>2</sup> + w<em>{P}^2(|P</em>{t,k+1}| + |P_{t,k-1}|)<sup>2</sup>}
+\end{align}
+</script></p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+|P<em>{t, k}| = \frac{w</em>{P}^2 (|P<em>{t,k+1}| + |P</em>{t,k-1}|)<sup>2</sup> |W<em>{t,k}|}{w</em>{H}^2 (|H<em>{t+1,k}| + |H</em>{t-1,k}|)<sup>2</sup> + w<em>{P}^2(|P</em>{t,k+1}| + |P_{t,k-1}|)<sup>2</sup>}
+\end{align}
+</script></p>
+
+<p>ただし
+<script type="math/tex; mode=display">
+\begin{align}
+|W<em>{t,k}| = |H</em>{t,k}| + |P_{t,k}|
+\end{align}
+</script></p>
+
+<p>絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。</p>
+
+<p>HPSSの論文はたくさんあるけど、日本語でかつ丁寧な <a href="http://ci.nii.ac.jp/naid/110007997346">&ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;</a> を参考にした。</p>
+
+<p>H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ</p>
+
+<p>一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。</p>
+
+<h2>結果</h2>
+
+<p>フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、<a href="http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html">歌もの音楽素材：歌入り素材系のフリー音楽素材一覧</a> から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
+18秒目くらいからを比較すると効果がわかりやすいです</p>
+
+<h3>元音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442" width="100%"></iframe>
+
+
+<h3>Hのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534" width="100%"></iframe>
+
+
+<h3>Pのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599" width="100%"></iframe>
+
+
+<p>それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</p>
+
+<p>コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ</p>
+
+<p>詳しくは論文へ（僕のじゃないけど</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://ci.nii.ac.jp/naid/110007997346">橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

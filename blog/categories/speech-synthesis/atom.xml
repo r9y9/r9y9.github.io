@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: speech-synthesis | NOTE @r9y9]]></title>
+  <link href="http://r9y9.github.io/blog/categories/speech-synthesis/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-03T01:28:38+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MLSA フィルタの実装]]></title>
+    <link href="http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/"/>
+    <updated>2013-09-23T23:51:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran</id>
+    <content type="html"><![CDATA[<p>音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ</p>
+
+<p>と、前置きはさておき、MLSAフィルタの実装を見つけたのでメモ。ここ最近ちょくちょく調べているが、SPTK以外で初めて見つけた。</p>
+
+<p><a href="http://simple4all.org/wp-content/uploads/2013/05/Jiunn.pdf">Realisation and Simulation of the Mel Log Spectrum Approximation Filter | Simple4All Internship Report</a></p>
+
+<p>Simple4Allという音声技術系のコミュニティの、学生さんのインターンの成果らしい。ちらっと調べてたら山岸ｾﾝｾｲも参加してる（た？）っぽい。ｺﾞｺﾞｺﾞｺﾞｺﾞ</p>
+
+<p>上のreportで引用されているように、MLSA filterの実現方法については、益子さんのD論に詳しく書いてあることがわかった。今井先生の論文と併せて読んでみようと思う。</p>
+
+<p><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.3623&amp;rep=rep1&amp;type=pdf">T. Masuko, &ldquo;HMM-Based Speech Synthesis and Its Applications&rdquo;, Ph.D Thesis, 2002.</a></p>
+
+<p>もう正直わからんしブラックボックスでもいいから既存のツール使うかーと諦めかけていたところで割りと丁寧な実装付き解説を見つけたので、もう一度勉強して実装してみようと思い直した。</p>
+
+<p>機械学習にかまけて信号処理をちゃんと勉強していなかったつけがきている。LMA filterもMLSA filterも、本当にわからなくてツライ……orz</p>
+
+<p>(実はそんなに難しくなく、理解できた 2013/09後半)</p>
+]]></content>
+  </entry>
+  
+</feed>
