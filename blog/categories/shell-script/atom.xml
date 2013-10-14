@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: shell-script | NOTE @r9y9]]></title>
+  <title><![CDATA[Category: shell-script | r9y9::blog]]></title>
   <link href="http://r9y9.github.io/blog/categories/shell-script/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-03T09:11:39+09:00</updated>
+  <updated>2013-10-14T15:16:45+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
