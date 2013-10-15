@@ -6,7 +6,7 @@
 	<title>r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Aug 3rd, 2013 Tags: blogger, mathjax Bloggerカスタマイズメモから、Mathjaxの部分を切り出して補足。ちょっとカスタマイズして書くことも増えたので。bloggerでの作業記録だけど、 &hellip;">
+	<meta name="description" content="Published on: Aug 6th, 2013 Tags: digit-recognition, machine-learning 前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -124,6 +124,116 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/06/naive-bayes-mnist/">
+		
+			Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-06T23:08:00+09:00" pubdate data-updated="true">Aug 6<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/digit-recognition/'>digit-recognition</a>, <a class='category' href='/blog/categories/machine-learning/'>machine-learning</a>
+
+
+</div>
+    </div>
+		<p>前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…</p>
+
+<p>そもそもナイーブベイズやろうとしてたのも、MNISTのdigit recognitionがやりたかったからなので、実際にやってみた。</p>
+
+<p>コードはgithubに置いた <a href="https://github.com/r9y9/naive_bayes">https://github.com/r9y9/naive_bayes</a></p>
+
+<p>結果だけ知りたい人へ：正解率  76 %くらいでした。まぁこんなもんですね</p>
+
+<h2>手書き数字認識</h2>
+
+<p>手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。</p>
+
+<p>今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→<a href="http://yann.lecun.com/exdb/mnist/">THE MNIST DATABASE of handwritten digits</a>
+ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（<a href="http://deeplearning.net/tutorial/gettingstarted.html#gettingstarted">ここ</a>）、pythonのcPickleから読める形式に変換されているデータを使った。感謝</p>
+
+<h2>とりあえずやってみる</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/r9y9/naive_bayes
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>naive_bayes
+</span><span class='line'><span class="nv">$ </span>python mnist_digit_recognition.py
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>プログラムの中身は以下のようになってる。</p>
+
+<ul>
+<li>MNISTデータセットのダウンロード</li>
+<li>モデルの学習</li>
+<li>テスト</li>
+</ul>
+
+
+<p>実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。</p>
+
+<h2>学習されたGaussianの平均</h2>
+
+<p><img class="center" src="/images/mnist_mean_of_gaussian.png" title="&#34;gaussian means&#34;" alt="&#34;gaussian means&#34;"></p>
+
+<p>学習されたGaussianの平均をプロットしたもの。上のコードを実行すると表示される。</p>
+
+<p>それっぽい。学習データは50000サンプル</p>
+
+<h2>認識結果</h2>
+
+<p>時間がかかるけど、テストデータ10000個に対してやってみると、結果は以下のようになった。</p>
+
+<p><code>0.7634 (7634/10000)</code></p>
+
+<p>まぁナイーブベイズなんてこんなもん。もちろん、改善のしようはいくらでもあるけれども。ちなみにDeep learningのチュートリアルで使われてたDBN.pyだと0.987くらいだった。</p>
+
+<h2>感想</h2>
+
+<p>相関が強い特徴だと上手くいかんのは当たり前で、ピクセル毎にGaussianなんて作らずに（ピクセル間の相関を無視せずに）、少しまともな特徴抽出をかませば、8割りは超えるんじゃないかなぁと思う。</p>
+
+<p>あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。</p>
+
+<p><a href="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/">導出編→Naive Bayesの復習（導出編）</a></p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://www.slideshare.net/shima__shima/python-13349162">機械学習のPythonとの出会い（１）：単純ベイズ基礎編 &ndash; slideshare</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/08/06/naive-bayes-mnist//blog/page/2/index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
 
 
     <article class="post">
