@@ -4,7 +4,7 @@
   <title><![CDATA[r9y9::blog]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-20T03:01:20+09:00</updated>
+  <updated>2013-10-20T03:03:00+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -18,7 +18,7 @@
     <link href="http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/"/>
     <updated>2013-10-20T00:55:00+09:00</updated>
     <id>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform</id>
-    <content type="html"><![CDATA[<p><img class="center" src="http://r9y9.github.io/images/gabor_wavelet_nnmnkwii.png" title="&#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using OpenJalk)&#34;" alt="&#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using OpenJalk)&#34;"></p>
+    <content type="html"><![CDATA[<p><img class="center" src="http://r9y9.github.io/images/gabor_wavelet_nnmnkwii.png" title="&#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using Open Jalk)&#34;" alt="&#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using Open Jalk)&#34;"></p>
 
 <h2>ウェーブレット変換って何？</h2>
 
