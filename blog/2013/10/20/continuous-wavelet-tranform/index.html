@@ -1,0 +1,339 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>FFTを使った連続ウェーブレット変換の高速化 - r9y9::blog</title>
+    <meta name="author" content="Ryuichi Yamamoto">
+    
+	<meta name="description" content="ウェーブレット変換って何？ Jump to wikipedia いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと 高速化の仕組み さて、本題。ウェーブレット変換は &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="r9y9::blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->   
+    <script src="/javascripts/ajaxify.js"></script>
+   
+    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        HTML: ["input/TeX","output/HTML-CSS"],
+        TeX: {
+               Macros: {
+                        bm: ["\\boldsymbol{#1}", 1],
+                        argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                        argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+               extensions: ["AMSmath.js","AMSsymbols.js"], 
+               equationNumbers: { autoNumber: "AMS" } },
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                   displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                   processEscapes: true },
+        "HTML-CSS": { availableFonts: ["TeX"],
+                      linebreaks: { automatic: true } }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-44433856-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1>
+    <div id="headerbg2">
+      <a href="/">
+        r9y9::blog
+      </a>
+    </div>
+</h1>
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+  <li><a href="/about/">About</a></li>
+  <li><a href="/blog/archives/">Archives</a></li>
+  <li><a href="/todo/">TODO</a></li>
+  <li><a href="/atom.xml">RSS</a></li>
+      
+</ul>
+
+
+
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">FFTを使った連続ウェーブレット変換の高速化</h2>
+	<div class="entry-content"><p><img class="center" src="/images/gabor_wavelet_nnmnkwii.png" title="&#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using OpenJalk)&#34;" alt="&#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using OpenJalk)&#34;"></p>
+
+<h2>ウェーブレット変換って何？</h2>
+
+<p><a href="http://ja.wikipedia.org/wiki/%E3%82%A6%E3%82%A7%E3%83%BC%E3%83%96%E3%83%AC%E3%83%83%E3%83%88%E5%A4%89%E6%8F%9B">Jump to wikipedia</a></p>
+
+<p>いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと</p>
+
+<h2>高速化の仕組み</h2>
+
+<p>さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。</p>
+
+<p>つまり、</p>
+
+<ul>
+<li>入力信号とマザーウェーブレットをそれぞれフーリエ変換する</li>
+<li>掛け算する</li>
+<li>逆フーリエ変換する</li>
+</ul>
+
+
+<p>というプロセスでウェーブレット変換を求めることができて、かつフーリエ変換にはFFTという高速なアルゴリズムが存在するので、計算を高速化できるという仕組み。まぁ原理としてはシンプルなんだけど以外と面倒くさい（気のせい？）。</p>
+
+<p>色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です</p>
+
+<h2>A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pd">[PDF]</a></h2>
+
+<p>結論から言えばここが一番詳しいかった。</p>
+
+<ul>
+<li>実装よりで理論の解説がある</li>
+<li>matlab/fortran のコードがある</li>
+</ul>
+
+
+<p>がいいところ</p>
+
+<p>基本的にはこれ読めばわかる。数学全然わからん俺でも読めた。特に、離散表現でのウェーブレットについても書かれているのは良い。連続ウェーブレットといっても、デジタル信号処理で扱う上では離散化しないといけないわけなので</p>
+
+<p>さて、僕が参考にしたmatlabコードへの直リンクは以下</p>
+
+<ul>
+<li><a href="http://paos.colorado.edu/research/wavelets/wave_matlab/wave_bases.m">マザーウェーブレットの周波数応答の計算部分</a></li>
+<li><a href="http://paos.colorado.edu/research/wavelets/wave_matlab/wavelet.m">連続ウェーブレット変換の本体</a></li>
+<li><a href="http://paos.colorado.edu/research/wavelets/wave_matlab/wavetest.m">連続ウェーブレット変換のテストコード</a></li>
+</ul>
+
+
+<p>その他、fortanコードなどいくつかあるので、それらはウェブサイトからどうぞ</p>
+
+<h2>Matlab</h2>
+
+<p> mathworksさんのwavelet toolboxのドキュメントもよかった。ここから上記のpracticalなんちゃらのリンクもある</p>
+
+<ul>
+<li><a href="http://www.mathworks.co.jp/jp/help/wavelet/gs/continuous-wavelet-transform.html">Continuous Wavelet Transform</a></li>
+<li><a href="http://www.mathworks.co.jp/jp/help/wavelet/ref/cwtft.html">Continuous wavelet transform using FFT algorithm</a></li>
+<li><a href="http://www.mathworks.co.jp/jp/help/wavelet/ref/icwtft.html">Inverse CWT</a></li>
+</ul>
+
+
+<p>コードは転がってないですね。まぁ有料なので</p>
+
+<h2>日本語でわかりやすいもの</h2>
+
+<ul>
+<li><a href="http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html">C/C++言語でガボールウェーブレット変換により時間周波数解析を行うサンプルプログラム</a>
+
+<ul>
+<li> ここは本当に素晴らしい。何年か前にも参考にさせて頂きました。</li>
+</ul>
+</li>
+<li><a href="http://www.hulinks.co.jp/support/flexpro/v7/dataanalysis_cwt.html">連続ウェーブレット変換 (CWT) &ndash; FlexPro 7 日本語版サポート情報</a>
+
+<ul>
+<li> 日本語で丁寧に書かれてる。内容自体は、practicalなんちゃらと似ている</li>
+</ul>
+</li>
+<li><a href="http://www.makino.ecei.tohoku.ac.jp/~aito/wavelet/">東北大学 伊藤先生の講義資料</a>
+
+<ul>
+<li> 数少ない日本語でのウェーブレットに関する資料。ただし連続ウェーブレットについてはあんまり解説はない。C言語のサンプル付き</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>書籍</h2>
+
+<p>今回は調べてない。数年前にちょいちょい調べたことがあるけど忘れた</p>
+
+<h2>その他</h2>
+
+<ul>
+<li><a href="https://code.google.com/p/tspl/source/browse/trunk/include/cwt-impl.h?spec=svn2&amp;r=2">tspl Signal Processing Library in C++</a>
+
+<ul>
+<li> 連続ウェーブレット変換/逆変換のC++実装。細部までコードは追えてないけど、それっぽいコードがある（俺が読んだ記事とはマザーウェーブレットのnormalizationが違う気もする…</li>
+</ul>
+</li>
+<li><a href="http://dsp.stackexchange.com/questions/10979/inverse-continuous-wavelet-transform-and-matlab">Inverse Continuous Wavelet Transform and matlab &ndash; dsp StackExchange</a>
+
+<ul>
+<li> 逆連続ウェーブレット変換教えてーっていう質問。ここでpracticalなんちゃらを知った</li>
+</ul>
+</li>
+<li><a href="http://staff.aist.go.jp/h.fujihara/voice_conversion/">混合音中の歌声の声質変換手法</a>
+
+<ul>
+<li> ガチ技術。元産総研の藤原さんが研究開発したもの。<a href="http://staff.aist.go.jp/m.goto/PAPER/SIGMUS201007fujihara.pdf">論文(PDF)</a>の方に少し説明がある。</li>
+<li> 声質変換でウェーブレット使うのは僕が知る限りではこれくらい</li>
+<li> ちなみに結果めっちゃすごい</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>さいごに</h2>
+
+<p>以上。ウェーブレット変換は難しいことがわかった（こなみ）。ウェーブレットの利点欠点については書かなかったけれど、音声や音楽を解析したい場合に、時間周波数解析によく用いられる短時間フーリエ解析よりもウェーブレット解析の方が望ましい場合は非常によくあると思っているので、ぜひもっと使われてほしいですね。作ってるライブラリには必ず入れます。</p>
+
+<h2>ちなみに</h2>
+
+<p>計算コストがそこまでボトルネックにならないなら、畳み込みでウェーブレット計算してもいいんじゃないかと思ってる。FFTを使う方法の場合、あるスケールパラメータに対する時間方向のウェーブレット変換係数を一気に求められても、あるシフトパラメータに対する周波数方向のウェーブレット変換係数（つまりある時間でのスペクトルのようなもの）は一気に求められない気がしている。つまり、STFTみたいな形でインクリメンタルにスペクトルは求めにくいんじゃないかってこと（少なくとも自明には思えない）。畳み込み計算するなら、間違いなくできるけど。このあたり理解がまだあやふやなので、間違ってる可能性大</p>
+
+<p>さらにちなみに、僕が作ってたリアルタイムで動く自動伴奏システムは畳み込みでウェーブレット変換してたよ。ウェーブレットよりもアルゴリズムのほうがボトルネックになっていたので全然気にならなかった。参考まで</p>
+</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/10/20/continuous-wavelet-tranform/#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Ryuichi Yamamoto
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'r9y9blog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/';
+        var disqus_url = 'http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>
