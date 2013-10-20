@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Category: continuous-wavelet - r9y9::blog</title>
+	<title>短時間フーリエ変換と連続ウェーブレット変換のvisualization - r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Category: continuous-wavelet">
+	<meta name="description" content="STFT(短時間フーリエ変換)によるスペクトログラム STFTによるスペクトログラム（Y軸を対数にしたもの） 連続ガボールウェーブレット変換によるスペクトログラム メモリも軸も無くて発表資料に貼ったら間違いなく怒られる奴だけど許して。でもだいたいの違いはわかると思う。図はgnuplotで作りました &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -123,31 +123,64 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        
+        <article class="post">
+	<h2 class="title">短時間フーリエ変換と連続ウェーブレット変換のvisualization</h2>
+	<div class="entry-content"><h2>STFT(短時間フーリエ変換)によるスペクトログラム</h2>
+
+<p><img class="center" src="/images/spectrogram_linear_clipped_rev_1.png" title="&#34;STFT spectrogram&#34;" alt="&#34;STFT spectrogram&#34;"></p>
+
+<h2>STFTによるスペクトログラム（Y軸を対数にしたもの）</h2>
+
+<p><img class="center" src="/images/spectrogram_log_clipped_rev_1.png" title="&#34;STFT spectrogram (with log-y-axis)&#34;" alt="&#34;STFT spectrogram (with log-y-axis)&#34;"></p>
+
+<h2>連続ガボールウェーブレット変換によるスペクトログラム</h2>
+
+<p><img class="center" src="/images/wavelet_spectrogram_clipped_rev_1.png" title="&#34;Gabor Wavelet spectrogram&#34;" alt="&#34;Gabor Wavelet spectrogram&#34;"></p>
+
+<p>メモリも軸も無くて発表資料に貼ったら間違いなく怒られる奴だけど許して。でもだいたいの違いはわかると思う。図はgnuplotで作りました</p>
+
+<p>STFTのlog-y-axisと比べるとよくわかるけど、ウェーブレットは低域もちゃんと綺麗にとれてますね。</p>
+
+<p>みんなもっとウェーブレット変換使おう（提案</p>
+
+<h2>分析に使った音声</h2>
+
+<p>決して聞いてはならない</p>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116165738"></iframe>
+
+</div>
+
+<div class="meta">
 	
-
-
+		<span class="comments"><a href="/blog/2013/10/20/wavelet-stft-visualization/#disqus_thread">Comments</a></span>
 	
-	
-	<section class="archives"><h1 class="year">2013</h1>
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/20/continuous-wavelet-tranform/">FFTを使った連続ウェーブレット変換の高速化</a></h2>
-	<div class="meta">
-		<span class="date">Oct 20</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/continuous-wavelet/'>continuous-wavelet</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/10/20/continuous-wavelet-tranform/#disqus_thread">Comments</a></span>
-	    
-	</div>
+</div>
 </article>
 
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 
 
     </div>
@@ -175,7 +208,10 @@
       var disqus_shortname = 'r9y9blog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/';
+        var disqus_url = 'http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
