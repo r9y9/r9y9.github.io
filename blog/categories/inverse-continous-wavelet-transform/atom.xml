@@ -4,7 +4,7 @@
   <title><![CDATA[Category: inverse-continous-wavelet-transform | r9y9::blog]]></title>
   <link href="http://r9y9.github.io/blog/categories/inverse-continous-wavelet-transform/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-21T01:20:01+09:00</updated>
+  <updated>2013-10-21T01:28:58+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -42,7 +42,7 @@
 
 <h2>ウェーブレットスペクトログラム</h2>
 
-<p><img class="center" src="/images/wavelet/morlet_wavelet_spectrogram.png" title="&ldquo;STFT spectrogram&rdquo;" ></p>
+<p><img class="center" src="/images/wavelet/morlet_wavelet_spectrogram.png" title="&ldquo;Morlet wavelet spectrogram&rdquo;" ></p>
 
 <p>Gaborではなく、Morletで求めたもの。スケールは、min=55hzで、25cent毎に8オクターブ分取った。一サンプル毎にウェーブレット変換を求めてるので、前回の記事でガボールウェーブレットで求めた奴よりよっぽど解像度高いっすね（前のは10ms毎だった、書いてなかったけど）。見てて綺麗（こなみ</p>
 
@@ -65,15 +65,15 @@
 
 <h2>あっぷ</h2>
 
-<p><img class="center" src="/images/wavelet/double_1.png" title="&ldquo;The original signal and recostructed signal with zoom&rdquo;" ></p>
+<p><img class="center" src="/images/wavelet/double_1.png" title="&ldquo;The original signal and recostructed signal with zoom 1&rdquo;" ></p>
 
-<p><img class="center" src="/images/wavelet/double_2.png" title="&ldquo;The original signal and recostructed signal with zoom&rdquo;" ></p>
+<p><img class="center" src="/images/wavelet/double_2.png" title="&ldquo;The original signal and recostructed signal with zoom 2&rdquo;" ></p>
 
-<p><img class="center" src="/images/wavelet/double_3.png" title="&ldquo;The original signal and recostructed signal with zoom&rdquo;" ></p>
+<p><img class="center" src="/images/wavelet/double_3.png" title="&ldquo;The original signal and recostructed signal with zoom 3&rdquo;" ></p>
 
-<p><img class="center" src="/images/wavelet/double_4.png" title="&ldquo;The original signal and recostructed signal with zoom&rdquo;" ></p>
+<p><img class="center" src="/images/wavelet/double_4.png" title="&ldquo;The original signal and recostructed signal with zoom 4&rdquo;" ></p>
 
-<p><img class="center" src="/images/wavelet/double_5.png" title="&ldquo;The original signal and recostructed signal with zoom&rdquo;" ></p>
+<p><img class="center" src="/images/wavelet/double_5.png" title="&ldquo;The original signal and recostructed signal with zoom 5&rdquo;" ></p>
 
 <p>んー、まぁだいたいあってんじゃないですかね</p>
 
@@ -119,6 +119,8 @@
 <li>ウェーブレット変換と戯れてたら週末終わった</li>
 </ul>
 
+
+<p>それはそうと、ウェブで手に入る逆連続ウェーブレットの情報って少ないすね。なぜだろう</p>
 ]]></content>
   </entry>
   
