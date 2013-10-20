@@ -4,7 +4,7 @@
   <title><![CDATA[r9y9::blog]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-20T12:52:11+09:00</updated>
+  <updated>2013-10-21T01:20:01+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,118 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[逆連続ウェーブレット変換による信号の再構成]]></title>
+    <link href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/"/>
+    <updated>2013-10-21T01:00:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt</id>
+    <content type="html"><![CDATA[<p>やったのでメモ。おそらく正しくできたと思う。結果貼っとく。ウェーブレットの参考は以下の文献</p>
+
+<p><a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">Torrence, C. and G.P. Compo &ldquo;A Practical Guide to Wavelet Analysis&rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.</a></p>
+
+<h2>ウェーブレットの条件</h2>
+
+<p>マザーウェーブレットはmorletを使う</p>
+
+<script type="math/tex; mode=display">
+\begin{align}
+\psi_{0}(\eta) = \pi^{-1/4}e^{i\omega_{0}\eta}e^{-\eta^{2}/2}
+\end{align}
+</script>
+
+
+<p></p>
+
+<p>文献に従って$\omega_{0} = 6.0$とした。</p>
+
+<p>以下にいっぱい図を張る。軸は適当</p>
+
+<h2>元の信号</h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/original_signal.png" title="&#34;The original signal&#34;" alt="&#34;The original signal&#34;"></p>
+
+<h2>ウェーブレットスペクトログラム</h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/morlet_wavelet_spectrogram.png" title="&#34;STFT spectrogram&#34;" alt="&#34;STFT spectrogram&#34;"></p>
+
+<p>Gaborではなく、Morletで求めたもの。スケールは、min=55hzで、25cent毎に8オクターブ分取った。一サンプル毎にウェーブレット変換を求めてるので、前回の記事でガボールウェーブレットで求めた奴よりよっぽど解像度高いっすね（前のは10ms毎だった、書いてなかったけど）。見てて綺麗（こなみ</p>
+
+<p>計算はFFT使ってるので速い</p>
+
+<p><a href="http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html">http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html</a>
+スケールのとり方はここを参考にするといい</p>
+
+<h2>再構成した信号</h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/recostructed_signal.png" title="&#34;The recostructed signal&#34;" alt="&#34;The recostructed signal&#34;"></p>
+
+<p>連続ウェーブレットの逆変換は、フーリエ変換と違ってそんなシンプルじゃないんだけど、デルタ関数のウェーブレット変換の実数部を足しあわせて適当にスケールすれば元の信号が再構成できるみたい。ほんまかと思って実際にやってみたけど、できた</p>
+
+<p>が、実は少し誤差がある</p>
+
+<h2>重ねてプロット</h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_0.png" title="&#34;The original signal and recostructed signal&#34;" alt="&#34;The original signal and recostructed signal&#34;"></p>
+
+<h2>あっぷ</h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_1.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_2.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_3.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_4.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_5.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p>んー、まぁだいたいあってんじゃないですかね</p>
+
+<h2>誤差</h2>
+
+<p>平均誤差を計算すると、図の縦軸の量で考えて55.3994だった。16bitのwavが-32768〜32767なので、どうだろう、大きいのか小さいのかわからん</p>
+
+<p>ただ、再合成した音声を聞いた所それほど違和感はなかった。これはつまり、スペクトルいじる系の分析にSTFTがではなくウェーブレット使ってもいいんではないか？という考えが生まれますね。果たして、ウェーブレットが音声/音楽の分析にフーリエ変換ほど使われないのはなぜなのか、突き詰めたい</p>
+
+<h2>使った音声</h2>
+
+<p>あなたが一番聞きたいと思った声が流れます、どうぞ</p>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227502"></iframe>
+
+
+<p>スペクトログラム表示するのにサンプルが多いと大変なので、48kから10kにサンプリング周波数を落としたもの</p>
+
+<h2>再構成した音声</h2>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227539"></iframe>
+
+
+<p>僕の耳では違いはわからない。サンプリング周波数によって誤差が大小する可能性はあるが、そこまで調査してない</p>
+
+<h2>メモ</h2>
+
+<p><a href="http://paos.colorado.edu/research/wavelets/wavelet3.html">http://paos.colorado.edu/research/wavelets/wavelet3.html</a>
+ここの最後に書かれている以下の文章、</p>
+
+<blockquote><p>One problem with performing the wavelet transform in Fourier space is that this assumes the time series is periodic. The result is that signals in the wavelet transform at one end of the time series will get wrapped around to the other end.</p></blockquote>
+
+<p>FFT使うウェーブレット変換の問題は、信号を周期関数として仮定してしまうことにある、と。まあ、ですよねー。信号がめちゃくちゃ長くてこの仮定が破綻してしまう場合、どうするのがいいんだろう。</p>
+
+<p>あと、FFT使うウェーブレットの問題として、メモリ食うってのがあるんよな。ウェーブレット変換を計算する前に、マザーウェーブレットのフーリエ変換を計算して持っとかないといけないし、サンプル毎に計算しないといけないし。44.1kの数分の音声とかなると、もう無理っすね。</p>
+
+<p>それぞれ、解決方法は思いつかないでもないけど、まだまとまってないので、解決したらまとめる、かもしれない。</p>
+
+<h2>さらにめも</h2>
+
+<ul>
+<li>practicalなんちゃらの、マザーウェーブレットを正規化する部分のmatlabコード、文献中の数式と若干違ってトリッキー。展開すれば一緒なんだけど、文献中の数式をそのまま書いたようになってないので、注意。ちょっと戸惑った</li>
+<li>ウェーブレット変換と戯れてたら週末終わった</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[短時間フーリエ変換と連続ウェーブレット変換のvisualization]]></title>
@@ -75,7 +187,7 @@
 
 <p>色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です</p>
 
-<h2>A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pd">[PDF]</a></h2>
+<h2>A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">[PDF]</a></h2>
 
 <p>結論から言えばここが一番わかりやすかった。</p>
 
@@ -1557,97 +1669,6 @@ NMFのアルゴリズムは、この更新式を目的関数が収束するま�
 
 
 <p>これでフォントインストールはほぼ自動化。ありとあらゆることを自動化したい。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Bloggerカスタマイズメモ]]></title>
-    <link href="http://r9y9.github.io/blog/2013/07/27/blogger-custom/"/>
-    <updated>2013-07-27T00:00:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/07/27/blogger-custom</id>
-    <content type="html"><![CDATA[<h2>まとめ</h2>
-
-<p>とりあえず、行ったのは以下の通り。変更の度にこの投稿に追加するかも</p>
-
-<ul>
-<li><a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxの導入</a></li>
-<li>syntax highlighterの導入</li>
-<li>google-code-prettyyの導入</li>
-<li>CSSの修正</li>
-<li>ソーシャルリンクの追加</li>
-</ul>
-
-
-<h2>Mathjax</h2>
-
-<p>別記事にまとめた→ <a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxを使ってBloggerで数式を書く</a></p>
-
-<h2>Syntax Highlighter</h2>
-
-<p>結局syntax highlighterを使うことにした（2013/08/03）。
-google-code-prettyだとデフォに不満が若干あるし、カスタマイズしててもめんどくさかったので。
-デフォで綺麗なのがいい</p>
-
-<h3>導入方法</h3>
-
-<p><a href="http://www.way2blogging.org/widget-generators/syntax-highlighter-scripts-generator">http://www.way2blogging.org/widget-generators/syntax-highlighter-scripts-generator</a></p>
-
-<p>ここでgenerateされたコードを埋め込むだけ。</p>
-
-<h3>使い方</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;pre</span> <span class="na">class=</span><span class="s">&quot;brush: html&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>   write html code here
-</span><span class='line'><span class="nt">&lt;/pre&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>カスタマイズ</h3>
-
-<p><a href="http://8bitsize.blogspot.jp/2012/10/syntax-highlighter-config.html">http://8bitsize.blogspot.jp/2012/10/syntax-highlighter-config.html</a></p>
-
-<p>ここを参考に、toolbarを表示しないようにした。</p>
-
-<p><code>SyntaxHighlighter.defaults['toolbar'] = false;</code></p>
-
-<p>とgenerateされたスクリプトに追加するだけ</p>
-
-<h2>google-code-pretty</h2>
-
-<p>結局syntax highlighterを使うことにした（2013/08/03）。
-google-code-prettyだとデフォに不満が若干あるし、カスタマイズしててもめんどくさかったので。</p>
-
-<h3>導入方法</h3>
-
-<p>以下のリンクから、add to bloggerボタンを押すと一瞬で導入できる</p>
-
-<p><a href="http://www.kuribo.info/2008/04/code-prettify.html">http://www.kuribo.info/2008/04/code-prettify.html</a></p>
-
-<h2>CSS</h2>
-
-<p>cssの修正は、とりあえず最低限以下のようにした。
-全体のフォントをよさげな奴に指定
-タイトルのフォントやらをよさげな奴に指定
-headingのフォーマット変更</p>
-
-<p>気に入らないところはその都度調整すると思うので、gistで管理することにする。
-<a href="https://gist.github.com/r9y9/6094627">https://gist.github.com/r9y9/6094627</a></p>
-
-<h2>ソーシャルリンク</h2>
-
-<h3>Follow me ボタン</h3>
-
-<p><a href="http://www.go2web20.net/twitterFollowBadge/">http://www.go2web20.net/twitterFollowBadge/</a>
-ここで作って、html/javascriptガジェットにコードを貼り付けるだけ。</p>
-
-<h3>いいねボタン</h3>
-
-<p>あとで付けたい</p>
-
-<p>継ぎ足し継ぎ足しカスタマイズしていく</p>
 ]]></content>
   </entry>
   

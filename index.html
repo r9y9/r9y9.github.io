@@ -6,7 +6,7 @@
 	<title>r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Oct 20th, 2013 Tags: short-time-fourier-transform, signal-processing, visualization, wavelet-transform STFT(短時間フーリエ変換)によるスペクトログラム &hellip;">
+	<meta name="description" content="Published on: Oct 21st, 2013 Tags: inverse-continous-wavelet-transform, signal-processing, signal-reconstruction, wavelet-transform やったのでメモ。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -124,6 +124,153 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">
+		
+			逆連続ウェーブレット変換による信号の再構成</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-21T01:00:00+09:00" pubdate data-updated="true">Oct 21<span>st</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/inverse-continous-wavelet-transform/'>inverse-continous-wavelet-transform</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/signal-reconstruction/'>signal-reconstruction</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a>
+
+
+</div>
+    </div>
+		<p>やったのでメモ。おそらく正しくできたと思う。結果貼っとく。ウェーブレットの参考は以下の文献</p>
+
+<p><a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">Torrence, C. and G.P. Compo &ldquo;A Practical Guide to Wavelet Analysis&rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.</a></p>
+
+<h2>ウェーブレットの条件</h2>
+
+<p>マザーウェーブレットはmorletを使う</p>
+
+<script type="math/tex; mode=display">
+\begin{align}
+\psi_{0}(\eta) = \pi^{-1/4}e^{i\omega_{0}\eta}e^{-\eta^{2}/2}
+\end{align}
+</script>
+
+
+<p></p>
+
+<p>文献に従って$\omega_{0} = 6.0$とした。</p>
+
+<p>以下にいっぱい図を張る。軸は適当</p>
+
+<h2>元の信号</h2>
+
+<p><img class="center" src="/images/wavelet/original_signal.png" title="&#34;The original signal&#34;" alt="&#34;The original signal&#34;"></p>
+
+<h2>ウェーブレットスペクトログラム</h2>
+
+<p><img class="center" src="/images/wavelet/morlet_wavelet_spectrogram.png" title="&#34;STFT spectrogram&#34;" alt="&#34;STFT spectrogram&#34;"></p>
+
+<p>Gaborではなく、Morletで求めたもの。スケールは、min=55hzで、25cent毎に8オクターブ分取った。一サンプル毎にウェーブレット変換を求めてるので、前回の記事でガボールウェーブレットで求めた奴よりよっぽど解像度高いっすね（前のは10ms毎だった、書いてなかったけど）。見てて綺麗（こなみ</p>
+
+<p>計算はFFT使ってるので速い</p>
+
+<p><a href="http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html">http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html</a>
+スケールのとり方はここを参考にするといい</p>
+
+<h2>再構成した信号</h2>
+
+<p><img class="center" src="/images/wavelet/recostructed_signal.png" title="&#34;The recostructed signal&#34;" alt="&#34;The recostructed signal&#34;"></p>
+
+<p>連続ウェーブレットの逆変換は、フーリエ変換と違ってそんなシンプルじゃないんだけど、デルタ関数のウェーブレット変換の実数部を足しあわせて適当にスケールすれば元の信号が再構成できるみたい。ほんまかと思って実際にやってみたけど、できた</p>
+
+<p>が、実は少し誤差がある</p>
+
+<h2>重ねてプロット</h2>
+
+<p><img class="center" src="/images/wavelet/double_0.png" title="&#34;The original signal and recostructed signal&#34;" alt="&#34;The original signal and recostructed signal&#34;"></p>
+
+<h2>あっぷ</h2>
+
+<p><img class="center" src="/images/wavelet/double_1.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p><img class="center" src="/images/wavelet/double_2.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p><img class="center" src="/images/wavelet/double_3.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p><img class="center" src="/images/wavelet/double_4.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p><img class="center" src="/images/wavelet/double_5.png" title="&#34;The original signal and recostructed signal with zoom&#34;" alt="&#34;The original signal and recostructed signal with zoom&#34;"></p>
+
+<p>んー、まぁだいたいあってんじゃないですかね</p>
+
+<h2>誤差</h2>
+
+<p>平均誤差を計算すると、図の縦軸の量で考えて55.3994だった。16bitのwavが-32768〜32767なので、どうだろう、大きいのか小さいのかわからん</p>
+
+<p>ただ、再合成した音声を聞いた所それほど違和感はなかった。これはつまり、スペクトルいじる系の分析にSTFTがではなくウェーブレット使ってもいいんではないか？という考えが生まれますね。果たして、ウェーブレットが音声/音楽の分析にフーリエ変換ほど使われないのはなぜなのか、突き詰めたい</p>
+
+<h2>使った音声</h2>
+
+<p>あなたが一番聞きたいと思った声が流れます、どうぞ</p>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227502"></iframe>
+
+
+<p>スペクトログラム表示するのにサンプルが多いと大変なので、48kから10kにサンプリング周波数を落としたもの</p>
+
+<h2>再構成した音声</h2>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227539"></iframe>
+
+
+<p>僕の耳では違いはわからない。サンプリング周波数によって誤差が大小する可能性はあるが、そこまで調査してない</p>
+
+<h2>メモ</h2>
+
+<p><a href="http://paos.colorado.edu/research/wavelets/wavelet3.html">http://paos.colorado.edu/research/wavelets/wavelet3.html</a>
+ここの最後に書かれている以下の文章、</p>
+
+<blockquote><p>One problem with performing the wavelet transform in Fourier space is that this assumes the time series is periodic. The result is that signals in the wavelet transform at one end of the time series will get wrapped around to the other end.</p></blockquote>
+
+<p>FFT使うウェーブレット変換の問題は、信号を周期関数として仮定してしまうことにある、と。まあ、ですよねー。信号がめちゃくちゃ長くてこの仮定が破綻してしまう場合、どうするのがいいんだろう。</p>
+
+<p>あと、FFT使うウェーブレットの問題として、メモリ食うってのがあるんよな。ウェーブレット変換を計算する前に、マザーウェーブレットのフーリエ変換を計算して持っとかないといけないし、サンプル毎に計算しないといけないし。44.1kの数分の音声とかなると、もう無理っすね。</p>
+
+<p>それぞれ、解決方法は思いつかないでもないけど、まだまとまってないので、解決したらまとめる、かもしれない。</p>
+
+<h2>さらにめも</h2>
+
+<ul>
+<li>practicalなんちゃらの、マザーウェーブレットを正規化する部分のmatlabコード、文献中の数式と若干違ってトリッキー。展開すれば一緒なんだけど、文献中の数式をそのまま書いたようになってないので、注意。ちょっと戸惑った</li>
+<li>ウェーブレット変換と戯れてたら週末終わった</li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/10/21/signal-reconstruction-using-invere-cwt//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -248,7 +395,7 @@
 
 <p>色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です</p>
 
-<h2>A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pd">[PDF]</a></h2>
+<h2>A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">[PDF]</a></h2>
 
 <p>結論から言えばここが一番わかりやすかった。</p>
 
@@ -941,72 +1088,6 @@ Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインス
 <div class="meta">
 	
 		<span class="comments"><a href="/blog/2013/08/12/numpy-scipy-for-ubuntu//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/12/apt-commend-check/">
-		
-			Apt-getでコマンドがインストールできるか確認する方法</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-12T00:33:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/package-management/'>package-management</a>
-
-
-</div>
-    </div>
-		<p>apt-cacheを使えばいい、なんてことは誰でも知ってると思うけど、apt-cache search ってすると、コマンド名だけじゃなくコマンドの説明文も一緒に検索されてしまって、都合が悪い場合がある。</p>
-
-<p>そんな時には以下のようにする。</p>
-
-<p><code>
-apt-cache search --names-only ^emacs24$
-</code></p>
-
-<p>これで、指定したコマンドがインストールできるかを確認できる。</p>
-
-<h3>ポイント1</h3>
-
-<p><code>--names-only</code> オプションを付ける。これで名前のみから検索してくれる。</p>
-
-<h3>ポイント2</h3>
-
-<p>正規表現を使う。これで柔軟性の高い検索ができる。</p>
-
-<p>以上。</p>
-
-<p>ちなみにyumだともうちょっとめんどくさい。yum listかyum searchを使えば似たようなことができる。yum listは、名前のみ検索、yum searchは名前と説明文を検索。</p>
-
-<p>どうでもいいけどyum使いづらい。apt-get最高</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/08/12/apt-commend-check//index.html#disqus_thread">Comments</a></span>
 	
 </div>
 </article>

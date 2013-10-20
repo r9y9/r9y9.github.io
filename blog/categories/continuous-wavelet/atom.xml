@@ -4,7 +4,7 @@
   <title><![CDATA[Category: continuous-wavelet | r9y9::blog]]></title>
   <link href="http://r9y9.github.io/blog/categories/continuous-wavelet/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-20T12:52:11+09:00</updated>
+  <updated>2013-10-21T01:20:01+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -43,7 +43,7 @@
 
 <p>色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です</p>
 
-<h2>A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pd">[PDF]</a></h2>
+<h2>A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">[PDF]</a></h2>
 
 <p>結論から言えばここが一番わかりやすかった。</p>
 
