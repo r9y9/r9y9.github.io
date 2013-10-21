@@ -4,7 +4,7 @@
   <title><![CDATA[Category: signal-reconstruction | r9y9::blog]]></title>
   <link href="http://r9y9.github.io/blog/categories/signal-reconstruction/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-10-21T01:56:00+09:00</updated>
+  <updated>2013-10-21T10:06:25+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -55,7 +55,7 @@
 
 <p><img class="center" src="/images/wavelet/recostructed_signal.png" title="&ldquo;The recostructed signal&rdquo;" ></p>
 
-<p>連続ウェーブレットの逆変換は、フーリエ変換と違ってそんなシンプルじゃないんだけど、デルタ関数のウェーブレット変換の実数部を足しあわせて適当にスケールすれば元の信号が再構成できるみたい。ほんまかと思って実際にやってみたけど、できた</p>
+<p>連続ウェーブレットの逆変換は、フーリエ変換と違ってそんなシンプルじゃないんだけど、結果から言えばウェーブレット変換の実数部を足しあわせて適当にスケールすれば元の信号が再構成できるみたい。ほんまかと思って実際にやってみたけど、できた</p>
 
 <p>が、実は少し誤差がある</p>
 
