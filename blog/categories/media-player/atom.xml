@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: media-player | r9y9::blog]]></title>
+  <link href="http://r9y9.github.io/blog/categories/media-player/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2013-10-27T00:48:43+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[QtのQMediaPlayerを使って簡単なAudio playerを作る]]></title>
+    <link href="http://r9y9.github.io/blog/2013/10/27/qt-mediaplayer-demo/"/>
+    <updated>2013-10-27T00:06:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/10/27/qt-mediaplayer-demo</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/media-player_clipped_rev_1.png" title="&ldquo;A simple media player demo&rdquo;" ></p>
+
+<p>Qtのmultimediaを使えば簡単に出来る。最低限の機能しかないけど試しに作ってみた。再生、停止、スライダー、ボリューム調整とかだけなら、100行くらいでできる。</p>
+
+<p><a href="https://github.com/r9y9/media-player-demo">https://github.com/r9y9/media-player-demo</a></p>
+
+<p>あまりにも簡単なコードだけど、何か音が流れるだけで満足してしまうのは普段低レベルのコードばっか書いてるからかなぁ…</p>
+
+<p>以下の当たりを読んでやった</p>
+
+<ul>
+<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/multimediaoverview.html">Qt Multimedia Overview</a></li>
+<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qmediaplayer.html">QMediaPlayer Class</a></li>
+<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qml-qtmultimedia5-mediaplayer.html">MediaPlayer</a></li>
+</ul>
+
+
+<h2>メディアの再生</h2>
+
+<p><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qmediaplayer.html">QMediaPlayer Class</a> から引用すれば、</p>
+
+<p><code>cpp
+player = new QMediaPlayer;
+connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+player-&gt;setMedia(QUrl::fromLocalFile("/Users/me/Music/coolsong.mp3"));
+player-&gt;setVolume(50);
+player-&gt;play();
+</code></p>
+
+<p>で再生できる。簡単過ぎる。。</p>
+
+<p>Qt5 になってから、さらにMultimediaが進化したらしいので、これからも色々使っていきたい。特にグラフィック周りがすごくなったとかなってないとか。今試行錯誤中</p>
+
+<h2>Qtめも</h2>
+
+<ul>
+<li>Resourceを登録するとき、ちゃんとリソースファイルを"保存"しないとdesigner上では登録したリソースが出てこない</li>
+<li>volume(50)だとけっこう小さい。ちなみに単位なんやねんということだけど、classのドキュメントには書いてなかった。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -6,7 +6,7 @@
 	<title>r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Oct 21st, 2013 Tags: inverse-continous-wavelet-transform, signal-processing, signal-reconstruction, wavelet-transform やったのでメモ。 &hellip;">
+	<meta name="description" content="Published on: Oct 27th, 2013 Tags: media-player, qt Qtのmultimediaを使えば簡単に出来る。最低限の機能しかないけど試しに作ってみた。再生、停止、スライダー、ボリューム調整とかだけなら、100行くらいでできる。 https:// &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -124,6 +124,94 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/10/27/qt-mediaplayer-demo/">
+		
+			QtのQMediaPlayerを使って簡単なAudio Playerを作る</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-27T00:06:00+09:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/media-player/'>media-player</a>, <a class='category' href='/blog/categories/qt/'>qt</a>
+
+
+</div>
+    </div>
+		<p><img class="center" src="/images/media-player_clipped_rev_1.png" title="&#34;A simple media player demo&#34;" alt="&#34;A simple media player demo&#34;"></p>
+
+<p>Qtのmultimediaを使えば簡単に出来る。最低限の機能しかないけど試しに作ってみた。再生、停止、スライダー、ボリューム調整とかだけなら、100行くらいでできる。</p>
+
+<p><a href="https://github.com/r9y9/media-player-demo">https://github.com/r9y9/media-player-demo</a></p>
+
+<p>あまりにも簡単なコードだけど、何か音が流れるだけで満足してしまうのは普段低レベルのコードばっか書いてるからかなぁ…</p>
+
+<p>以下の当たりを読んでやった</p>
+
+<ul>
+<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/multimediaoverview.html">Qt Multimedia Overview</a></li>
+<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qmediaplayer.html">QMediaPlayer Class</a></li>
+<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qml-qtmultimedia5-mediaplayer.html">MediaPlayer</a></li>
+</ul>
+
+
+<h2>メディアの再生</h2>
+
+<p><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qmediaplayer.html">QMediaPlayer Class</a> から引用すれば、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">player</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QMediaPlayer</span><span class="p">;</span>
+</span><span class='line'><span class="n">connect</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">positionChanged</span><span class="p">(</span><span class="n">qint64</span><span class="p">)),</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">positionChanged</span><span class="p">(</span><span class="n">qint64</span><span class="p">)));</span>
+</span><span class='line'><span class="n">player</span><span class="o">-&gt;</span><span class="n">setMedia</span><span class="p">(</span><span class="n">QUrl</span><span class="o">::</span><span class="n">fromLocalFile</span><span class="p">(</span><span class="s">&quot;/Users/me/Music/coolsong.mp3&quot;</span><span class="p">));</span>
+</span><span class='line'><span class="n">player</span><span class="o">-&gt;</span><span class="n">setVolume</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+</span><span class='line'><span class="n">player</span><span class="o">-&gt;</span><span class="n">play</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>で再生できる。簡単過ぎる。。</p>
+
+<p>Qt5 になってから、さらにMultimediaが進化したらしいので、これからも色々使っていきたい。特にグラフィック周りがすごくなったとかなってないとか。今試行錯誤中</p>
+
+<h2>Qtめも</h2>
+
+<ul>
+<li>Resourceを登録するとき、ちゃんとリソースファイルを&#8221;保存&#8221;しないとdesigner上では登録したリソースが出てこない</li>
+<li>volume(50)だとけっこう小さい。ちなみに単位なんやねんということだけど、classのドキュメントには書いてなかった。</li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/10/27/qt-mediaplayer-demo//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -959,136 +1047,6 @@ X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
 <div class="meta">
 	
 		<span class="comments"><a href="/blog/2013/09/07/math-eng-ml-programming//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/12/numpy-scipy-for-ubuntu/">
-		
-			UbuntuでNumpy, Scipyをソースからインストール</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-12T00:35:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
-
-
-</div>
-    </div>
-		<p><img class="center" src="/images/numpy_scipy_version_terminal.png"></p>
-
-<p>apt-getを使う場合→<a href="http://d.hatena.ne.jp/sat0yu/20130302/1362172589">ubuntuにnumpy, scipy, matplotlib環境を構築 &ndash; sat0yuの日記</a>
-ただやっぱり最新版を使いたいということがある。というわけでメモ。
-Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインストールできると思う）。</p>
-
-<h2>準備</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install python python-dev gcc gfortran g++
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Numpyのインストール</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/numpy/numpy
-</span><span class='line'><span class="nb">cd </span>numpy
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>かんたん</p>
-
-<h2>Scipyのインストール</h2>
-
-<p>これがちょっとめんどい。numpyのようには行かなかった。2013/08/12</p>
-
-<h3>前準備</h3>
-
-<p>以下をインストール</p>
-
-<ul>
-<li>numpy （上の通りでおｋ）</li>
-<li>blas/lapack</li>
-<li>cython</li>
-</ul>
-
-
-<h2>cythonのインストール</h2>
-
-<p>これ、apt-get install cython でも入るんだけど、バージョンが古いって怒られた。なので、cythonもソースからいれる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/cython/cython
-</span><span class='line'><span class="nb">cd </span>cython
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>かんたん</p>
-
-<h2>blas/lapackのインストール</h2>
-
-<p>これはapt-getから入れればおｋ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install libblas-dev liblapack-dev
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>scipyのINSTALL.txt （リンク）を見るに、libatlas3-base-devをインストールすれば良さそうだけど、ubuntu 12.04じゃ見つからんかった（2013/08/12時点で）。で、何となく試してたら、libblas-devとliblapack-devで行けた。</p>
-
-<h2>Scipyのインストール！</h2>
-
-<p>これでやっとインストールできる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/scipy/scipy
-</span><span class='line'><span class="nb">cd </span>scipy
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>終わり。</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/08/12/numpy-scipy-for-ubuntu//index.html#disqus_thread">Comments</a></span>
 	
 </div>
 </article>
