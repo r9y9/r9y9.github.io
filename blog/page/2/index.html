@@ -6,9 +6,7 @@
 	<title>r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Sep 7th, 2013 Tags: daily タイトルに上げたものは、僕がやりたい or やるべきと思っていることで、まぁ思い始めて数年立つんだけど未だにまったく出来ていない。どうにかしないとヤバイ 数学：算数すら危うい
-英語：話せない
-機械学習： &hellip;">
+	<meta name="description" content="Published on: Sep 14th, 2013 Tags: matrix-factorization, music-signal-processing, source-separation, HPSSとは（一行説明） HPSS（Harmonic/Percussive Sound &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -124,6 +122,124 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/09/14/hpss/">
+		
+			調波打楽器音分離（HPSS）を試す</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-14T23:34:00+09:00" pubdate data-updated="true">Sep 14<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/matrix-factorization/'>matrix-factorization</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/source-separation/'>source-separation,</a>
+
+
+</div>
+    </div>
+		<h2>HPSSとは（一行説明）</h2>
+
+<p>HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ</p>
+
+<p>アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる</p>
+
+<h2>実装</h2>
+
+<p>調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ</p>
+
+<script type="math/tex; mode=display">
+\begin{align}
+|H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
+\end{align}
+</script>
+
+
+
+
+<script type="math/tex; mode=display">
+\begin{align}
+|P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
+\end{align}
+</script>
+
+
+<p>ただし</p>
+
+<script type="math/tex; mode=display">
+\begin{align}
+|W_{t,k}| = |H_{t,k}| + |P_{t,k}|
+\end{align}
+</script>
+
+
+<p>絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。</p>
+
+<p>HPSSの論文はたくさんあるけど、日本語でかつ丁寧な <a href="http://ci.nii.ac.jp/naid/110007997346">&ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;</a> を参考にした。</p>
+
+<p>H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ</p>
+
+<p>一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。</p>
+
+<h2>結果</h2>
+
+<p>フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、<a href="http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html">歌もの音楽素材：歌入り素材系のフリー音楽素材一覧</a> から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
+18秒目くらいからを比較すると効果がわかりやすいです</p>
+
+<h3>元音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442" width="100%"></iframe>
+
+
+<h3>Hのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534" width="100%"></iframe>
+
+
+<h3>Pのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599" width="100%"></iframe>
+
+
+<p>それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</p>
+
+<p>コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ</p>
+
+<p>詳しくは論文へ（僕のじゃないけど</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://ci.nii.ac.jp/naid/110007997346">橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/09/14/hpss//blog/page/2/index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1203,212 +1319,6 @@ G &=  \sum_{n=1}^{N}\Bigl[ \log \pi_{y_{n}} \notag \\
 <div class="meta">
 	
 		<span class="comments"><a href="/blog/2013/07/28/naive-bayes-formulation//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/07/27/nmf-euclid/">
-		
-			NMFアルゴリズムの導出（ユークリッド距離版）</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-27T23:30:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/machine-learning/'>machine-learning</a>, <a class='category' href='/blog/categories/matrix-factorization/'>matrix-factorization</a>
-
-
-</div>
-    </div>
-		<h2>はじめに</h2>
-
-<p>シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。
-音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。
-実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。</p>
-
-<p>と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。</p>
-
-<h2>NMFの問題設定</h2>
-
-<p>NMFとは、与えられた行列を非負という制約の元で因子分解する方法のこと。
-音楽の場合、対象はスペクトログラムで、式で書くとわかりやすい。
-スペクトログラムを <script type="math/tex"> \mathbf{Y}: [\Omega \times T] </script>
-とすると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\mathbf{Y} \simeq \mathbf{H} \mathbf{U}
-\end{align}
-</script>
-
-
-<p>となる、<script type="math/tex">\mathbf{H}: [\Omega \times K]、\mathbf{U}: [K \times T]</script>を求めるのがNMFの問題。
-ここで、Hが基底、Uがアクティビティ行列に相当する。
-NMFは、元の行列Yと分解後の行列の距離の最小化問題として定式化できる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\mathbf{H}, \mathbf{U} = \mathop{\rm arg~min}\limits_{\mathbf{H}, \mathbf{U}} D (\mathbf{Y}|\mathbf{H}\mathbf{U}), \hspace{3mm} {\rm subect\ to} \hspace{3mm} H_{\omega,k}, U_{k, t} > 0
-\end{align}
-</script>
-
-
-<p>すごくシンプル。Dは距離関数で色んなものがある。ユークリッド距離、KLダイバージェンス、板倉斎藤距離、βダイバージェンスとか。</p>
-
-<h2>ユークリッド距離の最小化</h2>
-
-<p>ここではユークリッド距離（Frobeniusノルムともいう）として、二乗誤差最小化問題を解くことにする。
-一番簡単なので。最小化すべき目的関数は次のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-D (\mathbf{Y}|\mathbf{H}\mathbf{U}) =& || \mathbf{Y}-\mathbf{HU}||_{F} \\
-=& \sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2}
-\end{align}
-</script>
-
-
-<p>行列同士の二乗誤差の最小化は、要素毎の二乗誤差の和の最小化ということですね。展開すると、次のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2}
-= \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{k, t} + |\sum_{k}H_{\omega, k}U_{k, t}|^2)
-\end{align}
-</script>
-
-
-<p>微分してゼロ！としたいところだけど、3つ目の項を見ると、絶対値の中に和が入っているので、そうはいかない。
-なので、補助関数法を使う。
-基本的なアイデアは、目的関数の直接の最適化が難しい場合には、上界関数を立てることで間接的に最小化するということ。</p>
-
-<p>3項目に対してイェンセンの不等式を適応すると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-|\sum_{k}H_{\omega,k}U_{k,t}|^{2} \le \sum_{k} \frac{H_{\omega,k}^{2}U_{k, t}^{2}}{\lambda_{k, \omega, t}}
-\end{align}
-</script>
-
-
-<p>これで、右辺は <script type="math/tex"> H_{\omega,k}, U_{k, t} </script> について二次関数になったので、微分できてはっぴー。
-上の不等式を使えば、実際に最小化する目的関数は、次のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G := \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{k, t} + \sum_{k} \frac{H_{\omega,k}^{2}U_{k, t}^{2}}{\lambda_{k, \omega, t}})
-\end{align}
-</script>
-
-
-<p>Gを最小化すれば、間接的に元の目的関数も小さくなる。</p>
-
-<h2>更新式の導出</h2>
-
-<p>あとは更新式を導出するだけ。
-まず、目的関数を上から押さえるイメージで、イェンセンの不等式の等号条件から補助変数の更新式を求める。
-この場合、kに関して和が1になることに注意して、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\lambda_{k,\omega,t} = \frac{H_{\omega, k}U_{k, t}}{\sum_{k'}H_{\omega, k'}U_{k', t}}
-\end{align}
-</script>
-
-
-<p>次に、目的関数Gを<script type="math/tex">H_{\omega,k}, U_{k,t} </script>で偏微分する。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\frac{\partial G}{\partial H_{\omega,k}} &= \sum_{t} (-2 Y_{\omega,t}U_{k,t} + 2 \frac{H_{\omega, k}U_{k, t}^2}{\lambda_{k,\omega,t}}) &= 0\\
-\frac{\partial G}{\partial U_{k, t}} &= \sum_{\omega} (-2 Y_{\omega,t}H_{\omega,k} + 2 \frac{H_{\omega, k}^2U_{k, t}}{\lambda_{k,\omega,t}}) &= 0
-\end{align}
-</script>
-
-
-<p>少し変形すれば、以下の式を得る。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-H_{\omega,k} = \frac{\sum_{t}Y_{\omega,t}U_{k,t}}{\sum_{t}\frac{U_{k, t}^2}{\lambda_{k,\omega,t}}}, \hspace{3mm}
-U_{k,t} = \frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}\frac{H_{\omega, k}^2}{\lambda_{k,\omega,t}}}
-\end{align}
-</script>
-
-
-<p>補助変数を代入すれば、出来上がり。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-H_{\omega,k} = H_{\omega,k} \frac{\sum_{t}Y_{\omega,t}U_{k,t}}{\sum_{t}U_{k, t}\sum_{k'}H_{\omega, k'}U_{k', t}}, \hspace{3mm}
-U_{k,t} = U_{k,t}\frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}H_{\omega, k}\sum_{k'}H_{\omega, k'}U_{k', t}}
-\end{align}
-</script>
-
-
-<h2>行列表記で</h2>
-
-<p>これで終わり…ではなく、もう少しスマートに書きたい。
-ここで、少し実装を意識して行列表記を使って書きなおす。
-行列の積は、AB（A: [m x n] 行列、B: [n x l] 行列）のようにAの列数とBの行数が等しくなることに注意して、
-ほんの少し変形すれば最終的には次のように書ける。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-H_{\omega,k} &= H_{\omega,k} \frac{[\mathbf{Y}\mathbf{U}^{\mathrm{T}}]_{\omega,k}}{[\mathbf{H}\mathbf{U}\mathbf{U}^{\mathrm{T}}]_{\omega,k}}, \\
-U_{k,t} &= U_{k,t}\frac{[\mathbf{H}^{\mathrm{T}}\mathbf{Y}]_{k, t}}{[\mathbf{H}^{\mathrm{T}}\mathbf{H}\mathbf{U}]_{k,t}}
-\end{align}
-</script>
-
-
-<p>乗法更新式というやつですね。
-元々の行列の要素が非負なら、掛けても非負のままですよってこと。
-NMFのアルゴリズムは、この更新式を目的関数が収束するまで計算するだけ、簡単。Pythonなら数行で書ける。</p>
-
-<h2>メモ</h2>
-
-<p>自分で導出していて思ったことをメモっておこうと思う。</p>
-
-<ul>
-<li>更新式は、行列の要素毎に独立して求められるんだなぁということ。
-
-<ul>
-<li>まぁ要素毎に偏微分して等式立ててるからそうなんだけど。更新の順番によって、収束する値、速度が変わるといったことはないんだろうか。</li>
-</ul>
-</li>
-<li>行列演算とスカラー演算が同じ式に同時に含まれていることがあるので注意。例えば、最終的な更新式の割り算は、要素毎のスカラー演算で、行列演算ではない。</li>
-<li>何かいっぱいシグマがあるけど、めげない。計算ミスしやすい、つらい。</li>
-<li>NMFという名前から行列操作を意識してしまうけど、更新式の導出の過程に行列の微分とか出てこない。更新式の導出は、行列の要素個々に対して行うイメージ。</li>
-</ul>
-
-
-<p>NMFなんて簡単、と言われますが（要出典）、実際にやってみると結構めんどくさいなー、と思いました（小並感</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/07/27/nmf-euclid//blog/page/2/index.html#disqus_thread">Comments</a></span>
 	
 </div>
 </article>
