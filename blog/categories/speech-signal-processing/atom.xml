@@ -4,7 +4,7 @@
   <title><![CDATA[Category: speech-signal-processing | r9y9::blog]]></title>
   <link href="http://r9y9.github.io/blog/categories/speech-signal-processing/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-11-16T13:52:52+09:00</updated>
+  <updated>2013-11-17T01:53:19+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,105 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[スペクトログラムとメル周波数スペクトログラムの可視化]]></title>
+    <link href="http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/"/>
+    <updated>2013-11-16T23:07:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram</id>
+    <content type="html"><![CDATA[<p>やったので貼っとくだけ</p>
+
+<p><img class="center" src="/images/spectrogram.png" title="&ldquo;よくあるスペクトログラム&rdquo;" ></p>
+
+<p><img class="center" src="/images/mel_spectrogram.png" title="&ldquo;メル周波数に変換したスペクトログラム&rdquo;" ></p>
+
+<p>低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。</p>
+
+<p>今回は、対数を取って表示した。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。</p>
+
+<p>直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に会うようにメル周波数に変換して次元圧縮するイメージ。</p>
+
+<p>解説は、<a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a> を見よう。素晴らしいです</p>
+
+<p>僕はと言えば特に解説する気も起きないので、C++コードでも貼っとこう</p>
+
+<p>```c++
+template <class Vector>
+Vector mel_filterbank::mel_filter_impl(const Vector&amp; x,</p>
+
+<pre><code>                   int samplerate, 
+                   int n_bands,
+                   int min_freq,
+                   int max_freq)
+</code></pre>
+
+<p>{
+  const int len = x.size();<br/>
+  double df = static_cast<double>(samplerate) / len;
+  double dmel = sp::hz_to_mel((max_freq &ndash; min_freq)) / (n_bands + 1.0);</p>
+
+<p>  // create mel filterbank center indices
+  std::vector<int> centers(n_bands);
+  for (int i = 0; i &lt; n_bands; ++i) {</p>
+
+<pre><code>centers[i] = ((min_freq + sp::mel_to_hz(dmel * (i+1))) / df + 0.5);
+</code></pre>
+
+<p>  }</p>
+
+<p>  Vector result(n_bands);
+  // multiply triangle filter banks
+  for (int i = 0; i &lt; n_bands; ++i) {</p>
+
+<pre><code>int left = (i &gt; 0) ? centers[i-1] : 0;
+int right = (i &lt; n_bands-1) ? centers[i+1] : len/2;
+
+// quite narrow band
+if (abs(left-right) &lt;= 1) {
+  result[i] = x[i];
+  continue;
+} 
+
+double slope_from_left = 1.0 / (centers[i] - left);
+for (int j = left; j &lt; centers[i]; ++j) {
+  result[i] += x[j] * (j - left) * slope_from_left;
+}
+double slope_to_right = 1.0 / (right - centers[i]);
+for (int j = centers[i]; j &lt;= right; ++j) {
+  result[i] += x[j] * (1.0 - (j - centers[i]) * slope_to_right);
+}
+
+// normalize
+result[i] /= (right - left)/2.0;
+</code></pre>
+
+<p>  }</p>
+
+<p>  return result;
+};
+```</p>
+
+<p><code>sp::hz_to_mel</code>とか<code>sp::mel_to_hz</code>はご想像におまかせ</p>
+
+<p>もし使う場合は、xにスペクトルを与えて、その他パラメータを適当に指定すればおｋ</p>
+
+<h2>まとめ</h2>
+
+<p>メルフィルタバンクかけるクラス作ってたら数時間潰した</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a>
+
+<ul>
+<li> とても参考にしました。ただ、フィルタバンクかける際に正規化してない？元のスケールを保つたえに、上のコードでは正規化するようにした(<a href="http://ohm.nuigalway.ie/0809/mbyrne/Images.html#MFCC">ここ</a>の図のようなイメージ）</li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい]]></title>

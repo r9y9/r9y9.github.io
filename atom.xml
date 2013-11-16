@@ -4,7 +4,7 @@
   <title><![CDATA[r9y9::blog]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-11-16T13:52:52+09:00</updated>
+  <updated>2013-11-17T01:53:19+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,140 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[スペクトログラムとメル周波数スペクトログラムの可視化]]></title>
+    <link href="http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/"/>
+    <updated>2013-11-16T23:07:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram</id>
+    <content type="html"><![CDATA[<p>やったので貼っとくだけ</p>
+
+<p><img class="center" src="http://r9y9.github.io/images/spectrogram.png" title="&#34;よくあるスペクトログラム&#34;" alt="&#34;よくあるスペクトログラム&#34;"></p>
+
+<p><img class="center" src="http://r9y9.github.io/images/mel_spectrogram.png" title="&#34;メル周波数に変換したスペクトログラム&#34;" alt="&#34;メル周波数に変換したスペクトログラム&#34;"></p>
+
+<p>低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。</p>
+
+<p>今回は、対数を取って表示した。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。</p>
+
+<p>直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に会うようにメル周波数に変換して次元圧縮するイメージ。</p>
+
+<p>解説は、<a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a> を見よう。素晴らしいです</p>
+
+<p>僕はと言えば特に解説する気も起きないので、C++コードでも貼っとこう</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">Vector</span> <span class="n">mel_filterbank</span><span class="o">::</span><span class="n">mel_filter_impl</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span>
+</span><span class='line'>                     <span class="kt">int</span> <span class="n">samplerate</span><span class="p">,</span>
+</span><span class='line'>                     <span class="kt">int</span> <span class="n">n_bands</span><span class="p">,</span>
+</span><span class='line'>                     <span class="kt">int</span> <span class="n">min_freq</span><span class="p">,</span>
+</span><span class='line'>                     <span class="kt">int</span> <span class="n">max_freq</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">const</span> <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span><span class='line'>  <span class="kt">double</span> <span class="n">df</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">samplerate</span><span class="p">)</span> <span class="o">/</span> <span class="n">len</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">double</span> <span class="n">dmel</span> <span class="o">=</span> <span class="n">sp</span><span class="o">::</span><span class="n">hz_to_mel</span><span class="p">((</span><span class="n">max_freq</span> <span class="o">-</span> <span class="n">min_freq</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_bands</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// create mel filterbank center indices</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">centers</span><span class="p">(</span><span class="n">n_bands</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_bands</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">min_freq</span> <span class="o">+</span> <span class="n">sp</span><span class="o">::</span><span class="n">mel_to_hz</span><span class="p">(</span><span class="n">dmel</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span> <span class="o">/</span> <span class="n">df</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">Vector</span> <span class="n">result</span><span class="p">(</span><span class="n">n_bands</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">// multiply triangle filter banks</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_bands</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_bands</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="n">len</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// quite narrow band</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">left</span><span class="o">-</span><span class="n">right</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>      <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">double</span> <span class="n">slope_from_left</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">left</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">left</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">*</span> <span class="n">slope_from_left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="kt">double</span> <span class="n">slope_to_right</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">slope_to_right</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// normalize</span>
+</span><span class='line'>    <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>sp::hz_to_mel</code>とか<code>sp::mel_to_hz</code>はご想像におまかせ</p>
+
+<p>もし使う場合は、xにスペクトルを与えて、その他パラメータを適当に指定すればおｋ</p>
+
+<h2>まとめ</h2>
+
+<p>メルフィルタバンクかけるクラス作ってたら数時間潰した</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a>
+
+<ul>
+<li> とても参考にしました。ただ、フィルタバンクかける際に正規化してない？元のスケールを保つたえに、上のコードでは正規化するようにした(<a href="http://ohm.nuigalway.ie/0809/mbyrne/Images.html#MFCC">ここ</a>の図のようなイメージ）</li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Jenkinsを使い始めたのでメモ。インストール方法とかプラグインとかテーマとか]]></title>
@@ -1275,221 +1409,6 @@ G = \sum_{l=1}^{L} N_{l}\log \pi_{l} + \lambda \Bigl[ \sum_{l=1}^{L} \pi_{l} -1)
 <li><a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定 &ndash; nokunoの日記</a></li>
 <li><a href="http://d.hatena.ne.jp/sleepy_yoshi/20111107/p1">多項分布の最尤推定とMAP推定 &ndash; 睡眠時間？</a></li>
 <li><a href="http://lef-t.blogspot.jp/2013/02/categorical-distribution-wikipedia-free.html">Categorical distribution &ndash; Researcher&rsquo;s Eye</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Naive Bayesの復習（導出編）]]></title>
-    <link href="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/"/>
-    <updated>2013-07-28T22:24:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation</id>
-    <content type="html"><![CDATA[<p>すぐ忘れるのでメモ。ナイーブベイズの学習アルゴリズムの導出とか、そもそもナイーブベイズが定番過ぎて意外とやったことなかった気もするので、復習がてらやってみた。</p>
-
-<p>ちょっと修正 2013/07/30</p>
-
-<ul>
-<li>ナイーブベイズについて整理</li>
-<li>学習アルゴリズムの導出</li>
-</ul>
-
-
-<h2>Naive bayes （ナイーブベイズ）</h2>
-
-<p>スパムフィルタで使われたことで有名な確率モデルで、シンプルだけどそこそこ実用的なのが良い所。Naive bayesという名前は、特徴ベクトル間に条件付き独立性を仮定してることにある（実際は相関あることが多いけど、まぁ簡単のためって感じ）。具体的に例を挙げて言うと、例えば文書分類タスクの場合、各単語は独立に生起するという仮定を置くことに相当する。</p>
-
-<p>まずはモデルを書き下す。入力データを$\mathbf{x}$（D次元）、ラベルを$y$（離散値）とすると、ナイーブベイズでは以下のように同時確率をモデル化する。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(\mathbf{x}, y) &= p(y)p(\mathbf{x}|y)\\
-&= p(y)p(x_{1}, x_{2}, \dots, x_{D}|y)\\
-&= p(y)\prod_{d=1}^{D} p(x_{d}|y)
-\end{align}
-</script>
-
-
-<p>カンタン。基本的にdは次元に対するインデックス、nはデータに対するインデックスとして書く。</p>
-
-<p>ポイントは特徴ベクトル間に条件付き独立性の仮定を置いていること（二度目）で、それによってパラメータの数が少なくて済む。</p>
-
-<h2>分類</h2>
-
-<p>一番確率の高いラベルを選べばいい。数式で書くと以下のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\hat{y} &= \argmax_{y} [p(y|\mathbf{x})]\\
- &= \argmax_{y} [p(\mathbf{x}, y)]\\
- &= \argmax_{y} \Bigl[ p(y)\prod_{d=1}^{D} p(x_{d}|y)\Bigr]
-\end{align}
-</script>
-
-
-<p>argmaxを取る上では、$y$に依存しない項は無視していいので、事後確率の最大化は、同時確率の最大化に等しくなる。</p>
-
-<h2>学習アルゴリズムの導出</h2>
-
-<p>ここからが本番。学習データを$X = {\mathbf{x}_{n}}_{n=1}^{N}$、対応する正解ラベルを<script type="math/tex">Y = {y_n}_{n=1}^{N} </script>として、最尤推定により学習アルゴリズムを導出する。実際はMAP推定をすることが多いけど、今回は省略。拡張は簡単。</p>
-
-<h3>尤度関数</h3>
-
-<p>各サンプルが独立に生起したと仮定すると、尤度関数は以下のように書ける。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-L(X,Y; \mathbf{\theta}) &= \prod_{n=1}^{N}p(y_{n})p(\mathbf{x_{n}}|y_{n})\\
-&= \prod_{n=1}^{N} \Bigl[ p(y_{n})\prod_{d=1}^{D}p(x_{nd}|y_{n})\Bigr]
-\end{align}
-</script>
-
-
-<p>対数を取って、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\log L(X,Y; \mathbf{\theta}) =  \sum_{n=1}^{N}\Bigl[\log p(y_{n}) + \sum_{d=1}^{D}\log p(x_{nd}|y_{n})\Bigr]
-\end{align}
-</script>
-
-
-<p>学習アルゴリズムは、この関数の最大化として導くことができる。</p>
-
-<h3>ところで</h3>
-
-<p>特徴ベクトルにどのような分布を仮定するかでアルゴリズムが少し変わるので、今回は以下の二つをやってみる。</p>
-
-<ul>
-<li>ベルヌーイ分布</li>
-<li>正規分布</li>
-</ul>
-
-
-<p>前者は、binary featureを使う場合で、後者は、continuous featureを使う場合を想定してる。画像のピクセル値とか連続値を扱いたい場合は、正規分布が無難。その他、多項分布を使うこともあるけど、ベルヌーイ分布の場合とほとんど一緒なので今回は省略</p>
-
-<p>ラベルに対する事前分布は、ラベルが離散値なので多項分布（間違ってた）categorical distributionとする。日本語でなんて言えばいいのか…<a href="http://en.wikipedia.org/wiki/Categorical_distribution">wikipedia</a> 参考</p>
-
-<h2>Bernoulli naive bayes</h2>
-
-<p>特徴ベクトルにベルヌーイ分布を仮定する場合。0 or 1のbinary featureを使う場合にはこれでおｋ．ベルヌーイ分布は以下</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(x;q) = q^{x}(1-q)^{1-x}
-\end{align}
-</script>
-
-
-<p>特徴ベクトルに対するパラメータは、ラベル数×特徴ベクトルの次元数（L×D）個ある。対数尤度関数（Gとする）は、以下のように書ける。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G &=  \sum_{n=1}^{N}\Bigl[ \log \pi_{y_{n}} \notag \\
- &+ \sum_{d=1}^{D} \bigl[ x_{nd} \log q_{y_{n}d} + (1-x_{nd}) \log (1-q_{y_{n}d}) \bigr] \Bigr]
-\end{align}
-</script>
-
-
-<p>ここで、<script type="math/tex">\pi_{y_{n}}</script> はcategorical distributionのパラメータ。</p>
-
-<h3>微分方程式を解く</h3>
-
-<p>あとは微分してゼロ。ラベルに対するインデックスをl 、学習データ中のラベルlが出現する回数を$N_{l} = \sum_{n=1}^{N} \delta(y_{n}= l)$、さらにその中で<script type="math/tex">x_{nd}=1 </script>となる回数を<script type="math/tex">N_{ld} = \sum_{n=1}^{N} \delta(y_{n}= l) \cdot x_{nd} </script>とすると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\frac{\partial G}{\partial q_{ld}} &= \frac{N_{ld}}{q_{ld}} - \frac{N_{l} - N_{ld}}{1-q_{ld}}  = 0
-\end{align}
-</script>
-
-
-<p>よって、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-q_{ld} = \frac{N_{ld}}{N_{l}} \label{eq:naive1}
-\end{align}
-</script>
-
-
-<p>できました。厳密に数式で書こうとするとめんどくさい。日本語で書くと、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-パラメータ = \frac{特徴ベクトルの出現回数}{ラベルの出現回数}
-\end{align}
-</script>
-
-
-<p>って感じでしょうか。</p>
-
-<p>categoricalのパラメータについては、めんどくさくなってきたのでやらないけど、もう直感的に以下。ラグランジュの未定定数法でおｋ</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\pi_{l} = \frac{N_{l}}{N} \label{eq:naive2}
-\end{align}
-</script>
-
-
-<p>学習は、式 ($\ref{eq:naive1}$)、($\ref{eq:naive2}$) を計算すればおｋ．やっと終わった。。。長かった。</p>
-
-<h2>Gaussian naive bayes</h2>
-
-<p>次。$x$が連続変数で、その分布に正規分布（Gaussian）を仮定する場合。まず、正規分布は以下のとおり。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(x; \mu, \sigma^{2}) = \frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\Bigl\{-\frac{(x-\mu)^{2}}{2\sigma^{2}}\Bigr\}
-\end{align}
-</script>
-
-
-<p>正規分布を使う場合、特徴ベクトルに対するパラメータは、ラベル数×特徴ベクトルの次元数×2個ある。×2となっているのは、平均と分散の分。対数尤度関数は、以下のようになる</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G &=  \sum_{n=1}^{N}\Bigl[ \log \pi_{y_{n}} \notag \\
- &+ \sum_{d=1}^{D} \bigl[ -\frac{1}{2}\log 2\pi - \log\sigma_{y_{n}d} -  \frac{(x_{nd}-\mu_{y_{n}d})^2}{2\sigma_{y_{n}d}} \bigr] \Bigr]
-\end{align}
-</script>
-
-
-<h3>微分方程式を解く</h3>
-
-<p>計算は省略するけど、偏微分してゼロと置けば、結果は以下のようになる。式が若干煩雑だけど、基本的には正規分布の最尤推定をしてるだけ。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\mu_{ld} = \frac{1}{N_{l}} \sum_{n=1}^{N} x_{nd} \cdot \delta(y_{n} =l) = \frac{N_{ld}}{N_{l}} \label{eq:naive3}
-\end{align}
-</script>
-
-
-
-
-<script type="math/tex; mode=display">
-\begin{align}
-\sigma_{ld} = \frac{1}{N_{l}} \sum_{n=1}^{N} (x_{nd}-\mu_{ld})^{2} \cdot \delta (y_{n}= l) \label{eq:naive4}
-\end{align}
-</script>
-
-
-<p>学習では、式 ($\ref{eq:naive2}$)、($\ref{eq:naive3}$)、($\ref{eq:naive4}$)を計算すればおｋ．式 ($\ref{eq:naive3}$)は式 ($\ref{eq:naive1}$)と一緒なんだけど、正規分布の場合はxが連続値なので注意。分散が特徴ベクトルの次元によらず一定とすれば、パラメータの数をぐっと減らすこともできる。</p>
-
-<h2>おわりに</h2>
-
-<p>これで終わり。予想以上に書くのに時間かかった…。今日logistic regressionを見直してて、ふとnaive bayesやったことないなーと思って、まぁ試すだけならscipy使えば一瞬なんだろうけどちょっと導出までやってみようと思った。</p>
-
-<p>実装編→<a href="http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/">Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a></p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://d.hatena.ne.jp/saket/20130212/1360678478">scikit.learn手法徹底比較！ ナイーブベイズ編Add Star &ndash; Risky Dune</a></li>
-<li><a href="http://www.cs.cmu.edu/~epxing/Class/10701-10s/Lecture/lecture5.pdf">Gaussian Naïve Bayes, andLogistic Regression</a></li>
-<li><a href="http://aidiary.hatenablog.com/entry/20100613/1276389337">ナイーブベイズを用いたテキスト分類 &ndash; 人工知能に関する断創録</a></li>
 </ul>
 
 ]]></content>

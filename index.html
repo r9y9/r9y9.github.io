@@ -6,7 +6,7 @@
 	<title>r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Nov 16th, 2013 Tags: jenkins Jenkinsとは 超高機能cronだと思えばいいよ（先輩より Ubuntu 12.04へのインストール 以下のURLに従えばできる。 https://wiki.jenkins-ci.org/display/ &hellip;">
+	<meta name="description" content="Published on: Nov 16th, 2013 Tags: speech-signal-processing やったので貼っとくだけ 低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -122,6 +122,175 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/11/16/mel-spectrogram/">
+		
+			スペクトログラムとメル周波数スペクトログラムの可視化</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-16T23:07:00+09:00" pubdate data-updated="true">Nov 16<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
+
+
+</div>
+    </div>
+		<p>やったので貼っとくだけ</p>
+
+<p><img class="center" src="/images/spectrogram.png" title="&#34;よくあるスペクトログラム&#34;" alt="&#34;よくあるスペクトログラム&#34;"></p>
+
+<p><img class="center" src="/images/mel_spectrogram.png" title="&#34;メル周波数に変換したスペクトログラム&#34;" alt="&#34;メル周波数に変換したスペクトログラム&#34;"></p>
+
+<p>低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。</p>
+
+<p>今回は、対数を取って表示した。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。</p>
+
+<p>直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に会うようにメル周波数に変換して次元圧縮するイメージ。</p>
+
+<p>解説は、<a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a> を見よう。素晴らしいです</p>
+
+<p>僕はと言えば特に解説する気も起きないので、C++コードでも貼っとこう</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">Vector</span> <span class="n">mel_filterbank</span><span class="o">::</span><span class="n">mel_filter_impl</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span>
+</span><span class='line'>                     <span class="kt">int</span> <span class="n">samplerate</span><span class="p">,</span>
+</span><span class='line'>                     <span class="kt">int</span> <span class="n">n_bands</span><span class="p">,</span>
+</span><span class='line'>                     <span class="kt">int</span> <span class="n">min_freq</span><span class="p">,</span>
+</span><span class='line'>                     <span class="kt">int</span> <span class="n">max_freq</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">const</span> <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span><span class='line'>  <span class="kt">double</span> <span class="n">df</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">samplerate</span><span class="p">)</span> <span class="o">/</span> <span class="n">len</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">double</span> <span class="n">dmel</span> <span class="o">=</span> <span class="n">sp</span><span class="o">::</span><span class="n">hz_to_mel</span><span class="p">((</span><span class="n">max_freq</span> <span class="o">-</span> <span class="n">min_freq</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_bands</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// create mel filterbank center indices</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">centers</span><span class="p">(</span><span class="n">n_bands</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_bands</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">min_freq</span> <span class="o">+</span> <span class="n">sp</span><span class="o">::</span><span class="n">mel_to_hz</span><span class="p">(</span><span class="n">dmel</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span> <span class="o">/</span> <span class="n">df</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">Vector</span> <span class="n">result</span><span class="p">(</span><span class="n">n_bands</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">// multiply triangle filter banks</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_bands</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_bands</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="n">len</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// quite narrow band</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">left</span><span class="o">-</span><span class="n">right</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>      <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">double</span> <span class="n">slope_from_left</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">left</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">left</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">*</span> <span class="n">slope_from_left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="kt">double</span> <span class="n">slope_to_right</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">slope_to_right</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// normalize</span>
+</span><span class='line'>    <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>sp::hz_to_mel</code>とか<code>sp::mel_to_hz</code>はご想像におまかせ</p>
+
+<p>もし使う場合は、xにスペクトルを与えて、その他パラメータを適当に指定すればおｋ</p>
+
+<h2>まとめ</h2>
+
+<p>メルフィルタバンクかけるクラス作ってたら数時間潰した</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a>
+
+<ul>
+<li> とても参考にしました。ただ、フィルタバンクかける際に正規化してない？元のスケールを保つたえに、上のコードでは正規化するようにした(<a href="http://ohm.nuigalway.ie/0809/mbyrne/Images.html#MFCC">ここ</a>の図のようなイメージ）</li>
+</ul>
+</li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/11/16/mel-spectrogram//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1041,66 +1210,6 @@ X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
 <div class="meta">
 	
 		<span class="comments"><a href="/blog/2013/09/28/start-using-octopress//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/23/mlsa-filter-wakaran/">
-		
-			MLSA フィルタの実装</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-23T23:51:00+09:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>, <a class='category' href='/blog/categories/speech-synthesis/'>speech-synthesis</a>
-
-
-</div>
-    </div>
-		<p>音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ</p>
-
-<p>と、前置きはさておき、MLSAフィルタの実装を見つけたのでメモ。ここ最近ちょくちょく調べているが、SPTK以外で初めて見つけた。</p>
-
-<p><a href="http://simple4all.org/wp-content/uploads/2013/05/Jiunn.pdf">Realisation and Simulation of the Mel Log Spectrum Approximation Filter | Simple4All Internship Report</a></p>
-
-<p>Simple4Allという音声技術系のコミュニティの、学生さんのインターンの成果らしい。ちらっと調べてたら山岸ｾﾝｾｲも参加してる（た？）っぽい。ｺﾞｺﾞｺﾞｺﾞｺﾞ</p>
-
-<p>上のreportで引用されているように、MLSA filterの実現方法については、益子さんのD論に詳しく書いてあることがわかった。今井先生の論文と併せて読んでみようと思う。</p>
-
-<p><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.3623&amp;rep=rep1&amp;type=pdf">T. Masuko, &ldquo;HMM-Based Speech Synthesis and Its Applications&rdquo;, Ph.D Thesis, 2002.</a></p>
-
-<p>もう正直わからんしブラックボックスでもいいから既存のツール使うかーと諦めかけていたところで割りと丁寧な実装付き解説を見つけたので、もう一度勉強して実装してみようと思い直した。</p>
-
-<p>機械学習にかまけて信号処理をちゃんと勉強していなかったつけがきている。LMA filterもMLSA filterも、本当にわからなくてツライ……orz</p>
-
-<p>(実はそんなに難しくなく、理解できた 2013/09後半)</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/09/23/mlsa-filter-wakaran//index.html#disqus_thread">Comments</a></span>
 	
 </div>
 </article>
