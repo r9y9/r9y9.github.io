@@ -4,7 +4,7 @@
   <title><![CDATA[r9y9::blog]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-11-18T00:06:41+09:00</updated>
+  <updated>2013-11-25T00:34:20+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,70 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[MFCCの計算方法についてメモ]]></title>
+    <link href="http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/"/>
+    <updated>2013-11-24T22:29:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo</id>
+    <content type="html"><![CDATA[<h2>MFCC とは</h2>
+
+<p>Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。</p>
+
+<h3>算出手順</h3>
+
+<ul>
+<li>音声信号を適当な長さのフレームで切り出し</li>
+<li>窓がけ</li>
+<li>フーリエ変換して対数振幅スペクトルを求める</li>
+<li>メルフィルタバンクを掛けて、メル周波数スペクトルを求める</li>
+<li>離散コサイン変換により、MFCCを求める</li>
+</ul>
+
+
+<p>以上。SPTKのmfccコマンドのソースもだいたいそうなってた。</p>
+
+<h3>さて</h3>
+
+<h4>ここに音声波形があるじゃろ？？</h4>
+
+<p><img class="center" src="http://r9y9.github.io/images/speech-signal.png" title="&#34;音声信号を適当な長さのフレームで切り出し&#34;" alt="&#34;音声信号を適当な長さのフレームで切り出し&#34;"></p>
+
+<h4>音声波形を窓がけして…</h4>
+
+<p><img class="center" src="http://r9y9.github.io/images/windowed-signal.png" title="&#34;窓がけ&#34;" alt="&#34;窓がけ&#34;"></p>
+
+<h4>さらにフーリエ変換して対数取って…</h4>
+
+<p><img class="center" src="http://r9y9.github.io/images/log-amplitude.png" title="&#34;フーリエ変換して振幅スペクトルを求める&#34;" alt="&#34;フーリエ変換して振幅スペクトルを求める&#34;"></p>
+
+<h4>ここでメルフィルタバンクの出番じゃ</h4>
+
+<p><img class="center" src="http://r9y9.github.io/images/after-mel-filterbank.png" title="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;" alt="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;"></p>
+
+<h4>最後に離散コサイン変換で完成じゃ</h4>
+
+<p><img class="center" src="http://r9y9.github.io/images/MFCC.png" title="&#34;離散コサイン変換により、MFCCを求める&#34;" alt="&#34;離散コサイン変換により、MFCCを求める&#34;"></p>
+
+<h2>まとめ</h2>
+
+<ul>
+<li>MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです</li>
+<li>正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 <a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf</a> にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。</li>
+<li>間違ってるかもしれないけどご愛嬌</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>
+<li><a href="http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html">メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版</a></li>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[スペクトログラムとメル周波数スペクトログラムの可視化]]></title>
@@ -1183,137 +1247,6 @@ y = \argmax_y p(y|x)
 <p>マクロ参考: <a href="http://d.hatena.ne.jp/a_bicky/20130216/1361098344">http://d.hatena.ne.jp/a_bicky/20130216/1361098344</a></p>
 
 <p>数式綺麗でイイネ！重いけどね</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Multinomial distributionとCategorical distributionの違い]]></title>
-    <link href="http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/"/>
-    <updated>2013-07-31T22:51:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff</id>
-    <content type="html"><![CDATA[<p>些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。</p>
-
-<p>結論としては、多項分布のn=1の特殊な場合がカテゴリカル分布ですよってこと。以下少しまとめる。</p>
-
-<p>分布を仮定する離散変数をカテゴリと呼ぶとして、</p>
-
-<ul>
-<li>多項分布は、n回試行したときに各カテゴリが何回出るかを表す確率分布</li>
-<li>多項分布は、二項分布を多カテゴリに一般化したもの</li>
-<li>カテゴリカル分布は、多項分布のn=1の場合に相当する</li>
-<li>カテゴリカル分布は、ベルヌーイ分布を多カテゴリに一般化したもの</li>
-</ul>
-
-
-<p>以上</p>
-
-<p>nokunoさんによるこの記事→ <a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定</a> は、多項分布というよりカテゴリカル分布の話。本文には書いてあるけどね。あと最尤推定の結果はどちらにしろ同じなんだけどね</p>
-
-<h2>導出メモ</h2>
-
-<p>一応最尤推定をやってみる。前回のナイーブベイズのメモの時は省略したので。入力の変数を$Y = {y_n}_{n=1}^{N}$とする。</p>
-
-<h3>カテゴリカル分布</h3>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(l) = \pi_{l}, \hspace{2mm} \sum_{l=1}^{L}\pi_{l} = 1
-\end{align}
-</script>
-
-
-<p>ここで、$\pi_{l}$がパラメータ、lはカテゴリの番号</p>
-
-<h3>最尤推定</h3>
-
-<p>尤度関数を立てて、最大化することでパラメータを求める。各データは独立に生起すると仮定すると、尤度関数は以下のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-L(Y; \theta) = \prod_{n=1}^{N} \pi_{y_{n}}
-\end{align}
-</script>
-
-
-<p>$\theta$はパラメータの集合ということで。</p>
-
-<p>ラベルlの出現回数を$N_{l} = \sum_{n=1}^{N} \delta (y_{n} = l)$とすると、次のように書き直せる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-L(Y; \theta) = \prod_{l=1}^{L}\pi_{l}^{N_{l}}
-\end{align}
-</script>
-
-
-<p>よって、対数尤度は以下のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\log L(Y; \theta) = \sum_{l=1}^{L} N_{l}\log \pi_{l}
-\end{align}
-</script>
-
-
-<h3>ラグランジュの未定乗数法で解く</h3>
-
-<p>nokunoさんの記事の通りだけど、一応手でも解いたのでメモ</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G = \sum_{l=1}^{L} N_{l}\log \pi_{l} + \lambda \Bigl[ \sum_{l=1}^{L} \pi_{l} -1) \Bigr]
-\end{align}
-</script>
-
-
-<p>として、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\frac{\partial G}{\partial \pi_{l}} = \frac{N_{l}}{\pi_{l}} + \lambda  =0
-\end{align}
-</script>
-
-
-<p>よって、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\pi_{l} = -\frac{N_{l}}{\lambda}
-\end{align}
-</script>
-
-
-<p>ここで、以下の制約条件に代入すると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\sum_{l=1}^{L} \pi_{l} = 1
-\end{align}
-</script>
-
-
-<p>$\lambda = -N$となることがわかるので、求めたかったパラメータは以下のようになる</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\pi_{l} = \frac{N_{l}}{N}
-\end{align}
-</script>
-
-
-<p>カテゴリの頻度を計算するだけ、カンタン！！</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Categorical_distribution">Categorical distribution &ndash; Wikipedia</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Multinomial_distribution">Multinomial distribution &ndash; Wikipedia</a></li>
-<li><a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定 &ndash; nokunoの日記</a></li>
-<li><a href="http://d.hatena.ne.jp/sleepy_yoshi/20111107/p1">多項分布の最尤推定とMAP推定 &ndash; 睡眠時間？</a></li>
-<li><a href="http://lef-t.blogspot.jp/2013/02/categorical-distribution-wikipedia-free.html">Categorical distribution &ndash; Researcher&rsquo;s Eye</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

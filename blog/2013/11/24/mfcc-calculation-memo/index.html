@@ -3,10 +3,13 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Category: speech-signal-processing - r9y9::blog</title>
+	<title>MFCCの計算方法についてメモ - r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Category: speech-signal-processing">
+	<meta name="description" content="MFCC とは Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。 算出手順 音声信号を適当な長さのフレームで切り出し
+窓がけ
+フーリエ変換して対数振幅スペクトルを求める
+メルフィルタバンクを掛けて &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -121,94 +124,96 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        
+        <article class="post">
+	<h2 class="title">MFCCの計算方法についてメモ</h2>
+	<div class="entry-content"><h2>MFCC とは</h2>
+
+<p>Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。</p>
+
+<h3>算出手順</h3>
+
+<ul>
+<li>音声信号を適当な長さのフレームで切り出し</li>
+<li>窓がけ</li>
+<li>フーリエ変換して対数振幅スペクトルを求める</li>
+<li>メルフィルタバンクを掛けて、メル周波数スペクトルを求める</li>
+<li>離散コサイン変換により、MFCCを求める</li>
+</ul>
+
+
+<p>以上。SPTKのmfccコマンドのソースもだいたいそうなってた。</p>
+
+<h3>さて</h3>
+
+<h4>ここに音声波形があるじゃろ？？</h4>
+
+<p><img class="center" src="/images/speech-signal.png" title="&#34;音声信号を適当な長さのフレームで切り出し&#34;" alt="&#34;音声信号を適当な長さのフレームで切り出し&#34;"></p>
+
+<h4>音声波形を窓がけして…</h4>
+
+<p><img class="center" src="/images/windowed-signal.png" title="&#34;窓がけ&#34;" alt="&#34;窓がけ&#34;"></p>
+
+<h4>さらにフーリエ変換して対数取って…</h4>
+
+<p><img class="center" src="/images/log-amplitude.png" title="&#34;フーリエ変換して振幅スペクトルを求める&#34;" alt="&#34;フーリエ変換して振幅スペクトルを求める&#34;"></p>
+
+<h4>ここでメルフィルタバンクの出番じゃ</h4>
+
+<p><img class="center" src="/images/after-mel-filterbank.png" title="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;" alt="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;"></p>
+
+<h4>最後に離散コサイン変換で完成じゃ</h4>
+
+<p><img class="center" src="/images/MFCC.png" title="&#34;離散コサイン変換により、MFCCを求める&#34;" alt="&#34;離散コサイン変換により、MFCCを求める&#34;"></p>
+
+<h2>まとめ</h2>
+
+<ul>
+<li>MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです</li>
+<li>正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 <a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf</a> にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。</li>
+<li>間違ってるかもしれないけどご愛嬌</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>
+<li><a href="http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html">メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版</a></li>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a></li>
+</ul>
+
+</div>
+
+<div class="meta">
 	
-
-
+		<span class="comments"><a href="/blog/2013/11/24/mfcc-calculation-memo/#disqus_thread">Comments</a></span>
 	
-	
-	<section class="archives"><h1 class="year">2013</h1>
-
-<article>
-  <h2 class="title"><a href="/blog/2013/11/24/mfcc-calculation-memo/">MFCCの計算方法についてメモ</a></h2>
-	<div class="meta">
-		<span class="date">Nov 24</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/11/24/mfcc-calculation-memo/#disqus_thread">Comments</a></span>
-	    
-	</div>
+</div>
 </article>
 
-
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/11/16/mel-spectrogram/">スペクトログラムとメル周波数スペクトログラムの可視化</a></h2>
-	<div class="meta">
-		<span class="date">Nov 16</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/11/16/mel-spectrogram/#disqus_thread">Comments</a></span>
-	    
-	</div>
-</article>
-
-
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/15/signal-processing-library/">簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい</a></h2>
-	<div class="meta">
-		<span class="date">Oct 15</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/daily/'>daily</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/10/15/signal-processing-library/#disqus_thread">Comments</a></span>
-	    
-	</div>
-</article>
-
-
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/09/23/mlsa-filter-wakaran/">MLSA フィルタの実装</a></h2>
-	<div class="meta">
-		<span class="date">Sep 23</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>, <a class='category' href='/blog/categories/speech-synthesis/'>speech-synthesis</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/09/23/mlsa-filter-wakaran/#disqus_thread">Comments</a></span>
-	    
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	
 	</div>
-</article>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
 
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 
 
     </div>
@@ -236,7 +241,10 @@
       var disqus_shortname = 'r9y9blog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/';
+        var disqus_url = 'http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

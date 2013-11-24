@@ -6,7 +6,7 @@
 	<title>r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Nov 16th, 2013 Tags: speech-signal-processing やったので貼っとくだけ 低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、 &hellip;">
+	<meta name="description" content="Published on: Nov 24th, 2013 Tags: speech-signal-processing MFCC とは Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。 算出手順 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -122,6 +122,105 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/11/24/mfcc-calculation-memo/">
+		
+			MFCCの計算方法についてメモ</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-24T22:29:00+09:00" pubdate data-updated="true">Nov 24<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
+
+
+</div>
+    </div>
+		<h2>MFCC とは</h2>
+
+<p>Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。</p>
+
+<h3>算出手順</h3>
+
+<ul>
+<li>音声信号を適当な長さのフレームで切り出し</li>
+<li>窓がけ</li>
+<li>フーリエ変換して対数振幅スペクトルを求める</li>
+<li>メルフィルタバンクを掛けて、メル周波数スペクトルを求める</li>
+<li>離散コサイン変換により、MFCCを求める</li>
+</ul>
+
+
+<p>以上。SPTKのmfccコマンドのソースもだいたいそうなってた。</p>
+
+<h3>さて</h3>
+
+<h4>ここに音声波形があるじゃろ？？</h4>
+
+<p><img class="center" src="/images/speech-signal.png" title="&#34;音声信号を適当な長さのフレームで切り出し&#34;" alt="&#34;音声信号を適当な長さのフレームで切り出し&#34;"></p>
+
+<h4>音声波形を窓がけして…</h4>
+
+<p><img class="center" src="/images/windowed-signal.png" title="&#34;窓がけ&#34;" alt="&#34;窓がけ&#34;"></p>
+
+<h4>さらにフーリエ変換して対数取って…</h4>
+
+<p><img class="center" src="/images/log-amplitude.png" title="&#34;フーリエ変換して振幅スペクトルを求める&#34;" alt="&#34;フーリエ変換して振幅スペクトルを求める&#34;"></p>
+
+<h4>ここでメルフィルタバンクの出番じゃ</h4>
+
+<p><img class="center" src="/images/after-mel-filterbank.png" title="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;" alt="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;"></p>
+
+<h4>最後に離散コサイン変換で完成じゃ</h4>
+
+<p><img class="center" src="/images/MFCC.png" title="&#34;離散コサイン変換により、MFCCを求める&#34;" alt="&#34;離散コサイン変換により、MFCCを求める&#34;"></p>
+
+<h2>まとめ</h2>
+
+<ul>
+<li>MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです</li>
+<li>正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 <a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf</a> にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。</li>
+<li>間違ってるかもしれないけどご愛嬌</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>
+<li><a href="http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html">メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版</a></li>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/11/24/mfcc-calculation-memo//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1029,90 +1128,6 @@
 <div class="meta">
 	
 		<span class="comments"><a href="/blog/2013/10/03/blogger-to-github-pages//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/28/start-using-octopress/">
-		
-			Start Using Octopress</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-28T00:33:00+09:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/daily/'>daily</a>
-
-
-</div>
-    </div>
-		<h1>使い始めました</h1>
-
-<p>テストです</p>
-
-<h2>Text</h2>
-
-<p>こんにちは。octopressを使い始めた。Hello Octopress!</p>
-
-<h2>code</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello octopress&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Math</h2>
-
-<script type="math/tex; mode=display">
-\begin{align}
-X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
-\end{align}
-</script>
-
-
-<p>なかなかいい。Let&rsquo;s enjoy with Octopress!</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/09/28/start-using-octopress//index.html#disqus_thread">Comments</a></span>
 	
 </div>
 </article>

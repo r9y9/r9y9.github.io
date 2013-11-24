@@ -6,7 +6,16 @@
 	<title>r9y9::blog</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Sep 23rd, 2013 Tags: speech-signal-processing, speech-synthesis 音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。 &hellip;">
+	<meta name="description" content="Published on: Sep 28th, 2013 Tags: daily 使い始めました テストです Text こんにちは。octopressを使い始めた。Hello Octopress! code 1
+2
+3
+4
+5
+6
+7
+8
+9
+#include &lt;iostream&gt; &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -122,6 +131,90 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/09/28/start-using-octopress/">
+		
+			Start Using Octopress</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-28T00:33:00+09:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/daily/'>daily</a>
+
+
+</div>
+    </div>
+		<h1>使い始めました</h1>
+
+<p>テストです</p>
+
+<h2>Text</h2>
+
+<p>こんにちは。octopressを使い始めた。Hello Octopress!</p>
+
+<h2>code</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello octopress&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Math</h2>
+
+<script type="math/tex; mode=display">
+\begin{align}
+X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
+\end{align}
+</script>
+
+
+<p>なかなかいい。Let&rsquo;s enjoy with Octopress!</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2013/09/28/start-using-octopress//blog/page/2/index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -963,172 +1056,6 @@ y = \argmax_y p(y|x)
 <div class="meta">
 	
 		<span class="comments"><a href="/blog/2013/08/03/mathjax-blogger//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/07/31/multinomial-categorical-diff/">
-		
-			Multinomial distributionとCategorical Distributionの違い</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-31T22:51:00+09:00" pubdate data-updated="true">Jul 31<span>st</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/probability/'>probability</a>
-
-
-</div>
-    </div>
-		<p>些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。</p>
-
-<p>結論としては、多項分布のn=1の特殊な場合がカテゴリカル分布ですよってこと。以下少しまとめる。</p>
-
-<p>分布を仮定する離散変数をカテゴリと呼ぶとして、</p>
-
-<ul>
-<li>多項分布は、n回試行したときに各カテゴリが何回出るかを表す確率分布</li>
-<li>多項分布は、二項分布を多カテゴリに一般化したもの</li>
-<li>カテゴリカル分布は、多項分布のn=1の場合に相当する</li>
-<li>カテゴリカル分布は、ベルヌーイ分布を多カテゴリに一般化したもの</li>
-</ul>
-
-
-<p>以上</p>
-
-<p>nokunoさんによるこの記事→ <a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定</a> は、多項分布というよりカテゴリカル分布の話。本文には書いてあるけどね。あと最尤推定の結果はどちらにしろ同じなんだけどね</p>
-
-<h2>導出メモ</h2>
-
-<p>一応最尤推定をやってみる。前回のナイーブベイズのメモの時は省略したので。入力の変数を$Y = {y_n}_{n=1}^{N}$とする。</p>
-
-<h3>カテゴリカル分布</h3>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(l) = \pi_{l}, \hspace{2mm} \sum_{l=1}^{L}\pi_{l} = 1
-\end{align}
-</script>
-
-
-<p>ここで、$\pi_{l}$がパラメータ、lはカテゴリの番号</p>
-
-<h3>最尤推定</h3>
-
-<p>尤度関数を立てて、最大化することでパラメータを求める。各データは独立に生起すると仮定すると、尤度関数は以下のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-L(Y; \theta) = \prod_{n=1}^{N} \pi_{y_{n}}
-\end{align}
-</script>
-
-
-<p>$\theta$はパラメータの集合ということで。</p>
-
-<p>ラベルlの出現回数を$N_{l} = \sum_{n=1}^{N} \delta (y_{n} = l)$とすると、次のように書き直せる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-L(Y; \theta) = \prod_{l=1}^{L}\pi_{l}^{N_{l}}
-\end{align}
-</script>
-
-
-<p>よって、対数尤度は以下のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\log L(Y; \theta) = \sum_{l=1}^{L} N_{l}\log \pi_{l}
-\end{align}
-</script>
-
-
-<h3>ラグランジュの未定乗数法で解く</h3>
-
-<p>nokunoさんの記事の通りだけど、一応手でも解いたのでメモ</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G = \sum_{l=1}^{L} N_{l}\log \pi_{l} + \lambda \Bigl[ \sum_{l=1}^{L} \pi_{l} -1) \Bigr]
-\end{align}
-</script>
-
-
-<p>として、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\frac{\partial G}{\partial \pi_{l}} = \frac{N_{l}}{\pi_{l}} + \lambda  =0
-\end{align}
-</script>
-
-
-<p>よって、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\pi_{l} = -\frac{N_{l}}{\lambda}
-\end{align}
-</script>
-
-
-<p>ここで、以下の制約条件に代入すると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\sum_{l=1}^{L} \pi_{l} = 1
-\end{align}
-</script>
-
-
-<p>$\lambda = -N$となることがわかるので、求めたかったパラメータは以下のようになる</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\pi_{l} = \frac{N_{l}}{N}
-\end{align}
-</script>
-
-
-<p>カテゴリの頻度を計算するだけ、カンタン！！</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Categorical_distribution">Categorical distribution &ndash; Wikipedia</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Multinomial_distribution">Multinomial distribution &ndash; Wikipedia</a></li>
-<li><a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定 &ndash; nokunoの日記</a></li>
-<li><a href="http://d.hatena.ne.jp/sleepy_yoshi/20111107/p1">多項分布の最尤推定とMAP推定 &ndash; 睡眠時間？</a></li>
-<li><a href="http://lef-t.blogspot.jp/2013/02/categorical-distribution-wikipedia-free.html">Categorical distribution &ndash; Researcher&rsquo;s Eye</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/07/31/multinomial-categorical-diff//blog/page/2/index.html#disqus_thread">Comments</a></span>
 	
 </div>
 </article>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: speech-signal-processing | r9y9::blog]]></title>
   <link href="http://r9y9.github.io/blog/categories/speech-signal-processing/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-11-18T00:06:41+09:00</updated>
+  <updated>2013-11-25T00:34:20+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,70 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[MFCCの計算方法についてメモ]]></title>
+    <link href="http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/"/>
+    <updated>2013-11-24T22:29:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo</id>
+    <content type="html"><![CDATA[<h2>MFCC とは</h2>
+
+<p>Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。</p>
+
+<h3>算出手順</h3>
+
+<ul>
+<li>音声信号を適当な長さのフレームで切り出し</li>
+<li>窓がけ</li>
+<li>フーリエ変換して対数振幅スペクトルを求める</li>
+<li>メルフィルタバンクを掛けて、メル周波数スペクトルを求める</li>
+<li>離散コサイン変換により、MFCCを求める</li>
+</ul>
+
+
+<p>以上。SPTKのmfccコマンドのソースもだいたいそうなってた。</p>
+
+<h3>さて</h3>
+
+<h4>ここに音声波形があるじゃろ？？</h4>
+
+<p><img class="center" src="/images/speech-signal.png" title="&ldquo;音声信号を適当な長さのフレームで切り出し&rdquo;" ></p>
+
+<h4>音声波形を窓がけして…</h4>
+
+<p><img class="center" src="/images/windowed-signal.png" title="&ldquo;窓がけ&rdquo;" ></p>
+
+<h4>さらにフーリエ変換して対数取って…</h4>
+
+<p><img class="center" src="/images/log-amplitude.png" title="&ldquo;フーリエ変換して振幅スペクトルを求める&rdquo;" ></p>
+
+<h4>ここでメルフィルタバンクの出番じゃ</h4>
+
+<p><img class="center" src="/images/after-mel-filterbank.png" title="&ldquo;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&rdquo;" ></p>
+
+<h4>最後に離散コサイン変換で完成じゃ</h4>
+
+<p><img class="center" src="/images/MFCC.png" title="&ldquo;離散コサイン変換により、MFCCを求める&rdquo;" ></p>
+
+<h2>まとめ</h2>
+
+<ul>
+<li>MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです</li>
+<li>正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 <a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf</a> にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。</li>
+<li>間違ってるかもしれないけどご愛嬌</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>
+<li><a href="http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html">メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版</a></li>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[スペクトログラムとメル周波数スペクトログラムの可視化]]></title>
