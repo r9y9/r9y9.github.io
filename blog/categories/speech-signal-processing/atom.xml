@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: speech-signal-processing, | R)Y)]]></title>
+  <title><![CDATA[Category: speech-signal-processing | R)Y)]]></title>
   <link href="http://r9y9.github.io/blog/categories/speech-signal-processing/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-12-02T00:54:04+09:00</updated>
+  <updated>2013-12-02T01:00:17+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -305,6 +305,291 @@ sp::mlsa_filter mlsa_f(order, alpha, n_pade);</p>
 <p>MLSAフィルタ、難しいですね（小並感</p>
 
 <p>いつかリアルタイム声質変換がやってみたいので、それに使う予定（worldを使うことになるかもしれんけど）。戸田先生当たりがやってる声質変換を一回真似してみたいと思ってる</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SPTKをC++から使えるようにする]]></title>
+    <link href="http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/"/>
+    <updated>2013-12-01T18:46:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf</id>
+    <content type="html"><![CDATA[<p><a href="http://sp-tk.sourceforge.net/">音声信号処理ツールキットSPTK</a>をC++から使おうと思ったら意外とハマってしまったので、</p>
+
+<ul>
+<li>C++から使えるようにC++コンパイラでコンパイルできるようにした</li>
+<li>使いやすいようにwafを組み込みんだ</li>
+</ul>
+
+
+<p>リポジトリ: <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a></p>
+
+<p>というわけで、使い方について簡単に書いておく</p>
+
+<h1>SPTK について</h1>
+
+<ul>
+<li>SPTKを使うと何ができるか: <a href="http://aidiary.hatenablog.com/entry/20120701/1341126474">SPTKの使い方 (1) インストール・波形描画・音声再生 | 人工知能に関する断創録</a></li>
+<li>SPTKとは: <a href="[http://sp-tk.sourceforge.net/]">Speech Signal Processing Toolkit (SPTK)</a></li>
+</ul>
+
+
+<h1>SPTK with waf</h1>
+
+<p><a href="https://github.com/r9y9/SPTK">SPTK with waf</a>は、SPTKをwafでビルド管理できるようにしたものです。</p>
+
+<ul>
+<li>SPTKを共有ライブラリとしてインストールできます。</li>
+<li>C、C++の好きな方でコンパイルできます。</li>
+<li>wafが使えます（速い、出力がキレイ）</li>
+<li>自分のC、C++コードからSPTKのメソッドを呼べます。</li>
+<li>コマンドラインツールはインストールされません。</li>
+</ul>
+
+
+<p>コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。</p>
+
+<h1>環境</h1>
+
+<ul>
+<li>Unix系</li>
+</ul>
+
+
+<p>Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み</p>
+
+<h1>SPTKのインストール</h1>
+
+<p>リポジトリをクローンしたあと、</p>
+
+<h2>Build</h2>
+
+<pre><code> ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2>Build with clang++</h2>
+
+<pre><code> CXX=clang++ ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2>Build with gcc</h2>
+
+<pre><code> git checkout c
+ ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2>Build with clang</h2>
+
+<pre><code> git checkout c
+ CC=clang ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2>Install</h2>
+
+<pre><code> sudo ./waf install
+</code></pre>
+
+<ul>
+<li>Include files: <code>/usr/local/include/SPTK</code></li>
+<li>Library: <code>/usr/local/lib/SPTK</code></li>
+<li>Pkg-config: <code>/usr/local/lib/pkgconfig</code></li>
+</ul>
+
+
+<p>オリジナルのSPTKとはインストール場所が異なります（オリジナルは、<code>/usr/local/SPTK</code>）</p>
+
+<h1>SPTKを使ってコードを書く</h1>
+
+<p><code>&lt;SPTK/SPTK.h&gt;</code> をインクルードして、好きな関数を呼ぶ</p>
+
+<p>コンパイルは、例えば以下のようにする</p>
+
+<pre><code> g++ test.cpp `pkg-config SPTK --cflags --libs`
+</code></pre>
+
+<p>面倒なので、example/ 内のコードを修正して使う（wafを使おう）のがおすすめです。</p>
+
+<br/>
+
+
+<h1>きっかけ</h1>
+
+<ul>
+<li>SPTKはコマンドラインツールだと思ってたけど、どうやらSPTK.hをインクルードすれば一通りのツールを使えるらしい</li>
+<li>SPTK.hをインクルードして使う方法のマニュアルが見つからない…</li>
+<li>SPTKはC言語で書かれてるし、C++から使うの地味にめんどくさい</li>
+</ul>
+
+
+<h1>C++から簡単に使いたかった</h1>
+
+<ul>
+<li>gccやclangだけじゃなくg++やclang++でコンパイルできるようにしよう</li>
+<li>自分のコードのビルド管理にはwafを使ってるし、wafで管理できるようにしてしまおう</li>
+<li>waf素晴らしいしな （参考: <a href="http://d.hatena.ne.jp/tanakh/20100212">waf チュートリアル | 純粋関数型雑記帳 </a>）</li>
+</ul>
+
+
+<h1>最後に</h1>
+
+<p>SPTKもwafも素晴らしいので積極的に使おう＾＾</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MFCCの計算方法についてメモ]]></title>
+    <link href="http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/"/>
+    <updated>2013-11-24T22:29:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo</id>
+    <content type="html"><![CDATA[<h2>MFCC とは</h2>
+
+<p>Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。</p>
+
+<h3>算出手順</h3>
+
+<ul>
+<li>音声信号を適当な長さのフレームで切り出し</li>
+<li>窓がけ</li>
+<li>フーリエ変換して対数振幅スペクトルを求める</li>
+<li>メルフィルタバンクを掛けて、メル周波数スペクトルを求める</li>
+<li>離散コサイン変換により、MFCCを求める</li>
+</ul>
+
+
+<p>以上。SPTKのmfccコマンドのソースもだいたいそうなってた。</p>
+
+<h3>さて</h3>
+
+<h4>ここに音声波形があるじゃろ？？</h4>
+
+<p><img class="center" src="/images/speech-signal.png" title="&ldquo;音声信号を適当な長さのフレームで切り出し&rdquo;" ></p>
+
+<h4>音声波形を窓がけして…</h4>
+
+<p><img class="center" src="/images/windowed-signal.png" title="&ldquo;窓がけ&rdquo;" ></p>
+
+<h4>さらにフーリエ変換して対数取って…</h4>
+
+<p><img class="center" src="/images/log-amplitude.png" title="&ldquo;フーリエ変換して振幅スペクトルを求める&rdquo;" ></p>
+
+<h4>ここでメルフィルタバンクの出番じゃ</h4>
+
+<p><img class="center" src="/images/after-mel-filterbank.png" title="&ldquo;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&rdquo;" ></p>
+
+<h4>最後に離散コサイン変換で完成じゃ</h4>
+
+<p><img class="center" src="/images/MFCC.png" title="&ldquo;離散コサイン変換により、MFCCを求める&rdquo;" ></p>
+
+<h2>まとめ</h2>
+
+<ul>
+<li>MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです</li>
+<li>正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 <a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf</a> にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。</li>
+<li>間違ってるかもしれないけどご愛嬌</li>
+</ul>
+
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>
+<li><a href="http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html">メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版</a></li>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[スペクトログラムとメル周波数スペクトログラムの可視化]]></title>
+    <link href="http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/"/>
+    <updated>2013-11-16T23:07:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram</id>
+    <content type="html"><![CDATA[<p>やったので貼っとくだけ</p>
+
+<p><img class="center" src="/images/spectrogram.png" title="&ldquo;よくあるスペクトログラム&rdquo;" ></p>
+
+<p><img class="center" src="/images/mel_spectrogram.png" title="&ldquo;メル周波数に変換したスペクトログラム&rdquo;" ></p>
+
+<p>低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。</p>
+
+<p>今回は振幅を対数を取って表示した（ちなみに）。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に合うようにメル周波数に変換して次元圧縮するイメージ。</p>
+
+<p>解説は、<a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a> を見よう。素晴らしいです</p>
+
+<p>僕はと言えば特に解説する気も起きないので、C++コードでも貼っとこう（※間違ってたので、とりあえず消しました</p>
+
+<h2>まとめ</h2>
+
+<p>メルフィルタバンクかけるクラス作ってたら数時間潰した</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a>
+
+<ul>
+<li> とても参考にしました。ただ、フィルタバンクかける際に正規化してない？元のスケールを保つために、上のコードでは正規化するようにした(<a href="http://ohm.nuigalway.ie/0809/mbyrne/Images.html#MFCC">ここ</a>の図のようなイメージ）</li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい]]></title>
+    <link href="http://r9y9.github.io/blog/2013/10/15/signal-processing-library/"/>
+    <updated>2013-10-15T23:47:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/10/15/signal-processing-library</id>
+    <content type="html"><![CDATA[<p>音声を使ったアプリケーションが作りたい、例えば自分の声を誰かの声に変えたい、自動で音痴補正したい、関西弁のゆっくりちゃん作りたい、ギターエフェクト作りたい、とか思う人も少なくないんじゃないかと思う。</p>
+
+<p>信号処理のアプリケーションを一から真面目に作ろうとすると、やるべきことが多すぎて途中で断念してしまうことがある。信号処理って、Hello 信号処理までがホント長くて、File I/O やらstreaming I/O等音声入出力書いたり、スペクトルやケプストラムやらメルケプやらウェーブレットやら特徴抽出書いたり、波形合成のアルゴリズム書いたり、難しい機械学習のアルゴリズム書いたり。本当にやりたいことを実現するためには、専門家はおろか初学者にはハードルが高すぎると思う。リアルタイムでやりたい（よくある状況）とかだとなおさら大変。</p>
+
+<p>もちろん、そんなの自分で書かなくてもライブラリなりツールなりはたくさんある。</p>
+
+<ul>
+<li><a href="http://sp-tk.sourceforge.net/">SPTK &ndash; Speech Signal Processing Toolkit</a></li>
+<li><a href="http://hts.sp.nitech.ac.jp/">HTS &ndash; HMM-based Speech Synthesis System</a></li>
+<li><a href="http://www.mmdagent.jp/">MMDAgenet &ndash; toolkit for building voice interaction systems.</a></li>
+<li><a href="http://open-jtalk.sourceforge.net/">OpenJTalk &ndash; HMM-based Text-to-Speech System</a></li>
+<li><a href="https://ccrma.stanford.edu/software/stk/">STK &ndash; The Synthesis ToolKit in C++ (STK)</a></li>
+<li><a href="http://aquila-dsp.org/">Aquila &ndash; Open source DSP library for C++</a></li>
+<li><a href="http://www.portaudio.com/">PortAudio &ndash; Portable Cross-platform Audio I/O</a></li>
+<li><a href="http://www.sonicvisualiser.org/">Sonic visualiser</a></li>
+<li><a href="https://www.jyu.fi/hum/laitokset/musiikki/en/research/coe/materials/mirtoolbox">MIRToolbox</a></li>
+<li><a href="http://isse.sourceforge.net/">ISSE &ndash; An Interactive Source Separation Editor</a></li>
+<li><a href="http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html">音声分析変換合成法STRAIGHT</a></li>
+<li><a href="http://www.slp.is.ritsumei.ac.jp/~morise/world/">音声分析合成システム「WORLD」</a></li>
+</ul>
+
+
+<p>直近で印象に残ってるのはこんなもん。どれも素晴らしいけど、傾向としては専門知識のある人向けの物が多い気がしている。一方で、専門知識がなくても使えるツールというのは、本当に少ないと思う。これは個人的に大きな問題だと思っていて、何とか解決したい。というか僕でも簡単に使える便利ツールほしい。</p>
+
+<p>とまぁそんな経緯で、</p>
+
+<ul>
+<li>音声/音楽信号処理をやるためのベースをすでに備えていて、アプリケーションが簡単に作れる</li>
+<li>専門知識がなくてもまぁ使える</li>
+<li>リアルタイムアプリケーションを作れる</li>
+<li>商用/学術利用共にフリー</li>
+</ul>
+
+
+<p>なライブラリを作ろうと考えている。商用フリーなのは、単に僕がGPL/LPGLとか嫌いだから。フリーという制約を除けば選択肢も増えるけど、まぁ使いづらい。</p>
+
+<p><a href="http://opencv.org/">opencv</a>とか、めっちゃ素晴らしいよね。まさにこういうものがほしい（作りたい）。これの音声版ですよ。何でないんだ。あったら教えて下さい。</p>
+
+<p><a href="http://stackoverflow.com/questions/6938634/any-opencv-like-c-c-library-for-audio-processing">&ldquo;Any OpenCV-like C/C++ library for Audio processing?&rdquo; &ndash; StackOverflow</a></p>
+
+<p>今頑張って作ってるので、お楽しみに。ここに書くことで、後に引けなくする作戦です。</p>
+
+<h2>余談</h2>
+
+<p>ライブラリ作ろうと思ったきっかけは、つい最近声質変換を作ろうとしたことにあります。自分の声を、好きな人の声に変えられたらおもしろいなぁと思って。何か火が着いちゃった時がありました。ただ、音声読み込み、FFT、ケプストラム、メルフィルタバンク、メルケプストラム、GMM、固有声空間の構築、MLSAフィルタ、短遅延アルゴリズム、overlapping addition合成（ry</p>
+
+<p>もう、やることが多すぎてギブアップした。具体的にはmlsaフィルタが難しくてやめた。その時にSPTKのソースコードを読んでいたんだけど、すごいわかりにくくて、くそーっと思って、どうせなら新しく書きなおして使いやすいライブラリ作ってやろうと思ったのが、きっかけ。まぁえらそうな事書いといて、自分がほしいからっていうのが落ちなんですけどね。</p>
+
+<p>ないから作る、シンプルに言えばそれだけです。あと、絶賛有志募集中です。よろしくおねがいします。</p>
 ]]></content>
   </entry>
   
