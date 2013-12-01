@@ -4,7 +4,7 @@
   <title><![CDATA[Category: speech-signal-processing | R)Y)]]></title>
   <link href="http://r9y9.github.io/blog/categories/speech-signal-processing/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2013-12-01T20:21:36+09:00</updated>
+  <updated>2013-12-01T20:31:27+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -18,7 +18,7 @@
     <link href="http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/"/>
     <updated>2013-12-01T18:46:00+09:00</updated>
     <id>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf</id>
-    <content type="html"><![CDATA[<p><a href="http://sp-tk.sourceforge.net/">音声信号処理ツールキットSPTK</a>を自分のC++から使おうと思ったら意外とハマってしまったので、</p>
+    <content type="html"><![CDATA[<p><a href="http://sp-tk.sourceforge.net/">音声信号処理ツールキットSPTK</a>をC++から使おうと思ったら意外とハマってしまったので、</p>
 
 <ul>
 <li>C++から使えるようにC++コンパイラでコンパイルできるようにした</li>
