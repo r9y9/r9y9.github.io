@@ -3,10 +3,11 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Category: speech-signal-processing - R)Y)</title>
+	<title>SPTKをC++から使えるようにする - R)Y)</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Category: speech-signal-processing">
+	<meta name="description" content="音声信号処理ツールキットSPTKを自分のC++から使おうと思ったら意外とハマってしまったので、 C++から使えるようにC++コンパイラでコンパイルできるようにした
+使いやすいようにwafを組み込みんだ リポジトリ: https://github.com/r9y9/SPTK というわけで、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -121,115 +122,159 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        
+        <article class="post">
+	<h2 class="title">SPTKをC++から使えるようにする</h2>
+	<div class="entry-content"><p><a href="http://sp-tk.sourceforge.net/">音声信号処理ツールキットSPTK</a>を自分のC++から使おうと思ったら意外とハマってしまったので、</p>
+
+<ul>
+<li>C++から使えるようにC++コンパイラでコンパイルできるようにした</li>
+<li>使いやすいようにwafを組み込みんだ</li>
+</ul>
+
+
+<p>リポジトリ: <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a></p>
+
+<p>というわけで、使い方について簡単に書いておく</p>
+
+<h1>SPTK について</h1>
+
+<ul>
+<li>SPTKを使うと何ができるか: <a href="http://aidiary.hatenablog.com/entry/20120701/1341126474">SPTKの使い方 (1) インストール・波形描画・音声再生 | 人工知能に関する断創録</a></li>
+<li>SPTKとは: <a href="[http://sp-tk.sourceforge.net/]">Speech Signal Processing Toolkit (SPTK)</a></li>
+</ul>
+
+
+<h1>SPTK with waf</h1>
+
+<p><a href="https://github.com/r9y9/SPTK">SPTK with waf</a>は、SPTKをwafでビルド管理できるようにしたものです。</p>
+
+<ul>
+<li>SPTKを共有ライブラリとしてインストールできます。</li>
+<li>C、C++の好きな方でコンパイルできます。</li>
+<li>wafが使えます（速い、出力がキレイ）</li>
+<li>自分のC、C++コードからSPTKのメソッドを呼べます。</li>
+<li>コマンドラインツールはインストールされません。</li>
+</ul>
+
+
+<p>コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。</p>
+
+<h1>環境</h1>
+
+<ul>
+<li>Unix系</li>
+</ul>
+
+
+<p>Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み</p>
+
+<h1>SPTKのインストール</h1>
+
+<p>リポジトリをクローンしたあと、</p>
+
+<h2>Build</h2>
+
+<pre><code> ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2>Build with clang++</h2>
+
+<pre><code> CXX=clang++ ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2>Build with gcc</h2>
+
+<pre><code> git checkout c
+ ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2>Build with clang</h2>
+
+<pre><code> git checkout c
+ CC=clang ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2>Install</h2>
+
+<pre><code> sudo ./waf install
+</code></pre>
+
+<ul>
+<li>Include files: <code>/usr/local/include/SPTK</code></li>
+<li>Library: <code>/usr/local/lib/SPTK</code></li>
+<li>Pkg-config: <code>/usr/local/lib/pkgconfig</code></li>
+</ul>
+
+
+<p>オリジナルのSPTKとはインストール場所が異なります（オリジナルは、<code>/usr/local/SPTK</code>）</p>
+
+<h1>SPTKを使ってコードを書く</h1>
+
+<p><code>&lt;SPTK/SPTK.h&gt;</code> をインクルードして、好きな関数を呼ぶ</p>
+
+<p>コンパイルは、例えば以下のようにする</p>
+
+<pre><code> g++ test.cpp `pkg-config SPTK --cflags --libs`
+</code></pre>
+
+<p>面倒なので、example/ 内のコードを修正して使う（wafを使おう）のがおすすめです。</p>
+
+<br/>
+
+
+<h1>きっかけ</h1>
+
+<ul>
+<li>SPTKはコマンドラインツールだと思ってたけど、どうやらSPTK.hをインクルードすれば一通りのツールを使えるらしい</li>
+<li>SPTK.hをインクルードして使う方法のマニュアルが見つからない…</li>
+<li>SPTKはC言語で書かれてるし、C++から使うの地味にめんどくさい</li>
+</ul>
+
+
+<h1>C++から簡単に使いたかった</h1>
+
+<ul>
+<li>gccやclangだけじゃなくg++やclang++でコンパイルできるようにしよう</li>
+<li>自分のコードのビルド管理にはwafを使ってるし、wafで管理できるようにしてしまおう</li>
+<li>waf素晴らしいしな （参考: <a href="http://d.hatena.ne.jp/tanakh/20100212">waf チュートリアル | 純粋関数型雑記帳 </a>）</li>
+</ul>
+
+
+<h1>最後に</h1>
+
+<p>SPTKもwafも素晴らしいので積極的に使おう＾＾</p>
+</div>
+
+<div class="meta">
 	
-
-
+		<span class="comments"><a href="/blog/2013/12/01/sptk-with-waf/#disqus_thread">Comments</a></span>
 	
-	
-	<section class="archives"><h1 class="year">2013</h1>
-
-<article>
-  <h2 class="title"><a href="/blog/2013/12/01/sptk-with-waf/">SPTKをC++から使えるようにする</a></h2>
-	<div class="meta">
-		<span class="date">Dec  1</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/12/01/sptk-with-waf/#disqus_thread">Comments</a></span>
-	    
-	</div>
+</div>
 </article>
 
-
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/11/24/mfcc-calculation-memo/">MFCCの計算方法についてメモ</a></h2>
-	<div class="meta">
-		<span class="date">Nov 24</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/11/24/mfcc-calculation-memo/#disqus_thread">Comments</a></span>
-	    
-	</div>
-</article>
-
-
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/11/16/mel-spectrogram/">スペクトログラムとメル周波数スペクトログラムの可視化</a></h2>
-	<div class="meta">
-		<span class="date">Nov 16</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/11/16/mel-spectrogram/#disqus_thread">Comments</a></span>
-	    
-	</div>
-</article>
-
-
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/10/15/signal-processing-library/">簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい</a></h2>
-	<div class="meta">
-		<span class="date">Oct 15</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/daily/'>daily</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/10/15/signal-processing-library/#disqus_thread">Comments</a></span>
-	    
-	</div>
-</article>
-
-
+	<a class="addthis_button_tweet"></a>
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/09/23/mlsa-filter-wakaran/">MLSA フィルタの実装</a></h2>
-	<div class="meta">
-		<span class="date">Sep 23</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>, <a class='category' href='/blog/categories/speech-synthesis/'>speech-synthesis</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/09/23/mlsa-filter-wakaran/#disqus_thread">Comments</a></span>
-	    
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	
 	</div>
-</article>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
 
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 
 
     </div>
@@ -257,7 +302,10 @@
       var disqus_shortname = 'r9y9blog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/';
+        var disqus_url = 'http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
