@@ -6,7 +6,7 @@
 	<title>R)Y)</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Published on: Dec 23rd, 2013 Tags: emacs Sublime Textのデフォルトの色が結構好きなので、emacsも同じようにしたいと思ってた。今まではずっとsolarizedを使ってたけど、個人的にはsublime textっぽい方が好き。 &hellip;">
+	<meta name="description" content="Published on: Jan 27th, 2014 Tags: Go, Music-Signal-Processing 最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う Goの良い所 デフォでたくさん便利なパッケージがある。http, &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -122,6 +122,108 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/start-coding-go-msptools/">
+		
+			Goで音楽信号処理のコードを書き始めた</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T02:17:00+09:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+      <div class="tags">Tags: 
+
+
+	<a class='category' href='/blog/categories/go/'>Go</a>, <a class='category' href='/blog/categories/music-signal-processing/'>Music-Signal-Processing</a>
+
+
+</div>
+    </div>
+		<p>最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う</p>
+
+<h2>Goの良い所</h2>
+
+<ul>
+<li>デフォでたくさん便利なパッケージがある。http, json, os, &hellip;</li>
+<li>パッケージのインストールはとても簡単。go getするだけ</li>
+<li>デフォでテストの枠組みがある</li>
+<li>gofmtでコードのformattingしてくれるので書き方で迷わなくて良い</li>
+<li>使わないパッケージをimportするとコンパイルエラーになるし自然と疎結合なコードを書くようになる</li>
+<li>並列処理を言語レベルでサポート</li>
+<li>GCあるのでメモリ管理なんてしなくていい</li>
+<li>全般的にC++より書きやすい（ここ重要）</li>
+<li>そこそこ速い（C++よりは遅いけど）</li>
+</ul>
+
+
+<p>ホントはPythonでさくっと書きたいけどパフォーマンスもほしいからC++で書くかー（嫌だけど）。と思ってた自分にはちょうどいい</p>
+
+<h2>Goの悪い所（主にC++と比べて）</h2>
+
+<ul>
+<li>ちょっと遅い。さっと試したウェーブレット変換は、1.5倍くらい遅かった気がする（うろ覚え）</li>
+<li>C++やpythonに比べるとライブラリは少ない</li>
+<li>言語仕様とかそのへんが優れてるかどうかは判断つきませんごめんなさい</li>
+</ul>
+
+
+<h1><a href="https://github.com/r9y9/go-msptools">Go-msptools</a></h1>
+
+<p>で、大学院時代から継ぎ足し継ぎ足ししてきた秘伝の音楽信号処理C++ライブラリがあるんだけど、一部切り出してGoで書いてみた</p>
+
+<ul>
+<li><a href="https://github.com/r9y9/go-msptools">Github</a></li>
+<li><a href="http://godoc.org/github.com/r9y9/go-msptools">GoDoc</a></li>
+</ul>
+
+
+<p>音声信号処理用にケプストラム分析とかLPCとか色々書いたけど、考えた結果既存のライブラリ使うほうがいいやってなったので音楽に特化することにしました。SPTK様には頭が上がりません</p>
+
+<p>さておき、パッケージは今の所二つ</p>
+
+<ul>
+<li><a href="https://github.com/r9y9/go-msptools/tree/master/cwt">cwt</a> : ガボール連続ウェーブレット変換</li>
+<li><a href="https://github.com/r9y9/go-msptools/tree/master/pcp">pcp</a> : クロマベクトル</li>
+</ul>
+
+
+<p>Go始めたてのころに <a href="https://github.com/mjibson/go-dsp/">go-dsp</a> というデジタル信号処理ライブラリを見つけて、もろそれに影響受けた名前になってる。</p>
+
+<p>徐々にC++版を移植していこうかなと考え中</p>
+
+<h2>おまけ：音の信号処理に役立ちそうなライブラリ</h2>
+
+<ul>
+<li><a href="https://github.com/mjibson/go-dsp/">go-dsp</a></li>
+<li><a href="https://code.google.com/p/portaudio-go/">portaudio-go</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+		<span class="comments"><a href="/blog/2014/01/27/start-coding-go-msptools//index.html#disqus_thread">Comments</a></span>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1462,73 +1564,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/20/wavelet-stft-visualization/">
-		
-			短時間フーリエ変換と連続ウェーブレット変換のvisualization</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-20T11:46:00+09:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/short-time-fourier-transform/'>short-time-fourier-transform</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/visualization/'>visualization</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a>
-
-
-</div>
-    </div>
-		<h2>STFT(短時間フーリエ変換)によるスペクトログラム</h2>
-
-<p><img class="center" src="/images/spectrogram_linear_clipped_rev_1.png" title="&#34;STFT spectrogram&#34;" alt="&#34;STFT spectrogram&#34;"></p>
-
-<h2>STFTによるスペクトログラム（Y軸を対数にしたもの）</h2>
-
-<p><img class="center" src="/images/spectrogram_log_clipped_rev_1.png" title="&#34;STFT spectrogram (with log-y-axis)&#34;" alt="&#34;STFT spectrogram (with log-y-axis)&#34;"></p>
-
-<h2>連続ガボールウェーブレット変換によるスペクトログラム</h2>
-
-<p><img class="center" src="/images/wavelet_spectrogram_clipped_rev_1.png" title="&#34;Gabor Wavelet spectrogram&#34;" alt="&#34;Gabor Wavelet spectrogram&#34;"></p>
-
-<p>メモリも軸も無くて発表資料に貼ったら間違いなく怒られる奴だけど許して。でもだいたいの違いはわかると思う。図はgnuplotで作りました</p>
-
-<p>STFTのlog-y-axisと比べるとよくわかるけど、ウェーブレットは低域もちゃんと綺麗にとれてますね。</p>
-
-<p>みんなもっとウェーブレット変換使おう（提案</p>
-
-<h2>分析に使った音声</h2>
-
-<p>決して聞いてはならない</p>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116165738"></iframe>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/10/20/wavelet-stft-visualization//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
     
@@ -1540,7 +1575,7 @@
     </div>
     <footer id="footer">
     <div style="display:inline">
-    Copyright &copy; 2013
+    Copyright &copy; 2014
 
     Ryuichi Yamamoto
 . Powered by <a href="http://octopress.org">Octopress</a> | 

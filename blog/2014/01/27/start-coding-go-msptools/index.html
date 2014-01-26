@@ -3,10 +3,12 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Category: matrix-factorization - R)Y)</title>
+	<title>Goで音楽信号処理のコードを書き始めた - R)Y)</title>
     <meta name="author" content="Ryuichi Yamamoto">
     
-	<meta name="description" content="Category: matrix-factorization">
+	<meta name="description" content="最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う Goの良い所 デフォでたくさん便利なパッケージがある。http, json, os, &hellip;
+パッケージのインストールはとても簡単。go getするだけ
+デフォでテストの枠組みがある &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -121,52 +123,99 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        
+        <article class="post">
+	<h2 class="title">Goで音楽信号処理のコードを書き始めた</h2>
+	<div class="entry-content"><p>最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う</p>
+
+<h2>Goの良い所</h2>
+
+<ul>
+<li>デフォでたくさん便利なパッケージがある。http, json, os, &hellip;</li>
+<li>パッケージのインストールはとても簡単。go getするだけ</li>
+<li>デフォでテストの枠組みがある</li>
+<li>gofmtでコードのformattingしてくれるので書き方で迷わなくて良い</li>
+<li>使わないパッケージをimportするとコンパイルエラーになるし自然と疎結合なコードを書くようになる</li>
+<li>並列処理を言語レベルでサポート</li>
+<li>GCあるのでメモリ管理なんてしなくていい</li>
+<li>全般的にC++より書きやすい（ここ重要）</li>
+<li>そこそこ速い（C++よりは遅いけど）</li>
+</ul>
+
+
+<p>ホントはPythonでさくっと書きたいけどパフォーマンスもほしいからC++で書くかー（嫌だけど）。と思ってた自分にはちょうどいい</p>
+
+<h2>Goの悪い所（主にC++と比べて）</h2>
+
+<ul>
+<li>ちょっと遅い。さっと試したウェーブレット変換は、1.5倍くらい遅かった気がする（うろ覚え）</li>
+<li>C++やpythonに比べるとライブラリは少ない</li>
+<li>言語仕様とかそのへんが優れてるかどうかは判断つきませんごめんなさい</li>
+</ul>
+
+
+<h1><a href="https://github.com/r9y9/go-msptools">Go-msptools</a></h1>
+
+<p>で、大学院時代から継ぎ足し継ぎ足ししてきた秘伝の音楽信号処理C++ライブラリがあるんだけど、一部切り出してGoで書いてみた</p>
+
+<ul>
+<li><a href="https://github.com/r9y9/go-msptools">Github</a></li>
+<li><a href="http://godoc.org/github.com/r9y9/go-msptools">GoDoc</a></li>
+</ul>
+
+
+<p>音声信号処理用にケプストラム分析とかLPCとか色々書いたけど、考えた結果既存のライブラリ使うほうがいいやってなったので音楽に特化することにしました。SPTK様には頭が上がりません</p>
+
+<p>さておき、パッケージは今の所二つ</p>
+
+<ul>
+<li><a href="https://github.com/r9y9/go-msptools/tree/master/cwt">cwt</a> : ガボール連続ウェーブレット変換</li>
+<li><a href="https://github.com/r9y9/go-msptools/tree/master/pcp">pcp</a> : クロマベクトル</li>
+</ul>
+
+
+<p>Go始めたてのころに <a href="https://github.com/mjibson/go-dsp/">go-dsp</a> というデジタル信号処理ライブラリを見つけて、もろそれに影響受けた名前になってる。</p>
+
+<p>徐々にC++版を移植していこうかなと考え中</p>
+
+<h2>おまけ：音の信号処理に役立ちそうなライブラリ</h2>
+
+<ul>
+<li><a href="https://github.com/mjibson/go-dsp/">go-dsp</a></li>
+<li><a href="https://code.google.com/p/portaudio-go/">portaudio-go</a></li>
+</ul>
+
+</div>
+
+<div class="meta">
 	
-
-
+		<span class="comments"><a href="/blog/2014/01/27/start-coding-go-msptools/#disqus_thread">Comments</a></span>
 	
-	
-	<section class="archives"><h1 class="year">2013</h1>
-
-<article>
-  <h2 class="title"><a href="/blog/2013/09/14/hpss/">調波打楽器音分離（HPSS）を試す</a></h2>
-	<div class="meta">
-		<span class="date">Sep 14</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/matrix-factorization/'>matrix-factorization</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/source-separation/'>source-separation,</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/09/14/hpss/#disqus_thread">Comments</a></span>
-	    
-	</div>
+</div>
 </article>
 
-
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
 	
-
-
-<article>
-  <h2 class="title"><a href="/blog/2013/07/27/nmf-euclid/">NMFアルゴリズムの導出（ユークリッド距離版）</a></h2>
-	<div class="meta">
-		<span class="date">Jul 27</span>
-		<span class="tags">
-
-
-	<a class='category' href='/blog/categories/machine-learning/'>machine-learning</a>, <a class='category' href='/blog/categories/matrix-factorization/'>matrix-factorization</a>
-
-
-</span>
-	    
-	    <span class="comments"><a href="/blog/2013/07/27/nmf-euclid/#disqus_thread">Comments</a></span>
-	    
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	
 	</div>
-</article>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
 
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 
 
     </div>
@@ -194,7 +243,10 @@
       var disqus_shortname = 'r9y9blog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/';
+        var disqus_url = 'http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
