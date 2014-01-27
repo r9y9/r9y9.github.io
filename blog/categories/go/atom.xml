@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Go | R)Y)]]></title>
   <link href="http://r9y9.github.io/blog/categories/go/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-01-27T09:31:23+09:00</updated>
+  <updated>2014-01-27T09:37:29+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Goで信号処理のコードを書き始めた]]></title>
+    <title type="html"><![CDATA[Goで信号処理]]></title>
     <link href="http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/"/>
     <updated>2014-01-27T02:17:00+09:00</updated>
     <id>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools</id>
