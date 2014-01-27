@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Music-Signal-Processing - 山本さんのブログ（仮）</title>
+  <title>Category: music-signal-processing - 山本さんのブログ（仮）</title>
   <meta name="author" content="Ryuichi Yamamoto">
 
   
-  <meta name="description" content="Category: Music-Signal-Processing">
+  <meta name="description" content="Category: music-signal-processing">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,7 +25,45 @@
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"], 
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+ 
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
   
   <script type="text/javascript">
@@ -78,7 +116,7 @@
 <article role="article">
   
   <header>
-    <h1 class="entry-title">Category: Music-Signal-Processing</h1>
+    <h1 class="entry-title">Category: Music-signal-processing</h1>
     
   </header>
   
@@ -87,15 +125,29 @@
 
 
   
-  <h2>2014</h2>
+  <h2>2013</h2>
 
 <article>
   
-<h1><a href="/blog/2014/01/27/start-coding-go-msptools/">Goで信号処理</a></h1>
-<time datetime="2014-01-27T02:17:00+09:00" pubdate><span class='month'>Jan</span> <span class='day'>27</span> <span class='year'>2014</span></time>
+<h1><a href="/blog/2013/10/15/signal-processing-library/">簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい</a></h1>
+<time datetime="2013-10-15T23:47:00+09:00" pubdate><span class='month'>Oct</span> <span class='day'>15</span> <span class='year'>2013</span></time>
 
 <footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/go/'>Go</a>, <a class='category' href='/blog/categories/music-signal-processing/'>Music-Signal-Processing</a></span>
+  <span class="categories">posted in <a class='category' href='/blog/categories/daily/'>daily</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a></span>
+</footer>
+
+
+</article>
+
+
+
+<article>
+  
+<h1><a href="/blog/2013/09/14/hpss/">調波打楽器音分離（HPSS）を試す</a></h1>
+<time datetime="2013-09-14T23:34:00+09:00" pubdate><span class='month'>Sep</span> <span class='day'>14</span> <span class='year'>2013</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/matrix-factorization/'>matrix-factorization</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/source-separation/'>source-separation,</a></span>
 </footer>
 
 
@@ -243,7 +295,45 @@
 
 
 
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"], 
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+ 
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
   <script type="text/javascript">
