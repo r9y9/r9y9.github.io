@@ -1,141 +1,94 @@
 
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<title>R)Y)</title>
-    <meta name="author" content="Ryuichi Yamamoto">
-    
-	<meta name="description" content="Published on: Jan 27th, 2014 Tags: Go, Music-Signal-Processing 最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う Goの良い所 デフォでたくさん便利なパッケージがある。http, &hellip;">
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="utf-8">
+  <title>山本さんのブログ（仮）</title>
+  <meta name="author" content="Ryuichi Yamamoto">
 
-	<link href="/atom.xml" rel="alternate" title="R)Y)" type="application/atom+xml">
-	<link rel="canonical" href="">
-	<link href="/favicon.ico" rel="shortcut icon">
-    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  
+  <meta name="description" content="Goで信号処理 Jan 27th, 2014 | <a href="/blog/2014/01/27/start-coding-go-msptools/#disqus_thread" data-disqus-identifier="http://r9y9.github.io/blog/2014/ &hellip;">
+  
 
-    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+  
+  <link rel="canonical" href="http://r9y9.github.io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="山本さんのブログ（仮）" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
 
-    <!-- remove or comment it to disable ajaxification -->   
-    <script src="/javascripts/ajaxify.js"></script>
-   
-    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
 
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        HTML: ["input/TeX","output/HTML-CSS"],
-        TeX: {
-               Macros: {
-                        bm: ["\\boldsymbol{#1}", 1],
-                        argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                        argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-               extensions: ["AMSmath.js","AMSsymbols.js"], 
-               equationNumbers: { autoNumber: "AMS" } },
-        extensions: ["tex2jax.js"],
-        jax: ["input/TeX","output/HTML-CSS"],
-        tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                   displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                   processEscapes: true },
-        "HTML-CSS": { availableFonts: ["TeX"],
-                      linebreaks: { automatic: true } }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-    
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-44433856-1']);
-		_gaq.push(['_trackPageview']);
-
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 
 
 </head>
 
 
 <body>
-    <div id="wrapper">
-    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
-<h1>
-    <div id="headerbg2">
-      <a href="/">
-        R)Y)
-      </a>
-    </div>
-</h1>
+	<div class="container">
+		<aside class="left">
+			<div class="inner-left">
+				<header>
+					<img src="http://www.gravatar.com/avatar/6d356017749662a0c75ca192c7c88ed6?s=200" alt="Gravatar of Ryuichi Yamamoto " title="Gravatar of Ryuichi Yamamoto" class="profilepic" />
+<hgroup>
+  <h1><a href="/">山本さんのブログ（仮）</a></h1>
+  
+    <h2 class="subtitle">fmt.Println("Hello world")</h2>
+   
+</hgroup>
 
-<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
-<ul id="nav">
-  <li><a href="/about/">About</a></li>
-  <li><a href="/blog/archives/">Archives</a></li>
+
+				</header>
+				<footer>
+					<p>
+	
+		<a href="http://github.com/r9y9" class="btn btn-dark">GitHub</a>
+	
+	
+		<a href="http://twitter.com/r9y9" class="btn btn-dark">Twitter</a>
+	
+</p>
+				</footer>
+			</div>
+		</aside>
+    	<section class="right">
+    		<div class="inner-right">
+    			<div id="posts">
+    			  	<div class="blog-index">
+  
+  
+  
+    <article>
       
-</ul>
-
-
-
-
-
-
-
-</header>
-
-<div id="toload">
-<!-- begin toload --> 
-    <div id="content" class="inner">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/27/start-coding-go-msptools/">Goで信号処理</a></h1>
+    
+    
+      <p class="meta">
         
 
 
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/27/start-coding-go-msptools/">
-		
-			Goで信号処理</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
 
 
 
@@ -145,1453 +98,437 @@
   
 
 
-<time datetime="2014-01-27T02:17:00+09:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
-      <div class="tags">Tags: 
+<time datetime="2014-01-27T02:17:00+09:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/01/27/start-coding-go-msptools/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/">Comments</a>
+        
+      </p>
+    
+  </header>
 
 
-	<a class='category' href='/blog/categories/go/'>Go</a>, <a class='category' href='/blog/categories/music-signal-processing/'>Music-Signal-Processing</a>
+  <!-- do nothing but show the title on the listings page -->
 
 
-</div>
-    </div>
-		<p>最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う</p>
-
-<h2>Goの良い所</h2>
-
-<ul>
-<li>デフォでたくさん便利なパッケージがある。http, json, os, &hellip;</li>
-<li>パッケージのインストールはとても簡単。go getするだけ</li>
-<li>デフォでテストの枠組みがある</li>
-<li>gofmtでコードのformattingしてくれるので書き方で迷わなくて良い</li>
-<li>使わないパッケージをimportするとコンパイルエラーになるし自然と疎結合なコードを書くようになる</li>
-<li>並列処理を言語レベルでサポート</li>
-<li>GCあるのでメモリ管理なんてしなくていい</li>
-<li>全般的にC++より書きやすい（ここ重要）</li>
-<li>そこそこ速い（C++よりは遅いけど）</li>
-</ul>
-
-
-<p>ホントはPythonでさくっと書きたいけどパフォーマンスもほしいからC++で書くかー（嫌だけど）。と思ってた自分にはちょうどいい</p>
-
-<h2>Goの悪い所（主にC++と比べて）</h2>
-
-<ul>
-<li>ちょっと遅い。さっと試したウェーブレット変換は、1.5倍くらい遅かった気がする（うろ覚え）</li>
-<li>C++やpythonに比べるとライブラリは少ない</li>
-<li>言語仕様とかそのへんが優れてるかどうかは判断つきませんごめんなさい</li>
-</ul>
-
-
-<h1><a href="https://github.com/r9y9/go-msptools">Go-msptools</a></h1>
-
-<p>で、大学院時代から継ぎ足し継ぎ足ししてきた秘伝の信号処理C++ライブラリがあるんだけど、一部切り出してGoで書いてみた</p>
-
-<ul>
-<li><a href="https://github.com/r9y9/go-msptools">Github</a></li>
-<li><a href="http://godoc.org/github.com/r9y9/go-msptools">GoDoc</a></li>
-</ul>
-
-
-<p>音声信号処理用にケプストラム分析とかLPCとか色々書いたけど、考えた結果既存のライブラリ使うほうがいいやってなったので音楽に特化することにしました。SPTK様には頭が上がりません</p>
-
-<p>さておき、パッケージは今の所二つ</p>
-
-<ul>
-<li><a href="https://github.com/r9y9/go-msptools/tree/master/cwt">cwt</a> : ガボール連続ウェーブレット変換</li>
-<li><a href="https://github.com/r9y9/go-msptools/tree/master/pcp">pcp</a> : クロマベクトル</li>
-</ul>
-
-
-<p>Go始めたてのころに <a href="https://github.com/mjibson/go-dsp/">go-dsp</a> というデジタル信号処理ライブラリを見つけて、もろそれに影響受けた名前になってる。</p>
-
-<p>徐々にC++版を移植していこうかなと考え中</p>
-
-<h2>おまけ：音の信号処理に役立ちそうなライブラリ</h2>
-
-<ul>
-<li><a href="https://github.com/mjibson/go-dsp/">go-dsp</a></li>
-<li><a href="https://code.google.com/p/portaudio-go/">portaudio-go</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2014/01/27/start-coding-go-msptools//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/12/23/emacs-sublime-text-like-theme/">
-		
-			Emacs Themes - Sublime Text風のcolor Themeが気に入った</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
+    </article>
   
-
-
-<time datetime="2013-12-23T23:32:00+09:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/emacs/'>emacs</a>
-
-
-</div>
-    </div>
-		<p><img class="center" src="/images/emacs-sublime-text-like-theme.png" title="&#34;Spolsky, Sublime Text風のcolor theme on Ubuntu 12.04&#34;" alt="&#34;Spolsky, Sublime Text風のcolor theme on Ubuntu 12.04&#34;"></p>
-
-<p>Sublime Textのデフォルトの色が結構好きなので、emacsも同じようにしたいと思ってた。今まではずっと<a href="http://ethanschoonover.com/solarized">solarized</a>を使ってたけど、個人的にはsublime textっぽい方が好き。</p>
-
-<p>と思って探してたらよさげなのを見つけた。</p>
-
-<p><a href="https://github.com/owainlewis/emacs-color-themes">https://github.com/owainlewis/emacs-color-themes</a></p>
-
-<p>若干目がチカチカせんこともないけど、しばらく使ってみる。</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/12/23/emacs-sublime-text-like-theme//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/12/01/mlsa-filter-with-c-plus-plus/">
-		
-			MLSA Digital Filter のC++実装</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
   
-
-
-<time datetime="2013-12-01T23:43:00+09:00" pubdate data-updated="true">Dec 1<span>st</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>, <a class='category' href='/blog/categories/speech-synthesis/'>speech-synthesis</a>
-
-
-</div>
-    </div>
-		<p><a href="http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/">MLSAフィルタわからん</a>という記事を書いて早2ヶ月、ようやく出来た。</p>
-
-<p>Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。<a href="http://sp-tk.sourceforge.net/">SPTK</a>のmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。</p>
-
-<h1>mlsa_filter.h</h1>
-
-<p><a href="https://gist.github.com/r9y9/7735120">https://gist.github.com/r9y9/7735120</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-<span class='line-number'>112</span>
-<span class='line-number'>113</span>
-<span class='line-number'>114</span>
-<span class='line-number'>115</span>
-<span class='line-number'>116</span>
-<span class='line-number'>117</span>
-<span class='line-number'>118</span>
-<span class='line-number'>119</span>
-<span class='line-number'>120</span>
-<span class='line-number'>121</span>
-<span class='line-number'>122</span>
-<span class='line-number'>123</span>
-<span class='line-number'>124</span>
-<span class='line-number'>125</span>
-<span class='line-number'>126</span>
-<span class='line-number'>127</span>
-<span class='line-number'>128</span>
-<span class='line-number'>129</span>
-<span class='line-number'>130</span>
-<span class='line-number'>131</span>
-<span class='line-number'>132</span>
-<span class='line-number'>133</span>
-<span class='line-number'>134</span>
-<span class='line-number'>135</span>
-<span class='line-number'>136</span>
-<span class='line-number'>137</span>
-<span class='line-number'>138</span>
-<span class='line-number'>139</span>
-<span class='line-number'>140</span>
-<span class='line-number'>141</span>
-<span class='line-number'>142</span>
-<span class='line-number'>143</span>
-<span class='line-number'>144</span>
-<span class='line-number'>145</span>
-<span class='line-number'>146</span>
-<span class='line-number'>147</span>
-<span class='line-number'>148</span>
-<span class='line-number'>149</span>
-<span class='line-number'>150</span>
-<span class='line-number'>151</span>
-<span class='line-number'>152</span>
-<span class='line-number'>153</span>
-<span class='line-number'>154</span>
-<span class='line-number'>155</span>
-<span class='line-number'>156</span>
-<span class='line-number'>157</span>
-<span class='line-number'>158</span>
-<span class='line-number'>159</span>
-<span class='line-number'>160</span>
-<span class='line-number'>161</span>
-<span class='line-number'>162</span>
-<span class='line-number'>163</span>
-<span class='line-number'>164</span>
-<span class='line-number'>165</span>
-<span class='line-number'>166</span>
-<span class='line-number'>167</span>
-<span class='line-number'>168</span>
-<span class='line-number'>169</span>
-<span class='line-number'>170</span>
-<span class='line-number'>171</span>
-<span class='line-number'>172</span>
-<span class='line-number'>173</span>
-<span class='line-number'>174</span>
-<span class='line-number'>175</span>
-<span class='line-number'>176</span>
-<span class='line-number'>177</span>
-<span class='line-number'>178</span>
-<span class='line-number'>179</span>
-<span class='line-number'>180</span>
-<span class='line-number'>181</span>
-<span class='line-number'>182</span>
-<span class='line-number'>183</span>
-<span class='line-number'>184</span>
-<span class='line-number'>185</span>
-<span class='line-number'>186</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#pragma once</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#include &lt;cmath&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;memory&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;vector&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;cassert&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">namespace</span> <span class="n">sp</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter)</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">mlsa_base_filter</span> <span class="p">{</span>
-</span><span class='line'><span class="k">public</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">mlsa_base_filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">order</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">alpha</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">private</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">mlsa_base_filter</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">alpha_</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">delay_</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">mlsa_base_filter</span><span class="o">::</span><span class="n">mlsa_base_filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">order</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">alpha</span><span class="p">)</span>
-</span><span class='line'><span class="o">:</span> <span class="n">alpha_</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span>
-</span><span class='line'>  <span class="n">delay_</span><span class="p">(</span><span class="n">order</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="o">&gt;</span>
-</span><span class='line'><span class="kt">double</span> <span class="n">mlsa_base_filter</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">result</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">delay_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">delay_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">alpha_</span><span class="o">*</span><span class="n">alpha_</span><span class="p">)</span><span class="o">*</span><span class="n">delay_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha_</span><span class="o">*</span><span class="n">delay_</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha_</span><span class="o">*</span><span class="p">(</span><span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]);</span>
-</span><span class='line'>    <span class="n">result</span> <span class="o">+=</span> <span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// special case</span>
-</span><span class='line'>  <span class="c1">// TODO: other solution?</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">result</span> <span class="o">+=</span> <span class="n">delay_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// t &lt;- t+1 in time</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="n">delay_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * MLSA digital filter cascaded</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">mlsa_base_cascaded_filter</span> <span class="p">{</span>
-</span><span class='line'> <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">mlsa_base_cascaded_filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">order</span><span class="p">,</span>
-</span><span class='line'>              <span class="k">const</span> <span class="kt">double</span> <span class="n">alpha</span><span class="p">,</span>
-</span><span class='line'>              <span class="k">const</span> <span class="kt">int</span> <span class="n">n_pade</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">private</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">mlsa_base_cascaded_filter</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">mlsa_base_filter</span><span class="o">&gt;&gt;</span> <span class="n">base_f_</span><span class="p">;</span> <span class="c1">// cascadad filters</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">delay_</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">pade_coef_</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">mlsa_base_cascaded_filter</span><span class="o">::</span><span class="n">mlsa_base_cascaded_filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">order</span><span class="p">,</span>
-</span><span class='line'>                           <span class="k">const</span> <span class="kt">double</span> <span class="n">alpha</span><span class="p">,</span>
-</span><span class='line'>                           <span class="k">const</span> <span class="kt">int</span> <span class="n">n_pade</span><span class="p">)</span>
-</span><span class='line'>  <span class="o">:</span> <span class="n">delay_</span><span class="p">(</span><span class="n">n_pade</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-</span><span class='line'>  <span class="n">pade_coef_</span><span class="p">(</span><span class="n">n_pade</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">n_pade</span> <span class="o">!=</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">n_pade</span> <span class="o">!=</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;The number of pade approximations must be 4 or 5.&quot;</span>
-</span><span class='line'>        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="n">assert</span><span class="p">(</span><span class="n">n_pade</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">||</span> <span class="n">n_pade</span> <span class="o">==</span> <span class="mi">5</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n_pade</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">mlsa_base_filter</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">mlsa_base_filter</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">base_f_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">mlsa_base_filter</span><span class="o">&gt;</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">n_pade</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.999273e-1</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.067005e-1</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.170221e-2</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.656279e-4</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">n_pade</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.999391e-1</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.107098e-1</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.369984e-2</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.564853e-4</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">pade_coef_</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.041721e-5</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="o">&gt;</span>
-</span><span class='line'><span class="kt">double</span> <span class="n">mlsa_base_cascaded_filter</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">result</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">feed_back</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="n">pade_coef_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">base_f_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">filter</span><span class="p">(</span><span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="p">);</span>
-</span><span class='line'>    <span class="kt">double</span> <span class="n">v</span> <span class="o">=</span> <span class="n">delay_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">pade_coef_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">feed_back</span> <span class="o">+=</span> <span class="n">v</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">feed_back</span> <span class="o">-=</span> <span class="n">v</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">result</span> <span class="o">+=</span> <span class="n">v</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">delay_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">feed_back</span> <span class="o">+</span> <span class="n">x</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">result</span> <span class="o">+=</span> <span class="n">delay_</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * MLSA digital filter (Mel-log Spectrum Approximate digital filter)</span>
-</span><span class='line'><span class="cm"> * The filter consists of two stage cascade filters</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">mlsa_filter</span> <span class="p">{</span>
-</span><span class='line'> <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">mlsa_filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">order</span><span class="p">,</span> <span class="k">const</span> <span class="kt">double</span> <span class="n">alpha</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">n_pade</span><span class="p">);</span>
-</span><span class='line'> <span class="o">~</span><span class="n">mlsa_filter</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="o">&gt;</span>
-</span><span class='line'> <span class="kt">double</span> <span class="n">filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">private</span><span class="o">:</span>
-</span><span class='line'> <span class="n">mlsa_filter</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">alpha_</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">mlsa_base_cascaded_filter</span><span class="o">&gt;</span> <span class="n">f1_</span><span class="p">;</span> <span class="c1">// first stage</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">mlsa_base_cascaded_filter</span><span class="o">&gt;</span> <span class="n">f2_</span><span class="p">;</span> <span class="c1">// second stage</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">mlsa_filter</span><span class="o">::</span><span class="n">mlsa_filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">order</span><span class="p">,</span>
-</span><span class='line'>           <span class="k">const</span> <span class="kt">double</span> <span class="n">alpha</span><span class="p">,</span>
-</span><span class='line'>           <span class="k">const</span> <span class="kt">int</span> <span class="n">n_pade</span><span class="p">)</span>
-</span><span class='line'>  <span class="o">:</span> <span class="n">alpha_</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span>
-</span><span class='line'>  <span class="n">f1_</span><span class="p">(</span><span class="k">new</span> <span class="n">mlsa_base_cascaded_filter</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">n_pade</span><span class="p">)),</span>
-</span><span class='line'>  <span class="n">f2_</span><span class="p">(</span><span class="k">new</span> <span class="n">mlsa_base_cascaded_filter</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">n_pade</span><span class="p">))</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">mlsa_filter</span><span class="o">::~</span><span class="n">mlsa_filter</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Vector</span><span class="o">&gt;</span>
-</span><span class='line'><span class="kt">double</span> <span class="n">mlsa_filter</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="c1">// 1. First stage filtering</span>
-</span><span class='line'>  <span class="n">Vector</span> <span class="n">b1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]};</span>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">y</span> <span class="o">=</span> <span class="n">f1_</span><span class="o">-&gt;</span><span class="n">filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// 2. Second stage filtering</span>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">result</span> <span class="o">=</span> <span class="n">f2_</span><span class="o">-&gt;</span><span class="n">filter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span> <span class="c1">// end namespace sp</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>使い方</h1>
-
-<p>mlsa_filter.hをインクルードすればおｋ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &quot;mlsa_filter.h&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// セットアップ</span>
-</span><span class='line'><span class="k">const</span> <span class="kt">double</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.42</span><span class="p">;</span>
-</span><span class='line'><span class="k">const</span> <span class="kt">int</span> <span class="n">order</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-</span><span class='line'><span class="k">const</span> <span class="kt">int</span> <span class="n">n_pade</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span><span class='line'><span class="n">sp</span><span class="o">::</span><span class="n">mlsa_filter</span> <span class="n">mlsa_f</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">n_pade</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">...</span>
-</span><span class='line'><span class="c1">// MLSA フィルタリング </span>
-</span><span class='line'><span class="err">出力一サンプル</span> <span class="o">=</span> <span class="n">mlsa_f</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="err">入力一サンプル</span><span class="p">,</span> <span class="err">フィルタ係数</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>何で再実装したのか</h1>
-
-<ul>
-<li>mlsa filterをC++的なインタフェースで使いたかった</li>
-<li>コード見たらまったく意味がわからなくて、意地でも理解してやろうと思った</li>
-<li>反省はしている</li>
-<li>知り合いの声質変換やってる方がMLSAフィルタを波形合成に使ってるっていうし、ちょっとやってみようかなって</li>
-<li>あと最近音声合成の低レベルに手をつけようとと思ってたし勉強にもなるかなって</li>
-<li>思ったんだ……んだ…だ…</li>
-</ul>
-
-
-<p>車輪の再開発はあんま良くないと思ってるけど許して。
-誰かがリファクタせないかんのだ</p>
-
-<h1>感想</h1>
-
-<p>SPTKのmlsa filterは、正直に言うとこれまで読んできたコードの中で一二を争うほど難解でした（いうてC言語はあまり読んできてないので、Cだとこれが普通なのかもしれないけど）。特に、元コードの d: delayという変数の使われ方が複雑過ぎて、とても読みにくくございました。MLSAフィルタは複数のbase filterのcascade接続で表されるわけだけど、それぞれの遅延が一つのdという変数で管理されていたのです。つまり、</p>
-
-<ul>
-<li>d[1] ~ d[5] までは、あるフィルタの遅延</li>
-<li>d[6] ~ d[11] までは、別のフィルタの遅延</li>
-<li>d[12] ~ にはまた別のフィルタの遅延</li>
-</ul>
-
-
-<p>という感じです。</p>
-
-<p>改善しようと思って、base filterというクラスを作ってそのクラスの状態として各フィルタの遅延を持たせて、見通しを良くしました</p>
-
-<h2>さいごに</h2>
-
-<p>MLSAフィルタ、難しいですね（小並感</p>
-
-<p>いつかリアルタイム声質変換がやってみたいので、それに使う予定（worldを使うことになるかもしれんけど）。戸田先生当たりがやってる声質変換を一回真似してみたいと思ってる</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/12/01/mlsa-filter-with-c-plus-plus//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/12/01/sptk-with-waf/">
-		
-			SPTKをC++から使えるようにする</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-01T18:46:00+09:00" pubdate data-updated="true">Dec 1<span>st</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</div>
-    </div>
-		<p><a href="http://sp-tk.sourceforge.net/">音声信号処理ツールキットSPTK</a>をC++から使おうと思ったら意外とハマってしまったので、</p>
-
-<ul>
-<li>C++から使えるようにC++コンパイラでコンパイルできるようにした</li>
-<li>使いやすいようにwafを組み込みんだ</li>
-</ul>
-
-
-<p>リポジトリ: <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a></p>
-
-<p>というわけで、使い方について簡単に書いておく</p>
-
-<h1>SPTK について</h1>
-
-<ul>
-<li>SPTKを使うと何ができるか: <a href="http://aidiary.hatenablog.com/entry/20120701/1341126474">SPTKの使い方 (1) インストール・波形描画・音声再生 | 人工知能に関する断創録</a></li>
-<li>SPTKとは: <a href="[http://sp-tk.sourceforge.net/]">Speech Signal Processing Toolkit (SPTK)</a></li>
-</ul>
-
-
-<h1>SPTK with waf</h1>
-
-<p><a href="https://github.com/r9y9/SPTK">SPTK with waf</a>は、SPTKをwafでビルド管理できるようにしたものです。</p>
-
-<ul>
-<li>SPTKを共有ライブラリとしてインストールできます。</li>
-<li>C、C++の好きな方でコンパイルできます。</li>
-<li>wafが使えます（速い、出力がキレイ）</li>
-<li>自分のC、C++コードからSPTKのメソッドを呼べます。</li>
-<li>コマンドラインツールはインストールされません。</li>
-</ul>
-
-
-<p>コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。</p>
-
-<h1>環境</h1>
-
-<ul>
-<li>Unix系</li>
-</ul>
-
-
-<p>Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み</p>
-
-<h1>SPTKのインストール</h1>
-
-<p>リポジトリをクローンしたあと、</p>
-
-<h2>Build</h2>
-
-<pre><code> ./waf configure &amp;&amp; ./waf
-</code></pre>
-
-<h2>Build with clang++</h2>
-
-<pre><code> CXX=clang++ ./waf configure &amp;&amp; ./waf
-</code></pre>
-
-<h2>Build with gcc</h2>
-
-<pre><code> git checkout c
- ./waf configure &amp;&amp; ./waf
-</code></pre>
-
-<h2>Build with clang</h2>
-
-<pre><code> git checkout c
- CC=clang ./waf configure &amp;&amp; ./waf
-</code></pre>
-
-<h2>Install</h2>
-
-<pre><code> sudo ./waf install
-</code></pre>
-
-<ul>
-<li>Include files: <code>/usr/local/include/SPTK</code></li>
-<li>Library: <code>/usr/local/lib/SPTK</code></li>
-<li>Pkg-config: <code>/usr/local/lib/pkgconfig</code></li>
-</ul>
-
-
-<p>オリジナルのSPTKとはインストール場所が異なります（オリジナルは、<code>/usr/local/SPTK</code>）</p>
-
-<h1>SPTKを使ってコードを書く</h1>
-
-<p><code>&lt;SPTK/SPTK.h&gt;</code> をインクルードして、好きな関数を呼ぶ</p>
-
-<p>コンパイルは、例えば以下のようにする</p>
-
-<pre><code> g++ test.cpp `pkg-config SPTK --cflags --libs`
-</code></pre>
-
-<p>面倒なので、example/ 内のコードを修正して使う（wafを使おう）のがおすすめです。</p>
-
-<br/>
-
-
-<h1>きっかけ</h1>
-
-<ul>
-<li>SPTKはコマンドラインツールだと思ってたけど、どうやらSPTK.hをインクルードすれば一通りのツールを使えるらしい</li>
-<li>SPTK.hをインクルードして使う方法のマニュアルが見つからない…</li>
-<li>SPTKはC言語で書かれてるし、C++から使うの地味にめんどくさい</li>
-</ul>
-
-
-<h1>C++から簡単に使いたかった</h1>
-
-<ul>
-<li>gccやclangだけじゃなくg++やclang++でコンパイルできるようにしよう</li>
-<li>自分のコードのビルド管理にはwafを使ってるし、wafで管理できるようにしてしまおう</li>
-<li>waf素晴らしいしな （参考: <a href="http://d.hatena.ne.jp/tanakh/20100212">waf チュートリアル | 純粋関数型雑記帳 </a>）</li>
-</ul>
-
-
-<h1>最後に</h1>
-
-<p>SPTKもwafも素晴らしいので積極的に使おう＾＾</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/12/01/sptk-with-waf//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/11/24/mfcc-calculation-memo/">
-		
-			MFCCの計算方法についてメモ</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-24T22:29:00+09:00" pubdate data-updated="true">Nov 24<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</div>
-    </div>
-		<h2>MFCC とは</h2>
-
-<p>Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。</p>
-
-<h3>算出手順</h3>
-
-<ul>
-<li>音声信号を適当な長さのフレームで切り出し</li>
-<li>窓がけ</li>
-<li>フーリエ変換して対数振幅スペクトルを求める</li>
-<li>メルフィルタバンクを掛けて、メル周波数スペクトルを求める</li>
-<li>離散コサイン変換により、MFCCを求める</li>
-</ul>
-
-
-<p>以上。SPTKのmfccコマンドのソースもだいたいそうなってた。</p>
-
-<h3>さて</h3>
-
-<h4>ここに音声波形があるじゃろ？？</h4>
-
-<p><img class="center" src="/images/speech-signal.png" title="&#34;音声信号を適当な長さのフレームで切り出し&#34;" alt="&#34;音声信号を適当な長さのフレームで切り出し&#34;"></p>
-
-<h4>音声波形を窓がけして…</h4>
-
-<p><img class="center" src="/images/windowed-signal.png" title="&#34;窓がけ&#34;" alt="&#34;窓がけ&#34;"></p>
-
-<h4>さらにフーリエ変換して対数取って…</h4>
-
-<p><img class="center" src="/images/log-amplitude.png" title="&#34;フーリエ変換して振幅スペクトルを求める&#34;" alt="&#34;フーリエ変換して振幅スペクトルを求める&#34;"></p>
-
-<h4>ここでメルフィルタバンクの出番じゃ</h4>
-
-<p><img class="center" src="/images/after-mel-filterbank.png" title="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;" alt="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;"></p>
-
-<h4>最後に離散コサイン変換で完成じゃ</h4>
-
-<p><img class="center" src="/images/MFCC.png" title="&#34;離散コサイン変換により、MFCCを求める&#34;" alt="&#34;離散コサイン変換により、MFCCを求める&#34;"></p>
-
-<h2>まとめ</h2>
-
-<ul>
-<li>MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです</li>
-<li>正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 <a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf</a> にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。</li>
-<li>間違ってるかもしれないけどご愛嬌</li>
-</ul>
-
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>
-<li><a href="http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html">メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版</a></li>
-<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/11/24/mfcc-calculation-memo//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/11/16/mel-spectrogram/">
-		
-			スペクトログラムとメル周波数スペクトログラムの可視化</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-16T23:07:00+09:00" pubdate data-updated="true">Nov 16<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</div>
-    </div>
-		<p>やったので貼っとくだけ</p>
-
-<p><img class="center" src="/images/spectrogram.png" title="&#34;よくあるスペクトログラム&#34;" alt="&#34;よくあるスペクトログラム&#34;"></p>
-
-<p><img class="center" src="/images/mel_spectrogram.png" title="&#34;メル周波数に変換したスペクトログラム&#34;" alt="&#34;メル周波数に変換したスペクトログラム&#34;"></p>
-
-<p>低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。</p>
-
-<p>今回は振幅を対数を取って表示した（ちなみに）。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に合うようにメル周波数に変換して次元圧縮するイメージ。</p>
-
-<p>解説は、<a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a> を見よう。素晴らしいです</p>
-
-<p>僕はと言えば特に解説する気も起きないので、C++コードでも貼っとこう（※間違ってたので、とりあえず消しました</p>
-
-<h2>まとめ</h2>
-
-<p>メルフィルタバンクかけるクラス作ってたら数時間潰した</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a>
-
-<ul>
-<li> とても参考にしました。ただ、フィルタバンクかける際に正規化してない？元のスケールを保つために、上のコードでは正規化するようにした(<a href="http://ohm.nuigalway.ie/0809/mbyrne/Images.html#MFCC">ここ</a>の図のようなイメージ）</li>
-</ul>
-</li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/11/16/mel-spectrogram//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/11/16/start-using-jenkins/">
-		
-			Jenkinsを使い始めたのでメモ。インストール方法とかプラグインとかテーマとか</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-16T12:27:00+09:00" pubdate data-updated="true">Nov 16<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/jenkins/'>jenkins</a>
-
-
-</div>
-    </div>
-		<p><img class="center" src="/images/jenkins_doony.png" title="&#34;Jenkinsをdoonyというテーマにしたもの。jenkinsおじさんはいません&#34;" alt="&#34;Jenkinsをdoonyというテーマにしたもの。jenkinsおじさんはいません&#34;"></p>
-
-<h2>Jenkinsとは</h2>
-
-<p>超高機能cronだと思えばいいよ（先輩より</p>
-
-<h2>Ubuntu 12.04へのインストール</h2>
-
-<p>以下のURLに従えばできる。</p>
-
-<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu">https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
-</span><span class='line'>sudo sh -c <span class="s1">&#39;echo deb http://pkg.jenkins-ci.org/debian binary/ &gt; /etc/apt/sources.list.d/jenkins.list&#39;</span>
-</span><span class='line'>sudo apt-get update
-</span><span class='line'>sudo apt-get install jenkins
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>まとめると、</p>
-
-<ol>
-<li>新しいjenkinsのpackageをリポジトリに追加して</li>
-<li>apt-get でインストール（2013/11/16 現在だと、1.5.39が入る）</li>
-</ol>
-
-
-<p>※1の手順を省くと、少しバージョン（1.4.x）の古いjenkinsが入ってしまうので注意</p>
-
-<h2>Mac OS Xへのインストール</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>brew install jenkins
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>でおｋ。</p>
-
-<h2>プラグイン</h2>
-
-<p>インストールしたものをメモ。他にも便利なのはたくさんあると思う</p>
-
-<ul>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Configuration+Slicing+Plugin">Configuration Slicing plugin</a> 設定を一括で変更したいときに使う</li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin">Jenkins GIT plugin</a> Git使うために</li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin">Jenkins Email Extension Plugin</a> メール機能を拡張するため</li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/JobConfigHistory+Plugin">Jenkins Job Configuration History Plugin</a> ジョブの変更履歴がサイドバーから見れる、便利</li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Python+Plugin">Python Plugin</a> Pythonスクリプト書きたい</li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Simple+Theme+Plugin">Simple Theme Plugin</a> テーマ変更するのに使う</li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Timestamper">Timestamper</a> コンソール出力にタイムスタンプが付く、便利</li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/jQuery+Plugin">Jenkins jQuery plugin</a> テーマにDoonyを使うためにいる</li>
-</ul>
-
-
-<h2>テーマをDoonyにする</h2>
-
-<p>見やすい、オススメ。気に入った。</p>
-
-<p><a href="https://github.com/kevinburke/doony">https://github.com/kevinburke/doony</a></p>
-
-<p>上によれば、</p>
-
-<blockquote><p>Doony is a series of UI improvements on top of Jenkins. Install this to make your Jenkins user experience much better.</p></blockquote>
-
-<p>とのこと。良い。使い方などは、githubのdoonyのREADMEを見るか、あるいは以下の日本語の記事にも書いてある。</p>
-
-<p><a href="http://safx-dev.blogspot.jp/2013/10/jenkinsuidoony.html">JenkinsのUIをすっきり変化させるテーマdoonyを試す | Safx</a></p>
-
-<h3>必要なプラグイン</h3>
-
-<ul>
-<li>Simple Theme Plugin</li>
-<li>Jenkins jQuery plugin</li>
-</ul>
-
-
-<p>※テーマのプラグインだけでなく、jqueryのプラグインもインストールしないとダメなので注意</p>
-
-<h2>おわりに</h2>
-
-<p>これでテストもろもろ自動化だー</p>
-
-<h2>その他メモ</h2>
-
-<ul>
-<li>/etc/default/jenkinsでjava起動時に文字コードをutf-8にしても、コンソールのログで日本語が化ける？
-
-<ul>
-<li> /etc/default/jenkinsを変更前に実行したものは化けたまま。変更後に実行すると、化けない</li>
-<li> Jenkinsのバージョンを1.4.xから1.5.39にしたらオプションつけなくても化けなくなった？たぶん</li>
-<li> ちな、Macのbrewでインストールしたものは、日本語文字化け問題に悩まなかった。新し目のjenkinsはデフォがutf-8にでもなってんですかね</li>
-</ul>
-</li>
-<li>brewでインストールすると、jenkinsユーザは作られない。ubuntuでインストールすると、jenkinsというユーザが作られ、jenkins権限でdeamonが立ち上がる
-
-<ul>
-<li> スクリプトでsudoするために、visudoで <code>jenkins ALL=(ALL) NOPASSWD:ALL</code> しておく</li>
-</ul>
-</li>
-<li>workspaceの場所
-
-<ul>
-<li> brewでインストールした場合、~/.jenkins/ にできると思う</li>
-<li> ubuntuの場合、/var/lib/jenkins/ にある</li>
-</ul>
-</li>
-<li>Macの場合、jenkinsの実行ユーザをちゃんと考えないとですね</li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/11/16/start-using-jenkins//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/11/03/mit-media-lab-talk-participated/">
-		
-			MIT Media Lab 特別フォーラムに参加してきた</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-03T22:31:00+09:00" pubdate data-updated="true">Nov 3<span>rd</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/daily/'>Daily</a>
-
-
-</div>
-    </div>
-		<p><img class="center" src="/images/mit_media_lab_talk_participated.jpg" title="&#34;MIT Media Lab Talk&#34;" alt="&#34;MIT Media Lab Talk&#34;"></p>
-
-<p><a href="http://www.tdwa.com/tdw/special/forum/mitmedialab.html">TOKYO DESIGNES WEEK MIT Media Lab 特別フォーラム</a></p>
-
-<p>すごい刺激になった。悔しかった。このままで終わりたくない。世の中にはすごい人がいる中で、自分が大したことも為せないでいること、ビジョンを持てていないこと、自分がとても小さな人間だと感じた。石井先生の話の一つに「ビジョンを持て」っていうのがあったけど、僕にはビジョンが圧倒的に欠けてると思った。</p>
-
-<p>メディアラボの学生の発表は、内容に興味を感じたのはもちろん、プレゼンテーションの魅せ方が上手かった。一番面白かったのはsuper shoes。プレゼンの魅せ方も一際良かったし話の構成もわかりやすくて、super shoes自体も面白かった。自分の行きたい所、食べたいもの、聴きたい音楽、それらに合わせて道案内してくれる靴。</p>
-
-<p>石井先生の話では、今の僕に一番響いたのは「屈辱力」という言葉だった。理由は単純で、今の僕が一番頻繁に感じている感情だから。石井先生の言葉で「出杭力」とか有名だけど、それはもうすでに身に染みてるので。打たれても打たれてもやるしかない。何度叩かれようが、出すぎるまでやる。</p>
-
-<p>とはいえ、なかなか思ったようにできない。努力は最低条件と思っているが、十分にできていない。理想と現実のギャップが大きくて、毎日悔しいと感じる。恥ずかしい話ですね、こういうの書いてしまうあたり。僕は弱音はかずに頑張れるほど強くない・・・。</p>
-
-<p>話がそれてしまったけど、それはさておき、パーティーで石井先生と話したとき、悔しいのは誰でも感じること、そこから何が出来るかが大事、的なことを言われた（はず…緊張していてうろ覚え…）。当たり前なんですけどね。最近、どうも悔しさの数だけ強くなれると思っていた節があるけど、正確にはそれは違って、強くなるチャンスが得られる、が正しいと思う。悔しさを感じただけでは、変われない。行動に移さないと行けない。変わるために、自分で一歩踏み出さねければならない。</p>
-
-<p>最近、いつも通り毎日悔しいけど、その分楽しいよね。Mかもしれない。成長するって、人間の本質的な欲求の一つなんじゃないか（適当</p>
-
-<p>っと、すごい恥ずかしいことを書いてしまった。ただせっかくなので、思ったことを残しておこうと思った。</p>
-
-<p>Xiao Xiaoのピアノ、良かったよね。プレゼンもとても良かった。日本語しゃべってるXiao Xiaoに惚れた</p>
-
-<p>趣向は違うけれど、自動伴奏紹介すればよかったよ。お前何やってんの？って言われて何も語れないとか、いやだなぁって思う。せっかく修士でやったんだし、もっとブラッシュアップして、使えるレベルにまで持っていきたい。僕だって、何のビジョンもなく自動伴奏やってたわけじゃないんだし。</p>
-
-<p>当面やりたいことが、また増えた。</p>
-
-<p>感じたこと一行まとめ</p>
-
-<p>「なぜを突き詰めて、自分の本当にやりたいことを理解して、ビジョンを持ってひたすら進む」</p>
-
-<p>ところでどうでもいいけど、最近、さくら荘7.5巻の生徒会長のはうはうな彼女、って短編読みましたが、はうはうかわいいですね</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/11/03/mit-media-lab-talk-participated//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/27/qt-mediaplayer-demo/">
-		
-			QtのQMediaPlayerを使って簡単なAudio Playerを作る</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-27T00:06:00+09:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/media-player/'>media-player</a>, <a class='category' href='/blog/categories/qt/'>qt</a>
-
-
-</div>
-    </div>
-		<p><img class="center" src="/images/media-player_clipped_rev_1.png" title="&#34;A simple media player demo&#34;" alt="&#34;A simple media player demo&#34;"></p>
-
-<p>Qtのmultimediaを使えば簡単に出来る。最低限の機能しかないけど試しに作ってみた。再生、停止、スライダー、ボリューム調整とかだけなら、100行くらいでできる。</p>
-
-<p><a href="https://github.com/r9y9/media-player-demo">https://github.com/r9y9/media-player-demo</a></p>
-
-<p>あまりにも簡単なコードだけど、何か音が流れるだけで満足してしまうのは普段低レベルのコードばっか書いてるからか…</p>
-
-<p>感想はさておき、適当なアプリ作るのに、以下の当たりを参考にした</p>
-
-<ul>
-<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/multimediaoverview.html">Qt Multimedia Overview</a></li>
-<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qmediaplayer.html">QMediaPlayer Class</a></li>
-<li><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qml-qtmultimedia5-mediaplayer.html">MediaPlayer</a></li>
-</ul>
-
-
-<h2>メディアの再生</h2>
-
-<p><a href="http://qt-project.org/doc/qt-5.0/qtmultimedia/qmediaplayer.html">QMediaPlayer Class</a> から引用すれば、</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">player</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QMediaPlayer</span><span class="p">;</span>
-</span><span class='line'><span class="n">connect</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">positionChanged</span><span class="p">(</span><span class="n">qint64</span><span class="p">)),</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">positionChanged</span><span class="p">(</span><span class="n">qint64</span><span class="p">)));</span>
-</span><span class='line'><span class="n">player</span><span class="o">-&gt;</span><span class="n">setMedia</span><span class="p">(</span><span class="n">QUrl</span><span class="o">::</span><span class="n">fromLocalFile</span><span class="p">(</span><span class="s">&quot;/Users/me/Music/coolsong.mp3&quot;</span><span class="p">));</span>
-</span><span class='line'><span class="n">player</span><span class="o">-&gt;</span><span class="n">setVolume</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
-</span><span class='line'><span class="n">player</span><span class="o">-&gt;</span><span class="n">play</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>で再生できる。簡単過ぎる。。</p>
-
-<p>Qt5 になってから、さらにMultimediaが進化したらしいので、これからも色々使っていきたい。特にグラフィック周りがすごくなったとかなってないとか。今試行錯誤中</p>
-
-<h2>Qtめも</h2>
-
-<ul>
-<li>Resourceを登録するとき、ちゃんとリソースファイルを&#8221;保存&#8221;しないとdesigner上では登録したリソースが出てこない</li>
-<li>volume(50)だとけっこう小さい。ちなみに単位なんやねんということだけど、classのドキュメントには書いてなかった。</li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/10/27/qt-mediaplayer-demo//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">
-		
-			逆連続ウェーブレット変換による信号の再構成</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-21T01:00:00+09:00" pubdate data-updated="true">Oct 21<span>st</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/inverse-continous-wavelet-transform/'>inverse-continous-wavelet-transform</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/signal-reconstruction/'>signal-reconstruction</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a>
-
-
-</div>
-    </div>
-		<p>やったのでメモ。おそらく正しくできたと思う。結果貼っとく。ウェーブレットの参考は以下の文献</p>
-
-<p><a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">Torrence, C. and G.P. Compo &ldquo;A Practical Guide to Wavelet Analysis&rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.</a></p>
-
-<h2>ウェーブレットの条件</h2>
-
-<p>マザーウェーブレットはmorletを使う</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\psi_{0}(\eta) = \pi^{-1/4}e^{i\omega_{0}\eta}e^{-\eta^{2}/2}
-\end{align}
-</script>
-
-
-<p></p>
-
-<p>文献に従って$\omega_{0} = 6.0$とした。</p>
-
-<p>以下にいっぱい図を張る。軸は適当</p>
-
-<h2>元の信号</h2>
-
-<p><img class="center" src="/images/wavelet/original_signal.png" title="&#34;The original signal&#34;" alt="&#34;The original signal&#34;"></p>
-
-<h2>ウェーブレットスペクトログラム</h2>
-
-<p><img class="center" src="/images/wavelet/morlet_wavelet_spectrogram.png" title="&#34;Morlet wavelet spectrogram&#34;" alt="&#34;Morlet wavelet spectrogram&#34;"></p>
-
-<p>Gaborではなく、Morletで求めたもの。スケールは、min=55hzで、25cent毎に8オクターブ分取った。一サンプル毎にウェーブレット変換を求めてるので、前回の記事でガボールウェーブレットで求めた奴よりよっぽど解像度高いっすね（前のは10ms毎だった、書いてなかったけど）。見てて綺麗（こなみ</p>
-
-<p>計算はFFT使ってるので速い</p>
-
-<p><a href="http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html">http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html</a>
-スケールのとり方はここを参考にするといい</p>
-
-<h2>再構成した信号</h2>
-
-<p><img class="center" src="/images/wavelet/recostructed_signal.png" title="&#34;The recostructed signal&#34;" alt="&#34;The recostructed signal&#34;"></p>
-
-<p>連続ウェーブレットの逆変換は、フーリエ変換と違ってそんなシンプルじゃないんだけど、結果から言えばウェーブレット変換の実数部を足しあわせて適当にスケールすれば元の信号が再構成できるみたい。ほんまかと思って実際にやってみたけど、できた</p>
-
-<p>が、実は少し誤差がある</p>
-
-<h2>重ねてプロット</h2>
-
-<p><img class="center" src="/images/wavelet/double_0.png" title="&#34;The original signal and recostructed signal&#34;" alt="&#34;The original signal and recostructed signal&#34;"></p>
-
-<h2>あっぷ</h2>
-
-<p><img class="center" src="/images/wavelet/double_1.png" title="&#34;The original signal and recostructed signal with zoom 1&#34;" alt="&#34;The original signal and recostructed signal with zoom 1&#34;"></p>
-
-<p><img class="center" src="/images/wavelet/double_2.png" title="&#34;The original signal and recostructed signal with zoom 2&#34;" alt="&#34;The original signal and recostructed signal with zoom 2&#34;"></p>
-
-<p><img class="center" src="/images/wavelet/double_3.png" title="&#34;The original signal and recostructed signal with zoom 3&#34;" alt="&#34;The original signal and recostructed signal with zoom 3&#34;"></p>
-
-<p><img class="center" src="/images/wavelet/double_4.png" title="&#34;The original signal and recostructed signal with zoom 4&#34;" alt="&#34;The original signal and recostructed signal with zoom 4&#34;"></p>
-
-<p><img class="center" src="/images/wavelet/double_5.png" title="&#34;The original signal and recostructed signal with zoom 5&#34;" alt="&#34;The original signal and recostructed signal with zoom 5&#34;"></p>
-
-<p>んー、まぁだいたいあってんじゃないですかね</p>
-
-<h2>誤差</h2>
-
-<p>平均誤差を計算すると、図の縦軸の量で考えて55.3994だった。16bitのwavが-32768〜32767なので、どうだろう、大きいのか小さいのかわからん</p>
-
-<p>ただ、再合成した音声を聞いた所それほど違和感はなかった。これはつまり、スペクトルいじる系の分析にSTFTがではなくウェーブレット使ってもいいんではないか？という考えが生まれますね。果たして、ウェーブレットが音声/音楽の分析にフーリエ変換ほど使われないのはなぜなのか、突き詰めたい</p>
-
-<h2>使った音声</h2>
-
-<p>あなたが一番聞きたいと思った声が流れます、どうぞ</p>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227502"></iframe>
-
-
-<p>スペクトログラム表示するのにサンプルが多いと大変なので、48kから10kにサンプリング周波数を落としたもの</p>
-
-<h2>再構成した音声</h2>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227539"></iframe>
-
-
-<p>僕の耳では違いはわからない。サンプリング周波数によって誤差が大小する可能性はあるが、そこまで調査してない</p>
-
-<h2>メモ</h2>
-
-<p><a href="http://paos.colorado.edu/research/wavelets/wavelet3.html">http://paos.colorado.edu/research/wavelets/wavelet3.html</a>
-ここの最後に書かれている以下の文章、</p>
-
-<blockquote><p>One problem with performing the wavelet transform in Fourier space is that this assumes the time series is periodic. The result is that signals in the wavelet transform at one end of the time series will get wrapped around to the other end.</p></blockquote>
-
-<p>FFT使うウェーブレット変換の問題は、信号を周期関数として仮定してしまうことにある、と。まあ、ですよねー。信号がめちゃくちゃ長くてこの仮定が破綻してしまう場合、どうするのがいいんだろう。</p>
-
-<p>あと、FFT使うウェーブレットの問題として、メモリ食うってのがあるんよな。ウェーブレット変換を計算する前に、マザーウェーブレットのフーリエ変換を持っとかないといけないし、サンプル毎に計算しないといけないし。44.1kの数分の音声とかなると、もう無理っすね。</p>
-
-<p>それぞれ、解決方法は思いつかないでもないけど、まだまとまってないので、解決したらまとめる、かもしれない。</p>
-
-<h2>さらにめも</h2>
-
-<ul>
-<li>practicalなんちゃらの、マザーウェーブレットを正規化する部分のmatlabコード、文献中の数式と若干違ってトリッキー。展開すれば一緒なんだけど、文献中の数式をそのまま書いたようになってないので、注意。ちょっと戸惑った</li>
-<li>逆ウェーブレットを行う際のスケールにかかる係数（文献中でいう$C_{\delta}$）は、マザーウェーブレットが決まれば値が定まる（らしい）。例えばMorletの$\omega_0 = 6$なら0.776とわかってるので、積分して計算する必要はない</li>
-<li>ウェーブレット変換と戯れてたら週末終わった</li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/10/21/signal-reconstruction-using-invere-cwt//index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-<nav id="pagenavi">
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/23/emacs-sublime-text-like-theme/">Emacs Themes - Sublime Text風のcolor Themeが気に入った</a></h1>
     
     
-        <a href="/blog/page/2/" class="next">Next</a>
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-23T23:32:00+09:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time>
+        
+           | <a href="/blog/2013/12/23/emacs-sublime-text-like-theme/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/12/23/emacs-sublime-text-like-theme/">Comments</a>
+        
+      </p>
     
-    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
-</nav>
+  </header>
 
-    </div>
-    <footer id="footer">
-    <div style="display:inline">
-    Copyright &copy; 2014
 
-    Ryuichi Yamamoto
-. Powered by <a href="http://octopress.org">Octopress</a> | 
-    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/01/mlsa-filter-with-c-plus-plus/">MLSA Digital Filter のC++実装</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-01T23:43:00+09:00" pubdate data-updated="true">Dec 1<span>st</span>, 2013</time>
+        
+           | <a href="/blog/2013/12/01/mlsa-filter-with-c-plus-plus/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/01/sptk-with-waf/">SPTKをC++から使えるようにする</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-01T18:46:00+09:00" pubdate data-updated="true">Dec 1<span>st</span>, 2013</time>
+        
+           | <a href="/blog/2013/12/01/sptk-with-waf/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/24/mfcc-calculation-memo/">MFCCの計算方法についてメモ</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-24T22:29:00+09:00" pubdate data-updated="true">Nov 24<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/11/24/mfcc-calculation-memo/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/16/mel-spectrogram/">スペクトログラムとメル周波数スペクトログラムの可視化</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-16T23:07:00+09:00" pubdate data-updated="true">Nov 16<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/11/16/mel-spectrogram/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/16/start-using-jenkins/">Jenkinsを使い始めたのでメモ。インストール方法とかプラグインとかテーマとか</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-16T12:27:00+09:00" pubdate data-updated="true">Nov 16<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/11/16/start-using-jenkins/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/11/16/start-using-jenkins/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/03/mit-media-lab-talk-participated/">MIT Media Lab 特別フォーラムに参加してきた</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-03T22:31:00+09:00" pubdate data-updated="true">Nov 3<span>rd</span>, 2013</time>
+        
+           | <a href="/blog/2013/11/03/mit-media-lab-talk-participated/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/27/qt-mediaplayer-demo/">QtのQMediaPlayerを使って簡単なAudio Playerを作る</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-27T00:06:00+09:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/10/27/qt-mediaplayer-demo/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/10/27/qt-mediaplayer-demo/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">逆連続ウェーブレット変換による信号の再構成</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-21T01:00:00+09:00" pubdate data-updated="true">Oct 21<span>st</span>, 2013</time>
+        
+           | <a href="/blog/2013/10/21/signal-reconstruction-using-invere-cwt/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="previous btn btn-light" href="/blog/page/2/">&larr; Older</a>
+    
+    <a class="archives btn btn-light" href="/blog/archives">Blog Archives</a>
+    
+  </div>
 </div>
 
 
-    </footer>
-    <script src="/javascripts/fabric.js"></script>
-<script src="/javascripts/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-	$('.fancybox').fancybox();
-})(jQuery);
-</script> <!-- Delete or comment this line to disable Fancybox -->
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://r9y9.github.io" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://r9y9.github.io/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      
+      <a href="http://r9y9.github.io/atom.xml" alt="subscribe feed"><img src="/images/rss.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/27/start-coding-go-msptools/">Goで信号処理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/23/emacs-sublime-text-like-theme/">Emacs Themes - Sublime Text風のcolor Themeが気に入った</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/01/mlsa-filter-with-c-plus-plus/">MLSA Digital Filter のC++実装</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/01/sptk-with-waf/">SPTKをC++から使えるようにする</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/24/mfcc-calculation-memo/">MFCCの計算方法についてメモ</a>
+      </li>
+    
+  </ul>
+</section>
 
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/r9y9">@r9y9</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'r9y9',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+</aside>
+
+
+    			</div>
+    			<footer id="footer">
+    				<p class="credit">
+  Copyright &copy; 2014 - Ryuichi Yamamoto. Powered by <a href="http://octopress.org">Octopress</a>
+</p>
+
+
+    			</footer>
+    			
 
 <script type="text/javascript">
       var disqus_shortname = 'r9y9blog';
@@ -1601,23 +538,67 @@
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
 
 
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 
-<!-- end toload --> 
-</div>
-</div>
-<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
-<script type="text/javascript">
-/*<![CDATA[*/
-;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
-/*]]>*/
-</script><!-- remove it to remove the scroll to top button -->
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+    		</div>
+    	</section>
+  	</div>
 </body>
 </html>

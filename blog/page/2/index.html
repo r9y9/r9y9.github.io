@@ -1,141 +1,94 @@
 
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<title>R)Y)</title>
-    <meta name="author" content="Ryuichi Yamamoto">
-    
-	<meta name="description" content="Published on: Oct 20th, 2013 Tags: short-time-fourier-transform, signal-processing, visualization, wavelet-transform STFT(短時間フーリエ変換)によるスペクトログラム &hellip;">
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="utf-8">
+  <title>山本さんのブログ（仮）</title>
+  <meta name="author" content="Ryuichi Yamamoto">
 
-	<link href="/atom.xml" rel="alternate" title="R)Y)" type="application/atom+xml">
-	<link rel="canonical" href="">
-	<link href="/favicon.ico" rel="shortcut icon">
-    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  
+  <meta name="description" content="短時間フーリエ変換と連続ウェーブレット変換のvisualization Oct 20th, 2013 | <a href="/blog/2013/10/20/wavelet-stft-visualization/#disqus_thread" data-disqus-identifier=" &hellip;">
+  
 
-    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+  
+  <link rel="canonical" href="http://r9y9.github.io/blog/page/2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="山本さんのブログ（仮）" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
 
-    <!-- remove or comment it to disable ajaxification -->   
-    <script src="/javascripts/ajaxify.js"></script>
-   
-    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
 
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        HTML: ["input/TeX","output/HTML-CSS"],
-        TeX: {
-               Macros: {
-                        bm: ["\\boldsymbol{#1}", 1],
-                        argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                        argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-               extensions: ["AMSmath.js","AMSsymbols.js"], 
-               equationNumbers: { autoNumber: "AMS" } },
-        extensions: ["tex2jax.js"],
-        jax: ["input/TeX","output/HTML-CSS"],
-        tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                   displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                   processEscapes: true },
-        "HTML-CSS": { availableFonts: ["TeX"],
-                      linebreaks: { automatic: true } }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-    
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-44433856-1']);
-		_gaq.push(['_trackPageview']);
-
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 
 
 </head>
 
 
 <body>
-    <div id="wrapper">
-    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
-<h1>
-    <div id="headerbg2">
-      <a href="/">
-        R)Y)
-      </a>
-    </div>
-</h1>
+	<div class="container">
+		<aside class="left">
+			<div class="inner-left">
+				<header>
+					<img src="http://www.gravatar.com/avatar/6d356017749662a0c75ca192c7c88ed6?s=200" alt="Gravatar of Ryuichi Yamamoto " title="Gravatar of Ryuichi Yamamoto" class="profilepic" />
+<hgroup>
+  <h1><a href="/">山本さんのブログ（仮）</a></h1>
+  
+    <h2 class="subtitle">fmt.Println("Hello world")</h2>
+   
+</hgroup>
 
-<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
-<ul id="nav">
-  <li><a href="/about/">About</a></li>
-  <li><a href="/blog/archives/">Archives</a></li>
+
+				</header>
+				<footer>
+					<p>
+	
+		<a href="http://github.com/r9y9" class="btn btn-dark">GitHub</a>
+	
+	
+		<a href="http://twitter.com/r9y9" class="btn btn-dark">Twitter</a>
+	
+</p>
+				</footer>
+			</div>
+		</aside>
+    	<section class="right">
+    		<div class="inner-right">
+    			<div id="posts">
+    			  	<div class="blog-index">
+  
+  
+  
+    <article>
       
-</ul>
-
-
-
-
-
-
-
-</header>
-
-<div id="toload">
-<!-- begin toload --> 
-    <div id="content" class="inner">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/20/wavelet-stft-visualization/">短時間フーリエ変換と連続ウェーブレット変換のvisualization</a></h1>
+    
+    
+      <p class="meta">
         
 
 
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/20/wavelet-stft-visualization/">
-		
-			短時間フーリエ変換と連続ウェーブレット変換のvisualization</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
 
 
 
@@ -145,900 +98,439 @@
   
 
 
-<time datetime="2013-10-20T11:46:00+09:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/short-time-fourier-transform/'>short-time-fourier-transform</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/visualization/'>visualization</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a>
-
-
-</div>
-    </div>
-		<h2>STFT(短時間フーリエ変換)によるスペクトログラム</h2>
-
-<p><img class="center" src="/images/spectrogram_linear_clipped_rev_1.png" title="&#34;STFT spectrogram&#34;" alt="&#34;STFT spectrogram&#34;"></p>
-
-<h2>STFTによるスペクトログラム（Y軸を対数にしたもの）</h2>
-
-<p><img class="center" src="/images/spectrogram_log_clipped_rev_1.png" title="&#34;STFT spectrogram (with log-y-axis)&#34;" alt="&#34;STFT spectrogram (with log-y-axis)&#34;"></p>
-
-<h2>連続ガボールウェーブレット変換によるスペクトログラム</h2>
-
-<p><img class="center" src="/images/wavelet_spectrogram_clipped_rev_1.png" title="&#34;Gabor Wavelet spectrogram&#34;" alt="&#34;Gabor Wavelet spectrogram&#34;"></p>
-
-<p>メモリも軸も無くて発表資料に貼ったら間違いなく怒られる奴だけど許して。でもだいたいの違いはわかると思う。図はgnuplotで作りました</p>
-
-<p>STFTのlog-y-axisと比べるとよくわかるけど、ウェーブレットは低域もちゃんと綺麗にとれてますね。</p>
-
-<p>みんなもっとウェーブレット変換使おう（提案</p>
-
-<h2>分析に使った音声</h2>
-
-<p>決して聞いてはならない</p>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116165738"></iframe>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/10/20/wavelet-stft-visualization//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/20/continuous-wavelet-tranform/">
-		
-			FFTを使った連続ウェーブレット変換の高速化</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-20T00:55:00+09:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/continuous-wavelet/'>continuous-wavelet</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a>
-
-
-</div>
-    </div>
-		<p><img class="center" src="/images/gabor_wavelet_nnmnkwii.png" title="&#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using Open Jalk)&#34;" alt="&#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using Open Jalk)&#34;"></p>
-
-<h2>そもそもウェーブレット変換って何</h2>
-
-<p><a href="http://ja.wikipedia.org/wiki/%E3%82%A6%E3%82%A7%E3%83%BC%E3%83%96%E3%83%AC%E3%83%83%E3%83%88%E5%A4%89%E6%8F%9B">Jump to wikipedia</a></p>
-
-<p>いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、STFTでいう窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと</p>
-
-<h2>高速化の仕組み</h2>
-
-<p>さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。</p>
-
-<p>つまり、</p>
-
-<ul>
-<li>入力信号とマザーウェーブレットをそれぞれフーリエ変換する</li>
-<li>掛け算する</li>
-<li>逆フーリエ変換する</li>
-</ul>
-
-
-<p>というプロセスでウェーブレット変換を求めることができて、かつフーリエ変換にはFFTという高速なアルゴリズムが存在するので、計算を高速化できるという仕組み。まぁ原理としてはシンプルなんだけど以外と面倒くさい（気のせい？）。</p>
-
-<p>色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です</p>
-
-<h2>A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">[PDF]</a></h2>
-
-<p>結論から言えばここが一番わかりやすかった。</p>
-
-<ul>
-<li>実装よりで理論の解説がある</li>
-<li>matlab/fortran のコードがある</li>
-</ul>
-
-
-<p>がいいところ</p>
-
-<p>基本的にはこれ読めばわかる。数学全然わからん俺でも読めた。特に、離散表現でのウェーブレットについても書かれているのは良い。連続ウェーブレットといっても、デジタル信号処理で扱う上では離散化しないといけないわけなので</p>
-
-<p>さて、僕が参考にしたmatlabコードへの直リンクは以下</p>
-
-<ul>
-<li><a href="http://paos.colorado.edu/research/wavelets/wave_matlab/wave_bases.m">マザーウェーブレットの周波数応答の計算部分</a></li>
-<li><a href="http://paos.colorado.edu/research/wavelets/wave_matlab/wavelet.m">連続ウェーブレット変換の本体</a></li>
-<li><a href="http://paos.colorado.edu/research/wavelets/wave_matlab/wavetest.m">連続ウェーブレット変換のテストコード</a></li>
-</ul>
-
-
-<p>その他、fortanコードなどいくつかあるので、それらはウェブサイトからどうぞ</p>
-
-<h2>Matlab</h2>
-
-<p> mathworksさんのwavelet toolboxのドキュメントもよかった。ここから上記のpracticalなんちゃらのリンクもある</p>
-
-<ul>
-<li><a href="http://www.mathworks.co.jp/jp/help/wavelet/gs/continuous-wavelet-transform.html">Continuous Wavelet Transform</a></li>
-<li><a href="http://www.mathworks.co.jp/jp/help/wavelet/ref/cwtft.html">Continuous wavelet transform using FFT algorithm</a></li>
-<li><a href="http://www.mathworks.co.jp/jp/help/wavelet/ref/icwtft.html">Inverse CWT</a></li>
-</ul>
-
-
-<p>コードは転がってないですね。まぁ有料なので</p>
-
-<h2>日本語でわかりやすいもの</h2>
-
-<ul>
-<li><a href="http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html">C/C++言語でガボールウェーブレット変換により時間周波数解析を行うサンプルプログラム</a>
-
-<ul>
-<li> ここは本当に素晴らしい。何年か前にも参考にさせて頂きました。</li>
-</ul>
-</li>
-<li><a href="http://www.hulinks.co.jp/support/flexpro/v7/dataanalysis_cwt.html">連続ウェーブレット変換 (CWT) &ndash; FlexPro 7 日本語版サポート情報</a>
-
-<ul>
-<li> 日本語で丁寧に書かれてる。内容自体は、practicalなんちゃらと似ている</li>
-</ul>
-</li>
-<li><a href="http://www.makino.ecei.tohoku.ac.jp/~aito/wavelet/">東北大学 伊藤先生の講義資料</a>
-
-<ul>
-<li> 数少ない日本語でのウェーブレットに関する資料。ただし連続ウェーブレットについてはあんまり解説はない。C言語のサンプル付き</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>書籍</h2>
-
-<p>今回は調べてない。数年前にちょいちょい調べたことがあるけど忘れた</p>
-
-<h2>その他</h2>
-
-<ul>
-<li><a href="https://code.google.com/p/tspl/source/browse/trunk/include/cwt-impl.h?spec=svn2&amp;r=2">tspl Signal Processing Library in C++</a>
-
-<ul>
-<li> 連続ウェーブレット変換/逆変換のC++実装。細部までコードは追えてないけど、それっぽいコードがある（俺が読んだ記事とはマザーウェーブレットのnormalizationが違う気もする…</li>
-</ul>
-</li>
-<li><a href="http://dsp.stackexchange.com/questions/10979/inverse-continuous-wavelet-transform-and-matlab">Inverse Continuous Wavelet Transform and matlab &ndash; dsp StackExchange</a>
-
-<ul>
-<li> 逆連続ウェーブレット変換教えてーっていう質問。ここでpracticalなんちゃらを知った</li>
-</ul>
-</li>
-<li><a href="http://staff.aist.go.jp/h.fujihara/voice_conversion/">混合音中の歌声の声質変換手法</a>
-
-<ul>
-<li> ガチ技術。元産総研の藤原さんが研究開発したもの。<a href="http://staff.aist.go.jp/m.goto/PAPER/SIGMUS201007fujihara.pdf">論文(PDF)</a>の方に少し説明がある。</li>
-<li> 声質変換でウェーブレット使うのは僕が知る限りではこれくらい</li>
-<li> ちなみに結果めっちゃすごい</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>さいごに</h2>
-
-<p>以上。ウェーブレット変換は難しいことがわかった（こなみ）。ウェーブレットの利点欠点については書かなかったけれど、音声や音楽を解析したい場合に、時間周波数解析によく用いられる短時間フーリエ解析よりもウェーブレット解析の方が望ましい場合は非常によくあると思っているので、ぜひもっと使われてほしいですね。作ってるライブラリには必ず入れます。</p>
-
-<h2>ちなみに</h2>
-
-<p>計算コストがそこまでボトルネックにならないなら、畳み込みでウェーブレット計算してもいいんじゃないかと思ってる。FFTを使う方法の場合、あるスケールパラメータに対する時間方向のウェーブレット変換係数を一気に求められても、あるシフトパラメータに対する周波数方向のウェーブレット変換係数（つまりある時間でのスペクトルのようなもの）は一気に求められない気がしている。つまり、STFTみたいな形でインクリメンタルにスペクトルは求めにくいんじゃないかってこと（少なくとも自明には思えない）。畳み込み計算するなら、間違いなくできるけど。このあたり理解がまだあやふやなので、間違ってる可能性大</p>
-
-<p>さらにちなみに、僕が作ってたリアルタイムで動く自動伴奏システムは畳み込みでウェーブレット変換してたよ。ウェーブレットよりもアルゴリズムのほうがボトルネックになっていたので全然気にならなかった。参考まで</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/10/20/continuous-wavelet-tranform//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/15/signal-processing-library/">
-		
-			簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-15T23:47:00+09:00" pubdate data-updated="true">Oct 15<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/daily/'>daily</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>
-
-
-</div>
-    </div>
-		<p>音声を使ったアプリケーションが作りたい、例えば自分の声を誰かの声に変えたい、自動で音痴補正したい、関西弁のゆっくりちゃん作りたい、ギターエフェクト作りたい、とか思う人も少なくないんじゃないかと思う。</p>
-
-<p>信号処理のアプリケーションを一から真面目に作ろうとすると、やるべきことが多すぎて途中で断念してしまうことがある。信号処理って、Hello 信号処理までがホント長くて、File I/O やらstreaming I/O等音声入出力書いたり、スペクトルやケプストラムやらメルケプやらウェーブレットやら特徴抽出書いたり、波形合成のアルゴリズム書いたり、難しい機械学習のアルゴリズム書いたり。本当にやりたいことを実現するためには、専門家はおろか初学者にはハードルが高すぎると思う。リアルタイムでやりたい（よくある状況）とかだとなおさら大変。</p>
-
-<p>もちろん、そんなの自分で書かなくてもライブラリなりツールなりはたくさんある。</p>
-
-<ul>
-<li><a href="http://sp-tk.sourceforge.net/">SPTK &ndash; Speech Signal Processing Toolkit</a></li>
-<li><a href="http://hts.sp.nitech.ac.jp/">HTS &ndash; HMM-based Speech Synthesis System</a></li>
-<li><a href="http://www.mmdagent.jp/">MMDAgenet &ndash; toolkit for building voice interaction systems.</a></li>
-<li><a href="http://open-jtalk.sourceforge.net/">OpenJTalk &ndash; HMM-based Text-to-Speech System</a></li>
-<li><a href="https://ccrma.stanford.edu/software/stk/">STK &ndash; The Synthesis ToolKit in C++ (STK)</a></li>
-<li><a href="http://aquila-dsp.org/">Aquila &ndash; Open source DSP library for C++</a></li>
-<li><a href="http://www.portaudio.com/">PortAudio &ndash; Portable Cross-platform Audio I/O</a></li>
-<li><a href="http://www.sonicvisualiser.org/">Sonic visualiser</a></li>
-<li><a href="https://www.jyu.fi/hum/laitokset/musiikki/en/research/coe/materials/mirtoolbox">MIRToolbox</a></li>
-<li><a href="http://isse.sourceforge.net/">ISSE &ndash; An Interactive Source Separation Editor</a></li>
-<li><a href="http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html">音声分析変換合成法STRAIGHT</a></li>
-<li><a href="http://www.slp.is.ritsumei.ac.jp/~morise/world/">音声分析合成システム「WORLD」</a></li>
-</ul>
-
-
-<p>直近で印象に残ってるのはこんなもん。どれも素晴らしいけど、傾向としては専門知識のある人向けの物が多い気がしている。一方で、専門知識がなくても使えるツールというのは、本当に少ないと思う。これは個人的に大きな問題だと思っていて、何とか解決したい。というか僕でも簡単に使える便利ツールほしい。</p>
-
-<p>とまぁそんな経緯で、</p>
-
-<ul>
-<li>音声/音楽信号処理をやるためのベースをすでに備えていて、アプリケーションが簡単に作れる</li>
-<li>専門知識がなくてもまぁ使える</li>
-<li>リアルタイムアプリケーションを作れる</li>
-<li>商用/学術利用共にフリー</li>
-</ul>
-
-
-<p>なライブラリを作ろうと考えている。商用フリーなのは、単に僕がGPL/LPGLとか嫌いだから。フリーという制約を除けば選択肢も増えるけど、まぁ使いづらい。</p>
-
-<p><a href="http://opencv.org/">opencv</a>とか、めっちゃ素晴らしいよね。まさにこういうものがほしい（作りたい）。これの音声版ですよ。何でないんだ。あったら教えて下さい。</p>
-
-<p><a href="http://stackoverflow.com/questions/6938634/any-opencv-like-c-c-library-for-audio-processing">&ldquo;Any OpenCV-like C/C++ library for Audio processing?&rdquo; &ndash; StackOverflow</a></p>
-
-<p>今頑張って作ってるので、お楽しみに。ここに書くことで、後に引けなくする作戦です。</p>
-
-<h2>余談</h2>
-
-<p>ライブラリ作ろうと思ったきっかけは、つい最近声質変換を作ろうとしたことにあります。自分の声を、好きな人の声に変えられたらおもしろいなぁと思って。何か火が着いちゃった時がありました。ただ、音声読み込み、FFT、ケプストラム、メルフィルタバンク、メルケプストラム、GMM、固有声空間の構築、MLSAフィルタ、短遅延アルゴリズム、overlapping addition合成（ry</p>
-
-<p>もう、やることが多すぎてギブアップした。具体的にはmlsaフィルタが難しくてやめた。その時にSPTKのソースコードを読んでいたんだけど、すごいわかりにくくて、くそーっと思って、どうせなら新しく書きなおして使いやすいライブラリ作ってやろうと思ったのが、きっかけ。まぁえらそうな事書いといて、自分がほしいからっていうのが落ちなんですけどね。</p>
-
-<p>ないから作る、シンプルに言えばそれだけです。あと、絶賛有志募集中です。よろしくおねがいします。</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/10/15/signal-processing-library//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/03/blogger-to-github-pages/">
-		
-			BloggerからGithub Pagesに引越しした</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-03T01:24:00+09:00" pubdate data-updated="true">Oct 3<span>rd</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/daily/'>daily</a>
-
-
-</div>
-    </div>
-		<p>これからは、こちらで書いてく。</p>
-
-<p>気まぐれなのでまた変わるかもしれないけど、ぼちぼちメモっていこうと思う</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/10/03/blogger-to-github-pages//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/28/start-using-octopress/">
-		
-			Start Using Octopress</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-28T00:33:00+09:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/daily/'>daily</a>
-
-
-</div>
-    </div>
-		<h1>使い始めました</h1>
-
-<p>テストです</p>
-
-<h2>Text</h2>
-
-<p>こんにちは。octopressを使い始めた。Hello Octopress!</p>
-
-<h2>code</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello octopress&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Math</h2>
-
-<script type="math/tex; mode=display">
-\begin{align}
-X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
-\end{align}
-</script>
-
-
-<p>なかなかいい。Let&rsquo;s enjoy with Octopress!</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/09/28/start-using-octopress//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/23/mlsa-filter-wakaran/">
-		
-			MLSA フィルタの実装</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-23T23:51:00+09:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/speech-signal-processing/'>speech-signal-processing</a>, <a class='category' href='/blog/categories/speech-synthesis/'>speech-synthesis</a>
-
-
-</div>
-    </div>
-		<p>音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ</p>
-
-<p>と、前置きはさておき、MLSAフィルタの実装を見つけたのでメモ。ここ最近ちょくちょく調べているが、SPTK以外で初めて見つけた。</p>
-
-<p><a href="http://simple4all.org/wp-content/uploads/2013/05/Jiunn.pdf">Realisation and Simulation of the Mel Log Spectrum Approximation Filter | Simple4All Internship Report</a></p>
-
-<p>Simple4Allという音声技術系のコミュニティの、学生さんのインターンの成果らしい。ちらっと調べてたら山岸ｾﾝｾｲも参加してる（た？）っぽい。ｺﾞｺﾞｺﾞｺﾞｺﾞ</p>
-
-<p>上のreportで引用されているように、MLSA filterの実現方法については、益子さんのD論に詳しく書いてあることがわかった。今井先生の論文と併せて読んでみようと思う。</p>
-
-<p><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.3623&amp;rep=rep1&amp;type=pdf">T. Masuko, &ldquo;HMM-Based Speech Synthesis and Its Applications&rdquo;, Ph.D Thesis, 2002.</a></p>
-
-<p>もう正直わからんしブラックボックスでもいいから既存のツール使うかーと諦めかけていたところで割りと丁寧な実装付き解説を見つけたので、もう一度勉強して実装してみようと思い直した。</p>
-
-<p>機械学習にかまけて信号処理をちゃんと勉強していなかったつけがきている。LMA filterもMLSA filterも、本当にわからなくてツライ……orz</p>
-
-<p>(実はそんなに難しくなく、理解できた 2013/09後半)</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/09/23/mlsa-filter-wakaran//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/14/hpss/">
-		
-			調波打楽器音分離（HPSS）を試す</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-14T23:34:00+09:00" pubdate data-updated="true">Sep 14<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/matrix-factorization/'>matrix-factorization</a>, <a class='category' href='/blog/categories/music-signal-processing/'>music-signal-processing</a>, <a class='category' href='/blog/categories/source-separation/'>source-separation,</a>
-
-
-</div>
-    </div>
-		<h2>HPSSとは（一行説明）</h2>
-
-<p>HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ</p>
-
-<p>アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる</p>
-
-<h2>実装</h2>
-
-<p>調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-|H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
-\end{align}
-</script>
-
-
-
-
-<script type="math/tex; mode=display">
-\begin{align}
-|P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
-\end{align}
-</script>
-
-
-<p>ただし</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-|W_{t,k}| = |H_{t,k}| + |P_{t,k}|
-\end{align}
-</script>
-
-
-<p>絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。</p>
-
-<p>HPSSの論文はたくさんあるけど、日本語でかつ丁寧な <a href="http://ci.nii.ac.jp/naid/110007997346">&ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;</a> を参考にした。</p>
-
-<p>H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ</p>
-
-<p>一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。</p>
-
-<h2>結果</h2>
-
-<p>フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、<a href="http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html">歌もの音楽素材：歌入り素材系のフリー音楽素材一覧</a> から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
-18秒目くらいからを比較すると効果がわかりやすいです</p>
-
-<h3>元音源</h3>
-
-<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442" width="100%"></iframe>
-
-
-<h3>Hのみ取り出して再合成した音源</h3>
-
-<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534" width="100%"></iframe>
-
-
-<h3>Pのみ取り出して再合成した音源</h3>
-
-<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599" width="100%"></iframe>
-
-
-<p>それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</p>
-
-<p>コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ</p>
-
-<p>詳しくは論文へ（僕のじゃないけど</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://ci.nii.ac.jp/naid/110007997346">橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/09/14/hpss//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/07/math-eng-ml-programming/">
-		
-			数学と英語と機械学習とプログラミング</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-07T23:32:00+09:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/daily/'>daily</a>
-
-
-</div>
-    </div>
-		<p>タイトルに上げたものは、僕がやりたい or やるべきと思っていることで、まぁ思い始めて数年立つんだけど未だにまったく出来ていない。どうにかしないとヤバイ</p>
-
-<ul>
-<li>数学：算数すら危うい</li>
-<li>英語：話せない</li>
-<li>機械学習：あぁカーネルトリックね（全然わかってない</li>
-<li>プログラミング：c++わからん</li>
-</ul>
-
-
-<p>がんばろう。ただの日記</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/09/07/math-eng-ml-programming//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/12/numpy-scipy-for-ubuntu/">
-		
-			UbuntuでNumpy, Scipyをソースからインストール</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-12T00:35:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
-
-
-</div>
-    </div>
-		<p><img class="center" src="/images/numpy_scipy_version_terminal.png"></p>
-
-<p>apt-getを使う場合→<a href="http://d.hatena.ne.jp/sat0yu/20130302/1362172589">ubuntuにnumpy, scipy, matplotlib環境を構築 &ndash; sat0yuの日記</a>
-ただやっぱり最新版を使いたいということがある。というわけでメモ。
-Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインストールできると思う）。</p>
-
-<h2>準備</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install python python-dev gcc gfortran g++
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Numpyのインストール</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/numpy/numpy
-</span><span class='line'><span class="nb">cd </span>numpy
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>かんたん</p>
-
-<h2>Scipyのインストール</h2>
-
-<p>これがちょっとめんどい。numpyのようには行かなかった。2013/08/12</p>
-
-<h3>前準備</h3>
-
-<p>以下をインストール</p>
-
-<ul>
-<li>numpy （上の通りでおｋ）</li>
-<li>blas/lapack</li>
-<li>cython</li>
-</ul>
-
-
-<h2>cythonのインストール</h2>
-
-<p>これ、apt-get install cython でも入るんだけど、バージョンが古いって怒られた。なので、cythonもソースからいれる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/cython/cython
-</span><span class='line'><span class="nb">cd </span>cython
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>かんたん</p>
-
-<h2>blas/lapackのインストール</h2>
-
-<p>これはapt-getから入れればおｋ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install libblas-dev liblapack-dev
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>scipyのINSTALL.txt （リンク）を見るに、libatlas3-base-devをインストールすれば良さそうだけど、ubuntu 12.04じゃ見つからんかった（2013/08/12時点で）。で、何となく試してたら、libblas-devとliblapack-devで行けた。</p>
-
-<h2>Scipyのインストール！</h2>
-
-<p>これでやっとインストールできる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/scipy/scipy
-</span><span class='line'><span class="nb">cd </span>scipy
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>終わり。</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/08/12/numpy-scipy-for-ubuntu//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/12/apt-commend-check/">
-		
-			Apt-getでコマンドがインストールできるか確認する方法</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-12T00:33:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/package-management/'>package-management</a>
-
-
-</div>
-    </div>
-		<p>apt-cacheを使えばいい、なんてことは誰でも知ってると思うけど、apt-cache search ってすると、コマンド名だけじゃなくコマンドの説明文も一緒に検索されてしまって、都合が悪い場合がある。</p>
-
-<p>そんな時には以下のようにする。</p>
-
-<p><code>
-apt-cache search --names-only ^emacs24$
-</code></p>
-
-<p>これで、指定したコマンドがインストールできるかを確認できる。</p>
-
-<h3>ポイント1</h3>
-
-<p><code>--names-only</code> オプションを付ける。これで名前のみから検索してくれる。</p>
-
-<h3>ポイント2</h3>
-
-<p>正規表現を使う。これで柔軟性の高い検索ができる。</p>
-
-<p>以上。</p>
-
-<p>ちなみにyumだともうちょっとめんどくさい。yum listかyum searchを使えば似たようなことができる。yum listは、名前のみ検索、yum searchは名前と説明文を検索。</p>
-
-<p>どうでもいいけどyum使いづらい。apt-get最高</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/08/12/apt-commend-check//blog/page/2/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-<nav id="pagenavi">
+<time datetime="2013-10-20T11:46:00+09:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/10/20/wavelet-stft-visualization/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/">Comments</a>
+        
+      </p>
     
-        <a href="/" class="prev">Prev</a>
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/20/continuous-wavelet-tranform/">FFTを使った連続ウェーブレット変換の高速化</a></h1>
     
     
-        <a href="/blog/page/3/" class="next">Next</a>
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T00:55:00+09:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/10/20/continuous-wavelet-tranform/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/">Comments</a>
+        
+      </p>
     
-    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
-</nav>
+  </header>
 
-    </div>
-    <footer id="footer">
-    <div style="display:inline">
-    Copyright &copy; 2014
 
-    Ryuichi Yamamoto
-. Powered by <a href="http://octopress.org">Octopress</a> | 
-    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/15/signal-processing-library/">簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-15T23:47:00+09:00" pubdate data-updated="true">Oct 15<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/10/15/signal-processing-library/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/10/15/signal-processing-library/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/03/blogger-to-github-pages/">BloggerからGithub Pagesに引越しした</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-03T01:24:00+09:00" pubdate data-updated="true">Oct 3<span>rd</span>, 2013</time>
+        
+           | <a href="/blog/2013/10/03/blogger-to-github-pages/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/10/03/blogger-to-github-pages/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/28/start-using-octopress/">Start Using Octopress</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-28T00:33:00+09:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/09/28/start-using-octopress/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/09/28/start-using-octopress/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/23/mlsa-filter-wakaran/">MLSA フィルタの実装</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-23T23:51:00+09:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2013</time>
+        
+           | <a href="/blog/2013/09/23/mlsa-filter-wakaran/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/14/hpss/">調波打楽器音分離（HPSS）を試す</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-14T23:34:00+09:00" pubdate data-updated="true">Sep 14<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/09/14/hpss/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/09/14/hpss/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/07/math-eng-ml-programming/">数学と英語と機械学習とプログラミング</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-07T23:32:00+09:00" pubdate data-updated="true">Sep 7<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/09/07/math-eng-ml-programming/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/09/07/math-eng-ml-programming/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/12/numpy-scipy-for-ubuntu/">UbuntuでNumpy, Scipyをソースからインストール</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-12T00:35:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/08/12/numpy-scipy-for-ubuntu/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/08/12/numpy-scipy-for-ubuntu/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/12/apt-commend-check/">Apt-getでコマンドがインストールできるか確認する方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-12T00:33:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/08/12/apt-commend-check/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/08/12/apt-commend-check/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="previous btn btn-light" href="/blog/page/3/">&larr; Older</a>
+    
+    <a class="archives btn btn-light" href="/blog/archives">Blog Archives</a>
+    
+    <a class="next btn btn-light" href="/">Newer &rarr;</a>
+    
+  </div>
 </div>
 
 
-    </footer>
-    <script src="/javascripts/fabric.js"></script>
-<script src="/javascripts/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-	$('.fancybox').fancybox();
-})(jQuery);
-</script> <!-- Delete or comment this line to disable Fancybox -->
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://r9y9.github.io" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://r9y9.github.io/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      
+      <a href="http://r9y9.github.io/atom.xml" alt="subscribe feed"><img src="/images/rss.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/27/start-coding-go-msptools/">Goで信号処理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/23/emacs-sublime-text-like-theme/">Emacs Themes - Sublime Text風のcolor Themeが気に入った</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/01/mlsa-filter-with-c-plus-plus/">MLSA Digital Filter のC++実装</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/01/sptk-with-waf/">SPTKをC++から使えるようにする</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/24/mfcc-calculation-memo/">MFCCの計算方法についてメモ</a>
+      </li>
+    
+  </ul>
+</section>
 
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/r9y9">@r9y9</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'r9y9',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+</aside>
+
+
+    			</div>
+    			<footer id="footer">
+    				<p class="credit">
+  Copyright &copy; 2014 - Ryuichi Yamamoto. Powered by <a href="http://octopress.org">Octopress</a>
+</p>
+
+
+    			</footer>
+    			
 
 <script type="text/javascript">
       var disqus_shortname = 'r9y9blog';
@@ -1048,23 +540,67 @@ apt-cache search --names-only ^emacs24$
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
 
 
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 
-<!-- end toload --> 
-</div>
-</div>
-<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
-<script type="text/javascript">
-/*<![CDATA[*/
-;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
-/*]]>*/
-</script><!-- remove it to remove the scroll to top button -->
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+    		</div>
+    	</section>
+  	</div>
 </body>
 </html>

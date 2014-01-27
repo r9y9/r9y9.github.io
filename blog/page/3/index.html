@@ -1,141 +1,94 @@
 
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<title>R)Y)</title>
-    <meta name="author" content="Ryuichi Yamamoto">
-    
-	<meta name="description" content="Published on: Aug 12th, 2013 Tags: shell-script 素晴らしいまとめ→ コマンドの存在チェックはwhichよりhashの方が良いかも→いやtypeが最強 &ndash; qiita いつもwhichを使っていたのだけど、typeの方がよさげ。 &hellip;">
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="utf-8">
+  <title>山本さんのブログ（仮）</title>
+  <meta name="author" content="Ryuichi Yamamoto">
 
-	<link href="/atom.xml" rel="alternate" title="R)Y)" type="application/atom+xml">
-	<link rel="canonical" href="">
-	<link href="/favicon.ico" rel="shortcut icon">
-    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  
+  <meta name="description" content="Bashでコマンドの存在チェック Aug 12th, 2013 | <a href="/blog/2013/08/12/bash-check-commend-existence/#disqus_thread" data-disqus-identifier="http://r9y9.github. &hellip;">
+  
 
-    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+  
+  <link rel="canonical" href="http://r9y9.github.io/blog/page/3">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="山本さんのブログ（仮）" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
 
-    <!-- remove or comment it to disable ajaxification -->   
-    <script src="/javascripts/ajaxify.js"></script>
-   
-    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
 
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        HTML: ["input/TeX","output/HTML-CSS"],
-        TeX: {
-               Macros: {
-                        bm: ["\\boldsymbol{#1}", 1],
-                        argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                        argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-               extensions: ["AMSmath.js","AMSsymbols.js"], 
-               equationNumbers: { autoNumber: "AMS" } },
-        extensions: ["tex2jax.js"],
-        jax: ["input/TeX","output/HTML-CSS"],
-        tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                   displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                   processEscapes: true },
-        "HTML-CSS": { availableFonts: ["TeX"],
-                      linebreaks: { automatic: true } }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-    
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-44433856-1']);
-		_gaq.push(['_trackPageview']);
-
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 
 
 </head>
 
 
 <body>
-    <div id="wrapper">
-    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
-<h1>
-    <div id="headerbg2">
-      <a href="/">
-        R)Y)
-      </a>
-    </div>
-</h1>
+	<div class="container">
+		<aside class="left">
+			<div class="inner-left">
+				<header>
+					<img src="http://www.gravatar.com/avatar/6d356017749662a0c75ca192c7c88ed6?s=200" alt="Gravatar of Ryuichi Yamamoto " title="Gravatar of Ryuichi Yamamoto" class="profilepic" />
+<hgroup>
+  <h1><a href="/">山本さんのブログ（仮）</a></h1>
+  
+    <h2 class="subtitle">fmt.Println("Hello world")</h2>
+   
+</hgroup>
 
-<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
-<ul id="nav">
-  <li><a href="/about/">About</a></li>
-  <li><a href="/blog/archives/">Archives</a></li>
+
+				</header>
+				<footer>
+					<p>
+	
+		<a href="http://github.com/r9y9" class="btn btn-dark">GitHub</a>
+	
+	
+		<a href="http://twitter.com/r9y9" class="btn btn-dark">Twitter</a>
+	
+</p>
+				</footer>
+			</div>
+		</aside>
+    	<section class="right">
+    		<div class="inner-right">
+    			<div id="posts">
+    			  	<div class="blog-index">
+  
+  
+  
+    <article>
       
-</ul>
-
-
-
-
-
-
-
-</header>
-
-<div id="toload">
-<!-- begin toload --> 
-    <div id="content" class="inner">
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/12/bash-check-commend-existence/">Bashでコマンドの存在チェック</a></h1>
+    
+    
+      <p class="meta">
         
 
 
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/12/bash-check-commend-existence/">
-		
-			Bashでコマンドの存在チェック</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
 
 
 
@@ -145,1464 +98,437 @@
   
 
 
-<time datetime="2013-08-12T00:30:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/shell-script/'>shell-script</a>
-
-
-</div>
-    </div>
-		<p>素晴らしいまとめ→ <a href="http://qiita.com/kawaz/items/1b61ee2dd4d1acc7cc94">コマンドの存在チェックはwhichよりhashの方が良いかも→いやtypeが最強 &ndash; qiita</a></p>
-
-<p>いつもwhichを使っていたのだけど、typeの方がよさげ。</p>
-
-<p>今までこう書いてた</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="k">if</span> <span class="o">[</span> -x which <span class="s2">&quot;何かコマンド&quot;</span> <span class="o">]</span>
-</span><span class='line'><span class="k">then</span>
-</span><span class='line'>    コマンドが存在した場合の処理
-</span><span class='line'><span class="k">fi</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>コマンドが実行可能かどうかをwhichを使って判定する。少なくとも自分のubuntu 12.04では期待した通りに動く。だた環境によっては、指定したコマンドがない場合に、</p>
-
-<p><code>
-/usr/bin/which: no hogehoge
-</code></p>
-
-<p>みたいに表示されて、おそらくwhichが実行可能なバイナリだから、if文がtrueで通っちゃうことがある。これは困る。で、ググってたらtypeやhashがあることを知って、typeが良さそうということで試したら期待通りの動作になったのでハッピー。bash組み込みらしいね</p>
-
-<h2>書き方</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="k">if </span><span class="nb">type</span> <span class="s2">&quot;コマンド&quot;</span> &gt; /dev/null 2&gt;&amp;1
-</span><span class='line'><span class="k">then</span>
-</span><span class='line'>    コマンドが存在した場合の処理
-</span><span class='line'><span class="k">fi</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>bash組み込みのコマンドを使って存在判定するので、速いらしい（割りとどうでもいいけど）。標準エラー出力は意外とうっとしいということがわかったので、今回書いてたスクリプトでは捨てるようにした。</p>
-
-<p>これからはtype使おう。［］も書かなくても済むしコードもすっきりする</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/08/12/bash-check-commend-existence//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/11/emacs-24-for-ubuntu12-04/">
-		
-			emacs24をUbuntu12.04 にインストールする方法</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-11T00:26:00+09:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/emacs/'>emacs</a>
-
-
-</div>
-    </div>
-		<h2>コマンド</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo add-apt-repository ppa:cassou/emacs
-</span><span class='line'>sudo apt-get update
-</span><span class='line'>sudo apt-get install emacs24
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ググればすぐ解決するんだけど、過去何回も調べててアホみたいなので自分でもスクリプト書いたよ。といってもレポジトリ追加してapt-getするだけだけど。</p>
-
-<p><a href="https://github.com/r9y9/install/blob/master/install_emacs.sh">https://github.com/r9y9/install/blob/master/install_emacs.sh</a></p>
-
-<p>emacsがサーバに入ってないとしにたみることが判明したので、もうサーバにもemacs入れておくようにしたい。</p>
-
-<p>ちなみに24以降だと、パッケージ管理システムがデフォでちゃんとしてたり、color-themeがデフォであったりするので、24以降の方がいい</p>
-
-<h2>参考</h2>
-
-<p><a href="http://d.hatena.ne.jp/going-around/20130120/1358693301">emacs24 &ndash; Ubuntu的日常</a></p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/08/11/emacs-24-for-ubuntu12-04//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/06/naive-bayes-mnist/">
-		
-			Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-06T23:08:00+09:00" pubdate data-updated="true">Aug 6<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/digit-recognition/'>digit-recognition</a>, <a class='category' href='/blog/categories/machine-learning/'>machine-learning</a>
-
-
-</div>
-    </div>
-		<p>前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…</p>
-
-<p>そもそもナイーブベイズやろうとしてたのも、MNISTのdigit recognitionがやりたかったからなので、実際にやってみた。</p>
-
-<p>コードはgithubに置いた <a href="https://github.com/r9y9/naive_bayes">https://github.com/r9y9/naive_bayes</a></p>
-
-<p>結果だけ知りたい人へ：正解率  76 %くらいでした。まぁこんなもんですね</p>
-
-<h2>手書き数字認識</h2>
-
-<p>手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。</p>
-
-<p>今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→<a href="http://yann.lecun.com/exdb/mnist/">THE MNIST DATABASE of handwritten digits</a>
-ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（<a href="http://deeplearning.net/tutorial/gettingstarted.html#gettingstarted">ここ</a>）、pythonのcPickleから読める形式に変換されているデータを使った。感謝</p>
-
-<h2>とりあえずやってみる</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/r9y9/naive_bayes
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>naive_bayes
-</span><span class='line'><span class="nv">$ </span>python mnist_digit_recognition.py
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>プログラムの中身は以下のようになってる。</p>
-
-<ul>
-<li>MNISTデータセットのダウンロード</li>
-<li>モデルの学習</li>
-<li>テスト</li>
-</ul>
-
-
-<p>実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。</p>
-
-<h2>学習されたGaussianの平均</h2>
-
-<p><img class="center" src="/images/mnist_mean_of_gaussian.png" title="&#34;gaussian means&#34;" alt="&#34;gaussian means&#34;"></p>
-
-<p>学習されたGaussianの平均をプロットしたもの。上のコードを実行すると表示される。</p>
-
-<p>それっぽい。学習データは50000サンプル</p>
-
-<h2>認識結果</h2>
-
-<p>時間がかかるけど、テストデータ10000個に対してやってみると、結果は以下のようになった。</p>
-
-<p><code>0.7634 (7634/10000)</code></p>
-
-<p>まぁナイーブベイズなんてこんなもん。もちろん、改善のしようはいくらでもあるけれども。ちなみにDeep learningのチュートリアルで使われてたDBN.pyだと0.987くらいだった。</p>
-
-<h2>感想</h2>
-
-<p>相関が強い特徴だと上手くいかんのは当たり前で、ピクセル毎にGaussianなんて作らずに（ピクセル間の相関を無視せずに）、少しまともな特徴抽出をかませば、8割りは超えるんじゃないかなぁと思う。</p>
-
-<p>あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。</p>
-
-<p><a href="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/">導出編→Naive Bayesの復習（導出編）</a></p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://www.slideshare.net/shima__shima/python-13349162">機械学習のPythonとの出会い（１）：単純ベイズ基礎編 &ndash; slideshare</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/08/06/naive-bayes-mnist//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/03/mathjax-blogger/">
-		
-			Mathjaxを使ってBloggerで数式を書く</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-03T23:01:00+09:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/blogger/'>blogger</a>, <a class='category' href='/blog/categories/mathjax/'>mathjax</a>
-
-
-</div>
-    </div>
-		<p>Bloggerカスタマイズメモから、Mathjaxの部分を切り出して補足。ちょっとカスタマイズして書くことも増えたので。bloggerでの作業記録だけど、wordpressでもoctopressでもだいたい一緒</p>
-
-<h2>Mathjax</h2>
-
-<p>Latex形式の数式をレンダリングしてくれるエンジン。レンダリングに少し時間がかかるけど、それでも数式は綺麗だし画像じゃないから普通にコピーできるし、個人的にオススメ</p>
-
-<h3>使い方</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='latex'><span class='line'><span class="k">\begin</span><span class="nb">{</span>align<span class="nb">}</span>
-</span><span class='line'><span class="k">\sum</span><span class="nb">_{</span>i=1<span class="nb">}^{</span>n<span class="nb">}</span>i = <span class="k">\frac</span><span class="nb">{</span>1<span class="nb">}{</span>2<span class="nb">}</span>n(n+1)
-</span><span class='line'><span class="k">\end</span><span class="nb">{</span>align<span class="nb">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>と書くと、以下のように表示される</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\sum_{i=1}^{n}i = \frac{1}{2}n(n+1)
-\end{align}
-</script>
-
-
-<p>他にもLaTeXの記法はまぁだいたい使えると思う。$$でインラインで書いてももちろんおｋ</p>
-
-<h3>導入方法</h3>
-
-<p>bloggerのレイアウト編集画面で、html/javascriptのガジェットを追加して、そこにmathjaxを使うためのスクリプトを書くだけ。もしくは、htmlを編集して、<code>&lt;head&gt;&lt;/head&gt;</code>の中に直接書く。
-以下をコピペすればおｋ．</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Config</span><span class="p">({</span>
-</span><span class='line'>        <span class="nx">HTML</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;input/TeX&quot;</span><span class="p">,</span><span class="s2">&quot;output/HTML-CSS&quot;</span><span class="p">],</span>
-</span><span class='line'>        <span class="nx">TeX</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>               <span class="nx">Macros</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>                        <span class="nx">bm</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;\\boldsymbol{#1}&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-</span><span class='line'>                        <span class="nx">argmax</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;\\mathop{\\rm arg\\,max}\\limits&quot;</span><span class="p">],</span>
-</span><span class='line'>                        <span class="nx">argmin</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;\\mathop{\\rm arg\\,min}\\limits&quot;</span><span class="p">]},</span>
-</span><span class='line'>               <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;AMSmath.js&quot;</span><span class="p">,</span><span class="s2">&quot;AMSsymbols.js&quot;</span><span class="p">],</span>
-</span><span class='line'>               <span class="nx">equationNumbers</span><span class="o">:</span> <span class="p">{</span> <span class="nx">autoNumber</span><span class="o">:</span> <span class="s2">&quot;AMS&quot;</span> <span class="p">}</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;tex2jax.js&quot;</span><span class="p">],</span>
-</span><span class='line'>        <span class="nx">jax</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;input/TeX&quot;</span><span class="p">,</span><span class="s2">&quot;output/HTML-CSS&quot;</span><span class="p">],</span>
-</span><span class='line'>        <span class="nx">tex2jax</span><span class="o">:</span> <span class="p">{</span> <span class="nx">inlineMath</span><span class="o">:</span> <span class="p">[</span> <span class="p">[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span><span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;\\(&quot;</span><span class="p">,</span><span class="s2">&quot;\\)&quot;</span><span class="p">]</span> <span class="p">],</span>
-</span><span class='line'>                   <span class="nx">displayMath</span><span class="o">:</span> <span class="p">[</span> <span class="p">[</span><span class="s1">&#39;$$&#39;</span><span class="p">,</span><span class="s1">&#39;$$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;\\[&quot;</span><span class="p">,</span><span class="s2">&quot;\\]&quot;</span><span class="p">]</span> <span class="p">],</span>
-</span><span class='line'>                   <span class="nx">processEscapes</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span>
-</span><span class='line'>        <span class="s2">&quot;HTML-CSS&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="nx">availableFonts</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;TeX&quot;</span><span class="p">],</span>
-</span><span class='line'>                      <span class="nx">linebreaks</span><span class="o">:</span> <span class="p">{</span> <span class="nx">automatic</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">}</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'><span class="nt">&lt;/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでlatexの文法で数式が書ける。らくちん。wordpressとかでももちろん使える</p>
-
-<h3>マクロの追加</h3>
-
-<p>基本的にはここ→ <a href="http://irrep.blogspot.jp/2011/07/mathjax-in-blogger-ii.html">MathJax in Blogger (II)</a> に書いてあるとおりにやったけど、デフォではargmaxとかargminが使えないので、マクロを追加した。</p>
-
-<p>Mathjaxを呼び出すスクリプトに、以下のような感じで追加（正確には上のスクリプト参考）</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">bm</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;\\boldsymbol{#1}&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-</span><span class='line'><span class="nx">argmax</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;\\mathop{\\rm arg\\,max}\\limits&quot;</span><span class="p">]</span>
-</span><span class='line'><span class="nx">argmin</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;\\mathop{\\rm arg\\,min}\\limits&quot;</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>bmはおまけ。これで以下のような数式が書ける。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='latex'><span class='line'><span class="k">\begin</span><span class="nb">{</span>align<span class="nb">}</span>
-</span><span class='line'>y = <span class="k">\argmax</span><span class="nb">_</span>y p(y|x)
-</span><span class='line'><span class="k">\end</span><span class="nb">{</span>align<span class="nb">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>次のように表示される</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-y = \argmax_y p(y|x)
-\end{align}
-</script>
-
-
-<p>マクロ参考: <a href="http://d.hatena.ne.jp/a_bicky/20130216/1361098344">http://d.hatena.ne.jp/a_bicky/20130216/1361098344</a></p>
-
-<p>数式綺麗でイイネ！重いけどね</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/08/03/mathjax-blogger//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/07/31/multinomial-categorical-diff/">
-		
-			Multinomial distributionとCategorical Distributionの違い</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-31T22:51:00+09:00" pubdate data-updated="true">Jul 31<span>st</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/probability/'>probability</a>
-
-
-</div>
-    </div>
-		<p>些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。</p>
-
-<p>結論としては、多項分布のn=1の特殊な場合がカテゴリカル分布ですよってこと。以下少しまとめる。</p>
-
-<p>分布を仮定する離散変数をカテゴリと呼ぶとして、</p>
-
-<ul>
-<li>多項分布は、n回試行したときに各カテゴリが何回出るかを表す確率分布</li>
-<li>多項分布は、二項分布を多カテゴリに一般化したもの</li>
-<li>カテゴリカル分布は、多項分布のn=1の場合に相当する</li>
-<li>カテゴリカル分布は、ベルヌーイ分布を多カテゴリに一般化したもの</li>
-</ul>
-
-
-<p>以上</p>
-
-<p>nokunoさんによるこの記事→ <a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定</a> は、多項分布というよりカテゴリカル分布の話。本文には書いてあるけどね。あと最尤推定の結果はどちらにしろ同じなんだけどね</p>
-
-<h2>導出メモ</h2>
-
-<p>一応最尤推定をやってみる。前回のナイーブベイズのメモの時は省略したので。入力の変数を$Y = {y_n}_{n=1}^{N}$とする。</p>
-
-<h3>カテゴリカル分布</h3>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(l) = \pi_{l}, \hspace{2mm} \sum_{l=1}^{L}\pi_{l} = 1
-\end{align}
-</script>
-
-
-<p>ここで、$\pi_{l}$がパラメータ、lはカテゴリの番号</p>
-
-<h3>最尤推定</h3>
-
-<p>尤度関数を立てて、最大化することでパラメータを求める。各データは独立に生起すると仮定すると、尤度関数は以下のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-L(Y; \theta) = \prod_{n=1}^{N} \pi_{y_{n}}
-\end{align}
-</script>
-
-
-<p>$\theta$はパラメータの集合ということで。</p>
-
-<p>ラベルlの出現回数を$N_{l} = \sum_{n=1}^{N} \delta (y_{n} = l)$とすると、次のように書き直せる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-L(Y; \theta) = \prod_{l=1}^{L}\pi_{l}^{N_{l}}
-\end{align}
-</script>
-
-
-<p>よって、対数尤度は以下のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\log L(Y; \theta) = \sum_{l=1}^{L} N_{l}\log \pi_{l}
-\end{align}
-</script>
-
-
-<h3>ラグランジュの未定乗数法で解く</h3>
-
-<p>nokunoさんの記事の通りだけど、一応手でも解いたのでメモ</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G = \sum_{l=1}^{L} N_{l}\log \pi_{l} + \lambda \Bigl[ \sum_{l=1}^{L} \pi_{l} -1) \Bigr]
-\end{align}
-</script>
-
-
-<p>として、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\frac{\partial G}{\partial \pi_{l}} = \frac{N_{l}}{\pi_{l}} + \lambda  =0
-\end{align}
-</script>
-
-
-<p>よって、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\pi_{l} = -\frac{N_{l}}{\lambda}
-\end{align}
-</script>
-
-
-<p>ここで、以下の制約条件に代入すると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\sum_{l=1}^{L} \pi_{l} = 1
-\end{align}
-</script>
-
-
-<p>$\lambda = -N$となることがわかるので、求めたかったパラメータは以下のようになる</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\pi_{l} = \frac{N_{l}}{N}
-\end{align}
-</script>
-
-
-<p>カテゴリの頻度を計算するだけ、カンタン！！</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Categorical_distribution">Categorical distribution &ndash; Wikipedia</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Multinomial_distribution">Multinomial distribution &ndash; Wikipedia</a></li>
-<li><a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定 &ndash; nokunoの日記</a></li>
-<li><a href="http://d.hatena.ne.jp/sleepy_yoshi/20111107/p1">多項分布の最尤推定とMAP推定 &ndash; 睡眠時間？</a></li>
-<li><a href="http://lef-t.blogspot.jp/2013/02/categorical-distribution-wikipedia-free.html">Categorical distribution &ndash; Researcher&rsquo;s Eye</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/07/31/multinomial-categorical-diff//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/07/28/naive-bayes-formulation/">
-		
-			Naive Bayesの復習（導出編）</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-28T22:24:00+09:00" pubdate data-updated="true">Jul 28<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/machine-learning/'>machine-learning</a>
-
-
-</div>
-    </div>
-		<p>すぐ忘れるのでメモ。ナイーブベイズの学習アルゴリズムの導出とか、そもそもナイーブベイズが定番過ぎて意外とやったことなかった気もするので、復習がてらやってみた。</p>
-
-<p>ちょっと修正 2013/07/30</p>
-
-<ul>
-<li>ナイーブベイズについて整理</li>
-<li>学習アルゴリズムの導出</li>
-</ul>
-
-
-<h2>Naive bayes （ナイーブベイズ）</h2>
-
-<p>スパムフィルタで使われたことで有名な確率モデルで、シンプルだけどそこそこ実用的なのが良い所。Naive bayesという名前は、特徴ベクトル間に条件付き独立性を仮定してることにある（実際は相関あることが多いけど、まぁ簡単のためって感じ）。具体的に例を挙げて言うと、例えば文書分類タスクの場合、各単語は独立に生起するという仮定を置くことに相当する。</p>
-
-<p>まずはモデルを書き下す。入力データを$\mathbf{x}$（D次元）、ラベルを$y$（離散値）とすると、ナイーブベイズでは以下のように同時確率をモデル化する。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(\mathbf{x}, y) &= p(y)p(\mathbf{x}|y)\\
-&= p(y)p(x_{1}, x_{2}, \dots, x_{D}|y)\\
-&= p(y)\prod_{d=1}^{D} p(x_{d}|y)
-\end{align}
-</script>
-
-
-<p>カンタン。基本的にdは次元に対するインデックス、nはデータに対するインデックスとして書く。</p>
-
-<p>ポイントは特徴ベクトル間に条件付き独立性の仮定を置いていること（二度目）で、それによってパラメータの数が少なくて済む。</p>
-
-<h2>分類</h2>
-
-<p>一番確率の高いラベルを選べばいい。数式で書くと以下のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\hat{y} &= \argmax_{y} [p(y|\mathbf{x})]\\
- &= \argmax_{y} [p(\mathbf{x}, y)]\\
- &= \argmax_{y} \Bigl[ p(y)\prod_{d=1}^{D} p(x_{d}|y)\Bigr]
-\end{align}
-</script>
-
-
-<p>argmaxを取る上では、$y$に依存しない項は無視していいので、事後確率の最大化は、同時確率の最大化に等しくなる。</p>
-
-<h2>学習アルゴリズムの導出</h2>
-
-<p>ここからが本番。学習データを$X = {\mathbf{x}_{n}}_{n=1}^{N}$、対応する正解ラベルを<script type="math/tex">Y = {y_n}_{n=1}^{N} </script>として、最尤推定により学習アルゴリズムを導出する。実際はMAP推定をすることが多いけど、今回は省略。拡張は簡単。</p>
-
-<h3>尤度関数</h3>
-
-<p>各サンプルが独立に生起したと仮定すると、尤度関数は以下のように書ける。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-L(X,Y; \mathbf{\theta}) &= \prod_{n=1}^{N}p(y_{n})p(\mathbf{x_{n}}|y_{n})\\
-&= \prod_{n=1}^{N} \Bigl[ p(y_{n})\prod_{d=1}^{D}p(x_{nd}|y_{n})\Bigr]
-\end{align}
-</script>
-
-
-<p>対数を取って、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\log L(X,Y; \mathbf{\theta}) =  \sum_{n=1}^{N}\Bigl[\log p(y_{n}) + \sum_{d=1}^{D}\log p(x_{nd}|y_{n})\Bigr]
-\end{align}
-</script>
-
-
-<p>学習アルゴリズムは、この関数の最大化として導くことができる。</p>
-
-<h3>ところで</h3>
-
-<p>特徴ベクトルにどのような分布を仮定するかでアルゴリズムが少し変わるので、今回は以下の二つをやってみる。</p>
-
-<ul>
-<li>ベルヌーイ分布</li>
-<li>正規分布</li>
-</ul>
-
-
-<p>前者は、binary featureを使う場合で、後者は、continuous featureを使う場合を想定してる。画像のピクセル値とか連続値を扱いたい場合は、正規分布が無難。その他、多項分布を使うこともあるけど、ベルヌーイ分布の場合とほとんど一緒なので今回は省略</p>
-
-<p>ラベルに対する事前分布は、ラベルが離散値なので多項分布（間違ってた）categorical distributionとする。日本語でなんて言えばいいのか…<a href="http://en.wikipedia.org/wiki/Categorical_distribution">wikipedia</a> 参考</p>
-
-<h2>Bernoulli naive bayes</h2>
-
-<p>特徴ベクトルにベルヌーイ分布を仮定する場合。0 or 1のbinary featureを使う場合にはこれでおｋ．ベルヌーイ分布は以下</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(x;q) = q^{x}(1-q)^{1-x}
-\end{align}
-</script>
-
-
-<p>特徴ベクトルに対するパラメータは、ラベル数×特徴ベクトルの次元数（L×D）個ある。対数尤度関数（Gとする）は、以下のように書ける。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G &=  \sum_{n=1}^{N}\Bigl[ \log \pi_{y_{n}} \notag \\
- &+ \sum_{d=1}^{D} \bigl[ x_{nd} \log q_{y_{n}d} + (1-x_{nd}) \log (1-q_{y_{n}d}) \bigr] \Bigr]
-\end{align}
-</script>
-
-
-<p>ここで、<script type="math/tex">\pi_{y_{n}}</script> はcategorical distributionのパラメータ。</p>
-
-<h3>微分方程式を解く</h3>
-
-<p>あとは微分してゼロ。ラベルに対するインデックスをl 、学習データ中のラベルlが出現する回数を$N_{l} = \sum_{n=1}^{N} \delta(y_{n}= l)$、さらにその中で<script type="math/tex">x_{nd}=1 </script>となる回数を<script type="math/tex">N_{ld} = \sum_{n=1}^{N} \delta(y_{n}= l) \cdot x_{nd} </script>とすると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\frac{\partial G}{\partial q_{ld}} &= \frac{N_{ld}}{q_{ld}} - \frac{N_{l} - N_{ld}}{1-q_{ld}}  = 0
-\end{align}
-</script>
-
-
-<p>よって、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-q_{ld} = \frac{N_{ld}}{N_{l}} \label{eq:naive1}
-\end{align}
-</script>
-
-
-<p>できました。厳密に数式で書こうとするとめんどくさい。日本語で書くと、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-パラメータ = \frac{特徴ベクトルの出現回数}{ラベルの出現回数}
-\end{align}
-</script>
-
-
-<p>って感じでしょうか。</p>
-
-<p>categoricalのパラメータについては、めんどくさくなってきたのでやらないけど、もう直感的に以下。ラグランジュの未定定数法でおｋ</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\pi_{l} = \frac{N_{l}}{N} \label{eq:naive2}
-\end{align}
-</script>
-
-
-<p>学習は、式 ($\ref{eq:naive1}$)、($\ref{eq:naive2}$) を計算すればおｋ．やっと終わった。。。長かった。</p>
-
-<h2>Gaussian naive bayes</h2>
-
-<p>次。$x$が連続変数で、その分布に正規分布（Gaussian）を仮定する場合。まず、正規分布は以下のとおり。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-p(x; \mu, \sigma^{2}) = \frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\Bigl\{-\frac{(x-\mu)^{2}}{2\sigma^{2}}\Bigr\}
-\end{align}
-</script>
-
-
-<p>正規分布を使う場合、特徴ベクトルに対するパラメータは、ラベル数×特徴ベクトルの次元数×2個ある。×2となっているのは、平均と分散の分。対数尤度関数は、以下のようになる</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G &=  \sum_{n=1}^{N}\Bigl[ \log \pi_{y_{n}} \notag \\
- &+ \sum_{d=1}^{D} \bigl[ -\frac{1}{2}\log 2\pi - \log\sigma_{y_{n}d} -  \frac{(x_{nd}-\mu_{y_{n}d})^2}{2\sigma_{y_{n}d}} \bigr] \Bigr]
-\end{align}
-</script>
-
-
-<h3>微分方程式を解く</h3>
-
-<p>計算は省略するけど、偏微分してゼロと置けば、結果は以下のようになる。式が若干煩雑だけど、基本的には正規分布の最尤推定をしてるだけ。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\mu_{ld} = \frac{1}{N_{l}} \sum_{n=1}^{N} x_{nd} \cdot \delta(y_{n} =l) = \frac{N_{ld}}{N_{l}} \label{eq:naive3}
-\end{align}
-</script>
-
-
-
-
-<script type="math/tex; mode=display">
-\begin{align}
-\sigma_{ld} = \frac{1}{N_{l}} \sum_{n=1}^{N} (x_{nd}-\mu_{ld})^{2} \cdot \delta (y_{n}= l) \label{eq:naive4}
-\end{align}
-</script>
-
-
-<p>学習では、式 ($\ref{eq:naive2}$)、($\ref{eq:naive3}$)、($\ref{eq:naive4}$)を計算すればおｋ．式 ($\ref{eq:naive3}$)は式 ($\ref{eq:naive1}$)と一緒なんだけど、正規分布の場合はxが連続値なので注意。分散が特徴ベクトルの次元によらず一定とすれば、パラメータの数をぐっと減らすこともできる。</p>
-
-<h2>おわりに</h2>
-
-<p>これで終わり。予想以上に書くのに時間かかった…。今日logistic regressionを見直してて、ふとnaive bayesやったことないなーと思って、まぁ試すだけならscipy使えば一瞬なんだろうけどちょっと導出までやってみようと思った。</p>
-
-<p>実装編→<a href="http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/">Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a></p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://d.hatena.ne.jp/saket/20130212/1360678478">scikit.learn手法徹底比較！ ナイーブベイズ編Add Star &ndash; Risky Dune</a></li>
-<li><a href="http://www.cs.cmu.edu/~epxing/Class/10701-10s/Lecture/lecture5.pdf">Gaussian Naïve Bayes, andLogistic Regression</a></li>
-<li><a href="http://aidiary.hatenablog.com/entry/20100613/1276389337">ナイーブベイズを用いたテキスト分類 &ndash; 人工知能に関する断創録</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/07/28/naive-bayes-formulation//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/07/27/nmf-euclid/">
-		
-			NMFアルゴリズムの導出（ユークリッド距離版）</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-27T23:30:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/machine-learning/'>machine-learning</a>, <a class='category' href='/blog/categories/matrix-factorization/'>matrix-factorization</a>
-
-
-</div>
-    </div>
-		<h2>はじめに</h2>
-
-<p>シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。
-音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。
-実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。</p>
-
-<p>と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。</p>
-
-<h2>NMFの問題設定</h2>
-
-<p>NMFとは、与えられた行列を非負という制約の元で因子分解する方法のこと。
-音楽の場合、対象はスペクトログラムで、式で書くとわかりやすい。
-スペクトログラムを <script type="math/tex"> \mathbf{Y}: [\Omega \times T] </script>
-とすると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\mathbf{Y} \simeq \mathbf{H} \mathbf{U}
-\end{align}
-</script>
-
-
-<p>となる、<script type="math/tex">\mathbf{H}: [\Omega \times K]、\mathbf{U}: [K \times T]</script>を求めるのがNMFの問題。
-ここで、Hが基底、Uがアクティビティ行列に相当する。
-NMFは、元の行列Yと分解後の行列の距離の最小化問題として定式化できる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\mathbf{H}, \mathbf{U} = \mathop{\rm arg~min}\limits_{\mathbf{H}, \mathbf{U}} D (\mathbf{Y}|\mathbf{H}\mathbf{U}), \hspace{3mm} {\rm subect\ to} \hspace{3mm} H_{\omega,k}, U_{k, t} > 0
-\end{align}
-</script>
-
-
-<p>すごくシンプル。Dは距離関数で色んなものがある。ユークリッド距離、KLダイバージェンス、板倉斎藤距離、βダイバージェンスとか。</p>
-
-<h2>ユークリッド距離の最小化</h2>
-
-<p>ここではユークリッド距離（Frobeniusノルムともいう）として、二乗誤差最小化問題を解くことにする。
-一番簡単なので。最小化すべき目的関数は次のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-D (\mathbf{Y}|\mathbf{H}\mathbf{U}) =& || \mathbf{Y}-\mathbf{HU}||_{F} \\
-=& \sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2}
-\end{align}
-</script>
-
-
-<p>行列同士の二乗誤差の最小化は、要素毎の二乗誤差の和の最小化ということですね。展開すると、次のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2}
-= \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{k, t} + |\sum_{k}H_{\omega, k}U_{k, t}|^2)
-\end{align}
-</script>
-
-
-<p>微分してゼロ！としたいところだけど、3つ目の項を見ると、絶対値の中に和が入っているので、そうはいかない。
-なので、補助関数法を使う。
-基本的なアイデアは、目的関数の直接の最適化が難しい場合には、上界関数を立てることで間接的に最小化するということ。</p>
-
-<p>3項目に対してイェンセンの不等式を適応すると、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-|\sum_{k}H_{\omega,k}U_{k,t}|^{2} \le \sum_{k} \frac{H_{\omega,k}^{2}U_{k, t}^{2}}{\lambda_{k, \omega, t}}
-\end{align}
-</script>
-
-
-<p>これで、右辺は <script type="math/tex"> H_{\omega,k}, U_{k, t} </script> について二次関数になったので、微分できてはっぴー。
-上の不等式を使えば、実際に最小化する目的関数は、次のようになる。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-G := \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{k, t} + \sum_{k} \frac{H_{\omega,k}^{2}U_{k, t}^{2}}{\lambda_{k, \omega, t}})
-\end{align}
-</script>
-
-
-<p>Gを最小化すれば、間接的に元の目的関数も小さくなる。</p>
-
-<h2>更新式の導出</h2>
-
-<p>あとは更新式を導出するだけ。
-まず、目的関数を上から押さえるイメージで、イェンセンの不等式の等号条件から補助変数の更新式を求める。
-この場合、kに関して和が1になることに注意して、</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\lambda_{k,\omega,t} = \frac{H_{\omega, k}U_{k, t}}{\sum_{k'}H_{\omega, k'}U_{k', t}}
-\end{align}
-</script>
-
-
-<p>次に、目的関数Gを<script type="math/tex">H_{\omega,k}, U_{k,t} </script>で偏微分する。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\frac{\partial G}{\partial H_{\omega,k}} &= \sum_{t} (-2 Y_{\omega,t}U_{k,t} + 2 \frac{H_{\omega, k}U_{k, t}^2}{\lambda_{k,\omega,t}}) &= 0\\
-\frac{\partial G}{\partial U_{k, t}} &= \sum_{\omega} (-2 Y_{\omega,t}H_{\omega,k} + 2 \frac{H_{\omega, k}^2U_{k, t}}{\lambda_{k,\omega,t}}) &= 0
-\end{align}
-</script>
-
-
-<p>少し変形すれば、以下の式を得る。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-H_{\omega,k} = \frac{\sum_{t}Y_{\omega,t}U_{k,t}}{\sum_{t}\frac{U_{k, t}^2}{\lambda_{k,\omega,t}}}, \hspace{3mm}
-U_{k,t} = \frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}\frac{H_{\omega, k}^2}{\lambda_{k,\omega,t}}}
-\end{align}
-</script>
-
-
-<p>補助変数を代入すれば、出来上がり。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-H_{\omega,k} = H_{\omega,k} \frac{\sum_{t}Y_{\omega,t}U_{k,t}}{\sum_{t}U_{k, t}\sum_{k'}H_{\omega, k'}U_{k', t}}, \hspace{3mm}
-U_{k,t} = U_{k,t}\frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}H_{\omega, k}\sum_{k'}H_{\omega, k'}U_{k', t}}
-\end{align}
-</script>
-
-
-<h2>行列表記で</h2>
-
-<p>これで終わり…ではなく、もう少しスマートに書きたい。
-ここで、少し実装を意識して行列表記を使って書きなおす。
-行列の積は、AB（A: [m x n] 行列、B: [n x l] 行列）のようにAの列数とBの行数が等しくなることに注意して、
-ほんの少し変形すれば最終的には次のように書ける。</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-H_{\omega,k} &= H_{\omega,k} \frac{[\mathbf{Y}\mathbf{U}^{\mathrm{T}}]_{\omega,k}}{[\mathbf{H}\mathbf{U}\mathbf{U}^{\mathrm{T}}]_{\omega,k}}, \\
-U_{k,t} &= U_{k,t}\frac{[\mathbf{H}^{\mathrm{T}}\mathbf{Y}]_{k, t}}{[\mathbf{H}^{\mathrm{T}}\mathbf{H}\mathbf{U}]_{k,t}}
-\end{align}
-</script>
-
-
-<p>乗法更新式というやつですね。
-元々の行列の要素が非負なら、掛けても非負のままですよってこと。
-NMFのアルゴリズムは、この更新式を目的関数が収束するまで計算するだけ、簡単。Pythonなら数行で書ける。</p>
-
-<h2>メモ</h2>
-
-<p>自分で導出していて思ったことをメモっておこうと思う。</p>
-
-<ul>
-<li>更新式は、行列の要素毎に独立して求められるんだなぁということ。
-
-<ul>
-<li>まぁ要素毎に偏微分して等式立ててるからそうなんだけど。更新の順番によって、収束する値、速度が変わるといったことはないんだろうか。</li>
-</ul>
-</li>
-<li>行列演算とスカラー演算が同じ式に同時に含まれていることがあるので注意。例えば、最終的な更新式の割り算は、要素毎のスカラー演算で、行列演算ではない。</li>
-<li>何かいっぱいシグマがあるけど、めげない。計算ミスしやすい、つらい。</li>
-<li>NMFという名前から行列操作を意識してしまうけど、更新式の導出の過程に行列の微分とか出てこない。更新式の導出は、行列の要素個々に対して行うイメージ。</li>
-</ul>
-
-
-<p>NMFなんて簡単、と言われますが（要出典）、実際にやってみると結構めんどくさいなー、と思いました（小並感</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/07/27/nmf-euclid//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/07/27/nlp-ime-book-read/">
-		
-			「日本語入力を支える技術」を読んだ</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-27T00:30:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/book/'>book</a>
-
-
-</div>
-    </div>
-		<div align="center">
-<a href="http://www.amazon.co.jp/exec/obidos/ASIN/4774149934/ryry-22/" target="_blank"><img alt="日本語入力を支える技術　～変わり続けるコンピュータと言葉の世界 (WEB+DB PRESS plus)" height="500" src="http://ecx.images-amazon.com/images/I/51DjOK-jLoL.jpg" title="日本語入力を支える技術　～変わり続けるコンピュータと言葉の世界 (WEB+DB PRESS plus)" width="354" /></a></div>
-
-
-<h2>感想</h2>
-
-<ul>
-<li>自然言語処理はあまり詳しくないけど、さっと読んで全然わからんということはなかった</li>
-<li>2章まではさくっと読めたけど、3章のトライ、ダブル配列当たりでコケた</li>
-<li>簡潔ビット構造はわかりやすい</li>
-<li>カッコウ・ハッシュおもしろい</li>
-<li>「CRFの更新式はどのような動作をするか」の説明はすごくわかりやすい</li>
-<li>付録が付録じゃないくらい力入ってる…ヤバイ…</li>
-</ul>
-
-
-<p>（小並感）</p>
-
-<p>全体的にわかりやすい説明が見て取れるけど、内容が盛りだくさん過ぎる印象。すべてをこの本で理解しようとするのは無理なので、この本を機に、他の本や論文などを読んで理解を深めるといいと思った。</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/07/27/nlp-ime-book-read//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/07/27/mig-ricty-font-install/">
-		
-			MigMix 1P, Migu 1M, Rictyとか綺麗なフォントをインストールするスクリプト</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-27T00:11:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/font/'>font</a>
-
-
-</div>
-    </div>
-		<p>家、大学、会社、レンタルサーバ、デスクトップからノートPCや仮想マシンなど、色んな環境があると思う。それぞれで、別個に環境を整えるのってとてもめんどくさい。.zshrc等の設定ファイルは、github置いておいて各環境でpullすればいい。けど、fontはデカイし、Rictyに関してはライセンスの関係もあってフォント自体を配布することは禁止されているので、github等にアップロードしておくのはいい方法ではない。</p>
-
-<p>というわけで、Rictyを含め僕が使ってるフォントをインストールするスクリプトを書いた。</p>
-
-<p>インストールされるのは、以下のフォント</p>
-
-<ul>
-<li>MigMix 1P</li>
-<li>Migu 1M</li>
-<li>Inconsolata</li>
-<li>Ricty</li>
-<li>Ricty for Powerline</li>
-</ul>
-
-
-<p>基本的にはMigMix 1Pを使っていて、テキストエディタ等で等幅フォントが望ましい場合は、Migu 1M か Ricty にしてる。Ricty for Powerlineは、powerlineで必要なフォントパッチを当てたもので、ターミナルで使ってる。</p>
-
-<p><a href="https://gist.github.com/r9y9/5938857">https://gist.github.com/r9y9/5938857</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Requirement: wget, unzip, git and fontforge</span>
-</span><span class='line'><span class="k">function </span>check_requirement<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="nv">messages</span><span class="o">=()</span>
-</span><span class='line'>    <span class="k">for </span>r in <span class="s2">&quot;wget&quot;</span> <span class="s2">&quot;unzip&quot;</span> <span class="s2">&quot;git&quot;</span> <span class="s2">&quot;fontforge&quot;</span>
-</span><span class='line'>    <span class="k">do</span>
-</span><span class='line'> <span class="o">[</span> -z <span class="sb">`</span>which <span class="nv">$r</span><span class="sb">`</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> messages+<span class="o">=(</span><span class="nv">$r</span><span class="o">)</span>
-</span><span class='line'>    <span class="k">done</span>
-</span><span class='line'><span class="k">    if</span> <span class="o">[</span> <span class="k">${#</span><span class="nv">messages</span><span class="p">[@]</span><span class="k">}</span> -gt 0 <span class="o">]</span>
-</span><span class='line'>    <span class="k">then</span>
-</span><span class='line'><span class="k"> </span><span class="nb">echo</span> <span class="s2">&quot;NOT found: ${messages[@]}. Try again after installing the command(s).&quot;</span>
-</span><span class='line'> <span class="nb">exit </span>1;
-</span><span class='line'>    <span class="k">fi</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Install directory</span>
-</span><span class='line'><span class="o">[</span> ! -d ~/.fonts <span class="o">]</span> <span class="o">&amp;&amp;</span> mkdir -p ~/.fonts/
-</span><span class='line'>
-</span><span class='line'><span class="c"># MigMix 1P</span>
-</span><span class='line'><span class="k">function </span>install_migumix-1p<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    wget -O migmix.zip <span class="s2">&quot;http://sourceforge.jp/frs/redir.php?m=jaist&amp;f=%2Fmix-mplus-ipa%2F59021%2Fmigmix-1p-20130617.zip&quot;</span>
-</span><span class='line'>    unzip -o migmix.zip -d migmix
-</span><span class='line'>    find migmix -name <span class="s2">&quot;*.ttf&quot;</span> | xargs -i mv -vf <span class="o">{}</span> ~/.fonts
-</span><span class='line'>    rm -rf migmix*
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Migu 1M</span>
-</span><span class='line'><span class="k">function </span>install_migu-1m<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    wget -O migu-1m.zip <span class="s2">&quot;http://sourceforge.jp/frs/redir.php?m=jaist&amp;f=%2Fmix-mplus-ipa%2F59022%2Fmigu-1m-20130617.zip&quot;</span>
-</span><span class='line'>    unzip -o migu-1m.zip -d migu-1m
-</span><span class='line'>    find migu-1m -name <span class="s2">&quot;*.ttf&quot;</span> | xargs -i mv -vf <span class="o">{}</span> ~/.fonts
-</span><span class='line'>    rm -rf migu-1m*
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Inconsolata</span>
-</span><span class='line'><span class="k">function </span>install_inconsolata<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    wget -O Inconsolata.otf <span class="s2">&quot;http://levien.com/type/myfonts/Inconsolata.otf&quot;</span>
-</span><span class='line'>    mv -vf Inconsolata.otf ~/.fonts
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Ricty</span>
-</span><span class='line'><span class="c"># Migu-1m and Inconsolata must be installed in advance</span>
-</span><span class='line'><span class="k">function </span>install_ricty<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    git clone https://github.com/yascentur/Ricty.git
-</span><span class='line'>    sh Ricty/ricty_generator.sh auto
-</span><span class='line'>    mv -vf Ricty*.ttf ~/.fonts
-</span><span class='line'>    rm -rf Ricty
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Powerline symbols</span>
-</span><span class='line'><span class="k">function </span>install_powerline_symbols<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    wget -O PowerlineSymbols.otf <span class="s2">&quot;https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf&quot;</span>
-</span><span class='line'>    mv -vf PowerlineSymbols.otf ~/.fonts/
-</span><span class='line'>
-</span><span class='line'>    wget -O 10-powerline-symbols.conf <span class="s2">&quot;https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf&quot;</span>
-</span><span class='line'>    <span class="o">[</span> ! -d ~/.config/fontconfig/conf.d/ <span class="o">]</span> <span class="o">&amp;&amp;</span> mkdir -p ~/.config/fontconfig/conf.d/
-</span><span class='line'>    mv -vf 10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Ricty for powerline</span>
-</span><span class='line'><span class="k">function </span>install_ricty_for_powerline<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    wget -O fontpatcher.py <span class="s2">&quot;https://github.com/Lokaltog/powerline/raw/develop/font/fontpatcher.py&quot;</span>
-</span><span class='line'>    wget -O fontpatcher-symbols.sfd <span class="s2">&quot;https://github.com/Lokaltog/powerline/raw/develop/font/fontpatcher-symbols.sfd&quot;</span>
-</span><span class='line'>    fontforge -script fontpatcher.py ~/.fonts/Ricty-Regular.ttf
-</span><span class='line'>    mv -vf Ricty*.ttf ~/.fonts
-</span><span class='line'>    rm -f fontpatcher.py
-</span><span class='line'>    rm -f fontpatcher-symbols.sfd
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>check_requirement
-</span><span class='line'>
-</span><span class='line'>install_migumix-1p
-</span><span class='line'>install_migu-1m
-</span><span class='line'>install_inconsolata
-</span><span class='line'>install_ricty
-</span><span class='line'>install_powerline_symbols
-</span><span class='line'>install_ricty_for_powerline
-</span><span class='line'>
-</span><span class='line'><span class="nb">fc</span>-cache -fv ~/.fonts
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これでフォントインストールはほぼ自動化。ありとあらゆることを自動化したい。</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/07/27/mig-ricty-font-install//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/07/27/blogger-custom/">
-		
-			Bloggerカスタマイズメモ</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-27T00:00:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-
-	<a class='category' href='/blog/categories/blogger/'>blogger</a>
-
-
-</div>
-    </div>
-		<h2>まとめ</h2>
-
-<p>とりあえず、行ったのは以下の通り。変更の度にこの投稿に追加するかも</p>
-
-<ul>
-<li><a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxの導入</a></li>
-<li>syntax highlighterの導入</li>
-<li>google-code-prettyyの導入</li>
-<li>CSSの修正</li>
-<li>ソーシャルリンクの追加</li>
-</ul>
-
-
-<h2>Mathjax</h2>
-
-<p>別記事にまとめた→ <a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxを使ってBloggerで数式を書く</a></p>
-
-<h2>Syntax Highlighter</h2>
-
-<p>結局syntax highlighterを使うことにした（2013/08/03）。
-google-code-prettyだとデフォに不満が若干あるし、カスタマイズしててもめんどくさかったので。
-デフォで綺麗なのがいい</p>
-
-<h3>導入方法</h3>
-
-<p><a href="http://www.way2blogging.org/widget-generators/syntax-highlighter-scripts-generator">http://www.way2blogging.org/widget-generators/syntax-highlighter-scripts-generator</a></p>
-
-<p>ここでgenerateされたコードを埋め込むだけ。</p>
-
-<h3>使い方</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;pre</span> <span class="na">class=</span><span class="s">&quot;brush: html&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>   write html code here
-</span><span class='line'><span class="nt">&lt;/pre&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>カスタマイズ</h3>
-
-<p><a href="http://8bitsize.blogspot.jp/2012/10/syntax-highlighter-config.html">http://8bitsize.blogspot.jp/2012/10/syntax-highlighter-config.html</a></p>
-
-<p>ここを参考に、toolbarを表示しないようにした。</p>
-
-<p><code>SyntaxHighlighter.defaults['toolbar'] = false;</code></p>
-
-<p>とgenerateされたスクリプトに追加するだけ</p>
-
-<h2>google-code-pretty</h2>
-
-<p>結局syntax highlighterを使うことにした（2013/08/03）。
-google-code-prettyだとデフォに不満が若干あるし、カスタマイズしててもめんどくさかったので。</p>
-
-<h3>導入方法</h3>
-
-<p>以下のリンクから、add to bloggerボタンを押すと一瞬で導入できる</p>
-
-<p><a href="http://www.kuribo.info/2008/04/code-prettify.html">http://www.kuribo.info/2008/04/code-prettify.html</a></p>
-
-<h2>CSS</h2>
-
-<p>cssの修正は、とりあえず最低限以下のようにした。
-全体のフォントをよさげな奴に指定
-タイトルのフォントやらをよさげな奴に指定
-headingのフォーマット変更</p>
-
-<p>気に入らないところはその都度調整すると思うので、gistで管理することにする。
-<a href="https://gist.github.com/r9y9/6094627">https://gist.github.com/r9y9/6094627</a></p>
-
-<h2>ソーシャルリンク</h2>
-
-<h3>Follow me ボタン</h3>
-
-<p><a href="http://www.go2web20.net/twitterFollowBadge/">http://www.go2web20.net/twitterFollowBadge/</a>
-ここで作って、html/javascriptガジェットにコードを貼り付けるだけ。</p>
-
-<h3>いいねボタン</h3>
-
-<p>あとで付けたい</p>
-
-<p>継ぎ足し継ぎ足しカスタマイズしていく</p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-		<span class="comments"><a href="/blog/2013/07/27/blogger-custom//blog/page/3/index.html#disqus_thread">Comments</a></span>
-	
-</div>
-</article>
-
-<nav id="pagenavi">
+<time datetime="2013-08-12T00:30:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/08/12/bash-check-commend-existence/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/08/12/bash-check-commend-existence/">Comments</a>
+        
+      </p>
     
-        <a href="/blog/page/2/" class="prev">Prev</a>
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/11/emacs-24-for-ubuntu12-04/">emacs24をUbuntu12.04 にインストールする方法</a></h1>
     
     
-    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
-</nav>
+      <p class="meta">
+        
 
-    </div>
-    <footer id="footer">
-    <div style="display:inline">
-    Copyright &copy; 2014
 
-    Ryuichi Yamamoto
-. Powered by <a href="http://octopress.org">Octopress</a> | 
-    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-11T00:26:00+09:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/08/11/emacs-24-for-ubuntu12-04/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/08/11/emacs-24-for-ubuntu12-04/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/06/naive-bayes-mnist/">Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-06T23:08:00+09:00" pubdate data-updated="true">Aug 6<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/08/06/naive-bayes-mnist/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/03/mathjax-blogger/">Mathjaxを使ってBloggerで数式を書く</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-03T23:01:00+09:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2013</time>
+        
+           | <a href="/blog/2013/08/03/mathjax-blogger/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/31/multinomial-categorical-diff/">Multinomial distributionとCategorical Distributionの違い</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-31T22:51:00+09:00" pubdate data-updated="true">Jul 31<span>st</span>, 2013</time>
+        
+           | <a href="/blog/2013/07/31/multinomial-categorical-diff/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/28/naive-bayes-formulation/">Naive Bayesの復習（導出編）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-28T22:24:00+09:00" pubdate data-updated="true">Jul 28<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/07/28/naive-bayes-formulation/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/27/nmf-euclid/">NMFアルゴリズムの導出（ユークリッド距離版）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T23:30:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/07/27/nmf-euclid/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/07/27/nmf-euclid/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/27/nlp-ime-book-read/">「日本語入力を支える技術」を読んだ</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T00:30:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/07/27/nlp-ime-book-read/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/07/27/nlp-ime-book-read/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/27/mig-ricty-font-install/">MigMix 1P, Migu 1M, Rictyとか綺麗なフォントをインストールするスクリプト</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T00:11:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/07/27/mig-ricty-font-install/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/07/27/mig-ricty-font-install/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/27/blogger-custom/">Bloggerカスタマイズメモ</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T00:00:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+           | <a href="/blog/2013/07/27/blogger-custom/#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io/blog/2013/07/27/blogger-custom/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <!-- do nothing but show the title on the listings page -->
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a class="archives btn btn-light" href="/blog/archives">Blog Archives</a>
+    
+    <a class="next btn btn-light" href="/blog/page/2/">Newer &rarr;</a>
+    
+  </div>
 </div>
 
 
-    </footer>
-    <script src="/javascripts/fabric.js"></script>
-<script src="/javascripts/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-	$('.fancybox').fancybox();
-})(jQuery);
-</script> <!-- Delete or comment this line to disable Fancybox -->
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://r9y9.github.io" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://r9y9.github.io/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      
+      <a href="http://r9y9.github.io/atom.xml" alt="subscribe feed"><img src="/images/rss.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/27/start-coding-go-msptools/">Goで信号処理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/23/emacs-sublime-text-like-theme/">Emacs Themes - Sublime Text風のcolor Themeが気に入った</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/01/mlsa-filter-with-c-plus-plus/">MLSA Digital Filter のC++実装</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/01/sptk-with-waf/">SPTKをC++から使えるようにする</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/24/mfcc-calculation-memo/">MFCCの計算方法についてメモ</a>
+      </li>
+    
+  </ul>
+</section>
 
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/r9y9">@r9y9</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'r9y9',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+</aside>
+
+
+    			</div>
+    			<footer id="footer">
+    				<p class="credit">
+  Copyright &copy; 2014 - Ryuichi Yamamoto. Powered by <a href="http://octopress.org">Octopress</a>
+</p>
+
+
+    			</footer>
+    			
 
 <script type="text/javascript">
       var disqus_shortname = 'r9y9blog';
@@ -1612,23 +538,67 @@ headingのフォーマット変更</p>
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
 
 
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 
-<!-- end toload --> 
-</div>
-</div>
-<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
-<script type="text/javascript">
-/*<![CDATA[*/
-;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
-/*]]>*/
-</script><!-- remove it to remove the scroll to top button -->
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+    		</div>
+    	</section>
+  	</div>
 </body>
 </html>
