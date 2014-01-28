@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Go | 山本さんのブログ（仮）]]></title>
+  <title><![CDATA[Category: Go, | 山本さんのブログ（仮）]]></title>
   <link href="http://r9y9.github.io/blog/categories/go/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-01-28T01:47:01+09:00</updated>
+  <updated>2014-01-28T23:47:35+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -14,69 +14,91 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Goで信号処理]]></title>
-    <link href="http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/"/>
-    <updated>2014-01-27T02:17:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools</id>
-    <content type="html"><![CDATA[<p>最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う</p>
+    <title type="html"><![CDATA[Goでクロマベクトルを求める]]></title>
+    <link href="http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/"/>
+    <updated>2014-01-28T23:08:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/pcp_result.png" title="&ldquo;Chromagram&rdquo;" ></p>
 
-<h2>Goの良い所</h2>
+<p>Chromagram。ドレミの歌の冒頭を分析した結果です</p>
+
+<p>```go
+package main</p>
+
+<p>import (</p>
+
+<pre><code>"fmt"
+"github.com/mjibson/go-dsp/wav"
+"github.com/r9y9/go-msptools/pcp"
+"log"
+"os"
+</code></pre>
+
+<p>)</p>
+
+<p>func main() {</p>
+
+<pre><code>// reading data
+file, err := os.Open("/path/to/file.wav")
+if err != nil {
+    log.Fatal(err)
+}
+defer file.Close()
+
+wav, werr := wav.ReadWav(file)
+if werr != nil {
+    log.Fatal(werr)
+}
+
+// convert to []float64 from []int
+data := make([]float64, len(wav.Data[0]))
+for i := range data {
+    data[i] = float64(wav.Data[0][i])
+}
+
+// settings for analysis
+frameShift := int(float64(wav.SampleRate) / 100.0) // 0.01 sec
+sampleRate := int(wav.SampleRate)
+
+// create PCP extrator
+p := pcp.NewPCP(sampleRate, frameShift)
+
+// analysis roop
+result := make([][]float64, p.NumFrames(data))
+for i := 0; i &lt; p.NumFrames(data); i++ {
+    pcp := p.PCP(data, i*frameShift)
+    //pcp := p.PCPNormalized(data, i*frameShift)
+    result[i] = pcp
+}
+
+// print as a gnuplot 3D plotting format
+fmt.Println("#", len(result[0]), len(result))
+for i, spec := range result {
+    for j, val := range spec {
+        fmt.Println(i, j, val)
+    }
+    fmt.Println("")
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>こんな感じでOK。Chromagramをgnuplot形式で標準出力に出力します</p>
+
+<h2>Pitch Class Profile (PCP) in Go <a href="https://github.com/r9y9/go-msptools/tree/master/pcp">[Code]</a></h2>
+
+<p>どうやってクロマベクトルを計算しているかざっくり説明すると、</p>
 
 <ul>
-<li>デフォでたくさん便利なパッケージがある。http, json, os, &hellip;</li>
-<li>パッケージのインストールはとても簡単。go getするだけ</li>
-<li>デフォでテストの枠組みがある</li>
-<li>gofmtでコードのformattingしてくれるので書き方で迷わなくて良い</li>
-<li>使わないパッケージをimportするとコンパイルエラーになるし自然と疎結合なコードを書くようになる</li>
-<li>並列処理を言語レベルでサポート</li>
-<li>GCあるのでメモリ管理なんてしなくていい</li>
-<li>全般的にC++より書きやすい（ここ重要）</li>
-<li>そこそこ速い（C++よりは遅いけど）</li>
+<li>入力信号をガボールウェーブレット変換</li>
+<li>オクターブ無視して12次元に圧縮（例えば55Hz, 110Hz, 220Hz, 440Hz はすべてAとする）</li>
 </ul>
 
 
-<p>ホントはPythonでさくっと書きたいけどパフォーマンスもほしいからC++で書くかー（嫌だけど）。と思ってた自分にはちょうどいい</p>
+<p>という手順で求めてます</p>
 
-<h2>Goの悪い所（主にC++と比べて）</h2>
-
-<ul>
-<li>ちょっと遅い。さっと試したウェーブレット変換は、1.5倍くらい遅かった気がする（うろ覚え）</li>
-<li>C++やpythonに比べるとライブラリは少ない</li>
-<li>言語仕様とかそのへんが優れてるかどうかは判断つきませんごめんなさい</li>
-</ul>
-
-
-<h1><a href="https://github.com/r9y9/go-msptools">Go-msptools</a></h1>
-
-<p>で、大学院時代から継ぎ足し継ぎ足ししてきた秘伝の信号処理C++ライブラリがあるんだけど、一部切り出してGoで書いてみた</p>
-
-<ul>
-<li><a href="https://github.com/r9y9/go-msptools">Github</a></li>
-<li><a href="http://godoc.org/github.com/r9y9/go-msptools">GoDoc</a></li>
-</ul>
-
-
-<p>音声信号処理用にケプストラム分析とかLPCとか色々書いたけど、考えた結果既存のライブラリ使うほうがいいやってなったので音楽に特化することにしました。SPTK様には頭が上がりません</p>
-
-<p>さておき、パッケージは今の所二つ</p>
-
-<ul>
-<li><a href="https://github.com/r9y9/go-msptools/tree/master/cwt">cwt</a> : ガボール連続ウェーブレット変換</li>
-<li><a href="https://github.com/r9y9/go-msptools/tree/master/pcp">pcp</a> : クロマベクトル</li>
-</ul>
-
-
-<p>Go始めたてのころに <a href="https://github.com/mjibson/go-dsp/">go-dsp</a> というデジタル信号処理ライブラリを見つけて、もろそれに影響受けた名前になってる。</p>
-
-<p>徐々にC++版を移植していこうかなと考え中</p>
-
-<h2>おまけ：音の信号処理に役立ちそうなライブラリ</h2>
-
-<ul>
-<li><a href="https://github.com/mjibson/go-dsp/">go-dsp</a></li>
-<li><a href="https://code.google.com/p/portaudio-go/">portaudio-go</a></li>
-</ul>
-
+<p>Goかどうかなんてどうでもいいんだけど、まぁC++に比べて書きやすすぎて泣けるよね</p>
 ]]></content>
   </entry>
   

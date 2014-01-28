@@ -4,7 +4,7 @@
   <title><![CDATA[山本さんのブログ（仮）]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-01-28T01:47:01+09:00</updated>
+  <updated>2014-01-28T23:47:35+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,142 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Goでクロマベクトルを求める]]></title>
+    <link href="http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/"/>
+    <updated>2014-01-28T23:08:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://r9y9.github.io/images/pcp_result.png" title="&#34;Chromagram&#34;" alt="&#34;Chromagram&#34;"></p>
+
+<p>Chromagram。ドレミの歌の冒頭を分析した結果です</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/mjibson/go-dsp/wav&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/r9y9/go-msptools/pcp&quot;</span>
+</span><span class='line'>  <span class="s">&quot;log&quot;</span>
+</span><span class='line'>  <span class="s">&quot;os&quot;</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// reading data</span>
+</span><span class='line'>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Open</span><span class="p">(</span><span class="s">&quot;/path/to/file.wav&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">wav</span><span class="p">,</span> <span class="nx">werr</span> <span class="o">:=</span> <span class="nx">wav</span><span class="p">.</span><span class="nx">ReadWav</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">werr</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">werr</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// convert to []float64 from []int</span>
+</span><span class='line'>  <span class="nx">data</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">wav</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">data</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">wav</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">])</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// settings for analysis</span>
+</span><span class='line'>  <span class="nx">frameShift</span> <span class="o">:=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float64</span><span class="p">(</span><span class="nx">wav</span><span class="p">.</span><span class="nx">SampleRate</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="c1">// 0.01 sec</span>
+</span><span class='line'>  <span class="nx">sampleRate</span> <span class="o">:=</span> <span class="nb">int</span><span class="p">(</span><span class="nx">wav</span><span class="p">.</span><span class="nx">SampleRate</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// create PCP extrator</span>
+</span><span class='line'>  <span class="nx">p</span> <span class="o">:=</span> <span class="nx">pcp</span><span class="p">.</span><span class="nx">NewPCP</span><span class="p">(</span><span class="nx">sampleRate</span><span class="p">,</span> <span class="nx">frameShift</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// analysis roop</span>
+</span><span class='line'>  <span class="nx">result</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([][]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">NumFrames</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">NumFrames</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">pcp</span> <span class="o">:=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">PCP</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">i</span><span class="o">*</span><span class="nx">frameShift</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1">//pcp := p.PCPNormalized(data, i*frameShift)</span>
+</span><span class='line'>      <span class="nx">result</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">pcp</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// print as a gnuplot 3D plotting format</span>
+</span><span class='line'>  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;#&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="nx">result</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">spec</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">result</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">for</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">spec</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>こんな感じでOK。Chromagramをgnuplot形式で標準出力に出力します</p>
+
+<h2>Pitch Class Profile (PCP) in Go <a href="https://github.com/r9y9/go-msptools/tree/master/pcp">[Code]</a></h2>
+
+<p>どうやってクロマベクトルを計算しているかざっくり説明すると、</p>
+
+<ul>
+<li>入力信号をガボールウェーブレット変換</li>
+<li>オクターブ無視して12次元に圧縮（例えば55Hz, 110Hz, 220Hz, 440Hz はすべてAとする）</li>
+</ul>
+
+
+<p>という手順で求めてます</p>
+
+<p>Goかどうかなんてどうでもいいんだけど、まぁC++に比べて書きやすすぎて泣けるよね</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Goで信号処理]]></title>
@@ -1606,37 +1742,6 @@ Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインス
 
 
 <p>終わり。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[apt-getでコマンドがインストールできるか確認する方法]]></title>
-    <link href="http://r9y9.github.io/blog/2013/08/12/apt-commend-check/"/>
-    <updated>2013-08-12T00:33:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/08/12/apt-commend-check</id>
-    <content type="html"><![CDATA[<p>apt-cacheを使えばいい、なんてことは誰でも知ってると思うけど、apt-cache search ってすると、コマンド名だけじゃなくコマンドの説明文も一緒に検索されてしまって、都合が悪い場合がある。</p>
-
-<p>そんな時には以下のようにする。</p>
-
-<p><code>
-apt-cache search --names-only ^emacs24$
-</code></p>
-
-<p>これで、指定したコマンドがインストールできるかを確認できる。</p>
-
-<h3>ポイント1</h3>
-
-<p><code>--names-only</code> オプションを付ける。これで名前のみから検索してくれる。</p>
-
-<h3>ポイント2</h3>
-
-<p>正規表現を使う。これで柔軟性の高い検索ができる。</p>
-
-<p>以上。</p>
-
-<p>ちなみにyumだともうちょっとめんどくさい。yum listかyum searchを使えば似たようなことができる。yum listは、名前のみ検索、yum searchは名前と説明文を検索。</p>
-
-<p>どうでもいいけどyum使いづらい。apt-get最高</p>
 ]]></content>
   </entry>
   
