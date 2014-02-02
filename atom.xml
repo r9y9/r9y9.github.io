@@ -4,7 +4,7 @@
   <title><![CDATA[山本さんのブログ（仮）]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-01-28T23:54:29+09:00</updated>
+  <updated>2014-02-02T18:34:22+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Goに関する良記事]]></title>
+    <link href="http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/"/>
+    <updated>2014-02-02T16:57:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go</id>
+    <content type="html"><![CDATA[<p>いくつか見つけたのでメモる</p>
+
+<h2><a href="http://www.jellolabs.com/blog/why-golang-is-ready-for-early-stage-startups.html">Why We Think GoLang Is Ready For Early Stage Startups</a></h2>
+
+<p>とあるスタートアップがウェブでGoを使うという意思決定をした理由、その決断に至るまでのプロセスが書かれている。また、その過程でGoを使うことによる利点・欠点が簡潔にまとめられてる。参考になった</p>
+
+<h2><a href="https://kidoman.com/programming/go-getter.html">Go Getter &ndash; Performance comparison to C++ business card ray tracer</a></h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/go-improvements.png"></p>
+
+<p>GoとC++のパフォーマンスの比較。Ray tracingというCGの手法を用いて比較をしていて、Goでも最適化するとC++並のスピード出ますよ（そしてC++と違ってGCあるしマルチコアにも簡単にできるしGoいいよ）って話。（自分へのメモのため画像を拝借していますが、意味がわからないと思うので元記事を参照してください）</p>
+
+<p>ただoptimized Go vs un-optimized C++なので注意。Goの最適化が主旨の記事です</p>
+
+<h2><a href="https://kidoman.com/programming/go-getter-part-2.html">Go Getter Part 2 &ndash; Now with C++ optimizations</a></h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/go-vs-cpp-after-both-optimized.png"></p>
+
+<p>さっきの続きで、こちらでは最適化したC++と比較されてる。OpenMP使って並列化してるようだけど、あれ、まだC++の方が遅い・・（正直意外</p>
+
+<h2><a href="https://kidoman.com/programming/go-getter-part-3.html">Go Getter Part 3 &ndash; Further optimizations and a multi-threaded C++ version</a></h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/2048x2048-3.png"></p>
+
+<p>これで最後。C++（とGo）をめちゃくちゃ最適化した、って奴ですね。C++の方が二倍程度速くなったよう。
+ただ、やっぱC++の方が良かった、というよりGoがC++並になるのも時間の問題って感じですね。</p>
+
+<h2>さて</h2>
+
+<p>このまとめで何が言いたかったというと</p>
+
+<p><strong>「Goを使わない選択肢がない」</strong></p>
+
+<p>まぁ半分冗談（ケースバイケースだし）ですが、僕のようにC++をメインで使っているけど不満ありまくりな人は、一度Go使ってみてもいいんじゃないでしょうか、と思います。C++の百倍書きやすいです</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Goでクロマベクトルを求める]]></title>
@@ -1647,101 +1689,6 @@ X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
 
 
 <p>がんばろう。ただの日記</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[UbuntuでNumpy, Scipyをソースからインストール]]></title>
-    <link href="http://r9y9.github.io/blog/2013/08/12/numpy-scipy-for-ubuntu/"/>
-    <updated>2013-08-12T00:35:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/08/12/numpy-scipy-for-ubuntu</id>
-    <content type="html"><![CDATA[<p><img class="center" src="http://r9y9.github.io/images/numpy_scipy_version_terminal.png"></p>
-
-<p>apt-getを使う場合→<a href="http://d.hatena.ne.jp/sat0yu/20130302/1362172589">ubuntuにnumpy, scipy, matplotlib環境を構築 &ndash; sat0yuの日記</a>
-ただやっぱり最新版を使いたいということがある。というわけでメモ。
-Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインストールできると思う）。</p>
-
-<h2>準備</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install python python-dev gcc gfortran g++
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Numpyのインストール</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/numpy/numpy
-</span><span class='line'><span class="nb">cd </span>numpy
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>かんたん</p>
-
-<h2>Scipyのインストール</h2>
-
-<p>これがちょっとめんどい。numpyのようには行かなかった。2013/08/12</p>
-
-<h3>前準備</h3>
-
-<p>以下をインストール</p>
-
-<ul>
-<li>numpy （上の通りでおｋ）</li>
-<li>blas/lapack</li>
-<li>cython</li>
-</ul>
-
-
-<h2>cythonのインストール</h2>
-
-<p>これ、apt-get install cython でも入るんだけど、バージョンが古いって怒られた。なので、cythonもソースからいれる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/cython/cython
-</span><span class='line'><span class="nb">cd </span>cython
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>かんたん</p>
-
-<h2>blas/lapackのインストール</h2>
-
-<p>これはapt-getから入れればおｋ</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install libblas-dev liblapack-dev
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>scipyのINSTALL.txt （リンク）を見るに、libatlas3-base-devをインストールすれば良さそうだけど、ubuntu 12.04じゃ見つからんかった（2013/08/12時点で）。で、何となく試してたら、libblas-devとliblapack-devで行けた。</p>
-
-<h2>Scipyのインストール！</h2>
-
-<p>これでやっとインストールできる</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/scipy/scipy
-</span><span class='line'><span class="nb">cd </span>scipy
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>終わり。</p>
 ]]></content>
   </entry>
   
