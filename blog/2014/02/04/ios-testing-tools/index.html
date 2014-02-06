@@ -10,7 +10,9 @@
 
   
   <meta name="description" content="まとめ 結局どれがいいのか？時と場合によるが、自分の場合、以下の二つを使うのがベストではないかと考えた Kiwi (単体テスト用)
-KIF (UI周りの結合テスト用) Why so? 単体テスト 代表的なツールににApple製のSenTestingやXCTestがある。が、 &hellip;">
+KIF (UI周りの結合テスト用) 追記
+unit testに関しては以下の記事がよくまとまっているので、そちらを参照した方が良いです
+http:// &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -151,13 +153,17 @@ KIF (UI周りの結合テスト用) Why so? 単体テスト 代表的なツー�
 </ul>
 
 
+<p>追記
+unit testに関しては以下の記事がよくまとまっているので、そちらを参照した方が良いです
+<a href="http://magneticbear.com/lab/ios-unit-testing/">http://magneticbear.com/lab/ios-unit-testing/</a></p>
+
 <h1>Why so?</h1>
 
 <h2>単体テスト</h2>
 
 <p>代表的なツールににApple製のSenTestingやXCTestがある。が、SenTestingはXcode 5に上がってからXcodeのデフォルトがXCTestになったので、新しいアプリではあえてSenTestingを使う必要はない（ちなみにSentTestingからXCTestへの変更は容易）。</p>
 
-<p>KiwiかXCTestか、といった問題は、正直人によると思うが、Ruby on RailsのRSpecに慣れてる人はKiwiのが使いやすいと思う。XCTestはデフォでサポートされているし使いやすいというメリットはあるが、Kiwiは<a href="https://github.com/allending/Kiwi/wiki/Asynchronous-Testing">Asynchronous Testing</a> をデフォでサポートしてるというメリットもあるので、個人的にはKiwiを選択した。XCTestとかSenTestingでもAsynchronus testingは可能だけど若干めんどいし、非同期処理のテストのしやすさはやはり重要</p>
+<p>KiwiかXCTestか、といった問題は、正直人によると思うが、RSpecに慣れてる人はKiwiのが使いやすいと思う。XCTestはデフォでサポートされているし使いやすいというメリットはあるが、Kiwiは<a href="https://github.com/allending/Kiwi/wiki/Asynchronous-Testing">Asynchronous Testing</a> をデフォでサポートしてるというメリットもあるので、個人的にはKiwiを選択した。XCTestとかSenTestingでもAsynchronus testingは可能だけど若干めんどいし、非同期処理のテストのしやすさはやはり重要</p>
 
 <h2>結合テスト</h2>
 
