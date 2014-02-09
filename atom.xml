@@ -4,7 +4,7 @@
   <title><![CDATA[山本さんのブログ（仮）]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-02-07T00:59:41+09:00</updated>
+  <updated>2014-02-10T03:09:47+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,145 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Goで音声信号処理をしたいのでSPTKのGoラッパーを書く]]></title>
+    <link href="http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/"/>
+    <updated>2014-02-10T02:33:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper</id>
+    <content type="html"><![CDATA[<p>Goが最近オススメです（n度目</p>
+
+<p>Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の<a href="http://sp-tk.sourceforge.net/">SPTK</a> をGoから使えるようにする</p>
+
+<h2>cgo</h2>
+
+<p>GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う <a href="http://golang.org/cmd/cgo/">http://golang.org/cmd/cgo/</a></p>
+
+<p>Cの関数や変数などには、 <code>C.</code> でアクセスできる</p>
+
+<h2>ラッパー</h2>
+
+<p>例えば以下のように書く。MFCCの計算を例に上げる。必要に応じで<code>SPTK.h</code>に定義されている関数をラップする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">sptk</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// #cgo pkg-config: SPTK</span>
+</span><span class='line'><span class="c1">// #cgo LDFLAGS: -lSPTK -lSPTKlib -lm</span>
+</span><span class='line'><span class="c1">// #include &lt;stdio.h&gt;</span>
+</span><span class='line'><span class="c1">// #include &lt;SPTK/SPTK.h&gt;</span>
+</span><span class='line'><span class="kn">import</span> <span class="s">&quot;C&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/****************************************************************</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">    $Id: _mfcc.c,v 1.11 2012/12/21 11:27:35 mataki Exp $</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">    Mel-Frequency Cepstral Analysis</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">        void mfcc(in, mc, sampleFreq, alpha, eps, wlng, flng</span>
+</span><span class='line'><span class="cm">                  m, n, ceplift, dftmode, usehamming);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">        double  *in        : input sequence</span>
+</span><span class='line'><span class="cm">        double  *mc        : mel-frequency cepstral coefficients</span>
+</span><span class='line'><span class="cm">        double  sampleFreq : sample frequency</span>
+</span><span class='line'><span class="cm">        double  alpha      : pre-emphasis coefficient</span>
+</span><span class='line'><span class="cm">        double  eps        : epsilon</span>
+</span><span class='line'><span class="cm">        int     wlng       : frame length of input sequence</span>
+</span><span class='line'><span class="cm">        int     flng       : frame length for fft</span>
+</span><span class='line'><span class="cm">        int     m          : order of cepstrum</span>
+</span><span class='line'><span class="cm">        int     n          : number of channel for mel-filter bank</span>
+</span><span class='line'><span class="cm">        int     ceplift    : liftering coefficients</span>
+</span><span class='line'><span class="cm">        Boolean dftmode    : use dft</span>
+</span><span class='line'><span class="cm">        Boolean usehamming : use hamming window</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">******************************************************************/</span>
+</span><span class='line'><span class="c1">// MFCC returns Mel-frequency Cepstral Coefficients.</span>
+</span><span class='line'><span class="kd">func</span> <span class="nx">MFCC</span><span class="p">(</span><span class="nx">audioBuffer</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">sampleRate</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">alpha</span><span class="p">,</span> <span class="nx">eps</span> <span class="kt">float64</span><span class="p">,</span> <span class="nx">wlng</span><span class="p">,</span> <span class="nx">flng</span><span class="p">,</span> <span class="nx">m</span><span class="p">,</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">ceplift</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">dftmode</span><span class="p">,</span> <span class="nx">usehamming</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// Convert go bool to C.Boolean (so annoying..</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">dftmodeInGo</span><span class="p">,</span> <span class="nx">usehammingInGo</span> <span class="nx">C</span><span class="p">.</span><span class="nx">Boolean</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">dftmode</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">dftmodeInGo</span> <span class="p">=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">dftmodeInGo</span> <span class="p">=</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">usehamming</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">usehammingInGo</span> <span class="p">=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">usehammingInGo</span> <span class="p">=</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">resultBuffer</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">m</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">C</span><span class="p">.</span><span class="nx">mfcc</span><span class="p">((</span><span class="o">*</span><span class="nx">_Ctype_double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">audioBuffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="o">*</span><span class="nx">_Ctype_double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">resultBuffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">sampleRate</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">alpha</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">eps</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">wlng</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">flng</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">m</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">n</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">ceplift</span><span class="p">),</span> <span class="nx">dftmodeInGo</span><span class="p">,</span> <span class="nx">usehammingInGo</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">resultBuffer</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>個人的な流儀で、結果は必ずreturnするようにしている</li>
+<li>boolからC言語のBooleanっぽいenumへの変換でめんどくさいことしてます</li>
+<li>コメントはSPTK 3.6のコードから引っ張って来ました</li>
+</ul>
+
+
+<p>このパッケージを使う前に、 <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a> を使ってSPTKをインストールする。本家のを使ってもいいですが、その場合は #cgo の設定が変わると思います。公式のSPTK、pkg-configに対応してくれんかな…</p>
+
+<p>最初は、LDFLAGS つけ忘れてて、symbol not foundってなってつらまった。次回から気をつけよう</p>
+
+<p>SPTKの、特に（メル）ケプストラム分析当たりは本当に難しいので、論文読んで実装するのも大変だし中身がわからなくてもラップする方が合理的、という結論に至りました。簡単なもの（例えば、メルケプからMLSA filterの係数への変換とか）は、依存関係を少なくするためにもGo nativeで書きなおした方がいいです</p>
+
+<p>コードは気が向いたら上げる</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[iOSアプリ開発に使える単体テスト・結合テストのツール]]></title>
@@ -1708,89 +1847,6 @@ X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i\omega t} dt.
 <p>機械学習にかまけて信号処理をちゃんと勉強していなかったつけがきている。LMA filterもMLSA filterも、本当にわからなくてツライ……orz</p>
 
 <p>(実はそんなに難しくなく、理解できた 2013/09後半)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[調波打楽器音分離（HPSS）を試す]]></title>
-    <link href="http://r9y9.github.io/blog/2013/09/14/hpss/"/>
-    <updated>2013-09-14T23:34:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/09/14/hpss</id>
-    <content type="html"><![CDATA[<h2>HPSSとは（一行説明）</h2>
-
-<p>HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ</p>
-
-<p>アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる</p>
-
-<h2>実装</h2>
-
-<p>調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-|H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
-\end{align}
-</script>
-
-
-
-
-<script type="math/tex; mode=display">
-\begin{align}
-|P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
-\end{align}
-</script>
-
-
-<p>ただし</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-|W_{t,k}| = |H_{t,k}| + |P_{t,k}|
-\end{align}
-</script>
-
-
-<p>絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。</p>
-
-<p>HPSSの論文はたくさんあるけど、日本語でかつ丁寧な <a href="http://ci.nii.ac.jp/naid/110007997346">&ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;</a> を参考にした。</p>
-
-<p>H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ</p>
-
-<p>一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。</p>
-
-<h2>結果</h2>
-
-<p>フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、<a href="http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html">歌もの音楽素材：歌入り素材系のフリー音楽素材一覧</a> から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
-18秒目くらいからを比較すると効果がわかりやすいです</p>
-
-<h3>元音源</h3>
-
-<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442" width="100%"></iframe>
-
-
-<h3>Hのみ取り出して再合成した音源</h3>
-
-<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534" width="100%"></iframe>
-
-
-<h3>Pのみ取り出して再合成した音源</h3>
-
-<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599" width="100%"></iframe>
-
-
-<p>それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</p>
-
-<p>コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ</p>
-
-<p>詳しくは論文へ（僕のじゃないけど</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://ci.nii.ac.jp/naid/110007997346">橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

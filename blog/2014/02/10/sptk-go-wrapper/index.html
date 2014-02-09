@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Goで音声信号処理をしたいのでSPTKのGoラッパーを書く - 山本さんのブログ（仮）</title>
+  <meta name="author" content="Ryuichi Yamamoto">
+
+  
+  <meta name="description" content="Goが最近オススメです（n度目 Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製のSPTK をGoから使えるようにする cgo GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="山本さんのブログ（仮）" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"], 
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+ 
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- mathjax settings end -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<aside class="left">
+			<div class="inner-left">
+				<header>
+					<img src="http://www.gravatar.com/avatar/6d356017749662a0c75ca192c7c88ed6?s=200" alt="Gravatar of Ryuichi Yamamoto " title="Gravatar of Ryuichi Yamamoto" class="profilepic" />
+<hgroup>
+  <h1><a href="/">山本さんのブログ（仮）</a></h1>
+  
+    <h2 class="subtitle">fmt.Println("Hello world")</h2>
+   
+</hgroup>
+
+
+				</header>
+				<footer>
+					<p>
+	
+		<a href="http://github.com/r9y9" class="btn btn-dark">GitHub</a>
+	
+	
+		<a href="http://twitter.com/r9y9" class="btn btn-dark">Twitter</a>
+	
+</p>
+				</footer>
+			</div>
+		</aside>
+    	<section class="right">
+    		<div class="inner-right">
+    			<div id="posts">
+    			  	<article class="post">
+    
+  <header>
+    
+      <h1 class="entry-title">Goで音声信号処理をしたいのでSPTKのGoラッパーを書く</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-10T02:33:00+09:00" pubdate data-updated="true">Feb 10<span>th</span>, 2014</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://r9y9.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Goが最近オススメです（n度目</p>
+
+<p>Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の<a href="http://sp-tk.sourceforge.net/">SPTK</a> をGoから使えるようにする</p>
+
+<h2>cgo</h2>
+
+<p>GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う <a href="http://golang.org/cmd/cgo/">http://golang.org/cmd/cgo/</a></p>
+
+<p>Cの関数や変数などには、 <code>C.</code> でアクセスできる</p>
+
+<h2>ラッパー</h2>
+
+<p>例えば以下のように書く。MFCCの計算を例に上げる。必要に応じで<code>SPTK.h</code>に定義されている関数をラップする</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">sptk</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// #cgo pkg-config: SPTK</span>
+</span><span class='line'><span class="c1">// #cgo LDFLAGS: -lSPTK -lSPTKlib -lm</span>
+</span><span class='line'><span class="c1">// #include &lt;stdio.h&gt;</span>
+</span><span class='line'><span class="c1">// #include &lt;SPTK/SPTK.h&gt;</span>
+</span><span class='line'><span class="kn">import</span> <span class="s">&quot;C&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/****************************************************************</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">    $Id: _mfcc.c,v 1.11 2012/12/21 11:27:35 mataki Exp $</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">    Mel-Frequency Cepstral Analysis</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">        void mfcc(in, mc, sampleFreq, alpha, eps, wlng, flng</span>
+</span><span class='line'><span class="cm">                  m, n, ceplift, dftmode, usehamming);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">        double  *in        : input sequence</span>
+</span><span class='line'><span class="cm">        double  *mc        : mel-frequency cepstral coefficients</span>
+</span><span class='line'><span class="cm">        double  sampleFreq : sample frequency</span>
+</span><span class='line'><span class="cm">        double  alpha      : pre-emphasis coefficient</span>
+</span><span class='line'><span class="cm">        double  eps        : epsilon</span>
+</span><span class='line'><span class="cm">        int     wlng       : frame length of input sequence</span>
+</span><span class='line'><span class="cm">        int     flng       : frame length for fft</span>
+</span><span class='line'><span class="cm">        int     m          : order of cepstrum</span>
+</span><span class='line'><span class="cm">        int     n          : number of channel for mel-filter bank</span>
+</span><span class='line'><span class="cm">        int     ceplift    : liftering coefficients</span>
+</span><span class='line'><span class="cm">        Boolean dftmode    : use dft</span>
+</span><span class='line'><span class="cm">        Boolean usehamming : use hamming window</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">******************************************************************/</span>
+</span><span class='line'><span class="c1">// MFCC returns Mel-frequency Cepstral Coefficients.</span>
+</span><span class='line'><span class="kd">func</span> <span class="nx">MFCC</span><span class="p">(</span><span class="nx">audioBuffer</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">sampleRate</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">alpha</span><span class="p">,</span> <span class="nx">eps</span> <span class="kt">float64</span><span class="p">,</span> <span class="nx">wlng</span><span class="p">,</span> <span class="nx">flng</span><span class="p">,</span> <span class="nx">m</span><span class="p">,</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">ceplift</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">dftmode</span><span class="p">,</span> <span class="nx">usehamming</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// Convert go bool to C.Boolean (so annoying..</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">dftmodeInGo</span><span class="p">,</span> <span class="nx">usehammingInGo</span> <span class="nx">C</span><span class="p">.</span><span class="nx">Boolean</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">dftmode</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">dftmodeInGo</span> <span class="p">=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">dftmodeInGo</span> <span class="p">=</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">usehamming</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">usehammingInGo</span> <span class="p">=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">usehammingInGo</span> <span class="p">=</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">resultBuffer</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">m</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">C</span><span class="p">.</span><span class="nx">mfcc</span><span class="p">((</span><span class="o">*</span><span class="nx">_Ctype_double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">audioBuffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="o">*</span><span class="nx">_Ctype_double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">resultBuffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">sampleRate</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">alpha</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">eps</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">wlng</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">flng</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">m</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">n</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">ceplift</span><span class="p">),</span> <span class="nx">dftmodeInGo</span><span class="p">,</span> <span class="nx">usehammingInGo</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">resultBuffer</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>個人的な流儀で、結果は必ずreturnするようにしている</li>
+<li>boolからC言語のBooleanっぽいenumへの変換でめんどくさいことしてます</li>
+<li>コメントはSPTK 3.6のコードから引っ張って来ました</li>
+</ul>
+
+
+<p>このパッケージを使う前に、 <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a> を使ってSPTKをインストールする。本家のを使ってもいいですが、その場合は #cgo の設定が変わると思います。公式のSPTK、pkg-configに対応してくれんかな…</p>
+
+<p>最初は、LDFLAGS つけ忘れてて、symbol not foundってなってつらまった。次回から気をつけよう</p>
+
+<p>SPTKの、特に（メル）ケプストラム分析当たりは本当に難しいので、論文読んで実装するのも大変だし中身がわからなくてもラップする方が合理的、という結論に至りました。簡単なもの（例えば、メルケプからMLSA filterの係数への変換とか）は、依存関係を少なくするためにもGo nativeで書きなおした方がいいです</p>
+
+<p>コードは気が向いたら上げる</p>
+</div>
+
+
+</article>
+
+
+        <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/" data-via="r9y9" data-counturl="http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+
+
+
+<section id="comments">
+    <div id="disqus_thread"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+
+    			</div>
+    			<footer id="footer">
+    				<p class="credit">
+  Copyright &copy; 2014 - Ryuichi Yamamoto. Powered by <a href="http://octopress.org">Octopress</a>
+</p>
+
+
+    			</footer>
+    			
+
+<script type="text/javascript">
+      var disqus_shortname = 'r9y9blog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/';
+        var disqus_url = 'http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"], 
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+ 
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- mathjax settings end -->
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+    		</div>
+    	</section>
+  	</div>
+</body>
+</html>
