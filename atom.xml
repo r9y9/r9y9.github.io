@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[R9Y9]]></title>
+  <title><![CDATA[Less is more]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-03-05T02:44:52+09:00</updated>
+  <updated>2014-03-22T21:25:28+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,317 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[音声分析変換合成システムWORLDのGoラッパーを書いた]]></title>
+    <link href="http://r9y9.github.io/blog/2014/03/22/go-world/"/>
+    <updated>2014-03-22T18:28:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/03/22/go-world</id>
+    <content type="html"><![CDATA[<h2>音声分析変換合成システムWORLD</h2>
+
+<p>WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ</p>
+
+<p><a href="http://ml.cs.yamanashi.ac.jp/world/">http://ml.cs.yamanashi.ac.jp/world/</a></p>
+
+<p>オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ</p>
+
+<h2>GO-WORLD</h2>
+
+<p><a href="https://github.com/r9y9/go-world">https://github.com/r9y9/go-world</a></p>
+
+<p>使い方について、ほんの少し解説を書きます</p>
+
+<p>※ubuntu12.04でのみ動作確認してます。</p>
+
+<h2>準備</h2>
+
+<h3>1. WORLDのインストール</h3>
+
+<p>まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました</p>
+
+<p><a href="https://github.com/r9y9/world">https://github.com/r9y9/world</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'> ./waf configure <span class="o">&amp;&amp;</span> ./waf
+</span><span class='line'> sudo ./waf install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>でインストールできます。</p>
+
+<p>なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…</p>
+
+<h3>2. GO-WORLDのインストール</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>go get github.com/r9y9/go-world
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>簡単ですね！</p>
+
+<h2>使い方</h2>
+
+<h3>1. インポートする</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">import</span> <span class="s">&quot;github.com/r9y9/go-world&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. worldのインスタンスを作る</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">w</span> <span class="o">:=</span> <span class="nx">world</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="nx">sampleRate</span><span class="p">,</span> <span class="nx">framePeriod</span><span class="p">)</span> <span class="c1">// e.g. (44100, 5)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3. 好きなworldのメソッドを呼ぶ</h3>
+
+<h4>基本周波数の推定: Dio</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Dio</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">w</span><span class="p">.</span><span class="nx">NewDioOption</span><span class="p">())</span> <span class="c1">// default option is used</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>スペクトル包絡の推定: Star</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">spectrogram</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Star</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>励起信号の推定: Platinum</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">residual</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Platinum</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span><span class="p">,</span> <span class="nx">spectrogram</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>パラメータから音声の再合成: Synthesis</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">synthesized</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Synthesis</span><span class="p">(</span><span class="nx">f0</span><span class="p">,</span> <span class="nx">spectrogram</span><span class="p">,</span> <span class="nx">residual</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使い方例.</h2>
+
+<p>音声（wavファイル）を分析して、パラメータから音声を再合成する例を紹介します。80行弱と少し長いですがはっつけておきます</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&quot;flag&quot;</span>
+</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/mjibson/go-dsp/wav&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/r9y9/go-world&quot;</span>
+</span><span class='line'>  <span class="s">&quot;log&quot;</span>
+</span><span class='line'>  <span class="s">&quot;os&quot;</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">defaultDioOption</span> <span class="p">=</span> <span class="nx">world</span><span class="p">.</span><span class="nx">DioOption</span><span class="p">{</span>
+</span><span class='line'>  <span class="nx">F0Floor</span><span class="p">:</span>          <span class="mf">80.0</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">F0Ceil</span><span class="p">:</span>           <span class="mf">640.0</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">FramePeriod</span><span class="p">:</span>      <span class="mi">5</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">ChannelsInOctave</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">Speed</span><span class="p">:</span>            <span class="mi">6</span><span class="p">,</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 音声を基本周波数、スペクトル包絡、励起信号の三つに分解したあと、再合成します</span>
+</span><span class='line'><span class="kd">func</span> <span class="nx">worldExample</span><span class="p">(</span><span class="nx">input</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">sampleRate</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">w</span> <span class="o">:=</span> <span class="nx">world</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="nx">sampleRate</span><span class="p">,</span> <span class="nx">defaultDioOption</span><span class="p">.</span><span class="nx">FramePeriod</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 1. Fundamental frequency</span>
+</span><span class='line'>  <span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Dio</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">defaultDioOption</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 2. Spectral envelope</span>
+</span><span class='line'>  <span class="nx">spectrogram</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Star</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 3. Excitation spectrum</span>
+</span><span class='line'>  <span class="nx">residual</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Platinum</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span><span class="p">,</span> <span class="nx">spectrogram</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 4. Synthesis</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Synthesis</span><span class="p">(</span><span class="nx">f0</span><span class="p">,</span> <span class="nx">spectrogram</span><span class="p">,</span> <span class="nx">residual</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 音声を基本周波数、スペクトル包絡、非周期成分の三つに分解したあと、再合成します</span>
+</span><span class='line'><span class="kd">func</span> <span class="nx">worldExampleAp</span><span class="p">(</span><span class="nx">input</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">sampleRate</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">w</span> <span class="o">:=</span> <span class="nx">world</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="nx">sampleRate</span><span class="p">,</span> <span class="nx">defaultDioOption</span><span class="p">.</span><span class="nx">FramePeriod</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 1. Fundamental frequency</span>
+</span><span class='line'>  <span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Dio</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">defaultDioOption</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 2. Spectral envelope</span>
+</span><span class='line'>  <span class="nx">spectrogram</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Star</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 3. Apiriodiciy</span>
+</span><span class='line'>  <span class="nx">apiriodicity</span><span class="p">,</span> <span class="nx">targetF0</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">AperiodicityRatio</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">f0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 4. Synthesis</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">w</span><span class="p">.</span><span class="nx">SynthesisFromAperiodicity</span><span class="p">(</span><span class="nx">f0</span><span class="p">,</span> <span class="nx">spectrogram</span><span class="p">,</span> <span class="nx">apiriodicity</span><span class="p">,</span> <span class="nx">targetF0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">GetMonoDataFromWavData</span><span class="p">(</span><span class="nx">data</span> <span class="p">[][]</span><span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">y</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">data</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">y</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">val</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">y</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">ifilename</span> <span class="o">:=</span> <span class="nx">flag</span><span class="p">.</span><span class="nx">String</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">,</span> <span class="s">&quot;default.wav&quot;</span><span class="p">,</span> <span class="s">&quot;Input filename&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">flag</span><span class="p">.</span><span class="nx">Parse</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Read wav data</span>
+</span><span class='line'>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Open</span><span class="p">(</span><span class="o">*</span><span class="nx">ifilename</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">w</span><span class="p">,</span> <span class="nx">werr</span> <span class="o">:=</span> <span class="nx">wav</span><span class="p">.</span><span class="nx">ReadWav</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">werr</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">werr</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">input</span> <span class="o">:=</span> <span class="nx">GetMonoDataFromWavData</span><span class="p">(</span><span class="nx">w</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">sampleRate</span> <span class="o">:=</span> <span class="nb">int</span><span class="p">(</span><span class="nx">w</span><span class="p">.</span><span class="nx">SampleRate</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">synthesized</span> <span class="o">:=</span> <span class="nx">worldExample</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">sampleRate</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1">// synthesized := worldExampleAp(input, sampleRate)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">synthesized</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Goだとメモリ管理きにしなくていいしそこそこ速いし読みやすいし書きやすいし楽でいいですね（信者</p>
+
+<h2>おわりに</h2>
+
+<ul>
+<li>GoはC++ほど速くはないですが、C++の何倍も書きやすいし読みやすい（メンテしやすい）ので、個人的にオススメです（パフォーマンスが厳しく要求される場合には、C++の方がいいかもしれません）</li>
+<li>WORLD良いソフトウェアなので使いましょう</li>
+</ul>
+
+
+<h2>ちなみに</h2>
+
+<p>元はと言えば、オレオレ基本周波数推定（YINもどき）が微妙に精度悪くて代替を探していたとき、</p>
+
+<ul>
+<li>SPTKのRAPTかSWIPE使おうかな…</li>
+<li>RAPTもSWIPEもSPTK.hにインタフェースがない…</li>
+<li>うわRAPTのコード意味わからん</li>
+<li>SWIPEのコードまじ謎</li>
+<li>後藤さんのPreFest実装しよう</li>
+<li>あれ上手くいかない…orz</li>
+<li>どうしようかな…</li>
+</ul>
+
+
+<p>となっていたときに、森勢先生が書いたと思われる以下の文献を見つけて、</p>
+
+<p><a href="http://crestmuse.jp/handbookMI/pdf/2_2_PitchExtraction_Morise.pdf">2-2 基本周波数推定（歌声研究に関する視点から）</a></p>
+
+<blockquote><p>本方法は，低域に雑音が存在する音声に対する推定は困難であるが，低域の雑音が存在しない音声の場合，SWIPE′ や NDF と実質的に同等の性能を達成しつつ，計算時間を SWIPE′の 1/42, NDF の 1/80 にまで低減可能である．</p></blockquote>
+
+<p>あぁworld使おう（白目</p>
+
+<p>となり、ラッパーを書くにいたりましたとさ、おしまい</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Restricted Boltzmann Machines with MNIST]]></title>
@@ -2676,17 +2987,6 @@ unit testに関しては以下の記事がよくまとまっているので、�
 <p>もう、やることが多すぎてギブアップした。具体的にはmlsaフィルタが難しくてやめた。その時にSPTKのソースコードを読んでいたんだけど、すごいわかりにくくて、くそーっと思って、どうせなら新しく書きなおして使いやすいライブラリ作ってやろうと思ったのが、きっかけ。まぁえらそうな事書いといて、自分がほしいからっていうのが落ちなんですけどね。</p>
 
 <p>ないから作る、シンプルに言えばそれだけです。あと、絶賛有志募集中です。よろしくおねがいします。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[BloggerからGithub Pagesに引越しした]]></title>
-    <link href="http://r9y9.github.io/blog/2013/10/03/blogger-to-github-pages/"/>
-    <updated>2013-10-03T01:24:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/10/03/blogger-to-github-pages</id>
-    <content type="html"><![CDATA[<p>これからは、こちらで書いてく。</p>
-
-<p>気まぐれなのでまた変わるかもしれないけど、ぼちぼちメモっていこうと思う</p>
 ]]></content>
   </entry>
   
