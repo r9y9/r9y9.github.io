@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cgo | LESS IS MORE]]></title>
+  <link href="http://r9y9.github.io/blog/categories/cgo/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2014-03-23T11:30:27+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[cgo の基本的な使い方とポインタ周りのTips (Go v1.2)]]></title>
+    <link href="http://r9y9.github.io/blog/2014/03/22/cgo-tutorial/"/>
+    <updated>2014-03-22T23:17:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/03/22/cgo-tutorial</id>
+    <content type="html"><![CDATA[<p>C/C++ライブラリのGoラッパーを書くためにはcgoというパッケージを使うのですが、特にCのポインタ周りに地味にハマりどころが多かったので、少しまとめておきます。</p>
+
+<p>cgoの基礎については、以下の二つを読むことを推奨します。</p>
+
+<ul>
+<li><a href="http://golang.org/cmd/cgo/">http://golang.org/cmd/cgo/</a></li>
+<li><a href="https://code.google.com/p/go-wiki/wiki/cgo">https://code.google.com/p/go-wiki/wiki/cgo</a></li>
+</ul>
+
+
+<p>この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめます。Tipsのみ必要な場合は、最初の方は飛ばして下さい</p>
+
+<h2>cgo</h2>
+
+<blockquote><p>Cgo enables the creation of Go packages that call C code.</p></blockquote>
+
+<p><a href="http://golang.org/cmd/cgo/">http://golang.org/cmd/cgo/</a></p>
+
+<p>cgoとは、GoからCの関数/型にアクセスするために用いるパッケージのことです。cgoを使えば、GoからCのコードが呼べます。つまり、<strong>Cで書かれたライブラリが、Goでも再利用できるというわけです</strong>。</p>
+
+<p>なお、go v1.2 から、C++もサポートされています
+<a href="http://golang.org/doc/go1.2#cgo_and_cpp">http://golang.org/doc/go1.2#cgo_and_cpp</a></p>
+
+<p>ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &ldquo;C&rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べるようです</p>
+
+<h2>基本的な使い方</h2>
+
+<p>まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行います。</p>
+
+<p><code>go
+import "C"
+</code></p>
+
+<p>import文のすぐ上のコメントにinclude &lt;ヘッダ.h> と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書きます</p>
+
+<p><code>go
+// #include &lt;stdio.h&gt;
+// #include &lt;stdlib.h&gt;
+import "C"
+</code></p>
+
+<p>これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできます</p>
+
+<h2>外部ライブラリを呼ぶ</h2>
+
+<p>通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いと思います。そのような場合には、ライブラリの依存関係をgoのコードに記述する必要があります。</p>
+
+<p>cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができます。</p>
+
+<p>pkg-configを使うと 、</p>
+
+<p><code>go
+// #cgo pkg-config: png cairo
+// #include &lt;png.h&gt;
+import "C"
+</code></p>
+
+<p>こんな感じです（<a href="http://golang.org/cmd/cgo/">Goの公式ページ</a>から参照）</p>
+
+<h2>Tips</h2>
+
+<p>さて、ここからTipsです。主に、<a href="ml.cs.yamanashi.ac.jp/world/">WORLD</a>のGoラッパーを書いていたときに得た知見です。ラッパーは、<a href="https://github.com/r9y9/go-world">Github</a>にあげています。</p>
+
+<h2>1. GoのスライスをCのポインタとして関数の引数に渡す</h2>
+
+<p>例えば、[]float64 &ndash;> double* のイメージです</p>
+
+<p>これは比較的簡単にできます。以前qiitaにも書きました。
+<a href="http://qiita.com/r9y9/items/e6d879c9b7d4f2697593">http://qiita.com/r9y9/items/e6d879c9b7d4f2697593</a></p>
+
+<p><code>go
+(*C.double)(&amp;slice[0])
+</code></p>
+
+<p>のようにキャストしてやればOKです</p>
+
+<h2>2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す</h2>
+
+<p>[][]float64 &ndash;> double** のようなイメージです</p>
+
+<p>例として、worldから引っ張ってきた以下のようなCの関数を考えます</p>
+
+<p><code>c++
+void Star(double *x, int x_length, int fs, double *time_axis, double *f0,
+  int f0_length, double **spectrogram);
+</code></p>
+
+<p>**spectrogramには処理結果が格納されます。もちろん処理結果はGoの型で扱いたいのですが、では<strong>**spectrogramにどうやってGoの型を渡すか？</strong>ということが問題になります。</p>
+
+<p>doubleの二次元配列なので、</p>
+
+<p><code>go
+s := [][]float64
+</code></p>
+
+<p>というスライスのスライスを考えて、キャストして渡したいところですが、結論から言うとこれはできません</p>
+
+<p>ではどうするかというと、苦肉の策として、
+<code>go
+wspace := make([]*C.double, len(f0))
+</code></p>
+
+<p>というスライスを考えて、</p>
+
+<p><code>
+(**C.double)(&amp;wspace[0])
+</code></p>
+
+<p>とすれば、double**として関数の引数に渡すことができます。他にも方法がある気がしていますが、これでも期待通りの動作をします</p>
+
+<p>まとめると、</p>
+
+<ul>
+<li>[][]float64 &ndash;> double**はできないが、</li>
+<li>[]*C.double &ndash;> double**はできる。よって、一応Goの型をdouble**に渡すことはできる</li>
+</ul>
+
+
+<p>です。</p>
+
+<h2>3. ポインタのポインタからスライスのスライスへの変換</h2>
+
+<p>double** &ndash;> [][]float64 のようなイメージです</p>
+
+<p>Tipsその2の例より、Cの関数の処理が終われば**spectrogramにデータが格納されます。もちろん処理結果はGoの型で扱いたいので、[][]float64 にしたいです。ただし、先程の例では、Cの関数に渡した型は実際には []*C.doubleで、Cの型を含んでいます。</p>
+
+<p>そこで、次に問題になるのは、<strong>[]*C.doubleにから[][]float64 に変換するにはどうするか？</strong>ということです。そして、これも面倒です…（※節の頭でdouble** &ndash;> [][]float64と書いていますが、正確には []*C.double &ndash;> [][]float64です）</p>
+
+<p>結論から言えば、直接の変換は難しいですが、中間変数をかませば可能です</p>
+
+<ul>
+<li>[]bytes型でtmp変数を作り、<code>C.GoBytes</code> を使って*C.double &ndash;> []bytes にコピー</li>
+<li>encoding/binaryパッケージを使って、[]bytes &ndash;> []float64 に書き込み</li>
+<li>この処理をsliceOfSlices[0], sliceOfSlices[1], &hellip; に対して繰り返す</li>
+</ul>
+
+
+<p>以上です。とても面倒ですね…</p>
+
+<p>さて、結局上のStarのラッパーは以下のようになりました</p>
+
+<p>```go
+func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {</p>
+
+<pre><code>FFTSize := C.size_t(C.GetFFTSizeForStar(C.int(fs)))
+numFreqBins := FFTSize/2 + 1
+
+// Create workspace
+wspace := make([]*C.double, len(f0))
+for i := range wspace {
+    wspace[i] = (*C.double)(C.malloc(byteSizeOfFloat64 * numFreqBins))
+    defer C.free(unsafe.Pointer(wspace[i]))
+}
+
+// Perform star
+C.Star((*C.double)(&amp;x[0]),
+    C.int(len(x)),
+    C.int(fs),
+    (*C.double)(&amp;timeAxis[0]),
+    (*C.double)(&amp;f0[0]),
+    C.int(len(f0)),
+    (**C.double)(&amp;wspace[0]))
+
+// Copy to go slice
+spectrogram := make([][]float64, len(f0))
+for i := range spectrogram {
+    spectrogram[i] = CArrayToGoSlice(wspace[i], C.int(numFreqBins))
+}
+
+return spectrogram
+</code></pre>
+
+<p>}
+```</p>
+
+<p>上で使っているutility function</p>
+
+<p>```
+func CArrayToGoSlice(array *C.double, length C.int) []float64 {</p>
+
+<pre><code>slice := make([]float64, int(length))
+b := C.GoBytes(unsafe.Pointer(array), C.int(byteSizeOfFloat64*length))
+err := binary.Read(bytes.NewReader(b), binary.LittleEndian, slice)
+if err != nil {
+    panic(err)
+}
+return slice
+</code></pre>
+
+<p>}
+```</p>
+
+<ul>
+<li>[]*C.double のスライスを作り、作業領域のメモリを確保する（Tips1の内容+メモリ確保）</li>
+<li>[]*C.double のスライスをdouble** にキャストして、Cの関数を実行（Tips1の内容）</li>
+<li>[]*C.double から[][]float64に変換する（Tips2の内容）</li>
+</ul>
+
+
+<p>という手順になっているのがわかると思います。</p>
+
+<h2>おわりに</h2>
+
+<ul>
+<li>ポインタのポインタを引数に取る関数のラップはめんどくさい</li>
+<li>Goは使いやすいのにcgoは使いにくい</li>
+<li>cgoつらい</li>
+</ul>
+
+
+<p>よりいい方法があれば教えて下さい</p>
+]]></content>
+  </entry>
+  
+</feed>
