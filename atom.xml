@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-03-23T12:41:24+09:00</updated>
+  <updated>2014-03-23T12:43:21+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -124,7 +124,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>というスライスのスライスを考えて、キャストして渡したいところだけど、結論から言うとこれはできません</p>
+<p>というスライスのスライスを考えて、キャストして渡したいところだけど、結論から言うとこれはできない</p>
 
 <p>ではどうするかというと、苦肉の策として、</p>
 
