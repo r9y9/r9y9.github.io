@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-03-23T11:30:27+09:00</updated>
+  <updated>2014-03-23T11:48:56+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -18,9 +18,9 @@
     <link href="http://r9y9.github.io/blog/2014/03/22/cgo-tutorial/"/>
     <updated>2014-03-22T23:17:00+09:00</updated>
     <id>http://r9y9.github.io/blog/2014/03/22/cgo-tutorial</id>
-    <content type="html"><![CDATA[<p>C/C++ライブラリのGoラッパーを書くためにはcgoというパッケージを使うのですが、特にCのポインタ周りに地味にハマりどころが多かったので、少しまとめておきます。</p>
+    <content type="html"><![CDATA[<p>C/C++ライブラリのGoラッパーを書くためには、cgoというパッケージを使うのだけど、特にCのポインタ周りに地味にハマりどころが多かったので、少しまとめく</p>
 
-<p>cgoの基礎については、以下の二つを読むことを推奨します。</p>
+<p>cgoの基礎については、以下の二つを読むことを推奨</p>
 
 <ul>
 <li><a href="http://golang.org/cmd/cgo/">http://golang.org/cmd/cgo/</a></li>
@@ -28,7 +28,7 @@
 </ul>
 
 
-<p>この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめます。Tipsのみ必要な場合は、最初の方は飛ばして下さい</p>
+<p>この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい</p>
 
 <h2>cgo</h2>
 
@@ -36,23 +36,23 @@
 
 <p><a href="http://golang.org/cmd/cgo/">http://golang.org/cmd/cgo/</a></p>
 
-<p>cgoとは、GoからCの関数/型にアクセスするために用いるパッケージのことです。cgoを使えば、GoからCのコードが呼べます。つまり、<strong>Cで書かれたライブラリが、Goでも再利用できるというわけです</strong>。</p>
+<p>cgoとは、GoからCの関数/型にアクセスするために用いるパッケージのこと。cgoを使えば、GoからCのコードが呼べる。つまり、<strong>Cで書かれたライブラリが、Goでも再利用できる</strong>。</p>
 
-<p>なお、go v1.2 から、C++もサポートされています
+<p>なお、go v1.2 から、C++もサポートされている様子
 <a href="http://golang.org/doc/go1.2#cgo_and_cpp">http://golang.org/doc/go1.2#cgo_and_cpp</a></p>
 
-<p>ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &ldquo;C&rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べるようです</p>
+<p>ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &ldquo;C&rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べる</p>
 
 <h2>基本的な使い方</h2>
 
-<p>まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行います。</p>
+<p>まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">import</span> <span class="s">&quot;C&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>import文のすぐ上のコメントにinclude &lt;ヘッダ.h> と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書きます</p>
+<p>import文のすぐ上のコメントにinclude &lt;ヘッダ.h> と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書く</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -63,13 +63,13 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできます</p>
+<p>これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる</p>
 
 <h2>外部ライブラリを呼ぶ</h2>
 
-<p>通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いと思います。そのような場合には、ライブラリの依存関係をgoのコードに記述する必要があります。</p>
+<p>通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いので、そのような場合には、ライブラリの依存関係をgoのコードに記述する</p>
 
-<p>cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができます。</p>
+<p>cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができる</p>
 
 <p>pkg-configを使うと 、</p>
 
@@ -82,17 +82,17 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>こんな感じです（<a href="http://golang.org/cmd/cgo/">Goの公式ページ</a>から参照）</p>
+<p>こんな感じ（<a href="http://golang.org/cmd/cgo/">Goの公式ページ</a>から参照）</p>
 
 <h2>Tips</h2>
 
-<p>さて、ここからTipsです。主に、<a href="ml.cs.yamanashi.ac.jp/world/">WORLD</a>のGoラッパーを書いていたときに得た知見です。ラッパーは、<a href="https://github.com/r9y9/go-world">Github</a>にあげています。</p>
+<p>さて、ここからTips。主に、<a href="ml.cs.yamanashi.ac.jp/world/">WORLD</a>のGoラッパーを書いていたときに得た知見です。ラッパーは、<a href="https://github.com/r9y9/go-world">Github</a>にあげた</p>
 
 <h2>1. GoのスライスをCのポインタとして関数の引数に渡す</h2>
 
-<p>例えば、[]float64 &ndash;> double* のイメージです</p>
+<p>例えば、[]float64 &ndash;> double* のイメージ</p>
 
-<p>これは比較的簡単にできます。以前qiitaにも書きました。
+<p>これは比較的簡単にできる。以前qiitaにも書いた
 <a href="http://qiita.com/r9y9/items/e6d879c9b7d4f2697593">http://qiita.com/r9y9/items/e6d879c9b7d4f2697593</a></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -100,13 +100,13 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>のようにキャストしてやればOKです</p>
+<p>のようにキャストしてやればOK</p>
 
 <h2>2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す</h2>
 
-<p>[][]float64 &ndash;> double** のようなイメージです</p>
+<p>[][]float64 &ndash;> double** のようなイメージ</p>
 
-<p>例として、worldから引っ張ってきた以下のようなCの関数を考えます</p>
+<p>例として、worldから引っ張ってきた以下のようなCの関数を考える</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -115,7 +115,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>**spectrogramには処理結果が格納されます。もちろん処理結果はGoの型で扱いたいのですが、では<strong>**spectrogramにどうやってGoの型を渡すか？</strong>ということが問題になります。</p>
+<p>**spectrogramには処理結果が格納される。もちろん処理結果はGoの型で扱いたいんだが、では<strong>**spectrogramにどうやってGoの型を渡すか？</strong>ということが問題になる</p>
 
 <p>doubleの二次元配列なので、</p>
 
@@ -124,7 +124,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>というスライスのスライスを考えて、キャストして渡したいところですが、結論から言うとこれはできません</p>
+<p>というスライスのスライスを考えて、キャストして渡したいところだけど、結論から言うとこれはできません</p>
 
 <p>ではどうするかというと、苦肉の策として、</p>
 
@@ -140,7 +140,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>とすれば、double**として関数の引数に渡すことができます。他にも方法がある気がしていますが、これでも期待通りの動作をします</p>
+<p>とすれば、double**として関数の引数に渡すことができる。他にも方法がある気がするが、これでも期待通りの動作をする（あまりハックっぽいことしたくない…</p>
 
 <p>まとめると、</p>
 
@@ -154,13 +154,13 @@
 
 <h2>3. ポインタのポインタからスライスのスライスへの変換</h2>
 
-<p>double** &ndash;> [][]float64 のようなイメージです</p>
+<p>double** &ndash;> [][]float64 のようなイメージ</p>
 
-<p>Tipsその2の例より、Cの関数の処理が終われば**spectrogramにデータが格納されます。もちろん処理結果はGoの型で扱いたいので、[][]float64 にしたいです。ただし、先程の例では、Cの関数に渡した型は実際には []*C.doubleで、Cの型を含んでいます。</p>
+<p>Tipsその2の例より、Cの関数の処理が終われば**spectrogramにデータが格納される。もちろん処理結果はGoの型で扱いたいので、[][]float64 にしたい。ただし、先程の例では、Cの関数に渡した型は実際には []*C.doubleで、Cの型を含んでいる。</p>
 
-<p>そこで、次に問題になるのは、<strong>[]*C.doubleにから[][]float64 に変換するにはどうするか？</strong>ということです。そして、これも面倒です…（※節の頭でdouble** &ndash;> [][]float64と書いていますが、正確には []*C.double &ndash;> [][]float64です）</p>
+<p>そこで、次に問題になるのは、<strong>[]*C.doubleにから[][]float64 に変換するにはどうするか？</strong>ということ。そして、これも面倒です…（※節の頭でdouble** &ndash;> [][]float64と書いたけど、正確には []*C.double &ndash;> [][]float64）</p>
 
-<p>結論から言えば、直接の変換は難しいですが、中間変数をかませば可能です</p>
+<p>結論から言えば、直接の変換は難しいけど中間変数をかませばできる</p>
 
 <ul>
 <li>[]bytes型でtmp変数を作り、<code>C.GoBytes</code> を使って*C.double &ndash;> []bytes にコピー</li>
@@ -169,9 +169,9 @@
 </ul>
 
 
-<p>以上です。とても面倒ですね…</p>
+<p>以上。とても面倒ですね…</p>
 
-<p>さて、結局上のStarのラッパーは以下のようになりました</p>
+<p>さて、結局上のStarのラッパーは以下のようになった</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -262,7 +262,7 @@
 </ul>
 
 
-<p>という手順になっているのがわかると思います。</p>
+<p>という手順になってます</p>
 
 <h2>おわりに</h2>
 
@@ -270,10 +270,9 @@
 <li>ポインタのポインタを引数に取る関数のラップはめんどくさい</li>
 <li>Goは使いやすいのにcgoは使いにくい</li>
 <li>cgoつらい</li>
+<li>よりいい方法があれば教えて下さい</li>
 </ul>
 
-
-<p>よりいい方法があれば教えて下さい</p>
 ]]></content>
   </entry>
   
