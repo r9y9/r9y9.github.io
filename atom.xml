@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-03-23T11:48:56+09:00</updated>
+  <updated>2014-03-23T11:50:23+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[cgo の基本的な使い方とポインタ周りのTips (Go v1.2)]]></title>
-    <link href="http://r9y9.github.io/blog/2014/03/22/cgo-tutorial/"/>
+    <link href="http://r9y9.github.io/blog/2014/03/22/cgo-tips/"/>
     <updated>2014-03-22T23:17:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/03/22/cgo-tutorial</id>
+    <id>http://r9y9.github.io/blog/2014/03/22/cgo-tips</id>
     <content type="html"><![CDATA[<p>C/C++ライブラリのGoラッパーを書くためには、cgoというパッケージを使うのだけど、特にCのポインタ周りに地味にハマりどころが多かったので、少しまとめく</p>
 
 <p>cgoの基礎については、以下の二つを読むことを推奨</p>
