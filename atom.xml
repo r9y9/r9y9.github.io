@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-03-23T12:43:21+09:00</updated>
+  <updated>2014-03-27T01:30:25+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -256,13 +256,84 @@
 
 
 <ul>
-<li>[]*C.double のスライスを作り、作業領域のメモリを確保する（Tips1の内容+メモリ確保）</li>
-<li>[]*C.double のスライスをdouble** にキャストして、Cの関数を実行（Tips1の内容）</li>
-<li>[]*C.double から[][]float64に変換する（Tips2の内容）</li>
+<li>[]*C.double のスライスを作り、作業領域のメモリを確保する（Tips2の内容+メモリ確保）</li>
+<li>[]*C.double のスライスをdouble** にキャストして、Cの関数を実行（Tips2の内容）</li>
+<li>[]*C.double から[][]float64に変換する（Tips3の内容）</li>
 </ul>
 
 
 <p>という手順になってます</p>
+
+<p><strong>※2013/03/27 追記</strong>
+:もっとシンプルかつ効率的（deep copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]<em>double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]</em>doubleから[][]float64に変換する必要はなかった。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kd">func</span> <span class="nx">Star</span><span class="p">(</span><span class="nx">x</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">fs</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">timeAxis</span><span class="p">,</span> <span class="nx">f0</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">float64</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">FFTSize</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nx">size_t</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nx">GetFFTSizeForStar</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">fs</span><span class="p">)))</span>
+</span><span class='line'>  <span class="nx">numFreqBins</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nx">size_t</span><span class="p">(</span><span class="nx">FFTSize</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">spectrogram</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([][]</span><span class="kt">float64</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">f0</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">spectrogram</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">spectrogram</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">numFreqBins</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">spectrogramUsedInC</span> <span class="o">:=</span> <span class="nx">Make2DCArrayAlternative</span><span class="p">(</span><span class="nx">spectrogram</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Perform star</span>
+</span><span class='line'>  <span class="nx">C</span><span class="p">.</span><span class="nx">Star</span><span class="p">((</span><span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+</span><span class='line'>      <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">x</span><span class="p">)),</span>
+</span><span class='line'>      <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">fs</span><span class="p">),</span>
+</span><span class='line'>      <span class="p">(</span><span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">timeAxis</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+</span><span class='line'>      <span class="p">(</span><span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">f0</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+</span><span class='line'>      <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">f0</span><span class="p">)),</span>
+</span><span class='line'>      <span class="p">(</span><span class="o">**</span><span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">spectrogramUsedInC</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">spectrogram</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kd">func</span> <span class="nx">Make2DCArrayAlternative</span><span class="p">(</span><span class="nx">matrix</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">[]</span><span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">double</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">alternative</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">matrix</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">alternative</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// DO NOT free because the source slice is managed by Go</span>
+</span><span class='line'>      <span class="nx">alternative</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="p">(</span><span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">matrix</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alternative</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h2>おわりに</h2>
 

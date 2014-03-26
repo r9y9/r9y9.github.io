@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cgo | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/cgo/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-03-23T12:43:21+09:00</updated>
+  <updated>2014-03-27T01:30:25+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -195,7 +195,7 @@ return spectrogram
 
 <p>上で使っているutility function</p>
 
-<p>```
+<p>```go
 func CArrayToGoSlice(array *C.double, length C.int) []float64 {</p>
 
 <pre><code>slice := make([]float64, int(length))
@@ -211,13 +211,59 @@ return slice
 ```</p>
 
 <ul>
-<li>[]*C.double のスライスを作り、作業領域のメモリを確保する（Tips1の内容+メモリ確保）</li>
-<li>[]*C.double のスライスをdouble** にキャストして、Cの関数を実行（Tips1の内容）</li>
-<li>[]*C.double から[][]float64に変換する（Tips2の内容）</li>
+<li>[]*C.double のスライスを作り、作業領域のメモリを確保する（Tips2の内容+メモリ確保）</li>
+<li>[]*C.double のスライスをdouble** にキャストして、Cの関数を実行（Tips2の内容）</li>
+<li>[]*C.double から[][]float64に変換する（Tips3の内容）</li>
 </ul>
 
 
 <p>という手順になってます</p>
+
+<p><strong>※2013/03/27 追記</strong>
+:もっとシンプルかつ効率的（deep copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]<em>double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]</em>doubleから[][]float64に変換する必要はなかった。</p>
+
+<p>```go
+func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {</p>
+
+<pre><code>FFTSize := C.size_t(C.GetFFTSizeForStar(C.int(fs)))
+numFreqBins := C.size_t(FFTSize/2 + 1)
+
+spectrogram := make([][]float64, len(f0))
+for i := range spectrogram {
+    spectrogram[i] = make([]float64, numFreqBins)
+}
+
+spectrogramUsedInC := Make2DCArrayAlternative(spectrogram)
+
+// Perform star
+C.Star((*C.double)(&amp;x[0]),
+    C.int(len(x)),
+    C.int(fs),
+    (*C.double)(&amp;timeAxis[0]),
+    (*C.double)(&amp;f0[0]),
+    C.int(len(f0)),
+    (**C.double)(&amp;spectrogramUsedInC[0]))
+
+return spectrogram
+</code></pre>
+
+<p>}
+```</p>
+
+<p>```go</p>
+
+<p>func Make2DCArrayAlternative(matrix [][]float64) []*C.double {</p>
+
+<pre><code>alternative := make([]*C.double, len(matrix))
+for i := range alternative {
+    // DO NOT free because the source slice is managed by Go
+    alternative[i] = (*C.double)(&amp;matrix[i][0])
+}
+return alternative
+</code></pre>
+
+<p>}
+```</p>
 
 <h2>おわりに</h2>
 
