@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-05-11T02:43:13+09:00</updated>
+  <updated>2014-05-11T03:19:53+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -131,21 +131,6 @@
 <span class='line-number'>107</span>
 <span class='line-number'>108</span>
 <span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-<span class='line-number'>112</span>
-<span class='line-number'>113</span>
-<span class='line-number'>114</span>
-<span class='line-number'>115</span>
-<span class='line-number'>116</span>
-<span class='line-number'>117</span>
-<span class='line-number'>118</span>
-<span class='line-number'>119</span>
-<span class='line-number'>120</span>
-<span class='line-number'>121</span>
-<span class='line-number'>122</span>
-<span class='line-number'>123</span>
-<span class='line-number'>124</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/python</span>
 </span><span class='line'><span class="c"># coding: utf-8</span>
 </span><span class='line'>
@@ -238,38 +223,23 @@
 </span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
 </span><span class='line'>    <span class="kn">import</span> <span class="nn">argparse</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&quot;MNIST手書き数字認識のデモ&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&quot;Specify options&quot;</span><span class="p">)</span>
 </span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--epoches&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;epoches&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--learning_rate&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;learning_rate&quot;</span><span class="p">,</span>\
 </span><span class='line'>                        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--hidden&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;hidden&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--hidden&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;hidden&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </span><span class='line'>    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">train_set</span><span class="p">,</span> <span class="n">valid_set</span><span class="p">,</span> <span class="n">test_set</span> <span class="o">=</span> <span class="n">load_mnist_dataset</span><span class="p">(</span><span class="s">&quot;mnist.pkl.gz&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">n_labels</span> <span class="o">=</span> <span class="mi">10</span> <span class="c"># 0,1,2,3,4,5,6,7,9</span>
-</span><span class='line'>    <span class="n">n_features</span> <span class="o">=</span> <span class="mi">28</span><span class="o">*</span><span class="mi">28</span>
+</span><span class='line'>    <span class="n">nn</span> <span class="o">=</span> <span class="n">NeuralNet</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="c"># モデルを新しく作る</span>
-</span><span class='line'>    <span class="c"># nn = net.NeuralNet(n_features, args.hidden, n_labels)</span>
+</span><span class='line'>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span> <span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+</span><span class='line'>    <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="c"># モデルを読み込む</span>
-</span><span class='line'>    <span class="n">nn</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;./nn_mnist.pkl&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">nn</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">epoches</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>\
+</span><span class='line'>             <span class="n">monitor_period</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">nn</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">train_set</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">augument_labels</span><span class="p">(</span><span class="n">train_set</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_labels</span><span class="p">),</span>\
-</span><span class='line'>             <span class="n">args</span><span class="o">.</span><span class="n">epoches</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">monitor_period</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c">## テスト</span>
-</span><span class='line'>    <span class="n">test_data</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">test_set</span>
-</span><span class='line'>    <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">)):</span>
-</span><span class='line'>        <span class="n">results</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
-</span><span class='line'>        <span class="c"># print &quot;%d : predicted %s, expected %s&quot; % (n, results[n], labels[n])</span>
-</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;recognition rate: &quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">results</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># モデルを保存</span>
-</span><span class='line'>    <span class="n">model_filename</span> <span class="o">=</span> <span class="s">&quot;nn_mnist.pkl&quot;</span>
-</span><span class='line'>    <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">model_filename</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;The model parameters are dumped to &quot;</span> <span class="o">+</span> <span class="n">model_filename</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> : predicted </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
