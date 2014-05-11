@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-05-11T13:52:54+09:00</updated>
+  <updated>2014-05-11T21:36:17+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[PythonによるニューラルネットのToyコード]]></title>
-    <link href="http://r9y9.github.io/blog/2014/05/11/feed-forward-neural-network/"/>
+    <link href="http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/"/>
     <updated>2014-05-11T01:20:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/05/11/feed-forward-neural-network</id>
+    <id>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code</id>
     <content type="html"><![CDATA[<p>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。</p>
 
 <p>このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）</p>
