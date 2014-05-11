@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Machine-Learning | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/machine-learning/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-05-11T03:19:53+09:00</updated>
+  <updated>2014-05-11T13:52:54+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -529,12 +529,16 @@ return nil
 
 <p>Gaussian Bernoulli RBM、Deep Belief Networks, Deep Neural Networksについてはまた今度</p>
 
+<p>2014/05/11
+要望があったので、もろもろコードあげました
+<a href="https://github.com/r9y9/nnet">https://github.com/r9y9/nnet</a></p>
+
 <h2>参考資料</h2>
 
 <ul>
 <li><a href="http://image.diku.dk/igel/paper/AItRBM-proof.pdf">An Introduction to Restricted Boltzmann Machines (PDF)</a></li>
 <li><a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a></li>
-<li><a href="http://m%0Aglab.blogspot.jp/2012/08/restricted-boltzmann-machine.html">Restricted Boltzmann Machineの学習手法についての簡単なまとめ | 映像奮闘記</a></li>
+<li><a href="http://mglab.blogspot.jp/2012/08/restricted-boltzmann-machine.html">Restricted Boltzmann Machineの学習手法についての簡単なまとめ | 映像奮闘記</a></li>
 <li><a href="http://d.hatena.ne.jp/saket/20121212">ゆるふわ Restricted Boltzmann Machine | Risky Dune</a></li>
 <li><a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a></li>
 <li><a href="http://imonad.com/rbm/restricted-boltzmann-machine/">Restricted Boltzmann Machine &ndash; Short Tutorial | iMonad</a></li>
