@@ -4,7 +4,7 @@
   <title><![CDATA[Category: wavelet-transform | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/wavelet-transform/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-06-01T12:35:48+09:00</updated>
+  <updated>2014-06-01T12:38:54+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG]]></title>
+    <link href="http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/"/>
+    <updated>2014-06-01T01:42:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types</id>
+    <content type="html"><![CDATA[<p>Morlet, Paul, DOG (Derivative of Gaussian) の代表的な3つのマザーウェーブレットで音声に対してウェーブレット変換をしてみたので、メモがてら結果を貼っておく</p>
+
+<p>図の横軸はサンプルで、縦軸は周波数Hz（対数目盛り）にした</p>
+
+<p>マザーウェーブレットのパラメータは、Morletは $\omega_{0} = 6.0$、Paulは $M = 4$、DOGは $M = 6$</p>
+
+<p>スケールは、min=55hzで、25cent毎に8オクターブ分取った※厳密には違うのでごめんなさい</p>
+
+<p>分析に使った音声は、<a href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">逆連続ウェーブレット変換による信号の再構成 &ndash; LESS IS MORE</a> で使ったのと同じ</p>
+
+<h2>Morlet</h2>
+
+<p><img class="center" src="/images/morlet_6.png" title="&ldquo;Morlet Wavelet spectrogram&rdquo;" ></p>
+
+<h2>Paul</h2>
+
+<p><img class="center" src="/images/paul_4.png" title="&ldquo;Paul Wavelet spectrogram&rdquo;" ></p>
+
+<h2>DOG</h2>
+
+<p><img class="center" src="/images/dog_6.png" title="&ldquo;DOG Wavelet spectrogram&rdquo;" ></p>
+
+<p>対数を取ると、以下のような感じ</p>
+
+<h2>Morlet</h2>
+
+<p><img class="center" src="/images/morlet_6_log.png" title="&ldquo;Morlet Wavelet log spectrogram&rdquo;" ></p>
+
+<h2>Paul</h2>
+
+<p><img class="center" src="/images/paul_4_log.png" title="&ldquo;Paul Wavelet log spectrogram&rdquo;" ></p>
+
+<h2>DOG</h2>
+
+<p><img class="center" src="/images/dog_6_log.png" title="&ldquo;DOG Wavelet log spectrogram&rdquo;" ></p>
+
+<p>Paulは時間解像度は高いけど周波数解像度はいまいちなので、音声とかには向かないのかなー。DOGはMorletとPaulの中間くらいの位置づけの様子。DOGはorderを上げればMorletっぽくなるけど、Morletの方がやっぱ使いやすいなーという印象。</p>
+
+<p>どのマザーウェーブレットが理論的にどのような性質を持つのかまだわかってないので、そのあたり次に勉強しようかなと思ってる。</p>
+
+<h2>スケールから周波数への変換</h2>
+
+<p>実は今日まで知らなかったんだけど、マザーウェーブレットによっては時間領域でのスケールの逆数は必ずしも周波数領域での周波数に対応するとは限らないそう。というかずれる（詳細はPractical Guideの3.hを参照）。上で書いた厳密には違うというのは、これが理由。</p>
+
+<p>ただし、スケールから周波数への変換はマザーウェーブレットから一意に決まるようなので、正しい周波数を求めることは可能。上に貼った図は、Practical Guideにしたがってスケールから周波数に変換している。</p>
+
+<p>例えば、$f = \frac{1}{s}$となるようにスケールを与えていたとき、$\omega_0 = 6.0$のMorletを使ったウェーブレット変換の真の周波数は、</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+f' &amp;= \frac{\omega_0 + \sqrt{2+\omega_{0}^2}}{4\pi s} \
+&amp;= \frac{0.96801330919}{s} \
+&amp;= 0.96801330919f
+\end{align}
+</script></p>
+
+<p>となる。
+$\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので今まで気づかなかった…</p>
+
+<p>めんどくさい。これを知ってからちょっとウェーブレット嫌いになった。</p>
+
+<p>おわり</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">Torrence, C. and G.P. Compo &ldquo;A Practical Guide to Wavelet Analysis&rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.</a></li>
+<li><a href="http://www.mark-bishop.net/signals/CWTReconstructionFactors.pdf">Continuous Wavelet Transform Reconstruction Factors for Selected Wavelets</a></li>
+<li><a href="http://www.hulinks.co.jp/support/flexpro/v7/dataanalysis_cwt.html">HULINKS | テクニカルサポート | FlexPro | 連続ウェーブレット変換 (CWT)</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[逆連続ウェーブレット変換による信号の再構成]]></title>
