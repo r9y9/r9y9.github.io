@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-06-01T13:13:27+09:00</updated>
+  <updated>2014-06-13T02:37:37+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,440 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[GOSSP - Go言語で音声信号処理]]></title>
+    <link href="http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/"/>
+    <updated>2014-06-08T00:56:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go</id>
+    <content type="html"><![CDATA[<h1>C++からGoへ</h1>
+
+<p>みなさん、C++で信号処理のアルゴリズムを書くのはつらいと思ったことはありませんか？C++で書くと速いのはいいけれど、いかんせん書くのが大変、コンパイルエラーは読みづらい、はたまたライブラリをビルドしようとしたら依存関係が上手く解決できず……そんな覚えはないでしょうか？謎のコンパイルエラーに悩みたくない、ガーベジコレクションほしい、Pythonのようにさくっと書きたい、型推論もほしい、でも動作は速い方がいい、そう思ったことはないでしょうか。</p>
+
+<p>そこでGoです。もちろん、そういった思いに完全に答えてくれるわけではありませんが、厳しいパフォーマンスを要求される場合でなければ、Goの方が良い場合も多いと僕は思っています。
+とはいえ、まだ比較的新しい言語のため、ライブラリは少なく信号処理を始めるのも大変です。というわけで、僕がC++をやめてGoに移行したことを思い出し、Goでの信号処理の基礎と、今まで整備してきたGoでの音声信号処理ライブラリを紹介します。</p>
+
+<p>Goの良いところ/悪いところについては書きません。正直、本当は何の言語でもいいと思っていますが、僕はGoが好きなので、ちょっとでもGoで信号処理したいと思う人が増えるといいなーと思って書いてみます。</p>
+
+<p>あとで書きますが、僕が書いたコードで使えそうなものは、以下にまとめました。</p>
+
+<p><a href="https://github.com/r9y9/gossp">https://github.com/r9y9/gossp</a></p>
+
+<h1>基礎</h1>
+
+<h2>Wavファイルの読み込み/書き込み <a href="http://godoc.org/github.com/mjibson/go-dsp/wav">[wav]</a></h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/speech_signal.png" title="&#34;Speech signal example.&#34;" alt="&#34;Speech signal example.&#34;"></p>
+
+<p>まずは音声ファイルの読み込みですね。wavファイルの読み込みさえできれば十分でしょう。</p>
+
+<p>これは、すでに有用なライブラリが存在します。<a href="https://github.com/mjibson/go-dsp">GO-DSP</a> とういデジタル信号処理のライブラリに含まれるwavパッケージを使いましょう。</p>
+
+<p>次のように書くことができます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/mjibson/go-dsp/wav&quot;</span>
+</span><span class='line'>  <span class="s">&quot;log&quot;</span>
+</span><span class='line'>  <span class="s">&quot;os&quot;</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// ファイルのオープン</span>
+</span><span class='line'>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Open</span><span class="p">(</span><span class="s">&quot;./test.wav&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Wavファイルの読み込み </span>
+</span><span class='line'>  <span class="nx">w</span><span class="p">,</span> <span class="nx">werr</span> <span class="o">:=</span> <span class="nx">wav</span><span class="p">.</span><span class="nx">ReadWav</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">werr</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">werr</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// データを表示</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Data</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>簡単ですね。</p>
+
+<p>Goはウェブ周りの標準パッケージが充実しているので、以前<a href="http://qiita.com/r9y9/items/35a1cf139332a3072fc8">qiitaに書いた記事</a>のように、wavファイルを受け取って何らかの処理をする、みたいなサーバも簡単に書くことができます</p>
+
+<p>wavファイルの書き込み＋ユーティリティを追加したかったので、僕は自分でカスタムしたパッケージを使っています。</p>
+
+<p><a href="https://github.com/r9y9/go-dsp">https://github.com/r9y9/go-dsp</a></p>
+
+<h2>高速フーリエ変換 (Fast Fourier Transform; FFT) <a href="http://godoc.org/github.com/mjibson/go-dsp/fft">[fft]</a></h2>
+
+<p>言わずとしれたFFTです。音のスペクトルを求めるのに必須の処理です。で、Goではどうすればいいのか？ということですが、こちらもすでに有用なライブラリが存在します。<a href="https://github.com/mjibson/go-dsp">GO-DSP</a>に含まれる、fftパッケージを使いましょう。</p>
+
+<p>このfftパッケージは、go routinesを使って平行化されているため速いです。僕は、1次元のフーリエ変換以外めったに使いませんが、N次元のフーリエ変換をサポートしているのもこのライブラリのいいところです。</p>
+
+<h3>参考</h3>
+
+<ul>
+<li><a href="http://mattjibson.com/blog/2013/01/04/go-dsp-fft-performance-with-go-routines/">go-dsp FFT performance with go routines · Matt Jibson</a></li>
+</ul>
+
+
+<p>使い方は、とても簡単です。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/mjibson/go-dsp/fft&quot;</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">fft</span><span class="p">.</span><span class="nx">FFTReal</span><span class="p">([]</span><span class="kt">float64</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">}))</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>離散コサイン変換 (Discrete Cosine Transform; DCT) <a href="http://godoc.org/github.com/r9y9/gossp/dct">[dct]</a></h2>
+
+<p>DCTは、Mel-Frequency Cepstrum Coefficients (通称MFCC) 求めるのに必要な変換です。こちらは、残念ながら良さそうなライブラリがなかったので、自分で書きました。</p>
+
+<p>使い方はFFTとほとんど一緒です。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/r9y9/gossp/dct&quot;</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">y</span> <span class="o">:=</span> <span class="nx">dct</span><span class="p">.</span><span class="nx">DCTOrthogonal</span><span class="p">([]</span><span class="kt">float64</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">})</span>
+</span><span class='line'>  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">dct</span><span class="p">.</span><span class="nx">IDCTOrthogonal</span><span class="p">(</span><span class="nx">y</span><span class="p">))</span> <span class="c1">// 直交変換では、逆変換すると元に戻る</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>さて、基本的なところは一旦ここまでです。次からは、少し音声寄りの信号処理手法の紹介です。</p>
+
+<h1>時間周波数解析</h1>
+
+<h2>短時間フーリエ変換 (Short Time Fourier Transform; STFT) <a href="http://godoc.org/github.com/r9y9/gossp/stft">[stft]</a></h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/stft.png" title="&#34;STFT spectrogram&#34;" alt="&#34;STFT spectrogram&#34;"></p>
+
+<p>STFTは、音声の時間周波数解析手法として定番の方法ですね。音声を可視化したり、何らかの認識アルゴリズムの特徴抽出に使ったり、まぁ色々です。</p>
+
+<p>次のようなコードを書くと、スペクトログラムが作れます</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&quot;flag&quot;</span>
+</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/r9y9/gossp&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/r9y9/gossp/io&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/r9y9/gossp/stft&quot;</span>
+</span><span class='line'>  <span class="s">&quot;github.com/r9y9/gossp/window&quot;</span>
+</span><span class='line'>  <span class="s">&quot;log&quot;</span>
+</span><span class='line'>  <span class="s">&quot;math&quot;</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">filename</span> <span class="o">:=</span> <span class="nx">flag</span><span class="p">.</span><span class="nx">String</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">,</span> <span class="s">&quot;input.wav&quot;</span><span class="p">,</span> <span class="s">&quot;Input filename&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">flag</span><span class="p">.</span><span class="nx">Parse</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">w</span><span class="p">,</span> <span class="nx">werr</span> <span class="o">:=</span> <span class="nx">io</span><span class="p">.</span><span class="nx">ReadWav</span><span class="p">(</span><span class="o">*</span><span class="nx">filename</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">werr</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">werr</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">data</span> <span class="o">:=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">GetMonoData</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">s</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">stft</span><span class="p">.</span><span class="nx">STFT</span><span class="p">{</span>
+</span><span class='line'>      <span class="nx">FrameShift</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float64</span><span class="p">(</span><span class="nx">w</span><span class="p">.</span><span class="nx">SampleRate</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">),</span> <span class="c1">// 0.01 sec,</span>
+</span><span class='line'>      <span class="nx">FrameLen</span><span class="p">:</span>   <span class="mi">2048</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Window</span><span class="p">:</span>     <span class="nx">window</span><span class="p">.</span><span class="nx">CreateHanning</span><span class="p">(</span><span class="mi">2048</span><span class="p">),</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">spectrogram</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">gossp</span><span class="p">.</span><span class="nx">SplitSpectrogram</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">STFT</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
+</span><span class='line'>  <span class="nx">PrintMatrixAsGnuplotFormat</span><span class="p">(</span><span class="nx">spectrogram</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">PrintMatrixAsGnuplotFormat</span><span class="p">(</span><span class="nx">matrix</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;#&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="nx">matrix</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">vec</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">matrix</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">for</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">vec</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">math</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="nx">val</span><span class="p">))</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上の画像は、gnuplotで表示したものです</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">set</span> <span class="nx">pm3d</span> <span class="kd">map</span>
+</span><span class='line'><span class="nx">sp</span> <span class="s">&quot;spepctrogram.txt&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>逆短時間フーリエ変換 (Inverse Short Time Fourier Transform; ISTFT) <a href="http://godoc.org/github.com/r9y9/gossp/stft">[stft]</a></h2>
+
+<p>ISTFTは、STFTの逆変換でスペクトログラムから時間領域の信号に戻すために使います。スペクトログラムを加工するような音源分離、ノイズ除去手法を使う場合には、必須の処理です。これはstftと同じパッケージ下にあります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">reconstructed</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">ISTFT</span><span class="p">(</span><span class="nx">spectrogram</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで、スペクトログラムから音声を再構築することができます。</p>
+
+<p>逆変換の仕組みは、意外と難しかったりします。</p>
+
+<ul>
+<li><a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.306.7858">D. W. Griffin and J. S. Lim, &ldquo;Signal estimation from modified short-time Fourier transform,&rdquo; IEEE Trans. ASSP, vol.32, no.2, pp.236–243, Apr. 1984.</a></li>
+<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l6.pdf">L6: Short-time Fourier analysis and synthesis</a></li>
+<li><a href="http://yukara-13.hatenablog.com/entry/2013/11/17/210204">Pythonで短時間フーリエ変換（STFT）と逆変換 &ndash; 音楽プログラミングの超入門（仮）</a></li>
+</ul>
+
+
+<p>この辺を参考にしました。興味のある人は読んで見てください。</p>
+
+<h2>連続ウェーブレット変換 (Continuous Wavelet Transform; CWT)</h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/morlet_6_log.png" title="&#34;Morlet Wavelet spectrogram&#34;" alt="&#34;Morlet Wavelet spectrogram&#34;"></p>
+
+<p>これは何回かブログで書きました。</p>
+
+<ul>
+<li><a href="http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/">FFTを使った連続ウェーブレット変換の高速化 &ndash; LESS IS MORE</a></li>
+<li><a href="http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/">連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG &ndash; LESS IS MORE</a></li>
+</ul>
+
+
+<p>コードは、テストがまだ通らないので開発中ということで…orz</p>
+
+<h2>逆連続ウェーブレット変換 (Inverse Continuous Wavelet Transform; ICWT)</h2>
+
+<p>連続ウェーブレット変換の逆変換ですね。これもけっこう難しいです。こちらもまだテストに通っていないので、開発中です。</p>
+
+<ul>
+<li><a href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">逆連続ウェーブレット変換による信号の再構成 &ndash; LESS IS MORE</a></li>
+</ul>
+
+
+<p>さて、この辺でまた一区切りです。次は、より音声に特化した信号処理手法を紹介します。</p>
+
+<p>※以降紹介するもののうち、多くは<a href="http://sp-tk.sourceforge.net/">SPTK</a>のGo-portになっていて、一部はcgoを使ってラップしただけです（後々はpure goにしたいけれど、特にメルケプストラム分析あたりは難しいのでできていません）</p>
+
+<h1>音声分析系</h1>
+
+<h2>基本周波数推定 <a href="http://godoc.org/github.com/r9y9/gossp/f0">[f0]</a></h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/arayuru_f0.png" title="&#34;Fundamental frequency trajectory example.&#34;" alt="&#34;Fundamental frequency trajectory example.&#34;"></p>
+
+<p>ざっくり言えば音の高さを求める方法ですね。一応、音声に特化した方法をいくつか使えるようにしました。</p>
+
+<ul>
+<li><a href="http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf">A. de Cheveigne and H. Kawahara. YIN, a fundamental frequency estimator for speech and music. J. Acoust. Soc. Am., 111(4):1917–1930, 2002.</a></li>
+<li><a href="http://www.cise.ufl.edu/~acamacho/publications/dissertation.pdf">A. Camacho. SWIPE: A sawtooth waveform inspired pitch estimator for speech and music. PhD thesis, University of Florida, 2007.</a></li>
+</ul>
+
+
+<p>ただしYINはもどきです。</p>
+
+<p>以前、<a href="https://github.com/r9y9/go-world">GO-WORLD</a>という音声分析合成系WORLDのGoラッパーを書いたので、それを使えばF0推定手法Dioが使えます。</p>
+
+<h3>参考</h3>
+
+<ul>
+<li><a href="http://r9y9.github.io/blog/2014/03/22/go-world/">音声分析変換合成システムWORLDのGoラッパーを書いた &ndash; LESS IS MORE</a></li>
+</ul>
+
+
+<h2>メルケプストラム分析 <a href="http://godoc.org/github.com/r9y9/gossp/mgcep">[mgcep]</a></h2>
+
+<p>音声合成界隈ではよく聞くメルケプストラム（※MFCCとは異なります）を求めるための分析手法です。メルケプストラムは、HMM（Hidden Markov Models; 隠れマルコフモデル）音声合成や統計的声質変換において、声道特徴（いわゆる、声質）のパラメータ表現としてよく使われています。メルケプストラムの前に、LPCとかPARCORとか色々あるのですが、現在のHMM音声合成で最もよく使われているのはメルケプストラムな気がするので、メルケプストラム分析があれば十分な気がします。</p>
+
+<p>これは、SPTKをcgoを使ってラップしました</p>
+
+<h3>参考</h3>
+
+<ul>
+<li><a href="http://ci.nii.ac.jp/naid/40004638236/">徳田恵一, 小林隆夫, 深田俊明, 斎藤博徳, 今井 聖, “メルケプストラムをパラメータとする音声のスペクトル推定,” 信学論(A), vol.J74-A, no.8, pp.1240–1248, Aug. 1991.</a></li>
+</ul>
+
+
+<h2>メル一般化ケプストラム分析 <a href="http://godoc.org/github.com/r9y9/gossp/mgcep">[mgcep]</a></h2>
+
+<p>メル一般化ケプストラム分析は、その名の通りメルケプストラム分析を一般化したものです。メルケプストラム分析はもちろん、LPCも包含します（詳細は、参考文献をチェックしてみてください）。論文をいくつかあさっている限り、あんまり使われていない気はしますが、これもSPTKをラップしてGoから使えるようにしました。メルケプストラム分析もメル一般化ケプストラム分析に含まれるので、mgcepという一つのパッケージにしました。</p>
+
+<h3>参考</h3>
+
+<ul>
+<li><a href="http://www.utdallas.edu/~john.hanse/nPublications/JP-55-SpeechComm-Yapanel-Hansen-PMVDR-Feb08.pdf">Tokuda, K., Masuko, T., Kobayashi, T., Imai, S., 1994. Mel-generalized Cepstral Analysis-A Uniﬁed Approach to Speech Spectral Estimation, ISCA ICSLP-94: Inter. Conf. Spoken Lang. Proc., Yokohama, Japan, pp. 1043–1046.</a></li>
+</ul>
+
+
+<h1>音声合成系</h1>
+
+<h2>励起信号の生成 <a href="http://godoc.org/github.com/r9y9/gossp/excite">[excite]</a></h2>
+
+<p><img class="center" src="http://r9y9.github.io/images/pulse_excite.png" title="&#34;Exciation eignal.&#34;" alt="&#34;Exciation eignal.&#34;"></p>
+
+<p>SPTKのexciteのGo実装です。いわゆるPulseExcitationという奴ですね。非周期成分まったく考慮しない単純な励起信号です。</p>
+
+<p>高品質な波形合成が必要な場合は、WORLDやSTRAIGHTを使うのが良いです。</p>
+
+<h2>MLSA (Mel Log Spectrum Approximation) デジタルフィルタ <a href="http://godoc.org/github.com/r9y9/gossp/vocoder">[vocoder]</a></h2>
+
+<p>MLSAフィルタは、メルケプストラムと励起信号から音声波形を合成するためのデジタルフィルタです。HMM音声合成の波形合成部で使われています（今もきっと）。Pure goで書き直しました。</p>
+
+<p>昔、C++でも書いたことあります。</p>
+
+<h3>参考</h3>
+
+<ul>
+<li><a href="http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/">MLSA digital filter のC++実装 &ndash; LESS IS MORE</a></li>
+</ul>
+
+
+<h2>MGLSA (Mel Genaralized-Log Spectrum Approximation) デジタルフィルタ <a href="http://godoc.org/github.com/r9y9/gossp/vocoder">[vocoder]</a></h2>
+
+<p>MGLSAフィルタは、メル一般化ケプストラムから波形を合成するためのデジタルフィルタですね。これも pure goで書きました。</p>
+
+<h2><strong>※SPTKの再実装について</strong></h2>
+
+<p>SPTKの実装をGoで書き直したものについては、SPTKの実装と結果が一致するかどうかを確認するテストを書いてあります。よって、誤った結果になるということは（計算誤差が影響する場合を除き）基本的にないので、お気になさらず。</p>
+
+<h2>高品質な音声分析変換合成系 WORLD <a href="http://godoc.org/github.com/r9y9/go-world">[go-world]</a></h2>
+
+<p><a href="http://r9y9.github.io/blog/2014/03/22/go-world/">音声分析変換合成システムWORLDのGoラッパーを書いた &ndash; LESS IS MORE</a></p>
+
+<p>以前WORLDのGoラッパーを書いたので、色々使えると思います。統計ベースの音声合成とか、声質変換とか。僕は声質変換に使おうと思ってラップしました。</p>
+
+<h1>おわりに</h1>
+
+<p>長々と書きましたが、Go言語での信号処理の基礎と、今まで整備してきた音声信号処理ライブラリを簡単に紹介しました。僕が書いたものは、まとめてGithubで公開しています。</p>
+
+<p><a href="https://github.com/r9y9/gossp">https://github.com/r9y9/gossp</a></p>
+
+<p>使ってももらって、あわよくばバグとか報告してもらって、改善していければいいなーというのと、あとGithubのissue管理便利だし使おうと思ってGithubに上げました。</p>
+
+<p>みなさん、Goで音声信号処理始めてみませんか？</p>
+
+<h1>余談</h1>
+
+<h2>Pythonではダメなの？その他言語は？</h2>
+
+<p>なんでGoなの？と思う人がいると思います。冒頭にも書いたとおり、正直好きなのにすればいいですが、適当に書いて速いのがいいならC++だし、型を意識せずさくっと書きたいならPythonだし、そこそこ速くて型があって型推論もあって、とかだったらGoがいいかなと僕は思います。</p>
+
+<p>Goの特徴（≒良さ）ついては、<a href="http://www.slideshare.net/ymotongpoo/20130228-gobp-study-66-16830134">20130228 Goノススメ（BPStudy #66） | SlideShare</a>
+ の11枚目が僕にはドンピシャです。</p>
+
+<p>numpy, scipy, matplotlib, scikit-learnあたりが最強すぎるので、僕はpythonも良く使います。</p>
+
+<h2>きっかけ</h2>
+
+<p>この記事を書いたきっかけは、友人にGoをおすすめしまくっていたのに全然聞いてくれなかったからでした。Goでも信号処理はできるよ</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG]]></title>
@@ -3513,119 +3947,6 @@ unit testに関しては以下の記事がよくまとまっているので、�
 <ul>
 <li>Resourceを登録するとき、ちゃんとリソースファイルを&#8221;保存&#8221;しないとdesigner上では登録したリソースが出てこない</li>
 <li>volume(50)だとけっこう小さい。ちなみに単位なんやねんということだけど、classのドキュメントには書いてなかった。</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[逆連続ウェーブレット変換による信号の再構成]]></title>
-    <link href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/"/>
-    <updated>2013-10-21T01:00:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt</id>
-    <content type="html"><![CDATA[<p>やったのでメモ。おそらく正しくできたと思う。結果貼っとく。ウェーブレットの参考は以下の文献</p>
-
-<p><a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">Torrence, C. and G.P. Compo &ldquo;A Practical Guide to Wavelet Analysis&rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.</a></p>
-
-<h2>ウェーブレットの条件</h2>
-
-<p>マザーウェーブレットはmorletを使う</p>
-
-<script type="math/tex; mode=display">
-\begin{align}
-\psi_{0}(\eta) = \pi^{-1/4}e^{i\omega_{0}\eta}e^{-\eta^{2}/2}
-\end{align}
-</script>
-
-
-<p></p>
-
-<p>文献に従って$\omega_{0} = 6.0$とした。</p>
-
-<p>以下にいっぱい図を張る。軸は適当</p>
-
-<h2>元の信号</h2>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/original_signal.png" title="&#34;The original signal&#34;" alt="&#34;The original signal&#34;"></p>
-
-<h2>ウェーブレットスペクトログラム</h2>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/morlet_wavelet_spectrogram.png" title="&#34;Morlet wavelet spectrogram&#34;" alt="&#34;Morlet wavelet spectrogram&#34;"></p>
-
-<p>Gaborではなく、Morletで求めたもの。スケールは、min=55hzで、25cent毎に8オクターブ分取った。一サンプル毎にウェーブレット変換を求めてるので、前回の記事でガボールウェーブレットで求めた奴よりよっぽど解像度高いっすね（前のは10ms毎だった、書いてなかったけど）。見てて綺麗（こなみ</p>
-
-<p>計算はFFT使ってるので速い</p>
-
-<p><a href="http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html">http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html</a>
-スケールのとり方はここを参考にするといい</p>
-
-<h2>再構成した信号</h2>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/recostructed_signal.png" title="&#34;The recostructed signal&#34;" alt="&#34;The recostructed signal&#34;"></p>
-
-<p>連続ウェーブレットの逆変換は、フーリエ変換と違ってそんなシンプルじゃないんだけど、結果から言えばウェーブレット変換の実数部を足しあわせて適当にスケールすれば元の信号が再構成できるみたい。ほんまかと思って実際にやってみたけど、できた</p>
-
-<p>が、実は少し誤差がある</p>
-
-<h2>重ねてプロット</h2>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_0.png" title="&#34;The original signal and recostructed signal&#34;" alt="&#34;The original signal and recostructed signal&#34;"></p>
-
-<h2>あっぷ</h2>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_1.png" title="&#34;The original signal and recostructed signal with zoom 1&#34;" alt="&#34;The original signal and recostructed signal with zoom 1&#34;"></p>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_2.png" title="&#34;The original signal and recostructed signal with zoom 2&#34;" alt="&#34;The original signal and recostructed signal with zoom 2&#34;"></p>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_3.png" title="&#34;The original signal and recostructed signal with zoom 3&#34;" alt="&#34;The original signal and recostructed signal with zoom 3&#34;"></p>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_4.png" title="&#34;The original signal and recostructed signal with zoom 4&#34;" alt="&#34;The original signal and recostructed signal with zoom 4&#34;"></p>
-
-<p><img class="center" src="http://r9y9.github.io/images/wavelet/double_5.png" title="&#34;The original signal and recostructed signal with zoom 5&#34;" alt="&#34;The original signal and recostructed signal with zoom 5&#34;"></p>
-
-<p>んー、まぁだいたいあってんじゃないですかね</p>
-
-<h2>誤差</h2>
-
-<p>平均誤差を計算すると、図の縦軸の量で考えて55.3994だった。16bitのwavが-32768〜32767なので、どうだろう、大きいのか小さいのかわからん</p>
-
-<p>ただ、再合成した音声を聞いた所それほど違和感はなかった。これはつまり、スペクトルいじる系の分析にSTFTがではなくウェーブレット使ってもいいんではないか？という考えが生まれますね。果たして、ウェーブレットが音声/音楽の分析にフーリエ変換ほど使われないのはなぜなのか、突き詰めたい</p>
-
-<h2>使った音声</h2>
-
-<p>あなたが一番聞きたいと思った声が流れます、どうぞ</p>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227502"></iframe>
-
-
-<p>スペクトログラム表示するのにサンプルが多いと大変なので、48kから10kにサンプリング周波数を落としたもの</p>
-
-<h2>再構成した音声</h2>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227539"></iframe>
-
-
-<p>僕の耳では違いはわからない。サンプリング周波数によって誤差が大小する可能性はあるが、そこまで調査してない</p>
-
-<h2>メモ</h2>
-
-<p><a href="http://paos.colorado.edu/research/wavelets/wavelet3.html">http://paos.colorado.edu/research/wavelets/wavelet3.html</a>
-ここの最後に書かれている以下の文章、</p>
-
-<blockquote><p>One problem with performing the wavelet transform in Fourier space is that this assumes the time series is periodic. The result is that signals in the wavelet transform at one end of the time series will get wrapped around to the other end.</p></blockquote>
-
-<p>FFT使うウェーブレット変換の問題は、信号を周期関数として仮定してしまうことにある、と。まあ、ですよねー。信号がめちゃくちゃ長くてこの仮定が破綻してしまう場合、どうするのがいいんだろう。</p>
-
-<p>あと、FFT使うウェーブレットの問題として、メモリ食うってのがあるんよな。ウェーブレット変換を計算する前に、マザーウェーブレットのフーリエ変換を持っとかないといけないし、サンプル毎に計算しないといけないし。44.1kの数分の音声とかなると、もう無理っすね。</p>
-
-<p>それぞれ、解決方法は思いつかないでもないけど、まだまとまってないので、解決したらまとめる、かもしれない。</p>
-
-<h2>さらにめも</h2>
-
-<ul>
-<li>practicalなんちゃらの、マザーウェーブレットを正規化する部分のmatlabコード、文献中の数式と若干違ってトリッキー。展開すれば一緒なんだけど、文献中の数式をそのまま書いたようになってないので、注意。ちょっと戸惑った</li>
-<li>逆ウェーブレットを行う際のスケールにかかる係数（文献中でいう$C_{\delta}$）は、マザーウェーブレットが決まれば値が定まる（らしい）。例えばMorletの$\omega_0 = 6$なら0.776とわかってるので、積分して計算する必要はない</li>
-<li>ウェーブレット変換と戯れてたら週末終わった</li>
 </ul>
 
 ]]></content>
