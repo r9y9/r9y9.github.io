@@ -350,6 +350,7 @@
 <span class='line-number'>40</span>
 <span class='line-number'>41</span>
 <span class='line-number'>42</span>
+<span class='line-number'>43</span>
 </pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
 </span><span class='line'>
 </span><span class='line'><span class="kn">import</span> <span class="p">(</span>
@@ -379,8 +380,9 @@
 </span><span class='line'>      <span class="nx">Window</span><span class="p">:</span>     <span class="nx">window</span><span class="p">.</span><span class="nx">CreateHanning</span><span class="p">(</span><span class="mi">2048</span><span class="p">),</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="nx">spectrogram</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">gossp</span><span class="p">.</span><span class="nx">SplitSpectrogram</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">STFT</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
-</span><span class='line'>  <span class="nx">PrintMatrixAsGnuplotFormat</span><span class="p">(</span><span class="nx">spectrogram</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">spectrogram</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">STFT</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">amplitudeSpectrogram</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">gossp</span><span class="p">.</span><span class="nx">SplitSpectrogram</span><span class="p">(</span><span class="nx">spectrogram</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">PrintMatrixAsGnuplotFormat</span><span class="p">(</span><span class="nx">amplitudeSpectrogram</span><span class="p">)</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="kd">func</span> <span class="nx">PrintMatrixAsGnuplotFormat</span><span class="p">(</span><span class="nx">matrix</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
@@ -400,7 +402,7 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='go'><span class='line'><span class="nx">set</span> <span class="nx">pm3d</span> <span class="kd">map</span>
-</span><span class='line'><span class="nx">sp</span> <span class="s">&quot;spepctrogram.txt&quot;</span>
+</span><span class='line'><span class="nx">sp</span> <span class="s">&quot;spectrogram.txt&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

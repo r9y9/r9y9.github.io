@@ -4,7 +4,7 @@
   <title><![CDATA[Category: speech-signal-processing | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/speech-signal-processing/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-06-13T02:37:37+09:00</updated>
+  <updated>2014-06-13T23:18:50+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -193,8 +193,9 @@ s := &amp;stft.STFT{
     Window:     window.CreateHanning(2048),
 }
 
-spectrogram, _ := gossp.SplitSpectrogram(s.STFT(data))
-PrintMatrixAsGnuplotFormat(spectrogram)
+spectrogram := s.STFT(data)
+amplitudeSpectrogram, _ := gossp.SplitSpectrogram(spectrogram)
+PrintMatrixAsGnuplotFormat(amplitudeSpectrogram)
 </code></pre>
 
 <p>}</p>
@@ -217,7 +218,7 @@ for i, vec := range matrix {
 
 <p><code>
 set pm3d map
-sp "spepctrogram.txt"
+sp "spectrogram.txt"
 </code></p>
 
 <h2>逆短時間フーリエ変換 (Inverse Short Time Fourier Transform; ISTFT) <a href="http://godoc.org/github.com/r9y9/gossp/stft">[stft]</a></h2>
