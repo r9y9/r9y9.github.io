@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-05T16:49:53+09:00</updated>
+  <updated>2014-07-05T16:55:25+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -35,7 +35,7 @@
 
 <ul>
 <li>参照話者と目標話者のスペクトル特徴量の結合GMM $P(x,y)$を学習する</li>
-<li>入力$x$が与えらたとき、$p(y|x)$が最大となるようにスペクトル特徴量を変換する</li>
+<li>入力$x$が与えらたとき、$P(y|x)$が最大となるようにスペクトル特徴量を変換する</li>
 </ul>
 
 
