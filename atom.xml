@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-13T02:28:53+09:00</updated>
+  <updated>2014-07-13T03:26:15+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -23,6 +23,14 @@
 <p>前回、<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ &ndash; LESS IS MORE</a> という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。</p>
 
 <p>Twitter引用:</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>統計的声質変換クッソムズすぎワロタ - LESS IS MORE <a href="http://t.co/8RkeXIf6Ym">http://t.co/8RkeXIf6Ym</a> <a href="https://twitter.com/r9y9">@r9y9</a>さんから ムズすぎと言いながら，最後の音はしっかり出ているあたり凄いなぁ．</p>&mdash; M. Morise (忍者系研究者) (@m_morise) <a href="https://twitter.com/m_morise/statuses/485339123171852289">July 5, 2014</a></blockquote>
+
+
+<script async src="http://r9y9.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+
 
 <blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/ballforest">@ballforest</a> 従来のパラメータ変換と比較すると、音質は従来よりもよさそうな気はしますがスペクトル包絡の性差ががっつりと影響しそうな気もするんですよね。</p>&mdash; 縄文人（妖精系研究者なのです） (@dicekicker) <a href="https://twitter.com/dicekicker/statuses/485380534122463232">July 5, 2014</a></blockquote>
 
