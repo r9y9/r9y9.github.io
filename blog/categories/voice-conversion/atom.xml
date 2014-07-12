@@ -4,7 +4,7 @@
   <title><![CDATA[Category: voice-conversion, | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/voice-conversion/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-13T02:26:21+09:00</updated>
+  <updated>2014-07-13T02:28:53+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -369,7 +369,7 @@ def convert(self, src):
 <h2>結論</h2>
 
 <ul>
-<li>疎行列の演算を考えるときは、間違ってもめんどくさいとか思わずに密行列を積極的に使おう</li>
+<li>疎行列の演算を考えるときは、間違ってもめんどくさいとか思わずに疎行列を積極的に使おう</li>
 <li>統計的声質変換ムズすぎ</li>
 </ul>
 
