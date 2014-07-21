@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-21T00:46:19+09:00</updated>
+  <updated>2014-07-21T12:36:28+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,29 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[論文メモ：[Chen 2013] Joint Spectral Distribution Modeling Using Restricted Boltzmann Machines for Voice Conversion]]></title>
+    <link href="http://r9y9.github.io/blog/2014/07/21/joint-spectral-distribution-modeling-using-restricted-boltzman-machines-for-voice-conversion/"/>
+    <updated>2014-07-21T11:53:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/07/21/joint-spectral-distribution-modeling-using-restricted-boltzman-machines-for-voice-conversion</id>
+    <content type="html"><![CDATA[<p>めずらしく声質変換のデモのURLを載せている論文を見つけたのでメモ。</p>
+
+<p><a href="https://wiki.inf.ed.ac.uk/twiki/pub/CSTR/Speak13To14/IS130156.pdf">L-H. Chen, Z-H. Ling, Y. Song and L-R. Dai, &ldquo;Joint Spectral Distribution Modeling Using Restricted Boltzmann Machines for Voice Conversion&rdquo;, in Proc. of InterSpeech, 2013, pp. 3052 &ndash; 3056</a></p>
+
+<p>声質変換のデモ: <a href="http://home.ustc.edu.cn/~chenlh/demo/IS2013_SMCRBM.html">http://home.ustc.edu.cn/~chenlh/demo/IS2013_SMCRBM.html</a></p>
+
+<p>デモを聴く限り、主観的には若干音質向上してる気はする。over-smoothingっぽさがマシになってる感</p>
+
+<p>まださらっとしか読んでないけど、なぜRBMを学習する前にGMMを学習してmixture毎のsubspaceに分けるのかイマイチよくわからん（subspace毎にRBMを作ってる）。GMMベースの方法がベースとしてあって、各mixtureのGaussianじゃ表現力がアレだから、その部分をRBMで置き換えると良くなるよ、ということなのかな。</p>
+
+<p>と思ったらConclusionsに、</p>
+
+<blockquote><p>Even so, the proposed method still needs to be built based on GMM systems, therefore, using mixture of RBMs to directly model the entire acoustic space will be a future work.</p></blockquote>
+
+<p>って書いてあったわ。学習が難しいんだろうなー。納得。参考になる</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Pylearn2, theanoをEC2 g2.x2large で動かす方法]]></title>
@@ -4689,43 +4712,6 @@ unit testに関しては以下の記事がよくまとまっているので、�
 <li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>
 <li><a href="http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html">メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版</a></li>
 <li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[スペクトログラムとメル周波数スペクトログラムの可視化]]></title>
-    <link href="http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/"/>
-    <updated>2013-11-16T23:07:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram</id>
-    <content type="html"><![CDATA[<p>やったので貼っとくだけ</p>
-
-<p><img class="center" src="http://r9y9.github.io/images/spectrogram.png" title="&#34;よくあるスペクトログラム&#34;" alt="&#34;よくあるスペクトログラム&#34;"></p>
-
-<p><img class="center" src="http://r9y9.github.io/images/mel_spectrogram.png" title="&#34;メル周波数に変換したスペクトログラム&#34;" alt="&#34;メル周波数に変換したスペクトログラム&#34;"></p>
-
-<p>低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。</p>
-
-<p>今回は振幅を対数を取って表示した（ちなみに）。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に合うようにメル周波数に変換して次元圧縮するイメージ。</p>
-
-<p>解説は、<a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a> を見よう。素晴らしいです</p>
-
-<p>僕はと言えば特に解説する気も起きないので、C++コードでも貼っとこう（※間違ってたので、とりあえず消しました</p>
-
-<h2>まとめ</h2>
-
-<p>メルフィルタバンクかけるクラス作ってたら数時間潰した</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a>
-
-<ul>
-<li> とても参考にしました。ただ、フィルタバンクかける際に正規化してない？元のスケールを保つために、上のコードでは正規化するようにした(<a href="http://ohm.nuigalway.ie/0809/mbyrne/Images.html#MFCC">ここ</a>の図のようなイメージ）</li>
-</ul>
-</li>
 </ul>
 
 ]]></content>
