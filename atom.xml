@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-22T21:25:07+09:00</updated>
+  <updated>2014-07-22T21:35:40+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -3946,29 +3946,10 @@ unit testに関しては以下の記事がよくまとまっているので、�
 </ul>
 
 
-<h1><a href="https://github.com/r9y9/go-msptools">Go-msptools</a></h1>
+<h1>Go-msptools</h1>
 
-<p>で、大学院時代から継ぎ足し継ぎ足ししてきた秘伝の信号処理C++ライブラリがあるんだけど、一部切り出してGoで書いてみた</p>
-
-<ul>
-<li><a href="https://github.com/r9y9/go-msptools">Github</a></li>
-<li><a href="http://godoc.org/github.com/r9y9/go-msptools">GoDoc</a></li>
-</ul>
-
-
-<p>音声信号処理用にケプストラム分析とかLPCとか色々書いたけど、考えた結果既存のライブラリ使うほうがいいやってなったので音楽に特化することにしました。SPTK様には頭が上がりません</p>
-
-<p>さておき、パッケージは今の所二つ</p>
-
-<ul>
-<li><a href="https://github.com/r9y9/go-msptools/tree/master/cwt">cwt</a> : ガボール連続ウェーブレット変換</li>
-<li><a href="https://github.com/r9y9/go-msptools/tree/master/pcp">pcp</a> : クロマベクトル</li>
-</ul>
-
-
-<p>Go始めたてのころに <a href="https://github.com/mjibson/go-dsp/">go-dsp</a> というデジタル信号処理ライブラリを見つけて、もろそれに影響受けた名前になってる。</p>
-
-<p>徐々にC++版を移植していこうかなと考え中</p>
+<p>2014/07/22 追記：<br/>
+Go-msptoolsはGOSSPに吸収されました。（<a href="http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/">GOSSP &ndash; Go言語で音声信号処理 &ndash; LESS IS MORE</a>を参照）</p>
 
 <h2>おまけ：音の信号処理に役立ちそうなライブラリ</h2>
 
