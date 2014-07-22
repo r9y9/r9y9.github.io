@@ -9,7 +9,9 @@
   <meta name="author" content="Ryuichi Yamamoto">
 
   
-  <meta name="description" content="Goが最近オススメです（n度目 Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製のSPTK をGoから使えるようにする cgo GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、 &hellip;">
+  <meta name="description" content="2014/07/22 追記：
+パッケージの一部として書きました（GOSSP &ndash; Go言語で音声信号処理 &ndash; LESS IS MOREを参照）。
+SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ &mdash; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -137,7 +139,13 @@
   </header>
 
 
-<div class="entry-content"><p>Goが最近オススメです（n度目</p>
+<div class="entry-content"><p>2014/07/22 追記：<br/>
+パッケージの一部として書きました（<a href="http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/">GOSSP &ndash; Go言語で音声信号処理 &ndash; LESS IS MORE</a>を参照）。
+SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ</p>
+
+<p>&mdash;</p>
+
+<p>Goが最近オススメです（n度目</p>
 
 <p>Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の<a href="http://sp-tk.sourceforge.net/">SPTK</a> をGoから使えるようにする</p>
 
@@ -176,63 +184,13 @@
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
 </pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">sptk</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// #cgo pkg-config: SPTK</span>
-</span><span class='line'><span class="c1">// #cgo LDFLAGS: -lSPTK -lSPTKlib -lm</span>
 </span><span class='line'><span class="c1">// #include &lt;stdio.h&gt;</span>
 </span><span class='line'><span class="c1">// #include &lt;SPTK/SPTK.h&gt;</span>
 </span><span class='line'><span class="kn">import</span> <span class="s">&quot;C&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="cm">/****************************************************************</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">    $Id: _mfcc.c,v 1.11 2012/12/21 11:27:35 mataki Exp $</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">    Mel-Frequency Cepstral Analysis</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">        void mfcc(in, mc, sampleFreq, alpha, eps, wlng, flng</span>
-</span><span class='line'><span class="cm">                  m, n, ceplift, dftmode, usehamming);</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">        double  *in        : input sequence</span>
-</span><span class='line'><span class="cm">        double  *mc        : mel-frequency cepstral coefficients</span>
-</span><span class='line'><span class="cm">        double  sampleFreq : sample frequency</span>
-</span><span class='line'><span class="cm">        double  alpha      : pre-emphasis coefficient</span>
-</span><span class='line'><span class="cm">        double  eps        : epsilon</span>
-</span><span class='line'><span class="cm">        int     wlng       : frame length of input sequence</span>
-</span><span class='line'><span class="cm">        int     flng       : frame length for fft</span>
-</span><span class='line'><span class="cm">        int     m          : order of cepstrum</span>
-</span><span class='line'><span class="cm">        int     n          : number of channel for mel-filter bank</span>
-</span><span class='line'><span class="cm">        int     ceplift    : liftering coefficients</span>
-</span><span class='line'><span class="cm">        Boolean dftmode    : use dft</span>
-</span><span class='line'><span class="cm">        Boolean usehamming : use hamming window</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">******************************************************************/</span>
-</span><span class='line'><span class="c1">// MFCC returns Mel-frequency Cepstral Coefficients.</span>
 </span><span class='line'><span class="kd">func</span> <span class="nx">MFCC</span><span class="p">(</span><span class="nx">audioBuffer</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">sampleRate</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">alpha</span><span class="p">,</span> <span class="nx">eps</span> <span class="kt">float64</span><span class="p">,</span> <span class="nx">wlng</span><span class="p">,</span> <span class="nx">flng</span><span class="p">,</span> <span class="nx">m</span><span class="p">,</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">ceplift</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">dftmode</span><span class="p">,</span> <span class="nx">usehamming</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
 </span><span class='line'>  <span class="c1">// Convert go bool to C.Boolean (so annoying..</span>
 </span><span class='line'>  <span class="kd">var</span> <span class="nx">dftmodeInGo</span><span class="p">,</span> <span class="nx">usehammingInGo</span> <span class="nx">C</span><span class="p">.</span><span class="nx">Boolean</span>
@@ -252,13 +210,6 @@
 </span><span class='line'>  <span class="k">return</span> <span class="nx">resultBuffer</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>個人的な流儀で、結果は必ずreturnするようにしている</li>
-<li>boolからC言語のBooleanっぽいenumへの変換でめんどくさいことしてます</li>
-<li>コメントはSPTK 3.6のコードから引っ張って来ました</li>
-</ul>
 
 
 <p>このパッケージを使う前に、 <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a> を使ってSPTKをインストールする。本家のを使ってもいいですが、その場合は #cgo の設定が変わると思います。公式のSPTK、pkg-configに対応してくれんかな…</p>
