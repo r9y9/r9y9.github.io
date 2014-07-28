@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-22T21:35:40+09:00</updated>
+  <updated>2014-07-28T22:59:06+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -192,7 +192,11 @@
     <link href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/"/>
     <updated>2014-07-13T02:02:00+09:00</updated>
     <id>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran</id>
-    <content type="html"><![CDATA[<h2>まえがき</h2>
+    <content type="html"><![CDATA[<p>2014/07/28 追記：<br/>
+重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました
+<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
+
+<h2>まえがき</h2>
 
 <p>前回、<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ &ndash; LESS IS MORE</a> という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。</p>
 
@@ -278,7 +282,8 @@
 
 <h2>コード</h2>
 
-<p>メモ的な意味で主要なコードを貼っておきます。</p>
+<p>メモ的な意味で主要なコードを貼っておきます。
+<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -538,6 +543,12 @@
 <span class='line-number'>256</span>
 <span class='line-number'>257</span>
 <span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
 </pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/python</span>
 </span><span class='line'><span class="c"># coding: utf-8</span>
 </span><span class='line'>
@@ -723,27 +734,33 @@
 </span><span class='line'>    <span class="k">def</span> <span class="nf">__construct_weight_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
 </span><span class='line'>        <span class="c"># Construct Weight matrix W</span>
 </span><span class='line'>        <span class="c"># Eq.(25) ~ (28)</span>
-</span><span class='line'>        <span class="c"># TODO(ryuichi) replace self.W to sparse matrix</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="o">*</span><span class="n">T</span><span class="p">))</span>
 </span><span class='line'>        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-</span><span class='line'>            <span class="n">w0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="o">*</span><span class="n">T</span><span class="p">))</span>
-</span><span class='line'>            <span class="n">w1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="o">*</span><span class="n">T</span><span class="p">))</span>
-</span><span class='line'>            <span class="n">w0</span><span class="p">[</span><span class="mi">0</span><span class="p">:,</span><span class="n">t</span><span class="o">*</span><span class="n">D</span><span class="p">:(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">D</span><span class="p">))</span>
+</span><span class='line'>            <span class="n">w0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">lil_matrix</span><span class="p">((</span><span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="o">*</span><span class="n">T</span><span class="p">))</span>
+</span><span class='line'>            <span class="n">w1</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">lil_matrix</span><span class="p">((</span><span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="o">*</span><span class="n">T</span><span class="p">))</span>
+</span><span class='line'>            <span class="n">w0</span><span class="p">[</span><span class="mi">0</span><span class="p">:,</span><span class="n">t</span><span class="o">*</span><span class="n">D</span><span class="p">:(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'>            <span class="k">if</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
 </span><span class='line'>                <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 </span><span class='line'>                <span class="n">tmp</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
-</span><span class='line'>                <span class="n">w1</span><span class="p">[</span><span class="mi">0</span><span class="p">:,(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="p">:</span><span class="n">t</span><span class="o">*</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+</span><span class='line'>                <span class="n">w1</span><span class="p">[</span><span class="mi">0</span><span class="p">:,(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="p">:</span><span class="n">t</span><span class="o">*</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </span><span class='line'>            <span class="k">if</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">:</span>
 </span><span class='line'>                <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 </span><span class='line'>                <span class="n">tmp</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-</span><span class='line'>                <span class="n">w1</span><span class="p">[</span><span class="mi">0</span><span class="p">:,(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="p">:(</span><span class="n">t</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+</span><span class='line'>                <span class="n">w1</span><span class="p">[</span><span class="mi">0</span><span class="p">:,(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="p">:(</span><span class="n">t</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>            <span class="n">W_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">w0</span><span class="p">,</span> <span class="n">w1</span><span class="p">])</span>
-</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">t</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">),:]</span> <span class="o">=</span> <span class="n">W_t</span>
+</span><span class='line'>            <span class="n">W_t</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">w0</span><span class="p">,</span> <span class="n">w1</span><span class="p">])</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="c"># make self.W as a sparse matrix that is suitable for matrix product</span>
+</span><span class='line'>            <span class="c"># Slower</span>
+</span><span class='line'>            <span class="c"># self.W[2*D*t:2*D*(t+1),:] = W_t</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>                <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">W_t</span>
+</span><span class='line'>            <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>                <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">W_t</span><span class="p">])</span>
+</span><span class='line'>
 </span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="o">*</span><span class="n">T</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">):</span>
 </span><span class='line'>        <span class="sd">&quot;&quot;&quot;</span>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: voice-conversion, | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/voice-conversion/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-22T21:35:40+09:00</updated>
+  <updated>2014-07-28T22:59:06+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -18,7 +18,11 @@
     <link href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/"/>
     <updated>2014-07-13T02:02:00+09:00</updated>
     <id>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran</id>
-    <content type="html"><![CDATA[<h2>まえがき</h2>
+    <content type="html"><![CDATA[<p>2014/07/28 追記：<br/>
+重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました
+<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
+
+<h2>まえがき</h2>
 
 <p>前回、<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ &ndash; LESS IS MORE</a> という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。</p>
 
@@ -104,7 +108,8 @@
 
 <h2>コード</h2>
 
-<p>メモ的な意味で主要なコードを貼っておきます。</p>
+<p>メモ的な意味で主要なコードを貼っておきます。
+<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
 
 <p>```python</p>
 
@@ -297,27 +302,33 @@ def __init__(self, gmm, T, gv=None, swap=False):
 def __construct_weight_matrix(self, T, D):
     # Construct Weight matrix W
     # Eq.(25) ~ (28)
-    # TODO(ryuichi) replace self.W to sparse matrix
-    self.W = np.zeros((2*D*T, D*T))
     for t in range(T):
-        w0 = np.zeros((D, D*T))
-        w1 = np.zeros((D, D*T))
-        w0[0:,t*D:(t+1)*D] = np.diag(np.ones(D))
+        w0 = scipy.sparse.lil_matrix((D, D*T))
+        w1 = scipy.sparse.lil_matrix((D, D*T))
+        w0[0:,t*D:(t+1)*D] = scipy.sparse.diags(np.ones(D), 0)
 
         if t-1 &gt;= 0:
             tmp = np.zeros(D)
             tmp.fill(-0.5)
-            w1[0:,(t-1)*D:t*D] = np.diag(tmp)
+            w1[0:,(t-1)*D:t*D] = scipy.sparse.diags(tmp, 0)
         if t+1 &lt; T:
             tmp = np.zeros(D)
             tmp.fill(0.5)
-            w1[0:,(t+1)*D:(t+2)*D] = np.diag(tmp)
+            w1[0:,(t+1)*D:(t+2)*D] = scipy.sparse.diags(tmp, 0)
 
-        W_t = np.vstack([w0, w1])
-        self.W[2*D*t:2*D*(t+1),:] = W_t
+        W_t = scipy.sparse.vstack([w0, w1])
 
-    # make self.W as a sparse matrix that is suitable for matrix product
+        # Slower
+        # self.W[2*D*t:2*D*(t+1),:] = W_t
+
+        if t == 0:
+            self.W = W_t
+        else:
+            self.W = scipy.sparse.vstack([self.W, W_t])
+
     self.W = scipy.sparse.csr_matrix(self.W)
+
+    assert self.W.shape == (2*D*T, D*T)
 
 def convert(self, src):
     """
