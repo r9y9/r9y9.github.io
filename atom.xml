@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-29T22:28:32+09:00</updated>
+  <updated>2014-07-29T22:35:28+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -38,8 +38,6 @@
 
 <p>自分で作るかー、という考えも生まれなかったことはないですが、端的に言えばそれを行うだけのやる気がありませんでした。まぁ本当に必要だったら多少難しくてもやるのですが、ほら、僕達にはpythonがあるじゃないですか…</p>
 
-<p>なぜGoは数値計算のライブラリが少ないのか、というのは、単に言語自体が新しいからだけでなく言語の特性に理由がある気もしますが（よく言われてそうなのは演算子のオーバーロードがないこと）、あまり深く考えているわけでもないので今回は書きません。</p>
-
 <h2>Pythonで機械学習</h2>
 
 <p><a href="https://www.google.co.jp/search?q=python+%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&amp;oq=python+%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92">python 機械学習 &ndash; Google 検索</a> 約 119,000 件（2014/07/29現在）</p>
@@ -56,7 +54,7 @@
 
 <h2>Pythonでニューラルネット（pylearn2を使おう）</h2>
 
-<p>Deep何とかを含め流行りのニューラルネットが使える機械学習のライブラリでは、僕が <a href="https://github.com/lisa-lab/pylearn2">pylearn2</a> がよさ気だなーと思っています。理由は、高速かつ拡張性が高いからです。pylearn2は、数学的な記号表現からGPUコード（GPUがなければCPU向けのコード）を生成するmathコンパイラ <a href="https://github.com/Theano/Theano">Theano</a> で書かれているためpythonでありながら高速で、かつ機械学習に置いて重要なコンポーネントであるデータ、モデル、アルゴリズムが上手く分離されて設計されているのがいいところかなと思います（全部ごっちゃに書いていませんか？僕はそうですごめんなさい。データはともかくモデルと学習を上手く切り分けるの難しい）。A Machine Learning library based on Theanoとのことですが、Deep learningで有名な <a href="http://lisa.iro.umontreal.ca/index_en.html">lisa lab</a> 発ということもあり、ニューラルネットのライブラリという印象が少し強いですね。</p>
+<p>Deep何とかを含め流行りのニューラルネットが使える機械学習のライブラリでは、僕は <a href="https://github.com/lisa-lab/pylearn2">pylearn2</a> がよさ気だなーと思っています。理由は、高速かつ拡張性が高いからです。pylearn2は、数学的な記号表現からGPUコード（GPUがなければCPU向けのコード）を生成するmathコンパイラ <a href="https://github.com/Theano/Theano">Theano</a> で書かれているためpythonでありながら高速で、かつ機械学習に置いて重要なコンポーネントであるデータ、モデル、アルゴリズムが上手く分離されて設計されているのがいいところかなと思います（全部ごっちゃに書いていませんか？僕はそうですごめんなさい。データはともかくモデルと学習を上手く切り分けるの難しい）。A Machine Learning library based on Theanoとのことですが、Deep learningで有名な <a href="http://lisa.iro.umontreal.ca/index_en.html">lisa lab</a> 発ということもあり、ニューラルネットのライブラリという印象が少し強いですね。</p>
 
 <p>一つ重要なこととして、このライブラリはかなり研究者向けです。ブラックボックスとして使うのではなく、中身を読んで必要に応じて自分で拡張を書きたい人に向いているかと思います。</p>
 
