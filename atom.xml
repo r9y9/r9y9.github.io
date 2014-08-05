@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-07-29T22:35:28+09:00</updated>
+  <updated>2014-08-06T00:19:14+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi Yamamoto]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Tokyo.Scipyに参加してきた]]></title>
+    <link href="http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/"/>
+    <updated>2014-08-05T23:36:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy</id>
+    <content type="html"><![CDATA[<h2><a href="https://github.com/tokyo-scipy/archive">Tokyo.SciPy</a></h2>
+
+<p>ハッシュタグ: <a href="https://twitter.com/search?q=%23tokyoscipy&amp;src=tyah">#tokyoscipy</a></p>
+
+<blockquote><p>Tokyo.Scipy は科学技術計算で Python を利用するための勉強会です．</p></blockquote>
+
+<p>とのことです。最近、python/numpy/scipyによくお世話になっているので、参加してみました。雑感をメモしておきます。</p>
+
+<h2><a href="https://github.com/tokyo-scipy/archive/tree/master/006">Tokyo.Scipy 006</a></h2>
+
+<p>第6回のようでした。プログラムだけさっとまとめると、</p>
+
+<ul>
+<li>そこそこ大規模Python並列/パイプライン処理入門 w/o MapReduceレジーム (柏野雄太 @yutakashino) 45分</li>
+<li>初心者が陥るN個の罠。いざ進めNumpy/Scipyの道 (@nezuq) 15分</li>
+<li>Making computations reproducible (@fuzzysphere) 30分</li>
+<li>IPython Notebookで始めるデータ分析と可視化 (杜世橋 @lucidfrontier45) 30分</li>
+<li>PyMCがあれば，ベイズ推定でもう泣いたりなんかしない (神嶌敏弘 @shima__shima) 45分</li>
+</ul>
+
+
+<p>という感じ。僕的には、@shima__shima 先生の発表が目当てだった</p>
+
+<h2>雑感</h2>
+
+<ul>
+<li>今回（？）はscipyの話はほとんどなかった。pythonを使った科学技術計算に関する幅広いトピックを扱ってる印象。</li>
+<li>ipython はやっぱ便利ですね。僕も良く使います</li>
+<li>@shima__shima 先生の発表がとてもわかりやすかったので、本当に参考にしたい</li>
+<li>正直もっとコアな話もあっていいのでは、と思った</li>
+<li>懇親会で気づいたが、意外と音声信号処理やってる（た）人がいてびっくりした</li>
+<li><a href="https://github.com/scikit-learn/scikit-learn">scikit-learn</a> を初期の頃に作られてた方 <a href="https://twitter.com/cournape">@cournape</a> がいてびっくり。開発当初はGMMとSVMくらいしかなくて全然ユーザーがつかなかったなどなど、裏話を色々聞けた</li>
+<li>フランス人の「たぶん大丈夫」は絶対無理の意（わろた</li>
+<li>Rust, juliaがいいと教えてもらった。うちjuliaは今やってみてるがなかなかいい</li>
+<li>発表でも話題に上がったけど、Pandasがいいという話を聞いたので、試してみたい</li>
+</ul>
+
+
+<p>運営の方々、発表された方々、ありがとうございました。僕も機会が合えば何か発表したい</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね]]></title>
@@ -4653,70 +4700,6 @@ Go-msptoolsはGOSSPに吸収されました。（<a href="http://r9y9.github.io/
 <h1>最後に</h1>
 
 <p>SPTKもwafも素晴らしいので積極的に使おう＾＾</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MFCCの計算方法についてメモ]]></title>
-    <link href="http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/"/>
-    <updated>2013-11-24T22:29:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo</id>
-    <content type="html"><![CDATA[<h2>MFCC とは</h2>
-
-<p>Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。</p>
-
-<h3>算出手順</h3>
-
-<ul>
-<li>音声信号を適当な長さのフレームで切り出し</li>
-<li>窓がけ</li>
-<li>フーリエ変換して対数振幅スペクトルを求める</li>
-<li>メルフィルタバンクを掛けて、メル周波数スペクトルを求める</li>
-<li>離散コサイン変換により、MFCCを求める</li>
-</ul>
-
-
-<p>以上。SPTKのmfccコマンドのソースもだいたいそうなってた。</p>
-
-<h3>さて</h3>
-
-<h4>ここに音声波形があるじゃろ？？</h4>
-
-<p><img class="center" src="http://r9y9.github.io/images/speech-signal.png" title="&#34;音声信号を適当な長さのフレームで切り出し&#34;" alt="&#34;音声信号を適当な長さのフレームで切り出し&#34;"></p>
-
-<h4>音声波形を窓がけして…</h4>
-
-<p><img class="center" src="http://r9y9.github.io/images/windowed-signal.png" title="&#34;窓がけ&#34;" alt="&#34;窓がけ&#34;"></p>
-
-<h4>さらにフーリエ変換して対数取って…</h4>
-
-<p><img class="center" src="http://r9y9.github.io/images/log-amplitude.png" title="&#34;フーリエ変換して振幅スペクトルを求める&#34;" alt="&#34;フーリエ変換して振幅スペクトルを求める&#34;"></p>
-
-<h4>ここでメルフィルタバンクの出番じゃ</h4>
-
-<p><img class="center" src="http://r9y9.github.io/images/after-mel-filterbank.png" title="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;" alt="&#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;"></p>
-
-<h4>最後に離散コサイン変換で完成じゃ</h4>
-
-<p><img class="center" src="http://r9y9.github.io/images/MFCC.png" title="&#34;離散コサイン変換により、MFCCを求める&#34;" alt="&#34;離散コサイン変換により、MFCCを求める&#34;"></p>
-
-<h2>まとめ</h2>
-
-<ul>
-<li>MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです</li>
-<li>正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 <a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf</a> にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。</li>
-<li>間違ってるかもしれないけどご愛嬌</li>
-</ul>
-
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>
-<li><a href="http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html">メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版</a></li>
-<li><a href="http://aidiary.hatenablog.com/entry/20120225/1330179868">メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
