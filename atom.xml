@@ -4,14 +4,40 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-08-06T00:19:14+09:00</updated>
+  <updated>2014-08-10T02:40:45+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
-    <name><![CDATA[Ryuichi Yamamoto]]></name>
+    <name><![CDATA[Ryuichi YAMAMOTO]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SPTKのPythonラッパーを書いた]]></title>
+    <link href="http://r9y9.github.io/blog/2014/08/10/sptk-from-python/"/>
+    <updated>2014-08-10T02:12:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/08/10/sptk-from-python</id>
+    <content type="html"><![CDATA[<p>SPTKの中で最も価値がある（と僕が思っている）メルケプストラム分析、メルケプストラムからの波形合成（MLSA filter）がpythonから可能になります。</p>
+
+<p>ご自由にどうぞ</p>
+
+<p><a href="https://github.com/r9y9/SPTK">Speech Signal Processing Toolkit (SPTK) for API use with python | Github</a></p>
+
+<p>注意ですが、<code>SPTK.h</code>にある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？scipy.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/">Goで音声信号処理をしたいのでSPTKのGoラッパーを書く &ndash; LESS IS MORE</a></li>
+</ul>
+
+
+<p>Goでも書いたのでPythonでも書いてしまった。</p>
+
+<p>一年くらい前に元指導教員の先生と「Pythonから使えたらいいですよね」と話をしていました。先生、ようやく書きました。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Tokyo.Scipyに参加してきた]]></title>
@@ -4573,133 +4599,6 @@ Go-msptoolsはGOSSPに吸収されました。（<a href="http://r9y9.github.io/
 <p>MLSAフィルタ、難しいですね（小並感</p>
 
 <p>いつかリアルタイム声質変換がやってみたいので、それに使う予定（worldを使うことになるかもしれんけど）。戸田先生当たりがやってる声質変換を一回真似してみたいと思ってる</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[SPTKをC++から使えるようにする]]></title>
-    <link href="http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/"/>
-    <updated>2013-12-01T18:46:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf</id>
-    <content type="html"><![CDATA[<p><a href="http://sp-tk.sourceforge.net/">音声信号処理ツールキットSPTK</a>をC++から使おうと思ったら意外とハマってしまったので、</p>
-
-<ul>
-<li>C++から使えるようにC++コンパイラでコンパイルできるようにした</li>
-<li>使いやすいようにwafを組み込みんだ</li>
-</ul>
-
-
-<p>リポジトリ: <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a></p>
-
-<p>というわけで、使い方について簡単に書いておく</p>
-
-<h1>SPTK について</h1>
-
-<ul>
-<li>SPTKを使うと何ができるか: <a href="http://aidiary.hatenablog.com/entry/20120701/1341126474">SPTKの使い方 (1) インストール・波形描画・音声再生 | 人工知能に関する断創録</a></li>
-<li>SPTKとは: <a href="[http://sp-tk.sourceforge.net/]">Speech Signal Processing Toolkit (SPTK)</a></li>
-</ul>
-
-
-<h1>SPTK with waf</h1>
-
-<p><a href="https://github.com/r9y9/SPTK">SPTK with waf</a>は、SPTKをwafでビルド管理できるようにしたものです。</p>
-
-<ul>
-<li>SPTKを共有ライブラリとしてインストールできます。</li>
-<li>C、C++の好きな方でコンパイルできます。</li>
-<li>wafが使えます（速い、出力がキレイ）</li>
-<li>自分のC、C++コードからSPTKのメソッドを呼べます。</li>
-<li>コマンドラインツールはインストールされません。</li>
-</ul>
-
-
-<p>コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。</p>
-
-<h1>環境</h1>
-
-<ul>
-<li>Unix系</li>
-</ul>
-
-
-<p>Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み</p>
-
-<h1>SPTKのインストール</h1>
-
-<p>リポジトリをクローンしたあと、</p>
-
-<h2>Build</h2>
-
-<pre><code> ./waf configure &amp;&amp; ./waf
-</code></pre>
-
-<h2>Build with clang++</h2>
-
-<pre><code> CXX=clang++ ./waf configure &amp;&amp; ./waf
-</code></pre>
-
-<h2>Build with gcc</h2>
-
-<pre><code> git checkout c
- ./waf configure &amp;&amp; ./waf
-</code></pre>
-
-<h2>Build with clang</h2>
-
-<pre><code> git checkout c
- CC=clang ./waf configure &amp;&amp; ./waf
-</code></pre>
-
-<h2>Install</h2>
-
-<pre><code> sudo ./waf install
-</code></pre>
-
-<ul>
-<li>Include files: <code>/usr/local/include/SPTK</code></li>
-<li>Library: <code>/usr/local/lib/SPTK</code></li>
-<li>Pkg-config: <code>/usr/local/lib/pkgconfig</code></li>
-</ul>
-
-
-<p>オリジナルのSPTKとはインストール場所が異なります（オリジナルは、<code>/usr/local/SPTK</code>）</p>
-
-<h1>SPTKを使ってコードを書く</h1>
-
-<p><code>&lt;SPTK/SPTK.h&gt;</code> をインクルードして、好きな関数を呼ぶ</p>
-
-<p>コンパイルは、例えば以下のようにする</p>
-
-<pre><code> g++ test.cpp `pkg-config SPTK --cflags --libs`
-</code></pre>
-
-<p>面倒なので、example/ 内のコードを修正して使う（wafを使おう）のがおすすめです。</p>
-
-<br/>
-
-
-<h1>きっかけ</h1>
-
-<ul>
-<li>SPTKはコマンドラインツールだと思ってたけど、どうやらSPTK.hをインクルードすれば一通りのツールを使えるらしい</li>
-<li>SPTK.hをインクルードして使う方法のマニュアルが見つからない…</li>
-<li>SPTKはC言語で書かれてるし、C++から使うの地味にめんどくさい</li>
-</ul>
-
-
-<h1>C++から簡単に使いたかった</h1>
-
-<ul>
-<li>gccやclangだけじゃなくg++やclang++でコンパイルできるようにしよう</li>
-<li>自分のコードのビルド管理にはwafを使ってるし、wafで管理できるようにしてしまおう</li>
-<li>waf素晴らしいしな （参考: <a href="http://d.hatena.ne.jp/tanakh/20100212">waf チュートリアル | 純粋関数型雑記帳 </a>）</li>
-</ul>
-
-
-<h1>最後に</h1>
-
-<p>SPTKもwafも素晴らしいので積極的に使おう＾＾</p>
 ]]></content>
   </entry>
   
