@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-08-10T17:10:56+09:00</updated>
+  <updated>2014-08-20T02:58:32+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -2464,11 +2464,17 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 
 <ul>
 <li>ポインタのポインタを引数に取る関数のラップはめんどくさい</li>
-<li>Goは使いやすいのにcgoは使いにくい</li>
+<li>Goは使いやすいのに <del>cgoは使いにくい</del></li>
 <li>cgoつらい</li>
 <li>よりいい方法があれば教えて下さい</li>
 </ul>
 
+
+<h2>2014/08/10 追記</h2>
+
+<p>cgo使いにくいと書いたけど、あとから考えてみればcgoさんまじ使いやすかったです（遅い</p>
+
+<p>Juliaのccallはもっと使いやすい。</p>
 ]]></content>
   </entry>
   
