@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: wavelet-transform - LESS IS MORE</title>
+  <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia - LESS IS MORE</title>
   <meta name="author" content="Ryuichi YAMAMOTO">
 
   
-  <meta name="description" content="Category: wavelet-transform">
+  <meta name="description" content="最近 Julia で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが） https:// &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://r9y9.github.ioblog/categories/wavelet-transform">
+  <link rel="canonical" href="http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="LESS IS MORE" type="application/atom+xml">
@@ -110,159 +110,109 @@
     	<section class="right">
     		<div class="inner-right">
     			<div id="posts">
-    			  	<div>
-<article role="article">
-  
+    			  	<article class="post">
+    
   <header>
-    <h1 class="entry-title">Category: Wavelet-transform</h1>
+    
+      <h1 class="entry-title">Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-20T15:30:00+09:00" pubdate data-updated="true">Aug 20<span>th</span>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>最近 <a href="julialang.org">Julia</a> で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）</p>
 
-  
-  <h2>2014</h2>
+<p><a href="https://github.com/r9y9/BNMF.jl">https://github.com/r9y9/BNMF.jl</a></p>
 
-<article>
-  
-<h1><a href="/blog/2014/06/01/continuouos-wavelet-transform-types/">連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG</a></h1>
-<time datetime="2014-06-01T01:42:00+09:00" pubdate><span class='month'>Jun</span> <span class='day'>01</span> <span class='year'>2014</span></time>
+<p>元論文:
+ <a href="http://soundlab.cs.princeton.edu/publications/2010_icml_gapnmf.pdf">Bayesian Nonparametric Matrix Factorization for Recorded Music</a>
+by Matthew D. Hoffman et al. in ICML 2010.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/continuous-wavelet/'>continuous-wavelet</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a></span>
-</footer>
+<h2>デモ</h2>
 
+<p><a href="http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb">http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb</a></p>
 
-</article>
+<p>適当な音声（音楽じゃなくてごめんなさい）に対して、GaP-NMFをfittingしてみた結果のメモです。$K=100$ で始めて、100回ほどイテレーションを回すと適度な数（12くらい）にtruncateしているのがわかると思います。予めモデルの複雑度を指定しなくても、データから適当な数を自動決定してくれる、ノンパラベイズの良いところですね。</p>
 
+<h2>ハマったところ</h2>
 
-
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">逆連続ウェーブレット変換による信号の再構成</a></h1>
-<time datetime="2013-10-21T01:00:00+09:00" pubdate><span class='month'>Oct</span> <span class='day'>21</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/inverse-continous-wavelet-transform/'>inverse-continous-wavelet-transform</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/signal-reconstruction/'>signal-reconstruction</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a></span>
-</footer>
+<ul>
+<li>GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら <a href="https://julia.readthedocs.org/en/latest/stdlib/base/?highlight=besselkx#Base.besselkx">besselkx</a> で、scipyで言うなら <a href="http://students.mimuw.edu.pl/~pbechler/scipy_doc/generated/scipy.special.kve.html#scipy.special.kve">scipy.special.kve</a> です。</li>
+</ul>
 
 
-</article>
+<h2>雑感</h2>
+
+<ul>
+<li>MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒</li>
+<li>というかJuliaがMatlabに似すぎ？</li>
+<li>Gamma分布に従う乱数は、<a href="https://github.com/JuliaStats/Distributions.jl">Distributions,jl</a> を使えばめっちゃ簡単に生成できた。素晴らしすぎる</li>
+<li>行列演算がシンプルにかけてホント楽。pythonでもmatlabでもそうだけど（Goだとこれができないんですよ…）</li>
+<li>第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。</li>
+</ul>
 
 
+<h2>Python版と速度比較</h2>
 
-<article>
-  
-<h1><a href="/blog/2013/10/20/wavelet-stft-visualization/">短時間フーリエ変換と連続ウェーブレット変換のvisualization</a></h1>
-<time datetime="2013-10-20T11:46:00+09:00" pubdate><span class='month'>Oct</span> <span class='day'>20</span> <span class='year'>2013</span></time>
+<p><a href="https://github.com/dawenl/bp_nmf/tree/master/code/gap_nmf">bp_nmf/code/gap_nmf</a> と比較します。matlabはもってないので比較対象からはずします、ごめんなさい</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/short-time-fourier-transform/'>short-time-fourier-transform</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/visualization/'>visualization</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a></span>
-</footer>
+<p>Gistにベンチマークに使ったスクリプトと実行結果のメモを置いときました
+<a href="https://gist.github.com/r9y9/3d0c6a90dd155801c4c1">https://gist.github.com/r9y9/3d0c6a90dd155801c4c1</a></p>
 
+<p>結果だけ書いておくと、あらゆる現実を（ry の音声にGaP-NMFをepochs=100でfittingするのにかかった時間は、</p>
 
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/10/20/continuous-wavelet-tranform/">FFTを使った連続ウェーブレット変換の高速化</a></h1>
-<time datetime="2013-10-20T00:55:00+09:00" pubdate><span class='month'>Oct</span> <span class='day'>20</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/continuous-wavelet/'>continuous-wavelet</a>, <a class='category' href='/blog/categories/signal-processing/'>signal-processing</a>, <a class='category' href='/blog/categories/wavelet-transform/'>wavelet-transform</a></span>
-</footer>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Julia: Mean elapsed time: 21.92968243 [sec]
+</span><span class='line'>Python: Mean elapsed time: 18.3550617 [sec]</span></code></pre></td></tr></table></div></figure>
 
 
-</article>
+<p>という結果になりました。つまりJuliaのほうが1.2倍くらい遅かった（僕の実装が悪い可能性は十分ありますが）。どこがボトルネックになっているのか調べていないので、気が向いたら調べます。Juliaの方が速くなったらいいなー</p>
 
+<h2>おわりに</h2>
+
+<p>GaP-NMFの実装チャレンジは二回目でした。（たぶん）一昨年、年末に実家に帰るときに、何を思ったのか急に実装したくなって、電車の中で論文を読んで家に着くなり実装するというエクストリームわけわからんことをしていましたが、その時はNaN and Inf地獄に負けてしまいました。Pythonで書いていましたが、今見るとそのコードマジクソでした。</p>
+
+<p>そして二回目である今回、最初はmatlabコードを見ずに自力で書いていたんですが、またもやInf地獄に合いもうだめだと思って、matlabコードを写経しました。あんま成長していないようです（つらい）</p>
+
+<p>Julia歴二週間くらいですが、良い感じなので使い続けて見ようと思います。</p>
 </div>
 
-  
+
 </article>
 
+
+        <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/" data-via="r9y9" data-counturl="http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
 
-<aside class="sidebar">
-  
-    <section>
-  <ul id="recent_posts">
-      <li class="post">
-      <a href="http://r9y9.github.io" alt="Home"><img src="/images/Home.png"></a>
-      <a href="http://r9y9.github.io/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
-      
-      <a href="http://r9y9.github.io/atom.xml" alt="subscribe feed"><img src="/images/rss.png"></a>
-      </li>
-  </ul>
-</section>
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2014/08/20/gap-nmf-julia/">Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/20/life/">夏休みと人生</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/10/sptk-from-python/">SPTKのPythonラッパーを書いた</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/05/tokyo-scipy/">Tokyo.Scipyに参加してきた</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/07/29/neural-networks-in-go-and-python/">Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating...</li>
-  </ul>
-  
-  <a href="https://github.com/r9y9">@r9y9</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'r9y9',
-            count: 3,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
 
 
-
-
-
-  
-</aside>
 
 
     			</div>
