@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Speech-signal-processing | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/speech-signal-processing/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-09-01T01:12:14+09:00</updated>
+  <updated>2014-09-15T02:28:43+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SPTKのJuliaラッパーも書いた]]></title>
+    <link href="http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/"/>
+    <updated>2014-09-15T01:25:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/IMG_0960.JPG" title="&ldquo;sea&rdquo;" ></p>
+
+<p>夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。</p>
+
+<p><a href="https://github.com/r9y9/SPTK.jl">Julia wrapper for Speech Signal Processing Toolkit (SPTK) | Github</a></p>
+
+<p>かれこれ、Go, Python, Juliaと、3つの言語でラッパーを書いてしまいました。どれだけSPTK好きなんだと。そしてどれだけ言語触ってるんだ絞れと。うーん、とはいえどれも良いところと悪いところがあってですね（何も言ってない）、難しい…</p>
+
+<p>おしまい</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[音声分析変換合成システムWORLDのGoラッパーを書いた]]></title>
