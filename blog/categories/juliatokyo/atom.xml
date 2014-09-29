@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: JuliaTokyo | LESS IS MORE]]></title>
+  <link href="http://r9y9.github.io/blog/categories/juliatokyo/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2014-09-30T01:40:15+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi YAMAMOTO]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[JuliaTokyo]]></title>
+    <link href="http://r9y9.github.io/blog/2014/09/30/juliatokyo2/"/>
+    <updated>2014-09-30T00:40:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/09/30/juliatokyo2</id>
+    <content type="html"><![CDATA[<p><a href="juliatokyo.connpass.com/event/8010/">JuliaTokyo #2 &ndash; connpass</a></p>
+
+<script async class="speakerdeck-embed" data-id="21106ae0285e01327810268beacd0cf3" data-ratio="1.77777777777778" src="http://r9y9.github.io//speakerdeck.com/assets/embed.js"></script>
+
+
+<h2>発表概要</h2>
+
+<p>C/C++ライブラリのラッパー（C++は現状のJuliaでは難しいけど）を作るときに、どうやってライブラリの依存関係を管理するか？という話です。結論としては、方法はいくつかありますが　BinDeps.jl というパッケージを使うのが楽で良いですよ、ということです。Githubのいろんなリポジトリをあさった僕の経験上、BinDeps.jl はバイナリの依存関係管理におけるデファクトスタンダードな気がしています。BinDeps.jl の使い方は、既存のパッケージのコードを読みまくって学ぶのがおすすめです。</p>
+
+<p>さて、途中で書くのに疲れてしまったのですが、<a href="http://qiita.com/r9y9/items/73806e3ce7f3a372d0b3">自作のJuliaパッケージで、Cライブラリとの依存性を記述する &ndash; Qiita</a> に以前似たような内容をまとめたので、併せてどうぞ。qiitaにも書きましたが、最適化関係のプロジェクトを集めた <a href="http://www.juliaopt.org/">JuliaOpt</a> コミュニティでは、バイナリの依存関係管理にBinDeps.jlを使用することを推奨しています。</p>
+
+<h2>雑感</h2>
+
+<ul>
+<li>勉強会にはデータ分析界隈の人が多い印象。音声系の人はとても少なかった。</li>
+<li>R人気だった</li>
+<li>Go使ってる！って人と合わなかった（つらい）</li>
+<li>@show マクロ最高</li>
+<li>unicode最高</li>
+<li>懇親会では、なぜか途中から深層学習やベイズの話をしていた…</li>
+<li>いい忘れたけど僕もnightly build勢でした。毎日あたたかみのある手動pull &amp; make をしています。</li>
+<li>Julia の話ができて楽しかったので、また参加したいなー</li>
+</ul>
+
+
+<p>LTで <a href="https://github.com/chezou/MeCab.jl">MeCab.jl</a> について話をしてくれたchezouさんが、ちょうどBinDeps.jl に興味を持たれているようだったので、勉強会のあとに BinDeps.jl を使ってバイナリの管理を実装して、<a href="https://github.com/chezou/MeCab.jl/pull/2">プルリク</a>をしてみました。参考になればうれしいなーと思います。</p>
+
+<p>おしまい。</p>
+]]></content>
+  </entry>
+  
+</feed>
