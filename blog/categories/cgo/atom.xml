@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cgo | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/cgo/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-09-30T01:42:42+09:00</updated>
+  <updated>2014-10-04T14:07:37+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -220,7 +220,7 @@ return slice
 <p>という手順になってます</p>
 
 <p><strong>※2013/03/27 追記</strong>
-:もっとシンプルかつ効率的（deep copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]<em>double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]</em>doubleから[][]float64に変換する必要はなかった。</p>
+:もっとシンプルかつ効率的（copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]<em>double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]</em>doubleから[][]float64に変換する必要はなかった。</p>
 
 <p>```go
 func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {</p>

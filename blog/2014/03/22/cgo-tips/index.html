@@ -385,7 +385,7 @@ https://code.google &hellip;">
 <p>という手順になってます</p>
 
 <p><strong>※2013/03/27 追記</strong>
-:もっとシンプルかつ効率的（deep copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]<em>double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]</em>doubleから[][]float64に変換する必要はなかった。</p>
+:もっとシンプルかつ効率的（copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]<em>double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]</em>doubleから[][]float64に変換する必要はなかった。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
