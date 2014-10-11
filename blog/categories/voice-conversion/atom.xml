@@ -4,7 +4,7 @@
   <title><![CDATA[Category: voice-conversion, | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/voice-conversion/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-10-04T14:07:37+09:00</updated>
+  <updated>2014-10-12T01:14:04+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -416,7 +416,11 @@ def convert(self, src):
     <link href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/"/>
     <updated>2014-07-05T16:48:00+09:00</updated>
     <id>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui</id>
-    <content type="html"><![CDATA[<p>こんにちは。</p>
+    <content type="html"><![CDATA[<h2>2014/10/12 追記</h2>
+
+<p>少なくともGVのコードに致命的なバグがあったことがわかりました。よって、あまりあてにしないでください…（ごめんなさい</p>
+
+<p>こんにちは。</p>
 
 <p>最近、統計的声質変換の勉強をしていました。で、メジャーなGMM（混合ガウスモデル）ベースの変換を色々やってみたので、ちょろっと書きます。実は（というほどでもない?）シンプルなGMMベースの方法だと音質クッソ悪くなってしまうんですが、色々試してやっとまともに聞ける音質になったので、試行錯誤の形跡を残しておくとともに、音声サンプルを貼っておきます。ガチ勢の方はゆるりと見守ってください</p>
 
