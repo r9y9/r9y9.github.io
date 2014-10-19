@@ -4,7 +4,7 @@
   <title><![CDATA[Category: matrix-factorization | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/matrix-factorization/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-10-12T01:14:04+09:00</updated>
+  <updated>2014-10-19T21:15:54+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -12,6 +12,52 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[NMFで音源分離を試してみる]]></title>
+    <link href="http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/"/>
+    <updated>2014-10-19T20:55:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation</id>
+    <content type="html"><![CDATA[<p>ずーーっと前に、 <a href="http://r9y9.github.io/blog/2013/07/27/nmf-euclid/">NMFアルゴリズムの導出（ユークリッド距離版） &ndash; LESS IS MORE</a> で実際に実装してみてやってみると書いていたのに、まったくやっていなかったことに気づいたのでやりました。</p>
+
+<p>音楽に対してやってみたのですが、簡単な曲だったら、まぁぼちぼち期待通りに動いたかなぁという印象です。コードとノートを挙げたので、興味のある方はどうぞ。</p>
+
+<h2>Github</h2>
+
+<p><a href="https://github.com/r9y9/julia-nmf-ss-toy">https://github.com/r9y9/julia-nmf-ss-toy</a></p>
+
+<h2>ノート</h2>
+
+<p><a href="http://nbviewer.ipython.org/github/r9y9/julia-nmf-ss-toy/blob/master/NMF-based%20Music%20Source%20Separation%20Demo.ipynb">NMF-based Music Source Separation Demo.ipynb | nbviewer</a></p>
+
+<h2>NMFのコード (Julia)</h2>
+
+<p>NMFの実装の部分だけ抜き出しておきます。
+```julia
+function nmf_euc(Y::AbstractMatrix, K::Int=4;</p>
+
+<pre><code>                    maxiter::Int=100)
+H = rand(size(Y, 1), K)
+U = rand(K, size(Y, 2))
+const ϵ = 1.0e-21
+for i=1:maxiter
+    H = H .* (Y*U') ./ (H*U*U' + ϵ)
+    U = U .* (H'*Y) ./ (H'*H*U + ϵ)
+    U = U ./ maximum(U)
+end
+return H, U
+</code></pre>
+
+<p>end
+```</p>
+
+<p>いやー簡単ですねー。<a href="http://r9y9.github.io/blog/2013/07/27/nmf-euclid/">NMFアルゴリズムの導出（ユークリッド距離版） &ndash; LESS IS MORE</a> で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。</p>
+
+<p>B3, B4くらいの人にとっては参考になるかもしれないと思ってあげてみた。</p>
+
+<p>おわり</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[調波打楽器音分離（HPSS）を試す]]></title>
@@ -102,6 +148,12 @@
 実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。</p>
 
 <p>と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。</p>
+
+<h2>2014/10/19 追記</h2>
+
+<p>実装しました</p>
+
+<p><a href="https://github.com/r9y9/julia-nmf-ss-toy">https://github.com/r9y9/julia-nmf-ss-toy</a></p>
 
 <h2>NMFの問題設定</h2>
 

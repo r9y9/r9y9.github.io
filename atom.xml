@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-10-12T01:14:04+09:00</updated>
+  <updated>2014-10-19T21:15:54+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[NMFで音源分離を試してみる]]></title>
+    <link href="http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/"/>
+    <updated>2014-10-19T20:55:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation</id>
+    <content type="html"><![CDATA[<p>ずーーっと前に、 <a href="http://r9y9.github.io/blog/2013/07/27/nmf-euclid/">NMFアルゴリズムの導出（ユークリッド距離版） &ndash; LESS IS MORE</a> で実際に実装してみてやってみると書いていたのに、まったくやっていなかったことに気づいたのでやりました。</p>
+
+<p>音楽に対してやってみたのですが、簡単な曲だったら、まぁぼちぼち期待通りに動いたかなぁという印象です。コードとノートを挙げたので、興味のある方はどうぞ。</p>
+
+<h2>Github</h2>
+
+<p><a href="https://github.com/r9y9/julia-nmf-ss-toy">https://github.com/r9y9/julia-nmf-ss-toy</a></p>
+
+<h2>ノート</h2>
+
+<p><a href="http://nbviewer.ipython.org/github/r9y9/julia-nmf-ss-toy/blob/master/NMF-based%20Music%20Source%20Separation%20Demo.ipynb">NMF-based Music Source Separation Demo.ipynb | nbviewer</a></p>
+
+<h2>NMFのコード (Julia)</h2>
+
+<p>NMFの実装の部分だけ抜き出しておきます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="k">function</span><span class="nf"> nmf_euc</span><span class="p">(</span><span class="n">Y</span><span class="p">::</span><span class="n">AbstractMatrix</span><span class="p">,</span> <span class="n">K</span><span class="p">::</span><span class="kt">Int</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>
+</span><span class='line'>                        <span class="n">maxiter</span><span class="p">::</span><span class="kt">Int</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">H</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">K</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">U</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class='line'>    <span class="kd">const</span> <span class="err">ϵ</span> <span class="o">=</span> <span class="mf">1.0e-21</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">maxiter</span>
+</span><span class='line'>        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span> <span class="o">.*</span> <span class="p">(</span><span class="n">Y</span><span class="o">*</span><span class="n">U</span><span class="o">&#39;</span><span class="p">)</span> <span class="o">./</span> <span class="p">(</span><span class="n">H</span><span class="o">*</span><span class="n">U</span><span class="o">*</span><span class="n">U</span><span class="o">&#39;</span> <span class="o">+</span> <span class="err">ϵ</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">U</span> <span class="o">=</span> <span class="n">U</span> <span class="o">.*</span> <span class="p">(</span><span class="n">H</span><span class="o">&#39;*</span><span class="n">Y</span><span class="p">)</span> <span class="o">./</span> <span class="p">(</span><span class="n">H</span><span class="o">&#39;*</span><span class="n">H</span><span class="o">*</span><span class="n">U</span> <span class="o">+</span> <span class="err">ϵ</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">U</span> <span class="o">=</span> <span class="n">U</span> <span class="o">./</span> <span class="n">maximum</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">H</span><span class="p">,</span> <span class="n">U</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>いやー簡単ですねー。<a href="http://r9y9.github.io/blog/2013/07/27/nmf-euclid/">NMFアルゴリズムの導出（ユークリッド距離版） &ndash; LESS IS MORE</a> で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。</p>
+
+<p>B3, B4くらいの人にとっては参考になるかもしれないと思ってあげてみた。</p>
+
+<p>おわり</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JuliaTokyo #2でBinDeps.jl についてLTしてきた]]></title>
@@ -3951,127 +4007,6 @@ SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを�
 <p>SPTKの、特に（メル）ケプストラム分析当たりは本当に難しいので、論文読んで実装するのも大変だし中身がわからなくてもラップする方が合理的、という結論に至りました。簡単なもの（例えば、メルケプからMLSA filterの係数への変換とか）は、依存関係を少なくするためにもGo nativeで書きなおした方がいいです</p>
 
 <p>コードは気が向いたら上げる</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[iOSアプリ開発に使える単体テスト・結合テストのツール]]></title>
-    <link href="http://r9y9.github.io/blog/2014/02/04/ios-testing-tools/"/>
-    <updated>2014-02-04T00:29:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/02/04/ios-testing-tools</id>
-    <content type="html"><![CDATA[<h1>まとめ</h1>
-
-<p>結局どれがいいのか？時と場合によるが、自分の場合、以下の二つを使うのがベストではないかと考えた</p>
-
-<ul>
-<li><a href="https://github.com/allending/Kiwi">Kiwi</a> (単体テスト用)</li>
-<li><a href="https://github.com/kif-framework/KIF">KIF</a> (UI周りの結合テスト用)</li>
-</ul>
-
-
-<p>追記
-unit testに関しては以下の記事がよくまとまっているので、そちらを参照した方が良いです
-<a href="http://magneticbear.com/lab/ios-unit-testing/">http://magneticbear.com/lab/ios-unit-testing/</a></p>
-
-<h1>Why so?</h1>
-
-<h2>単体テスト</h2>
-
-<p>代表的なツールににApple製のSenTestingやXCTestがある。が、SenTestingはXcode 5に上がってからXcodeのデフォルトがXCTestになったので、新しいアプリではあえてSenTestingを使う必要はない（ちなみにSentTestingからXCTestへの変更は容易）。</p>
-
-<p>KiwiかXCTestか、といった問題は、正直人によると思うが、RSpecに慣れてる人はKiwiのが使いやすいと思う。XCTestはデフォでサポートされているし使いやすいというメリットはあるが、Kiwiは<a href="https://github.com/allending/Kiwi/wiki/Asynchronous-Testing">Asynchronous Testing</a> をデフォでサポートしてるというメリットもあるので、個人的にはKiwiを選択した。XCTestとかSenTestingでもAsynchronus testingは可能だけど若干めんどいし、非同期処理のテストのしやすさはやはり重要</p>
-
-<h2>結合テスト</h2>
-
-<p><a href="http://qiita.com/hirayaCM/items/513786631575db8e1fb1">iOSアプリのUIテストツール候補 | Qiita</a> によくまとまってる。色々調べた結果、一番メジャーなのは <a href="https://github.com/kif-framework/KIF">KIF</a> っぽい、かつKIFの方がgithubで人気だからいいんじゃねという短絡的発想です。その他ツールとの比較は、しばらくして気が向いたら書きます。。。</p>
-
-<p>ちなみにGoogleさんも使ってるらしい → <a href="http://googletesting.blogspot.jp/2013/08/how-google-team-tests-mobile-apps.html">http://googletesting.blogspot.jp/2013/08/how-google-team-tests-mobile-apps.html</a></p>
-
-<p>では、セットアップ方法についてまとめる。</p>
-
-<h1>Kiwi <a href="https://github.com/allending/Kiwi">[code]</a></h1>
-
-<p>基本的に、<a href="https://github.com/allending/Kiwi/wiki/Getting-Started-with-Kiwi-2.0">Getting Started with Kiwi 2.0</a> を読めばわかる</p>
-
-<h2>Kiwiのセットアップ</h2>
-
-<p>CocoaPodsを使う場合についてのみ記述する</p>
-
-<h3>Xcode 5</h3>
-
-<p>あらかじめXcodeでテスト用のターゲットを作成して、Podfileに以下を追加する。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>target :単体テストのターゲットの名前, :exclusive =&gt; true do
-</span><span class='line'>   pod 'Kiwi/XCTest'
-</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Xcode 5未満</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>target :単体テストのターゲットの名前, :exclusive =&gt; true do
-</span><span class='line'>   pod 'Kiwi'
-</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
-
-
-<p>XCTestを使うかどうか、の違いです</p>
-
-<h2>インストール</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>pod install</span></code></pre></td></tr></table></div></figure>
-
-
-<p>でOK、簡単。公式のtutorialは結構長いけど、基本的に確認するだけの作業</p>
-
-<h1>KIF <a href="https://github.com/kif-framework/KIF">[code]</a></h1>
-
-<h2>Podfile</h2>
-
-<p>Xcodeで結合テスト用のターゲットを作成して、Podfileに以下を追加する</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>target '結合テストのターゲットの名前', :exclusive =&gt; true do
-</span><span class='line'>  pod 'KIF', '~&gt; 2.0'
-</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>インストール</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>pod install</span></code></pre></td></tr></table></div></figure>
-
-
-<p>でOK、簡単。インストール方法の詳細はGithubのREADMEを参照</p>
-
-<p>Githubで検索するとサンプルプロジェクト等出てくるので、そちらで動作確認をするのがおすすめです。</p>
-
-<p>例えばこれ <a href="https://github.com/ishkawa/KIFNextExample">https://github.com/ishkawa/KIFNextExample</a></p>
-
-<h2>注意点</h2>
-
-<p>KIFはXCTestではなくSenTestingをベースに作られてる（XCTestに対応しようとしてる<a href="https://github.com/kif-framework/KIF/pull/313">pull request</a>もあるようだけど、まだ本家にmergeされてない）。よって、リンクするライブラリにはSenTestingを指定しないといけない。KiwiはXCTestを使ってるので、注意が必要</p>
-
-<h1>継続的インテグレーション?</h1>
-
-<p>Jenkins or Bots 使えばいいと思います。どっちもメリットデメリットがあって難しいよなーと思うけど、Jenkinsの方が柔軟性は圧倒的に高いので、Jenkinsを使おうと思ってます。</p>
-
-<h1>参考</h1>
-
-<ul>
-<li><a href="http://www.fastcolabs.com/3012626/open-company/finally-three-ways-to-automate-ios-app-testing">Finally, Three Ways To Automate iOS App Testing  By Brad Heintz, James Paolantonio and Aaron Schildkrout</a></li>
-<li><a href="http://blog.ishkawa.org/blog/2013/08/31/unit-test/">iOS開発でのユニットテストを身につけるには | blog.ishkawa.org</a></li>
-<li><a href="http://qiita.com/hirayaCM/items/513786631575db8e1fb1">iOSアプリのUIテストツール候補 | Qiita</a></li>
-<li><a href="https://github.com/mixi-inc/iOSTraining/wiki/11.3-Kiwi%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E6%8C%AF%E3%82%8B%E8%88%9E%E3%81%84%E3%83%86%E3%82%B9%E3%83%88">Kiwiを用いた振る舞いテスト | mixi-inc iOSTraining</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
