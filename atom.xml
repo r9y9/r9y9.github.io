@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-10-19T21:15:54+09:00</updated>
+  <updated>2014-11-11T01:48:10+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -12,6 +12,435 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[統計的声質変換クッソムズすぎワロタ（チュートリアル編）]]></title>
+    <link href="http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/"/>
+    <updated>2014-11-12T01:30:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code</id>
+    <content type="html"><![CDATA[<h2>はじめに</h2>
+
+<p>こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。</p>
+
+<p>前回の記事（<a href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/">統計的声質変換クッソムズすぎワロタ（実装の話） &ndash; LESS IS MORE</a>）では、変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。</p>
+
+<h2>コード</h2>
+
+<p><a href="https://github.com/r9y9/VoiceConversion.jl">https://github.com/r9y9/VoiceConversion.jl</a></p>
+
+<p><a href="julialang.org">Julia</a> という数値計算に強い言語で書かれています。なぜjuliaなのかというと、速いし書きやすいし、数値計算に関して言えばライブラリ豊富だし、あとはまぁ僕が好きだからですね。まだ新しい言語ですが、個人的におすすめです。</p>
+
+<h2>サードパーティライブラリ</h2>
+
+<p>声質変換は多くのコンポーネントによって成り立っていますが、すべてを自分で書くのは現実的ではありません。僕は、主に以下のライブラリを活用しています。</p>
+
+<ul>
+<li><a href="http://ml.cs.yamanashi.ac.jp/world/">WORLD</a> &ndash; 音声分析合成のフレームワークとして、あるいは単にスペクトル包絡を抽出するツールとして使っています。<a href="https://github.com/r9y9/WORLD.jl">Juliaラッパー</a>を書きました。</li>
+<li><a href="sp-tk.sourceforge.net">SPTK</a> &ndash; メル対数スペクトル近似（Mel-Log Spectrum Approximation; MLSA）フィルタを変換処理に使っています。これも<a href="https://github.com/r9y9/SPTK.jl">Juliaラッパー</a>を書きました。</li>
+<li><a href="http://scikit-learn.org/stable/">sklearn</a> &ndash; sklearn.mixture をGMMの学習に使っています。pythonのライブラリは、juliaから簡単に呼べます。</li>
+</ul>
+
+
+<p>音声分析合成に関しては、アカデミック界隈ではよく使われている<a href="http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html">STRAIGHT</a>がありますが、WORLDの方がライセンスもゆるくソースも公開されていて、かつ性能も劣らない（正確な話は、森勢先生の論文を参照してください）ので、おすすめです。</p>
+
+<h2><a href="https://github.com/r9y9/VoiceConversion.jl">VoiceConversion.jl</a> でできること</h2>
+
+<p>2014/11/10現在（v0.0.1のタグを付けました）、できることは以下の通りです（外部ライブラリを叩いているものを含む）。</p>
+
+<ul>
+<li>音声波形からのメルケプストラムの抽出</li>
+<li>DPマッチングによるパラレルデータの作成</li>
+<li>GMMの学習</li>
+<li>GMMベースのframe-by-frame特徴量変換</li>
+<li>GMMベースのtrajectory特徴量変換</li>
+<li>GMMベースのtrajectory特徴量変換（GV考慮版）</li>
+<li>音声分析合成系WORLDを使った声質変換</li>
+<li>MLSAフィルタを使った差分スペクトルに基づく声質変換</li>
+</ul>
+
+
+<p>これらのうち、trajectory変換以外を紹介します。</p>
+
+<h2>チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで）</h2>
+
+<p>データセットに<a href="http://festvox.org/cmu_arctic/">CMU_ARCTIC</a>を使って、GMMベースの声質変換（clb &ndash;> slt）を行う方法を説明します。なお、VoiceConversion.jl のv0.0.1を使います。ubuntuで主に動作確認をしていますが、macでも動くと思います。</p>
+
+<h2>0. 前準備</h2>
+
+<h3>0.1. データセットのダウンロード</h3>
+
+<p><a href="http://festvox.org/cmu_arctic/">Festvox: CMU_ARCTIC Databases</a> を使います。コマンド一発ですべてダウンロードする<a href="https://gist.github.com/r9y9/ff67c05aeb87410eae2e">スクリプト</a>を書いたので、ご自由にどうぞ。</p>
+
+<h3>0.2. juliaのインストール</h3>
+
+<p><a href="http://julialang.org/">公式サイト</a>からバイナリをダウンロードするか、<a href="https://github.com/JuliaLang/julia">githubのリポジトリ</a>をクローンしてビルドしてください。バージョンは、現在の最新安定版のv0.3.2を使います。</p>
+
+<p>記事内では、juliaの基本的な使い方については解説しないので、前もってある程度調べておいてもらえると、スムーズに読み進められるかと思います。</p>
+
+<h3>0.3. VoiceConversion.jl のインストール</h3>
+
+<p>juliaを起動して、以下のコマンドを実行してください。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="n">julia</span><span class="o">&gt;</span> <span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/r9y9/VoiceConversion.jl&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">julia</span><span class="o">&gt;</span> <span class="n">Pkg</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s">&quot;VoiceConversion&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>サードパーティライブラリは、sklearnを除いてすべて自動でインストールされます。sklearnは、例えば以下のようにしてインストールしておいてください。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo pip install sklearn
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで準備は完了です！</p>
+
+<h2>1. 音声波形からのメルケプストラムの抽出</h2>
+
+<p>まずは、音声から声質変換に用いる特徴量を抽出します。特徴量としては、声質変換や音声合成の分野で広く使われているメルケプストラムを使います。メルケプストラムの抽出は、<code>scripts/mcep.jl</code> を使うことでできます。</p>
+
+<p>以下のようにして、2話者分の特徴量を抽出しましょう。以下のスクリプトでは、 <code>~/data/cmu_arctic/</code> にデータがあることを前提としています。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># clb</span>
+</span><span class='line'>julia mcep.jl ~/data/cmu_arctic/cmu_us_clb_arctic/wav/ ~/data/cmu_arctic_jld/speakers/clb/
+</span><span class='line'><span class="c"># slt</span>
+</span><span class='line'>julia mcep.jl ~/data/cmu_arctic/cmu_us_slt_arctic/wav/ ~/data/cmu_arctic_jld/speakers/slt/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>基本的な使い方は、<code>mcep.jl &lt;wavファイルがあるディレクトリ&gt; &lt;メルケプストラムが出力されるディレクトリ&gt;</code> になっています。オプションについては、 <code>mcep.jl -h</code> としてヘルプを見るか、コードを直接見てください。</p>
+
+<p>抽出されたメルケプストラムは、HDF5フォーマットで保存されます。メルケプストラムの中身を見てみると、以下のような感じです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># メルケプストラムの可視化</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">using</span> <span class="n">HDF5</span><span class="p">,</span> <span class="n">JLD</span><span class="p">,</span> <span class="n">PyPlot</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="nb">load</span><span class="p">(</span><span class="s">&quot;clb/arctic_a0028.jld&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">imshow</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">],</span> <span class="n">origin</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s">&quot;auto&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">colorbar</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_a0028_melcepstrum.png" title="&#34;Mel-cepstrum of clb_a0028.&#34;" alt="&#34;Mel-cepstrum of clb_a0028.&#34;"></p>
+
+<p>0次成分だけ取り出してみると、以下のようになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># メルケプストラムの0次成分のみを可視化</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">plot</span><span class="p">(</span><span class="n">vec</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">,:]),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;0th order mel-cesptrum of clb_a0028&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="c"># 末尾がsilenceだった都合上…（決め打ち）</span>
+</span><span class='line'><span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;Frame&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;upper right&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="c"># 見やすいように適当に決めました</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_a0028_melcepstrum_0th.png" title="&#34;Mel-cepstrum of clb_a0028 0th.&#34;" alt="&#34;Mel-cepstrum of clb_a0028 0th.&#34;"></p>
+
+<p>こんな感じです。話者clbの<code>clb_a0028.wav</code>を聞きながら、特徴量見てみてください。0次の成分からは、音量の大小が読み取れると思います。</p>
+
+<h2>2. DPマッチングによるパラレルデータの作成</h2>
+
+<p>次に、2話者分の特徴量を時間同期して連結します。基本的に声質変換では、音韻の違いによらない特徴量（非言語情報）の対応関係を学習するために、同一発話内容の特徴量を時間同期し（音韻の違いによる変動を可能な限りなくすため）、学習データとして用います。このデータのことを、パラレルデータと呼びます。</p>
+
+<p>パラレルデータの作成には、DPマッチングを使うのが一般的です。<code>scripts/align.jl</code> を使うとできます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>julia align.jl ~/data/cmu_arctic_jld/speakers/clb ~/data/cmu_arctic_jld/speakers/slt ~/data/cmu_arctic_jld/parallel/clb_and_slt/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使い方は、<code>align.jl &lt;話者1（clb）の特徴量のパス&gt; &lt;話者2（slt）の特徴量のパス&gt; &lt;パラレルデータの出力先&gt;</code> になっています。</p>
+
+<p>きちんと時間同期されているかどうか、0次成分を見て確認してみましょう。</p>
+
+<p>時間同期を取る前のメルケプストラムを以下に示します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># 時間同期前のメルケプストラム（0次）を可視化</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="nb">load</span><span class="p">(</span><span class="s">&quot;clb/arctic_a0028.jld&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">y</span> <span class="o">=</span> <span class="nb">load</span><span class="p">(</span><span class="s">&quot;slt/arctic_a0028.jld&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">plot</span><span class="p">(</span><span class="n">vec</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">,:]),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;0th order mel-cesptrum of clb_a0028&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">plot</span><span class="p">(</span><span class="n">vec</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">,:]),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;0th order mel-cesptrum of slt_a0028&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">min</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="c"># 決め打ち</span>
+</span><span class='line'><span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;Frame&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;upper right&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="c"># 決め打ち</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_and_slt_a0028_melcepstrum_0th.png" title="&#34;0th order mel-cepstrum (not aligned)&#34;" alt="&#34;0th order mel-cepstrum (not aligned)&#34;"></p>
+
+<p>ちょっとずれてますね</p>
+
+<p>次に、時間同期後のメルケプストラムを示します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># 時間同期後のメルケプストラム（0次）を可視化</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parallel</span> <span class="o">=</span> <span class="nb">load</span><span class="p">(</span><span class="s">&quot;arctic_a0028_parallel.jld&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">plot</span><span class="p">(</span><span class="n">vec</span><span class="p">(</span><span class="n">parallel</span><span class="p">[</span><span class="s">&quot;src&quot;</span><span class="p">][</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">,:]),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;0th order mel-cesptrum of clb_a0028&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">plot</span><span class="p">(</span><span class="n">vec</span><span class="p">(</span><span class="n">parallel</span><span class="p">[</span><span class="s">&quot;tgt&quot;</span><span class="p">][</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">,:]),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="s">&quot;g&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;0th order mel-cesptrum of slt_a0028&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="n">parallel</span><span class="p">[</span><span class="s">&quot;tgt&quot;</span><span class="p">][</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class='line'><span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;Frame&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">legend</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_and_slt_a0028_melcepstrum_0th_aligned.png" title="&#34;0th order mel-cepstrum (aligned)&#34;" alt="&#34;0th order mel-cepstrum (aligned)&#34;"></p>
+
+<p>ずれが修正されているのがわかりますね。注意として、<code>align.jl</code> の中身を追えばわかるのですが、無音区間をしきい値判定で検出して、パラレルデータから除外しています。</p>
+
+<p>結果、時間同期されたパラレルデータは以下のようになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># パラレルデータの可視化</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">imshow</span><span class="p">(</span><span class="n">vcat</span><span class="p">(</span><span class="n">parallel</span><span class="p">[</span><span class="s">&quot;src&quot;</span><span class="p">][</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">],</span> <span class="n">parallel</span><span class="p">[</span><span class="s">&quot;tgt&quot;</span><span class="p">][</span><span class="s">&quot;feature_matrix&quot;</span><span class="p">]),</span> <span class="n">origin</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s">&quot;auto&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">colorbar</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_and_slt_a0028_parallel.png" title="&#34;example of parallel data&#34;" alt="&#34;example of parallel data&#34;"></p>
+
+<p>このパラレルデータを（複数の発話分さらに結合して）使って、特徴量の対応関係を学習していきます。モデルには、GMMを使います。</p>
+
+<h2>3. GMMの学習</h2>
+
+<p>GMMの学習には、<code>sklearn.mixture.GMM</code> を使います。GMMは古典的な生成モデルで、実装は探せばたくさん見つかるので、既存の有用なライブラリを使えば十分です。（余談ですが、pythonのライブラリを簡単に呼べるのはjuliaの良いところの一つですね）</p>
+
+<p><code>scripts/train_gmm.jl</code> を使うと、モデルのダンプ、julia &lt;&ndash;> python間のデータフォーマットの変換等、もろもろやってくれます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>julia train_gmm.jl ~/data/cmu_arctic_jld/parallel/clb_and_slt/ clb_and_slt_gmm32_order40.jld --max 200 --n_components 32 --n_iter<span class="o">=</span>100 --n_init<span class="o">=</span>1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使い方は、<code>train_gmm.jl &lt;パラレルデータのパス&gt; &lt;出力するモデルデータのパス&gt;</code> になっています。上の例では、学習に用いる発話数、GMMの混合数、反復回数等を指定しています。オプションの詳細はスクリプトをご覧ください。</p>
+
+<p>僕の環境では、上記のコマンドを叩くと2時間くらいかかりました。学習が終わったところで、学習済みのモデルのパラメータを可視化してみましょう。</p>
+
+<p>まずは平均を見てみます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># GMMの平均ベクトルを（いくつか）可視化</span>
+</span><span class='line'><span class="n">gmm</span> <span class="o">=</span> <span class="nb">load</span><span class="p">(</span><span class="s">&quot;clb_and_slt_gmm32_order40.jld&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">for</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span>
+</span><span class='line'>    <span class="n">plot</span><span class="p">(</span><span class="n">gmm</span><span class="p">[</span><span class="s">&quot;means&quot;</span><span class="p">][:,</span><span class="n">k</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;mean of mixture </span><span class="si">$</span><span class="s">k&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">legend</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_and_slt_gmm32_order40_mean.png" title="&#34;means of trained GMM&#34;" alt="&#34;means of trained GMM&#34;"></p>
+
+<p>共分散の一部可視化してみると、以下のようになります。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># GMMの共分散行列を一部可視化</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">imshow</span><span class="p">(</span><span class="n">gmm</span><span class="p">[</span><span class="s">&quot;covars&quot;</span><span class="p">][:,:,</span><span class="mi">2</span><span class="p">])</span>
+</span><span class='line'><span class="n">colorbar</span><span class="p">()</span>
+</span><span class='line'><span class="n">clim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.16</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_and_slt_gmm32_order40_covar.png" title="&#34;covariance of trained GMM&#34;" alt="&#34;covariance of trained GMM&#34;"></p>
+
+<p>まぁこんなもんですね。</p>
+
+<h2>4. 音声分析合成WORLDを用いたGMMベースのframe-by-frame声質変換</h2>
+
+<p>さて、ようやく声質変換の準備が整いました。学習したモデルを使って、GMMベースのframe-by-frame声質変換（clb &ndash;> slt ）をやってみましょう。具体的な変換アルゴリズムは、論文（例えば<a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">戸田先生のこれ</a>）をチェックしてみてください。音声分析合成系にはWORLDを使います。</p>
+
+<p>一般的な声質変換では、まず音声を以下の三つの成分に分解します。</p>
+
+<ul>
+<li>基本周波数</li>
+<li>スペクトル包絡（今回いじりたい部分）</li>
+<li>非周期性成分</li>
+</ul>
+
+
+<p>その後、スペクトル包絡に対して変換を行い、変換後のパラメータを使って音声波形を合成するといったプロセスを取ります。これらは、<code>scripts/vc.jl</code> を使うと簡単にできるようになっています。本当にWORLDさまさまです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>julia vc.jl ~/data/cmu_arctic/cmu_us_clb_arctic/wav/arctic_a0028.wav clb_and_slt_gmm32_order40.jld clb_to_slt_a0028.wav --order 40
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使い方は、<code>vc.jl &lt;変換対象の音声ファイル&gt; &lt;変換モデル&gt; &lt;出力wavファイル名&gt;</code> となっています。</p>
+
+<p>上記のコマンドを実行すると、GMMベースのframe-by-frame声質変換の結果が音声ファイルに出力されます。以下に結果を貼っておくので、聞いてみてください。</p>
+
+<h3>変換元となる音声 clb_a0028</h3>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093202&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+
+
+<h3>変換目標となる話者 slt_a0028</h3>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093240&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+
+
+<h3>変換結果 clb_to_slt_a0028</h3>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093403&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+
+
+<p>話者性はなんとなく目標話者に近づいている気がしますが、音質が若干残念な感じですね。。</p>
+
+<h2>5. 差分スペクトル補正に基づく声質変換</h2>
+
+<p>最後に、より高品質な声質変換を達成可能な差分スペクトル補正に基づく声質変換を紹介します。差分スペクトル補正に基づく声質変換では、基本周波数や非周期性成分をいじれない代わりに音質はかなり改善します。以前書いた記事（<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ &ndash; LESS IS MORE</a>）から、着想に関連する部分を引用します。</p>
+
+<blockquote><p>これまでは、音声を基本周波数、非周期性成分、スペクトル包絡に分解して、スペクトル包絡を表す特徴量を変換し、変換後の特徴量を元に波形を再合成していました。ただ、よくよく考えると、そもそも基本周波数、非周期性成分をいじる必要がない場合であれば、わざわざ分解して再合成する必要なくね？声質の部分のみ変換するようなフィルタかけてやればよくね？という考えが生まれます。実は、そういったアイデアに基づく素晴らしい手法があります。それが、差分スペクトル補正に基づく声質変換です。</p></blockquote>
+
+<p>差分スペクトル補正に基づく声質変換の詳細ついては、最近inter speechに論文が出たようなので、そちらをご覧ください。</p>
+
+<ul>
+<li><a href="http://isw3.naist.jp/~kazuhiro-k/resource/kobayashi14IS.pdf">[Kobayashi 2014] Kobayashi, Kazuhiro, et al. &ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.</a></li>
+</ul>
+
+
+<p>こばくん、論文を宣伝しておきますね＾＾</p>
+
+<h3>5.1 差分特徴量の学習</h3>
+
+<p>さて、差分スペクトル補正に基づく声質変換行うには、変換元話者$X$と目標話者$Y$の特徴量の同時分布$P(X,Y)$を学習するのではなく、$P(X, Y-X)$ （日本語で書くとややこしいのですが、変換元話者の特徴量$X$と、変換元話者と目標話者の差分特徴量$Y-X$の同時分布）を学習します。これは、 <code>train_gmm.jl</code> を使ってGMMを学習する際に、<code>--diff</code> とオプションをつけるだけでできます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>julia train_gmm.jl ~/data/cmu_arctic_jld/parallel/clb_and_slt/ clb_to_slt_gmm32_order40_diff.jld --max 200 --n_components 32 --n_iter<span class="o">=</span>100 --n_init<span class="o">=</span>1 --diff
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可視化してみます。</p>
+
+<p>平均</p>
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_to_slt_gmm32_order40_mean.png" title="&#34;means of trained DIFFGMM&#34;" alt="&#34;means of trained DIFFGMM&#34;"></p>
+
+<p>共分散</p>
+
+<p><img class="center" src="http://r9y9.github.io/images/clb_to_slt_gmm32_order40_covar.png" title="&#34;covar of trained DIFFGMM&#34;" alt="&#34;covar of trained DIFFGMM&#34;"></p>
+
+<p>さっき学習したGMMとは、共分散はかなり形が違いますね。高次元成分でも、分散が比較的大きな値をとっているように見えます。形が異っているのは見てすぐにわかりますが、では具体的には何が異っているのか、それはなぜなのか、きちんと考えると面白そうですね。</p>
+
+<h3>5.2 MLSAフィルタによる声質変換</h3>
+
+<p>差分スペクトル補正に基づく声質変換では、WORLDを使って音声の分析合成を行うのではなく、生の音声波形を入力として、MLSAフィルタをかけるのみです。これは、 <code>scripts/diffvc.jl</code> を使うと簡単にできます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>julia diffvc.jl ~/data/cmu_arctic/cmu_us_clb_arctic/wav/arctic_a0028.wav clb_to_slt_gmm32_order40_diff.jld clb_to_slt_a0028_diff.wav --order 40
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>さて、結果を聞いてみましょう。</p>
+
+<h3>5.3 差分スペクトル補正に基づく声質変換結果</h3>
+
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093513&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+
+
+<p>アイデアはシンプル、結果は良好、最高の手法ですね（べた褒め</p>
+
+<h2>おわりに</h2>
+
+<p>以上、長くなりましたが、統計的声質変換についてのチュートリアルはこれで終わります。誰の役に立つのか知らないけれど、役に立てば嬉しいです。トラジェクトリ変換やGVを考慮したバージョンなど、今回紹介していないものも実装しているので、詳しくは<a href="https://github.com/r9y9/VoiceConversion.jl">Githubのリポジトリ</a>をチェックしてください。バグをレポートしてくれたりすると、僕は喜びます。</p>
+
+<h2>参考</h2>
+
+<h3>以前書いた声質変換に関する記事</h3>
+
+<ul>
+<li><a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ &ndash; LESS IS MORE</a></li>
+<li><a href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/">統計的声質変換クッソムズすぎワロタ（実装の話） &ndash; LESS IS MORE</a></li>
+</ul>
+
+
+<h3>論文</h3>
+
+<ul>
+<li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">[Toda 2007] T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE
+Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235,
+Nov. 2007.</a></li>
+<li><a href="http://isw3.naist.jp/~kazuhiro-k/resource/kobayashi14IS.pdf">[Kobayashi 2014] Kobayashi, Kazuhiro, et al. &ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[NMFで音源分離を試してみる]]></title>
@@ -235,7 +664,7 @@ by Matthew D. Hoffman et al. in ICML 2010.</p>
 
 <p><a href="https://github.com/r9y9/SPTK">Speech Signal Processing Toolkit (SPTK) for API use with python | Github</a></p>
 
-<p>注意ですが、<code>SPTK.h</code>にある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？scipy.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。</p>
+<p>注意ですが、<code>SPTK.h</code>にある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？sklearn.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。</p>
 
 <h2>参考</h2>
 
@@ -253,6 +682,12 @@ by Matthew D. Hoffman et al. in ICML 2010.</p>
 <p>ipython notebookによる簡単なチュートリアルを貼っておきます</p>
 
 <p><a href="http://nbviewer.ipython.org/github/r9y9/SPTK/blob/master/notebook/SPTK%20calling%20from%20python.ipynb">SPTK を Pythonから呼ぶ | nbviewer</a></p>
+
+<h2>2014/11/09</h2>
+
+<p>タイポ修正しました…</p>
+
+<p>scipy.mixture &ndash;> sklearn.mixture</p>
 ]]></content>
   </entry>
   
@@ -3919,94 +4354,6 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 <li><a href="http://www.cs.helsinki.fi/group/cosco/Teaching/Probability/2010/lecture5_MRF2.pdf">More about Undirected Graphical Models</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Goで音声信号処理をしたいのでSPTKのGoラッパーを書く]]></title>
-    <link href="http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/"/>
-    <updated>2014-02-10T02:33:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper</id>
-    <content type="html"><![CDATA[<p>2014/07/22 追記：<br/>
-パッケージの一部として書きました（<a href="http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/">GOSSP &ndash; Go言語で音声信号処理 &ndash; LESS IS MORE</a>を参照）。
-SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ</p>
-
-<p>&mdash;</p>
-
-<p>Goが最近オススメです（n度目</p>
-
-<p>Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の<a href="http://sp-tk.sourceforge.net/">SPTK</a> をGoから使えるようにする</p>
-
-<h2>cgo</h2>
-
-<p>GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う <a href="http://golang.org/cmd/cgo/">http://golang.org/cmd/cgo/</a></p>
-
-<p>Cの関数や変数などには、 <code>C.</code> でアクセスできる</p>
-
-<h2>ラッパー</h2>
-
-<p>例えば以下のように書く。MFCCの計算を例に上げる。必要に応じで<code>SPTK.h</code>に定義されている関数をラップする</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">sptk</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// #cgo pkg-config: SPTK</span>
-</span><span class='line'><span class="c1">// #include &lt;stdio.h&gt;</span>
-</span><span class='line'><span class="c1">// #include &lt;SPTK/SPTK.h&gt;</span>
-</span><span class='line'><span class="kn">import</span> <span class="s">&quot;C&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">MFCC</span><span class="p">(</span><span class="nx">audioBuffer</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">sampleRate</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">alpha</span><span class="p">,</span> <span class="nx">eps</span> <span class="kt">float64</span><span class="p">,</span> <span class="nx">wlng</span><span class="p">,</span> <span class="nx">flng</span><span class="p">,</span> <span class="nx">m</span><span class="p">,</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">ceplift</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">dftmode</span><span class="p">,</span> <span class="nx">usehamming</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// Convert go bool to C.Boolean (so annoying..</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">dftmodeInGo</span><span class="p">,</span> <span class="nx">usehammingInGo</span> <span class="nx">C</span><span class="p">.</span><span class="nx">Boolean</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">dftmode</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">dftmodeInGo</span> <span class="p">=</span> <span class="mi">1</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">dftmodeInGo</span> <span class="p">=</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">usehamming</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">usehammingInGo</span> <span class="p">=</span> <span class="mi">1</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">usehammingInGo</span> <span class="p">=</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">resultBuffer</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">m</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">C</span><span class="p">.</span><span class="nx">mfcc</span><span class="p">((</span><span class="o">*</span><span class="nx">_Ctype_double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">audioBuffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="o">*</span><span class="nx">_Ctype_double</span><span class="p">)(</span><span class="o">&amp;</span><span class="nx">resultBuffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">sampleRate</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">alpha</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nx">double</span><span class="p">(</span><span class="nx">eps</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">wlng</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">flng</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">m</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">n</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="nx">ceplift</span><span class="p">),</span> <span class="nx">dftmodeInGo</span><span class="p">,</span> <span class="nx">usehammingInGo</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">resultBuffer</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>このパッケージを使う前に、 <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a> を使ってSPTKをインストールする。本家のを使ってもいいですが、その場合は #cgo の設定が変わると思います。公式のSPTK、pkg-configに対応してくれんかな…</p>
-
-<p>最初は、LDFLAGS つけ忘れてて、symbol not foundってなってつらまった。次回から気をつけよう</p>
-
-<p>SPTKの、特に（メル）ケプストラム分析当たりは本当に難しいので、論文読んで実装するのも大変だし中身がわからなくてもラップする方が合理的、という結論に至りました。簡単なもの（例えば、メルケプからMLSA filterの係数への変換とか）は、依存関係を少なくするためにもGo nativeで書きなおした方がいいです</p>
-
-<p>コードは気が向いたら上げる</p>
 ]]></content>
   </entry>
   
