@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-11-11T01:48:10+09:00</updated>
+  <updated>2014-11-12T00:13:05+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -22,7 +22,7 @@
 
 <p>こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。</p>
 
-<p>前回の記事（<a href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/">統計的声質変換クッソムズすぎワロタ（実装の話） &ndash; LESS IS MORE</a>）では、変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。</p>
+<p>前回の記事（<a href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/">統計的声質変換クッソムズすぎワロタ（実装の話） &ndash; LESS IS MORE</a>）では変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。</p>
 
 <h2>コード</h2>
 
@@ -439,6 +439,16 @@ Nov. 2007.</a></li>
 <li><a href="http://isw3.naist.jp/~kazuhiro-k/resource/kobayashi14IS.pdf">[Kobayashi 2014] Kobayashi, Kazuhiro, et al. &ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.</a></li>
 </ul>
 
+
+<h2>FAQ</h2>
+
+<h3>前はpythonで書いてなかった？</h3>
+
+<p>はい、<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a> ですね。正確には、GMMの学習・変換処理はpythonで書いて、特徴抽出、パラレルデータの作成、波形合成はGo言語で書いていました。が、Goとpythonでデータのやりとり、Goとpythonをいったり来たりするのが面倒になってしまって、一つの言語に統一したいと思うようになりました。Goで機械学習は厳しいと感じていたので、pythonで書くかなぁと最初は思ったのですが、WORLDやSPTKなど、Cのライブラリをpythonから使うのが思いの他面倒だったので（<a href="https://github.com/r9y9/SPTK">SPTKのpythonラッパー</a>は書きましたが）、Cやpythonとの連携がしやすく、スクリプト言語でありながらCに速度面で引けをとらないjuliaに興味があったので、juliaですべて完結するようにしました。かなり実験的な試みでしたが、今はかなり満足しています。juliaさいこー</p>
+
+<h3>新規性は？</h3>
+
+<p>ありません</p>
 ]]></content>
   </entry>
   
