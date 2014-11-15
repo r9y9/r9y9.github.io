@@ -4,7 +4,7 @@
   <title><![CDATA[Category: voice-conversion, | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/voice-conversion/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-11-12T00:13:05+09:00</updated>
+  <updated>2014-11-15T17:38:12+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -97,6 +97,10 @@ sudo pip install sklearn
 <h2>1. 音声波形からのメルケプストラムの抽出</h2>
 
 <p>まずは、音声から声質変換に用いる特徴量を抽出します。特徴量としては、声質変換や音声合成の分野で広く使われているメルケプストラムを使います。メルケプストラムの抽出は、<code>scripts/mcep.jl</code> を使うことでできます。</p>
+
+<h3>2014/11/15 追記</h3>
+
+<p>実行前に、<code>julia&gt; Pkg.add("WAV")</code> として、WAVパッケージをインストールしておいてください。(2014/11/15時点のmasterでは自動でインストールされますが、v0.0.1ではインストールされません、すいません）</p>
 
 <p>以下のようにして、2話者分の特徴量を抽出しましょう。以下のスクリプトでは、 <code>~/data/cmu_arctic/</code> にデータがあることを前提としています。</p>
 
