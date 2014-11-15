@@ -222,7 +222,7 @@
 
 <h3>2014/11/15 追記</h3>
 
-<p>実行前に、<code>julia&gt; Pkg.add("WAV")</code> として、WAVパッケージをインストールしておいてください。(2014/11/15時点のmasterでは自動でインストールされますが、v0.0.1ではインストールされません、すいません）</p>
+<p>実行前に、<code>julia&gt; Pkg.add("WAV")</code> として、WAVパッケージをインストールしておいてください。(2014/11/15時点のmasterでは自動でインストールされますが、v0.0.1ではインストールされません、すいません）。また、メルケプストラムの出力先ディレクトリは事前に作成しておいてください（最新のスクリプトでは自動で作成されます）。</p>
 
 <p>以下のようにして、2話者分の特徴量を抽出しましょう。以下のスクリプトでは、 <code>~/data/cmu_arctic/</code> にデータがあることを前提としています。</p>
 
@@ -239,7 +239,7 @@
 
 <p>基本的な使い方は、<code>mcep.jl &lt;wavファイルがあるディレクトリ&gt; &lt;メルケプストラムが出力されるディレクトリ&gt;</code> になっています。オプションについては、 <code>mcep.jl -h</code> としてヘルプを見るか、コードを直接見てください。</p>
 
-<p>抽出されたメルケプストラムは、HDF5フォーマットで保存されます。メルケプストラムの中身を見てみると、以下のような感じです。</p>
+<p>抽出されたメルケプストラムは、HDF5フォーマットで保存されます。メルケプストラムの中身を見てみると、以下のような感じです。可視化には、PyPlotパッケージが必要です。Juliaを開いて、<code>julia&gt; Pkg.add("PyPlot")</code> とすればOKです。IJuliaを使いたい場合（僕は使っています）は、<code>julia&gt; Pkg.add("IJulia")</code> としてIJuliaもインストールしておきましょう。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
