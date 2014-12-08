@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-11-15T19:00:53+09:00</updated>
+  <updated>2014-12-09T02:53:02+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -12,6 +12,326 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ccallにおけるポインタ周りのハマりどころとその解決法]]></title>
+    <link href="http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/"/>
+    <updated>2014-12-09T02:20:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips</id>
+    <content type="html"><![CDATA[<p><a href="http://qiita.com/advent-calendar/2014/julialang">Julia Advent Calendar 2014</a> 9日目の記事です。</p>
+
+<h2>はじめに</h2>
+
+<p>CやFortranの関数をJuliaから呼ぶために使用する<code>ccall</code>において、ポインタに関係するハマりどころとその解決法を紹介します。純粋なJuliaを使っている場合にはポインタを意識することはめったにないと思うので、<code>ccall</code> を使う人（計算が重いボトルネック部分をCで書いてJuliaから呼びたい人、Cのライブラリのラッパーを書きたい/書いてる人）を主な読者と想定して記事を書きました（限定的でごめんなさい）。</p>
+
+<p>困った時は、公式ドキュメントの <a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/">Calling C and Fortran Code</a> を参考にしましょう。</p>
+
+<p><strong>注意</strong>: 最新版の公式ドキュメントをいくつか引用していますが、ドキュメントは日々更新されていますので、この記事を読んで頂いた時点とは異なる可能性があることにご注意ください。</p>
+
+<h2>こんなとき</h2>
+
+<p><code>ccall</code> を使う際に、ポインタに関する以下のような疑問を持つことがあります。</p>
+
+<ul>
+<li>ポインタを引数に持つ（例. <code>double*</code>）関数のラッピングはどうすればいいのか？</li>
+<li>構造体のポインタを引数に持つ関数のラッピングはどうすれば？</li>
+<li>ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</li>
+</ul>
+
+
+<p>一つ目は非常に簡単で、<code>Array</code>（Cの関数が<code>double*</code>を取るならば<code>Array{Float64,1}</code>）をそのまま渡せばよいだけです。ドキュメントの<a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/#array-conversions">Array Conversions</a>にも書かれています。が、残りの二つに関してはハマりどころがあります。順に説明します。</p>
+
+<h2>構造体のポインタを引数に持つ関数のラッピングはどうすれば？</h2>
+
+<p>現状のドキュメントは少し不親切なので、引用した上で、整理します。</p>
+
+<p>ドキュメントより引用:</p>
+
+<blockquote><p>Currently, it is not possible to pass structs and other non-primitive types from Julia to C libraries. However, C functions that generate and use opaque struct types by passing pointers to them can return such values to Julia as Ptr{Void}, which can then be passed to other C functions as Ptr{Void}. Memory allocation and deallocation of such objects must be handled by calls to the appropriate cleanup routines in the libraries being used, just like in any C program.</p></blockquote>
+
+<p>冒頭に it is not possible とあります。が、決して不可能なわけではありません。上記文章の要点をまとめると、</p>
+
+<ul>
+<li>opaqueな構造体はCからJuliaへポインタとして渡すことができる</li>
+<li>そのポインタは <code>Ptr{Void}</code> としてCの関数に渡すことができる</li>
+</ul>
+
+
+<p>と書かれています。つまり、一般には構造体は渡せないけどポインタ渡しはできるよ、ということです。</p>
+
+<p>じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）</p>
+
+<p>例を示します。</p>
+
+<h3>Cコード</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span><span class='line'>   <span class="kt">double</span> <span class="n">a</span><span class="p">;</span>
+</span><span class='line'>   <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span> <span class="n">Foo</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 構造体のポインタを引数にとる関数1</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="n">Foo</span><span class="o">*</span> <span class="n">foo</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;a=%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;b=%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># 構造体のポインタを引数にとる関数2</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">reset</span><span class="p">(</span><span class="n">Foo</span><span class="o">*</span> <span class="n">foo</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">foo</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">foo</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Juliaコード</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># Cの構造体 Foo に相当する型を宣言します</span>
+</span><span class='line'><span class="n">immutable</span> <span class="n">Foo</span>
+</span><span class='line'>    <span class="n">a</span><span class="p">::</span><span class="kt">Float64</span>
+</span><span class='line'>    <span class="n">b</span><span class="p">::</span><span class="kt">Int32</span> <span class="c"># cのintはjuliaのInt32に対応します</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Cの関数に、ポインタとしてJuliaの型を渡すことができます</span>
+</span><span class='line'><span class="k">ccall</span><span class="p">(:</span><span class="n">print</span><span class="p">,</span> <span class="s">&quot;libfoo&quot;</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="p">(</span><span class="n">Ptr</span><span class="p">{</span><span class="n">Foo</span><span class="p">},),</span> <span class="o">&amp;</span><span class="n">foo</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># ポインタで渡す場合、Cで変更した結果はJuliaにも反映されます</span>
+</span><span class='line'><span class="k">ccall</span><span class="p">(:</span><span class="n">reset</span><span class="p">,</span> <span class="s">&quot;libfoo&quot;</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span> <span class="p">(</span><span class="n">Ptr</span><span class="p">{</span><span class="n">Foo</span><span class="p">},),</span> <span class="o">&amp;</span><span class="n">foo</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># foo(0.0, 0) と表示される</span>
+</span><span class='line'><span class="n">println</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ちなみにJuliaからCへ値渡しをしてもエラーにならないので、お気をつけください（ハマりました）。</p>
+
+<p>公式ドキュメントは不親切と言いましたが、 プルリクエスト <a href="https://github.com/JuliaLang/julia/pull/8948">update documentation for passing struct pointers to C #8948</a>（まだマージはされていない）で改善されているので、もしかするとこの記事が読まれる頃には改善されているかもしれません。</p>
+
+<p>また、値渡しを可能にしようとする動きもあります（<a href="https://github.com/JuliaLang/julia/pull/3466">RFC: Make struct passing work properly #3466</a>, <a href="https://github.com/JuliaLang/julia/pull/2818">WIP: types as C-structs #2818</a> マージ待ち）。</p>
+
+<h3>構造体渡しのまとめ</h3>
+
+<ul>
+<li>Cの構造体に相当するJuliaの型を定義して、ポインタで渡せばOK</li>
+<li>値渡しは現状できない</li>
+<li>ポインタを受けることはできる（Ptr{Void}として受ける）</li>
+</ul>
+
+
+<h2>2. ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
+
+<p>さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="nf">fooo</span><span class="p">(</span><span class="kt">double</span><span class="o">**</span> <span class="n">input</span><span class="p">,</span> <span class="kt">int</span> <span class="n">w</span><span class="p">,</span> <span class="kt">int</span> <span class="n">h</span><span class="p">,</span> <span class="kt">double</span><span class="o">**</span> <span class="n">output</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>input</code>は入力の行列、<code>output</code>は計算結果が格納される行列、行列のサイズは共に 列数<code>w</code>、行数<code>h</code> だと思ってください。Juliaからは <code>input::Array{Float64,2}</code> を入力として、<code>output::Array{Float64,2}</code> を得たいとします。</p>
+
+<p><code>double*</code>を引数にとる場合は<code>Array{Float64,1}</code>を渡せばよかったのに対して、<code>double**</code>を引数に取る関数に <code>Array{Float64,2}</code>や<code>Array{Array{Float64,1},1}</code>を単純に渡すだけでは、残念ながらコンパイルエラーになります。はい、すでに若干面倒ですね。。さて、どうすればいいかですが、</p>
+
+<ul>
+<li>どんな型で渡せばいいか</li>
+<li>どのように型を変換するか</li>
+<li>変換した型をどのように元に戻すか</li>
+</ul>
+
+
+<p>という三点に分けて説明します。</p>
+
+<h3>1. どんな型で渡せばいいか</h3>
+
+<p><code>Array{Ptr{Float64}}</code> で渡せばよいです。外側のArrayは、<code>ccall</code> がポインタに変換してくれるので、Juliaの型でいえば<code>Ptr{Ptr{Float64}}</code>、Cの型で言えば<code>double**</code>になるわけです。</p>
+
+<h3>2. どのように型を変換するか</h3>
+
+<p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64}}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># Array{T,2} -&gt; Array{Ptr{T}}</span>
+</span><span class='line'><span class="k">function</span><span class="nf"> ptrarray2d</span><span class="p">{</span><span class="n">T</span><span class="o">&lt;:</span><span class="n">Real</span><span class="p">}(</span><span class="n">src</span><span class="p">::</span><span class="n">Array</span><span class="p">{</span><span class="n">T</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
+</span><span class='line'>    <span class="n">dst</span> <span class="o">=</span> <span class="n">Array</span><span class="p">{</span><span class="n">Ptr</span><span class="p">{</span><span class="n">T</span><span class="p">},</span> <span class="n">size</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pointer</span><span class="p">(</span><span class="n">src</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="c"># 先頭要素のポインタを取り出す</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">dst</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>実はこの実装はバグを含んでいます。バグがあるとしたら一行しか該当する部分はないですが、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pointer</span><span class="p">(</span><span class="n">src</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
+
+<p>Array <code>A</code>に対する syntax <code>X = A[I_1, I_2, ..., I_n]</code> は <code>X = getindex(A, I_1, I_2, ..., I_n)</code> と等価です。詳細は、<a href="http://docs.julialang.org/en/latest/manual/arrays/">Multi-dimensional Arrays</a>や<a href="http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex">標準ライブラリのドキュメント</a> を参考にしてください</p>
+
+<p>さて、正解を示します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># Array{T,2} -&gt; Array{Ptr{T}}</span>
+</span><span class='line'><span class="k">function</span><span class="nf"> ptrarray2d</span><span class="p">{</span><span class="n">T</span><span class="o">&lt;:</span><span class="n">Real</span><span class="p">}(</span><span class="n">src</span><span class="p">::</span><span class="n">Array</span><span class="p">{</span><span class="n">T</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
+</span><span class='line'>    <span class="n">dst</span> <span class="o">=</span> <span class="n">Array</span><span class="p">{</span><span class="n">Ptr</span><span class="p">{</span><span class="n">T</span><span class="p">},</span> <span class="n">size</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>         <span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pointer</span><span class="p">(</span><span class="n">sub</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">dst</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>。</p>
+
+<blockquote><p>SubArray is a specialization of AbstractArray that performs indexing by reference rather than by copying. A SubArray is created with the sub() function, which is called the same way as getindex() (with an array and a series of index arguments). The result of sub() looks the same as the result of getindex(), except the data is left in place. sub() stores the input index vectors in a SubArray object, which can later be used to index the original array indirectly.</p></blockquote>
+
+<p>引用元: <a href="http://docs.julialang.org/en/latest/manual/arrays/#implementation">Multi-dimensional Arrays</a></p>
+
+<h3>3. 変換した型をどのように元に戻すか</h3>
+
+<p>Juliaで計算結果（上の例でいう <code>double** output</code>）を受け取りたい場合、ポインタに変換した値をJuliaのArrayに戻す必要があります（必ずしもそうではないですが、まぁほぼそうでしょう）。つまり、<code>Array(Ptr{Float64},1)</code>を<code>Array{Float64,2}</code>したいわけです。幸いにも、これは<code>pointer_to_array</code>を使うと簡単にできます。コードを以下に示します。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="c"># ccallを実行した後の計算結果が coutput に格納されているとします</span>
+</span><span class='line'><span class="n">coutput</span><span class="p">::</span><span class="n">Array</span><span class="p">{</span><span class="n">Ptr</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span><span class="mi">1</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Cに渡した型 Array{Ptr{Float64},1} から Array{Float64,2}に変換</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">coutput</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">output</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pointer_to_array</span><span class="p">(</span><span class="n">coutput</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">size</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>pointer_to_array</code> は、その名前の通りの関数ですね。pointerをArrayに変換してくれます。</p>
+
+<h3>1, 2, 3 をまとめる</h3>
+
+<p>最後に、1, 2, 3の内容をまとめて、ポインタのポインタを引数にもつ関数のラッパー例を書いておきます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='julia'><span class='line'><span class="k">function</span><span class="nf"> fooo</span><span class="p">(</span><span class="n">input</span><span class="p">::</span><span class="n">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
+</span><span class='line'>    <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">intput</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">output</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># C関数に渡す用の変数</span>
+</span><span class='line'>    <span class="n">cinput</span><span class="p">::</span><span class="n">Array</span><span class="p">{</span><span class="n">Ptr</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}</span> <span class="o">=</span> <span class="n">ptrarray</span><span class="p">(</span><span class="n">input</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">coutput</span><span class="p">::</span><span class="n">Array</span><span class="p">{</span><span class="n">Ptr</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}</span> <span class="o">=</span> <span class="n">ptrarray</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">ccall</span><span class="p">(:</span><span class="n">fooo</span><span class="p">,</span> <span class="s">&quot;libfooo&quot;</span><span class="p">,</span> <span class="n">Void</span><span class="p">,</span>
+</span><span class='line'>           <span class="p">(</span><span class="n">Ptr</span><span class="p">{</span><span class="n">Ptr</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}},</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">Ptr</span><span class="p">{</span><span class="n">Ptr</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}),</span>
+</span><span class='line'>           <span class="n">cinput</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">coutput</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># coutputをJuliaのArrayに変換</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">coutput</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">pointer_to_array</span><span class="p">(</span><span class="n">coutput</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">output</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>ポインタのポインタまとめ</h3>
+
+<ul>
+<li><code>Array</code>のindexingはコピーを作るのである要素のポインタがほしい時は注意</li>
+<li>行/列の先頭のポインタがほしいときは <code>SubArray</code> を使いましょう</li>
+</ul>
+
+
+<h2>おわりに</h2>
+
+<p>ポインタにまつわるハマりどころとその解決法を紹介しました。今回紹介したものはすべて <a href="https://github.com/r9y9/WORLD.jl">WORLD.jl</a> という <a href="http://ml.cs.yamanashi.ac.jp/world/">音声分析変換合成システムWORLD</a> のラッパーを書いていたときに得た知見です。やっと<code>WORLD.jl</code>が安定して動くようになってきて公式パッケージにしようかなぁと考えているところですので、興味のある方はぜひ触ってみてください。</p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも <a href="https://github.com/JuliaLang/julia/pull/8948">#8948</a> にはそう書いてあります<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<li id="fn:2">
+<p>たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです<a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+<li id="fn:3">
+<p>ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。<a href="#fnref:3" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[統計的声質変換クッソムズすぎワロタ（チュートリアル編）]]></title>
@@ -4299,73 +4619,6 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 <li><a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a></li>
 <li><a href="http://imonad.com/rbm/restricted-boltzmann-machine/">Restricted Boltzmann Machine &ndash; Short Tutorial | iMonad</a></li>
 <li><a href="http://scikit-learn.org/stable/auto_examples/plot_rbm_logistic_classification.html">Restricted Boltzmann Machine features for digit classification | scikit-learn</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[マルコフ確率場 (MRF) と条件付き確率場 (CRF) の違い]]></title>
-    <link href="http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/"/>
-    <updated>2014-03-01T22:06:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf</id>
-    <content type="html"><![CDATA[<p>一番の違いは、生成モデルか識別モデルか、ということ。それぞれ、</p>
-
-<ul>
-<li>Markov Random Fields (MRF) は生成モデル</li>
-<li>Conditional Random Fields (CRF) は識別モデル</li>
-</ul>
-
-
-<p>です。</p>
-
-<ul>
-<li><a href="http://metaoptimize.com/qa/questions/4021/what-is-exactly-the-difference-between-mrf-and-crf">What is exactly the difference between MRF and CRF</a></li>
-</ul>
-
-
-<p>ここを見ると割とすっきりする。</p>
-
-<p>ただ、少しスムーズに納得できないことがありまして…それは、MRFもCRFもグラフィカルモデルで書くと無向グラフとなること。識別モデルは無向グラフで生成モデルは有向グラフなんじゃ…？と思ってしまう人もいるんじゃないかと思う（いなかったらごめんなさい）。</p>
-
-<h2>グラフィカルモデルとしての表現</h2>
-
-<p>一般に、生成モデルは有向グラフの形で記述され、識別モデルは無向グラフとして記述される。例えば、隠れマルコフモデル (HMM) は有向グラフで、条件付き確率場 (CRF) は無向グラフで表される。図を貼っておく</p>
-
-<p><img class="center" src="http://r9y9.github.io/images/HMM_and_CRF.png"></p>
-
-<p>その道の人には、馴染みのある図だと思う（ｼｭｳﾛﾝから引っ張ってきた）。グレーの○が観測変数、白い○が隠れ変数です</p>
-
-<p>ここで重要なのは、例外もあるということ。具体的には、タイトルにあるMRFは生成モデルだけど無向グラフで書かれる。MRFというと、例えばRestricted Boltzmann Machine とかね！</p>
-
-<p>単純なことだけど、これを知らないとMRFについて学習するときにつっかかってしまうので注意</p>
-
-<p><a href="http://homepages.inf.ed.ac.uk/csutton/publications/crftut-fnt.pdf">An Introduction to Conditional Random Fields</a> の2.2 Generative versus Discriminative Models から引用すると、</p>
-
-<blockquote><p>Because a generative model takes the form p(y,x) = p(y)p(x|y), it is often natural to represent a generative model by a directed graph in which in outputs y topologically precede the inputs. Similarly, we will see that it is often natural to represent a discriminative model by a undirected graph. However, this need not always be the case, and both undirected generative models, such as the Markov random ﬁeld (2.32), and directed discriminative models, such as the MEMM (6.2), are sometimes used. It can also be useful to depict discriminative models by directed graphs in which the x precede the y.</p></blockquote>
-
-<p>らしいです</p>
-
-<h2>結論</h2>
-
-<ul>
-<li>生成モデル＝有向グラフ、識別モデル＝無向グラフで<strong>表されるとは限らない</strong></li>
-<li>ことMRFに関して言えば生成モデルだけど無向グラフで表されるよ</li>
-</ul>
-
-
-<p>ということです</p>
-
-<p>さらに言えば、MRFとCRFはグラフィカルモデルでは同じように書けてしまうけれど、両者には明確な違いがあることに気をつけましょう、ということです（ちょっと自信ない）</p>
-
-<p>間違っていたら教えて下さい</p>
-
-<h2>参考</h2>
-
-<ul>
-<li><a href="http://metaoptimize.com/qa/questions/4021/what-is-exactly-the-difference-between-mrf-and-crf">What is exactly the difference between MRF and CRF</a></li>
-<li><a href="http://homepages.inf.ed.ac.uk/csutton/publications/crftut-fnt.pdf">An Introduction to Conditional Random Fields (PDF)</a></li>
-<li><a href="http://www.cs.helsinki.fi/group/cosco/Teaching/Probability/2010/lecture5_MRF2.pdf">More about Undirected Graphical Models</a></li>
 </ul>
 
 ]]></content>
