@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-12-09T02:53:02+09:00</updated>
+  <updated>2014-12-09T03:24:46+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -88,8 +88,8 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp"># 構造体のポインタを引数にとる関数1</span>
 </span><span class='line'><span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="n">Foo</span><span class="o">*</span> <span class="n">foo</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;a=%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;b=%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;a=%lf</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;b=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp"># 構造体のポインタを引数にとる関数2</span>
@@ -180,7 +180,7 @@
 
 <h3>2. どのように型を変換するか</h3>
 
-<p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64}}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
+<p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64},1}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
