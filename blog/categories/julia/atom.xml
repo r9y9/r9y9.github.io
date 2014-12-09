@@ -4,7 +4,7 @@
   <title><![CDATA[Category: julia | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/julia/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-12-09T03:24:46+09:00</updated>
+  <updated>2014-12-09T09:48:19+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -248,8 +248,8 @@ function fooo(input::Array{Float64,2})</p>
 output = Array(Float64, h, w)
 
 # C関数に渡す用の変数
-cinput::Array{Ptr{Float64}} = ptrarray(input)
-coutput::Array{Ptr{Float64}} = ptrarray(output)
+cinput::Array{Ptr{Float64}} = ptrarray2d(input)
+coutput::Array{Ptr{Float64}} = ptrarray2d(output)
 
 ccall(:fooo, "libfooo", Void,
          (Ptr{Ptr{Float64}}, Int, Int, Ptr{Ptr{Float64}}), 
