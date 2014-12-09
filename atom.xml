@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-12-09T09:48:19+09:00</updated>
+  <updated>2014-12-09T10:25:04+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -45,7 +45,7 @@
 
 <p>現状のドキュメントは少し不親切なので、引用した上で、整理します。</p>
 
-<p>ドキュメントより引用:</p>
+<p><a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/">Calling C and Fortran Code</a> より引用:</p>
 
 <blockquote><p>Currently, it is not possible to pass structs and other non-primitive types from Julia to C libraries. However, C functions that generate and use opaque struct types by passing pointers to them can return such values to Julia as Ptr{Void}, which can then be passed to other C functions as Ptr{Void}. Memory allocation and deallocation of such objects must be handled by calls to the appropriate cleanup routines in the libraries being used, just like in any C program.</p></blockquote>
 
@@ -152,7 +152,7 @@
 </ul>
 
 
-<h2>2. ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
+<h2>ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
 
 <p>さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。</p>
 
