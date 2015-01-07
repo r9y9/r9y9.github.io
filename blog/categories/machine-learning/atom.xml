@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: machine-learning, | LESS IS MORE]]></title>
+  <title><![CDATA[Category: Machine-Learning | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/machine-learning/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-12-09T02:53:02+09:00</updated>
+  <updated>2015-01-07T23:58:42+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -14,967 +14,599 @@
 
   
   <entry>
-    <title type="html"><![CDATA[統計的声質変換クッソムズすぎワロタ（チュートリアル編）]]></title>
-    <link href="http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/"/>
-    <updated>2014-11-12T01:30:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code</id>
-    <content type="html"><![CDATA[<h2>はじめに</h2>
+    <title type="html"><![CDATA[Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia]]></title>
+    <link href="http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/"/>
+    <updated>2014-08-20T15:30:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia</id>
+    <content type="html"><![CDATA[<p>最近 <a href="julialang.org">Julia</a> で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）</p>
 
-<p>こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。</p>
+<p><a href="https://github.com/r9y9/BNMF.jl">https://github.com/r9y9/BNMF.jl</a></p>
 
-<p>前回の記事（<a href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/">統計的声質変換クッソムズすぎワロタ（実装の話） &ndash; LESS IS MORE</a>）では変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。</p>
+<p>元論文:
+ <a href="http://soundlab.cs.princeton.edu/publications/2010_icml_gapnmf.pdf">Bayesian Nonparametric Matrix Factorization for Recorded Music</a>
+by Matthew D. Hoffman et al. in ICML 2010.</p>
 
-<h2>コード</h2>
+<h2>デモ</h2>
 
-<p><a href="https://github.com/r9y9/VoiceConversion.jl">https://github.com/r9y9/VoiceConversion.jl</a></p>
+<p><a href="http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb">http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb</a></p>
 
-<p><a href="julialang.org">Julia</a> という数値計算に強い言語で書かれています。なぜjuliaなのかというと、速いし書きやすいし、数値計算に関して言えばライブラリ豊富だし、あとはまぁ僕が好きだからですね。まだ新しい言語ですが、個人的におすすめです。</p>
+<p>適当な音声（音楽じゃなくてごめんなさい）に対して、GaP-NMFをfittingしてみた結果のメモです。$K=100$ で始めて、100回ほどイテレーションを回すと適度な数（12くらい）にtruncateしているのがわかると思います。予めモデルの複雑度を指定しなくても、データから適当な数を自動決定してくれる、ノンパラベイズの良いところですね。</p>
 
-<h2>サードパーティライブラリ</h2>
-
-<p>声質変換は多くのコンポーネントによって成り立っていますが、すべてを自分で書くのは現実的ではありません。僕は、主に以下のライブラリを活用しています。</p>
+<h2>ハマったところ</h2>
 
 <ul>
-<li><a href="http://ml.cs.yamanashi.ac.jp/world/">WORLD</a> &ndash; 音声分析合成のフレームワークとして、あるいは単にスペクトル包絡を抽出するツールとして使っています。<a href="https://github.com/r9y9/WORLD.jl">Juliaラッパー</a>を書きました。</li>
-<li><a href="sp-tk.sourceforge.net">SPTK</a> &ndash; メル対数スペクトル近似（Mel-Log Spectrum Approximation; MLSA）フィルタを変換処理に使っています。これも<a href="https://github.com/r9y9/SPTK.jl">Juliaラッパー</a>を書きました。</li>
-<li><a href="http://scikit-learn.org/stable/">sklearn</a> &ndash; sklearn.mixture をGMMの学習に使っています。pythonのライブラリは、juliaから簡単に呼べます。</li>
+<li>GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら <a href="https://julia.readthedocs.org/en/latest/stdlib/base/?highlight=besselkx#Base.besselkx">besselkx</a> で、scipyで言うなら <a href="http://students.mimuw.edu.pl/~pbechler/scipy_doc/generated/scipy.special.kve.html#scipy.special.kve">scipy.special.kve</a> です。</li>
 </ul>
 
 
-<p>音声分析合成に関しては、アカデミック界隈ではよく使われている<a href="http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html">STRAIGHT</a>がありますが、WORLDの方がライセンスもゆるくソースも公開されていて、かつ性能も劣らない（正確な話は、森勢先生の論文を参照してください）ので、おすすめです。</p>
-
-<h2><a href="https://github.com/r9y9/VoiceConversion.jl">VoiceConversion.jl</a> でできること</h2>
-
-<p>2014/11/10現在（v0.0.1のタグを付けました）、できることは以下の通りです（外部ライブラリを叩いているものを含む）。</p>
+<h2>雑感</h2>
 
 <ul>
-<li>音声波形からのメルケプストラムの抽出</li>
-<li>DPマッチングによるパラレルデータの作成</li>
-<li>GMMの学習</li>
-<li>GMMベースのframe-by-frame特徴量変換</li>
-<li>GMMベースのtrajectory特徴量変換</li>
-<li>GMMベースのtrajectory特徴量変換（GV考慮版）</li>
-<li>音声分析合成系WORLDを使った声質変換</li>
-<li>MLSAフィルタを使った差分スペクトルに基づく声質変換</li>
+<li>MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒</li>
+<li>というかJuliaがMatlabに似すぎ？</li>
+<li>Gamma分布に従う乱数は、<a href="https://github.com/JuliaStats/Distributions.jl">Distributions,jl</a> を使えばめっちゃ簡単に生成できた。素晴らしすぎる</li>
+<li>行列演算がシンプルにかけてホント楽。pythonでもmatlabでもそうだけど（Goだとこれができないんですよ…）</li>
+<li>第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。</li>
 </ul>
 
 
-<p>これらのうち、trajectory変換以外を紹介します。</p>
+<h2>Python版と速度比較</h2>
 
-<h2>チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで）</h2>
+<p><a href="https://github.com/dawenl/bp_nmf/tree/master/code/gap_nmf">bp_nmf/code/gap_nmf</a> と比較します。matlabはもってないので比較対象からはずします、ごめんなさい</p>
 
-<p>データセットに<a href="http://festvox.org/cmu_arctic/">CMU_ARCTIC</a>を使って、GMMベースの声質変換（clb &ndash;> slt）を行う方法を説明します。なお、VoiceConversion.jl のv0.0.1を使います。ubuntuで主に動作確認をしていますが、macでも動くと思います。</p>
+<p>Gistにベンチマークに使ったスクリプトと実行結果のメモを置いときました
+<a href="https://gist.github.com/r9y9/3d0c6a90dd155801c4c1">https://gist.github.com/r9y9/3d0c6a90dd155801c4c1</a></p>
 
-<h2>0. 前準備</h2>
+<p>結果だけ書いておくと、あらゆる現実を（ry の音声にGaP-NMFをepochs=100でfittingするのにかかった時間は、</p>
 
-<h3>0.1. データセットのダウンロード</h3>
-
-<p><a href="http://festvox.org/cmu_arctic/">Festvox: CMU_ARCTIC Databases</a> を使います。コマンド一発ですべてダウンロードする<a href="https://gist.github.com/r9y9/ff67c05aeb87410eae2e">スクリプト</a>を書いたので、ご自由にどうぞ。</p>
-
-<h3>0.2. juliaのインストール</h3>
-
-<p><a href="http://julialang.org/">公式サイト</a>からバイナリをダウンロードするか、<a href="https://github.com/JuliaLang/julia">githubのリポジトリ</a>をクローンしてビルドしてください。バージョンは、現在の最新安定版のv0.3.2を使います。</p>
-
-<p>記事内では、juliaの基本的な使い方については解説しないので、前もってある程度調べておいてもらえると、スムーズに読み進められるかと思います。</p>
-
-<h3>0.3. VoiceConversion.jl のインストール</h3>
-
-<p>juliaを起動して、以下のコマンドを実行してください。</p>
-
-<p><code>julia
-julia&gt; Pkg.clone("https://github.com/r9y9/VoiceConversion.jl")
-julia&gt; Pkg.build("VoiceConversion")
+<p><code>
+Julia: Mean elapsed time: 21.92968243 [sec]
+Python: Mean elapsed time: 18.3550617 [sec]
 </code></p>
 
-<p>サードパーティライブラリは、sklearnを除いてすべて自動でインストールされます。sklearnは、例えば以下のようにしてインストールしておいてください。</p>
-
-<p><code>bash
-sudo pip install sklearn
-</code></p>
-
-<p>これで準備は完了です！</p>
-
-<h2>1. 音声波形からのメルケプストラムの抽出</h2>
-
-<p>まずは、音声から声質変換に用いる特徴量を抽出します。特徴量としては、声質変換や音声合成の分野で広く使われているメルケプストラムを使います。メルケプストラムの抽出は、<code>scripts/mcep.jl</code> を使うことでできます。</p>
-
-<h3>2014/11/15 追記</h3>
-
-<p>実行前に、<code>julia&gt; Pkg.add("WAV")</code> として、WAVパッケージをインストールしておいてください。(2014/11/15時点のmasterでは自動でインストールされますが、v0.0.1ではインストールされません、すいません）。また、メルケプストラムの出力先ディレクトリは事前に作成しておいてください（最新のスクリプトでは自動で作成されます）。</p>
-
-<p>以下のようにして、2話者分の特徴量を抽出しましょう。以下のスクリプトでは、 <code>~/data/cmu_arctic/</code> にデータがあることを前提としています。</p>
-
-<p>```bash</p>
-
-<h1>clb</h1>
-
-<p>julia mcep.jl ~/data/cmu_arctic/cmu_us_clb_arctic/wav/ ~/data/cmu_arctic_jld/speakers/clb/</p>
-
-<h1>slt</h1>
-
-<p>julia mcep.jl ~/data/cmu_arctic/cmu_us_slt_arctic/wav/ ~/data/cmu_arctic_jld/speakers/slt/
-```</p>
-
-<p>基本的な使い方は、<code>mcep.jl &lt;wavファイルがあるディレクトリ&gt; &lt;メルケプストラムが出力されるディレクトリ&gt;</code> になっています。オプションについては、 <code>mcep.jl -h</code> としてヘルプを見るか、コードを直接見てください。</p>
-
-<p>抽出されたメルケプストラムは、HDF5フォーマットで保存されます。メルケプストラムの中身を見てみると、以下のような感じです。可視化には、PyPlotパッケージが必要です。Juliaを開いて、<code>julia&gt; Pkg.add("PyPlot")</code> とすればOKです。IJuliaを使いたい場合（僕は使っています）は、<code>julia&gt; Pkg.add("IJulia")</code> としてIJuliaもインストールしておきましょう。</p>
-
-<p>```julia</p>
-
-<h1>メルケプストラムの可視化</h1>
-
-<p>using HDF5, JLD, PyPlot</p>
-
-<p>x = load(&ldquo;clb/arctic_a0028.jld&rdquo;)</p>
-
-<p>figure(figsize=(16, 6), dpi=80, facecolor=&ldquo;w&rdquo;, edgecolor=&ldquo;k&rdquo;)
-imshow(x[&ldquo;feature_matrix&rdquo;], origin=&ldquo;lower&rdquo;, aspect=&ldquo;auto&rdquo;)
-colorbar()
-```</p>
-
-<p><img class="center" src="/images/clb_a0028_melcepstrum.png" title="&ldquo;Mel-cepstrum of clb_a0028.&rdquo;" ></p>
-
-<p>0次成分だけ取り出してみると、以下のようになります。</p>
-
-<p>```julia</p>
-
-<h1>メルケプストラムの0次成分のみを可視化</h1>
-
-<p>figure(figsize=(16, 6), dpi=80, facecolor=&ldquo;w&rdquo;, edgecolor=&ldquo;k&rdquo;)
-plot(vec(x[&ldquo;feature_matrix&rdquo;][1,:]), linewidth=2.0, label=&ldquo;0th order mel-cesptrum of clb_a0028&rdquo;)
-xlim(0, size(x[&ldquo;feature_matrix&rdquo;], 2)-10) # 末尾がsilenceだった都合上…（決め打ち）
-xlabel(&ldquo;Frame&rdquo;)
-legend(loc=&ldquo;upper right&rdquo;)
-ylim(-10, -2) # 見やすいように適当に決めました
-```</p>
-
-<p><img class="center" src="/images/clb_a0028_melcepstrum_0th.png" title="&ldquo;Mel-cepstrum of clb_a0028 0th.&rdquo;" ></p>
-
-<p>こんな感じです。話者clbの<code>clb_a0028.wav</code>を聞きながら、特徴量見てみてください。0次の成分からは、音量の大小が読み取れると思います。</p>
-
-<h2>2. DPマッチングによるパラレルデータの作成</h2>
-
-<p>次に、2話者分の特徴量を時間同期して連結します。基本的に声質変換では、音韻の違いによらない特徴量（非言語情報）の対応関係を学習するために、同一発話内容の特徴量を時間同期し（音韻の違いによる変動を可能な限りなくすため）、学習データとして用います。このデータのことを、パラレルデータと呼びます。</p>
-
-<p>パラレルデータの作成には、DPマッチングを使うのが一般的です。<code>scripts/align.jl</code> を使うとできます。</p>
-
-<p><code>bash
-julia align.jl ~/data/cmu_arctic_jld/speakers/clb ~/data/cmu_arctic_jld/speakers/slt ~/data/cmu_arctic_jld/parallel/clb_and_slt/
-</code></p>
-
-<p>使い方は、<code>align.jl &lt;話者1（clb）の特徴量のパス&gt; &lt;話者2（slt）の特徴量のパス&gt; &lt;パラレルデータの出力先&gt;</code> になっています。</p>
-
-<p>きちんと時間同期されているかどうか、0次成分を見て確認してみましょう。</p>
-
-<p>時間同期を取る前のメルケプストラムを以下に示します。</p>
-
-<p>```julia</p>
-
-<h1>時間同期前のメルケプストラム（0次）を可視化</h1>
-
-<p>x = load(&ldquo;clb/arctic_a0028.jld&rdquo;)
-y = load(&ldquo;slt/arctic_a0028.jld&rdquo;)</p>
-
-<p>figure(figsize=(16, 6), dpi=80, facecolor=&ldquo;w&rdquo;, edgecolor=&ldquo;k&rdquo;)
-plot(vec(x[&ldquo;feature_matrix&rdquo;][1,:]), linewidth=2.0, label=&ldquo;0th order mel-cesptrum of clb_a0028&rdquo;)
-plot(vec(y[&ldquo;feature_matrix&rdquo;][1,:]), linewidth=2.0, label=&ldquo;0th order mel-cesptrum of slt_a0028&rdquo;)
-xlim(0, min(size(x[&ldquo;feature_matrix&rdquo;], 2), size(y[&ldquo;feature_matrix&rdquo;], 2))-10) # 決め打ち
-xlabel(&ldquo;Frame&rdquo;)
-legend(loc=&ldquo;upper right&rdquo;)
-ylim(-10, -2) # 決め打ち
-```</p>
-
-<p><img class="center" src="/images/clb_and_slt_a0028_melcepstrum_0th.png" title="&ldquo;0th order mel-cepstrum (not aligned)&rdquo;" ></p>
-
-<p>ちょっとずれてますね</p>
-
-<p>次に、時間同期後のメルケプストラムを示します。</p>
-
-<p>```julia</p>
-
-<h1>時間同期後のメルケプストラム（0次）を可視化</h1>
-
-<p>parallel = load(&ldquo;arctic_a0028_parallel.jld&rdquo;)</p>
-
-<p>figure(figsize=(16, 6), dpi=80, facecolor=&ldquo;w&rdquo;, edgecolor=&ldquo;k&rdquo;)
-plot(vec(parallel[&ldquo;src&rdquo;][&ldquo;feature_matrix&rdquo;][1,:]), linewidth=2.0, &ldquo;b&rdquo;, label=&ldquo;0th order mel-cesptrum of clb_a0028&rdquo;)
-plot(vec(parallel[&ldquo;tgt&rdquo;][&ldquo;feature_matrix&rdquo;][1,:]), linewidth=2.0, &ldquo;g&rdquo;, label=&ldquo;0th order mel-cesptrum of slt_a0028&rdquo;)
-xlim(0, size(parallel[&ldquo;tgt&rdquo;][&ldquo;feature_matrix&rdquo;], 2))
-xlabel(&ldquo;Frame&rdquo;)
-legend()
-```</p>
-
-<p><img class="center" src="/images/clb_and_slt_a0028_melcepstrum_0th_aligned.png" title="&ldquo;0th order mel-cepstrum (aligned)&rdquo;" ></p>
-
-<p>ずれが修正されているのがわかりますね。注意として、<code>align.jl</code> の中身を追えばわかるのですが、無音区間をしきい値判定で検出して、パラレルデータから除外しています。</p>
-
-<p>結果、時間同期されたパラレルデータは以下のようになります。</p>
-
-<p>```julia</p>
-
-<h1>パラレルデータの可視化</h1>
-
-<p>figure(figsize=(16, 6), dpi=80, facecolor=&ldquo;w&rdquo;, edgecolor=&ldquo;k&rdquo;)
-imshow(vcat(parallel[&ldquo;src&rdquo;][&ldquo;feature_matrix&rdquo;], parallel[&ldquo;tgt&rdquo;][&ldquo;feature_matrix&rdquo;]), origin=&ldquo;lower&rdquo;, aspect=&ldquo;auto&rdquo;)
-colorbar()
-```</p>
-
-<p><img class="center" src="/images/clb_and_slt_a0028_parallel.png" title="&ldquo;example of parallel data&rdquo;" ></p>
-
-<p>このパラレルデータを（複数の発話分さらに結合して）使って、特徴量の対応関係を学習していきます。モデルには、GMMを使います。</p>
-
-<h2>3. GMMの学習</h2>
-
-<p>GMMの学習には、<code>sklearn.mixture.GMM</code> を使います。GMMは古典的な生成モデルで、実装は探せばたくさん見つかるので、既存の有用なライブラリを使えば十分です。（余談ですが、pythonのライブラリを簡単に呼べるのはjuliaの良いところの一つですね）</p>
-
-<p><code>scripts/train_gmm.jl</code> を使うと、モデルのダンプ、julia &lt;&ndash;> python間のデータフォーマットの変換等、もろもろやってくれます。</p>
-
-<p><code>bash
-julia train_gmm.jl ~/data/cmu_arctic_jld/parallel/clb_and_slt/ clb_and_slt_gmm32_order40.jld --max 200 --n_components 32 --n_iter=100 --n_init=1
-</code></p>
-
-<p>使い方は、<code>train_gmm.jl &lt;パラレルデータのパス&gt; &lt;出力するモデルデータのパス&gt;</code> になっています。上の例では、学習に用いる発話数、GMMの混合数、反復回数等を指定しています。オプションの詳細はスクリプトをご覧ください。</p>
-
-<p>僕の環境では、上記のコマンドを叩くと2時間くらいかかりました。学習が終わったところで、学習済みのモデルのパラメータを可視化してみましょう。</p>
-
-<p>まずは平均を見てみます。</p>
-
-<p>```julia</p>
-
-<h1>GMMの平均ベクトルを（いくつか）可視化</h1>
-
-<p>gmm = load(&ldquo;clb_and_slt_gmm32_order40.jld&rdquo;)</p>
-
-<p>figure(figsize=(16, 6), dpi=80, facecolor=&ldquo;w&rdquo;, edgecolor=&ldquo;k&rdquo;)
-for k=1:3</p>
-
-<pre><code>plot(gmm["means"][:,k], linewidth=2.0, label="mean of mixture $k")
-</code></pre>
-
-<p>end
-legend()
-```</p>
-
-<p><img class="center" src="/images/clb_and_slt_gmm32_order40_mean.png" title="&ldquo;means of trained GMM&rdquo;" ></p>
-
-<p>共分散の一部可視化してみると、以下のようになります。</p>
-
-<p>```julia</p>
-
-<h1>GMMの共分散行列を一部可視化</h1>
-
-<p>figure(figsize=(16, 6), dpi=80, facecolor=&ldquo;w&rdquo;, edgecolor=&ldquo;k&rdquo;)
-imshow(gmm[&ldquo;covars&rdquo;][:,:,2])
-colorbar()
-clim(0.0, 0.16)
-```</p>
-
-<p><img class="center" src="/images/clb_and_slt_gmm32_order40_covar.png" title="&ldquo;covariance of trained GMM&rdquo;" ></p>
-
-<p>まぁこんなもんですね。</p>
-
-<h2>4. 音声分析合成WORLDを用いたGMMベースのframe-by-frame声質変換</h2>
-
-<p>さて、ようやく声質変換の準備が整いました。学習したモデルを使って、GMMベースのframe-by-frame声質変換（clb &ndash;> slt ）をやってみましょう。具体的な変換アルゴリズムは、論文（例えば<a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">戸田先生のこれ</a>）をチェックしてみてください。音声分析合成系にはWORLDを使います。</p>
-
-<p>一般的な声質変換では、まず音声を以下の三つの成分に分解します。</p>
-
-<ul>
-<li>基本周波数</li>
-<li>スペクトル包絡（今回いじりたい部分）</li>
-<li>非周期性成分</li>
-</ul>
-
-
-<p>その後、スペクトル包絡に対して変換を行い、変換後のパラメータを使って音声波形を合成するといったプロセスを取ります。これらは、<code>scripts/vc.jl</code> を使うと簡単にできるようになっています。本当にWORLDさまさまです。</p>
-
-<p><code>bash
-julia vc.jl ~/data/cmu_arctic/cmu_us_clb_arctic/wav/arctic_a0028.wav clb_and_slt_gmm32_order40.jld clb_to_slt_a0028.wav --order 40
-</code></p>
-
-<p>使い方は、<code>vc.jl &lt;変換対象の音声ファイル&gt; &lt;変換モデル&gt; &lt;出力wavファイル名&gt;</code> となっています。</p>
-
-<p>上記のコマンドを実行すると、GMMベースのframe-by-frame声質変換の結果が音声ファイルに出力されます。以下に結果を貼っておくので、聞いてみてください。</p>
-
-<h3>変換元となる音声 clb_a0028</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093202&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<h3>変換目標となる話者 slt_a0028</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093240&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<h3>変換結果 clb_to_slt_a0028</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093403&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<p>話者性はなんとなく目標話者に近づいている気がしますが、音質が若干残念な感じですね。。</p>
-
-<h2>5. 差分スペクトル補正に基づく声質変換</h2>
-
-<p>最後に、より高品質な声質変換を達成可能な差分スペクトル補正に基づく声質変換を紹介します。差分スペクトル補正に基づく声質変換では、基本周波数や非周期性成分をいじれない代わりに音質はかなり改善します。以前書いた記事（<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ &ndash; LESS IS MORE</a>）から、着想に関連する部分を引用します。</p>
-
-<blockquote><p>これまでは、音声を基本周波数、非周期性成分、スペクトル包絡に分解して、スペクトル包絡を表す特徴量を変換し、変換後の特徴量を元に波形を再合成していました。ただ、よくよく考えると、そもそも基本周波数、非周期性成分をいじる必要がない場合であれば、わざわざ分解して再合成する必要なくね？声質の部分のみ変換するようなフィルタかけてやればよくね？という考えが生まれます。実は、そういったアイデアに基づく素晴らしい手法があります。それが、差分スペクトル補正に基づく声質変換です。</p></blockquote>
-
-<p>差分スペクトル補正に基づく声質変換の詳細ついては、最近inter speechに論文が出たようなので、そちらをご覧ください。</p>
-
-<ul>
-<li><a href="http://isw3.naist.jp/~kazuhiro-k/resource/kobayashi14IS.pdf">[Kobayashi 2014] Kobayashi, Kazuhiro, et al. &ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.</a></li>
-</ul>
-
-
-<p>こばくん、論文を宣伝しておきますね＾＾</p>
-
-<h3>5.1 差分特徴量の学習</h3>
-
-<p>さて、差分スペクトル補正に基づく声質変換行うには、変換元話者$X$と目標話者$Y$の特徴量の同時分布$P(X,Y)$を学習するのではなく、$P(X, Y-X)$ （日本語で書くとややこしいのですが、変換元話者の特徴量$X$と、変換元話者と目標話者の差分特徴量$Y-X$の同時分布）を学習します。これは、 <code>train_gmm.jl</code> を使ってGMMを学習する際に、<code>--diff</code> とオプションをつけるだけでできます。</p>
-
-<p><code>bash
-julia train_gmm.jl ~/data/cmu_arctic_jld/parallel/clb_and_slt/ clb_to_slt_gmm32_order40_diff.jld --max 200 --n_components 32 --n_iter=100 --n_init=1 --diff
-</code></p>
-
-<p>可視化してみます。</p>
-
-<p>平均</p>
-
-<p><img class="center" src="/images/clb_to_slt_gmm32_order40_mean.png" title="&ldquo;means of trained DIFFGMM&rdquo;" ></p>
-
-<p>共分散</p>
-
-<p><img class="center" src="/images/clb_to_slt_gmm32_order40_covar.png" title="&ldquo;covar of trained DIFFGMM&rdquo;" ></p>
-
-<p>さっき学習したGMMとは、共分散はかなり形が違いますね。高次元成分でも、分散が比較的大きな値をとっているように見えます。形が異っているのは見てすぐにわかりますが、では具体的には何が異っているのか、それはなぜなのか、きちんと考えると面白そうですね。</p>
-
-<h3>5.2 MLSAフィルタによる声質変換</h3>
-
-<p>差分スペクトル補正に基づく声質変換では、WORLDを使って音声の分析合成を行うのではなく、生の音声波形を入力として、MLSAフィルタをかけるのみです。これは、 <code>scripts/diffvc.jl</code> を使うと簡単にできます。</p>
-
-<p><code>bash
-julia diffvc.jl ~/data/cmu_arctic/cmu_us_clb_arctic/wav/arctic_a0028.wav clb_to_slt_gmm32_order40_diff.jld clb_to_slt_a0028_diff.wav --order 40
-</code></p>
-
-<p>さて、結果を聞いてみましょう。</p>
-
-<h3>5.3 差分スペクトル補正に基づく声質変換結果</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093513&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<p>アイデアはシンプル、結果は良好、最高の手法ですね（べた褒め</p>
+<p>という結果になりました。つまりJuliaのほうが1.2倍くらい遅かった（僕の実装が悪い可能性は十分ありますが）。どこがボトルネックになっているのか調べていないので、気が向いたら調べます。Juliaの方が速くなったらいいなー</p>
 
 <h2>おわりに</h2>
 
-<p>以上、長くなりましたが、統計的声質変換についてのチュートリアルはこれで終わります。誰の役に立つのか知らないけれど、役に立てば嬉しいです。トラジェクトリ変換やGVを考慮したバージョンなど、今回紹介していないものも実装しているので、詳しくは<a href="https://github.com/r9y9/VoiceConversion.jl">Githubのリポジトリ</a>をチェックしてください。バグをレポートしてくれたりすると、僕は喜びます。</p>
+<p>GaP-NMFの実装チャレンジは二回目でした。（たぶん）一昨年、年末に実家に帰るときに、何を思ったのか急に実装したくなって、電車の中で論文を読んで家に着くなり実装するというエクストリームわけわからんことをしていましたが、その時はNaN and Inf地獄に負けてしまいました。Pythonで書いていましたが、今見るとそのコードマジクソでした。</p>
 
-<h2>参考</h2>
+<p>そして二回目である今回、最初はmatlabコードを見ずに自力で書いていたんですが、またもやInf地獄に合いもうだめだと思って、matlabコードを写経しました。あんま成長していないようです（つらい）</p>
 
-<h3>以前書いた声質変換に関する記事</h3>
-
-<ul>
-<li><a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ &ndash; LESS IS MORE</a></li>
-<li><a href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/">統計的声質変換クッソムズすぎワロタ（実装の話） &ndash; LESS IS MORE</a></li>
-</ul>
-
-
-<h3>論文</h3>
-
-<ul>
-<li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">[Toda 2007] T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE
-Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235,
-Nov. 2007.</a></li>
-<li><a href="http://isw3.naist.jp/~kazuhiro-k/resource/kobayashi14IS.pdf">[Kobayashi 2014] Kobayashi, Kazuhiro, et al. &ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.</a></li>
-</ul>
-
-
-<h2>FAQ</h2>
-
-<h3>前はpythonで書いてなかった？</h3>
-
-<p>はい、<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a> ですね。正確には、GMMの学習・変換処理はpythonで書いて、特徴抽出、パラレルデータの作成、波形合成はGo言語で書いていました。が、Goとpythonでデータのやりとり、Goとpythonをいったり来たりするのが面倒になってしまって、一つの言語に統一したいと思うようになりました。Goで機械学習は厳しいと感じていたので、pythonで書くかなぁと最初は思ったのですが、WORLDやSPTKなど、Cのライブラリをpythonから使うのが思いの他面倒だったので（<a href="https://github.com/r9y9/SPTK">SPTKのpythonラッパー</a>は書きましたが）、Cやpythonとの連携がしやすく、スクリプト言語でありながらCに速度面で引けをとらないjuliaに興味があったので、juliaですべて完結するようにしました。かなり実験的な試みでしたが、今はかなり満足しています。juliaさいこー</p>
-
-<h3>新規性は？</h3>
-
-<p>ありません</p>
+<p>Julia歴二週間くらいですが、良い感じなので使い続けて見ようと思います。</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[統計的声質変換クッソムズすぎワロタ（実装の話）]]></title>
-    <link href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/"/>
-    <updated>2014-07-13T02:02:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran</id>
-    <content type="html"><![CDATA[<p>2014/07/28 追記：<br/>
-重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました
-<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
+    <title type="html"><![CDATA[Restricted Boltzmann Machines with MNIST]]></title>
+    <link href="http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/"/>
+    <updated>2014-03-06T23:29:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/RBM_mnist_Hidden_500_layers.png" title="&ldquo;RBM training result on MNIST handwritten digit dataset. Each image represents a filter learned by RBM.&rdquo;" ></p>
 
-<h2>まえがき</h2>
-
-<p>前回、<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ &ndash; LESS IS MORE</a> という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。</p>
-
-<p>Twitter引用:</p>
-
-<blockquote class="twitter-tweet" lang="en"><p>統計的声質変換クッソムズすぎワロタ - LESS IS MORE <a href="http://t.co/8RkeXIf6Ym">http://t.co/8RkeXIf6Ym</a> <a href="https://twitter.com/r9y9">@r9y9</a>さんから ムズすぎと言いながら，最後の音はしっかり出ているあたり凄いなぁ．</p>&mdash; M. Morise (忍者系研究者) (@m_morise) <a href="https://twitter.com/m_morise/statuses/485339123171852289">July 5, 2014</a></blockquote>
-
-
-<script async src="http://r9y9.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-
-
-<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/ballforest">@ballforest</a> 従来のパラメータ変換と比較すると、音質は従来よりもよさそうな気はしますがスペクトル包絡の性差ががっつりと影響しそうな気もするんですよね。</p>&mdash; 縄文人（妖精系研究者なのです） (@dicekicker) <a href="https://twitter.com/dicekicker/statuses/485380534122463232">July 5, 2014</a></blockquote>
-
-
-<script async src="http://r9y9.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<p>異性間に関しては、実験が必要ですね。異性間だとF0が結構変わってくると思いますが、差分スペクトル補正の場合そもそもF0をいじらないという前提なので、F0とスペクトル包絡が完全に独立でない（ですよね？）以上、同姓間に比べて音質は劣化する気はします。簡単にやったところ、少なくとも僕の主観的には劣化しました</p>
-
-<p>ところで、結構いい感じにできたぜひゃっはーと思って、先輩に聞かせてみたら違いわかんねと言われて心が折れそうになりました。やはり現実はつらいです。</p>
-
-<h2>実装の話</h2>
-
-<p>さて、今回は少し実装のことを書こうと思います。学習&amp;変換部分はPythonで書いています。その他はGo（※Goの話は書きません）。</p>
-
-<h2>トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz</h2>
-
-<p>前回トラジェクトリベースは処理が激重だと書きました。なんと、4秒程度の音声（フレームシフト5msで777フレーム）に対して変換部分に600秒ほどかかっていたのですが（重すぎワロタ）、結果から言えばPythonでも12秒くらいまでに高速化されました（混合数64, メルケプの次元数40+デルタ=80次元、分散共分散はfull）。本当にごめんなさい。</p>
-
-<p>何ヶ月か前、ノリでトラジェクトリベースの変換を実装しようと思ってサクッと書いたのがそのままで、つまりとても効率の悪い実装になっていました。具体的には放置していた問題が二つあって、</p>
+<p>ディープ某を使った研究を再現してみたくて、最近某ニューラルネットに手を出し始めた。で、手始めにRestricted Boltzmann Machinesを実装してみたので、</p>
 
 <ul>
-<li>ナイーブな逆行列の計算</li>
-<li>スパース性の無視</li>
+<li>MNISTを使って学習した結果の重み（22*22=484個）を貼っとく（↑）</li>
+<li>得た知見をまとめとく</li>
+<li>Goのコード貼っとく</li>
 </ul>
 
 
-<p>です。特に後者はかなりパフォーマンスに影響していました</p>
+<p>ってな感じで書いておく</p>
 
-<h2>ナイーブな逆行列の計算</h2>
+<p>(本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)</p>
 
-<p><a href="http://d.hatena.ne.jp/sleepy_yoshi/20120513/p1">numpy.linalg.invとnumpy.linalg.solveを用いた逆行列計算 &ndash; 睡眠不足？！ (id:sleepy_yoshi)</a></p>
+<h2>実験条件</h2>
 
-<p><code>numpy.linalg.inv</code>を使っていましたよね。しかも<code>numpy.linalg.solve</code>のほうが速いことを知っていながら。一ヶ月前の自分を問い詰めたい。<code>numpy.linalg.solve</code>で置き換えたら少し速くなりました。</p>
+<p>データベースはmnist。手書き数字認識で有名なアレ。学習の条件は、</p>
 
 <ul>
-<li>600秒 &ndash;> 570秒 （うろ覚え）</li>
+<li>隠れ層のユニット数: 500</li>
+<li>mini-batch size: 20</li>
+<li>iterationの回数: 15</li>
 </ul>
 
 
-<p>1.05倍の高速化（微妙）</p>
+<h2>対数尤度の変化</h2>
 
-<h2>スパース性の無視</h2>
+<p><img class="center" src="/images/RBM_mnist_Hidden_500_log_likelihood.png" title="&ldquo;Pseudo log-likelihood on mnist databae.&rdquo;" ></p>
+
+<p>以下グラフに表示している生データ</p>
+
+<p><code>
+0 -196.59046099622128
+1 -70.31708616742365
+2 -65.29499371647965
+3 -62.37983267378022
+4 -61.5359019358253
+5 -60.917772257650164
+6 -59.64207778426757
+7 -59.42201674307857
+8 -59.18497336138633
+9 -58.277168243126305
+10 -58.36279288392401
+11 -58.57805165724595
+12 -57.71043215987184
+13 -58.17783142034138
+14 -57.53629129936344
+</code></p>
+
+<p>尤度上がると安心する。厳密に対数尤度を計算することは難しいので、<a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a> にある擬似尤度を参考にした</p>
+
+<h2>学習時間</h2>
+
+<p>うちのcore2duoのPCで4時間弱だった気がする（うろ覚え</p>
+
+<p>隠れ層のユニット数100だと、40分ほどだった</p>
+
+<h2>知見</h2>
+
+<p>今の所、試行錯誤して自分が得た知見は、</p>
 
 <ul>
-<li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007</a>.</li>
+<li>sample by sampleのSGDよりmini-batch SGDの方が安定して尤度上がる</li>
+<li>mini-batch sizeを大きくしすぎると学習が進まない。20くらいがちょうど良かった</li>
+<li>k-CD のkを大きくしてもさほど学習結果変わらない（計算コストはけっこう増すけど）</li>
+<li>persistent CDを使ってもあまりよくならない（計算コストはけっこう増すけど）</li>
+<li>やっぱ1-CDで十分だった</li>
+<li>データの正規化方法によって結構結果も変わる。ノイズを足すかどうか、とか</li>
+<li>学習率超重要すぎわろた。今回の場合は0.1くらいかちょうど良かった</li>
+<li>隠れ層のユニット数が大きいほど学習が上手く行けばと尤度は上がる(?)</li>
 </ul>
 
 
-<p>論文を見ていただければわかるのですが、トラジェクトリベースの変換法における多くの計算は、行列を使って表すことができます。で、論文中の$W$という行列は、サイズがめちゃくちゃでかいのですがほとんどの要素は0です。この性質を使わない理由はないですよね？？</p>
-
-<p>…残念なことに、僕は密行列として扱って計算していました。ほら、疎行列ってちょっと扱いづらいじゃないですか…めんどくさそう…と思って放置してました。ごめんなさい</p>
-
-<p>pythonで疎行列を扱うなら、scipy.sparseを使えば良さそうです。結果、$W$を疎行列として扱うことで行列演算は大きく高速化されました。</p>
-
-<ul>
-<li>570秒 &ndash;> 12秒くらい</li>
-</ul>
-
-
-<p>単純に考えると50倍の高速化ですか。本当にアホだった。最初からscipy.sparse使っておけばよかったです。</p>
-
-<p>scipy.sparseの使い方は以下を参考にしました。みなさんぜひ使いましょう</p>
-
-<ul>
-<li><a href="http://sucrose.hatenablog.com/entry/2013/04/07/130625">Python で疎行列(SciPy) &ndash; 唯物是真 @Scaled_Wurm</a></li>
-<li><a href="http://docs.scipy.org/doc/scipy/reference/sparse.html">Sparse matrices (scipy.sparse) — SciPy v0.14.0 Reference Guide</a></li>
-<li><a href="http://lucidfrontier45.wordpress.com/2011/08/02/scipysparse_matmul/">scipy.sparseで疎行列の行列積 | frontier45</a></li>
-</ul>
-
+<p>まぁだいたい <a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a> に書いてあるけど、実際に肌で感じて理解した。persistent CDはもうちょっと成果出て欲しい。データ変えると成果出るんかな？</p>
 
 <h2>コード</h2>
 
-<p>メモ的な意味で主要なコードを貼っておきます。
-<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
+<p>コアの部分だけ、一応</p>
 
-<p>```python</p>
+<p>```go
+package rbm</p>
 
-<h1>!/usr/bin/python</h1>
+<p>import (</p>
 
-<h1>coding: utf-8</h1>
-
-<p>import numpy as np
-from numpy import linalg
-from sklearn.mixture import GMM
-import scipy.linalg
-import scipy.sparse
-import scipy.sparse.linalg</p>
-
-<p>class GMMMap:</p>
-
-<pre><code>"""GMM-based frame-by-frame speech parameter mapping. 
-
-GMMMap represents a class to transform spectral features of a source
-speaker to that of a target speaker based on Gaussian Mixture Models
-of source and target joint spectral features.
-
-Notation
---------
-Source speaker's feature: X = {x_t}, 0 &lt;= t &lt; T
-Target speaker's feature: Y = {y_t}, 0 &lt;= t &lt; T
-where T is the number of time frames.
-
-Parameters
-----------
-gmm : scipy.mixture.GMM
-    Gaussian Mixture Models of source and target joint features
-
-swap : bool
-    True: source -&gt; target
-    False target -&gt; source
-
-Attributes
-----------
-num_mixtures : int
-    the number of Gaussian mixtures
-
-weights : array, shape (`num_mixtures`)
-    weights for each gaussian
-
-src_means : array, shape (`num_mixtures`, `order of spectral feature`)
-    means of GMM for a source speaker
-
-tgt_means : array, shape (`num_mixtures`, `order of spectral feature`)
-    means of GMM for a target speaker
-
-covarXX : array, shape (`num_mixtures`, `order of spectral feature`, 
-    `order of spectral feature`)
-    variance matrix of source speaker's spectral feature
-
-covarXY : array, shape (`num_mixtures`, `order of spectral feature`, 
-    `order of spectral feature`)
-    covariance matrix of source and target speaker's spectral feature
-
-covarYX : array, shape (`num_mixtures`, `order of spectral feature`, 
-    `order of spectral feature`)
-    covariance matrix of target and source speaker's spectral feature
-
-covarYY : array, shape (`num_mixtures`, `order of spectral feature`, 
-    `order of spectral feature`)
-    variance matrix of target speaker's spectral feature
-
-D : array, shape (`num_mixtures`, `order of spectral feature`, 
-    `order of spectral feature`)
-    covariance matrices of target static spectral features
-
-px : scipy.mixture.GMM
-    Gaussian Mixture Models of source speaker's features
-
-Reference
----------
-  - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
-    of Spectral Parameter Trajectory.
-    http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
-
-"""
-def __init__(self, gmm, swap=False):
-    # D is the order of spectral feature for a speaker
-    self.num_mixtures, D = gmm.means_.shape[0], gmm.means_.shape[1]/2
-    self.weights = gmm.weights_
-
-    # Split source and target parameters from joint GMM
-    self.src_means = gmm.means_[:, 0:D]
-    self.tgt_means = gmm.means_[:, D:]
-    self.covarXX = gmm.covars_[:, :D, :D]
-    self.covarXY = gmm.covars_[:, :D, D:]
-    self.covarYX = gmm.covars_[:, D:, :D]
-    self.covarYY = gmm.covars_[:, D:, D:]
-
-    # swap src and target parameters
-    if swap:
-        self.tgt_means, self.src_means = self.src_means, self.tgt_means
-        self.covarYY, self.covarXX = self.covarXX, self.covarYY
-        self.covarYX, self.covarXY = self.XY, self.covarYX
-
-    # Compute D eq.(12) in [Toda 2007]
-    self.D = np.zeros(self.num_mixtures*D*D).reshape(self.num_mixtures, D, D)
-    for m in range(self.num_mixtures):
-        xx_inv_xy = np.linalg.solve(self.covarXX[m], self.covarXY[m])
-        self.D[m] = self.covarYY[m] - np.dot(self.covarYX[m], xx_inv_xy)
-
-    # p(x), which is used to compute posterior prob. for a given source
-    # spectral feature in mapping stage.
-    self.px = GMM(n_components=self.num_mixtures, covariance_type="full")
-    self.px.means_ = self.src_means
-    self.px.covars_ = self.covarXX
-    self.px.weights_ = self.weights
-
-def convert(self, src):
-    """
-    Mapping source spectral feature x to target spectral feature y 
-    so that minimize the mean least squared error.
-    More specifically, it returns the value E(p(y|x)].
-
-    Parameters
-    ----------
-    src : array, shape (`order of spectral feature`)
-        source speaker's spectral feature that will be transformed
-
-    Return
-    ------
-    converted spectral feature
-    """
-    D = len(src)
-
-    # Eq.(11)
-    E = np.zeros((self.num_mixtures, D))
-    for m in range(self.num_mixtures):
-        xx = np.linalg.solve(self.covarXX[m], src - self.src_means[m])
-        E[m] = self.tgt_means[m] + self.covarYX[m].dot(xx)
-
-    # Eq.(9) p(m|x)
-    posterior = self.px.predict_proba(np.atleast_2d(src))
-
-    # Eq.(13) conditinal mean E[p(y|x)]
-    return posterior.dot(E)
+<pre><code>"encoding/json"
+"errors"
+"fmt"
+"github.com/r9y9/nn" // sigmoid, matrix
+"math"
+"math/rand"
+"os"
+"time"
 </code></pre>
 
-<p>class TrajectoryGMMMap(GMMMap):</p>
+<p>)</p>
 
-<pre><code>"""
-Trajectory-based speech parameter mapping for voice conversion
-based on the maximum likelihood criterion.
+<p>// References:
+// [1] G. Hinton, &ldquo;A Practical Guide to Training Restricted Boltzmann Machines&rdquo;,
+// UTML TR 2010-003.
+// url: <a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf</a>
+//
+// [2] A. Fischer and C. Igel. &ldquo;An introduction to restricted Boltzmann machines&rdquo;,
+// Proc. of the 17th Iberoamerican Congress on Pattern Recognition (CIARP),
+// Volume 7441 of LNCS, pages 14–36. Springer, 2012
+// url: <a href="http://image.diku.dk/igel/paper/AItRBM-proof.pdf">http://image.diku.dk/igel/paper/AItRBM-proof.pdf</a>
+//
+// [3] Restricted Boltzmann Machines (RBM),  DeepLearning tutorial
+// url: <a href="http://deeplearning.net/tutorial/rbm.html">http://deeplearning.net/tutorial/rbm.html</a></p>
 
-Parameters
-----------
-gmm : scipy.mixture.GMM
-    Gaussian Mixture Models of source and target speaker joint features
+<p>// Notes about implementation:
+// Notation used in this code basically follows [2].
+// e.g. W for weight, B for bias of visible layer, C for bias of hidden layer.</p>
 
-gv : scipy.mixture.GMM (default=None)
-    Gaussian Mixture Models of target speaker's global variance of spectral
-    feature
+<p>// Graphical representation of Restricted Boltzmann Machines (RBM).
+//
+//     ○ ○ &hellip;. ○  h(hidden layer), c(bias)
+//     /\ /\ /    /\
+//    ○ ○ ○ &hellip; ○ v(visible layer), b(bias)
+type RBM struct {</p>
 
-swap : bool (default=False)
-    True: source -&gt; target
-    False target -&gt; source
-
-Attributes
-----------
-TODO 
-
-Reference
----------
-  - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
-    of Spectral Parameter Trajectory.
-    http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
-"""
-def __init__(self, gmm, T, gv=None, swap=False):
-    GMMMap.__init__(self, gmm, swap)
-
-    self.T = T
-    # shape[1] = d(src) + d(src_delta) + d(tgt) + d(tgt_delta)
-    D = gmm.means_.shape[1] / 4
-
-    ## Setup for Trajectory-based mapping
-    self.__construct_weight_matrix(T, D)
-
-    ## Setup for GV post-filtering
-    # It is assumed that GV is modeled as a single mixture GMM
-    if gv != None:
-        self.gv_mean = gv.means_[0]
-        self.gv_covar = gv.covars_[0]
-        self.Pv = np.linalg.inv(self.gv_covar)
-
-def __construct_weight_matrix(self, T, D):
-    # Construct Weight matrix W
-    # Eq.(25) ~ (28)
-    for t in range(T):
-        w0 = scipy.sparse.lil_matrix((D, D*T))
-        w1 = scipy.sparse.lil_matrix((D, D*T))
-        w0[0:,t*D:(t+1)*D] = scipy.sparse.diags(np.ones(D), 0)
-
-        if t-1 &gt;= 0:
-            tmp = np.zeros(D)
-            tmp.fill(-0.5)
-            w1[0:,(t-1)*D:t*D] = scipy.sparse.diags(tmp, 0)
-        if t+1 &lt; T:
-            tmp = np.zeros(D)
-            tmp.fill(0.5)
-            w1[0:,(t+1)*D:(t+2)*D] = scipy.sparse.diags(tmp, 0)
-
-        W_t = scipy.sparse.vstack([w0, w1])
-
-        # Slower
-        # self.W[2*D*t:2*D*(t+1),:] = W_t
-
-        if t == 0:
-            self.W = W_t
-        else:
-            self.W = scipy.sparse.vstack([self.W, W_t])
-
-    self.W = scipy.sparse.csr_matrix(self.W)
-
-    assert self.W.shape == (2*D*T, D*T)
-
-def convert(self, src):
-    """
-    Mapping source spectral feature x to target spectral feature y 
-    so that maximize the likelihood of y given x.
-
-    Parameters
-    ----------
-    src : array, shape (`the number of frames`, `the order of spectral feature`)
-        a sequence of source speaker's spectral feature that will be
-        transformed
-
-    Return
-    ------
-    a sequence of transformed spectral features
-    """
-    T, D = src.shape[0], src.shape[1]/2
-
-    if T != self.T:
-        self.__construct_weight_matrix(T, D)
-
-    # A suboptimum mixture sequence  (eq.37)
-    optimum_mix = self.px.predict(src)
-
-    # Compute E eq.(40)
-    self.E = np.zeros((T, 2*D))
-    for t in range(T):
-        m = optimum_mix[t] # estimated mixture index at time t
-        xx = np.linalg.solve(self.covarXX[m], src[t] - self.src_means[m])
-        # Eq. (22)
-        self.E[t] = self.tgt_means[m] + np.dot(self.covarYX[m], xx)
-    self.E = self.E.flatten()
-
-    # Compute D eq.(41). Note that self.D represents D^-1.
-    self.D = np.zeros((T, 2*D, 2*D))
-    for t in range(T):
-        m = optimum_mix[t]
-        xx_inv_xy = np.linalg.solve(self.covarXX[m], self.covarXY[m])
-        # Eq. (23)
-        self.D[t] = self.covarYY[m] - np.dot(self.covarYX[m], xx_inv_xy)
-        self.D[t] = np.linalg.inv(self.D[t])
-    self.D = scipy.linalg.block_diag(*self.D)
-
-    # represent D as a sparse matrix
-    self.D = scipy.sparse.csr_matrix(self.D)
-
-    # Compute target static features
-    # eq.(39)
-    covar = self.W.T.dot(self.D.dot(self.W))
-    y = scipy.sparse.linalg.spsolve(covar, self.W.T.dot(self.D.dot(self.E)),\
-                                    use_umfpack=False)
-    return y.reshape((T, D))
+<pre><code>W               [][]float64 // Weight
+B               []float64   // Bias of visible layer
+C               []float64   // Bias of hidden layer
+NumHiddenUnits  int
+NumVisibleUnits int
+Option          TrainingOption
 </code></pre>
 
-<p>```</p>
+<p>}</p>
 
-<h2>結論</h2>
+<p>type TrainingOption struct {</p>
+
+<pre><code>LearningRate        float64
+OrderOfGibbsSamping int // It is known that 1 is enough for many cases.
+Epoches             int
+MiniBatchSize       int
+L2Regularization    bool
+RegularizationRate  float64
+</code></pre>
+
+<p>}</p>
+
+<p>// NewRBM creates new RBM instance. It requires input data and number of
+// hidden units to initialize RBM.
+func NewRBM(numVisibleUnits, numHiddenUnits int) *RBM {</p>
+
+<pre><code>rbm := new(RBM)
+rand.Seed(time.Now().UnixNano())
+
+rbm.W = nn.MakeMatrix(numHiddenUnits, numVisibleUnits)
+rbm.B = make([]float64, numVisibleUnits)
+rbm.C = make([]float64, numHiddenUnits)
+rbm.NumVisibleUnits = numVisibleUnits
+rbm.NumHiddenUnits = numHiddenUnits
+
+rbm.InitRBM()
+return rbm
+</code></pre>
+
+<p>}</p>
+
+<p>// NewRBMWithParameters returns RBM instance given RBM parameters.
+// This func will be used in Deep Belief Networks.
+func NewRBMWithParameters(W [][]float64, B, C []float64) (*RBM, error) {</p>
+
+<pre><code>rbm := new(RBM)
+
+rbm.NumVisibleUnits = len(B)
+rbm.NumHiddenUnits = len(C)
+
+if len(W) != rbm.NumHiddenUnits || len(W[0]) != rbm.NumVisibleUnits {
+    return nil, errors.New("Shape of weight matrix is wrong.")
+}
+
+rand.Seed(time.Now().UnixNano())
+rbm.W = W
+rbm.B = B
+rbm.C = C
+
+return rbm, nil
+</code></pre>
+
+<p>}</p>
+
+<p>// LoadRBM loads RBM from a dump file and return its instatnce.
+func LoadRBM(filename string) (*RBM, error) {</p>
+
+<pre><code>file, err := os.Open(filename)
+if err != nil {
+    return nil, err
+}
+defer file.Close()
+
+decoder := json.NewDecoder(file)
+rbm := &amp;RBM{}
+err = decoder.Decode(rbm)
+
+if err != nil {
+    return nil, err
+}
+
+return rbm, nil
+</code></pre>
+
+<p>}</p>
+
+<p>// Dump writes RBM parameters to file in json format.
+func (rbm *RBM) Dump(filename string) error {</p>
+
+<pre><code>file, err := os.Create(filename)
+if err != nil {
+    return err
+}
+defer file.Close()
+
+encoder := json.NewEncoder(file)
+err = encoder.Encode(rbm)
+if err != nil {
+    return err
+}
+
+return nil
+</code></pre>
+
+<p>}</p>
+
+<p>// Heuristic initialization of visible bias.
+func (rbm *RBM) InitVisibleBiasUsingTrainingData(data [][]float64) {</p>
+
+<pre><code>// Init B (bias of visible layer)
+activeRateInVisibleLayer := rbm.getActiveRateInVisibleLayer(data)
+for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+    rbm.B[j] = math.Log(activeRateInVisibleLayer[j] / (1.0 - activeRateInVisibleLayer[j]))
+}
+</code></pre>
+
+<p>}</p>
+
+<p>func (rbm *RBM) getActiveRateInVisibleLayer(data [][]float64) []float64 {</p>
+
+<pre><code>rate := make([]float64, rbm.NumVisibleUnits)
+for _, sample := range data {
+    for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+        rate[j] += sample[j]
+    }
+}
+for j := range rate {
+    rate[j] /= float64(len(data))
+}
+return rate
+</code></pre>
+
+<p>}</p>
+
+<p>// InitRBM performes a heuristic parameter initialization.
+func (rbm *RBM) InitRBM() {</p>
+
+<pre><code>// Init W
+for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+    for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+        rbm.W[i][j] = 0.01 * rand.NormFloat64()
+    }
+}
+
+for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+    rbm.B[j] = 0.0
+}
+
+// Init C (bias of hidden layer)
+for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+    rbm.C[i] = 0.0
+}
+</code></pre>
+
+<p>}</p>
+
+<p>// P_H_Given_V returns the conditinal probability of a hidden unit given a set of visible units.
+func (rbm *RBM) P_H_Given_V(hiddenIndex int, v []float64) float64 {</p>
+
+<pre><code>sum := 0.0
+for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+    sum += rbm.W[hiddenIndex][j] * v[j]
+}
+return nn.Sigmoid(sum + rbm.C[hiddenIndex])
+</code></pre>
+
+<p>}</p>
+
+<p>// P_V_Given_H returns the conditinal probability of a visible unit given a set of hidden units.
+func (rbm *RBM) P_V_Given_H(visibleIndex int, h []float64) float64 {</p>
+
+<pre><code>sum := 0.0
+for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+    sum += rbm.W[i][visibleIndex] * h[i]
+}
+return nn.Sigmoid(sum + rbm.B[visibleIndex])
+</code></pre>
+
+<p>}</p>
+
+<p>// GibbsSampling performs k-Gibbs sampling algorithm,
+// where k is the number of iterations in gibbs sampling.
+func (rbm *RBM) GibbsSampling(v []float64, k int) []float64 {</p>
+
+<pre><code>// Initial value is set to input
+vUsedInSamping := make([]float64, len(v))
+copy(vUsedInSamping, v)
+
+for t := 0; t &lt; k; t++ {
+    sampledH := make([]float64, rbm.NumHiddenUnits)
+    for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+        p := rbm.P_H_Given_V(i, vUsedInSamping)
+        if p &gt; rand.Float64() {
+            sampledH[i] = 1.0
+        } else {
+            sampledH[i] = 0.0
+        }
+    }
+    for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+        p := rbm.P_V_Given_H(j, sampledH)
+        if p &gt; rand.Float64() {
+            vUsedInSamping[j] = 1.0
+        } else {
+            vUsedInSamping[j] = 0.0
+        }
+    }
+}
+
+return vUsedInSamping
+</code></pre>
+
+<p>}</p>
+
+<p>func flip(x []float64, bit int) []float64 {</p>
+
+<pre><code>y := make([]float64, len(x))
+copy(y, x)
+y[bit] = 1.0 - x[bit]
+return y
+</code></pre>
+
+<p>}</p>
+
+<p>// FreeEnergy returns F(v), the free energy of RBM given a visible vector v.
+// refs: eq. (25) in [1].
+func (rbm *RBM) FreeEnergy(v []float64) float64 {</p>
+
+<pre><code>energy := 0.0
+
+for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+    energy -= rbm.B[j] * v[j]
+}
+
+for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+    sum := rbm.C[i]
+    for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+        sum += rbm.W[i][j] * v[j]
+    }
+    energy -= math.Log(1 + math.Exp(sum))
+}
+
+return energy
+</code></pre>
+
+<p>}</p>
+
+<p>// PseudoLogLikelihood returns pseudo log-likelihood for a given input data.
+func (rbm *RBM) PseudoLogLikelihood(v []float64) float64 {</p>
+
+<pre><code>bitIndex := rand.Int() % len(v)
+fe := rbm.FreeEnergy(v)
+feFlip := rbm.FreeEnergy(flip(v, bitIndex))
+cost := float64(rbm.NumVisibleUnits) * math.Log(nn.Sigmoid(feFlip-fe))
+return cost
+</code></pre>
+
+<p>}</p>
+
+<p>// PseudoLogLikelihood returns pseudo log-likelihood for a given dataset (or mini-batch).
+func (rbm *RBM) PseudoLogLikelihoodForAllData(data [][]float64) float64 {</p>
+
+<pre><code>sum := 0.0
+for i := range data {
+    sum += rbm.PseudoLogLikelihood(data[i])
+}
+cost := sum / float64(len(data))
+return cost
+</code></pre>
+
+<p>}</p>
+
+<p>// ComputeGradient returns gradients of RBM parameters for a given (mini-batch) dataset.
+func (rbm *RBM) ComputeGradient(data [][]float64) ([][]float64, []float64, []float64) {</p>
+
+<pre><code>gradW := nn.MakeMatrix(rbm.NumHiddenUnits, rbm.NumVisibleUnits)
+gradB := make([]float64, rbm.NumVisibleUnits)
+gradC := make([]float64, rbm.NumHiddenUnits)
+
+for _, v := range data {
+    // Gibbs Sampling
+    gibbsStart := v
+    vAfterSamping := rbm.GibbsSampling(gibbsStart, rbm.Option.OrderOfGibbsSamping)
+
+    // pre-computation that is used in gradient computation
+    p_h_given_v1 := make([]float64, rbm.NumHiddenUnits)
+    p_h_given_v2 := make([]float64, rbm.NumHiddenUnits)
+    for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+        p_h_given_v1[i] = rbm.P_H_Given_V(i, v)
+        p_h_given_v2[i] = rbm.P_H_Given_V(i, vAfterSamping)
+    }
+
+    // Gompute gradient of W
+    for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+        for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+            gradW[i][j] += p_h_given_v1[i]*v[j] - p_h_given_v2[i]*vAfterSamping[j]
+        }
+    }
+
+    // Gompute gradient of B
+    for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+        gradB[j] += v[j] - vAfterSamping[j]
+    }
+
+    // Gompute gradient of C
+    for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+        gradC[i] += p_h_given_v1[i] - p_h_given_v2[i]
+    }
+}
+
+return gradW, gradB, gradC
+</code></pre>
+
+<p>}</p>
+
+<p>func (rbm *RBM) ParseTrainingOption(option TrainingOption) error {</p>
+
+<pre><code>rbm.Option = option
+
+if rbm.Option.MiniBatchSize &lt;= 0 {
+    return errors.New("Number of mini-batchs must be larger than zero.")
+}
+if rbm.Option.Epoches &lt;= 0 {
+    return errors.New("Epoches must be larger than zero.")
+}
+if rbm.Option.OrderOfGibbsSamping &lt;= 0 {
+    return errors.New("Order of Gibbs sampling must be larger than zero.")
+}
+if rbm.Option.LearningRate == 0 {
+    return errors.New("Learning rate must be specified to train RBMs.")
+}
+
+return nil
+</code></pre>
+
+<p>}</p>
+
+<p>// Train performs Contrastive divergense learning algorithm to train RBM.
+// The alrogithm is basedd on (mini-batch) Stochastic Gradient Ascent.
+func (rbm *RBM) Train(data [][]float64, option TrainingOption) error {</p>
+
+<pre><code>err := rbm.ParseTrainingOption(option)
+if err != nil {
+    return err
+}
+
+numMiniBatches := len(data) / rbm.Option.MiniBatchSize
+
+for epoch := 0; epoch &lt; option.Epoches; epoch++ {
+    // Monitoring
+    fmt.Println(epoch, rbm.PseudoLogLikelihoodForAllData(data))
+
+    for m := 0; m &lt; numMiniBatches; m++ {
+        // Compute Gradient
+        batch := data[m*rbm.Option.MiniBatchSize : (m+1)*rbm.Option.MiniBatchSize]
+        gradW, gradB, gradC := rbm.ComputeGradient(batch)
+
+        // Update W
+        for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+            for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+                rbm.W[i][j] += rbm.Option.LearningRate * gradW[i][j] / float64(rbm.Option.MiniBatchSize)
+                if rbm.Option.L2Regularization {
+                    rbm.W[i][j] *= (1.0 - rbm.Option.RegularizationRate)
+                }
+            }
+        }
+
+        // Update B
+        for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+            rbm.B[j] += rbm.Option.LearningRate * gradB[j] / float64(rbm.Option.MiniBatchSize)
+        }
+
+        // Update C
+        for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+            rbm.C[i] += rbm.Option.LearningRate * gradC[i] / float64(rbm.Option.MiniBatchSize)
+        }
+    }
+}
+
+return nil
+</code></pre>
+
+<p>}
+```</p>
+
+<p>使い方とかは察して（どうせ誰も使わないはず</p>
+
+<p>今は、通常のRBMのvisible layerを連続値に拡張した Gaussian Bernoulli RBMを学習しようとしてるんだけど、これがムズイ。実装ミスもあるかもだけど、局所解に落ちまくってる気がする。</p>
+
+<p>Gaussian Bernoulli RBM、Deep Belief Networks, Deep Neural Networksについてはまた今度</p>
+
+<p>2014/05/11
+要望があったので、もろもろコードあげました
+<a href="https://github.com/r9y9/nnet">https://github.com/r9y9/nnet</a></p>
+
+<h2>参考資料</h2>
 
 <ul>
-<li>疎行列の演算を考えるときは、間違ってもめんどくさいとか思わずに疎行列を積極的に使おう</li>
-<li>統計的声質変換ムズすぎ</li>
+<li><a href="http://image.diku.dk/igel/paper/AItRBM-proof.pdf">An Introduction to Restricted Boltzmann Machines (PDF)</a></li>
+<li><a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a></li>
+<li><a href="http://mglab.blogspot.jp/2012/08/restricted-boltzmann-machine.html">Restricted Boltzmann Machineの学習手法についての簡単なまとめ | 映像奮闘記</a></li>
+<li><a href="http://d.hatena.ne.jp/saket/20121212">ゆるふわ Restricted Boltzmann Machine | Risky Dune</a></li>
+<li><a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a></li>
+<li><a href="http://imonad.com/rbm/restricted-boltzmann-machine/">Restricted Boltzmann Machine &ndash; Short Tutorial | iMonad</a></li>
+<li><a href="http://scikit-learn.org/stable/auto_examples/plot_rbm_logistic_classification.html">Restricted Boltzmann Machine features for digit classification | scikit-learn</a></li>
 </ul>
-
-
-<h2>おまけめも</h2>
-
-<p>僕が変換精度を改善するために考えていることのめも</p>
-
-<ul>
-<li>統計的な手法を使う限りover-smoothingの問題はついてくる。ならば、逆にover-smoothingされることで都合の良い特徴量を考えることはできないか</li>
-<li>メルケプとかそもそもスペクトル包絡をコンパクトにparamtricに表現するために考えられたもの（だと思ってる）ので、高品質な変換を考えるならばスペクトル包絡をそのまま使うなりした方がいいんじゃないか。とはいえスペクトル包絡をそのまま使うのはぼちぼち高次元なので、個人性に依存する部分を残した形で非線形次元削減したらどうか（例えばニューラルネットを使って統計的に個人性に依存する部分を見つけ出すとか）</li>
-<li>time-dependentな関係をモデル化しないとだめじゃないか、確率モデルとして。RNNとか普通に使えそうだし、まぁHMMでもよい</li>
-<li>音素境界を推定して、segment単位で変換するのも良いかも</li>
-<li>識別モデルもっと使ってもいいんじゃないか</li>
-<li>波形合成にSPTKのmlsadfコマンド使ってる？あれ実はフレーム間のメルケプが線形補間されてるんですよね。本当に線形補間でいいんでしょうか？他の補間法も試したらどうですかね</li>
-</ul>
-
-
-<p>こんなかんじですか。おやすみなさい</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[統計的声質変換クッソムズすぎワロタ]]></title>
-    <link href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/"/>
-    <updated>2014-07-05T16:48:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui</id>
-    <content type="html"><![CDATA[<h2>2014/10/12 追記</h2>
-
-<p>少なくともGVのコードに致命的なバグがあったことがわかりました。よって、あまりあてにしないでください…（ごめんなさい</p>
-
-<p>こんにちは。</p>
-
-<p>最近、統計的声質変換の勉強をしていました。で、メジャーなGMM（混合ガウスモデル）ベースの変換を色々やってみたので、ちょろっと書きます。実は（というほどでもない?）シンプルなGMMベースの方法だと音質クッソ悪くなってしまうんですが、色々試してやっとまともに聞ける音質になったので、試行錯誤の形跡を残しておくとともに、音声サンプルを貼っておきます。ガチ勢の方はゆるりと見守ってください</p>
-
-<p>基本的に、以下の論文を参考にしています</p>
-
-<ul>
-<li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007</a>.</li>
-</ul>
-
-
-<h2>GMMベースの声質変換の基本</h2>
-
-<p>シンプルなGMMベースの声質変換は大きく二つのフェーズに分けられます。</p>
-
-<ul>
-<li>参照話者と目標話者のスペクトル特徴量の結合GMM $P(x,y)$を学習する</li>
-<li>入力$x$が与えらたとき、$P(y|x)$が最大となるようにスペクトル特徴量を変換する</li>
-</ul>
-
-
-<p>あらかじめ話者間の関係をデータから学習しておくことで、未知の入力が来た時にも変換が可能になるわけです。</p>
-
-<p>具体的な変換プロセスとしては、音声を</p>
-
-<ul>
-<li>基本周波数</li>
-<li>非周期性成分</li>
-<li>スペクトル包絡</li>
-</ul>
-
-
-<p>の3つに分解し、スペクトル包絡の部分（≒声質を表す特徴量）に対して変換を行い、最後に波形を再合成するといった方法がよく用いられます。基本周波数や非周期性成分も変換することがありますが、ここではとりあえず扱いません</p>
-
-<p>シンプルな方法では、フレームごとに独立に変換を行います。</p>
-
-<p>GMMベースのポイントは、東大の齋藤先生の以下のツイートを引用しておきます。</p>
-
-<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/shurabaP">@shurabaP</a> GMMベースの声質変換の肝は、入力xが与えられた時の出力yの条件付き確率P(y|x) が最大になるようにyを選ぶという確率的な考えです。私のショボい自作スクリプトですが、HTKを使ったGMMの学習レシピは研究室内部用に作ってあるので、もし必要なら公開しますよ。</p>&mdash; Daisuke Saito (@dsk_saito) <a href="https://twitter.com/dsk_saito/statuses/48442052534472706">March 17, 2011</a></blockquote>
-
-
-<script async src="http://r9y9.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<p>ちなみに僕はscipy.mixture.GMMを使いました。HTKヤダー</p>
-
-<h2>やってみる</h2>
-
-<p>さて、実際にやってみます。データベースには、<a href="ht%0Atp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を使います。今回は、女性話者の二人を使いました。</p>
-
-<p>音声の分析合成には、<a href="http://ml.cs.yamanashi.ac.jp/world/">WORLD</a>を使います。WORLDで求めたスペクトル包絡からメルケプストラム（今回は32次元）に変換したものを特徴量として使いました。</p>
-
-<p>学習では、学習サンプル10641フレーム（23フレーズ）、GMMの混合数64、full-covarianceで学習しました。</p>
-
-<h3>変換元となる話者（参照話者）</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362625&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<h3>変換対象となる話者（目標話者）</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362613&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<h3>GMMベースのframe-by-frameな声質変換の結果</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371966&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<p>はぁー、正直聞けたもんじゃないですね。声質は目標話者に近づいている感がありますが、何分音質が悪い。学習条件を色々変えて試行錯誤しましたけどダメでした</p>
-
-<h2>GMMベースの声質変換の弱点</h2>
-
-<p>さて、なぜダメかを考えます。もう考えつくされてる感あるけど、大事なところだけ整理します</p>
-
-<h3>フレーム毎に独立な変換処理</h3>
-
-<p>まず、音声が時間的に独立なわけないですよね。フレームごとに独立に変換すると、時間的に不連続な点が出てきてしまいます。その結果、ちょっとノイジーな音声になってしまったのではないかと考えられます。</p>
-
-<p>これに対する解決法としては、戸田先生の論文にあるように、動的特徴量も併せてGMMを学習して、系列全体の確率が最大となるように変換を考えるトラジェクトリベースのパラメータ生成方法があります。<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
-
-<p>さて、やってみます。参照音声、目標音声は↑で使ったサンプルと同じです。</p>
-
-<h3>トラジェクトリベースの声質変換の結果</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371969&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<p>あんま変わらないですね。計算量めっちゃ食うのに、本当につらい。実装が間違ってる可能性もあるけど…</p>
-
-<p>他の方法を考えるとするならば、まぁいっぱいあると思うんですが、スペクトル包絡なんて時間的に不連続にコロコロ変わるようなもんでもない気がするので、確率モデルとしてそういう依存関係を考慮した声質変換があってもいいもんですけどね。あんま見てない気がします。</p>
-
-<p>ちょっと調べたら見つかったもの↓</p>
-
-<ul>
-<li><a href="http://koasas.kaist.ac.kr/bitstream/10203/17632/1/25.pdf">Kim, E.K., Lee, S., Oh, Y.-H. (1997). &ldquo;Hidden Markov Model Based Voice Conversion Using Dynamic Characteristics of Speaker&rdquo;, Proc. of Eurospeech’97, Rhodes, Greece, pp. 2519-2522.</a></li>
-</ul>
-
-
-<h3>過剰な平滑化</h3>
-
-<p>これはGMMに限った話ではないですが、GMMベースのFrame-by-Frameな声質変換の場合でいえば、変換後の特徴量は条件付き期待値を取ることになるので、まぁ常識的に考えて平滑化されますよね。</p>
-
-<p>これに対する解法としては、GV（Global Variance）を考慮する方法があります。これは戸田先生が提案されたものですね。</p>
-
-<p>さて、やってみます。wktk</p>
-
-<h3>GVを考慮したトラジェクトリベースの声質変換の結果</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371971&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<p>多少ましになった気もしなくもないけど、やっぱり音質はいまいちですね。そして計算量は激マシします。本当につらい。学会で聞いたGVありの音声はもっと改善してた気がするんだけどなー音声合成の話だけど。僕の実装が間違ってるんですかね…</p>
-
-<h2>ムズすぎわろた</h2>
-
-<p>以上、いくつか試しましたが、統計的声質変換は激ムズだということがわかりました。え、ここで終わるの？という感じですが、最後に一つ別の手法を紹介します。</p>
-
-<h2>差分スペクトル補正に基づく統計的声質変換</h2>
-
-<p>これまでは、音声を基本周波数、非周期性成分、スペクトル包絡に分解して、スペクトル包絡を表す特徴量を変換し、変換後の特徴量を元に波形を再合成していました。ただ、よくよく考えると、そもそも基本周波数、非周期性成分をいじる必要がない場合であれば、わざわざ分解して再合成する必要なくね？声質の部分のみ変換するようなフィルタかけてやればよくね？という考えが生まれます。実は、そういったアイデアに基づく素晴らしい手法があります。それが、差分スペクトル補正に基づく声質変換です。</p>
-
-<p>詳細は、以下の予稿をどうぞ</p>
-
-<p><a href="http://www.phontron.com/paper/kobayashi14asj.pdf">小林 和弘, 戸田 智基, Graham Neubig, Sakriani Sakti, 中村 哲. &ldquo;差分スペクトル補正に基づく統計的歌声声質変換&rdquo;, 日本音響学会2014年春季研究発表会(ASJ). 東京. 2014年3月.</a></p>
-
-<p>では、やってみます。歌声ではなく話し声ですが。他の声質変換の結果とも聴き比べてみてください。</p>
-
-<h3>差分スペクトル補正に基づく声質変換の結果</h3>
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362603&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-
-<p>かなり音声の自然性は上がりましたね。これはヘタすると騙されるレベル。本当に素晴らしいです。しかも簡単にできるので、お勧めです。↑のは、GMMに基づくframe-by-frameな変換です。計算量も軽いので、リアルタイムでもいけますね。</p>
-
-<h2>おわりに</h2>
-
-<p>声質変換であれこれ試行錯誤して、ようやくスタートラインにたてた感があります。今後は新しい方法を考えようかなーと思ってます。</p>
-
-<p>おわり</p>
-
-<h2>おわび</h2>
-
-<blockquote class="twitter-tweet" lang="en"><p>お盆の間に学習ベースの声質変換のプログラム書く（宿題） <a href="https://twitter.com/hashtag/%E5%AE%A3%E8%A8%80?src=hash">#宣言</a></p>&mdash; 山本りゅういち (@r9y9) <a href="https://twitter.com/r9y9/statuses/366928228465655808">August 12, 2013</a></blockquote>
-
-
-<script async src="http://r9y9.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<p>約1年かかりました……。本当に申し訳ありませんでした(´･_･`)</p>
-
-<h2>追記</h2>
-
-<p>Twitterで教えてもらいました。トラジェクトリベースで学習も変換も行う研究もありました</p>
-
-<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/r9y9">@r9y9</a> つ トラジェクトリＧＭＭな特徴量変換 <a href="http://t.co/kUn7bp9EUt">http://t.co/kUn7bp9EUt</a></p>&mdash; 縄文人（妖精系研究者なのです） (@dicekicker) <a href="https://twitter.com/dicekicker/statuses/485376823308455936">July 5, 2014</a></blockquote>
-
-
-<script async src="http://r9y9.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<div class="footnotes">
-<hr/>
-<ol>
-<li id="fn:1">
-<p>ただ、これはトラジェクトリベースのパラメータ生成法の提案であって、トラジェクトリモデル自体を学習してるわけではないんだよなー。普通に考えると学習もトラジェクトリで考える方法があっていい気がするが、 <del>まだ見てないですね。</del> ありました。追記参照<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
-</ol>
-</div>
 
 ]]></content>
   </entry>

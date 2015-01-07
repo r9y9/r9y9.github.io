@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Music-signal-processing | LESS IS MORE]]></title>
+  <title><![CDATA[Category: music-signal-processing | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/music-signal-processing/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-12-09T02:53:02+09:00</updated>
+  <updated>2015-01-07T23:58:42+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -14,91 +14,136 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Goでクロマベクトルを求める]]></title>
-    <link href="http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/"/>
-    <updated>2014-01-28T23:08:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/pcp_result.png" title="&ldquo;Chromagram&rdquo;" ></p>
+    <title type="html"><![CDATA[簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい]]></title>
+    <link href="http://r9y9.github.io/blog/2013/10/15/signal-processing-library/"/>
+    <updated>2013-10-15T23:47:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/10/15/signal-processing-library</id>
+    <content type="html"><![CDATA[<p>音声を使ったアプリケーションが作りたい、例えば自分の声を誰かの声に変えたい、自動で音痴補正したい、関西弁のゆっくりちゃん作りたい、ギターエフェクト作りたい、とか思う人も少なくないんじゃないかと思う。</p>
 
-<p>Chromagram。ドレミの歌の冒頭を分析した結果です</p>
+<p>信号処理のアプリケーションを一から真面目に作ろうとすると、やるべきことが多すぎて途中で断念してしまうことがある。信号処理って、Hello 信号処理までがホント長くて、File I/O やらstreaming I/O等音声入出力書いたり、スペクトルやケプストラムやらメルケプやらウェーブレットやら特徴抽出書いたり、波形合成のアルゴリズム書いたり、難しい機械学習のアルゴリズム書いたり。本当にやりたいことを実現するためには、専門家はおろか初学者にはハードルが高すぎると思う。リアルタイムでやりたい（よくある状況）とかだとなおさら大変。</p>
 
-<p>```go
-package main</p>
-
-<p>import (</p>
-
-<pre><code>"fmt"
-"github.com/mjibson/go-dsp/wav"
-"github.com/r9y9/go-msptools/pcp"
-"log"
-"os"
-</code></pre>
-
-<p>)</p>
-
-<p>func main() {</p>
-
-<pre><code>// reading data
-file, err := os.Open("/path/to/file.wav")
-if err != nil {
-    log.Fatal(err)
-}
-defer file.Close()
-
-wav, werr := wav.ReadWav(file)
-if werr != nil {
-    log.Fatal(werr)
-}
-
-// convert to []float64 from []int
-data := make([]float64, len(wav.Data[0]))
-for i := range data {
-    data[i] = float64(wav.Data[0][i])
-}
-
-// settings for analysis
-frameShift := int(float64(wav.SampleRate) / 100.0) // 0.01 sec
-sampleRate := int(wav.SampleRate)
-
-// create PCP extrator
-p := pcp.NewPCP(sampleRate, frameShift)
-
-// analysis roop
-result := make([][]float64, p.NumFrames(data))
-for i := 0; i &lt; p.NumFrames(data); i++ {
-    pcp := p.PCP(data, i*frameShift)
-    //pcp := p.PCPNormalized(data, i*frameShift)
-    result[i] = pcp
-}
-
-// print as a gnuplot 3D plotting format
-fmt.Println("#", len(result[0]), len(result))
-for i, spec := range result {
-    for j, val := range spec {
-        fmt.Println(i, j, val)
-    }
-    fmt.Println("")
-}
-</code></pre>
-
-<p>}
-```</p>
-
-<p>こんな感じでOK。Chromagramをgnuplot形式で標準出力に出力します</p>
-
-<h2>Pitch Class Profile (PCP) in Go <a href="https://github.com/r9y9/go-msptools/tree/master/pcp">[Code]</a></h2>
-
-<p>どうやってクロマベクトルを計算しているかざっくり説明すると、</p>
+<p>もちろん、そんなの自分で書かなくてもライブラリなりツールなりはたくさんある。</p>
 
 <ul>
-<li>入力信号をガボールウェーブレット変換</li>
-<li>オクターブ無視して12次元に圧縮（例えば55Hz, 110Hz, 220Hz, 440Hz はすべてAとする）</li>
+<li><a href="http://sp-tk.sourceforge.net/">SPTK &ndash; Speech Signal Processing Toolkit</a></li>
+<li><a href="http://hts.sp.nitech.ac.jp/">HTS &ndash; HMM-based Speech Synthesis System</a></li>
+<li><a href="http://www.mmdagent.jp/">MMDAgenet &ndash; toolkit for building voice interaction systems.</a></li>
+<li><a href="http://open-jtalk.sourceforge.net/">OpenJTalk &ndash; HMM-based Text-to-Speech System</a></li>
+<li><a href="https://ccrma.stanford.edu/software/stk/">STK &ndash; The Synthesis ToolKit in C++ (STK)</a></li>
+<li><a href="http://aquila-dsp.org/">Aquila &ndash; Open source DSP library for C++</a></li>
+<li><a href="http://www.portaudio.com/">PortAudio &ndash; Portable Cross-platform Audio I/O</a></li>
+<li><a href="http://www.sonicvisualiser.org/">Sonic visualiser</a></li>
+<li><a href="https://www.jyu.fi/hum/laitokset/musiikki/en/research/coe/materials/mirtoolbox">MIRToolbox</a></li>
+<li><a href="http://isse.sourceforge.net/">ISSE &ndash; An Interactive Source Separation Editor</a></li>
+<li><a href="http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html">音声分析変換合成法STRAIGHT</a></li>
+<li><a href="http://www.slp.is.ritsumei.ac.jp/~morise/world/">音声分析合成システム「WORLD」</a></li>
 </ul>
 
 
-<p>という手順で求めてます</p>
+<p>直近で印象に残ってるのはこんなもん。どれも素晴らしいけど、傾向としては専門知識のある人向けの物が多い気がしている。一方で、専門知識がなくても使えるツールというのは、本当に少ないと思う。これは個人的に大きな問題だと思っていて、何とか解決したい。というか僕でも簡単に使える便利ツールほしい。</p>
 
-<p>Goかどうかなんてどうでもいいんだけど、まぁC++に比べて書きやすすぎて泣けるよね</p>
+<p>とまぁそんな経緯で、</p>
+
+<ul>
+<li>音声/音楽信号処理をやるためのベースをすでに備えていて、アプリケーションが簡単に作れる</li>
+<li>専門知識がなくてもまぁ使える</li>
+<li>リアルタイムアプリケーションを作れる</li>
+<li>商用/学術利用共にフリー</li>
+</ul>
+
+
+<p>なライブラリを作ろうと考えている。商用フリーなのは、単に僕がGPL/LPGLとか嫌いだから。フリーという制約を除けば選択肢も増えるけど、まぁ使いづらい。</p>
+
+<p><a href="http://opencv.org/">opencv</a>とか、めっちゃ素晴らしいよね。まさにこういうものがほしい（作りたい）。これの音声版ですよ。何でないんだ。あったら教えて下さい。</p>
+
+<p><a href="http://stackoverflow.com/questions/6938634/any-opencv-like-c-c-library-for-audio-processing">&ldquo;Any OpenCV-like C/C++ library for Audio processing?&rdquo; &ndash; StackOverflow</a></p>
+
+<p>今頑張って作ってるので、お楽しみに。ここに書くことで、後に引けなくする作戦です。</p>
+
+<h2>余談</h2>
+
+<p>ライブラリ作ろうと思ったきっかけは、つい最近声質変換を作ろうとしたことにあります。自分の声を、好きな人の声に変えられたらおもしろいなぁと思って。何か火が着いちゃった時がありました。ただ、音声読み込み、FFT、ケプストラム、メルフィルタバンク、メルケプストラム、GMM、固有声空間の構築、MLSAフィルタ、短遅延アルゴリズム、overlapping addition合成（ry</p>
+
+<p>もう、やることが多すぎてギブアップした。具体的にはmlsaフィルタが難しくてやめた。その時にSPTKのソースコードを読んでいたんだけど、すごいわかりにくくて、くそーっと思って、どうせなら新しく書きなおして使いやすいライブラリ作ってやろうと思ったのが、きっかけ。まぁえらそうな事書いといて、自分がほしいからっていうのが落ちなんですけどね。</p>
+
+<p>ないから作る、シンプルに言えばそれだけです。あと、絶賛有志募集中です。よろしくおねがいします。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[調波打楽器音分離（HPSS）を試す]]></title>
+    <link href="http://r9y9.github.io/blog/2013/09/14/hpss/"/>
+    <updated>2013-09-14T23:34:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2013/09/14/hpss</id>
+    <content type="html"><![CDATA[<h2>HPSSとは（一行説明）</h2>
+
+<p>HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ</p>
+
+<p>アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる</p>
+
+<h2>実装</h2>
+
+<p>調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ</p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+|H<em>{t, k}| = \frac{w</em>{H}^2 (|H<em>{t+1,k}| + |H</em>{t-1,k}|)<sup>2</sup> |W<em>{t,k}|}{w</em>{H}^2 (|H<em>{t+1,k}| + |H</em>{t-1,k}|)<sup>2</sup> + w<em>{P}^2(|P</em>{t,k+1}| + |P_{t,k-1}|)<sup>2</sup>}
+\end{align}
+</script></p>
+
+<p><script type="math/tex; mode=display">
+\begin{align}
+|P<em>{t, k}| = \frac{w</em>{P}^2 (|P<em>{t,k+1}| + |P</em>{t,k-1}|)<sup>2</sup> |W<em>{t,k}|}{w</em>{H}^2 (|H<em>{t+1,k}| + |H</em>{t-1,k}|)<sup>2</sup> + w<em>{P}^2(|P</em>{t,k+1}| + |P_{t,k-1}|)<sup>2</sup>}
+\end{align}
+</script></p>
+
+<p>ただし
+<script type="math/tex; mode=display">
+\begin{align}
+|W<em>{t,k}| = |H</em>{t,k}| + |P_{t,k}|
+\end{align}
+</script></p>
+
+<p>絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。</p>
+
+<p>HPSSの論文はたくさんあるけど、日本語でかつ丁寧な <a href="http://ci.nii.ac.jp/naid/110007997346">&ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;</a> を参考にした。</p>
+
+<p>H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ</p>
+
+<p>一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。</p>
+
+<h2>結果</h2>
+
+<p>フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、<a href="http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html">歌もの音楽素材：歌入り素材系のフリー音楽素材一覧</a> から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
+18秒目くらいからを比較すると効果がわかりやすいです</p>
+
+<h3>元音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442" width="100%"></iframe>
+
+
+<h3>Hのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534" width="100%"></iframe>
+
+
+<h3>Pのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599" width="100%"></iframe>
+
+
+<p>それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</p>
+
+<p>コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ</p>
+
+<p>詳しくは論文へ（僕のじゃないけど</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://ci.nii.ac.jp/naid/110007997346">橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.</a></li>
+</ul>
+
 ]]></content>
   </entry>
   

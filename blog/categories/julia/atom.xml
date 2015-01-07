@@ -4,7 +4,7 @@
   <title><![CDATA[Category: julia | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/julia/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-12-09T02:53:02+09:00</updated>
+  <updated>2015-01-07T23:58:42+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -45,7 +45,7 @@
 
 <p>現状のドキュメントは少し不親切なので、引用した上で、整理します。</p>
 
-<p>ドキュメントより引用:</p>
+<p><a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/">Calling C and Fortran Code</a> より引用:</p>
 
 <blockquote><p>Currently, it is not possible to pass structs and other non-primitive types from Julia to C libraries. However, C functions that generate and use opaque struct types by passing pointers to them can return such values to Julia as Ptr{Void}, which can then be passed to other C functions as Ptr{Void}. Memory allocation and deallocation of such objects must be handled by calls to the appropriate cleanup routines in the libraries being used, just like in any C program.</p></blockquote>
 
@@ -75,8 +75,8 @@ typedef struct {
 
 <p>void print(Foo* foo) {</p>
 
-<pre><code>printf("a=%f\n", foo-&gt;a);
-printf("b=%f\n", foo-&gt;b);
+<pre><code>printf("a=%lf\n", foo-&gt;a);
+printf("b=%d\n", foo-&gt;b);
 </code></pre>
 
 <p>}</p>
@@ -136,7 +136,7 @@ b::Int32 # cのintはjuliaのInt32に対応します
 </ul>
 
 
-<h2>2. ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
+<h2>ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
 
 <p>さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。</p>
 
@@ -163,7 +163,7 @@ void fooo(double** input, int w, int h, double** output);
 
 <h3>2. どのように型を変換するか</h3>
 
-<p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64}}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
+<p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64},1}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
 
 <p>```julia</p>
 
@@ -248,8 +248,8 @@ function fooo(input::Array{Float64,2})</p>
 output = Array(Float64, h, w)
 
 # C関数に渡す用の変数
-cinput::Array{Ptr{Float64}} = ptrarray(input)
-coutput::Array{Ptr{Float64}} = ptrarray(output)
+cinput::Array{Ptr{Float64}} = ptrarray2d(input)
+coutput::Array{Ptr{Float64}} = ptrarray2d(output)
 
 ccall(:fooo, "libfooo", Void,
          (Ptr{Ptr{Float64}}, Int, Int, Ptr{Ptr{Float64}}), 

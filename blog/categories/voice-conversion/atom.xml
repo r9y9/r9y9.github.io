@@ -4,7 +4,7 @@
   <title><![CDATA[Category: voice-conversion, | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/voice-conversion/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2014-12-09T02:53:02+09:00</updated>
+  <updated>2015-01-07T23:58:42+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -28,7 +28,10 @@
 
 <p><a href="https://github.com/r9y9/VoiceConversion.jl">https://github.com/r9y9/VoiceConversion.jl</a></p>
 
-<p><a href="julialang.org">Julia</a> という数値計算に強い言語で書かれています。なぜjuliaなのかというと、速いし書きやすいし、数値計算に関して言えばライブラリ豊富だし、あとはまぁ僕が好きだからですね。まだ新しい言語ですが、個人的におすすめです。</p>
+<p><a href="http://julialang.org">Julia</a> という言語で書かれています。Juliaがどんな言語かをさっと知るのには、以下のスライドがお勧めです。人それぞれ好きな言語で書けばいいと思いますが、個人的にJuliaで書くことになった経緯は、最後の方に簡単にまとめました。</p>
+
+<div align="center"><iframe src="http://r9y9.github.io//www.slideshare.net/slideshow/embed_code/39141184" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="http://r9y9.github.io//www.slideshare.net/kentaroiizuka/julia-39141184" title="プログラミング言語 Julia の紹介" target="_blank">プログラミング言語 Julia の紹介</a> </strong> from <strong><a href="http://r9y9.github.io//www.slideshare.net/kentaroiizuka" target="_blank">Kentaro Iizuka</a></strong> </div></div>
+
 
 <h2>サードパーティライブラリ</h2>
 
@@ -44,6 +47,10 @@
 <p>音声分析合成に関しては、アカデミック界隈ではよく使われている<a href="http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html">STRAIGHT</a>がありますが、WORLDの方がライセンスもゆるくソースも公開されていて、かつ性能も劣らない（正確な話は、森勢先生の論文を参照してください）ので、おすすめです。</p>
 
 <h2><a href="https://github.com/r9y9/VoiceConversion.jl">VoiceConversion.jl</a> でできること</h2>
+
+<h3>追記 2015/01/07</h3>
+
+<p>この記事を書いた段階のv0.0.1は、依存ライブラリの変更のため、現在は動きません。すみません。何のためのタグだ、という気がしてきますが、、最低限masterは動作するようにしますので、そちらをお試しください（基本的には、新しいコードの方が改善されています）。それでも動かないときは、issueを投げてください。</p>
 
 <p>2014/11/10現在（v0.0.1のタグを付けました）、できることは以下の通りです（外部ライブラリを叩いているものを含む）。</p>
 
