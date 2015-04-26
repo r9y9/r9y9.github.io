@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2015-02-25T23:00:00+09:00</updated>
+  <updated>2015-04-27T00:47:56+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JuliaTokyo #3 Speech Signal Processing in Julia]]></title>
+    <link href="http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/"/>
+    <updated>2015-04-26T23:29:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia</id>
+    <content type="html"><![CDATA[<p><a href="http://juliatokyo.connpass.com/event/13218/">JuliaTokyo #3</a>でLT発表してきました。前回の<a href="http://juliatokyo.connpass.com/event/8010/">JuliaTokyo #2</a>でも発表したので、二回目でした。</p>
+
+<h2>スライド</h2>
+
+<div align="center">
+<iframe src="http://r9y9.github.io//www.slideshare.net/slideshow/embed_code/key/h4geMoK1msYqdY" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="http://r9y9.github.io//www.slideshare.net/ryuichiy/juliatokyo-3-speech-signal-processing-in-julia-47403938" title="JuliaTokyo #3 Speech Signal Processing in Julia" target="_blank">JuliaTokyo #3 Speech Signal Processing in Julia</a> </strong> from <strong><a href="http://r9y9.github.io//www.slideshare.net/ryuichiy" target="_blank">Ryuichi YAMAMOTO</a></strong> </div>
+</div>
+
+
+<h2>コード</h2>
+
+<p><a href="https://github.com/r9y9/JuliaTokyo3">https://github.com/r9y9/JuliaTokyo3</a></p>
+
+<h2>三行まとめ</h2>
+
+<p>発表の内容を三行でまとめると、</p>
+
+<ul>
+<li>音声ファイルの読み込み（or 書き込み）は<a href="(https://github.com/dancasimiro/WAV.jl">WAV.jl</a>を使おう</li>
+<li>基本的なデジタル信号処理は <a href="https://github.com/JuliaDSP/DSP.jl">JuliaDSP/DSP.jl</a> をチェック（※JuliaDSPにはウェーブレットとかもあるよ）</li>
+<li>音声に特化した信号処理は、<a href="https://github.com/r9y9/WORLD.jl">r9y9/WORLD.jl</a> がオススメです</li>
+</ul>
+
+
+<p>という感じです。</p>
+
+<p>応用例として、歌声を分離する話（<a href="https://github.com/r9y9/RobustPCA.jl">デモコード</a>）、統計的声質変換（<a href="http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/">統計的声質変換クッソムズすぎワロタ（チュートリアル編） &ndash; LESS IS MORE</a>）、画像をスペクトログラムに足しこむ話とか、さっと紹介しました。</p>
+
+<h2>補足</h2>
+
+<p>僕が使う/作ったパッケージを、あとで見返せるように最後のスライドにまとめておいたのですが、改めてここで整理しておきます。</p>
+
+<ul>
+<li><a href="https://github.com/dancasimiro/WAV.jl">dancasimiro/WAV</a> WAVファイルの読み込み</li>
+<li><a href="https://github.com/JuliaDSP/DSP.jl">JuliaDSP/DSP</a> 窓関数、スペクトログラム、デジタルフィルタ</li>
+<li><a href="https://github.com/r9y9/WORLD.jl">r9y9/WORLD</a> 音声分析・合成フレームワーク</li>
+<li><a href="https://github.com/r9y9/MelGeneralizedCepstrums.jl">r9y9/MelGeneralizedCepstrums</a> メル一般化ケプストラム分析</li>
+<li><a href="https://github.com/r9y9/SynthesisFilters.jl">r9y9/SynthesisFilters</a> メル一般化ケプストラムからの波形合成</li>
+<li><a href="https://github.com/r9y9/SPTK.jl">r9y9/SPTK</a> 音声信号処理ツールキット</li>
+<li><a href="https://github.com/r9y9/RobustPCA.jl">r9y9/RobustPCA</a> ロバスト主成分分析(歌声分離へ応用)</li>
+<li><a href="https://github.com/r9y9/REAPER.jl">r9y9/REAPER</a> 基本周波数推定</li>
+<li><a href="https://github.com/r9y9/VoiceConversion.jl">r9y9/VoiceConversion</a> 統計的声質変換</li>
+</ul>
+
+
+<p>上から順に、<del>汎用的かなーと思います</del><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>。僕が書いたパッケージの中では、<strong>WORLDのみ</strong>公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。</p>
+
+<h2>ざっくり感想</h2>
+
+<ul>
+<li>＃Juliaわからん 本当に素晴らしいと思うので、僕も積極的に #Juliaわからん とつぶやいていこうと思います（詳しくは <a href="https://twitter.com/chezou">@chezou</a> さんの記事をどうぞ <a href="http://chezou.hatenablog.com/entry/2015/04/26/222518">#JuliaTokyo で #juliaわからん という雑なレポジトリを立てた話をしたら julia.tokyo ができてた  &ndash; once upon a time,</a>）。僕は、Julia に Theano が欲しいです。<code>T.grad</code> 強力すぎる</li>
+<li><code>ccall</code> かんたんとか言いましたが、ミスった書き方をしたときのエラーメッセージはあまり親切ではないので、つまずきやすいかも。僕は気合で何とかしています。</li>
+<li>Julia遅いんだけど？？？と言われたら、<a href="https://twitter.com/bicycle1885">@bicycle1885</a> さんの <a href="http://www.slideshare.net/KentaSato/whats-wrong-47403774">What&rsquo;s wrong with this Julia?</a> を投げつけようと思います。</li>
+<li>かなり聴衆が限定的になってしまう話をしてしまったので、次発表するならJulia 言語自体の話をしようかなと思いました</li>
+</ul>
+
+
+<h2>最後に</h2>
+
+<p><a href="twitter.com/sorami">@sorami</a>さんを筆頭とする運営の方々、本当にありがとうございました！楽しかったです。</p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>とスライドに書いたけど、考えなおすと、僕が思う品質の高さ順、の方が正確です、失礼しました。MelGeneneralizedCepstrumsは一番気合入れて書いたけど、ユーザーがいるかといったらいないし、RobustPCAはさっと書いただけだけど、アルゴリズムとしては汎用的だし。またRobustPCAだけ毛色が違いますが、応用例で紹介したのでリストに入れておきました。<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ccallにおけるポインタ周りのハマりどころとその解決法]]></title>
@@ -3777,857 +3853,6 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 <p>あぁworld使おう（白目</p>
 
 <p>となり、ラッパーを書くにいたりましたとさ、おしまい</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Restricted Boltzmann Machines with MNIST]]></title>
-    <link href="http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/"/>
-    <updated>2014-03-06T23:29:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist</id>
-    <content type="html"><![CDATA[<p><img class="center" src="http://r9y9.github.io/images/RBM_mnist_Hidden_500_layers.png" title="&#34;RBM training result on MNIST handwritten digit dataset. Each image represents a filter learned by RBM.&#34;" alt="&#34;RBM training result on MNIST handwritten digit dataset. Each image represents a filter learned by RBM.&#34;"></p>
-
-<p>ディープ某を使った研究を再現してみたくて、最近某ニューラルネットに手を出し始めた。で、手始めにRestricted Boltzmann Machinesを実装してみたので、</p>
-
-<ul>
-<li>MNISTを使って学習した結果の重み（22*22=484個）を貼っとく（↑）</li>
-<li>得た知見をまとめとく</li>
-<li>Goのコード貼っとく</li>
-</ul>
-
-
-<p>ってな感じで書いておく</p>
-
-<p>(本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)</p>
-
-<h2>実験条件</h2>
-
-<p>データベースはmnist。手書き数字認識で有名なアレ。学習の条件は、</p>
-
-<ul>
-<li>隠れ層のユニット数: 500</li>
-<li>mini-batch size: 20</li>
-<li>iterationの回数: 15</li>
-</ul>
-
-
-<h2>対数尤度の変化</h2>
-
-<p><img class="center" src="http://r9y9.github.io/images/RBM_mnist_Hidden_500_log_likelihood.png" title="&#34;Pseudo log-likelihood on mnist databae.&#34;" alt="&#34;Pseudo log-likelihood on mnist databae.&#34;"></p>
-
-<p>以下グラフに表示している生データ</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>0 -196.59046099622128
-</span><span class='line'>1 -70.31708616742365
-</span><span class='line'>2 -65.29499371647965
-</span><span class='line'>3 -62.37983267378022
-</span><span class='line'>4 -61.5359019358253
-</span><span class='line'>5 -60.917772257650164
-</span><span class='line'>6 -59.64207778426757
-</span><span class='line'>7 -59.42201674307857
-</span><span class='line'>8 -59.18497336138633
-</span><span class='line'>9 -58.277168243126305
-</span><span class='line'>10 -58.36279288392401
-</span><span class='line'>11 -58.57805165724595
-</span><span class='line'>12 -57.71043215987184
-</span><span class='line'>13 -58.17783142034138
-</span><span class='line'>14 -57.53629129936344</span></code></pre></td></tr></table></div></figure>
-
-
-<p>尤度上がると安心する。厳密に対数尤度を計算することは難しいので、<a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a> にある擬似尤度を参考にした</p>
-
-<h2>学習時間</h2>
-
-<p>うちのcore2duoのPCで4時間弱だった気がする（うろ覚え</p>
-
-<p>隠れ層のユニット数100だと、40分ほどだった</p>
-
-<h2>知見</h2>
-
-<p>今の所、試行錯誤して自分が得た知見は、</p>
-
-<ul>
-<li>sample by sampleのSGDよりmini-batch SGDの方が安定して尤度上がる</li>
-<li>mini-batch sizeを大きくしすぎると学習が進まない。20くらいがちょうど良かった</li>
-<li>k-CD のkを大きくしてもさほど学習結果変わらない（計算コストはけっこう増すけど）</li>
-<li>persistent CDを使ってもあまりよくならない（計算コストはけっこう増すけど）</li>
-<li>やっぱ1-CDで十分だった</li>
-<li>データの正規化方法によって結構結果も変わる。ノイズを足すかどうか、とか</li>
-<li>学習率超重要すぎわろた。今回の場合は0.1くらいかちょうど良かった</li>
-<li>隠れ層のユニット数が大きいほど学習が上手く行けばと尤度は上がる(?)</li>
-</ul>
-
-
-<p>まぁだいたい <a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a> に書いてあるけど、実際に肌で感じて理解した。persistent CDはもうちょっと成果出て欲しい。データ変えると成果出るんかな？</p>
-
-<h2>コード</h2>
-
-<p>コアの部分だけ、一応</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-<span class='line-number'>112</span>
-<span class='line-number'>113</span>
-<span class='line-number'>114</span>
-<span class='line-number'>115</span>
-<span class='line-number'>116</span>
-<span class='line-number'>117</span>
-<span class='line-number'>118</span>
-<span class='line-number'>119</span>
-<span class='line-number'>120</span>
-<span class='line-number'>121</span>
-<span class='line-number'>122</span>
-<span class='line-number'>123</span>
-<span class='line-number'>124</span>
-<span class='line-number'>125</span>
-<span class='line-number'>126</span>
-<span class='line-number'>127</span>
-<span class='line-number'>128</span>
-<span class='line-number'>129</span>
-<span class='line-number'>130</span>
-<span class='line-number'>131</span>
-<span class='line-number'>132</span>
-<span class='line-number'>133</span>
-<span class='line-number'>134</span>
-<span class='line-number'>135</span>
-<span class='line-number'>136</span>
-<span class='line-number'>137</span>
-<span class='line-number'>138</span>
-<span class='line-number'>139</span>
-<span class='line-number'>140</span>
-<span class='line-number'>141</span>
-<span class='line-number'>142</span>
-<span class='line-number'>143</span>
-<span class='line-number'>144</span>
-<span class='line-number'>145</span>
-<span class='line-number'>146</span>
-<span class='line-number'>147</span>
-<span class='line-number'>148</span>
-<span class='line-number'>149</span>
-<span class='line-number'>150</span>
-<span class='line-number'>151</span>
-<span class='line-number'>152</span>
-<span class='line-number'>153</span>
-<span class='line-number'>154</span>
-<span class='line-number'>155</span>
-<span class='line-number'>156</span>
-<span class='line-number'>157</span>
-<span class='line-number'>158</span>
-<span class='line-number'>159</span>
-<span class='line-number'>160</span>
-<span class='line-number'>161</span>
-<span class='line-number'>162</span>
-<span class='line-number'>163</span>
-<span class='line-number'>164</span>
-<span class='line-number'>165</span>
-<span class='line-number'>166</span>
-<span class='line-number'>167</span>
-<span class='line-number'>168</span>
-<span class='line-number'>169</span>
-<span class='line-number'>170</span>
-<span class='line-number'>171</span>
-<span class='line-number'>172</span>
-<span class='line-number'>173</span>
-<span class='line-number'>174</span>
-<span class='line-number'>175</span>
-<span class='line-number'>176</span>
-<span class='line-number'>177</span>
-<span class='line-number'>178</span>
-<span class='line-number'>179</span>
-<span class='line-number'>180</span>
-<span class='line-number'>181</span>
-<span class='line-number'>182</span>
-<span class='line-number'>183</span>
-<span class='line-number'>184</span>
-<span class='line-number'>185</span>
-<span class='line-number'>186</span>
-<span class='line-number'>187</span>
-<span class='line-number'>188</span>
-<span class='line-number'>189</span>
-<span class='line-number'>190</span>
-<span class='line-number'>191</span>
-<span class='line-number'>192</span>
-<span class='line-number'>193</span>
-<span class='line-number'>194</span>
-<span class='line-number'>195</span>
-<span class='line-number'>196</span>
-<span class='line-number'>197</span>
-<span class='line-number'>198</span>
-<span class='line-number'>199</span>
-<span class='line-number'>200</span>
-<span class='line-number'>201</span>
-<span class='line-number'>202</span>
-<span class='line-number'>203</span>
-<span class='line-number'>204</span>
-<span class='line-number'>205</span>
-<span class='line-number'>206</span>
-<span class='line-number'>207</span>
-<span class='line-number'>208</span>
-<span class='line-number'>209</span>
-<span class='line-number'>210</span>
-<span class='line-number'>211</span>
-<span class='line-number'>212</span>
-<span class='line-number'>213</span>
-<span class='line-number'>214</span>
-<span class='line-number'>215</span>
-<span class='line-number'>216</span>
-<span class='line-number'>217</span>
-<span class='line-number'>218</span>
-<span class='line-number'>219</span>
-<span class='line-number'>220</span>
-<span class='line-number'>221</span>
-<span class='line-number'>222</span>
-<span class='line-number'>223</span>
-<span class='line-number'>224</span>
-<span class='line-number'>225</span>
-<span class='line-number'>226</span>
-<span class='line-number'>227</span>
-<span class='line-number'>228</span>
-<span class='line-number'>229</span>
-<span class='line-number'>230</span>
-<span class='line-number'>231</span>
-<span class='line-number'>232</span>
-<span class='line-number'>233</span>
-<span class='line-number'>234</span>
-<span class='line-number'>235</span>
-<span class='line-number'>236</span>
-<span class='line-number'>237</span>
-<span class='line-number'>238</span>
-<span class='line-number'>239</span>
-<span class='line-number'>240</span>
-<span class='line-number'>241</span>
-<span class='line-number'>242</span>
-<span class='line-number'>243</span>
-<span class='line-number'>244</span>
-<span class='line-number'>245</span>
-<span class='line-number'>246</span>
-<span class='line-number'>247</span>
-<span class='line-number'>248</span>
-<span class='line-number'>249</span>
-<span class='line-number'>250</span>
-<span class='line-number'>251</span>
-<span class='line-number'>252</span>
-<span class='line-number'>253</span>
-<span class='line-number'>254</span>
-<span class='line-number'>255</span>
-<span class='line-number'>256</span>
-<span class='line-number'>257</span>
-<span class='line-number'>258</span>
-<span class='line-number'>259</span>
-<span class='line-number'>260</span>
-<span class='line-number'>261</span>
-<span class='line-number'>262</span>
-<span class='line-number'>263</span>
-<span class='line-number'>264</span>
-<span class='line-number'>265</span>
-<span class='line-number'>266</span>
-<span class='line-number'>267</span>
-<span class='line-number'>268</span>
-<span class='line-number'>269</span>
-<span class='line-number'>270</span>
-<span class='line-number'>271</span>
-<span class='line-number'>272</span>
-<span class='line-number'>273</span>
-<span class='line-number'>274</span>
-<span class='line-number'>275</span>
-<span class='line-number'>276</span>
-<span class='line-number'>277</span>
-<span class='line-number'>278</span>
-<span class='line-number'>279</span>
-<span class='line-number'>280</span>
-<span class='line-number'>281</span>
-<span class='line-number'>282</span>
-<span class='line-number'>283</span>
-<span class='line-number'>284</span>
-<span class='line-number'>285</span>
-<span class='line-number'>286</span>
-<span class='line-number'>287</span>
-<span class='line-number'>288</span>
-<span class='line-number'>289</span>
-<span class='line-number'>290</span>
-<span class='line-number'>291</span>
-<span class='line-number'>292</span>
-<span class='line-number'>293</span>
-<span class='line-number'>294</span>
-<span class='line-number'>295</span>
-<span class='line-number'>296</span>
-<span class='line-number'>297</span>
-<span class='line-number'>298</span>
-<span class='line-number'>299</span>
-<span class='line-number'>300</span>
-<span class='line-number'>301</span>
-<span class='line-number'>302</span>
-<span class='line-number'>303</span>
-<span class='line-number'>304</span>
-<span class='line-number'>305</span>
-<span class='line-number'>306</span>
-<span class='line-number'>307</span>
-<span class='line-number'>308</span>
-<span class='line-number'>309</span>
-<span class='line-number'>310</span>
-<span class='line-number'>311</span>
-<span class='line-number'>312</span>
-<span class='line-number'>313</span>
-<span class='line-number'>314</span>
-<span class='line-number'>315</span>
-<span class='line-number'>316</span>
-<span class='line-number'>317</span>
-<span class='line-number'>318</span>
-<span class='line-number'>319</span>
-<span class='line-number'>320</span>
-<span class='line-number'>321</span>
-<span class='line-number'>322</span>
-<span class='line-number'>323</span>
-<span class='line-number'>324</span>
-<span class='line-number'>325</span>
-<span class='line-number'>326</span>
-<span class='line-number'>327</span>
-<span class='line-number'>328</span>
-<span class='line-number'>329</span>
-<span class='line-number'>330</span>
-<span class='line-number'>331</span>
-<span class='line-number'>332</span>
-<span class='line-number'>333</span>
-<span class='line-number'>334</span>
-<span class='line-number'>335</span>
-<span class='line-number'>336</span>
-<span class='line-number'>337</span>
-<span class='line-number'>338</span>
-<span class='line-number'>339</span>
-<span class='line-number'>340</span>
-<span class='line-number'>341</span>
-<span class='line-number'>342</span>
-<span class='line-number'>343</span>
-<span class='line-number'>344</span>
-<span class='line-number'>345</span>
-<span class='line-number'>346</span>
-<span class='line-number'>347</span>
-<span class='line-number'>348</span>
-<span class='line-number'>349</span>
-<span class='line-number'>350</span>
-<span class='line-number'>351</span>
-<span class='line-number'>352</span>
-<span class='line-number'>353</span>
-<span class='line-number'>354</span>
-<span class='line-number'>355</span>
-<span class='line-number'>356</span>
-<span class='line-number'>357</span>
-<span class='line-number'>358</span>
-<span class='line-number'>359</span>
-<span class='line-number'>360</span>
-<span class='line-number'>361</span>
-<span class='line-number'>362</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">rbm</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
-</span><span class='line'>  <span class="s">&quot;encoding/json&quot;</span>
-</span><span class='line'>  <span class="s">&quot;errors&quot;</span>
-</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
-</span><span class='line'>  <span class="s">&quot;github.com/r9y9/nn&quot;</span> <span class="c1">// sigmoid, matrix</span>
-</span><span class='line'>  <span class="s">&quot;math&quot;</span>
-</span><span class='line'>  <span class="s">&quot;math/rand&quot;</span>
-</span><span class='line'>  <span class="s">&quot;os&quot;</span>
-</span><span class='line'>  <span class="s">&quot;time&quot;</span>
-</span><span class='line'><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// References:</span>
-</span><span class='line'><span class="c1">// [1] G. Hinton, &quot;A Practical Guide to Training Restricted Boltzmann Machines&quot;,</span>
-</span><span class='line'><span class="c1">// UTML TR 2010-003.</span>
-</span><span class='line'><span class="c1">// url: http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf</span>
-</span><span class='line'><span class="c1">//</span>
-</span><span class='line'><span class="c1">// [2] A. Fischer and C. Igel. &quot;An introduction to restricted Boltzmann machines&quot;,</span>
-</span><span class='line'><span class="c1">// Proc. of the 17th Iberoamerican Congress on Pattern Recognition (CIARP),</span>
-</span><span class='line'><span class="c1">// Volume 7441 of LNCS, pages 14–36. Springer, 2012</span>
-</span><span class='line'><span class="c1">// url: http://image.diku.dk/igel/paper/AItRBM-proof.pdf</span>
-</span><span class='line'><span class="c1">//</span>
-</span><span class='line'><span class="c1">// [3] Restricted Boltzmann Machines (RBM),  DeepLearning tutorial</span>
-</span><span class='line'><span class="c1">// url: http://deeplearning.net/tutorial/rbm.html</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Notes about implementation:</span>
-</span><span class='line'><span class="c1">// Notation used in this code basically follows [2].</span>
-</span><span class='line'><span class="c1">// e.g. W for weight, B for bias of visible layer, C for bias of hidden layer.</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Graphical representation of Restricted Boltzmann Machines (RBM).</span>
-</span><span class='line'><span class="c1">//</span>
-</span><span class='line'><span class="c1">//     ○ ○ .... ○  h(hidden layer), c(bias)</span>
-</span><span class='line'><span class="c1">//     /\ /\ /    /\</span>
-</span><span class='line'><span class="c1">//    ○ ○ ○ ... ○ v(visible layer), b(bias)</span>
-</span><span class='line'><span class="kd">type</span> <span class="nx">RBM</span> <span class="kd">struct</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">W</span>               <span class="p">[][]</span><span class="kt">float64</span> <span class="c1">// Weight</span>
-</span><span class='line'>  <span class="nx">B</span>               <span class="p">[]</span><span class="kt">float64</span>   <span class="c1">// Bias of visible layer</span>
-</span><span class='line'>  <span class="nx">C</span>               <span class="p">[]</span><span class="kt">float64</span>   <span class="c1">// Bias of hidden layer</span>
-</span><span class='line'>  <span class="nx">NumHiddenUnits</span>  <span class="kt">int</span>
-</span><span class='line'>  <span class="nx">NumVisibleUnits</span> <span class="kt">int</span>
-</span><span class='line'>  <span class="nx">Option</span>          <span class="nx">TrainingOption</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">type</span> <span class="nx">TrainingOption</span> <span class="kd">struct</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">LearningRate</span>        <span class="kt">float64</span>
-</span><span class='line'>  <span class="nx">OrderOfGibbsSamping</span> <span class="kt">int</span> <span class="c1">// It is known that 1 is enough for many cases.</span>
-</span><span class='line'>  <span class="nx">Epoches</span>             <span class="kt">int</span>
-</span><span class='line'>  <span class="nx">MiniBatchSize</span>       <span class="kt">int</span>
-</span><span class='line'>  <span class="nx">L2Regularization</span>    <span class="kt">bool</span>
-</span><span class='line'>  <span class="nx">RegularizationRate</span>  <span class="kt">float64</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// NewRBM creates new RBM instance. It requires input data and number of</span>
-</span><span class='line'><span class="c1">// hidden units to initialize RBM.</span>
-</span><span class='line'><span class="kd">func</span> <span class="nx">NewRBM</span><span class="p">(</span><span class="nx">numVisibleUnits</span><span class="p">,</span> <span class="nx">numHiddenUnits</span> <span class="kt">int</span><span class="p">)</span> <span class="o">*</span><span class="nx">RBM</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">rbm</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">RBM</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">rand</span><span class="p">.</span><span class="nx">Seed</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">().</span><span class="nx">UnixNano</span><span class="p">())</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">W</span> <span class="p">=</span> <span class="nx">nn</span><span class="p">.</span><span class="nx">MakeMatrix</span><span class="p">(</span><span class="nx">numHiddenUnits</span><span class="p">,</span> <span class="nx">numVisibleUnits</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">B</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">numVisibleUnits</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">C</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">numHiddenUnits</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span> <span class="p">=</span> <span class="nx">numVisibleUnits</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span> <span class="p">=</span> <span class="nx">numHiddenUnits</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">InitRBM</span><span class="p">()</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">rbm</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// NewRBMWithParameters returns RBM instance given RBM parameters.</span>
-</span><span class='line'><span class="c1">// This func will be used in Deep Belief Networks.</span>
-</span><span class='line'><span class="kd">func</span> <span class="nx">NewRBMWithParameters</span><span class="p">(</span><span class="nx">W</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">B</span><span class="p">,</span> <span class="nx">C</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">RBM</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">rbm</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">RBM</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span> <span class="p">=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">B</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span> <span class="p">=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">C</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">W</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span> <span class="o">||</span> <span class="nb">len</span><span class="p">(</span><span class="nx">W</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;Shape of weight matrix is wrong.&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">rand</span><span class="p">.</span><span class="nx">Seed</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">().</span><span class="nx">UnixNano</span><span class="p">())</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">W</span> <span class="p">=</span> <span class="nx">W</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">B</span> <span class="p">=</span> <span class="nx">B</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">C</span> <span class="p">=</span> <span class="nx">C</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">rbm</span><span class="p">,</span> <span class="kc">nil</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// LoadRBM loads RBM from a dump file and return its instatnce.</span>
-</span><span class='line'><span class="kd">func</span> <span class="nx">LoadRBM</span><span class="p">(</span><span class="nx">filename</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">RBM</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Open</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">decoder</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">NewDecoder</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">rbm</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">RBM</span><span class="p">{}</span>
-</span><span class='line'>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">decoder</span><span class="p">.</span><span class="nx">Decode</span><span class="p">(</span><span class="nx">rbm</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">rbm</span><span class="p">,</span> <span class="kc">nil</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Dump writes RBM parameters to file in json format.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">Dump</span><span class="p">(</span><span class="nx">filename</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Create</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">err</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">encoder</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nx">NewEncoder</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">encoder</span><span class="p">.</span><span class="nx">Encode</span><span class="p">(</span><span class="nx">rbm</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">err</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="kc">nil</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Heuristic initialization of visible bias.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">InitVisibleBiasUsingTrainingData</span><span class="p">(</span><span class="nx">data</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// Init B (bias of visible layer)</span>
-</span><span class='line'>  <span class="nx">activeRateInVisibleLayer</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">getActiveRateInVisibleLayer</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">rbm</span><span class="p">.</span><span class="nx">B</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="nx">math</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="nx">activeRateInVisibleLayer</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="nx">activeRateInVisibleLayer</span><span class="p">[</span><span class="nx">j</span><span class="p">]))</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">getActiveRateInVisibleLayer</span><span class="p">(</span><span class="nx">data</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">rate</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">sample</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">data</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">rate</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">sample</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">rate</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">rate</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">/=</span> <span class="nb">float64</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">rate</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// InitRBM performes a heuristic parameter initialization.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">InitRBM</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// Init W</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">rbm</span><span class="p">.</span><span class="nx">W</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">NormFloat64</span><span class="p">()</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">rbm</span><span class="p">.</span><span class="nx">B</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="mf">0.0</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// Init C (bias of hidden layer)</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">rbm</span><span class="p">.</span><span class="nx">C</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="mf">0.0</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// P_H_Given_V returns the conditinal probability of a hidden unit given a set of visible units.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">P_H_Given_V</span><span class="p">(</span><span class="nx">hiddenIndex</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">v</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">sum</span> <span class="o">:=</span> <span class="mf">0.0</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">W</span><span class="p">[</span><span class="nx">hiddenIndex</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">*</span> <span class="nx">v</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">nn</span><span class="p">.</span><span class="nx">Sigmoid</span><span class="p">(</span><span class="nx">sum</span> <span class="o">+</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">C</span><span class="p">[</span><span class="nx">hiddenIndex</span><span class="p">])</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// P_V_Given_H returns the conditinal probability of a visible unit given a set of hidden units.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">P_V_Given_H</span><span class="p">(</span><span class="nx">visibleIndex</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">h</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">sum</span> <span class="o">:=</span> <span class="mf">0.0</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">W</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">visibleIndex</span><span class="p">]</span> <span class="o">*</span> <span class="nx">h</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">nn</span><span class="p">.</span><span class="nx">Sigmoid</span><span class="p">(</span><span class="nx">sum</span> <span class="o">+</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">B</span><span class="p">[</span><span class="nx">visibleIndex</span><span class="p">])</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// GibbsSampling performs k-Gibbs sampling algorithm,</span>
-</span><span class='line'><span class="c1">// where k is the number of iterations in gibbs sampling.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">GibbsSampling</span><span class="p">(</span><span class="nx">v</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">k</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// Initial value is set to input</span>
-</span><span class='line'>  <span class="nx">vUsedInSamping</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
-</span><span class='line'>  <span class="nb">copy</span><span class="p">(</span><span class="nx">vUsedInSamping</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">t</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">t</span> <span class="p">&lt;</span> <span class="nx">k</span><span class="p">;</span> <span class="nx">t</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">sampledH</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">p</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">P_H_Given_V</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">vUsedInSamping</span><span class="p">)</span>
-</span><span class='line'>          <span class="k">if</span> <span class="nx">p</span> <span class="p">&gt;</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">Float64</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">sampledH</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="mf">1.0</span>
-</span><span class='line'>          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">sampledH</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="mf">0.0</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">p</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">P_V_Given_H</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span> <span class="nx">sampledH</span><span class="p">)</span>
-</span><span class='line'>          <span class="k">if</span> <span class="nx">p</span> <span class="p">&gt;</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">Float64</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">vUsedInSamping</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="mf">1.0</span>
-</span><span class='line'>          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">vUsedInSamping</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="mf">0.0</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">vUsedInSamping</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">flip</span><span class="p">(</span><span class="nx">x</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">bit</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">y</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">x</span><span class="p">))</span>
-</span><span class='line'>  <span class="nb">copy</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">y</span><span class="p">[</span><span class="nx">bit</span><span class="p">]</span> <span class="p">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="nx">x</span><span class="p">[</span><span class="nx">bit</span><span class="p">]</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">y</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// FreeEnergy returns F(v), the free energy of RBM given a visible vector v.</span>
-</span><span class='line'><span class="c1">// refs: eq. (25) in [1].</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">FreeEnergy</span><span class="p">(</span><span class="nx">v</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">energy</span> <span class="o">:=</span> <span class="mf">0.0</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">energy</span> <span class="o">-=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">B</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">*</span> <span class="nx">v</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">sum</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">C</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">W</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">*</span> <span class="nx">v</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="nx">energy</span> <span class="o">-=</span> <span class="nx">math</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nx">math</span><span class="p">.</span><span class="nx">Exp</span><span class="p">(</span><span class="nx">sum</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">energy</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// PseudoLogLikelihood returns pseudo log-likelihood for a given input data.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">PseudoLogLikelihood</span><span class="p">(</span><span class="nx">v</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">bitIndex</span> <span class="o">:=</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">Int</span><span class="p">()</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">fe</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">FreeEnergy</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">feFlip</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">FreeEnergy</span><span class="p">(</span><span class="nx">flip</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">bitIndex</span><span class="p">))</span>
-</span><span class='line'>  <span class="nx">cost</span> <span class="o">:=</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">)</span> <span class="o">*</span> <span class="nx">math</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="nx">nn</span><span class="p">.</span><span class="nx">Sigmoid</span><span class="p">(</span><span class="nx">feFlip</span><span class="o">-</span><span class="nx">fe</span><span class="p">))</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">cost</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// PseudoLogLikelihood returns pseudo log-likelihood for a given dataset (or mini-batch).</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">PseudoLogLikelihoodForAllData</span><span class="p">(</span><span class="nx">data</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">sum</span> <span class="o">:=</span> <span class="mf">0.0</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">data</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">PseudoLogLikelihood</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="nx">cost</span> <span class="o">:=</span> <span class="nx">sum</span> <span class="o">/</span> <span class="nb">float64</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">cost</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// ComputeGradient returns gradients of RBM parameters for a given (mini-batch) dataset.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">ComputeGradient</span><span class="p">(</span><span class="nx">data</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">([][]</span><span class="kt">float64</span><span class="p">,</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">,</span> <span class="p">[]</span><span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">gradW</span> <span class="o">:=</span> <span class="nx">nn</span><span class="p">.</span><span class="nx">MakeMatrix</span><span class="p">(</span><span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">gradB</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">gradC</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">data</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// Gibbs Sampling</span>
-</span><span class='line'>      <span class="nx">gibbsStart</span> <span class="o">:=</span> <span class="nx">v</span>
-</span><span class='line'>      <span class="nx">vAfterSamping</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">GibbsSampling</span><span class="p">(</span><span class="nx">gibbsStart</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">OrderOfGibbsSamping</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">// pre-computation that is used in gradient computation</span>
-</span><span class='line'>      <span class="nx">p_h_given_v1</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">p_h_given_v2</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">p_h_given_v1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">P_H_Given_V</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
-</span><span class='line'>          <span class="nx">p_h_given_v2</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">P_H_Given_V</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">vAfterSamping</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">// Gompute gradient of W</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">gradW</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">p_h_given_v1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">*</span><span class="nx">v</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">-</span> <span class="nx">p_h_given_v2</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">*</span><span class="nx">vAfterSamping</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">// Gompute gradient of B</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">gradB</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">v</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">-</span> <span class="nx">vAfterSamping</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">// Gompute gradient of C</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">gradC</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">p_h_given_v1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">-</span> <span class="nx">p_h_given_v2</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">gradW</span><span class="p">,</span> <span class="nx">gradB</span><span class="p">,</span> <span class="nx">gradC</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">ParseTrainingOption</span><span class="p">(</span><span class="nx">option</span> <span class="nx">TrainingOption</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span> <span class="p">=</span> <span class="nx">option</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">MiniBatchSize</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;Number of mini-batchs must be larger than zero.&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">Epoches</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;Epoches must be larger than zero.&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">OrderOfGibbsSamping</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;Order of Gibbs sampling must be larger than zero.&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">LearningRate</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;Learning rate must be specified to train RBMs.&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="kc">nil</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Train performs Contrastive divergense learning algorithm to train RBM.</span>
-</span><span class='line'><span class="c1">// The alrogithm is basedd on (mini-batch) Stochastic Gradient Ascent.</span>
-</span><span class='line'><span class="kd">func</span> <span class="p">(</span><span class="nx">rbm</span> <span class="o">*</span><span class="nx">RBM</span><span class="p">)</span> <span class="nx">Train</span><span class="p">(</span><span class="nx">data</span> <span class="p">[][]</span><span class="kt">float64</span><span class="p">,</span> <span class="nx">option</span> <span class="nx">TrainingOption</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">err</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">ParseTrainingOption</span><span class="p">(</span><span class="nx">option</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">err</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">numMiniBatches</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">/</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">MiniBatchSize</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">epoch</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">epoch</span> <span class="p">&lt;</span> <span class="nx">option</span><span class="p">.</span><span class="nx">Epoches</span><span class="p">;</span> <span class="nx">epoch</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// Monitoring</span>
-</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">epoch</span><span class="p">,</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">PseudoLogLikelihoodForAllData</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">m</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">m</span> <span class="p">&lt;</span> <span class="nx">numMiniBatches</span><span class="p">;</span> <span class="nx">m</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="c1">// Compute Gradient</span>
-</span><span class='line'>          <span class="nx">batch</span> <span class="o">:=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">m</span><span class="o">*</span><span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">MiniBatchSize</span> <span class="p">:</span> <span class="p">(</span><span class="nx">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">MiniBatchSize</span><span class="p">]</span>
-</span><span class='line'>          <span class="nx">gradW</span><span class="p">,</span> <span class="nx">gradB</span><span class="p">,</span> <span class="nx">gradC</span> <span class="o">:=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">ComputeGradient</span><span class="p">(</span><span class="nx">batch</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="c1">// Update W</span>
-</span><span class='line'>          <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>              <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>                  <span class="nx">rbm</span><span class="p">.</span><span class="nx">W</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">LearningRate</span> <span class="o">*</span> <span class="nx">gradW</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">MiniBatchSize</span><span class="p">)</span>
-</span><span class='line'>                  <span class="k">if</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">L2Regularization</span> <span class="p">{</span>
-</span><span class='line'>                      <span class="nx">rbm</span><span class="p">.</span><span class="nx">W</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">RegularizationRate</span><span class="p">)</span>
-</span><span class='line'>                  <span class="p">}</span>
-</span><span class='line'>              <span class="p">}</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="c1">// Update B</span>
-</span><span class='line'>          <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumVisibleUnits</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">rbm</span><span class="p">.</span><span class="nx">B</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">LearningRate</span> <span class="o">*</span> <span class="nx">gradB</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">MiniBatchSize</span><span class="p">)</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="c1">// Update C</span>
-</span><span class='line'>          <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">NumHiddenUnits</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">rbm</span><span class="p">.</span><span class="nx">C</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">LearningRate</span> <span class="o">*</span> <span class="nx">gradC</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">rbm</span><span class="p">.</span><span class="nx">Option</span><span class="p">.</span><span class="nx">MiniBatchSize</span><span class="p">)</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="kc">nil</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>使い方とかは察して（どうせ誰も使わないはず</p>
-
-<p>今は、通常のRBMのvisible layerを連続値に拡張した Gaussian Bernoulli RBMを学習しようとしてるんだけど、これがムズイ。実装ミスもあるかもだけど、局所解に落ちまくってる気がする。</p>
-
-<p>Gaussian Bernoulli RBM、Deep Belief Networks, Deep Neural Networksについてはまた今度</p>
-
-<p>2014/05/11
-要望があったので、もろもろコードあげました
-<a href="https://github.com/r9y9/nnet">https://github.com/r9y9/nnet</a></p>
-
-<h2>参考資料</h2>
-
-<ul>
-<li><a href="http://image.diku.dk/igel/paper/AItRBM-proof.pdf">An Introduction to Restricted Boltzmann Machines (PDF)</a></li>
-<li><a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a></li>
-<li><a href="http://mglab.blogspot.jp/2012/08/restricted-boltzmann-machine.html">Restricted Boltzmann Machineの学習手法についての簡単なまとめ | 映像奮闘記</a></li>
-<li><a href="http://d.hatena.ne.jp/saket/20121212">ゆるふわ Restricted Boltzmann Machine | Risky Dune</a></li>
-<li><a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a></li>
-<li><a href="http://imonad.com/rbm/restricted-boltzmann-machine/">Restricted Boltzmann Machine &ndash; Short Tutorial | iMonad</a></li>
-<li><a href="http://scikit-learn.org/stable/auto_examples/plot_rbm_logistic_classification.html">Restricted Boltzmann Machine features for digit classification | scikit-learn</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Machine-Learning | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/machine-learning/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2015-02-25T23:00:00+09:00</updated>
+  <updated>2015-04-27T00:47:56+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JuliaTokyo #3 Speech Signal Processing in Julia]]></title>
+    <link href="http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/"/>
+    <updated>2015-04-26T23:29:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia</id>
+    <content type="html"><![CDATA[<p><a href="http://juliatokyo.connpass.com/event/13218/">JuliaTokyo #3</a>でLT発表してきました。前回の<a href="http://juliatokyo.connpass.com/event/8010/">JuliaTokyo #2</a>でも発表したので、二回目でした。</p>
+
+<h2>スライド</h2>
+
+<div align="center">
+<iframe src="http://r9y9.github.io//www.slideshare.net/slideshow/embed_code/key/h4geMoK1msYqdY" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="http://r9y9.github.io//www.slideshare.net/ryuichiy/juliatokyo-3-speech-signal-processing-in-julia-47403938" title="JuliaTokyo #3 Speech Signal Processing in Julia" target="_blank">JuliaTokyo #3 Speech Signal Processing in Julia</a> </strong> from <strong><a href="http://r9y9.github.io//www.slideshare.net/ryuichiy" target="_blank">Ryuichi YAMAMOTO</a></strong> </div>
+</div>
+
+
+<h2>コード</h2>
+
+<p><a href="https://github.com/r9y9/JuliaTokyo3">https://github.com/r9y9/JuliaTokyo3</a></p>
+
+<h2>三行まとめ</h2>
+
+<p>発表の内容を三行でまとめると、</p>
+
+<ul>
+<li>音声ファイルの読み込み（or 書き込み）は<a href="(https://github.com/dancasimiro/WAV.jl">WAV.jl</a>を使おう</li>
+<li>基本的なデジタル信号処理は <a href="https://github.com/JuliaDSP/DSP.jl">JuliaDSP/DSP.jl</a> をチェック（※JuliaDSPにはウェーブレットとかもあるよ）</li>
+<li>音声に特化した信号処理は、<a href="https://github.com/r9y9/WORLD.jl">r9y9/WORLD.jl</a> がオススメです</li>
+</ul>
+
+
+<p>という感じです。</p>
+
+<p>応用例として、歌声を分離する話（<a href="https://github.com/r9y9/RobustPCA.jl">デモコード</a>）、統計的声質変換（<a href="http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/">統計的声質変換クッソムズすぎワロタ（チュートリアル編） &ndash; LESS IS MORE</a>）、画像をスペクトログラムに足しこむ話とか、さっと紹介しました。</p>
+
+<h2>補足</h2>
+
+<p>僕が使う/作ったパッケージを、あとで見返せるように最後のスライドにまとめておいたのですが、改めてここで整理しておきます。</p>
+
+<ul>
+<li><a href="https://github.com/dancasimiro/WAV.jl">dancasimiro/WAV</a> WAVファイルの読み込み</li>
+<li><a href="https://github.com/JuliaDSP/DSP.jl">JuliaDSP/DSP</a> 窓関数、スペクトログラム、デジタルフィルタ</li>
+<li><a href="https://github.com/r9y9/WORLD.jl">r9y9/WORLD</a> 音声分析・合成フレームワーク</li>
+<li><a href="https://github.com/r9y9/MelGeneralizedCepstrums.jl">r9y9/MelGeneralizedCepstrums</a> メル一般化ケプストラム分析</li>
+<li><a href="https://github.com/r9y9/SynthesisFilters.jl">r9y9/SynthesisFilters</a> メル一般化ケプストラムからの波形合成</li>
+<li><a href="https://github.com/r9y9/SPTK.jl">r9y9/SPTK</a> 音声信号処理ツールキット</li>
+<li><a href="https://github.com/r9y9/RobustPCA.jl">r9y9/RobustPCA</a> ロバスト主成分分析(歌声分離へ応用)</li>
+<li><a href="https://github.com/r9y9/REAPER.jl">r9y9/REAPER</a> 基本周波数推定</li>
+<li><a href="https://github.com/r9y9/VoiceConversion.jl">r9y9/VoiceConversion</a> 統計的声質変換</li>
+</ul>
+
+
+<p>上から順に、<del>汎用的かなーと思います</del><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>。僕が書いたパッケージの中では、<strong>WORLDのみ</strong>公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。</p>
+
+<h2>ざっくり感想</h2>
+
+<ul>
+<li>＃Juliaわからん 本当に素晴らしいと思うので、僕も積極的に #Juliaわからん とつぶやいていこうと思います（詳しくは <a href="https://twitter.com/chezou">@chezou</a> さんの記事をどうぞ <a href="http://chezou.hatenablog.com/entry/2015/04/26/222518">#JuliaTokyo で #juliaわからん という雑なレポジトリを立てた話をしたら julia.tokyo ができてた  &ndash; once upon a time,</a>）。僕は、Julia に Theano が欲しいです。<code>T.grad</code> 強力すぎる</li>
+<li><code>ccall</code> かんたんとか言いましたが、ミスった書き方をしたときのエラーメッセージはあまり親切ではないので、つまずきやすいかも。僕は気合で何とかしています。</li>
+<li>Julia遅いんだけど？？？と言われたら、<a href="https://twitter.com/bicycle1885">@bicycle1885</a> さんの <a href="http://www.slideshare.net/KentaSato/whats-wrong-47403774">What&rsquo;s wrong with this Julia?</a> を投げつけようと思います。</li>
+<li>かなり聴衆が限定的になってしまう話をしてしまったので、次発表するならJulia 言語自体の話をしようかなと思いました</li>
+</ul>
+
+
+<h2>最後に</h2>
+
+<p><a href="twitter.com/sorami">@sorami</a>さんを筆頭とする運営の方々、本当にありがとうございました！楽しかったです。</p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>とスライドに書いたけど、考えなおすと、僕が思う品質の高さ順、の方が正確です、失礼しました。MelGeneneralizedCepstrumsは一番気合入れて書いたけど、ユーザーがいるかといったらいないし、RobustPCAはさっと書いただけだけど、アルゴリズムとしては汎用的だし。またRobustPCAだけ毛色が違いますが、応用例で紹介したのでリストに入れておきました。<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia]]></title>
