@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>最近の音声信号処理遊びの進捗 - LESS IS MORE</title>
+  <meta name="author" content="Ryuichi YAMAMOTO">
+
+  
+  <meta name="description" content="hello 遡ればもう約一年まえになるでしょうか、統計的声質遊びをしたいと思い、理論の勉強を始めたり、（特にJuliaで）コードを色々書いていました（お前ほんといろんな言語で遊んでるな、というツッコミはさておき）。統計的声質変換クッソムズすぎワロタ（チュートリアル編） &ndash; LESS &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="LESS IS MORE" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"], 
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+ 
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- mathjax settings end -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<aside class="left">
+			<div class="inner-left">
+				<header>
+					<img src="http://www.gravatar.com/avatar/6d356017749662a0c75ca192c7c88ed6?s=200" alt="Gravatar of Ryuichi YAMAMOTO " title="Gravatar of Ryuichi YAMAMOTO" class="profilepic" />
+<hgroup>
+  <h1><a href="/">LESS IS MORE</a></h1>
+  
+    <h2 class="subtitle">fmt.Println("Hello world")</h2>
+   
+</hgroup>
+
+
+				</header>
+				<footer>
+					<p>
+	
+		<a href="http://github.com/r9y9" class="btn btn-dark">GitHub</a>
+	
+	
+		<a href="http://twitter.com/r9y9" class="btn btn-dark">Twitter</a>
+	
+</p>
+				</footer>
+			</div>
+		</aside>
+    	<section class="right">
+    		<div class="inner-right">
+    			<div id="posts">
+    			  	<article class="post">
+    
+  <header>
+    
+      <h1 class="entry-title">最近の音声信号処理遊びの進捗</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-23T16:35:00+09:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>hello</h2>
+
+<p>遡ればもう約一年まえになるでしょうか、統計的声質遊びをしたいと思い、理論の勉強を始めたり、（特にJuliaで）コードを色々書いていました（お前ほんといろんな言語で遊んでるな、というツッコミはさておき）。<a href="http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/">統計的声質変換クッソムズすぎワロタ（チュートリアル編） &ndash; LESS IS MORE</a> を書いていた当初は、当然自分のためだけに書いていて、まぁアレな出来でしたが、最近気を取り直して多少マシに仕上げましたので、何となくブログに書いてみようかなーと思った次第です。というわけで、最近公式に登録したいくつかのパッケージを、まとめて簡単に紹介します。</p>
+
+<p>主な改善点は、windowsもちゃんとサポートするようにしたこと（誰得？）と、テストをきちんと書いたことと、julia的なインタフェースを意識するようにしたことですかね。3つ目はかなり曖昧ですが、まぁ気持ち使いやすくなったと思います。</p>
+
+<h2>パッケージ</h2>
+
+<ul>
+<li><a href="https://github.com/r9y9/MelGeneralizedCepstrums.jl">MelGeneralizedCepstrums.jl</a>: メル一般化ケプストラム分析</li>
+<li><a href="https://github.com/r9y9/SynthesisFilters.jl">SynthesisFilters.jl</a>: メル一般化ケプストラムからの音声波形合成</li>
+<li><a href="https://github.com/r9y9/SPTK.jl">SPTK.jl</a>: <a href="http://sp-tk.sourceforge.net/">SPTK</a>のラッパー</li>
+</ul>
+
+
+<p>車輪の再発明はできるだけしたくなかったので、最初のほうはCライブラリのラッパーを書くことが多く、windowsとかめんどくさいしunix環境でしか動作確認してませんでしたが、<a href="http://qiita.com/r9y9/items/e0567e2a21a5e3c36e51">WindowsのJuliaから呼べるようなCライブラリの共有ライブラリ（DLL）を作る | qiita</a> 重い腰を上げてwindowsでも動くように頑張ったことがあり（めんどくさいとか言って手を動かさないのホント良くないですね）、登録したパッケージはすべてwindowsでも動くようになりました。めでたし。<a href="https://github.com/r9y9/WORLD.jl">WORLD.jl</a> もwindowsで動くようにしました。</p>
+
+<h2>MelGeneralizedCepstrums.jl</h2>
+
+<p>メルケプストラムの推定とか。いくつか例を載せておきます</p>
+
+<p><img class="center" src="https://raw.githubusercontent.com/r9y9/MelGeneralizedCepstrums.jl/v0.0.1/examples/cepstrum.png" title="&#34;cepstrum based envelope.&#34;" alt="&#34;cepstrum based envelope.&#34;"></p>
+
+<p><img class="center" src="https://raw.githubusercontent.com/r9y9/MelGeneralizedCepstrums.jl/v0.0.1/examples/mel-cepstrum.png" title="&#34;mel-cepstrum based envelope.&#34;" alt="&#34;mel-cepstrum based envelope.&#34;"></p>
+
+<p><img class="center" src="https://raw.githubusercontent.com/r9y9/MelGeneralizedCepstrums.jl/v0.0.1/examples/mel-generalized-cepstrum.png" title="&#34;mel-generalized-cepstrum based envelope.&#34;" alt="&#34;mel-generalized-cepstrum based envelope.&#34;"></p>
+
+<p><img class="center" src="https://raw.githubusercontent.com/r9y9/MelGeneralizedCepstrums.jl/v0.0.1/examples/lpc-cepstrum.png" title="&#34;lpc-cepstrum based envelope.&#34;" alt="&#34;lpc-cepstrum based envelope.&#34;"></p>
+
+<p>詳細はこちらの<a href="http://nbviewer.ipython.org/github/r9y9/MelGeneralizedCepstrums.jl/blob/v0.0.1/examples/Introduction%20to%20MelGeneralizedCeptrums.jl.ipynb">ノートブック</a>へ</p>
+
+<p>メルケプストラム分析、メル一般化ケプストラム分析に関しては、SPTKの実装をjuliaで再実装してみました。結果、速度は1.0 ~ 1.5倍程度でおさまって、かつ数値的な安定性は増しています（メモリ使用量はお察し）。まぁ僕が頑張ったからというわけでなく、単にJuliaの線形方程式ソルバーがSPTKのものより安定しているというのが理由です。</p>
+
+<h2>SynthesisFilters.jl</h2>
+
+<p>メルケプストラムからの波形合成とか。</p>
+
+<p>詳細はこちらの<a href="http://nbviewer.ipython.org/github/r9y9/SynthesisFilters.jl/blob/v0.0.1/examples/Introduction%20to%20SynthesisFilters.jl.ipynb">ノートブック</a>へ。いくつかの音声合成フィルタの合成音をノートブック上で比較することができます。</p>
+
+<p><a href="http://nbviewer.ipython.org/github/r9y9/SynthesisFilters.jl/blob/mix-excitation/examples/Introduction%20to%20SynthesisFilters.jl.ipynb">mixed excitation（っぽいの）を使ったバージョンのノートブック</a>: 実装に自信がないので、そのうち消すかも。聴覚的にはこっちのほうが良いです。</p>
+
+<h2>SPTK.jl</h2>
+
+<p>公式のSPTKではなく、僕が少しいじったSPTK（windowsで動くようにしたり、APIとして使いやすいように関数内でexitしてた部分を適切なreturn code返すようにしたり、swipeというF0抽出のインタフェースをexposeしたり、など）をベースにしています。</p>
+
+<p><a href="http://nbviewer.ipython.org/github/r9y9/SPTK.jl/blob/v0.0.1/examples/Introduction%20to%20SPTK.jl.ipynb">デモ用のノートブック</a></p>
+
+<p>MelGeneralizedCepstrums.jl と SynthesiFilters.jl は、ほとんどSPTK.jlで成り立っています。本質的に SPTK.jl にできて MelGeneralizedCepstrums.jl と SynthesiFilters.jlにできないことは基本的にないのですが、後者の方が、より簡単な、Julia的なインタフェースになっています。</p>
+
+<p>例えば、メルケプストラム、ケプストラム、LPCなど、スペクトルパラメータの型に応じて、適切なフィルタ係数に変換する、合成フィルタを選択するなど、multiple dispatchを有効に活用して、よりシンプルなインタフェースを提供するようにしました（というか自分がミスりたくなかったからそうしました）。</p>
+
+<h2>おわり</h2>
+
+<p>かなり適当に書きましたが、最近の進捗は、Juliaで書いていたパッケージ多少改善して、公式に登録したくらいでした。進捗まじ少なめ。あと些細なことですが、ipython（ijulia）に音埋め込むのクッソ簡単にできてびっくりしました（なんで今までやらなかったんだろう）。<a href="https://github.com/jfsantos">@jfsantos</a> に感謝</p>
+</div>
+
+
+</article>
+
+
+        <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/" data-via="r9y9" data-counturl="http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+
+
+
+
+    			</div>
+    			<footer id="footer">
+    				<p class="credit">
+  Copyright &copy; 2015 - Ryuichi YAMAMOTO. Powered by <a href="http://octopress.org">Octopress</a>
+</p>
+
+
+    			</footer>
+    			
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"], 
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+ 
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- mathjax settings end -->
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+    		</div>
+    	</section>
+  	</div>
+</body>
+</html>

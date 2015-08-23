@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: julia | LESS IS MORE]]></title>
+  <title><![CDATA[Category: Julia | LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/blog/categories/julia/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2015-04-27T00:53:21+09:00</updated>
+  <updated>2015-08-23T18:09:15+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -14,281 +14,194 @@
 
   
   <entry>
-    <title type="html"><![CDATA[ccallにおけるポインタ周りのハマりどころとその解決法]]></title>
-    <link href="http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/"/>
-    <updated>2014-12-09T02:20:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips</id>
-    <content type="html"><![CDATA[<p><a href="http://qiita.com/advent-calendar/2014/julialang">Julia Advent Calendar 2014</a> 9日目の記事です。</p>
+    <title type="html"><![CDATA[JuliaTokyo #3 Speech Signal Processing in Julia]]></title>
+    <link href="http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/"/>
+    <updated>2015-04-26T23:29:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia</id>
+    <content type="html"><![CDATA[<p><a href="http://juliatokyo.connpass.com/event/13218/">JuliaTokyo #3</a>でLT発表してきました。前回の<a href="http://juliatokyo.connpass.com/event/8010/">JuliaTokyo #2</a>でも発表したので、二回目でした。</p>
 
-<h2>はじめに</h2>
+<h2>スライド</h2>
 
-<p>CやFortranの関数をJuliaから呼ぶために使用する<code>ccall</code>において、ポインタに関係するハマりどころとその解決法を紹介します。純粋なJuliaを使っている場合にはポインタを意識することはめったにないと思うので、<code>ccall</code> を使う人（計算が重いボトルネック部分をCで書いてJuliaから呼びたい人、Cのライブラリのラッパーを書きたい/書いてる人）を主な読者と想定して記事を書きました（限定的でごめんなさい）。</p>
+<div align="center">
+<iframe src="http://r9y9.github.io//www.slideshare.net/slideshow/embed_code/key/h4geMoK1msYqdY" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="http://r9y9.github.io//www.slideshare.net/ryuichiy/juliatokyo-3-speech-signal-processing-in-julia-47403938" title="JuliaTokyo #3 Speech Signal Processing in Julia" target="_blank">JuliaTokyo #3 Speech Signal Processing in Julia</a> </strong> from <strong><a href="http://r9y9.github.io//www.slideshare.net/ryuichiy" target="_blank">Ryuichi YAMAMOTO</a></strong> </div>
+</div>
 
-<p>困った時は、公式ドキュメントの <a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/">Calling C and Fortran Code</a> を参考にしましょう。</p>
 
-<p><strong>注意</strong>: 最新版の公式ドキュメントをいくつか引用していますが、ドキュメントは日々更新されていますので、この記事を読んで頂いた時点とは異なる可能性があることにご注意ください。</p>
+<h2>コード</h2>
 
-<h2>こんなとき</h2>
+<p><a href="https://github.com/r9y9/JuliaTokyo3">https://github.com/r9y9/JuliaTokyo3</a></p>
 
-<p><code>ccall</code> を使う際に、ポインタに関する以下のような疑問を持つことがあります。</p>
+<h2>三行まとめ</h2>
+
+<p>発表の内容を三行でまとめると、</p>
 
 <ul>
-<li>ポインタを引数に持つ（例. <code>double*</code>）関数のラッピングはどうすればいいのか？</li>
-<li>構造体のポインタを引数に持つ関数のラッピングはどうすれば？</li>
-<li>ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</li>
+<li>音声ファイルの読み込み（or 書き込み）は<a href="(https://github.com/dancasimiro/WAV.jl">WAV.jl</a>を使おう</li>
+<li>基本的なデジタル信号処理は <a href="https://github.com/JuliaDSP/DSP.jl">JuliaDSP/DSP.jl</a> をチェック（※JuliaDSPにはウェーブレットとかもあるよ）</li>
+<li>音声に特化した信号処理は、<a href="https://github.com/r9y9/WORLD.jl">r9y9/WORLD.jl</a> がオススメです</li>
 </ul>
 
 
-<p>一つ目は非常に簡単で、<code>Array</code>（Cの関数が<code>double*</code>を取るならば<code>Array{Float64,1}</code>）をそのまま渡せばよいだけです。ドキュメントの<a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/#array-conversions">Array Conversions</a>にも書かれています。が、残りの二つに関してはハマりどころがあります。順に説明します。</p>
+<p>という感じです。</p>
 
-<h2>構造体のポインタを引数に持つ関数のラッピングはどうすれば？</h2>
+<p>応用例として、歌声を分離する話（<a href="https://github.com/r9y9/RobustPCA.jl">デモコード</a>）、統計的声質変換（<a href="http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/">統計的声質変換クッソムズすぎワロタ（チュートリアル編） &ndash; LESS IS MORE</a>）、画像をスペクトログラムに足しこむ話とか、さっと紹介しました。</p>
 
-<p>現状のドキュメントは少し不親切なので、引用した上で、整理します。</p>
+<h2>補足</h2>
 
-<p><a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/">Calling C and Fortran Code</a> より引用:</p>
-
-<blockquote><p>Currently, it is not possible to pass structs and other non-primitive types from Julia to C libraries. However, C functions that generate and use opaque struct types by passing pointers to them can return such values to Julia as Ptr{Void}, which can then be passed to other C functions as Ptr{Void}. Memory allocation and deallocation of such objects must be handled by calls to the appropriate cleanup routines in the libraries being used, just like in any C program.</p></blockquote>
-
-<p>冒頭に it is not possible とあります。が、決して不可能なわけではありません。上記文章の要点をまとめると、</p>
+<p>僕が使う/作ったパッケージを、あとで見返せるように最後のスライドにまとめておいたのですが、改めてここで整理しておきます。</p>
 
 <ul>
-<li>opaqueな構造体はCからJuliaへポインタとして渡すことができる</li>
-<li>そのポインタは <code>Ptr{Void}</code> としてCの関数に渡すことができる</li>
+<li><a href="https://github.com/dancasimiro/WAV.jl">dancasimiro/WAV</a> WAVファイルの読み込み</li>
+<li><a href="https://github.com/JuliaDSP/DSP.jl">JuliaDSP/DSP</a> 窓関数、スペクトログラム、デジタルフィルタ</li>
+<li><a href="https://github.com/r9y9/WORLD.jl">r9y9/WORLD</a> 音声分析・合成フレームワーク</li>
+<li><a href="https://github.com/r9y9/MelGeneralizedCepstrums.jl">r9y9/MelGeneralizedCepstrums</a> メル一般化ケプストラム分析</li>
+<li><a href="https://github.com/r9y9/SynthesisFilters.jl">r9y9/SynthesisFilters</a> メル一般化ケプストラムからの波形合成</li>
+<li><a href="https://github.com/r9y9/SPTK.jl">r9y9/SPTK</a> 音声信号処理ツールキット</li>
+<li><a href="https://github.com/r9y9/RobustPCA.jl">r9y9/RobustPCA</a> ロバスト主成分分析(歌声分離へ応用)</li>
+<li><a href="https://github.com/r9y9/REAPER.jl">r9y9/REAPER</a> 基本周波数推定</li>
+<li><a href="https://github.com/r9y9/VoiceConversion.jl">r9y9/VoiceConversion</a> 統計的声質変換</li>
 </ul>
 
 
-<p>と書かれています。つまり、一般には構造体は渡せないけどポインタ渡しはできるよ、ということです。</p>
+<p>上から順に、<del>汎用的かなーと思います</del><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>。僕が書いたパッケージの中では、<strong>WORLDのみ</strong>公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。</p>
 
-<p>じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）</p>
-
-<p>例を示します。</p>
-
-<h3>Cコード</h3>
-
-<p>```c
-typedef struct {
-   double a;
-   int b;
-} Foo;</p>
-
-<h1>構造体のポインタを引数にとる関数1</h1>
-
-<p>void print(Foo* foo) {</p>
-
-<pre><code>printf("a=%lf\n", foo-&gt;a);
-printf("b=%d\n", foo-&gt;b);
-</code></pre>
-
-<p>}</p>
-
-<h1>構造体のポインタを引数にとる関数2</h1>
-
-<p>void reset(Foo* foo) {</p>
-
-<pre><code>foo-&gt;a = 0.0;
-foo-&gt;b = 0;
-</code></pre>
-
-<p>}
-```</p>
-
-<h3>Juliaコード</h3>
-
-<p>```julia</p>
-
-<h1>Cの構造体 Foo に相当する型を宣言します</h1>
-
-<p>immutable Foo</p>
-
-<pre><code>a::Float64
-b::Int32 # cのintはjuliaのInt32に対応します
-</code></pre>
-
-<p>end</p>
-
-<p>foo = Foo(10.0, 2)</p>
-
-<h1>Cの関数に、ポインタとしてJuliaの型を渡すことができます</h1>
-
-<p>ccall(:print, &ldquo;libfoo&rdquo;, Void, (Ptr{Foo},), &amp;foo)</p>
-
-<h1>ポインタで渡す場合、Cで変更した結果はJuliaにも反映されます</h1>
-
-<p>ccall(:reset, &ldquo;libfoo&rdquo;, Void, (Ptr{Foo},), &amp;foo)</p>
-
-<h1>foo(0.0, 0) と表示される</h1>
-
-<p>println(foo)
-```</p>
-
-<p>ちなみにJuliaからCへ値渡しをしてもエラーにならないので、お気をつけください（ハマりました）。</p>
-
-<p>公式ドキュメントは不親切と言いましたが、 プルリクエスト <a href="https://github.com/JuliaLang/julia/pull/8948">update documentation for passing struct pointers to C #8948</a>（まだマージはされていない）で改善されているので、もしかするとこの記事が読まれる頃には改善されているかもしれません。</p>
-
-<p>また、値渡しを可能にしようとする動きもあります（<a href="https://github.com/JuliaLang/julia/pull/3466">RFC: Make struct passing work properly #3466</a>, <a href="https://github.com/JuliaLang/julia/pull/2818">WIP: types as C-structs #2818</a> マージ待ち）。</p>
-
-<h3>構造体渡しのまとめ</h3>
+<h2>ざっくり感想</h2>
 
 <ul>
-<li>Cの構造体に相当するJuliaの型を定義して、ポインタで渡せばOK</li>
-<li>値渡しは現状できない</li>
-<li>ポインタを受けることはできる（Ptr{Void}として受ける）</li>
+<li>＃Juliaわからん 本当に素晴らしいと思うので、僕も積極的に #Juliaわからん とつぶやいていこうと思います（詳しくは <a href="https://twitter.com/chezou">@chezou</a> さんの記事をどうぞ <a href="http://chezou.hatenablog.com/entry/2015/04/26/222518">#JuliaTokyo で #juliaわからん という雑なレポジトリを立てた話をしたら julia.tokyo ができてた  &ndash; once upon a time,</a>）。僕は、Julia に Theano が欲しいです。<code>T.grad</code> 強力すぎる</li>
+<li><code>ccall</code> かんたんとか言いましたが、ミスった書き方をしたときのエラーメッセージはあまり親切ではないので、つまずきやすいかも。僕は気合で何とかしています。</li>
+<li>Julia遅いんだけど？？？と言われたら、<a href="https://twitter.com/bicycle1885">@bicycle1885</a> さんの <a href="http://www.slideshare.net/KentaSato/whats-wrong-47403774">What&rsquo;s wrong with this Julia?</a> を投げつけようと思います。</li>
+<li>かなり聴衆が限定的になってしまう話をしてしまったので、次発表するならJulia 言語自体の話をしようかなと思いました</li>
 </ul>
 
 
-<h2>ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
+<h2>最後に</h2>
 
-<p>さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。</p>
-
-<p><code>c
-void fooo(double** input, int w, int h, double** output);
-</code></p>
-
-<p><code>input</code>は入力の行列、<code>output</code>は計算結果が格納される行列、行列のサイズは共に 列数<code>w</code>、行数<code>h</code> だと思ってください。Juliaからは <code>input::Array{Float64,2}</code> を入力として、<code>output::Array{Float64,2}</code> を得たいとします。</p>
-
-<p><code>double*</code>を引数にとる場合は<code>Array{Float64,1}</code>を渡せばよかったのに対して、<code>double**</code>を引数に取る関数に <code>Array{Float64,2}</code>や<code>Array{Array{Float64,1},1}</code>を単純に渡すだけでは、残念ながらコンパイルエラーになります。はい、すでに若干面倒ですね。。さて、どうすればいいかですが、</p>
-
-<ul>
-<li>どんな型で渡せばいいか</li>
-<li>どのように型を変換するか</li>
-<li>変換した型をどのように元に戻すか</li>
-</ul>
-
-
-<p>という三点に分けて説明します。</p>
-
-<h3>1. どんな型で渡せばいいか</h3>
-
-<p><code>Array{Ptr{Float64}}</code> で渡せばよいです。外側のArrayは、<code>ccall</code> がポインタに変換してくれるので、Juliaの型でいえば<code>Ptr{Ptr{Float64}}</code>、Cの型で言えば<code>double**</code>になるわけです。</p>
-
-<h3>2. どのように型を変換するか</h3>
-
-<p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64},1}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
-
-<p>```julia</p>
-
-<h1>Array{T,2} &ndash;> Array{Ptr{T}}</h1>
-
-<p>function ptrarray2d{T&lt;:Real}(src::Array{T,2})</p>
-
-<pre><code>dst = Array{Ptr{T}, size(src, 2))
-for i=1:size(src, 2)
-    dst[i] = pointer(src[:,i], 1) # 先頭要素のポインタを取り出す
-end
-dst
-</code></pre>
-
-<p>end
-```</p>
-
-<p>実はこの実装はバグを含んでいます。バグがあるとしたら一行しか該当する部分はないですが、</p>
-
-<p><code>julia
-dst[i] = pointer(src[:,i], 1)
-</code></p>
-
-<p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
-
-<p>Array <code>A</code>に対する syntax <code>X = A[I_1, I_2, ..., I_n]</code> は <code>X = getindex(A, I_1, I_2, ..., I_n)</code> と等価です。詳細は、<a href="http://docs.julialang.org/en/latest/manual/arrays/">Multi-dimensional Arrays</a>や<a href="http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex">標準ライブラリのドキュメント</a> を参考にしてください</p>
-
-<p>さて、正解を示します。</p>
-
-<p>```julia</p>
-
-<h1>Array{T,2} &ndash;> Array{Ptr{T}}</h1>
-
-<p>function ptrarray2d{T&lt;:Real}(src::Array{T,2})</p>
-
-<pre><code>dst = Array{Ptr{T}, size(src, 2))
-for i=1:size(src, 2)
-     dst[i] = pointer(sub(src, 1:size(src,1), i), 1)
-end
-dst
-</code></pre>
-
-<p>end
-```</p>
-
-<p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>。</p>
-
-<blockquote><p>SubArray is a specialization of AbstractArray that performs indexing by reference rather than by copying. A SubArray is created with the sub() function, which is called the same way as getindex() (with an array and a series of index arguments). The result of sub() looks the same as the result of getindex(), except the data is left in place. sub() stores the input index vectors in a SubArray object, which can later be used to index the original array indirectly.</p></blockquote>
-
-<p>引用元: <a href="http://docs.julialang.org/en/latest/manual/arrays/#implementation">Multi-dimensional Arrays</a></p>
-
-<h3>3. 変換した型をどのように元に戻すか</h3>
-
-<p>Juliaで計算結果（上の例でいう <code>double** output</code>）を受け取りたい場合、ポインタに変換した値をJuliaのArrayに戻す必要があります（必ずしもそうではないですが、まぁほぼそうでしょう）。つまり、<code>Array(Ptr{Float64},1)</code>を<code>Array{Float64,2}</code>したいわけです。幸いにも、これは<code>pointer_to_array</code>を使うと簡単にできます。コードを以下に示します。</p>
-
-<p>```julia</p>
-
-<h1>ccallを実行した後の計算結果が coutput に格納されているとします</h1>
-
-<p>coutput::Array{Ptr{Float64},1}</p>
-
-<h1>Cに渡した型 Array{Ptr{Float64},1} から Array{Float64,2}に変換</h1>
-
-<p>for i=1:length(coutput)</p>
-
-<pre><code>output[:,i] = pointer_to_array(coutput[i], size(output, 1))
-</code></pre>
-
-<p>end
-```</p>
-
-<p><code>pointer_to_array</code> は、その名前の通りの関数ですね。pointerをArrayに変換してくれます。</p>
-
-<h3>1, 2, 3 をまとめる</h3>
-
-<p>最後に、1, 2, 3の内容をまとめて、ポインタのポインタを引数にもつ関数のラッパー例を書いておきます。</p>
-
-<p>```julia
-function fooo(input::Array{Float64,2})</p>
-
-<pre><code>h, w = size(intput)
-output = Array(Float64, h, w)
-
-# C関数に渡す用の変数
-cinput::Array{Ptr{Float64}} = ptrarray2d(input)
-coutput::Array{Ptr{Float64}} = ptrarray2d(output)
-
-ccall(:fooo, "libfooo", Void,
-         (Ptr{Ptr{Float64}}, Int, Int, Ptr{Ptr{Float64}}), 
-         cinput, w, h, coutput)
-
-# coutputをJuliaのArrayに変換
-for i=1:length(coutput)
-    output[i,:] = pointer_to_array(coutput[i], h)
-end
-
-output
-</code></pre>
-
-<p>end
-```</p>
-
-<h3>ポインタのポインタまとめ</h3>
-
-<ul>
-<li><code>Array</code>のindexingはコピーを作るのである要素のポインタがほしい時は注意</li>
-<li>行/列の先頭のポインタがほしいときは <code>SubArray</code> を使いましょう</li>
-</ul>
-
-
-<h2>おわりに</h2>
-
-<p>ポインタにまつわるハマりどころとその解決法を紹介しました。今回紹介したものはすべて <a href="https://github.com/r9y9/WORLD.jl">WORLD.jl</a> という <a href="http://ml.cs.yamanashi.ac.jp/world/">音声分析変換合成システムWORLD</a> のラッパーを書いていたときに得た知見です。やっと<code>WORLD.jl</code>が安定して動くようになってきて公式パッケージにしようかなぁと考えているところですので、興味のある方はぜひ触ってみてください。</p>
+<p><a href="https://twitter.com/sorami">@sorami</a>さんを筆頭とする運営の方々、本当にありがとうございました！楽しかったです。</p>
 <div class="footnotes">
 <hr/>
 <ol>
 <li id="fn:1">
-<p>immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも <a href="https://github.com/JuliaLang/julia/pull/8948">#8948</a> にはそう書いてあります<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
-<li id="fn:2">
-<p>たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです<a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
-<li id="fn:3">
-<p>ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。<a href="#fnref:3" rev="footnote">&#8617;</a></p></li>
+<p>とスライドに書いたけど、考えなおすと、僕が思う品質の高さ順、の方が正確です、失礼しました。MelGeneneralizedCepstrumsは一番気合入れて書いたけど、ユーザーがいるかといったらいないし、RobustPCAはさっと書いただけだけど、アルゴリズムとしては汎用的だし。またRobustPCAだけ毛色が違いますが、応用例で紹介したのでリストに入れておきました。<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
 </ol>
 </div>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JuliaTokyo #2でBinDeps.jl についてLTしてきた]]></title>
+    <link href="http://r9y9.github.io/blog/2014/09/30/juliatokyo2/"/>
+    <updated>2014-09-30T00:40:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/09/30/juliatokyo2</id>
+    <content type="html"><![CDATA[<p><a href="juliatokyo.connpass.com/event/8010/">JuliaTokyo #2 &ndash; connpass</a></p>
+
+<script async class="speakerdeck-embed" data-id="21106ae0285e01327810268beacd0cf3" data-ratio="1.77777777777778" src="http://r9y9.github.io//speakerdeck.com/assets/embed.js"></script>
+
+
+<h2>発表概要</h2>
+
+<p>C/C++ライブラリのラッパー（C++は現状のJuliaでは難しいけど）を作るときに、どうやってライブラリの依存関係を管理するか？という話です。結論としては、方法はいくつかありますが　BinDeps.jl というパッケージを使うのが楽で良いですよ、ということです。Githubのいろんなリポジトリをあさった僕の経験上、BinDeps.jl はバイナリの依存関係管理におけるデファクトスタンダードな気がしています。BinDeps.jl の使い方は、既存のパッケージのコードを読みまくって学ぶのがおすすめです。</p>
+
+<p>さて、途中で書くのに疲れてしまったのですが、<a href="http://qiita.com/r9y9/items/73806e3ce7f3a372d0b3">自作のJuliaパッケージで、Cライブラリとの依存性を記述する &ndash; Qiita</a> に以前似たような内容をまとめたので、併せてどうぞ。qiitaにも書きましたが、最適化関係のプロジェクトを集めた <a href="http://www.juliaopt.org/">JuliaOpt</a> コミュニティでは、バイナリの依存関係管理にBinDeps.jlを使用することを推奨しています。</p>
+
+<h2>雑感</h2>
+
+<ul>
+<li>勉強会にはデータ分析界隈の人が多い印象。音声系の人はとても少なかった。</li>
+<li>R人気だった</li>
+<li>Go使ってる！って人と合わなかった（つらい）</li>
+<li>@show マクロ最高</li>
+<li>unicode最高</li>
+<li>懇親会では、なぜか途中から深層学習やベイズの話をしていた…</li>
+<li>いい忘れたけど僕もnightly build勢でした。毎日あたたかみのある手動pull &amp; make をしています。</li>
+<li>Julia の話ができて楽しかったので、また参加したいなー</li>
+</ul>
+
+
+<p>LTで <a href="https://github.com/chezou/MeCab.jl">MeCab.jl</a> について話をしてくれたchezouさんが、ちょうどBinDeps.jl に興味を持たれているようだったので、勉強会のあとに BinDeps.jl を使ってバイナリの管理を実装して、<a href="https://github.com/chezou/MeCab.jl/pull/2">プルリク</a>をしてみました。参考になればうれしいなーと思います。</p>
+
+<p>おしまい。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SPTKのJuliaラッパーも書いた]]></title>
+    <link href="http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/"/>
+    <updated>2014-09-15T01:25:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/IMG_0960.JPG" title="&ldquo;sea&rdquo;" ></p>
+
+<p>夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。</p>
+
+<p><a href="https://github.com/r9y9/SPTK.jl">Julia wrapper for Speech Signal Processing Toolkit (SPTK) | Github</a></p>
+
+<p>かれこれ、Go, Python, Juliaと、3つの言語でラッパーを書いてしまいました。どれだけSPTK好きなんだと。そしてどれだけ言語触ってるんだ絞れと。うーん、とはいえどれも良いところと悪いところがあってですね（何も言ってない）、難しい…</p>
+
+<p>おしまい</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia]]></title>
+    <link href="http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/"/>
+    <updated>2014-08-20T15:30:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia</id>
+    <content type="html"><![CDATA[<p>最近 <a href="julialang.org">Julia</a> で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）</p>
+
+<p><a href="https://github.com/r9y9/BNMF.jl">https://github.com/r9y9/BNMF.jl</a></p>
+
+<p>元論文:
+ <a href="http://soundlab.cs.princeton.edu/publications/2010_icml_gapnmf.pdf">Bayesian Nonparametric Matrix Factorization for Recorded Music</a>
+by Matthew D. Hoffman et al. in ICML 2010.</p>
+
+<h2>デモ</h2>
+
+<p><a href="http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb">http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb</a></p>
+
+<p>適当な音声（音楽じゃなくてごめんなさい）に対して、GaP-NMFをfittingしてみた結果のメモです。$K=100$ で始めて、100回ほどイテレーションを回すと適度な数（12くらい）にtruncateしているのがわかると思います。予めモデルの複雑度を指定しなくても、データから適当な数を自動決定してくれる、ノンパラベイズの良いところですね。</p>
+
+<h2>ハマったところ</h2>
+
+<ul>
+<li>GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら <a href="https://julia.readthedocs.org/en/latest/stdlib/base/?highlight=besselkx#Base.besselkx">besselkx</a> で、scipyで言うなら <a href="http://students.mimuw.edu.pl/~pbechler/scipy_doc/generated/scipy.special.kve.html#scipy.special.kve">scipy.special.kve</a> です。</li>
+</ul>
+
+
+<h2>雑感</h2>
+
+<ul>
+<li>MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒</li>
+<li>というかJuliaがMatlabに似すぎ？</li>
+<li>Gamma分布に従う乱数は、<a href="https://github.com/JuliaStats/Distributions.jl">Distributions,jl</a> を使えばめっちゃ簡単に生成できた。素晴らしすぎる</li>
+<li>行列演算がシンプルにかけてホント楽。pythonでもmatlabでもそうだけど（Goだとこれができないんですよ…）</li>
+<li>第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。</li>
+</ul>
+
+
+<h2>Python版と速度比較</h2>
+
+<p><a href="https://github.com/dawenl/bp_nmf/tree/master/code/gap_nmf">bp_nmf/code/gap_nmf</a> と比較します。matlabはもってないので比較対象からはずします、ごめんなさい</p>
+
+<p>Gistにベンチマークに使ったスクリプトと実行結果のメモを置いときました
+<a href="https://gist.github.com/r9y9/3d0c6a90dd155801c4c1">https://gist.github.com/r9y9/3d0c6a90dd155801c4c1</a></p>
+
+<p>結果だけ書いておくと、あらゆる現実を（ry の音声にGaP-NMFをepochs=100でfittingするのにかかった時間は、</p>
+
+<p><code>
+Julia: Mean elapsed time: 21.92968243 [sec]
+Python: Mean elapsed time: 18.3550617 [sec]
+</code></p>
+
+<p>という結果になりました。つまりJuliaのほうが1.2倍くらい遅かった（僕の実装が悪い可能性は十分ありますが）。どこがボトルネックになっているのか調べていないので、気が向いたら調べます。Juliaの方が速くなったらいいなー</p>
+
+<h2>おわりに</h2>
+
+<p>GaP-NMFの実装チャレンジは二回目でした。（たぶん）一昨年、年末に実家に帰るときに、何を思ったのか急に実装したくなって、電車の中で論文を読んで家に着くなり実装するというエクストリームわけわからんことをしていましたが、その時はNaN and Inf地獄に負けてしまいました。Pythonで書いていましたが、今見るとそのコードマジクソでした。</p>
+
+<p>そして二回目である今回、最初はmatlabコードを見ずに自力で書いていたんですが、またもやInf地獄に合いもうだめだと思って、matlabコードを写経しました。あんま成長していないようです（つらい）</p>
+
+<p>Julia歴二週間くらいですが、良い感じなので使い続けて見ようと思います。</p>
 ]]></content>
   </entry>
   
