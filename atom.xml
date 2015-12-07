@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2015-12-08T00:44:51+09:00</updated>
+  <updated>2015-12-08T00:50:33+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -194,6 +194,13 @@
 
 
 <p>解答は、各自REPLで実行して確認してみてください。長々と読んでくださりありがとうございました。</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="http://docs.julialang.org/en/release-0.4/manual/types/?highlight=typeassert#type-declarations">公式ドキュメント / Type Declarations</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
