@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Julia-Advent-Calendar-2015 | LESS IS MORE]]></title>
+  <link href="http://r9y9.github.io/blog/categories/julia-advent-calendar-2015/atom.xml" rel="self"/>
+  <link href="http://r9y9.github.io/"/>
+  <updated>2015-12-08T00:37:31+09:00</updated>
+  <id>http://r9y9.github.io/</id>
+  <author>
+    <name><![CDATA[Ryuichi YAMAMOTO]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Julia: 値と変数に対する Type Annotation の違い]]></title>
+    <link href="http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/"/>
+    <updated>2015-12-08T00:01:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations</id>
+    <content type="html"><![CDATA[<h2>はじめに</h2>
+
+<p><a href="http://qiita.com/advent-calendar/2015/julialang">Julia Advent Calendar 2015</a> 8日目の記事です。</p>
+
+<p>この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。</p>
+
+<h2>問題</h2>
+
+<p>新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。</p>
+
+<h3>A</h3>
+
+<p>```jl
+function f()</p>
+
+<pre><code>x = (1.0 + 2.0)::Int
+return x
+</code></pre>
+
+<p>end</p>
+
+<p>f()
+```</p>
+
+<h3>B</h3>
+
+<p>```jl
+function g()</p>
+
+<pre><code>x::Int = (1.0 + 2.0)
+return x
+</code></pre>
+
+<p>end</p>
+
+<p>g()
+```</p>
+
+<p>なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。</p>
+
+<p>この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。</p>
+
+<h2>A: 値に対する type annotation</h2>
+
+<p>Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「<code>(1.0 + 2.0)</code> という式を評価した値は、Int 型であることを保証する」となります。</p>
+
+<p><code>(1.0 + 2.0)</code> を評価した値は <code>3.0</code> であり、 Float64の型を持ちます。したがって <code>Float64 != Int</code> であるため、</p>
+
+<p><code>
+ERROR: TypeError: typeassert: expected Int64, got Float64
+</code></p>
+
+<p>のような typeassert のエラーが吐かれます。</p>
+
+<p><code>(1.0 + 2.0)</code>を評価した値の型は一見して明らかため、実用的な例ではありませんが、例えば関数の返り値の型は一見してわからないことがあるので、例えば以下のような書き方は有用な場合もあると思います。</p>
+
+<p><code>jl
+x = f(y)::Int
+</code></p>
+
+<h2>B: 変数に対する type annotation</h2>
+
+<p>Bの2行目では、変数に対して type annotation をしています。同じく日本語で説明すると、「<code>x</code>という変数に入る値は、Int 型であることを保証する」となります。また、値に対する annotation とは異なり<strong>スコープ</strong>を持ちます。</p>
+
+<p>前述したとおり、<code>(1.0 + 2.0)</code> を評価した値は <code>3.0</code> であり、Float64の型を持ちます。一方で、<code>x</code> は Int型の値を持つ変数として宣言されているため、この場合、Float64型である <code>(1.0 + 2.0)</code> を、Int 型に変換するような処理が<strong>暗黙的に</strong>行われます。したがって、変換可能な場合には（B の例がそうです）、エラーは起きません。暗黙的に処理が行われるというのは、知らないと予期せぬバグに遭遇することになるため、気をつける必要があります。</p>
+
+<p>では、変数に対する type annotation はどのような場合に使うかというと、あるスコープの範囲で、代入によって変数の型が変わってしまうのを防ぐために使います。ある変数の型がスコープの範囲で不変というのはコンパイラにとっては嬉しい事で、パフォーマンスの向上に繋がります。Performance tips にもありますね（参考: <a href="http://docs.julialang.org/en/release-0.4/manual/performance-tips/#avoid-changing-the-type-of-a-variable">Performance tips / Avoid changing the type of a variable</a>）</p>
+
+<h2>違いまとめ</h2>
+
+<p>ここまでの話から、違いをまとめると、以下のようになります。</p>
+
+<table>
+<thead>
+<tr>
+<th> Type annotation の種類      </th>
+<th> typeassert error　 </th>
+<th> 暗黙的な型変換　 </th>
+<th> スコープ　</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 値に対する type annotation   </td>
+<td> あり             </td>
+<td> なし           </td>
+<td> なし</td>
+</tr>
+<tr>
+<td> 変数に対する type annotation 　 </td>
+<td> なし             </td>
+<td> あり           </td>
+<td> あり</td>
+</tr>
+</tbody>
+</table>
+
+
+<br>
+
+
+<h2>最後に</h2>
+
+<p>type annotation を使うときは、値と変数に対する annotation の違いを意識して、使い分けましょう</p>
+
+<h2>問題の解答</h2>
+
+<ul>
+<li>A: typeassert に引っかかり、TypeError が吐かれる</li>
+<li>B: Int 型の 3 が返り値として得られる</li>
+</ul>
+
+
+<h2>おまけ問題</h2>
+
+<h3>1</h3>
+
+<p>```jl
+function h()</p>
+
+<pre><code>x::UInt8 = UInt8(0)
+x = Float64(0.0)
+x
+</code></pre>
+
+<p>end
+```</p>
+
+<p>```jl</p>
+
+<h1>なんと表示されるでしょうか？</h1>
+
+<p>println(typeof(h())
+```</p>
+
+<h3>2</h3>
+
+<p>```jl
+function s()</p>
+
+<pre><code>x::Int = Float64(0)
+x = UInt8(0)
+x = Float32(0.5)
+x
+</code></pre>
+
+<p>end
+```</p>
+
+<p>```jl</p>
+
+<h1>なんと表示されるでしょうか？</h1>
+
+<p>s()
+```</p>
+
+<p>解答は、各自REPLで実行して確認してみてください。長々と読んでくださりありがとうございました。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Julia: 値と変数に対する Type Annotation の違い - LESS IS MORE</title>
+  <meta name="author" content="Ryuichi YAMAMOTO">
+
+  
+  <meta name="description" content="はじめに Julia Advent Calendar 2015 8日目の記事です。 この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://r9y9.github.io/blog/2015/12/08/julia-type-annotations">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="LESS IS MORE" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"], 
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+ 
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- mathjax settings end -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body>
+	<div class="container">
+		<aside class="left">
+			<div class="inner-left">
+				<header>
+					<img src="http://www.gravatar.com/avatar/6d356017749662a0c75ca192c7c88ed6?s=200" alt="Gravatar of Ryuichi YAMAMOTO " title="Gravatar of Ryuichi YAMAMOTO" class="profilepic" />
+<hgroup>
+  <h1><a href="/">LESS IS MORE</a></h1>
+  
+    <h2 class="subtitle">fmt.Println("Hello world")</h2>
+   
+</hgroup>
+
+
+				</header>
+				<footer>
+					<p>
+	
+		<a href="http://github.com/r9y9" class="btn btn-dark">GitHub</a>
+	
+	
+		<a href="http://twitter.com/r9y9" class="btn btn-dark">Twitter</a>
+	
+</p>
+				</footer>
+			</div>
+		</aside>
+    	<section class="right">
+    		<div class="inner-right">
+    			<div id="posts">
+    			  	<article class="post">
+    
+  <header>
+    
+      <h1 class="entry-title">Julia: 値と変数に対する Type Annotation の違い</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-08T00:01:00+09:00" pubdate data-updated="true">Dec 8<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>はじめに</h2>
+
+<p><a href="http://qiita.com/advent-calendar/2015/julialang">Julia Advent Calendar 2015</a> 8日目の記事です。</p>
+
+<p>この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。</p>
+
+<h2>問題</h2>
+
+<p>新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。</p>
+
+<h3>A</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="k">function</span><span class="nf"> f</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)::</span><span class="kt">Int</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">f</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>B</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="k">function</span><span class="nf"> g</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">x</span><span class="p">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">g</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。</p>
+
+<p>この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。</p>
+
+<h2>A: 値に対する type annotation</h2>
+
+<p>Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「<code>(1.0 + 2.0)</code> という式を評価した値は、Int 型であることを保証する」となります。</p>
+
+<p><code>(1.0 + 2.0)</code> を評価した値は <code>3.0</code> であり、 Float64の型を持ちます。したがって <code>Float64 != Int</code> であるため、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="n">ERROR</span><span class="p">:</span> <span class="n">TypeError</span><span class="p">:</span> <span class="n">typeassert</span><span class="p">:</span> <span class="n">expected</span> <span class="kt">Int64</span><span class="p">,</span> <span class="n">got</span> <span class="kt">Float64</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>のような typeassert のエラーが吐かれます。</p>
+
+<p><code>(1.0 + 2.0)</code>を評価した値の型は一見して明らかため、実用的な例ではありませんが、例えば関数の返り値の型は一見してわからないことがあるので、例えば以下のような書き方は有用な場合もあると思います。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">)::</span><span class="kt">Int</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>B: 変数に対する type annotation</h2>
+
+<p>Bの2行目では、変数に対して type annotation をしています。同じく日本語で説明すると、「<code>x</code>という変数に入る値は、Int 型であることを保証する」となります。また、値に対する annotation とは異なり<strong>スコープ</strong>を持ちます。</p>
+
+<p>前述したとおり、<code>(1.0 + 2.0)</code> を評価した値は <code>3.0</code> であり、Float64の型を持ちます。一方で、<code>x</code> は Int型の値を持つ変数として宣言されているため、この場合、Float64型である <code>(1.0 + 2.0)</code> を、Int 型に変換するような処理が<strong>暗黙的に</strong>行われます。したがって、変換可能な場合には（B の例がそうです）、エラーは起きません。暗黙的に処理が行われるというのは、知らないと予期せぬバグに遭遇することになるため、気をつける必要があります。</p>
+
+<p>では、変数に対する type annotation はどのような場合に使うかというと、あるスコープの範囲で、代入によって変数の型が変わってしまうのを防ぐために使います。ある変数の型がスコープの範囲で不変というのはコンパイラにとっては嬉しい事で、パフォーマンスの向上に繋がります。Performance tips にもありますね（参考: <a href="http://docs.julialang.org/en/release-0.4/manual/performance-tips/#avoid-changing-the-type-of-a-variable">Performance tips / Avoid changing the type of a variable</a>）</p>
+
+<h2>違いまとめ</h2>
+
+<p>ここまでの話から、違いをまとめると、以下のようになります。</p>
+
+<table>
+<thead>
+<tr>
+<th> Type annotation の種類      </th>
+<th> typeassert error　 </th>
+<th> 暗黙的な型変換　 </th>
+<th> スコープ　</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 値に対する type annotation   </td>
+<td> あり             </td>
+<td> なし           </td>
+<td> なし</td>
+</tr>
+<tr>
+<td> 変数に対する type annotation 　 </td>
+<td> なし             </td>
+<td> あり           </td>
+<td> あり</td>
+</tr>
+</tbody>
+</table>
+
+
+<br>
+
+
+<h2>最後に</h2>
+
+<p>type annotation を使うときは、値と変数に対する annotation の違いを意識して、使い分けましょう</p>
+
+<h2>問題の解答</h2>
+
+<ul>
+<li>A: typeassert に引っかかり、TypeError が吐かれる</li>
+<li>B: Int 型の 3 が返り値として得られる</li>
+</ul>
+
+
+<h2>おまけ問題</h2>
+
+<h3>1</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="k">function</span><span class="nf"> h</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">x</span><span class="p">::</span><span class="n">UInt8</span> <span class="o">=</span> <span class="n">UInt8</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="c"># なんと表示されるでしょうか？</span>
+</span><span class='line'><span class="n">println</span><span class="p">(</span><span class="nb">typeof</span><span class="p">(</span><span class="n">h</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="k">function</span><span class="nf"> s</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">x</span><span class="p">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="n">UInt8</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="kt">Float32</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="c"># なんと表示されるでしょうか？</span>
+</span><span class='line'><span class="n">s</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>解答は、各自REPLで実行して確認してみてください。長々と読んでくださりありがとうございました。</p>
+</div>
+
+
+</article>
+
+
+        <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/" data-via="r9y9" data-counturl="http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+
+
+
+
+    			</div>
+    			<footer id="footer">
+    				<p class="credit">
+  Copyright &copy; 2015 - Ryuichi YAMAMOTO. Powered by <a href="http://octopress.org">Octopress</a>
+</p>
+
+
+    			</footer>
+    			
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans|Roboto:400,300' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"], 
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+ 
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- mathjax settings end -->
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44433856-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+    		</div>
+    	</section>
+  	</div>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2015-09-06T16:47:57+09:00</updated>
+  <updated>2015-12-08T00:37:31+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -12,6 +12,188 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Julia: 値と変数に対する Type Annotation の違い]]></title>
+    <link href="http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/"/>
+    <updated>2015-12-08T00:01:00+09:00</updated>
+    <id>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations</id>
+    <content type="html"><![CDATA[<h2>はじめに</h2>
+
+<p><a href="http://qiita.com/advent-calendar/2015/julialang">Julia Advent Calendar 2015</a> 8日目の記事です。</p>
+
+<p>この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。</p>
+
+<h2>問題</h2>
+
+<p>新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。</p>
+
+<h3>A</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="k">function</span><span class="nf"> f</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)::</span><span class="kt">Int</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">f</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>B</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="k">function</span><span class="nf"> g</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">x</span><span class="p">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">g</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。</p>
+
+<p>この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。</p>
+
+<h2>A: 値に対する type annotation</h2>
+
+<p>Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「<code>(1.0 + 2.0)</code> という式を評価した値は、Int 型であることを保証する」となります。</p>
+
+<p><code>(1.0 + 2.0)</code> を評価した値は <code>3.0</code> であり、 Float64の型を持ちます。したがって <code>Float64 != Int</code> であるため、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="n">ERROR</span><span class="p">:</span> <span class="n">TypeError</span><span class="p">:</span> <span class="n">typeassert</span><span class="p">:</span> <span class="n">expected</span> <span class="kt">Int64</span><span class="p">,</span> <span class="n">got</span> <span class="kt">Float64</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>のような typeassert のエラーが吐かれます。</p>
+
+<p><code>(1.0 + 2.0)</code>を評価した値の型は一見して明らかため、実用的な例ではありませんが、例えば関数の返り値の型は一見してわからないことがあるので、例えば以下のような書き方は有用な場合もあると思います。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">)::</span><span class="kt">Int</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>B: 変数に対する type annotation</h2>
+
+<p>Bの2行目では、変数に対して type annotation をしています。同じく日本語で説明すると、「<code>x</code>という変数に入る値は、Int 型であることを保証する」となります。また、値に対する annotation とは異なり<strong>スコープ</strong>を持ちます。</p>
+
+<p>前述したとおり、<code>(1.0 + 2.0)</code> を評価した値は <code>3.0</code> であり、Float64の型を持ちます。一方で、<code>x</code> は Int型の値を持つ変数として宣言されているため、この場合、Float64型である <code>(1.0 + 2.0)</code> を、Int 型に変換するような処理が<strong>暗黙的に</strong>行われます。したがって、変換可能な場合には（B の例がそうです）、エラーは起きません。暗黙的に処理が行われるというのは、知らないと予期せぬバグに遭遇することになるため、気をつける必要があります。</p>
+
+<p>では、変数に対する type annotation はどのような場合に使うかというと、あるスコープの範囲で、代入によって変数の型が変わってしまうのを防ぐために使います。ある変数の型がスコープの範囲で不変というのはコンパイラにとっては嬉しい事で、パフォーマンスの向上に繋がります。Performance tips にもありますね（参考: <a href="http://docs.julialang.org/en/release-0.4/manual/performance-tips/#avoid-changing-the-type-of-a-variable">Performance tips / Avoid changing the type of a variable</a>）</p>
+
+<h2>違いまとめ</h2>
+
+<p>ここまでの話から、違いをまとめると、以下のようになります。</p>
+
+<table>
+<thead>
+<tr>
+<th> Type annotation の種類      </th>
+<th> typeassert error　 </th>
+<th> 暗黙的な型変換　 </th>
+<th> スコープ　</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 値に対する type annotation   </td>
+<td> あり             </td>
+<td> なし           </td>
+<td> なし</td>
+</tr>
+<tr>
+<td> 変数に対する type annotation 　 </td>
+<td> なし             </td>
+<td> あり           </td>
+<td> あり</td>
+</tr>
+</tbody>
+</table>
+
+
+<br>
+
+
+<h2>最後に</h2>
+
+<p>type annotation を使うときは、値と変数に対する annotation の違いを意識して、使い分けましょう</p>
+
+<h2>問題の解答</h2>
+
+<ul>
+<li>A: typeassert に引っかかり、TypeError が吐かれる</li>
+<li>B: Int 型の 3 が返り値として得られる</li>
+</ul>
+
+
+<h2>おまけ問題</h2>
+
+<h3>1</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="k">function</span><span class="nf"> h</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">x</span><span class="p">::</span><span class="n">UInt8</span> <span class="o">=</span> <span class="n">UInt8</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="c"># なんと表示されるでしょうか？</span>
+</span><span class='line'><span class="n">println</span><span class="p">(</span><span class="nb">typeof</span><span class="p">(</span><span class="n">h</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="k">function</span><span class="nf"> s</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">x</span><span class="p">::</span><span class="kt">Int</span> <span class="o">=</span> <span class="kt">Float64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="n">UInt8</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span> <span class="o">=</span> <span class="kt">Float32</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="c"># なんと表示されるでしょうか？</span>
+</span><span class='line'><span class="n">s</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>解答は、各自REPLで実行して確認してみてください。長々と読んでくださりありがとうございました。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[pysptk: SPTKのpythonラッパーを作った (part 2)]]></title>
@@ -2891,438 +3073,6 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 <li><a href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">逆連続ウェーブレット変換による信号の再構成 &ndash; LESS IS MORE</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PythonによるニューラルネットのToyコード]]></title>
-    <link href="http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/"/>
-    <updated>2014-05-11T01:20:00+09:00</updated>
-    <id>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code</id>
-    <content type="html"><![CDATA[<p>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。</p>
-
-<p>このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/python</span>
-</span><span class='line'><span class="c"># coding: utf-8</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の</span>
-</span><span class='line'><span class="c"># デモコードです。</span>
-</span><span class='line'><span class="c"># 誤差伝搬法によってニューラルネットを学習します。</span>
-</span><span class='line'><span class="c"># XORの学習、テストの簡単なデモコードもついています</span>
-</span><span class='line'><span class="c"># 2014/05/10 Ryuichi Yamamoto</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">dsigmoid</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">y</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">NeuralNet</span><span class="p">:</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_input</span><span class="p">,</span> <span class="n">num_hidden</span><span class="p">,</span> <span class="n">num_output</span><span class="p">):</span>
-</span><span class='line'>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">        パラメータの初期化</span>
-</span><span class='line'><span class="sd">        &quot;&quot;&quot;</span>
-</span><span class='line'>        <span class="c"># 入力層から隠れ層への重み行列</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">W1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">num_input</span><span class="p">,</span> <span class="n">num_hidden</span><span class="p">))</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_hidden</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-</span><span class='line'>        <span class="c"># 隠れ層から出力層への重み行列</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">W2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">num_hidden</span><span class="p">,</span> <span class="n">num_output</span><span class="p">))</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">output_bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_output</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-</span><span class='line'>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">        前向き伝搬の計算</span>
-</span><span class='line'><span class="sd">        &quot;&quot;&quot;</span>
-</span><span class='line'>        <span class="n">h</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_bias</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W2</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_bias</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-</span><span class='line'>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">        最小化したい誤差関数</span>
-</span><span class='line'><span class="sd">        &quot;&quot;&quot;</span>
-</span><span class='line'>        <span class="n">N</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span class='line'>        <span class="n">E</span> <span class="o">=</span> <span class="mf">0.0</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-</span><span class='line'>            <span class="n">y</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-</span><span class='line'>            <span class="n">E</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">t</span><span class="p">))</span>
-</span><span class='line'>        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">E</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">epoches</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>\
-</span><span class='line'>              <span class="n">monitor_period</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-</span><span class='line'>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">        Stochastic Gradient Decent (SGD) による学習</span>
-</span><span class='line'><span class="sd">        &quot;&quot;&quot;</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epoches</span><span class="p">):</span>
-</span><span class='line'>            <span class="c"># 学習データから1サンプルをランダムに選ぶ</span>
-</span><span class='line'>            <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</span><span class='line'>            <span class="n">x</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">target</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c"># 入力から出力まで前向きに信号を伝搬</span>
-</span><span class='line'>            <span class="n">h</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_bias</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">y</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W2</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_bias</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c"># 隠れ層-&gt;出力層の重みの修正量を計算</span>
-</span><span class='line'>            <span class="n">output_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">dsigmoid</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">grad_W2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">output_delta</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c"># 隠れ層-&gt;出力層の重みを更新</span>
-</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">W2</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_W2</span>
-</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">output_bias</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">output_delta</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c"># 入力層-&gt;隠れ層の重みの修正量を計算</span>
-</span><span class='line'>            <span class="n">hidden_delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W2</span><span class="p">,</span> <span class="n">output_delta</span><span class="p">)</span> <span class="o">*</span> <span class="n">dsigmoid</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">grad_W1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">hidden_delta</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c"># 入力層-&gt;隠れ層の重みを更新</span>
-</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">W1</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_W1</span>
-</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">hidden_bias</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">hidden_delta</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c"># 現在の目的関数の値を出力</span>
-</span><span class='line'>            <span class="k">if</span> <span class="n">monitor_period</span> <span class="o">!=</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">monitor_period</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-</span><span class='line'>                <span class="k">print</span> <span class="s">&quot;Epoch </span><span class="si">%d</span><span class="s">, Cost </span><span class="si">%f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Training finished.&quot;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-</span><span class='line'>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">        出力層の最も反応するニューロンの番号を返します</span>
-</span><span class='line'><span class="sd">        &quot;&quot;&quot;</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-</span><span class='line'>    <span class="kn">import</span> <span class="nn">argparse</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&quot;Specify options&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--epoches&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;epoches&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--learning_rate&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;learning_rate&quot;</span><span class="p">,</span>\
-</span><span class='line'>                        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--hidden&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;hidden&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">nn</span> <span class="o">=</span> <span class="n">NeuralNet</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span> <span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-</span><span class='line'>    <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">nn</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">epoches</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>\
-</span><span class='line'>             <span class="n">monitor_period</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> : predicted </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/python</span>
-</span><span class='line'><span class="c"># coding: utf-8</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># MNISTを用いたニューラルネットによる手書き数字認識のデモコードです</span>
-</span><span class='line'><span class="c"># 学習方法やパラメータによりますが、だいたい 90 ~ 97% くらいの精度出ます。</span>
-</span><span class='line'><span class="c"># 使い方は、コードを読むか、</span>
-</span><span class='line'><span class="c"># python mnist_net.py -h</span>
-</span><span class='line'><span class="c"># としてください</span>
-</span><span class='line'><span class="c"># 参考までに、</span>
-</span><span class='line'><span class="c"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100</span>
-</span><span class='line'><span class="c"># とすると、テストセットに対して、93.2%の正解率です</span>
-</span><span class='line'><span class="c"># 僕の環境では、学習、認識合わせて（だいたい）5分くらいかかりました。</span>
-</span><span class='line'><span class="c"># 2014/05/10 Ryuichi Yamamoto</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="kn">import</span> <span class="n">joblib</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">cPickle</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">gzip</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">os</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 作成したニューラルネットのパッケージ</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">net</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">load_mnist_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
-</span><span class='line'>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">    MNISTのデータセットをダウンロードします</span>
-</span><span class='line'><span class="sd">    &quot;&quot;&quot;</span>
-</span><span class='line'>    <span class="c"># Download the MNIST dataset if it is not present</span>
-</span><span class='line'>    <span class="n">data_dir</span><span class="p">,</span> <span class="n">data_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span> <span class="ow">and</span> <span class="n">data_file</span> <span class="o">==</span> <span class="s">&#39;mnist.pkl.gz&#39;</span><span class="p">:</span>
-</span><span class='line'>        <span class="kn">import</span> <span class="nn">urllib</span>
-</span><span class='line'>        <span class="n">origin</span> <span class="o">=</span> <span class="s">&#39;http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz&#39;</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&#39;Downloading data from </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">origin</span>
-</span><span class='line'>        <span class="n">urllib</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">f</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">train_set</span><span class="p">,</span> <span class="n">valid_set</span><span class="p">,</span> <span class="n">test_set</span> <span class="o">=</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">train_set</span><span class="p">,</span> <span class="n">valid_set</span><span class="p">,</span> <span class="n">test_set</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">augument_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
-</span><span class='line'>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">    1次元のラベルデータを、ラベルの種類数(order)次元に拡張します</span>
-</span><span class='line'><span class="sd">    &quot;&quot;&quot;</span>
-</span><span class='line'>    <span class="n">new_labels</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-</span><span class='line'>        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">v</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span class='line'>        <span class="n">new_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_labels</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">order</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-</span><span class='line'>    <span class="kn">import</span> <span class="nn">argparse</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&quot;MNIST手書き数字認識のデモ&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--epoches&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;epoches&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--learning_rate&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;learning_rate&quot;</span><span class="p">,</span>\
-</span><span class='line'>                        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--hidden&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;hidden&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">train_set</span><span class="p">,</span> <span class="n">valid_set</span><span class="p">,</span> <span class="n">test_set</span> <span class="o">=</span> <span class="n">load_mnist_dataset</span><span class="p">(</span><span class="s">&quot;mnist.pkl.gz&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">n_labels</span> <span class="o">=</span> <span class="mi">10</span> <span class="c"># 0,1,2,3,4,5,6,7,9</span>
-</span><span class='line'>    <span class="n">n_features</span> <span class="o">=</span> <span class="mi">28</span><span class="o">*</span><span class="mi">28</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># モデルを新しく作る</span>
-</span><span class='line'>    <span class="n">nn</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">NeuralNet</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="n">n_labels</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># モデルを読み込む</span>
-</span><span class='line'>    <span class="c"># nn = joblib.load(&quot;./nn_mnist.pkl&quot;)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">nn</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">train_set</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">augument_labels</span><span class="p">(</span><span class="n">train_set</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_labels</span><span class="p">),</span>\
-</span><span class='line'>             <span class="n">args</span><span class="o">.</span><span class="n">epoches</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">monitor_period</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c">## テスト</span>
-</span><span class='line'>    <span class="n">test_data</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">test_set</span>
-</span><span class='line'>    <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">)):</span>
-</span><span class='line'>        <span class="n">results</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
-</span><span class='line'>        <span class="c"># print &quot;%d : predicted %s, expected %s&quot; % (n, results[n], labels[n])</span>
-</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;recognition rate: &quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">results</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># モデルを保存</span>
-</span><span class='line'>    <span class="n">model_filename</span> <span class="o">=</span> <span class="s">&quot;nn_mnist.pkl&quot;</span>
-</span><span class='line'>    <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">model_filename</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;The model parameters are dumped to &quot;</span> <span class="o">+</span> <span class="n">model_filename</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="https://github.com/r9y9/python-neural-net-toy-codes">https://github.com/r9y9/python-neural-net-toy-codes</a></p>
-
-<p>以下のようなコマンドを叩いて、正解率が97%くらいになるまで学習してから入力層から隠れ層への重みを可視化してみた</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100 # epochesは適当に</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="center" src="http://r9y9.github.io/images/nn_mnist_W1_100.png" title="&#34;Input to Hidden weight filters after traingned on MNIST.&#34;" alt="&#34;Input to Hidden weight filters after traingned on MNIST.&#34;"></p>
-
-<p>興味深いことに、RBMと違って重み行列の解釈はしにくい。生成モデルの尤度を最大化することと、誤差を最小化することはこんなにも違うんだなぁというこなみな感想</p>
-
-<p>RBMについては、以下へ</p>
-
-<p><a href="http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/">Restricted Boltzmann Machines with MNIST &ndash; LESS IS MORE</a></p>
-
-<p>おわり</p>
 ]]></content>
   </entry>
   
