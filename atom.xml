@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2015-12-08T00:37:31+09:00</updated>
+  <updated>2015-12-08T00:44:51+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -23,6 +23,8 @@
 <p><a href="http://qiita.com/advent-calendar/2015/julialang">Julia Advent Calendar 2015</a> 8日目の記事です。</p>
 
 <p>この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。</p>
+
+<p>記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。</p>
 
 <h2>問題</h2>
 
@@ -161,7 +163,7 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='jl'><span class='line'><span class="c"># なんと表示されるでしょうか？</span>
-</span><span class='line'><span class="n">println</span><span class="p">(</span><span class="nb">typeof</span><span class="p">(</span><span class="n">h</span><span class="p">())</span>
+</span><span class='line'><span class="n">println</span><span class="p">(</span><span class="nb">typeof</span><span class="p">(</span><span class="n">h</span><span class="p">()))</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
