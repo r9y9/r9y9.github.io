@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2015-12-23T01:12:48+09:00</updated>
+  <updated>2015-12-23T02:15:40+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -24,7 +24,7 @@
 
 <p><a href="http://qiita.com/advent-calendar/2015/julialang">Julia Advent Calendar 2015</a> 22日目の記事です。</p>
 
-<p>Julia の C++ FFI (Fourign Function Interface) である <a href="https://github.com/Keno/Cxx.jl">Cxx.jl</a> をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。
+<p>Julia の C++ FFI (Foreign Function Interface) である <a href="https://github.com/Keno/Cxx.jl">Cxx.jl</a> をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。
 Cxx.jl の動作原理については、僕の理解が不十分なため簡単にしか紹介できませんが、そもそも使ったことがある人が稀だと思われるので、感想程度でも役に立てば幸いです。</p>
 
 <h2>Cxx.jl とは</h2>
