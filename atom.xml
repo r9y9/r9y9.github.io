@@ -4,7 +4,7 @@
   <title><![CDATA[LESS IS MORE]]></title>
   <link href="http://r9y9.github.io/atom.xml" rel="self"/>
   <link href="http://r9y9.github.io/"/>
-  <updated>2015-12-23T01:04:45+09:00</updated>
+  <updated>2015-12-23T01:12:48+09:00</updated>
   <id>http://r9y9.github.io/</id>
   <author>
     <name><![CDATA[Ryuichi YAMAMOTO]]></name>
@@ -147,7 +147,7 @@ Cxx.jl の動作原理については、僕の理解が不十分なため簡単�
 
 <p>さて、ようやくビルドもできて、ここからは使ってしばらくしての感想です。</p>
 
-<h3>本当にそのまま C++ が書ける</h3>
+<h3>Julia 上で C++ の syntax がそのまま使える</h3>
 
 <p>まず、簡単に Cxx.jl の機能を挙げると、重要なのは</p>
 
@@ -244,7 +244,7 @@ Cxx.jl の動作原理については、僕の理解が不十分なため簡単�
 
 <h2>Cxx.jl を使って作った成果物</h2>
 
-<p>まとめに入る前に、Cxx.jl を使って遊ぶ過程で作った成果物を、簡単なコメント付きではっておきます。</p>
+<p>まとめに入る前に、Cxx.jl を使って遊ぶ過程で作った成果物を、簡単なコメント付きで紹介します。</p>
 
 <h3>OpenCV.jl</h3>
 
