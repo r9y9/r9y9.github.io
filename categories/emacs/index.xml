@@ -11,10 +11,10 @@
     
     <item>
       <title>Emacs themes - Sublime Text風のcolor themeが気に入った</title>
-      <link>http://r9y9.github.io/2013/12/23/emacs-sublime-text-like-theme/</link>
+      <link>http://r9y9.github.io/blog/2013/12/23/emacs-sublime-text-like-theme/</link>
       <pubDate>Mon, 23 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/12/23/emacs-sublime-text-like-theme/</guid>
+      <guid>http://r9y9.github.io/blog/2013/12/23/emacs-sublime-text-like-theme/</guid>
       <description>&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/emacs-sublime-text-like-theme.png &#34;Spolsky, Sublime Text風のcolor theme on Ubuntu 12.04&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
 &lt;p&gt;Sublime Textのデフォルトの色が結構好きなので、emacsも同じようにしたいと思ってた。今まではずっと&lt;a href=&#34;http://ethanschoonover.com/solarized&#34;&gt;solarized&lt;/a&gt;を使ってたけど、個人的にはsublime textっぽい方が好き。&lt;/p&gt;
@@ -29,10 +29,10 @@
     
     <item>
       <title>emacs24をUbuntu12.04 にインストールする方法</title>
-      <link>http://r9y9.github.io/2013/08/11/emacs-24-for-ubuntu12-04/</link>
+      <link>http://r9y9.github.io/blog/2013/08/11/emacs-24-for-ubuntu12-04/</link>
       <pubDate>Sun, 11 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/08/11/emacs-24-for-ubuntu12-04/</guid>
+      <guid>http://r9y9.github.io/blog/2013/08/11/emacs-24-for-ubuntu12-04/</guid>
       <description>
 
 &lt;h2 id=&#34;コマンド:2750c6de75a653c405082b529157711c&#34;&gt;コマンド&lt;/h2&gt;

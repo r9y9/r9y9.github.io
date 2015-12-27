@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-07-29">July 29, 2014</time></span>
+			<section itemprop="entry-text">
+				
+
+<p>いまいち成果出ないので気分転換にブログをだらだら書いてみるテストです。</p>
+
+<h2 id="まえがき:77474c7b3ef8467b79027776aa355213">まえがき</h2>
+
+<p>半年くらい前に、某深層学習に興味を持ってやってみようかなーと思っていた時期があって、その時にGoでいくつかニューラルネットを書きました（参考：<a href="http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/">Restricted Boltzmann Machines with MNIST - LESS IS MORE</a>、<a href="https://github.com/r9y9/nnet">githubに上げたコード</a>）。なぜGoだったかというと、僕がGoに興味を持ち始めていたからというのが大きいです。Goを知る前は、たくさん計算するようなコードを書くときはC++だったけれど、C++は色々つらいものがあるし、GoはC++には速度面で劣るもののそこそこ速く、かつスクリプト的な書きやすさもあります。C++のデバッグやメンテに費やす膨大な時間に比べれば、計算時間が1.5~2倍に増えるくらい気にしないというスタンスで、僕はC++のかわりGoを使おうとしていました（※今でも間違っているとは思いませんが、とはいえ、厳しいパフォーマンスを求められる場合や既存の資産を有効活用したい場合など、必要な場面ではC++を書いています）。</p>
+
+<h2 id="goで機械学習:77474c7b3ef8467b79027776aa355213">Goで機械学習</h2>
+
+<p>僕は機械学習がけっこう好きなので、Goでコード書くかーと思っていたのですが、結果としてまったく捗りませんでした。ニューラルネットをてきとーに書いたくらいです。</p>
+
+<p>検索するとわかりますが、現状、他の主流な言語に比べて圧倒的に数値計算のライブラリが少ないです。特に、線形代数、行列演算のデファクト的なライブラリがないのはつらいです。いくつか代表的なものをあげます。</p>
+
+<ul>
+<li><a href="https://github.com/skelterjohn/go.matrix">skelterjohn/go.matrix</a> - もうまったくメンテされていないし、たぶんするつもりはないと思います。使い勝手は、僕にとってはそんなに悪くなかった（試しに<a href="https://gist.github.com/r9y9/9030922">NMF</a>を書いてみた）ですが、実装は純粋なGoで書かれていて、GPUを使って計算するのが流行りな時代では、例えば大きなニューラルネットをパラメータを変えながら何度も学習するのにはしんどいと思いました。</li>
+<li><a href="https://github.com/gonum/matrix">gonum/matrix</a> - 比較的最近出てきたライブラリで、<a href="https://code.google.com/p/biogo/">biogo</a> から行列演算に関する部分を切り出して作られたもののようです。行列演算の内部でblasを使っていて、かつ将来的にはcublasにも対応したい、みたいな投稿をGoogle Groupsで見たのもあって、半年くらい前にはgoで行列演算を行うならこのライブラリを使うべきだと判断しました（以前けっこう調べました：<a href="http://qiita.com/r9y9/items/7f93a89e3a88bb4ed263">gonum/matrix のデザインコンセプトに関するメモ - Qiita</a>）。しかし、それほど頻繁にアップデートされていませんし、機能もまだ少ないです。</li>
+</ul>
+
+<p>自分で作るかー、という考えも生まれなかったことはないですが、端的に言えばそれを行うだけのやる気がありませんでした。まぁ本当に必要だったら多少難しくてもやるのですが、ほら、僕達にはpythonがあるじゃないですか…</p>
+
+<h2 id="pythonで機械学習:77474c7b3ef8467b79027776aa355213">Pythonで機械学習</h2>
+
+<p><a href="https://www.google.co.jp/search?q=python+%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&amp;oq=python+%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92">python 機械学習 - Google 検索</a> 約 119,000 件（2014/07/29現在）</p>
+
+<p>もうみんなやってますよね。</p>
+
+<p><a href="https://www.google.co.jp/search?q=Golang+%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&amp;oq=Golang+%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92">Golang 機械学習 - Google 検索</a> 約 9,130 件（2014/07/29現在）</p>
+
+<p>いつかpythonのように増えるんでしょうか。正直に言って、わかりません（正確には、あんま考えていませんごめんなさい）</p>
+
+<p>さて、僕もよくpython使います。機械学習のコードを書くときは、だいたいpythonを使うようになりました（昔はC++で書いていました）。なぜかって、numpy, scipyのおかげで、とても簡潔に、かつ上手く書けばそこそこ速く書けるからです。加えて、ライブラリがとても豊富なんですよね、機械学習にかかわらず。numpy, scipyに加えて、matplotlibという優秀な描画ライブラリがあるのが、僕がpythonを使う大きな理由になっています。</p>
+
+<p>pythonの機械学習ライブラリは、<a href="http://scikit-learn.org/stable/">scikit-learn</a> が特に有名でしょうか。僕もちょいちょい使います。使っていて最近おどろいたのは、scipy.mixtureには通常のGMMだけでなく変分GMM、無限混合GMMも入っていることですよね。自分で実装しようとしたら、たぶんとても大変です。昔変分GMMの更新式を導出したことがありますが、何度も心が折れそうになりました。いやー、いい時代になったもんですよ…（遠い目</p>
+
+<h2 id="pythonでニューラルネット-pylearn2を使おう:77474c7b3ef8467b79027776aa355213">Pythonでニューラルネット（pylearn2を使おう）</h2>
+
+<p>Deep何とかを含め流行りのニューラルネットが使える機械学習のライブラリでは、僕は <a href="https://github.com/lisa-lab/pylearn2">pylearn2</a> がよさ気だなーと思っています。理由は、高速かつ拡張性が高いからです。pylearn2は、数学的な記号表現からGPUコード（GPUがなければCPU向けのコード）を生成するmathコンパイラ <a href="https://github.com/Theano/Theano">Theano</a> で書かれているためpythonでありながら高速で、かつ機械学習に置いて重要なコンポーネントであるデータ、モデル、アルゴリズムが上手く分離されて設計されているのがいいところかなと思います（全部ごっちゃに書いていませんか？僕はそうですごめんなさい。データはともかくモデルと学習を上手く切り分けるの難しい）。A Machine Learning library based on Theanoとのことですが、Deep learningで有名な <a href="http://lisa.iro.umontreal.ca/index_en.html">lisa lab</a> 発ということもあり、ニューラルネットのライブラリという印象が少し強いですね。</p>
+
+<p>一つ重要なこととして、このライブラリはかなり研究者向けです。ブラックボックスとして使うのではなく、中身を読んで必要に応じて自分で拡張を書きたい人に向いているかと思います。</p>
+
+<p><a href="http://arxiv.org/pdf/1308.4214v1.pdf">Ian J. Goodfellow, David Warde-Farley, Pascal Lamblin, Vincent Dumoulin, Mehdi Mirza, Razvan Pascanu, James Bergstra, Frédéric Bastien, and Yoshua Bengio. “Pylearn2: a machine learning research library”. arXiv preprint arXiv:1308.4214</a></p>
+
+<p>↑の論文のIntroductionの部分に、その旨は明記されています。と、論文のリンクを貼っておいてなんですが、<a href="http://www-etud.iro.umontreal.ca/~goodfeli/">Ian Goodfellow</a> のホームページにもっと簡潔に書いてありました。以下、引用します。</p>
+
+<blockquote>
+<p>I wrote most of Pylearn2, a python library designed to make machine learning research convenient. Its mission is to provide a toolbox of interchangeable parts that provide a lot of flexibility for setting up machine learning experiments, providing enough extensibility that pretty much any research idea is feasible within the context of the library. This is in contrast to other machine learning libraries such as scikits-learn that are designed to be black boxes that just work. Think of pylearn2 as user friendly for machine learning researchers and scikits-learn as user friendly for developers that want to apply machine learning.</p>
+</blockquote>
+
+<p>pylearn2では、Multi-layer Perceptron (MLP)、Deep Bolztmann Machines (DBM)、新しいものでMaxout Network等、手軽に試すことができます（まぁゆうて計算はめっちゃ時間かかるけど）。先述の通りmathコンパイラの <a href="https://github.com/Theano/Theano">Theano</a> を使って実装されているので、GPUがある場合はGPUを使って計算してくれます。環境構築に関しては、今はAWSという便利なサービスがあるので、GPUを持っていなくてもウェブ上でポチポチしてるだけで簡単にGPU環境を構築できます（参考：<a href="http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/">Pylearn2, theanoをEC2 g2.x2large で動かす方法 - LESS IS MORE</a>）。本当にいい時代になったものですね（二回目</p>
+
+<p>pylearn2、コードやドキュメント、活発なgithubでの開発、議論を見ていて、素晴らしいなーと思いました（まだ使い始めたばかりの僕の意見にあまり信憑性はないのですが…）。僕もこれくらい汎用性、拡張性のあるコードを書きたい人生でした…（自分の書いたニューラルネットのコードを見ながら）</p>
+
+<h2 id="pylearn2は遅いって:77474c7b3ef8467b79027776aa355213">Pylearn2は遅いって？</h2>
+
+<p>本当に速さを求めるなら <a href="https://code.google.com/p/cuda-convnet2/">cuda-convnet2</a> や <a href="http://caffe.berkeleyvision.org/">Cafee</a>、もしくは直でcudaのAPIをだな…と言いたいところですが、確かにpylearn2は他の深層学習のライブラリに比べて遅いようです。最近、Convolutional Neural Network (CNN) に関するベンチマークがGithubで公開されていました。</p>
+
+<p><a href="https://github.com/soumith/convnet-benchmarks">soumith/convnet-benchmarks</a></p>
+
+<p>現時点でまだ work in progressと書いてありますが、参考になると思います。優劣の問題ではなく、必要に応じて使い分ければいいと僕は思っています。</p>
+
+<p>さてさて、本当はここから僕が書いたGoのニューラルネットのコードがいかにクソかという話を書こうかと思ったのですが、長くなったのでまた今度にします。</p>
+
+<h2 id="まとめ:77474c7b3ef8467b79027776aa355213">まとめ</h2>
+
+<ul>
+<li>Goでニューラルネットとか機械学習をやるのは現状しんどいし（<a href="https://github.com/sjwhitworth/golearn">golearn</a>とかあるけど、まだまだearly stage）、おとなしくpython使うのが無難</li>
+<li>pythonはやっぱり楽。ライブラリ豊富だし。ニューラルネットならpylearn2がおすすめ。ただし自分で拡張まで書きたい人向けです。</li>
+</ul>
+
+<p>散々pythonいいよゆうてますが、どちらかといえば僕はGoの方が好きです。機械学習には現状pythonを使うのがいいんじゃないかなーと思って、Goでニューラルネットを書いていた時を思い出しながらつらつらと書いてみました。</p>
+
+<p>おわり。</p>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

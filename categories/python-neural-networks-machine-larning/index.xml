@@ -11,10 +11,10 @@
     
     <item>
       <title>PythonによるニューラルネットのToyコード</title>
-      <link>http://r9y9.github.io/2014/05/11/python-feed-forward-neural-network-toy-code/</link>
+      <link>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</link>
       <pubDate>Sun, 11 May 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
+      <guid>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
       <description>&lt;p&gt;1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。&lt;/p&gt;
 
 &lt;p&gt;このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）&lt;/p&gt;

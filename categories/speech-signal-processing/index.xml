@@ -11,10 +11,10 @@
     
     <item>
       <title>SPTKをC&#43;&#43;から使えるようにする</title>
-      <link>http://r9y9.github.io/2013/12/01/sptk-with-waf/</link>
+      <link>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</link>
       <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/12/01/sptk-with-waf/</guid>
+      <guid>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</guid>
       <description>
 
 &lt;p&gt;&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;音声信号処理ツールキットSPTK&lt;/a&gt;をC++から使おうと思ったら意外とハマってしまったので、&lt;/p&gt;
@@ -133,10 +133,10 @@
     
     <item>
       <title>MFCCの計算方法についてメモ</title>
-      <link>http://r9y9.github.io/2013/11/24/mfcc-calculation-memo/</link>
+      <link>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</link>
       <pubDate>Sun, 24 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/11/24/mfcc-calculation-memo/</guid>
+      <guid>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</guid>
       <description>
 
 &lt;h2 id=&#34;mfcc-とは:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;MFCC とは&lt;/h2&gt;
@@ -197,10 +197,10 @@
     
     <item>
       <title>スペクトログラムとメル周波数スペクトログラムの可視化</title>
-      <link>http://r9y9.github.io/2013/11/16/mel-spectrogram/</link>
+      <link>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</link>
       <pubDate>Sat, 16 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/11/16/mel-spectrogram/</guid>
+      <guid>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</guid>
       <description>
 
 &lt;p&gt;やったので貼っとくだけ&lt;/p&gt;

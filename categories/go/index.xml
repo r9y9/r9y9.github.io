@@ -11,10 +11,10 @@
     
     <item>
       <title>Goに関する良記事</title>
-      <link>http://r9y9.github.io/2014/02/02/ready-to-use-go/</link>
+      <link>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</link>
       <pubDate>Sun, 02 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/02/02/ready-to-use-go/</guid>
+      <guid>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</guid>
       <description>
 
 &lt;p&gt;いくつか見つけたのでメモる&lt;/p&gt;
@@ -56,10 +56,10 @@
     
     <item>
       <title>Goで信号処理</title>
-      <link>http://r9y9.github.io/2014/01/27/start-coding-go-msptools/</link>
+      <link>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</link>
       <pubDate>Mon, 27 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/01/27/start-coding-go-msptools/</guid>
+      <guid>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</guid>
       <description>
 
 &lt;p&gt;最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う&lt;/p&gt;

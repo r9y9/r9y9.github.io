@@ -11,10 +11,10 @@
     
     <item>
       <title>MigMix 1P, Migu 1M, Rictyとか綺麗なフォントをインストールするスクリプト </title>
-      <link>http://r9y9.github.io/2013/07/27/mig-ricty-font-install/</link>
+      <link>http://r9y9.github.io/blog/2013/07/27/mig-ricty-font-install/</link>
       <pubDate>Sat, 27 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/07/27/mig-ricty-font-install/</guid>
+      <guid>http://r9y9.github.io/blog/2013/07/27/mig-ricty-font-install/</guid>
       <description>&lt;p&gt;家、大学、会社、レンタルサーバ、デスクトップからノートPCや仮想マシンなど、色んな環境があると思う。それぞれで、別個に環境を整えるのってとてもめんどくさい。.zshrc等の設定ファイルは、github置いておいて各環境でpullすればいい。けど、fontはデカイし、Rictyに関してはライセンスの関係もあってフォント自体を配布することは禁止されているので、github等にアップロードしておくのはいい方法ではない。&lt;/p&gt;
 
 &lt;p&gt;というわけで、Rictyを含め僕が使ってるフォントをインストールするスクリプトを書いた。&lt;/p&gt;

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>Multinomial distributionとCategorical distributionの違い - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Multinomial distributionとCategorical distributionの違い</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2013-07-31">July 31, 2013</time></span>
+			<section itemprop="entry-text">
+				
+
+<p>些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。</p>
+
+<p>結論としては、多項分布のn=1の特殊な場合がカテゴリカル分布ですよってこと。以下少しまとめる。</p>
+
+<p>分布を仮定する離散変数をカテゴリと呼ぶとして、</p>
+
+<ul>
+<li>多項分布は、n回試行したときに各カテゴリが何回出るかを表す確率分布</li>
+<li>多項分布は、二項分布を多カテゴリに一般化したもの</li>
+<li>カテゴリカル分布は、多項分布のn=1の場合に相当する</li>
+<li>カテゴリカル分布は、ベルヌーイ分布を多カテゴリに一般化したもの</li>
+</ul>
+
+<p>以上</p>
+
+<p>nokunoさんによるこの記事→ <a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定</a> は、多項分布というよりカテゴリカル分布の話。本文には書いてあるけどね。あと最尤推定の結果はどちらにしろ同じなんだけどね</p>
+
+<h2 id="導出メモ:0a072047d6415735dde5d330d6716778">導出メモ</h2>
+
+<p>一応最尤推定をやってみる。前回のナイーブベイズのメモの時は省略したので。入力の変数を $ Y = {y_n}_{n=1}^{N} $ とする。</p>
+
+<h3 id="カテゴリカル分布:0a072047d6415735dde5d330d6716778">カテゴリカル分布</h3>
+
+<div>
+\begin{align}
+p(l) = \pi_{l}, \hspace{2mm} \sum_{l=1}^{L}\pi_{l} = 1
+\end{align}
+</div>
+
+<p>ここで、$\pi_{l}$がパラメータ、lはカテゴリの番号</p>
+
+<h3 id="最尤推定:0a072047d6415735dde5d330d6716778">最尤推定</h3>
+
+<p>尤度関数を立てて、最大化することでパラメータを求める。各データは独立に生起すると仮定すると、尤度関数は以下のようになる。</p>
+
+<div>
+\begin{align}
+L(Y; \theta) = \prod_{n=1}^{N} \pi_{y_{n}}
+\end{align}
+</div>
+
+<p>$\theta$はパラメータの集合ということで。</p>
+
+<p>ラベルlの出現回数を$N_{l} = \sum_{n=1}^{N} \delta (y_{n} = l)$とすると、次のように書き直せる。</p>
+
+<div>
+\begin{align}
+L(Y; \theta) = \prod_{l=1}^{L}\pi_{l}^{N_{l}}
+\end{align}
+</div>
+
+<p>よって、対数尤度は以下のようになる。</p>
+
+<div>
+\begin{align}
+\log L(Y; \theta) = \sum_{l=1}^{L} N_{l}\log \pi_{l}
+\end{align}
+</div>
+
+<h3 id="ラグランジュの未定乗数法で解く:0a072047d6415735dde5d330d6716778">ラグランジュの未定乗数法で解く</h3>
+
+<p>nokunoさんの記事の通りだけど、一応手でも解いたのでメモ</p>
+
+<div>
+\begin{align}
+G = \sum_{l=1}^{L} N_{l}\log \pi_{l} + \lambda \Bigl[ \sum_{l=1}^{L} \pi_{l} -1) \Bigr]
+\end{align}
+</div>
+として、
+
+<div>
+\begin{align}
+\frac{\partial G}{\partial \pi_{l}} = \frac{N_{l}}{\pi_{l}} + \lambda  =0
+\end{align}
+</div>
+
+<p>よって、</p>
+
+<div>
+\begin{align}
+\pi_{l} = -\frac{N_{l}}{\lambda}
+\end{align}
+</div>
+
+<p>ここで、以下の制約条件に代入すると、</p>
+
+<div>
+\begin{align}
+\sum_{l=1}^{L} \pi_{l} = 1
+\end{align}
+</div>
+
+<p>$\lambda = -N$となることがわかるので、求めたかったパラメータは以下のようになる</p>
+
+<div>
+\begin{align}
+\pi_{l} = \frac{N_{l}}{N}
+\end{align}
+</div>
+
+<p>カテゴリの頻度を計算するだけ、カンタン！！</p>
+
+<h2 id="参考:0a072047d6415735dde5d330d6716778">参考</h2>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Categorical_distribution">Categorical distribution - Wikipedia</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Multinomial_distribution">Multinomial distribution - Wikipedia</a></li>
+<li><a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定 - nokunoの日記</a></li>
+<li><a href="http://d.hatena.ne.jp/sleepy_yoshi/20111107/p1">多項分布の最尤推定とMAP推定 - 睡眠時間？</a></li>
+<li><a href="http://lef-t.blogspot.jp/2013/02/categorical-distribution-wikipedia-free.html">Categorical distribution - Researcher&rsquo;s Eye</a></li>
+</ul>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Multinomial distributionとCategorical distributionの違い" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

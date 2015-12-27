@@ -11,10 +11,10 @@
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ（チュートリアル編）</title>
-      <link>http://r9y9.github.io/2014/11/12/statistical-voice-conversion-code/</link>
+      <link>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</link>
       <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/11/12/statistical-voice-conversion-code/</guid>
+      <guid>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
       <description>
 
 &lt;h2 id=&#34;はじめに:17c5c8e90f37fec202473edd8829bd90&#34;&gt;はじめに&lt;/h2&gt;
@@ -370,10 +370,10 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ（実装の話）</title>
-      <link>http://r9y9.github.io/2014/07/13/statistical-voice-conversion-wakaran/</link>
+      <link>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</link>
       <pubDate>Sun, 13 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/07/13/statistical-voice-conversion-wakaran/</guid>
+      <guid>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</guid>
       <description>
 
 &lt;p&gt;2014/07/28 追記：&lt;br /&gt;
@@ -747,10 +747,10 @@ class TrajectoryGMMMap(GMMMap):
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ</title>
-      <link>http://r9y9.github.io/2014/07/05/statistical-voice-conversion-muzui/</link>
+      <link>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</link>
       <pubDate>Sat, 05 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/07/05/statistical-voice-conversion-muzui/</guid>
+      <guid>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</guid>
       <description>
 
 &lt;h2 id=&#34;2014-10-12-追記:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;2014/10/12 追記&lt;/h2&gt;

@@ -11,10 +11,10 @@
     
     <item>
       <title>マルコフ確率場 (MRF) と条件付き確率場 (CRF) の違い</title>
-      <link>http://r9y9.github.io/2014/03/01/difference-between-mrf-and-crf/</link>
+      <link>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</link>
       <pubDate>Sat, 01 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/03/01/difference-between-mrf-and-crf/</guid>
+      <guid>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</guid>
       <description>
 
 &lt;p&gt;一番の違いは、生成モデルか識別モデルか、ということ。それぞれ、&lt;/p&gt;

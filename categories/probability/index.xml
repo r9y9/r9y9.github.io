@@ -11,10 +11,10 @@
     
     <item>
       <title>Multinomial distributionとCategorical distributionの違い</title>
-      <link>http://r9y9.github.io/2013/07/31/multinomial-categorical-diff/</link>
+      <link>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</link>
       <pubDate>Wed, 31 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/07/31/multinomial-categorical-diff/</guid>
+      <guid>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</guid>
       <description>
 
 &lt;p&gt;些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。&lt;/p&gt;

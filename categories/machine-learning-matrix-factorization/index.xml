@@ -11,10 +11,10 @@
     
     <item>
       <title>NMFで音源分離を試してみる</title>
-      <link>http://r9y9.github.io/2014/10/19/nmf-music-source-separation/</link>
+      <link>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</link>
       <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/10/19/nmf-music-source-separation/</guid>
+      <guid>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</guid>
       <description>
 
 &lt;p&gt;ずーーっと前に、 &lt;a href=&#34;http://r9y9.github.io/blog/2013/07/27/nmf-euclid/&#34;&gt;NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE&lt;/a&gt; で実際に実装してみてやってみると書いていたのに、まったくやっていなかったことに気づいたのでやりました。&lt;/p&gt;
@@ -57,10 +57,10 @@ end
     
     <item>
       <title>NMFアルゴリズムの導出（ユークリッド距離版）</title>
-      <link>http://r9y9.github.io/2013/07/27/nmf-euclid/</link>
+      <link>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</link>
       <pubDate>Sat, 27 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/07/27/nmf-euclid/</guid>
+      <guid>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</guid>
       <description>
 
 &lt;h2 id=&#34;はじめに:c8e0452ca4c557f980fa2fd4512b7ed4&#34;&gt;はじめに&lt;/h2&gt;

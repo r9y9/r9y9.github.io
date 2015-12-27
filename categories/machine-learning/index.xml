@@ -11,10 +11,10 @@
     
     <item>
       <title>Naive Bayesの復習（導出編）</title>
-      <link>http://r9y9.github.io/2013/07/28/naive-bayes-formulation/</link>
+      <link>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</link>
       <pubDate>Sun, 28 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/07/28/naive-bayes-formulation/</guid>
+      <guid>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</guid>
       <description>
 
 &lt;p&gt;すぐ忘れるのでメモ。ナイーブベイズの学習アルゴリズムの導出とか、そもそもナイーブベイズが定番過ぎて意外とやったことなかった気もするので、復習がてらやってみた。&lt;/p&gt;

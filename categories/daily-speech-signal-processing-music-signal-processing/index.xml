@@ -11,10 +11,10 @@
     
     <item>
       <title>簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい</title>
-      <link>http://r9y9.github.io/2013/10/15/signal-processing-library/</link>
+      <link>http://r9y9.github.io/blog/2013/10/15/signal-processing-library/</link>
       <pubDate>Tue, 15 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/10/15/signal-processing-library/</guid>
+      <guid>http://r9y9.github.io/blog/2013/10/15/signal-processing-library/</guid>
       <description>
 
 &lt;p&gt;音声を使ったアプリケーションが作りたい、例えば自分の声を誰かの声に変えたい、自動で音痴補正したい、関西弁のゆっくりちゃん作りたい、ギターエフェクト作りたい、とか思う人も少なくないんじゃないかと思う。&lt;/p&gt;

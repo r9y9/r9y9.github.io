@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>SPTKをC&#43;&#43;から使えるようにする - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">SPTKをC&#43;&#43;から使えるようにする</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2013-12-01">December 01, 2013</time></span>
+			<section itemprop="entry-text">
+				
+
+<p><a href="http://sp-tk.sourceforge.net/">音声信号処理ツールキットSPTK</a>をC++から使おうと思ったら意外とハマってしまったので、</p>
+
+<ul>
+<li>C++から使えるようにC++コンパイラでコンパイルできるようにした</li>
+<li>使いやすいようにwafを組み込みんだ</li>
+</ul>
+
+<p>リポジトリ: <a href="https://github.com/r9y9/SPTK">https://github.com/r9y9/SPTK</a></p>
+
+<p>というわけで、使い方について簡単に書いておく</p>
+
+<h1 id="sptk-について:34e531958872c5182bd9245e8d99ab9c">SPTK について</h1>
+
+<ul>
+<li>SPTKを使うと何ができるか: <a href="http://aidiary.hatenablog.com/entry/20120701/1341126474">SPTKの使い方 (1) インストール・波形描画・音声再生 | 人工知能に関する断創録</a></li>
+<li>SPTKとは: <a href="[http://sp-tk.sourceforge.net/]">Speech Signal Processing Toolkit (SPTK)</a></li>
+</ul>
+
+<h1 id="sptk-with-waf:34e531958872c5182bd9245e8d99ab9c">SPTK with waf</h1>
+
+<p><a href="https://github.com/r9y9/SPTK">SPTK with waf</a>は、SPTKをwafでビルド管理できるようにしたものです。</p>
+
+<ul>
+<li>SPTKを共有ライブラリとしてインストールできます。</li>
+<li>C、C++の好きな方でコンパイルできます。</li>
+<li>wafが使えます（速い、出力がキレイ）</li>
+<li>自分のC、C++コードからSPTKのメソッドを呼べます。</li>
+<li>コマンドラインツールはインストールされません。</li>
+</ul>
+
+<p>コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。</p>
+
+<h1 id="環境:34e531958872c5182bd9245e8d99ab9c">環境</h1>
+
+<ul>
+<li>Unix系</li>
+</ul>
+
+<p>Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み</p>
+
+<h1 id="sptkのインストール:34e531958872c5182bd9245e8d99ab9c">SPTKのインストール</h1>
+
+<p>リポジトリをクローンしたあと、</p>
+
+<h2 id="build:34e531958872c5182bd9245e8d99ab9c">Build</h2>
+
+<pre><code> ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2 id="build-with-clang:34e531958872c5182bd9245e8d99ab9c">Build with clang++</h2>
+
+<pre><code> CXX=clang++ ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2 id="build-with-gcc:34e531958872c5182bd9245e8d99ab9c">Build with gcc</h2>
+
+<pre><code> git checkout c
+ ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2 id="build-with-clang-1:34e531958872c5182bd9245e8d99ab9c">Build with clang</h2>
+
+<pre><code> git checkout c
+ CC=clang ./waf configure &amp;&amp; ./waf
+</code></pre>
+
+<h2 id="install:34e531958872c5182bd9245e8d99ab9c">Install</h2>
+
+<pre><code> sudo ./waf install
+</code></pre>
+
+<ul>
+<li>Include files: <code>/usr/local/include/SPTK</code></li>
+<li>Library: <code>/usr/local/lib/SPTK</code></li>
+<li>Pkg-config: <code>/usr/local/lib/pkgconfig</code></li>
+</ul>
+
+<p>オリジナルのSPTKとはインストール場所が異なります（オリジナルは、<code>/usr/local/SPTK</code>）</p>
+
+<h1 id="sptkを使ってコードを書く:34e531958872c5182bd9245e8d99ab9c">SPTKを使ってコードを書く</h1>
+
+<p><code>&lt;SPTK/SPTK.h&gt;</code> をインクルードして、好きな関数を呼ぶ</p>
+
+<p>コンパイルは、例えば以下のようにする</p>
+
+<pre><code> g++ test.cpp `pkg-config SPTK --cflags --libs`
+</code></pre>
+
+<p>面倒なので、example/ 内のコードを修正して使う（wafを使おう）のがおすすめです。</p>
+
+<p><br/></p>
+
+<h1 id="きっかけ:34e531958872c5182bd9245e8d99ab9c">きっかけ</h1>
+
+<ul>
+<li>SPTKはコマンドラインツールだと思ってたけど、どうやらSPTK.hをインクルードすれば一通りのツールを使えるらしい</li>
+<li>SPTK.hをインクルードして使う方法のマニュアルが見つからない…</li>
+<li>SPTKはC言語で書かれてるし、C++から使うの地味にめんどくさい</li>
+</ul>
+
+<h1 id="c-から簡単に使いたかった:34e531958872c5182bd9245e8d99ab9c">C++から簡単に使いたかった</h1>
+
+<ul>
+<li>gccやclangだけじゃなくg++やclang++でコンパイルできるようにしよう</li>
+<li>自分のコードのビルド管理にはwafを使ってるし、wafで管理できるようにしてしまおう</li>
+<li>waf素晴らしいしな （参考: <a href="http://d.hatena.ne.jp/tanakh/20100212">waf チュートリアル | 純粋関数型雑記帳 </a>）</li>
+</ul>
+
+<h1 id="最後に:34e531958872c5182bd9245e8d99ab9c">最後に</h1>
+
+<p>SPTKもwafも素晴らしいので積極的に使おう＾＾</p>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="SPTKをC&#43;&#43;から使えるようにする" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

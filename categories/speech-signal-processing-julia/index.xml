@@ -11,10 +11,10 @@
     
     <item>
       <title>最近の音声信号処理遊びの進捗</title>
-      <link>http://r9y9.github.io/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
+      <link>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
       <pubDate>Sun, 23 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
       <description>
 
 &lt;h2 id=&#34;hello:b1293c38eb762e796bd8325101b228bb&#34;&gt;hello&lt;/h2&gt;
@@ -75,10 +75,10 @@
     
     <item>
       <title>SPTKのJuliaラッパーも書いた</title>
-      <link>http://r9y9.github.io/2014/09/15/sptk-for-julia/</link>
+      <link>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</link>
       <pubDate>Mon, 15 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/09/15/sptk-for-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</guid>
       <description>&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/IMG_0960.JPG &#34;sea&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
 &lt;p&gt;夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。&lt;/p&gt;

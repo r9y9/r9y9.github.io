@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>PythonによるニューラルネットのToyコード - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">PythonによるニューラルネットのToyコード</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-05-11">May 11, 2014</time></span>
+			<section itemprop="entry-text">
+				<p>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。</p>
+
+<p>このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）</p>
+
+<pre><code class="language-python">#!/usr/bin/python
+# coding: utf-8
+
+# ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の
+# デモコードです。
+# 誤差伝搬法によってニューラルネットを学習します。
+# XORの学習、テストの簡単なデモコードもついています
+# 2014/05/10 Ryuichi Yamamoto
+
+import numpy as np
+
+def sigmoid(x):
+    return 1.0 / (1.0 + np.exp(-x))
+
+def dsigmoid(y):
+    return y * (1.0 - y)
+
+class NeuralNet:
+    def __init__(self, num_input, num_hidden, num_output):
+        &quot;&quot;&quot;
+        パラメータの初期化
+        &quot;&quot;&quot;
+        # 入力層から隠れ層への重み行列
+        self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden))
+        self.hidden_bias = np.ones(num_hidden, dtype=float)
+        # 隠れ層から出力層への重み行列
+        self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output))
+        self.output_bias = np.ones(num_output, dtype=float)
+
+    def forward(self, x):
+        &quot;&quot;&quot;
+        前向き伝搬の計算
+        &quot;&quot;&quot;
+        h = sigmoid(np.dot(self.W1.T, x) + self.hidden_bias)
+        return sigmoid(np.dot(self.W2.T, h) + self.output_bias)
+
+    def cost(self, data, target):
+        &quot;&quot;&quot;
+        最小化したい誤差関数
+        &quot;&quot;&quot;
+        N = data.shape[0]
+        E = 0.0
+        for i in range(N):
+            y, t = self.forward(data[i]), target[i]
+            E += np.sum((y - t) * (y - t))
+        return 0.5 * E / float(N)
+
+    def train(self, data, target, epoches=30000, learning_rate=0.1,\
+              monitor_period=None):
+        &quot;&quot;&quot;
+        Stochastic Gradient Decent (SGD) による学習
+        &quot;&quot;&quot;
+        for epoch in range(epoches):
+            # 学習データから1サンプルをランダムに選ぶ
+            index = np.random.randint(0, data.shape[0])
+            x, t = data[index], target[index]
+
+            # 入力から出力まで前向きに信号を伝搬
+            h = sigmoid(np.dot(self.W1.T, x) + self.hidden_bias)
+            y = sigmoid(np.dot(self.W2.T, h) + self.output_bias)
+
+            # 隠れ層-&gt;出力層の重みの修正量を計算
+            output_delta = (y - t) * dsigmoid(y)
+            grad_W2 = np.dot(np.atleast_2d(h).T, np.atleast_2d(output_delta))
+
+            # 隠れ層-&gt;出力層の重みを更新
+            self.W2 -= learning_rate * grad_W2
+            self.output_bias -= learning_rate * output_delta
+
+            # 入力層-&gt;隠れ層の重みの修正量を計算
+            hidden_delta = np.dot(self.W2, output_delta) * dsigmoid(h)
+            grad_W1 = np.dot(np.atleast_2d(x).T, np.atleast_2d(hidden_delta))
+            
+            # 入力層-&gt;隠れ層の重みを更新
+            self.W1 -= learning_rate * grad_W1
+            self.hidden_bias -= learning_rate * hidden_delta
+
+            # 現在の目的関数の値を出力
+            if monitor_period != None and epoch % monitor_period == 0:
+                print &quot;Epoch %d, Cost %f&quot; % (epoch, self.cost(data, target))
+
+        print &quot;Training finished.&quot;
+
+    def predict(self, x):
+        &quot;&quot;&quot;
+        出力層の最も反応するニューロンの番号を返します
+        &quot;&quot;&quot;
+        return np.argmax(self.forward(x))
+
+if __name__ == &quot;__main__&quot;:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=&quot;Specify options&quot;)
+    parser.add_argument(&quot;--epoches&quot;, dest=&quot;epoches&quot;, type=int, required=True)
+    parser.add_argument(&quot;--learning_rate&quot;, dest=&quot;learning_rate&quot;,\
+                        type=float, default=0.1)
+    parser.add_argument(&quot;--hidden&quot;, dest=&quot;hidden&quot;, type=int, default=20)
+    args = parser.parse_args()
+
+    nn = NeuralNet(2, args.hidden, 1)
+
+    data = np.array([[0, 0], [0 ,1], [1, 0], [1, 1]])
+    target = np.array([0, 1, 1, 0])
+
+    nn.train(data, target, args.epoches, args.learning_rate,\
+             monitor_period=1000)
+
+    for x in data:
+        print &quot;%s : predicted %s&quot; % (x, nn.forward(x))
+</code></pre>
+
+<pre><code class="language-python">#!/usr/bin/python
+# coding: utf-8
+
+# MNISTを用いたニューラルネットによる手書き数字認識のデモコードです
+# 学習方法やパラメータによりますが、だいたい 90 ~ 97% くらいの精度出ます。
+# 使い方は、コードを読むか、
+# python mnist_net.py -h
+# としてください
+# 参考までに、
+# python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100
+# とすると、テストセットに対して、93.2%の正解率です
+# 僕の環境では、学習、認識合わせて（だいたい）5分くらいかかりました。
+# 2014/05/10 Ryuichi Yamamoto
+
+import numpy as np
+from sklearn.externals import joblib
+import cPickle
+import gzip
+import os
+
+# 作成したニューラルネットのパッケージ
+import net
+
+def load_mnist_dataset(dataset):
+    &quot;&quot;&quot;
+    MNISTのデータセットをダウンロードします
+    &quot;&quot;&quot;
+    # Download the MNIST dataset if it is not present
+    data_dir, data_file = os.path.split(dataset)
+    if (not os.path.isfile(dataset)) and data_file == 'mnist.pkl.gz':
+        import urllib
+        origin = 'http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz'
+        print 'Downloading data from %s' % origin
+        urllib.urlretrieve(origin, dataset)
+
+    f = gzip.open(dataset, 'rb')
+    train_set, valid_set, test_set = cPickle.load(f)
+    f.close()
+
+    return train_set, valid_set, test_set
+
+def augument_labels(labels, order):
+    &quot;&quot;&quot;
+    1次元のラベルデータを、ラベルの種類数(order)次元に拡張します
+    &quot;&quot;&quot;
+    new_labels = []
+    for i in range(labels.shape[0]):
+        v = np.zeros(order)
+        v[labels[i]] = 1
+        new_labels.append(v)
+    
+    return np.array(new_labels).reshape((labels.shape[0], order))        
+
+if __name__ == &quot;__main__&quot;:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=&quot;MNIST手書き数字認識のデモ&quot;)
+    parser.add_argument(&quot;--epoches&quot;, dest=&quot;epoches&quot;, type=int, required=True)
+    parser.add_argument(&quot;--learning_rate&quot;, dest=&quot;learning_rate&quot;,\
+                        type=float, default=0.1)
+    parser.add_argument(&quot;--hidden&quot;, dest=&quot;hidden&quot;, type=int, default=100)
+    args = parser.parse_args()
+
+    train_set, valid_set, test_set = load_mnist_dataset(&quot;mnist.pkl.gz&quot;)
+    n_labels = 10 # 0,1,2,3,4,5,6,7,9
+    n_features = 28*28
+
+    # モデルを新しく作る
+    nn = net.NeuralNet(n_features, args.hidden, n_labels)
+
+    # モデルを読み込む
+    # nn = joblib.load(&quot;./nn_mnist.pkl&quot;)
+
+    nn.train(train_set[0], augument_labels(train_set[1], n_labels),\
+             args.epoches, args.learning_rate, monitor_period=2000)
+
+    ## テスト
+    test_data, labels = test_set
+    results = np.arange(len(test_data), dtype=np.int)
+    for n in range(len(test_data)):
+        results[n] = nn.predict(test_data[n])
+        # print &quot;%d : predicted %s, expected %s&quot; % (n, results[n], labels[n])
+    print &quot;recognition rate: &quot;, (results == labels).mean()
+    
+    # モデルを保存
+    model_filename = &quot;nn_mnist.pkl&quot;
+    joblib.dump(nn, model_filename, compress=9)
+    print &quot;The model parameters are dumped to &quot; + model_filename
+</code></pre>
+
+<p><a href="https://github.com/r9y9/python-neural-net-toy-codes">https://github.com/r9y9/python-neural-net-toy-codes</a></p>
+
+<p>以下のようなコマンドを叩いて、正解率が97%くらいになるまで学習してから入力層から隠れ層への重みを可視化してみた</p>
+
+<pre><code class="language-bash"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100 # epochesは適当に
+</code></pre>
+
+<div align="center"><img src="/images/nn_mnist_W1_100.png "Input to Hidden weight filters after traingned on MNIST."" class="image"></div>
+
+<p>興味深いことに、RBMと違って重み行列の解釈はしにくい。生成モデルの尤度を最大化することと、誤差を最小化することはこんなにも違うんだなぁというこなみな感想</p>
+
+<p>RBMについては、以下へ</p>
+
+<p><a href="http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/">Restricted Boltzmann Machines with MNIST - LESS IS MORE</a></p>
+
+<p>おわり</p>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="PythonによるニューラルネットのToyコード" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

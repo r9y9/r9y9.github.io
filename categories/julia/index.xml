@@ -11,10 +11,10 @@
     
     <item>
       <title>ccallにおけるポインタ周りのハマりどころとその解決法</title>
-      <link>http://r9y9.github.io/2014/12/09/julia-advent-calender-2014-poiner-tips/</link>
+      <link>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</link>
       <pubDate>Tue, 09 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/12/09/julia-advent-calender-2014-poiner-tips/</guid>
+      <guid>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</guid>
       <description>
 
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2014/julialang&#34;&gt;Julia Advent Calendar 2014&lt;/a&gt; 9日目の記事です。&lt;/p&gt;

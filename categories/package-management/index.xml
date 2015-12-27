@@ -11,10 +11,10 @@
     
     <item>
       <title>apt-getでコマンドがインストールできるか確認する方法</title>
-      <link>http://r9y9.github.io/2013/08/12/apt-commend-check/</link>
+      <link>http://r9y9.github.io/blog/2013/08/12/apt-commend-check/</link>
       <pubDate>Mon, 12 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/08/12/apt-commend-check/</guid>
+      <guid>http://r9y9.github.io/blog/2013/08/12/apt-commend-check/</guid>
       <description>
 
 &lt;p&gt;apt-cacheを使えばいい、なんてことは誰でも知ってると思うけど、apt-cache search ってすると、コマンド名だけじゃなくコマンドの説明文も一緒に検索されてしまって、都合が悪い場合がある。&lt;/p&gt;

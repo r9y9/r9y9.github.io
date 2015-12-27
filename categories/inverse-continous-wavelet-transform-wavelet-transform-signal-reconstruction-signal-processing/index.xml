@@ -11,10 +11,10 @@
     
     <item>
       <title>逆連続ウェーブレット変換による信号の再構成</title>
-      <link>http://r9y9.github.io/2013/10/21/signal-reconstruction-using-invere-cwt/</link>
+      <link>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</link>
       <pubDate>Mon, 21 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/10/21/signal-reconstruction-using-invere-cwt/</guid>
+      <guid>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</guid>
       <description>
 
 &lt;p&gt;やったのでメモ。おそらく正しくできたと思う。結果貼っとく。ウェーブレットの参考は以下の文献&lt;/p&gt;

@@ -11,10 +11,10 @@
     
     <item>
       <title>Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</title>
-      <link>http://r9y9.github.io/2015/12/22/cxx-jl/</link>
+      <link>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</link>
       <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2015/12/22/cxx-jl/</guid>
+      <guid>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</guid>
       <description>
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/opencvjl_demo.jpg &#34;OpenCV.jl based on Cxx.jl&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
@@ -243,10 +243,10 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
     
     <item>
       <title>Julia: 値と変数に対する Type Annotation の違い</title>
-      <link>http://r9y9.github.io/2015/12/08/julia-type-annotations/</link>
+      <link>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</link>
       <pubDate>Tue, 08 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2015/12/08/julia-type-annotations/</guid>
+      <guid>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
       <description>
 
 &lt;h2 id=&#34;はじめに:05f0d6745bdfc575870e417c91be03ad&#34;&gt;はじめに&lt;/h2&gt;
@@ -394,10 +394,10 @@ s()
     
     <item>
       <title>pysptk: SPTKのpythonラッパーを作った (part 2)</title>
-      <link>http://r9y9.github.io/2015/09/06/pysptk/</link>
+      <link>http://r9y9.github.io/blog/2015/09/06/pysptk/</link>
       <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2015/09/06/pysptk/</guid>
+      <guid>http://r9y9.github.io/blog/2015/09/06/pysptk/</guid>
       <description>
 
 &lt;p&gt;2015/09/05:&lt;/p&gt;
@@ -447,10 +447,10 @@ s()
     
     <item>
       <title>最近の音声信号処理遊びの進捗</title>
-      <link>http://r9y9.github.io/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
+      <link>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
       <pubDate>Sun, 23 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
       <description>
 
 &lt;h2 id=&#34;hello:b1293c38eb762e796bd8325101b228bb&#34;&gt;hello&lt;/h2&gt;
@@ -511,10 +511,10 @@ s()
     
     <item>
       <title>JuliaTokyo #3 Speech Signal Processing in Julia</title>
-      <link>http://r9y9.github.io/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</link>
+      <link>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</link>
       <pubDate>Sun, 26 Apr 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</guid>
       <description>
 
 &lt;p&gt;&lt;a href=&#34;http://juliatokyo.connpass.com/event/13218/&#34;&gt;JuliaTokyo #3&lt;/a&gt;でLT発表してきました。前回の&lt;a href=&#34;http://juliatokyo.connpass.com/event/8010/&#34;&gt;JuliaTokyo #2&lt;/a&gt;でも発表したので、二回目でした。&lt;/p&gt;
@@ -587,10 +587,10 @@ s()
     
     <item>
       <title>ccallにおけるポインタ周りのハマりどころとその解決法</title>
-      <link>http://r9y9.github.io/2014/12/09/julia-advent-calender-2014-poiner-tips/</link>
+      <link>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</link>
       <pubDate>Tue, 09 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/12/09/julia-advent-calender-2014-poiner-tips/</guid>
+      <guid>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</guid>
       <description>
 
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2014/julialang&#34;&gt;Julia Advent Calendar 2014&lt;/a&gt; 9日目の記事です。&lt;/p&gt;
@@ -823,10 +823,10 @@ end
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ（チュートリアル編）</title>
-      <link>http://r9y9.github.io/2014/11/12/statistical-voice-conversion-code/</link>
+      <link>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</link>
       <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/11/12/statistical-voice-conversion-code/</guid>
+      <guid>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
       <description>
 
 &lt;h2 id=&#34;はじめに:17c5c8e90f37fec202473edd8829bd90&#34;&gt;はじめに&lt;/h2&gt;
@@ -1182,10 +1182,10 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
     
     <item>
       <title>NMFで音源分離を試してみる</title>
-      <link>http://r9y9.github.io/2014/10/19/nmf-music-source-separation/</link>
+      <link>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</link>
       <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/10/19/nmf-music-source-separation/</guid>
+      <guid>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</guid>
       <description>
 
 &lt;p&gt;ずーーっと前に、 &lt;a href=&#34;http://r9y9.github.io/blog/2013/07/27/nmf-euclid/&#34;&gt;NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE&lt;/a&gt; で実際に実装してみてやってみると書いていたのに、まったくやっていなかったことに気づいたのでやりました。&lt;/p&gt;
@@ -1228,10 +1228,10 @@ end
     
     <item>
       <title>JuliaTokyo #2でBinDeps.jl についてLTしてきた</title>
-      <link>http://r9y9.github.io/2014/09/30/juliatokyo2/</link>
+      <link>http://r9y9.github.io/blog/2014/09/30/juliatokyo2/</link>
       <pubDate>Tue, 30 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/09/30/juliatokyo2/</guid>
+      <guid>http://r9y9.github.io/blog/2014/09/30/juliatokyo2/</guid>
       <description>
 
 &lt;p&gt;&lt;a href=&#34;juliatokyo.connpass.com/event/8010/&#34;&gt;JuliaTokyo #2 - connpass&lt;/a&gt;&lt;/p&gt;
@@ -1265,10 +1265,10 @@ end
     
     <item>
       <title>SPTKのJuliaラッパーも書いた</title>
-      <link>http://r9y9.github.io/2014/09/15/sptk-for-julia/</link>
+      <link>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</link>
       <pubDate>Mon, 15 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/09/15/sptk-for-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</guid>
       <description>&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/IMG_0960.JPG &#34;sea&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
 &lt;p&gt;夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。&lt;/p&gt;
@@ -1283,10 +1283,10 @@ end
     
     <item>
       <title>最高の夏</title>
-      <link>http://r9y9.github.io/2014/09/01/summer/</link>
+      <link>http://r9y9.github.io/blog/2014/09/01/summer/</link>
       <pubDate>Mon, 01 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/09/01/summer/</guid>
+      <guid>http://r9y9.github.io/blog/2014/09/01/summer/</guid>
       <description>
 
 &lt;div align=&#34;center&#34;&gt;
@@ -1302,10 +1302,10 @@ end
     
     <item>
       <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</title>
-      <link>http://r9y9.github.io/2014/08/20/gap-nmf-julia/</link>
+      <link>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/08/20/gap-nmf-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
       <description>
 
 &lt;p&gt;最近 &lt;a href=&#34;julialang.org&#34;&gt;Julia&lt;/a&gt; で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）&lt;/p&gt;
@@ -1365,10 +1365,10 @@ Python: Mean elapsed time: 18.3550617 [sec]
     
     <item>
       <title>夏休みと人生</title>
-      <link>http://r9y9.github.io/2014/08/20/life/</link>
+      <link>http://r9y9.github.io/blog/2014/08/20/life/</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/08/20/life/</guid>
+      <guid>http://r9y9.github.io/blog/2014/08/20/life/</guid>
       <description>&lt;p&gt;&lt;div align=&#34;center&#34;&gt;
 &lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p&gt;&lt;a href=&#34;http://t.co/pm6uDKoAg6&#34;&gt;pic.twitter.com/pm6uDKoAg6&lt;/a&gt;&lt;/p&gt;&amp;mdash; ノッツ@ソラミちゃんの唄②発売中 (@knotscream) &lt;a href=&#34;https://twitter.com/knotscream/statuses/501511644359303168&#34;&gt;August 18, 2014&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
@@ -1385,10 +1385,10 @@ Python: Mean elapsed time: 18.3550617 [sec]
     
     <item>
       <title>SPTKのPythonラッパーを書いた</title>
-      <link>http://r9y9.github.io/2014/08/10/sptk-from-python/</link>
+      <link>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</link>
       <pubDate>Sun, 10 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/08/10/sptk-from-python/</guid>
+      <guid>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</guid>
       <description>
 
 &lt;h2 id=&#34;2015-09-06-追記:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;2015/09/06 追記&lt;/h2&gt;
@@ -1429,10 +1429,10 @@ Python: Mean elapsed time: 18.3550617 [sec]
     
     <item>
       <title>Tokyo.Scipyに参加してきた</title>
-      <link>http://r9y9.github.io/2014/08/05/tokyo-scipy/</link>
+      <link>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</link>
       <pubDate>Tue, 05 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/08/05/tokyo-scipy/</guid>
+      <guid>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</guid>
       <description>
 
 &lt;h2 id=&#34;tokyo-scipy-https-github-com-tokyo-scipy-archive:76a6885c113a3b13302a6640948e7e8f&#34;&gt;&lt;a href=&#34;https://github.com/tokyo-scipy/archive&#34;&gt;Tokyo.SciPy&lt;/a&gt;&lt;/h2&gt;

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">音声分析変換合成システムWORLDのGoラッパーを書いた</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-03-22">March 22, 2014</time></span>
+			<section itemprop="entry-text">
+				
+
+<h2 id="音声分析変換合成システムworld:bec113e130e13c2ead8f40ee7cfa5228">音声分析変換合成システムWORLD</h2>
+
+<p>WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ</p>
+
+<p><a href="http://ml.cs.yamanashi.ac.jp/world/">http://ml.cs.yamanashi.ac.jp/world/</a></p>
+
+<p>オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ</p>
+
+<h2 id="go-world:bec113e130e13c2ead8f40ee7cfa5228">GO-WORLD</h2>
+
+<p><a href="https://github.com/r9y9/go-world">https://github.com/r9y9/go-world</a></p>
+
+<p>使い方について、ほんの少し解説を書きます</p>
+
+<p>※ubuntu12.04でのみ動作確認してます。</p>
+
+<h2 id="準備:bec113e130e13c2ead8f40ee7cfa5228">準備</h2>
+
+<h3 id="1-worldのインストール:bec113e130e13c2ead8f40ee7cfa5228">1. WORLDのインストール</h3>
+
+<p>まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました</p>
+
+<p><a href="https://github.com/r9y9/world">https://github.com/r9y9/world</a></p>
+
+<pre><code class="language-bash"> ./waf configure &amp;&amp; ./waf
+ sudo ./waf install
+</code></pre>
+
+<p>でインストールできます。</p>
+
+<p>なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…</p>
+
+<h3 id="2-go-worldのインストール:bec113e130e13c2ead8f40ee7cfa5228">2. GO-WORLDのインストール</h3>
+
+<pre><code class="language-bash">go get github.com/r9y9/go-world
+</code></pre>
+
+<p>簡単ですね！</p>
+
+<h2 id="使い方:bec113e130e13c2ead8f40ee7cfa5228">使い方</h2>
+
+<h3 id="1-インポートする:bec113e130e13c2ead8f40ee7cfa5228">1. インポートする</h3>
+
+<pre><code class="language-go">import &quot;github.com/r9y9/go-world&quot;
+</code></pre>
+
+<h3 id="2-worldのインスタンスを作る:bec113e130e13c2ead8f40ee7cfa5228">2. worldのインスタンスを作る</h3>
+
+<pre><code class="language-go">w := world.New(sampleRate, framePeriod) // e.g. (44100, 5)
+</code></pre>
+
+<h3 id="3-好きなworldのメソッドを呼ぶ:bec113e130e13c2ead8f40ee7cfa5228">3. 好きなworldのメソッドを呼ぶ</h3>
+
+<h4 id="基本周波数の推定-dio:bec113e130e13c2ead8f40ee7cfa5228">基本周波数の推定: Dio</h4>
+
+<pre><code class="language-go">timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used
+</code></pre>
+
+<h4 id="スペクトル包絡の推定-star:bec113e130e13c2ead8f40ee7cfa5228">スペクトル包絡の推定: Star</h4>
+
+<pre><code class="language-go">spectrogram := w.Star(input, timeAxis, f0)
+</code></pre>
+
+<h4 id="励起信号の推定-platinum:bec113e130e13c2ead8f40ee7cfa5228">励起信号の推定: Platinum</h4>
+
+<pre><code class="language-go">residual := w.Platinum(input, timeAxis, f0, spectrogram)
+</code></pre>
+
+<h4 id="パラメータから音声の再合成-synthesis:bec113e130e13c2ead8f40ee7cfa5228">パラメータから音声の再合成: Synthesis</h4>
+
+<pre><code class="language-go">synthesized := w.Synthesis(f0, spectrogram, residual, len(input))
+</code></pre>
+
+<h2 id="使い方例:bec113e130e13c2ead8f40ee7cfa5228">使い方例.</h2>
+
+<p>音声（wavファイル）を分析して、パラメータから音声を再合成する例を紹介します。80行弱と少し長いですがはっつけておきます</p>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;flag&quot;
+	&quot;fmt&quot;
+	&quot;github.com/mjibson/go-dsp/wav&quot;
+	&quot;github.com/r9y9/go-world&quot;
+	&quot;log&quot;
+	&quot;os&quot;
+)
+
+var defaultDioOption = world.DioOption{
+	F0Floor:          80.0,
+	F0Ceil:           640.0,
+	FramePeriod:      5,
+	ChannelsInOctave: 4.0,
+	Speed:            6,
+}
+
+// 音声を基本周波数、スペクトル包絡、励起信号の三つに分解したあと、再合成します
+func worldExample(input []float64, sampleRate int) []float64 {
+	w := world.New(sampleRate, defaultDioOption.FramePeriod)
+
+	// 1. Fundamental frequency
+	timeAxis, f0 := w.Dio(input, defaultDioOption)
+
+	// 2. Spectral envelope
+	spectrogram := w.Star(input, timeAxis, f0)
+
+	// 3. Excitation spectrum
+	residual := w.Platinum(input, timeAxis, f0, spectrogram)
+
+	// 4. Synthesis
+	return w.Synthesis(f0, spectrogram, residual, len(input))
+}
+
+// 音声を基本周波数、スペクトル包絡、非周期成分の三つに分解したあと、再合成します
+func worldExampleAp(input []float64, sampleRate int) []float64 {
+	w := world.New(sampleRate, defaultDioOption.FramePeriod)
+
+	// 1. Fundamental frequency
+	timeAxis, f0 := w.Dio(input, defaultDioOption)
+
+	// 2. Spectral envelope
+	spectrogram := w.Star(input, timeAxis, f0)
+
+	// 3. Apiriodiciy
+	apiriodicity, targetF0 := w.AperiodicityRatio(input, f0)
+
+	// 4. Synthesis
+	return w.SynthesisFromAperiodicity(f0, spectrogram, apiriodicity, targetF0, len(input))
+}
+
+func GetMonoDataFromWavData(data [][]int) []float64 {
+	y := make([]float64, len(data))
+	for i, val := range data {
+		y[i] = float64(val[0])
+	}
+	return y
+}
+
+func main() {
+	ifilename := flag.String(&quot;i&quot;, &quot;default.wav&quot;, &quot;Input filename&quot;)
+	flag.Parse()
+
+	// Read wav data
+	file, err := os.Open(*ifilename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	w, werr := wav.ReadWav(file)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+	input := GetMonoDataFromWavData(w.Data)
+	sampleRate := int(w.SampleRate)
+
+	synthesized := worldExample(input, sampleRate)
+	// synthesized := worldExampleAp(input, sampleRate)
+
+	for i, val := range synthesized {
+		fmt.Println(i, val)
+	}
+}
+</code></pre>
+
+<p>Goだとメモリ管理きにしなくていいしそこそこ速いし読みやすいし書きやすいし楽でいいですね（信者</p>
+
+<h2 id="おわりに:bec113e130e13c2ead8f40ee7cfa5228">おわりに</h2>
+
+<ul>
+<li>GoはC++ほど速くはないですが、C++の何倍も書きやすいし読みやすい（メンテしやすい）ので、個人的にオススメです（パフォーマンスが厳しく要求される場合には、C++の方がいいかもしれません）</li>
+<li>WORLD良いソフトウェアなので使いましょう</li>
+</ul>
+
+<h2 id="ちなみに:bec113e130e13c2ead8f40ee7cfa5228">ちなみに</h2>
+
+<p>元はと言えば、オレオレ基本周波数推定（YINもどき）が微妙に精度悪くて代替を探していたとき、</p>
+
+<ul>
+<li>SPTKのRAPTかSWIPE使おうかな…</li>
+<li>RAPTもSWIPEもSPTK.hにインタフェースがない…</li>
+<li>うわRAPTのコード意味わからん</li>
+<li>SWIPEのコードまじ謎</li>
+<li>後藤さんのPreFest実装しよう</li>
+<li>あれ上手くいかない…orz</li>
+<li>どうしようかな…</li>
+</ul>
+
+<p>となっていたときに、森勢先生が書いたと思われる以下の文献を見つけて、</p>
+
+<p><a href="http://crestmuse.jp/handbookMI/pdf/2_2_PitchExtraction_Morise.pdf">2-2 基本周波数推定（歌声研究に関する視点から）</a></p>
+
+<blockquote>
+<p>本方法は，低域に雑音が存在する音声に対する推定は困難であるが，低域の雑音が存在しない音声の場合，SWIPE′ や NDF と実質的に同等の性能を達成しつつ，計算時間を SWIPE′の <sup>1</sup>&frasl;<sub>42</sub>, NDF の <sup>1</sup>&frasl;<sub>80</sub> にまで低減可能である．</p>
+</blockquote>
+
+<p>あぁworld使おう（白目</p>
+
+<p>となり、ラッパーを書くにいたりましたとさ、おしまい</p>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="音声分析変換合成システムWORLDのGoラッパーを書いた" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

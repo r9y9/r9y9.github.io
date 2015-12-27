@@ -11,10 +11,10 @@
     
     <item>
       <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</title>
-      <link>http://r9y9.github.io/2014/08/20/gap-nmf-julia/</link>
+      <link>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/08/20/gap-nmf-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
       <description>
 
 &lt;p&gt;最近 &lt;a href=&#34;julialang.org&#34;&gt;Julia&lt;/a&gt; で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）&lt;/p&gt;

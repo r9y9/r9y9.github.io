@@ -11,10 +11,10 @@
     
     <item>
       <title>MLSA digital filter のC&#43;&#43;実装</title>
-      <link>http://r9y9.github.io/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
+      <link>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
       <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
+      <guid>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
       <description>
 
 &lt;p&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/&#34;&gt;MLSAフィルタわからん&lt;/a&gt;という記事を書いて早2ヶ月、ようやく出来た。&lt;/p&gt;
@@ -268,10 +268,10 @@ sp::mlsa_filter mlsa_f(order, alpha, n_pade);
     
     <item>
       <title>MLSA フィルタの実装</title>
-      <link>http://r9y9.github.io/2013/09/23/mlsa-filter-wakaran/</link>
+      <link>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</link>
       <pubDate>Mon, 23 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/09/23/mlsa-filter-wakaran/</guid>
+      <guid>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</guid>
       <description>
 
 &lt;p&gt;音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ&lt;/p&gt;

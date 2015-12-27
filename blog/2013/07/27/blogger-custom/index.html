@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>Bloggerカスタマイズメモ - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Bloggerカスタマイズメモ</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2013-07-27">July 27, 2013</time></span>
+			<section itemprop="entry-text">
+				
+
+<h2 id="まとめ:84675519d7ed938401292a8b64b4a36b">まとめ</h2>
+
+<p>とりあえず、行ったのは以下の通り。変更の度にこの投稿に追加するかも</p>
+
+<ul>
+<li><a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxの導入</a></li>
+<li>syntax highlighterの導入</li>
+<li>google-code-prettyyの導入</li>
+<li>CSSの修正</li>
+<li>ソーシャルリンクの追加</li>
+</ul>
+
+<h2 id="mathjax:84675519d7ed938401292a8b64b4a36b">Mathjax</h2>
+
+<p>別記事にまとめた→ <a href="http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/">Mathjaxを使ってBloggerで数式を書く</a></p>
+
+<h2 id="syntax-highlighter:84675519d7ed938401292a8b64b4a36b">Syntax Highlighter</h2>
+
+<p>結局syntax highlighterを使うことにした（2013/08/03）。
+google-code-prettyだとデフォに不満が若干あるし、カスタマイズしててもめんどくさかったので。
+デフォで綺麗なのがいい</p>
+
+<h3 id="導入方法:84675519d7ed938401292a8b64b4a36b">導入方法</h3>
+
+<p><a href="http://www.way2blogging.org/widget-generators/syntax-highlighter-scripts-generator">http://www.way2blogging.org/widget-generators/syntax-highlighter-scripts-generator</a></p>
+
+<p>ここでgenerateされたコードを埋め込むだけ。</p>
+
+<h3 id="使い方:84675519d7ed938401292a8b64b4a36b">使い方</h3>
+
+<pre><code class="language-html">&lt;pre class=&quot;brush: html&quot;&gt;
+   write html code here
+&lt;/pre&gt;
+</code></pre>
+
+<h3 id="カスタマイズ:84675519d7ed938401292a8b64b4a36b">カスタマイズ</h3>
+
+<p><a href="http://8bitsize.blogspot.jp/2012/10/syntax-highlighter-config.html">http://8bitsize.blogspot.jp/2012/10/syntax-highlighter-config.html</a></p>
+
+<p>ここを参考に、toolbarを表示しないようにした。</p>
+
+<p><code>SyntaxHighlighter.defaults['toolbar'] = false;</code></p>
+
+<p>とgenerateされたスクリプトに追加するだけ</p>
+
+<h2 id="google-code-pretty:84675519d7ed938401292a8b64b4a36b">google-code-pretty</h2>
+
+<p>結局syntax highlighterを使うことにした（2013/08/03）。
+google-code-prettyだとデフォに不満が若干あるし、カスタマイズしててもめんどくさかったので。</p>
+
+<h3 id="導入方法-1:84675519d7ed938401292a8b64b4a36b">導入方法</h3>
+
+<p>以下のリンクから、add to bloggerボタンを押すと一瞬で導入できる</p>
+
+<p><a href="http://www.kuribo.info/2008/04/code-prettify.html">http://www.kuribo.info/2008/04/code-prettify.html</a></p>
+
+<h2 id="css:84675519d7ed938401292a8b64b4a36b">CSS</h2>
+
+<p>cssの修正は、とりあえず最低限以下のようにした。
+全体のフォントをよさげな奴に指定
+タイトルのフォントやらをよさげな奴に指定
+headingのフォーマット変更</p>
+
+<p>気に入らないところはその都度調整すると思うので、gistで管理することにする。
+<a href="https://gist.github.com/r9y9/6094627">https://gist.github.com/r9y9/6094627</a></p>
+
+<h2 id="ソーシャルリンク:84675519d7ed938401292a8b64b4a36b">ソーシャルリンク</h2>
+
+<h3 id="follow-me-ボタン:84675519d7ed938401292a8b64b4a36b">Follow me ボタン</h3>
+
+<p><a href="http://www.go2web20.net/twitterFollowBadge/">http://www.go2web20.net/twitterFollowBadge/</a>
+ここで作って、html/javascriptガジェットにコードを貼り付けるだけ。</p>
+
+<h3 id="いいねボタン:84675519d7ed938401292a8b64b4a36b">いいねボタン</h3>
+
+<p>あとで付けたい</p>
+
+<p>継ぎ足し継ぎ足しカスタマイズしていく</p>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Bloggerカスタマイズメモ" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

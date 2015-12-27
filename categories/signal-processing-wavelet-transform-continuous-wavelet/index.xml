@@ -11,10 +11,10 @@
     
     <item>
       <title>連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG</title>
-      <link>http://r9y9.github.io/2014/06/01/continuouos-wavelet-transform-types/</link>
+      <link>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</link>
       <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/06/01/continuouos-wavelet-transform-types/</guid>
+      <guid>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</guid>
       <description>
 
 &lt;p&gt;「ウェーブレット変換って難しいんじゃ…マザーウェーブレット？よくわかんない…」&lt;/p&gt;
@@ -103,10 +103,10 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
     
     <item>
       <title>FFTを使った連続ウェーブレット変換の高速化</title>
-      <link>http://r9y9.github.io/2013/10/20/continuous-wavelet-tranform/</link>
+      <link>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</link>
       <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/10/20/continuous-wavelet-tranform/</guid>
+      <guid>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</guid>
       <description>
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/gabor_wavelet_nnmnkwii.png &#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using Open Jalk)&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;

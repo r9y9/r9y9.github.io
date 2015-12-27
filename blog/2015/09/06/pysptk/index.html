@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>pysptk: SPTKのpythonラッパーを作った (part 2) - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">pysptk: SPTKのpythonラッパーを作った (part 2)</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2015-09-06">September 06, 2015</time></span>
+			<section itemprop="entry-text">
+				
+
+<p>2015/09/05:</p>
+
+<div align="center">
+<blockquote class="twitter-tweet" lang="en"><p lang="ja" dir="ltr"><a href="https://t.co/WFBmYEIVce">https://t.co/WFBmYEIVce</a> SPTKのpythonラッパー（マシなやつ）完成&#10;ドキュメント <a href="http://t.co/jYhw1y3Bzg">http://t.co/jYhw1y3Bzg</a>&#10;pip install pysptk でインストールできるようになりました。pypi童貞捨てれた</p>&mdash; 山本りゅういち (@r9y9) <a href="https://twitter.com/r9y9/status/639848868075560960">September 4, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
+<p>ずいぶん前に、swig遊びをしがてらpythonのラッパーを書いていたんですが、cythonを使って新しく作りなおしました。かなりパワーアップしました。</p>
+
+<pre><code>pip install pysptk
+</code></pre>
+
+<p>でインストールできるので、よろしければどうぞ</p>
+
+<h2 id="なぜ作ったのか:c62e4c75a9a71e9f9b743246c82ffb70">なぜ作ったのか</h2>
+
+<ul>
+<li>cythonとsphinxで遊んでたらできた</li>
+</ul>
+
+<h2 id="使い方:c62e4c75a9a71e9f9b743246c82ffb70">使い方</h2>
+
+<p>以下のデモを参考にどうぞ</p>
+
+<ul>
+<li><a href="http://nbviewer.ipython.org/github/r9y9/pysptk/blob/51c103e5a7e9746c96cd78043df4e48fe2d6a3a8/examples/pysptk%20introduction.ipynb">Introduction to pysptk</a>: メル一般化ケプストラム分析とか</li>
+<li><a href="http://nbviewer.ipython.org/github/r9y9/pysptk/blob/51c103e5a7e9746c96cd78043df4e48fe2d6a3a8/examples/Speech%20analysis%20and%20re-synthesis.ipynb">Speech analysis and re-synthesis</a>: 音声の分析・再合成のデモ。合成音声はnotebook上で再生できます</li>
+</ul>
+
+<h2 id="ドキュメント:c62e4c75a9a71e9f9b743246c82ffb70">ドキュメント</h2>
+
+<p><a href="http://pysptk.readthedocs.org">http://pysptk.readthedocs.org</a></p>
+
+<h2 id="ぼやき:c62e4c75a9a71e9f9b743246c82ffb70">ぼやき</h2>
+
+<p>SPTKの関数、変な値入れるとexitしたりセグフォったりするので、ちゃんとテスト書いてほしいなあ</p>
+
+<h2 id="関連:c62e4c75a9a71e9f9b743246c82ffb70">関連</h2>
+
+<ul>
+<li><a href="http://r9y9.github.io/blog/2014/08/10/sptk-from-python/">SPTKのPythonラッパーを書いた - LESS IS MORE</a></li>
+</ul>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="pysptk: SPTKのpythonラッパーを作った (part 2)" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

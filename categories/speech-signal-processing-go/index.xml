@@ -11,10 +11,10 @@
     
     <item>
       <title>GOSSP - Go言語で音声信号処理</title>
-      <link>http://r9y9.github.io/2014/06/08/gossp-speech-signal-processing-for-go/</link>
+      <link>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</link>
       <pubDate>Sun, 08 Jun 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
+      <guid>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
       <description>
 
 &lt;h1 id=&#34;c-からgoへ:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;C++からGoへ&lt;/h1&gt;
@@ -341,10 +341,10 @@ sp &amp;quot;spectrogram.txt&amp;quot;
     
     <item>
       <title>音声分析変換合成システムWORLDのGoラッパーを書いた</title>
-      <link>http://r9y9.github.io/2014/03/22/go-world/</link>
+      <link>http://r9y9.github.io/blog/2014/03/22/go-world/</link>
       <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2014/03/22/go-world/</guid>
+      <guid>http://r9y9.github.io/blog/2014/03/22/go-world/</guid>
       <description>
 
 &lt;h2 id=&#34;音声分析変換合成システムworld:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;音声分析変換合成システムWORLD&lt;/h2&gt;

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2013-10-15">October 15, 2013</time></span>
+			<section itemprop="entry-text">
+				
+
+<p>音声を使ったアプリケーションが作りたい、例えば自分の声を誰かの声に変えたい、自動で音痴補正したい、関西弁のゆっくりちゃん作りたい、ギターエフェクト作りたい、とか思う人も少なくないんじゃないかと思う。</p>
+
+<p>信号処理のアプリケーションを一から真面目に作ろうとすると、やるべきことが多すぎて途中で断念してしまうことがある。信号処理って、Hello 信号処理までがホント長くて、File I/O やらstreaming I/O等音声入出力書いたり、スペクトルやケプストラムやらメルケプやらウェーブレットやら特徴抽出書いたり、波形合成のアルゴリズム書いたり、難しい機械学習のアルゴリズム書いたり。本当にやりたいことを実現するためには、専門家はおろか初学者にはハードルが高すぎると思う。リアルタイムでやりたい（よくある状況）とかだとなおさら大変。</p>
+
+<p>もちろん、そんなの自分で書かなくてもライブラリなりツールなりはたくさんある。</p>
+
+<ul>
+<li><a href="http://sp-tk.sourceforge.net/">SPTK - Speech Signal Processing Toolkit</a></li>
+<li><a href="http://hts.sp.nitech.ac.jp/">HTS - HMM-based Speech Synthesis System</a></li>
+<li><a href="http://www.mmdagent.jp/">MMDAgenet - toolkit for building voice interaction systems.</a></li>
+<li><a href="http://open-jtalk.sourceforge.net/">OpenJTalk - HMM-based Text-to-Speech System</a></li>
+<li><a href="https://ccrma.stanford.edu/software/stk/">STK - The Synthesis ToolKit in C++ (STK)</a></li>
+<li><a href="http://aquila-dsp.org/">Aquila - Open source DSP library for C++</a></li>
+<li><a href="http://www.portaudio.com/">PortAudio - Portable Cross-platform Audio I/O</a></li>
+<li><a href="http://www.sonicvisualiser.org/">Sonic visualiser</a></li>
+<li><a href="https://www.jyu.fi/hum/laitokset/musiikki/en/research/coe/materials/mirtoolbox">MIRToolbox</a></li>
+<li><a href="http://isse.sourceforge.net/">ISSE - An Interactive Source Separation Editor</a></li>
+<li><a href="http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html">音声分析変換合成法STRAIGHT</a></li>
+<li><a href="http://www.slp.is.ritsumei.ac.jp/~morise/world/">音声分析合成システム「WORLD」</a></li>
+</ul>
+
+<p>直近で印象に残ってるのはこんなもん。どれも素晴らしいけど、傾向としては専門知識のある人向けの物が多い気がしている。一方で、専門知識がなくても使えるツールというのは、本当に少ないと思う。これは個人的に大きな問題だと思っていて、何とか解決したい。というか僕でも簡単に使える便利ツールほしい。</p>
+
+<p>とまぁそんな経緯で、</p>
+
+<ul>
+<li>音声/音楽信号処理をやるためのベースをすでに備えていて、アプリケーションが簡単に作れる</li>
+<li>専門知識がなくてもまぁ使える</li>
+<li>リアルタイムアプリケーションを作れる</li>
+<li>商用/学術利用共にフリー</li>
+</ul>
+
+<p>なライブラリを作ろうと考えている。商用フリーなのは、単に僕がGPL/LPGLとか嫌いだから。フリーという制約を除けば選択肢も増えるけど、まぁ使いづらい。</p>
+
+<p><a href="http://opencv.org/">opencv</a>とか、めっちゃ素晴らしいよね。まさにこういうものがほしい（作りたい）。これの音声版ですよ。何でないんだ。あったら教えて下さい。</p>
+
+<p><a href="http://stackoverflow.com/questions/6938634/any-opencv-like-c-c-library-for-audio-processing">&ldquo;Any OpenCV-like C/C++ library for Audio processing?&rdquo; - StackOverflow</a></p>
+
+<p>今頑張って作ってるので、お楽しみに。ここに書くことで、後に引けなくする作戦です。</p>
+
+<h2 id="余談:edb08e42687be3464452e97ba5128bbc">余談</h2>
+
+<p>ライブラリ作ろうと思ったきっかけは、つい最近声質変換を作ろうとしたことにあります。自分の声を、好きな人の声に変えられたらおもしろいなぁと思って。何か火が着いちゃった時がありました。ただ、音声読み込み、FFT、ケプストラム、メルフィルタバンク、メルケプストラム、GMM、固有声空間の構築、MLSAフィルタ、短遅延アルゴリズム、overlapping addition合成（ry</p>
+
+<p>もう、やることが多すぎてギブアップした。具体的にはmlsaフィルタが難しくてやめた。その時にSPTKのソースコードを読んでいたんだけど、すごいわかりにくくて、くそーっと思って、どうせなら新しく書きなおして使いやすいライブラリ作ってやろうと思ったのが、きっかけ。まぁえらそうな事書いといて、自分がほしいからっていうのが落ちなんですけどね。</p>
+
+<p>ないから作る、シンプルに言えばそれだけです。あと、絶賛有志募集中です。よろしくおねがいします。</p>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

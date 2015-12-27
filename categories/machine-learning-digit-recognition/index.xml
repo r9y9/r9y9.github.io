@@ -11,10 +11,10 @@
     
     <item>
       <title>Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</title>
-      <link>http://r9y9.github.io/2013/08/06/naive-bayes-mnist/</link>
+      <link>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</link>
       <pubDate>Tue, 06 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/08/06/naive-bayes-mnist/</guid>
+      <guid>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</guid>
       <description>
 
 &lt;p&gt;前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…&lt;/p&gt;

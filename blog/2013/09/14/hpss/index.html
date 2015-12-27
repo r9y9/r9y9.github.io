@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>調波打楽器音分離（HPSS）を試す - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">調波打楽器音分離（HPSS）を試す</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2013-09-14">September 14, 2013</time></span>
+			<section itemprop="entry-text">
+				
+
+<h2 id="hpssとは-一行説明:0fa57022114ebdcc9ab940ca80953344">HPSSとは（一行説明）</h2>
+
+<p>HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ</p>
+
+<p>アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる</p>
+
+<h2 id="実装:0fa57022114ebdcc9ab940ca80953344">実装</h2>
+
+<p>調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ</p>
+
+<div>
+\begin{align}
+|H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
+\end{align}
+</div>
+
+<div>
+\begin{align}
+|P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
+\end{align}
+</div>
+
+<p>ただし</p>
+
+<div>
+\begin{align}
+|W_{t,k}| = |H_{t,k}| + |P_{t,k}|
+\end{align}
+</div>
+
+<p>絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。</p>
+
+<p>HPSSの論文はたくさんあるけど、日本語でかつ丁寧な <a href="http://ci.nii.ac.jp/naid/110007997346">&ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;</a> を参考にした。</p>
+
+<p>H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ</p>
+
+<p>一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。</p>
+
+<h2 id="結果:0fa57022114ebdcc9ab940ca80953344">結果</h2>
+
+<p>フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、<a href="http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html">歌もの音楽素材：歌入り素材系のフリー音楽素材一覧</a> から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
+18秒目くらいからを比較すると効果がわかりやすいです</p>
+
+<h3 id="元音源:0fa57022114ebdcc9ab940ca80953344">元音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442" width="100%"></iframe>
+
+<h3 id="hのみ取り出して再合成した音源:0fa57022114ebdcc9ab940ca80953344">Hのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534" width="100%"></iframe>
+
+<h3 id="pのみ取り出して再合成した音源:0fa57022114ebdcc9ab940ca80953344">Pのみ取り出して再合成した音源</h3>
+
+<iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599" width="100%"></iframe>
+
+<p>それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</p>
+
+<p>コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ</p>
+
+<p>詳しくは論文へ（僕のじゃないけど</p>
+
+<h2 id="参考:0fa57022114ebdcc9ab940ca80953344">参考</h2>
+
+<ul>
+<li><a href="http://ci.nii.ac.jp/naid/110007997346">橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.</a></li>
+</ul>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="調波打楽器音分離（HPSS）を試す" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

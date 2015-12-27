@@ -11,10 +11,10 @@
     
     <item>
       <title>Bashでコマンドの存在チェック</title>
-      <link>http://r9y9.github.io/2013/08/12/bash-check-commend-existence/</link>
+      <link>http://r9y9.github.io/blog/2013/08/12/bash-check-commend-existence/</link>
       <pubDate>Mon, 12 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2013/08/12/bash-check-commend-existence/</guid>
+      <guid>http://r9y9.github.io/blog/2013/08/12/bash-check-commend-existence/</guid>
       <description>
 
 &lt;p&gt;素晴らしいまとめ→ &lt;a href=&#34;http://qiita.com/kawaz/items/1b61ee2dd4d1acc7cc94&#34;&gt;コマンドの存在チェックはwhichよりhashの方が良いかも→いやtypeが最強 - qiita&lt;/a&gt;&lt;/p&gt;

@@ -11,10 +11,10 @@
     
     <item>
       <title>Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</title>
-      <link>http://r9y9.github.io/2015/12/22/cxx-jl/</link>
+      <link>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</link>
       <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2015/12/22/cxx-jl/</guid>
+      <guid>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</guid>
       <description>
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/opencvjl_demo.jpg &#34;OpenCV.jl based on Cxx.jl&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
@@ -243,10 +243,10 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
     
     <item>
       <title>Julia: 値と変数に対する Type Annotation の違い</title>
-      <link>http://r9y9.github.io/2015/12/08/julia-type-annotations/</link>
+      <link>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</link>
       <pubDate>Tue, 08 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/2015/12/08/julia-type-annotations/</guid>
+      <guid>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
       <description>
 
 &lt;h2 id=&#34;はじめに:05f0d6745bdfc575870e417c91be03ad&#34;&gt;はじめに&lt;/h2&gt;
