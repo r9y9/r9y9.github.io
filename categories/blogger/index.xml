@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogger on LESS IS MORE</title>
+    <link>http://r9y9.github.io/categories/blogger/</link>
+    <description>Recent content in Blogger on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sat, 27 Jul 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://r9y9.github.io/categories/blogger/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Bloggerカスタマイズメモ</title>
+      <link>http://r9y9.github.io/2013/07/27/blogger-custom/</link>
+      <pubDate>Sat, 27 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2013/07/27/blogger-custom/</guid>
+      <description>
+
+&lt;h2 id=&#34;まとめ:84675519d7ed938401292a8b64b4a36b&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;とりあえず、行ったのは以下の通り。変更の度にこの投稿に追加するかも&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/&#34;&gt;Mathjaxの導入&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;syntax highlighterの導入&lt;/li&gt;
+&lt;li&gt;google-code-prettyyの導入&lt;/li&gt;
+&lt;li&gt;CSSの修正&lt;/li&gt;
+&lt;li&gt;ソーシャルリンクの追加&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;mathjax:84675519d7ed938401292a8b64b4a36b&#34;&gt;Mathjax&lt;/h2&gt;
+
+&lt;p&gt;別記事にまとめた→ &lt;a href=&#34;http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/&#34;&gt;Mathjaxを使ってBloggerで数式を書く&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;syntax-highlighter:84675519d7ed938401292a8b64b4a36b&#34;&gt;Syntax Highlighter&lt;/h2&gt;
+
+&lt;p&gt;結局syntax highlighterを使うことにした（2013/08/03）。
+google-code-prettyだとデフォに不満が若干あるし、カスタマイズしててもめんどくさかったので。
+デフォで綺麗なのがいい&lt;/p&gt;
+
+&lt;h3 id=&#34;導入方法:84675519d7ed938401292a8b64b4a36b&#34;&gt;導入方法&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.way2blogging.org/widget-generators/syntax-highlighter-scripts-generator&#34;&gt;http://www.way2blogging.org/widget-generators/syntax-highlighter-scripts-generator&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ここでgenerateされたコードを埋め込むだけ。&lt;/p&gt;
+
+&lt;h3 id=&#34;使い方:84675519d7ed938401292a8b64b4a36b&#34;&gt;使い方&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;pre class=&amp;quot;brush: html&amp;quot;&amp;gt;
+   write html code here
+&amp;lt;/pre&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;カスタマイズ:84675519d7ed938401292a8b64b4a36b&#34;&gt;カスタマイズ&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://8bitsize.blogspot.jp/2012/10/syntax-highlighter-config.html&#34;&gt;http://8bitsize.blogspot.jp/2012/10/syntax-highlighter-config.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ここを参考に、toolbarを表示しないようにした。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;SyntaxHighlighter.defaults[&#39;toolbar&#39;] = false;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;とgenerateされたスクリプトに追加するだけ&lt;/p&gt;
+
+&lt;h2 id=&#34;google-code-pretty:84675519d7ed938401292a8b64b4a36b&#34;&gt;google-code-pretty&lt;/h2&gt;
+
+&lt;p&gt;結局syntax highlighterを使うことにした（2013/08/03）。
+google-code-prettyだとデフォに不満が若干あるし、カスタマイズしててもめんどくさかったので。&lt;/p&gt;
+
+&lt;h3 id=&#34;導入方法-1:84675519d7ed938401292a8b64b4a36b&#34;&gt;導入方法&lt;/h3&gt;
+
+&lt;p&gt;以下のリンクから、add to bloggerボタンを押すと一瞬で導入できる&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.kuribo.info/2008/04/code-prettify.html&#34;&gt;http://www.kuribo.info/2008/04/code-prettify.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;css:84675519d7ed938401292a8b64b4a36b&#34;&gt;CSS&lt;/h2&gt;
+
+&lt;p&gt;cssの修正は、とりあえず最低限以下のようにした。
+全体のフォントをよさげな奴に指定
+タイトルのフォントやらをよさげな奴に指定
+headingのフォーマット変更&lt;/p&gt;
+
+&lt;p&gt;気に入らないところはその都度調整すると思うので、gistで管理することにする。
+&lt;a href=&#34;https://gist.github.com/r9y9/6094627&#34;&gt;https://gist.github.com/r9y9/6094627&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ソーシャルリンク:84675519d7ed938401292a8b64b4a36b&#34;&gt;ソーシャルリンク&lt;/h2&gt;
+
+&lt;h3 id=&#34;follow-me-ボタン:84675519d7ed938401292a8b64b4a36b&#34;&gt;Follow me ボタン&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.go2web20.net/twitterFollowBadge/&#34;&gt;http://www.go2web20.net/twitterFollowBadge/&lt;/a&gt;
+ここで作って、html/javascriptガジェットにコードを貼り付けるだけ。&lt;/p&gt;
+
+&lt;h3 id=&#34;いいねボタン:84675519d7ed938401292a8b64b4a36b&#34;&gt;いいねボタン&lt;/h3&gt;
+
+&lt;p&gt;あとで付けたい&lt;/p&gt;
+
+&lt;p&gt;継ぎ足し継ぎ足しカスタマイズしていく&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

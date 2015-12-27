@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Julia on LESS IS MORE</title>
+    <link>http://r9y9.github.io/categories/julia/</link>
+    <description>Recent content in Julia on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 09 Dec 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://r9y9.github.io/categories/julia/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ccallにおけるポインタ周りのハマりどころとその解決法</title>
+      <link>http://r9y9.github.io/2014/12/09/julia-advent-calender-2014-poiner-tips/</link>
+      <pubDate>Tue, 09 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2014/12/09/julia-advent-calender-2014-poiner-tips/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2014/julialang&#34;&gt;Julia Advent Calendar 2014&lt;/a&gt; 9日目の記事です。&lt;/p&gt;
+
+&lt;h2 id=&#34;はじめに:4d037de2c6bae74ca497c1e416c33358&#34;&gt;はじめに&lt;/h2&gt;
+
+&lt;p&gt;CやFortranの関数をJuliaから呼ぶために使用する&lt;code&gt;ccall&lt;/code&gt;において、ポインタに関係するハマりどころとその解決法を紹介します。純粋なJuliaを使っている場合にはポインタを意識することはめったにないと思うので、&lt;code&gt;ccall&lt;/code&gt; を使う人（計算が重いボトルネック部分をCで書いてJuliaから呼びたい人、Cのライブラリのラッパーを書きたい/書いてる人）を主な読者と想定して記事を書きました（限定的でごめんなさい）。&lt;/p&gt;
+
+&lt;p&gt;困った時は、公式ドキュメントの &lt;a href=&#34;http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/&#34;&gt;Calling C and Fortran Code&lt;/a&gt; を参考にしましょう。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;: 最新版の公式ドキュメントをいくつか引用していますが、ドキュメントは日々更新されていますので、この記事を読んで頂いた時点とは異なる可能性があることにご注意ください。&lt;/p&gt;
+
+&lt;h2 id=&#34;こんなとき:4d037de2c6bae74ca497c1e416c33358&#34;&gt;こんなとき&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;ccall&lt;/code&gt; を使う際に、ポインタに関する以下のような疑問を持つことがあります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ポインタを引数に持つ（例. &lt;code&gt;double*&lt;/code&gt;）関数のラッピングはどうすればいいのか？&lt;/li&gt;
+&lt;li&gt;構造体のポインタを引数に持つ関数のラッピングはどうすれば？&lt;/li&gt;
+&lt;li&gt;ポインタのポインタを引数に持つ（例. &lt;code&gt;double**&lt;/code&gt;）関数のラッピングは？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;一つ目は非常に簡単で、&lt;code&gt;Array&lt;/code&gt;（Cの関数が&lt;code&gt;double*&lt;/code&gt;を取るならば&lt;code&gt;Array{Float64,1}&lt;/code&gt;）をそのまま渡せばよいだけです。ドキュメントの&lt;a href=&#34;http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/#array-conversions&#34;&gt;Array Conversions&lt;/a&gt;にも書かれています。が、残りの二つに関してはハマりどころがあります。順に説明します。&lt;/p&gt;
+
+&lt;h2 id=&#34;構造体のポインタを引数に持つ関数のラッピングはどうすれば:4d037de2c6bae74ca497c1e416c33358&#34;&gt;構造体のポインタを引数に持つ関数のラッピングはどうすれば？&lt;/h2&gt;
+
+&lt;p&gt;現状のドキュメントは少し不親切なので、引用した上で、整理します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/&#34;&gt;Calling C and Fortran Code&lt;/a&gt; より引用:
+&amp;gt; Currently, it is not possible to pass structs and other non-primitive types from Julia to C libraries. However, C functions that generate and use opaque struct types by passing pointers to them can return such values to Julia as Ptr{Void}, which can then be passed to other C functions as Ptr{Void}. Memory allocation and deallocation of such objects must be handled by calls to the appropriate cleanup routines in the libraries being used, just like in any C program.&lt;/p&gt;
+
+&lt;p&gt;冒頭に it is not possible とあります。が、決して不可能なわけではありません。上記文章の要点をまとめると、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;opaqueな構造体はCからJuliaへポインタとして渡すことができる&lt;/li&gt;
+&lt;li&gt;そのポインタは &lt;code&gt;Ptr{Void}&lt;/code&gt; としてCの関数に渡すことができる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;と書かれています。つまり、一般には構造体は渡せないけどポインタ渡しはできるよ、ということです。&lt;/p&gt;
+
+&lt;p&gt;じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d037de2c6bae74ca497c1e416c33358:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d037de2c6bae74ca497c1e416c33358:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）&lt;/p&gt;
+
+&lt;p&gt;例を示します。&lt;/p&gt;
+
+&lt;h3 id=&#34;cコード:4d037de2c6bae74ca497c1e416c33358&#34;&gt;Cコード&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;typedef struct {
+   double a;
+   int b;
+} Foo;
+
+# 構造体のポインタを引数にとる関数1
+void print(Foo* foo) {
+    printf(&amp;quot;a=%lf\n&amp;quot;, foo-&amp;gt;a);
+    printf(&amp;quot;b=%d\n&amp;quot;, foo-&amp;gt;b);
+}
+
+# 構造体のポインタを引数にとる関数2
+void reset(Foo* foo) {
+    foo-&amp;gt;a = 0.0;
+    foo-&amp;gt;b = 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;juliaコード:4d037de2c6bae74ca497c1e416c33358&#34;&gt;Juliaコード&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;# Cの構造体 Foo に相当する型を宣言します
+immutable Foo
+    a::Float64
+    b::Int32 # cのintはjuliaのInt32に対応します
+end
+
+foo = Foo(10.0, 2)
+
+# Cの関数に、ポインタとしてJuliaの型を渡すことができます
+ccall(:print, &amp;quot;libfoo&amp;quot;, Void, (Ptr{Foo},), &amp;amp;foo)
+
+# ポインタで渡す場合、Cで変更した結果はJuliaにも反映されます
+ccall(:reset, &amp;quot;libfoo&amp;quot;, Void, (Ptr{Foo},), &amp;amp;foo)
+
+# foo(0.0, 0) と表示される
+println(foo)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみにJuliaからCへ値渡しをしてもエラーにならないので、お気をつけください（ハマりました）。&lt;/p&gt;
+
+&lt;p&gt;公式ドキュメントは不親切と言いましたが、 プルリクエスト &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/8948&#34;&gt;update documentation for passing struct pointers to C #8948&lt;/a&gt;（まだマージはされていない）で改善されているので、もしかするとこの記事が読まれる頃には改善されているかもしれません。&lt;/p&gt;
+
+&lt;p&gt;また、値渡しを可能にしようとする動きもあります（&lt;a href=&#34;https://github.com/JuliaLang/julia/pull/3466&#34;&gt;RFC: Make struct passing work properly #3466&lt;/a&gt;, &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/2818&#34;&gt;WIP: types as C-structs #2818&lt;/a&gt; マージ待ち）。&lt;/p&gt;
+
+&lt;h3 id=&#34;構造体渡しのまとめ:4d037de2c6bae74ca497c1e416c33358&#34;&gt;構造体渡しのまとめ&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Cの構造体に相当するJuliaの型を定義して、ポインタで渡せばOK&lt;/li&gt;
+&lt;li&gt;値渡しは現状できない&lt;/li&gt;
+&lt;li&gt;ポインタを受けることはできる（Ptr{Void}として受ける）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ポインタのポインタを引数に持つ-例-double-関数のラッピングは:4d037de2c6bae74ca497c1e416c33358&#34;&gt;ポインタのポインタを引数に持つ（例. &lt;code&gt;double**&lt;/code&gt;）関数のラッピングは？&lt;/h2&gt;
+
+&lt;p&gt;さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;void fooo(double** input, int w, int h, double** output);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;input&lt;/code&gt;は入力の行列、&lt;code&gt;output&lt;/code&gt;は計算結果が格納される行列、行列のサイズは共に 列数&lt;code&gt;w&lt;/code&gt;、行数&lt;code&gt;h&lt;/code&gt; だと思ってください。Juliaからは &lt;code&gt;input::Array{Float64,2}&lt;/code&gt; を入力として、&lt;code&gt;output::Array{Float64,2}&lt;/code&gt; を得たいとします。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;double*&lt;/code&gt;を引数にとる場合は&lt;code&gt;Array{Float64,1}&lt;/code&gt;を渡せばよかったのに対して、&lt;code&gt;double**&lt;/code&gt;を引数に取る関数に &lt;code&gt;Array{Float64,2}&lt;/code&gt;や&lt;code&gt;Array{Array{Float64,1},1}&lt;/code&gt;を単純に渡すだけでは、残念ながらコンパイルエラーになります。はい、すでに若干面倒ですね。。さて、どうすればいいかですが、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;どんな型で渡せばいいか&lt;/li&gt;
+&lt;li&gt;どのように型を変換するか&lt;/li&gt;
+&lt;li&gt;変換した型をどのように元に戻すか&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;という三点に分けて説明します。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-どんな型で渡せばいいか:4d037de2c6bae74ca497c1e416c33358&#34;&gt;1. どんな型で渡せばいいか&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;Array{Ptr{Float64}}&lt;/code&gt; で渡せばよいです。外側のArrayは、&lt;code&gt;ccall&lt;/code&gt; がポインタに変換してくれるので、Juliaの型でいえば&lt;code&gt;Ptr{Ptr{Float64}}&lt;/code&gt;、Cの型で言えば&lt;code&gt;double**&lt;/code&gt;になるわけです。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-どのように型を変換するか:4d037de2c6bae74ca497c1e416c33358&#34;&gt;2. どのように型を変換するか&lt;/h3&gt;
+
+&lt;p&gt;ここがハマりどころです。今回の例では、&lt;code&gt;Array{Float64,2}&lt;/code&gt; を &lt;code&gt;Array{Ptr{Float64},1}&lt;/code&gt; に変換すればよいので、例えば以下のような実装が思いつきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;# Array{T,2} -&amp;gt; Array{Ptr{T}}
+function ptrarray2d{T&amp;lt;:Real}(src::Array{T,2})
+    dst = Array{Ptr{T}, size(src, 2))
+    for i=1:size(src, 2)
+        dst[i] = pointer(src[:,i], 1) # 先頭要素のポインタを取り出す
+    end
+    dst
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実はこの実装はバグを含んでいます。バグがあるとしたら一行しか該当する部分はないですが、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;dst[i] = pointer(src[:,i], 1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここが間違っています。何が間違っているかというと、&lt;code&gt;pointer(src[:,i], 1)&lt;/code&gt;は一見&lt;code&gt;src&lt;/code&gt;の&lt;code&gt;i&lt;/code&gt;列目の先頭要素のポインタを指しているような気がしますが、&lt;code&gt;src[:,1]&lt;/code&gt;で &lt;code&gt;getindex&lt;/code&gt;という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの&lt;code&gt;i&lt;/code&gt;列目のポインタを指していない）点が間違っています&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d037de2c6bae74ca497c1e416c33358:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d037de2c6bae74ca497c1e416c33358:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。&lt;/p&gt;
+
+&lt;p&gt;Array &lt;code&gt;A&lt;/code&gt;に対する syntax &lt;code&gt;X = A[I_1, I_2, ..., I_n]&lt;/code&gt; は &lt;code&gt;X = getindex(A, I_1, I_2, ..., I_n)&lt;/code&gt; と等価です。詳細は、&lt;a href=&#34;http://docs.julialang.org/en/latest/manual/arrays/&#34;&gt;Multi-dimensional Arrays&lt;/a&gt;や&lt;a href=&#34;http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex&#34;&gt;標準ライブラリのドキュメント&lt;/a&gt; を参考にしてください&lt;/p&gt;
+
+&lt;p&gt;さて、正解を示します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;# Array{T,2} -&amp;gt; Array{Ptr{T}}
+function ptrarray2d{T&amp;lt;:Real}(src::Array{T,2})
+    dst = Array{Ptr{T}, size(src, 2))
+    for i=1:size(src, 2)
+         dst[i] = pointer(sub(src, 1:size(src,1), i), 1)
+    end
+    dst
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;違いは &lt;code&gt;SubArray&lt;/code&gt;を使うようになった点です。&lt;code&gt;SubArray&lt;/code&gt;は、indexingを行うときにコピーを作らないので、期待した通りに&lt;code&gt;i&lt;/code&gt;列目の先頭要素のポインタを取得することができます。&lt;code&gt;SubArray&lt;/code&gt;について、以下引用しておきます&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d037de2c6bae74ca497c1e416c33358:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d037de2c6bae74ca497c1e416c33358:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;SubArray is a specialization of AbstractArray that performs indexing by reference rather than by copying. A SubArray is created with the sub() function, which is called the same way as getindex() (with an array and a series of index arguments). The result of sub() looks the same as the result of getindex(), except the data is left in place. sub() stores the input index vectors in a SubArray object, which can later be used to index the original array indirectly.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;引用元: &lt;a href=&#34;http://docs.julialang.org/en/latest/manual/arrays/#implementation&#34;&gt;Multi-dimensional Arrays&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;3-変換した型をどのように元に戻すか:4d037de2c6bae74ca497c1e416c33358&#34;&gt;3. 変換した型をどのように元に戻すか&lt;/h3&gt;
+
+&lt;p&gt;Juliaで計算結果（上の例でいう &lt;code&gt;double** output&lt;/code&gt;）を受け取りたい場合、ポインタに変換した値をJuliaのArrayに戻す必要があります（必ずしもそうではないですが、まぁほぼそうでしょう）。つまり、&lt;code&gt;Array(Ptr{Float64},1)&lt;/code&gt;を&lt;code&gt;Array{Float64,2}&lt;/code&gt;したいわけです。幸いにも、これは&lt;code&gt;pointer_to_array&lt;/code&gt;を使うと簡単にできます。コードを以下に示します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;# ccallを実行した後の計算結果が coutput に格納されているとします
+coutput::Array{Ptr{Float64},1}
+
+# Cに渡した型 Array{Ptr{Float64},1} から Array{Float64,2}に変換
+for i=1:length(coutput)
+    output[:,i] = pointer_to_array(coutput[i], size(output, 1))
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;pointer_to_array&lt;/code&gt; は、その名前の通りの関数ですね。pointerをArrayに変換してくれます。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-2-3-をまとめる:4d037de2c6bae74ca497c1e416c33358&#34;&gt;1, 2, 3 をまとめる&lt;/h3&gt;
+
+&lt;p&gt;最後に、1, 2, 3の内容をまとめて、ポインタのポインタを引数にもつ関数のラッパー例を書いておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;function fooo(input::Array{Float64,2})
+    h, w = size(intput)
+    output = Array(Float64, h, w)
+    
+    # C関数に渡す用の変数
+    cinput::Array{Ptr{Float64}} = ptrarray2d(input)
+    coutput::Array{Ptr{Float64}} = ptrarray2d(output)
+    
+    ccall(:fooo, &amp;quot;libfooo&amp;quot;, Void,
+    		 (Ptr{Ptr{Float64}}, Int, Int, Ptr{Ptr{Float64}}), 
+    		 cinput, w, h, coutput)
+
+    # coutputをJuliaのArrayに変換
+    for i=1:length(coutput)
+        output[i,:] = pointer_to_array(coutput[i], h)
+    end
+
+    output
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ポインタのポインタまとめ:4d037de2c6bae74ca497c1e416c33358&#34;&gt;ポインタのポインタまとめ&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Array&lt;/code&gt;のindexingはコピーを作るのである要素のポインタがほしい時は注意&lt;/li&gt;
+&lt;li&gt;行/列の先頭のポインタがほしいときは &lt;code&gt;SubArray&lt;/code&gt; を使いましょう&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;おわりに:4d037de2c6bae74ca497c1e416c33358&#34;&gt;おわりに&lt;/h2&gt;
+
+&lt;p&gt;ポインタにまつわるハマりどころとその解決法を紹介しました。今回紹介したものはすべて &lt;a href=&#34;https://github.com/r9y9/WORLD.jl&#34;&gt;WORLD.jl&lt;/a&gt; という &lt;a href=&#34;http://ml.cs.yamanashi.ac.jp/world/&#34;&gt;音声分析変換合成システムWORLD&lt;/a&gt; のラッパーを書いていたときに得た知見です。やっと&lt;code&gt;WORLD.jl&lt;/code&gt;が安定して動くようになってきて公式パッケージにしようかなぁと考えているところですので、興味のある方はぜひ触ってみてください。&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:4d037de2c6bae74ca497c1e416c33358:1&#34;&gt;immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/8948&#34;&gt;#8948&lt;/a&gt; にはそう書いてあります
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d037de2c6bae74ca497c1e416c33358:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4d037de2c6bae74ca497c1e416c33358:2&#34;&gt;たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d037de2c6bae74ca497c1e416c33358:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4d037de2c6bae74ca497c1e416c33358:3&#34;&gt;ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d037de2c6bae74ca497c1e416c33358:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

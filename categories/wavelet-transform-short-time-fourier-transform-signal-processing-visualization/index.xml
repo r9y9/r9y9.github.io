@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wavelet Transform Short Time Fourier Transform Signal Processing Visualization on LESS IS MORE</title>
+    <link>http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</link>
+    <description>Recent content in Wavelet Transform Short Time Fourier Transform Signal Processing Visualization on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 20 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>短時間フーリエ変換と連続ウェーブレット変換のvisualization</title>
+      <link>http://r9y9.github.io/2013/10/20/wavelet-stft-visualization/</link>
+      <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2013/10/20/wavelet-stft-visualization/</guid>
+      <description>
+
+&lt;h2 id=&#34;stft-短時間フーリエ変換-によるスペクトログラム:a6d364a5f0c6e9845adb076636f45841&#34;&gt;STFT(短時間フーリエ変換)によるスペクトログラム&lt;/h2&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/spectrogram_linear_clipped_rev_1.png &#34;STFT spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;stftによるスペクトログラム-y軸を対数にしたもの:a6d364a5f0c6e9845adb076636f45841&#34;&gt;STFTによるスペクトログラム（Y軸を対数にしたもの）&lt;/h2&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/spectrogram_log_clipped_rev_1.png &#34;STFT spectrogram (with log-y-axis)&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;連続ガボールウェーブレット変換によるスペクトログラム:a6d364a5f0c6e9845adb076636f45841&#34;&gt;連続ガボールウェーブレット変換によるスペクトログラム&lt;/h2&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/wavelet_spectrogram_clipped_rev_1.png &#34;Gabor Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;p&gt;メモリも軸も無くて発表資料に貼ったら間違いなく怒られる奴だけど許して。でもだいたいの違いはわかると思う。図はgnuplotで作りました&lt;/p&gt;
+
+&lt;p&gt;STFTのlog-y-axisと比べるとよくわかるけど、ウェーブレットは低域もちゃんと綺麗にとれてますね。&lt;/p&gt;
+
+&lt;p&gt;みんなもっとウェーブレット変換使おう（提案&lt;/p&gt;
+
+&lt;h2 id=&#34;分析に使った音声:a6d364a5f0c6e9845adb076636f45841&#34;&gt;分析に使った音声&lt;/h2&gt;
+
+&lt;p&gt;決して聞いてはならない&lt;/p&gt;
+
+&lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116165738&#34;&gt;&lt;/iframe&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

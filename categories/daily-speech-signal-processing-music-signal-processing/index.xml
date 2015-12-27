@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Daily Speech Signal Processing Music Signal Processing on LESS IS MORE</title>
+    <link>http://r9y9.github.io/categories/daily-speech-signal-processing-music-signal-processing/</link>
+    <description>Recent content in Daily Speech Signal Processing Music Signal Processing on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 15 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://r9y9.github.io/categories/daily-speech-signal-processing-music-signal-processing/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>簡単、フリーで使える音声/音楽信号処理ライブラリが作りたい</title>
+      <link>http://r9y9.github.io/2013/10/15/signal-processing-library/</link>
+      <pubDate>Tue, 15 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2013/10/15/signal-processing-library/</guid>
+      <description>
+
+&lt;p&gt;音声を使ったアプリケーションが作りたい、例えば自分の声を誰かの声に変えたい、自動で音痴補正したい、関西弁のゆっくりちゃん作りたい、ギターエフェクト作りたい、とか思う人も少なくないんじゃないかと思う。&lt;/p&gt;
+
+&lt;p&gt;信号処理のアプリケーションを一から真面目に作ろうとすると、やるべきことが多すぎて途中で断念してしまうことがある。信号処理って、Hello 信号処理までがホント長くて、File I/O やらstreaming I/O等音声入出力書いたり、スペクトルやケプストラムやらメルケプやらウェーブレットやら特徴抽出書いたり、波形合成のアルゴリズム書いたり、難しい機械学習のアルゴリズム書いたり。本当にやりたいことを実現するためには、専門家はおろか初学者にはハードルが高すぎると思う。リアルタイムでやりたい（よくある状況）とかだとなおさら大変。&lt;/p&gt;
+
+&lt;p&gt;もちろん、そんなの自分で書かなくてもライブラリなりツールなりはたくさんある。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;SPTK - Speech Signal Processing Toolkit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://hts.sp.nitech.ac.jp/&#34;&gt;HTS - HMM-based Speech Synthesis System&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.mmdagent.jp/&#34;&gt;MMDAgenet - toolkit for building voice interaction systems.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://open-jtalk.sourceforge.net/&#34;&gt;OpenJTalk - HMM-based Text-to-Speech System&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://ccrma.stanford.edu/software/stk/&#34;&gt;STK - The Synthesis ToolKit in C++ (STK)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://aquila-dsp.org/&#34;&gt;Aquila - Open source DSP library for C++&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.portaudio.com/&#34;&gt;PortAudio - Portable Cross-platform Audio I/O&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.sonicvisualiser.org/&#34;&gt;Sonic visualiser&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jyu.fi/hum/laitokset/musiikki/en/research/coe/materials/mirtoolbox&#34;&gt;MIRToolbox&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://isse.sourceforge.net/&#34;&gt;ISSE - An Interactive Source Separation Editor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html&#34;&gt;音声分析変換合成法STRAIGHT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slp.is.ritsumei.ac.jp/~morise/world/&#34;&gt;音声分析合成システム「WORLD」&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;直近で印象に残ってるのはこんなもん。どれも素晴らしいけど、傾向としては専門知識のある人向けの物が多い気がしている。一方で、専門知識がなくても使えるツールというのは、本当に少ないと思う。これは個人的に大きな問題だと思っていて、何とか解決したい。というか僕でも簡単に使える便利ツールほしい。&lt;/p&gt;
+
+&lt;p&gt;とまぁそんな経緯で、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;音声/音楽信号処理をやるためのベースをすでに備えていて、アプリケーションが簡単に作れる&lt;/li&gt;
+&lt;li&gt;専門知識がなくてもまぁ使える&lt;/li&gt;
+&lt;li&gt;リアルタイムアプリケーションを作れる&lt;/li&gt;
+&lt;li&gt;商用/学術利用共にフリー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;なライブラリを作ろうと考えている。商用フリーなのは、単に僕がGPL/LPGLとか嫌いだから。フリーという制約を除けば選択肢も増えるけど、まぁ使いづらい。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://opencv.org/&#34;&gt;opencv&lt;/a&gt;とか、めっちゃ素晴らしいよね。まさにこういうものがほしい（作りたい）。これの音声版ですよ。何でないんだ。あったら教えて下さい。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://stackoverflow.com/questions/6938634/any-opencv-like-c-c-library-for-audio-processing&#34;&gt;&amp;ldquo;Any OpenCV-like C/C++ library for Audio processing?&amp;rdquo; - StackOverflow&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;今頑張って作ってるので、お楽しみに。ここに書くことで、後に引けなくする作戦です。&lt;/p&gt;
+
+&lt;h2 id=&#34;余談:edb08e42687be3464452e97ba5128bbc&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;ライブラリ作ろうと思ったきっかけは、つい最近声質変換を作ろうとしたことにあります。自分の声を、好きな人の声に変えられたらおもしろいなぁと思って。何か火が着いちゃった時がありました。ただ、音声読み込み、FFT、ケプストラム、メルフィルタバンク、メルケプストラム、GMM、固有声空間の構築、MLSAフィルタ、短遅延アルゴリズム、overlapping addition合成（ry&lt;/p&gt;
+
+&lt;p&gt;もう、やることが多すぎてギブアップした。具体的にはmlsaフィルタが難しくてやめた。その時にSPTKのソースコードを読んでいたんだけど、すごいわかりにくくて、くそーっと思って、どうせなら新しく書きなおして使いやすいライブラリ作ってやろうと思ったのが、きっかけ。まぁえらそうな事書いといて、自分がほしいからっていうのが落ちなんですけどね。&lt;/p&gt;
+
+&lt;p&gt;ないから作る、シンプルに言えばそれだけです。あと、絶賛有志募集中です。よろしくおねがいします。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Speech Signal Processing Speech Synthesis on LESS IS MORE</title>
+    <link>http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</link>
+    <description>Recent content in Speech Signal Processing Speech Synthesis on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 01 Dec 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MLSA digital filter のC&#43;&#43;実装</title>
+      <link>http://r9y9.github.io/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
+      <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/&#34;&gt;MLSAフィルタわからん&lt;/a&gt;という記事を書いて早2ヶ月、ようやく出来た。&lt;/p&gt;
+
+&lt;p&gt;Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;SPTK&lt;/a&gt;のmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。&lt;/p&gt;
+
+&lt;h1 id=&#34;mlsa-filter-h:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;mlsa_filter.h&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://gist.github.com/r9y9/7735120&#34;&gt;https://gist.github.com/r9y9/7735120&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;#pragma once
+
+#include &amp;lt;cmath&amp;gt;
+#include &amp;lt;memory&amp;gt;
+#include &amp;lt;vector&amp;gt;
+#include &amp;lt;cassert&amp;gt;
+
+namespace sp {
+
+/**
+ * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter)
+ */
+class mlsa_base_filter {
+public:
+  mlsa_base_filter(const int order, const double alpha);
+
+  template &amp;lt;class Vector&amp;gt;
+  double filter(const double x, const Vector&amp;amp; b);
+
+ private:
+  mlsa_base_filter();
+
+  double alpha_;
+  std::vector&amp;lt;double&amp;gt; delay_;
+};
+
+mlsa_base_filter::mlsa_base_filter(const int order, const double alpha)
+: alpha_(alpha),
+  delay_(order+1)
+{
+}
+
+template &amp;lt;class Vector&amp;gt;
+double mlsa_base_filter::filter(const double x, const Vector&amp;amp; b)
+{
+  double result = 0.0;
+  
+  delay_[0] = x;
+  delay_[1] = (1.0-alpha_*alpha_)*delay_[0] + alpha_*delay_[1];
+
+  for (size_t i = 2; i &amp;lt; b.size(); ++i) {
+    delay_[i] = delay_[i] + alpha_*(delay_[i+1]-delay_[i-1]);
+    result += delay_[i] * b[i];
+  }
+
+  // special case
+  // TODO: other solution?
+  if (b.size() == 2) {
+    result += delay_[1] * b[1];
+  } 
+  
+  // t &amp;lt;- t+1 in time
+  for (size_t i = delay_.size()-1; i &amp;gt; 1; --i) {
+    delay_[i] = delay_[i-1];
+  }
+  
+  return result;
+}
+
+/**
+ * MLSA digital filter cascaded
+ */
+class mlsa_base_cascaded_filter {
+ public:
+  mlsa_base_cascaded_filter(const int order,
+			    const double alpha,
+			    const int n_pade);
+
+  template &amp;lt;class Vector&amp;gt;
+  double filter(const double x, const Vector&amp;amp; b);
+  
+ private:
+  mlsa_base_cascaded_filter();
+
+  std::vector&amp;lt;std::unique_ptr&amp;lt;mlsa_base_filter&amp;gt;&amp;gt; base_f_; // cascadad filters
+  std::vector&amp;lt;double&amp;gt; delay_;
+  std::vector&amp;lt;double&amp;gt; pade_coef_;
+};
+
+mlsa_base_cascaded_filter::mlsa_base_cascaded_filter(const int order, 
+						     const double alpha,
+						     const int n_pade)
+  : delay_(n_pade + 1),
+  pade_coef_(n_pade + 1)
+{ 
+  using std::unique_ptr;
+
+  if (n_pade != 4 &amp;amp;&amp;amp; n_pade != 5) {
+    std::cerr &amp;lt;&amp;lt; &amp;quot;The number of pade approximations must be 4 or 5.&amp;quot;
+	      &amp;lt;&amp;lt; std::endl;
+  }
+  assert(n_pade == 4 || n_pade == 5);
+
+  for (int i = 0; i &amp;lt;= n_pade; ++i) {
+    mlsa_base_filter* p = new mlsa_base_filter(order, alpha);
+    base_f_.push_back(unique_ptr&amp;lt;mlsa_base_filter&amp;gt;(p));
+  }
+  
+  if (n_pade == 4) {
+    pade_coef_[0] = 1.0;
+    pade_coef_[1] = 4.999273e-1;
+    pade_coef_[2] = 1.067005e-1;
+    pade_coef_[3] = 1.170221e-2;
+    pade_coef_[4] = 5.656279e-4;
+  }
+  
+  if (n_pade == 5) {
+    pade_coef_[0] = 1.0;
+    pade_coef_[1] = 4.999391e-1;
+    pade_coef_[2] = 1.107098e-1;
+    pade_coef_[3] = 1.369984e-2;
+    pade_coef_[4] = 9.564853e-4;
+    pade_coef_[5] = 3.041721e-5;
+  }   
+}
+
+template &amp;lt;class Vector&amp;gt;
+double mlsa_base_cascaded_filter::filter(const double x, const Vector&amp;amp; b)
+{
+  double result = 0.0;  
+  double feed_back = 0.0;
+
+  for (size_t i = pade_coef_.size()-1; i &amp;gt;= 1; --i) {
+    delay_[i] = base_f_[i]-&amp;gt;filter(delay_[i-1], b);
+    double v = delay_[i] * pade_coef_[i];
+    if (i % 2 == 1) {
+      feed_back += v;
+    } else {
+      feed_back -= v;
+    }
+    result += v;
+  }
+
+  delay_[0] = feed_back + x;
+  result += delay_[0];
+
+  return result;
+}
+
+/**
+ * MLSA digital filter (Mel-log Spectrum Approximate digital filter)
+ * The filter consists of two stage cascade filters
+ */
+class mlsa_filter {
+ public:
+  mlsa_filter(const int order, const double alpha, const int n_pade);
+ ~mlsa_filter();
+
+ template &amp;lt;class Vector&amp;gt;
+ double filter(const double x, const Vector&amp;amp; b);
+
+ private:
+ mlsa_filter();
+
+  double alpha_;
+  std::unique_ptr&amp;lt;mlsa_base_cascaded_filter&amp;gt; f1_; // first stage
+  std::unique_ptr&amp;lt;mlsa_base_cascaded_filter&amp;gt; f2_; // second stage
+};
+
+mlsa_filter::mlsa_filter(const int order,
+			 const double alpha,
+			 const int n_pade)
+  : alpha_(alpha),
+  f1_(new mlsa_base_cascaded_filter(2, alpha, n_pade)),
+  f2_(new mlsa_base_cascaded_filter(order, alpha, n_pade))
+{
+}
+
+mlsa_filter::~mlsa_filter()
+{
+}
+
+template &amp;lt;class Vector&amp;gt;
+double mlsa_filter::filter(const double x, const Vector&amp;amp; b)
+{
+  // 1. First stage filtering
+  Vector b1 = {0, b[1]};
+  double y = f1_-&amp;gt;filter(x, b1);
+  
+  // 2. Second stage filtering
+  double result = f2_-&amp;gt;filter(y, b);
+
+  return result;
+}
+
+} // end namespace sp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;使い方:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;使い方&lt;/h1&gt;
+
+&lt;p&gt;mlsa_filter.hをインクルードすればおｋ&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;mlsa_filter.h&amp;quot;
+
+// セットアップ
+const double alpha = 0.42;
+const int order = 30;
+const int n_pade = 5;
+sp::mlsa_filter mlsa_f(order, alpha, n_pade);
+
+...
+// MLSA フィルタリング 
+出力一サンプル = mlsa_f.filter(入力一サンプル, フィルタ係数);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;何で再実装したのか:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;何で再実装したのか&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;mlsa filterをC++的なインタフェースで使いたかった&lt;/li&gt;
+&lt;li&gt;コード見たらまったく意味がわからなくて、意地でも理解してやろうと思った&lt;/li&gt;
+&lt;li&gt;反省はしている&lt;/li&gt;
+&lt;li&gt;知り合いの声質変換やってる方がMLSAフィルタを波形合成に使ってるっていうし、ちょっとやってみようかなって&lt;/li&gt;
+&lt;li&gt;あと最近音声合成の低レベルに手をつけようとと思ってたし勉強にもなるかなって&lt;/li&gt;
+&lt;li&gt;思ったんだ……んだ…だ…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;車輪の再開発はあんま良くないと思ってるけど許して。
+誰かがリファクタせないかんのだ&lt;/p&gt;
+
+&lt;h1 id=&#34;感想:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;感想&lt;/h1&gt;
+
+&lt;p&gt;SPTKのmlsa filterは、正直に言うとこれまで読んできたコードの中で一二を争うほど難解でした（いうてC言語はあまり読んできてないので、Cだとこれが普通なのかもしれないけど）。特に、元コードの d: delayという変数の使われ方が複雑過ぎて、とても読みにくくございました。MLSAフィルタは複数のbase filterのcascade接続で表されるわけだけど、それぞれの遅延が一つのdという変数で管理されていたのです。つまり、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;d[1] ~ d[5] までは、あるフィルタの遅延&lt;/li&gt;
+&lt;li&gt;d[6] ~ d[11] までは、別のフィルタの遅延&lt;/li&gt;
+&lt;li&gt;d[12] ~ にはまた別のフィルタの遅延&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;という感じです。&lt;/p&gt;
+
+&lt;p&gt;改善しようと思って、base filterというクラスを作ってそのクラスの状態として各フィルタの遅延を持たせて、見通しを良くしました&lt;/p&gt;
+
+&lt;h2 id=&#34;さいごに:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;さいごに&lt;/h2&gt;
+
+&lt;p&gt;MLSAフィルタ、難しいですね（小並感&lt;/p&gt;
+
+&lt;p&gt;いつかリアルタイム声質変換がやってみたいので、それに使う予定（worldを使うことになるかもしれんけど）。戸田先生当たりがやってる声質変換を一回真似してみたいと思ってる&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MLSA フィルタの実装</title>
+      <link>http://r9y9.github.io/2013/09/23/mlsa-filter-wakaran/</link>
+      <pubDate>Mon, 23 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2013/09/23/mlsa-filter-wakaran/</guid>
+      <description>
+
+&lt;p&gt;音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ&lt;/p&gt;
+
+&lt;p&gt;と、前置きはさておき、MLSAフィルタの実装を見つけたのでメモ。ここ最近ちょくちょく調べているが、SPTK以外で初めて見つけた。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://simple4all.org/wp-content/uploads/2013/05/Jiunn.pdf&#34;&gt;Realisation and Simulation of the Mel Log Spectrum Approximation Filter | Simple4All Internship Report&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Simple4Allという音声技術系のコミュニティの、学生さんのインターンの成果らしい。ちらっと調べてたら山岸先生も参加してる（た？）っぽい。&lt;/p&gt;
+
+&lt;p&gt;上のreportで引用されているように、MLSA filterの実現方法については、益子さんのD論に詳しく書いてあることがわかった。今井先生の論文と併せて読んでみようと思う。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.3623&amp;amp;rep=rep1&amp;amp;type=pdf&#34;&gt;T. Masuko, &amp;ldquo;HMM-Based Speech Synthesis and Its Applications&amp;rdquo;, Ph.D Thesis, 2002.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;もう正直わからんしブラックボックスでもいいから既存のツール使うかーと諦めかけていたところで割りと丁寧な実装付き解説を見つけたので、もう一度勉強して実装してみようと思い直した。&lt;/p&gt;
+
+&lt;p&gt;機械学習にかまけて信号処理をちゃんと勉強していなかったつけがきている。LMA filterもMLSA filterも、本当にわからなくてツライ……&lt;/p&gt;
+
+&lt;p&gt;(実装だけであれば、実はそんなに難しくなかった 2013/09後半)&lt;/p&gt;
+
+&lt;h3 id=&#34;追記-2015-02-25:a7fa5b1ffe2a5c219043d49e3f8e00d9&#34;&gt;追記 2015/02/25&lt;/h3&gt;
+
+&lt;p&gt;誤解を生む表現があったので、直しました&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

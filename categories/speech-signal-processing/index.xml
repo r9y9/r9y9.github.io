@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Speech Signal Processing on LESS IS MORE</title>
+    <link>http://r9y9.github.io/categories/speech-signal-processing/</link>
+    <description>Recent content in Speech Signal Processing on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 01 Dec 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://r9y9.github.io/categories/speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SPTKをC&#43;&#43;から使えるようにする</title>
+      <link>http://r9y9.github.io/2013/12/01/sptk-with-waf/</link>
+      <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2013/12/01/sptk-with-waf/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;音声信号処理ツールキットSPTK&lt;/a&gt;をC++から使おうと思ったら意外とハマってしまったので、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;C++から使えるようにC++コンパイラでコンパイルできるようにした&lt;/li&gt;
+&lt;li&gt;使いやすいようにwafを組み込みんだ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;リポジトリ: &lt;a href=&#34;https://github.com/r9y9/SPTK&#34;&gt;https://github.com/r9y9/SPTK&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;というわけで、使い方について簡単に書いておく&lt;/p&gt;
+
+&lt;h1 id=&#34;sptk-について:34e531958872c5182bd9245e8d99ab9c&#34;&gt;SPTK について&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SPTKを使うと何ができるか: &lt;a href=&#34;http://aidiary.hatenablog.com/entry/20120701/1341126474&#34;&gt;SPTKの使い方 (1) インストール・波形描画・音声再生 | 人工知能に関する断創録&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SPTKとは: &lt;a href=&#34;[http://sp-tk.sourceforge.net/]&#34;&gt;Speech Signal Processing Toolkit (SPTK)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;sptk-with-waf:34e531958872c5182bd9245e8d99ab9c&#34;&gt;SPTK with waf&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK&#34;&gt;SPTK with waf&lt;/a&gt;は、SPTKをwafでビルド管理できるようにしたものです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SPTKを共有ライブラリとしてインストールできます。&lt;/li&gt;
+&lt;li&gt;C、C++の好きな方でコンパイルできます。&lt;/li&gt;
+&lt;li&gt;wafが使えます（速い、出力がキレイ）&lt;/li&gt;
+&lt;li&gt;自分のC、C++コードからSPTKのメソッドを呼べます。&lt;/li&gt;
+&lt;li&gt;コマンドラインツールはインストールされません。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。&lt;/p&gt;
+
+&lt;h1 id=&#34;環境:34e531958872c5182bd9245e8d99ab9c&#34;&gt;環境&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Unix系&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み&lt;/p&gt;
+
+&lt;h1 id=&#34;sptkのインストール:34e531958872c5182bd9245e8d99ab9c&#34;&gt;SPTKのインストール&lt;/h1&gt;
+
+&lt;p&gt;リポジトリをクローンしたあと、&lt;/p&gt;
+
+&lt;h2 id=&#34;build:34e531958872c5182bd9245e8d99ab9c&#34;&gt;Build&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt; ./waf configure &amp;amp;&amp;amp; ./waf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;build-with-clang:34e531958872c5182bd9245e8d99ab9c&#34;&gt;Build with clang++&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt; CXX=clang++ ./waf configure &amp;amp;&amp;amp; ./waf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;build-with-gcc:34e531958872c5182bd9245e8d99ab9c&#34;&gt;Build with gcc&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt; git checkout c
+ ./waf configure &amp;amp;&amp;amp; ./waf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;build-with-clang-1:34e531958872c5182bd9245e8d99ab9c&#34;&gt;Build with clang&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt; git checkout c
+ CC=clang ./waf configure &amp;amp;&amp;amp; ./waf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;install:34e531958872c5182bd9245e8d99ab9c&#34;&gt;Install&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt; sudo ./waf install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Include files: &lt;code&gt;/usr/local/include/SPTK&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Library: &lt;code&gt;/usr/local/lib/SPTK&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Pkg-config: &lt;code&gt;/usr/local/lib/pkgconfig&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;オリジナルのSPTKとはインストール場所が異なります（オリジナルは、&lt;code&gt;/usr/local/SPTK&lt;/code&gt;）&lt;/p&gt;
+
+&lt;h1 id=&#34;sptkを使ってコードを書く:34e531958872c5182bd9245e8d99ab9c&#34;&gt;SPTKを使ってコードを書く&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;&amp;lt;SPTK/SPTK.h&amp;gt;&lt;/code&gt; をインクルードして、好きな関数を呼ぶ&lt;/p&gt;
+
+&lt;p&gt;コンパイルは、例えば以下のようにする&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; g++ test.cpp `pkg-config SPTK --cflags --libs`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;面倒なので、example/ 内のコードを修正して使う（wafを使おう）のがおすすめです。&lt;/p&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;きっかけ:34e531958872c5182bd9245e8d99ab9c&#34;&gt;きっかけ&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SPTKはコマンドラインツールだと思ってたけど、どうやらSPTK.hをインクルードすれば一通りのツールを使えるらしい&lt;/li&gt;
+&lt;li&gt;SPTK.hをインクルードして使う方法のマニュアルが見つからない…&lt;/li&gt;
+&lt;li&gt;SPTKはC言語で書かれてるし、C++から使うの地味にめんどくさい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;c-から簡単に使いたかった:34e531958872c5182bd9245e8d99ab9c&#34;&gt;C++から簡単に使いたかった&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;gccやclangだけじゃなくg++やclang++でコンパイルできるようにしよう&lt;/li&gt;
+&lt;li&gt;自分のコードのビルド管理にはwafを使ってるし、wafで管理できるようにしてしまおう&lt;/li&gt;
+&lt;li&gt;waf素晴らしいしな （参考: &lt;a href=&#34;http://d.hatena.ne.jp/tanakh/20100212&#34;&gt;waf チュートリアル | 純粋関数型雑記帳 &lt;/a&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;最後に:34e531958872c5182bd9245e8d99ab9c&#34;&gt;最後に&lt;/h1&gt;
+
+&lt;p&gt;SPTKもwafも素晴らしいので積極的に使おう＾＾&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MFCCの計算方法についてメモ</title>
+      <link>http://r9y9.github.io/2013/11/24/mfcc-calculation-memo/</link>
+      <pubDate>Sun, 24 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2013/11/24/mfcc-calculation-memo/</guid>
+      <description>
+
+&lt;h2 id=&#34;mfcc-とは:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;MFCC とは&lt;/h2&gt;
+
+&lt;p&gt;Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。&lt;/p&gt;
+
+&lt;h3 id=&#34;算出手順:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;算出手順&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;音声信号を適当な長さのフレームで切り出し&lt;/li&gt;
+&lt;li&gt;窓がけ&lt;/li&gt;
+&lt;li&gt;フーリエ変換して対数振幅スペクトルを求める&lt;/li&gt;
+&lt;li&gt;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&lt;/li&gt;
+&lt;li&gt;離散コサイン変換により、MFCCを求める&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上。SPTKのmfccコマンドのソースもだいたいそうなってた。&lt;/p&gt;
+
+&lt;h3 id=&#34;さて:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;さて&lt;/h3&gt;
+
+&lt;h4 id=&#34;ここに音声波形があるじゃろ:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;ここに音声波形があるじゃろ？？&lt;/h4&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/speech-signal.png &#34;音声信号を適当な長さのフレームで切り出し&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;h4 id=&#34;音声波形を窓がけして:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;音声波形を窓がけして…&lt;/h4&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/windowed-signal.png &#34;窓がけ&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;h4 id=&#34;さらにフーリエ変換して対数取って:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;さらにフーリエ変換して対数取って…&lt;/h4&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/log-amplitude.png &#34;フーリエ変換して振幅スペクトルを求める&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;h4 id=&#34;ここでメルフィルタバンクの出番じゃ:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;ここでメルフィルタバンクの出番じゃ&lt;/h4&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/after-mel-filterbank.png &#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;h4 id=&#34;最後に離散コサイン変換で完成じゃ:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;最後に離散コサイン変換で完成じゃ&lt;/h4&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/MFCC.png &#34;離散コサイン変換により、MFCCを求める&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;まとめ:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです&lt;/li&gt;
+&lt;li&gt;正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 &lt;a href=&#34;http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf&#34;&gt;http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf&lt;/a&gt; にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。&lt;/li&gt;
+&lt;li&gt;間違ってるかもしれないけどご愛嬌&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考:55c3b0df8e0bd60dcd959c499adb7c13&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf&#34;&gt;L9: Cepstral analysis [PDF]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html&#34;&gt;メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://aidiary.hatenablog.com/entry/20120225/1330179868&#34;&gt;メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>スペクトログラムとメル周波数スペクトログラムの可視化</title>
+      <link>http://r9y9.github.io/2013/11/16/mel-spectrogram/</link>
+      <pubDate>Sat, 16 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2013/11/16/mel-spectrogram/</guid>
+      <description>
+
+&lt;p&gt;やったので貼っとくだけ&lt;/p&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/spectrogram.png &#34;よくあるスペクトログラム&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/mel_spectrogram.png &#34;メル周波数に変換したスペクトログラム&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;p&gt;低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。&lt;/p&gt;
+
+&lt;p&gt;今回は振幅を対数を取って表示した（ちなみに）。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に合うようにメル周波数に変換して次元圧縮するイメージ。&lt;/p&gt;
+
+&lt;p&gt;解説は、&lt;a href=&#34;http://aidiary.hatenablog.com/entry/20120225/1330179868&#34;&gt;メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録&lt;/a&gt; を見よう。素晴らしいです&lt;/p&gt;
+
+&lt;p&gt;僕はと言えば特に解説する気も起きないので、C++コードでも貼っとこう（※間違ってたので、とりあえず消しました&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:a3074bf60ef811f4061f90ff5abfe2c2&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;メルフィルタバンクかけるクラス作ってたら数時間潰した&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:a3074bf60ef811f4061f90ff5abfe2c2&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://aidiary.hatenablog.com/entry/20120225/1330179868&#34;&gt;メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;とても参考にしました。ただ、フィルタバンクかける際に正規化してない？元のスケールを保つために、上のコードでは正規化するようにした(&lt;a href=&#34;http://ohm.nuigalway.ie/0809/mbyrne/Images.html#MFCC&#34;&gt;ここ&lt;/a&gt;の図のようなイメージ）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

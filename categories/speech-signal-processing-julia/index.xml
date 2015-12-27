@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Speech Signal Processing Julia on LESS IS MORE</title>
+    <link>http://r9y9.github.io/categories/speech-signal-processing-julia/</link>
+    <description>Recent content in Speech Signal Processing Julia on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 23 Aug 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://r9y9.github.io/categories/speech-signal-processing-julia/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>最近の音声信号処理遊びの進捗</title>
+      <link>http://r9y9.github.io/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
+      <pubDate>Sun, 23 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
+      <description>
+
+&lt;h2 id=&#34;hello:b1293c38eb762e796bd8325101b228bb&#34;&gt;hello&lt;/h2&gt;
+
+&lt;p&gt;遡ればもう約一年まえになるでしょうか、統計的声質遊びをしたいと思い、理論の勉強を始めたり、（特にJuliaで）コードを色々書いていました（お前ほんといろんな言語で遊んでるな、というツッコミはさておき）。&lt;a href=&#34;http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/&#34;&gt;統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE&lt;/a&gt; を書いていた当初は、当然自分のためだけに書いていて、まぁアレな出来でしたが、最近気を取り直して多少マシに仕上げましたので、何となくブログに書いてみようかなーと思った次第です。というわけで、最近公式に登録したいくつかのパッケージを、まとめて簡単に紹介します。&lt;/p&gt;
+
+&lt;p&gt;主な改善点は、windowsもちゃんとサポートするようにしたこと（誰得？）と、テストをきちんと書いたことと、julia的なインタフェースを意識するようにしたことですかね。3つ目はかなり曖昧ですが、まぁ気持ち使いやすくなったと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;パッケージ:b1293c38eb762e796bd8325101b228bb&#34;&gt;パッケージ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/MelGeneralizedCepstrums.jl&#34;&gt;MelGeneralizedCepstrums.jl&lt;/a&gt;: メル一般化ケプストラム分析&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/SynthesisFilters.jl&#34;&gt;SynthesisFilters.jl&lt;/a&gt;: メル一般化ケプストラムからの音声波形合成&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK.jl&#34;&gt;SPTK.jl&lt;/a&gt;: &lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;SPTK&lt;/a&gt;のラッパー&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;車輪の再発明はできるだけしたくなかったので、最初のほうはCライブラリのラッパーを書くことが多く、windowsとかめんどくさいしunix環境でしか動作確認してませんでしたが、&lt;a href=&#34;http://qiita.com/r9y9/items/e0567e2a21a5e3c36e51&#34;&gt;WindowsのJuliaから呼べるようなCライブラリの共有ライブラリ（DLL）を作る | qiita&lt;/a&gt; 重い腰を上げてwindowsでも動くように頑張ったことがあり（めんどくさいとか言って手を動かさないのホント良くないですね）、登録したパッケージはすべてwindowsでも動くようになりました。めでたし。&lt;a href=&#34;https://github.com/r9y9/WORLD.jl&#34;&gt;WORLD.jl&lt;/a&gt; もwindowsで動くようにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;melgeneralizedcepstrums-jl:b1293c38eb762e796bd8325101b228bb&#34;&gt;MelGeneralizedCepstrums.jl&lt;/h2&gt;
+
+&lt;p&gt;メルケプストラムの推定とか。いくつか例を載せておきます&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/r9y9/MelGeneralizedCepstrums.jl/v0.0.1/examples/cepstrum.png&#34; alt=&#34;cepstrum based envelope.&#34; class=&#34;image&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/r9y9/MelGeneralizedCepstrums.jl/v0.0.1/examples/mel-cepstrum.png&#34; alt=&#34;mel-cepstrum based envelope.&#34; class=&#34;image&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/r9y9/MelGeneralizedCepstrums.jl/v0.0.1/examples/mel-generalized-cepstrum.png&#34; alt=&#34;mel-generalized-cepstrum based envelope.&#34; class=&#34;image&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/r9y9/MelGeneralizedCepstrums.jl/v0.0.1/examples/lpc-cepstrum.png&#34; alt=&#34;lpc-cepstrum based envelope.&#34; class=&#34;image&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;詳細はこちらの&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/MelGeneralizedCepstrums.jl/blob/v0.0.1/examples/Introduction%20to%20MelGeneralizedCeptrums.jl.ipynb&#34;&gt;ノートブック&lt;/a&gt;へ&lt;/p&gt;
+
+&lt;p&gt;メルケプストラム分析、メル一般化ケプストラム分析に関しては、SPTKの実装をjuliaで再実装してみました。結果、速度は1.0 ~ 1.5倍程度でおさまって、かつ数値的な安定性は増しています（メモリ使用量はお察し）。まぁ僕が頑張ったからというわけでなく、単にJuliaの線形方程式ソルバーがSPTKのものより安定しているというのが理由です。&lt;/p&gt;
+
+&lt;h2 id=&#34;synthesisfilters-jl:b1293c38eb762e796bd8325101b228bb&#34;&gt;SynthesisFilters.jl&lt;/h2&gt;
+
+&lt;p&gt;メルケプストラムからの波形合成とか。&lt;/p&gt;
+
+&lt;p&gt;詳細はこちらの&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/SynthesisFilters.jl/blob/v0.0.1/examples/Introduction%20to%20SynthesisFilters.jl.ipynb&#34;&gt;ノートブック&lt;/a&gt;へ。いくつかの音声合成フィルタの合成音をノートブック上で比較することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/SynthesisFilters.jl/blob/mix-excitation/examples/Introduction%20to%20SynthesisFilters.jl.ipynb&#34;&gt;mixed excitation（っぽいの）を使ったバージョンのノートブック&lt;/a&gt;: 実装に自信がないので、そのうち消すかも。聴覚的にはこっちのほうが良いです。&lt;/p&gt;
+
+&lt;h2 id=&#34;sptk-jl:b1293c38eb762e796bd8325101b228bb&#34;&gt;SPTK.jl&lt;/h2&gt;
+
+&lt;p&gt;公式のSPTKではなく、僕が少しいじったSPTK（windowsで動くようにしたり、APIとして使いやすいように関数内でexitしてた部分を適切なreturn code返すようにしたり、swipeというF0抽出のインタフェースをexposeしたり、など）をベースにしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/SPTK.jl/blob/v0.0.1/examples/Introduction%20to%20SPTK.jl.ipynb&#34;&gt;デモ用のノートブック&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;MelGeneralizedCepstrums.jl と SynthesiFilters.jl は、ほとんどSPTK.jlで成り立っています。本質的に SPTK.jl にできて MelGeneralizedCepstrums.jl と SynthesiFilters.jlにできないことは基本的にないのですが、後者の方が、より簡単な、Julia的なインタフェースになっています。&lt;/p&gt;
+
+&lt;p&gt;例えば、メルケプストラム、ケプストラム、LPCなど、スペクトルパラメータの型に応じて、適切なフィルタ係数に変換する、合成フィルタを選択するなど、multiple dispatchを有効に活用して、よりシンプルなインタフェースを提供するようにしました（というか自分がミスりたくなかったからそうしました）。&lt;/p&gt;
+
+&lt;h2 id=&#34;おわり:b1293c38eb762e796bd8325101b228bb&#34;&gt;おわり&lt;/h2&gt;
+
+&lt;p&gt;かなり適当に書きましたが、最近の進捗は、Juliaで書いていたパッケージ多少改善して、公式に登録したくらいでした。進捗まじ少なめ。あと些細なことですが、ipython（ijulia）に音埋め込むのクッソ簡単にできてびっくりしました（なんで今までやらなかったんだろう）。&lt;a href=&#34;https://github.com/jfsantos&#34;&gt;@jfsantos&lt;/a&gt; に感謝&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SPTKのJuliaラッパーも書いた</title>
+      <link>http://r9y9.github.io/2014/09/15/sptk-for-julia/</link>
+      <pubDate>Mon, 15 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2014/09/15/sptk-for-julia/</guid>
+      <description>&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/IMG_0960.JPG &#34;sea&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;p&gt;夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK.jl&#34;&gt;Julia wrapper for Speech Signal Processing Toolkit (SPTK) | Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;かれこれ、Go, Python, Juliaと、3つの言語でラッパーを書いてしまいました。どれだけSPTK好きなんだと。そしてどれだけ言語触ってるんだ絞れと。うーん、とはいえどれも良いところと悪いところがあってですね（何も言ってない）、難しい…&lt;/p&gt;
+
+&lt;p&gt;おしまい&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

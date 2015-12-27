@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>Jenkinsを使い始めたのでメモ。インストール方法とかプラグインとかテーマとか - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Jenkinsを使い始めたのでメモ。インストール方法とかプラグインとかテーマとか</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2013-11-16">November 16, 2013</time></span>
+			<section itemprop="entry-text">
+				
+
+<div align="center"><img src="/images/jenkins_doony.png "Jenkinsをdoonyというテーマにしたもの。jenkinsおじさんはいません"" class="image"></div>
+
+<h2 id="jenkinsとは:43f398bf0f7a6ce047950745ddfa1623">Jenkinsとは</h2>
+
+<p>超高機能cronだと思えばいいよ（先輩より</p>
+
+<h2 id="ubuntu-12-04へのインストール:43f398bf0f7a6ce047950745ddfa1623">Ubuntu 12.04へのインストール</h2>
+
+<p>以下のURLに従えばできる。</p>
+
+<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu">https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu</a></p>
+
+<pre><code class="language-bash">wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ &gt; /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install jenkins
+</code></pre>
+
+<p>まとめると、</p>
+
+<ol>
+<li>新しいjenkinsのpackageをリポジトリに追加して</li>
+<li>apt-get でインストール（2013/11/16 現在だと、1.5.39が入る）</li>
+</ol>
+
+<p>※1の手順を省くと、少しバージョン（1.4.x）の古いjenkinsが入ってしまうので注意</p>
+
+<h2 id="mac-os-xへのインストール:43f398bf0f7a6ce047950745ddfa1623">Mac OS Xへのインストール</h2>
+
+<pre><code class="language-bash">brew install jenkins
+</code></pre>
+
+<p>でおｋ。</p>
+
+<h2 id="プラグイン:43f398bf0f7a6ce047950745ddfa1623">プラグイン</h2>
+
+<p>インストールしたものをメモ。他にも便利なのはたくさんあると思う</p>
+
+<ul>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Configuration+Slicing+Plugin">Configuration Slicing plugin</a> 設定を一括で変更したいときに使う</li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin">Jenkins GIT plugin</a> Git使うために</li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin">Jenkins Email Extension Plugin</a> メール機能を拡張するため</li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/JobConfigHistory+Plugin">Jenkins Job Configuration History Plugin</a> ジョブの変更履歴がサイドバーから見れる、便利</li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Python+Plugin">Python Plugin</a> Pythonスクリプト書きたい</li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Simple+Theme+Plugin">Simple Theme Plugin</a> テーマ変更するのに使う</li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Timestamper">Timestamper</a> コンソール出力にタイムスタンプが付く、便利</li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/jQuery+Plugin">Jenkins jQuery plugin</a> テーマにDoonyを使うためにいる</li>
+</ul>
+
+<h2 id="テーマをdoonyにする:43f398bf0f7a6ce047950745ddfa1623">テーマをDoonyにする</h2>
+
+<p>見やすい、オススメ。気に入った。</p>
+
+<p><a href="https://github.com/kevinburke/doony">https://github.com/kevinburke/doony</a></p>
+
+<p>上によれば、</p>
+
+<blockquote>
+<p>Doony is a series of UI improvements on top of Jenkins. Install this to make your Jenkins user experience much better.</p>
+</blockquote>
+
+<p>とのこと。良い。使い方などは、githubのdoonyのREADMEを見るか、あるいは以下の日本語の記事にも書いてある。</p>
+
+<p><a href="http://safx-dev.blogspot.jp/2013/10/jenkinsuidoony.html">JenkinsのUIをすっきり変化させるテーマdoonyを試す | Safx</a></p>
+
+<h3 id="必要なプラグイン:43f398bf0f7a6ce047950745ddfa1623">必要なプラグイン</h3>
+
+<ul>
+<li>Simple Theme Plugin</li>
+<li>Jenkins jQuery plugin</li>
+</ul>
+
+<p>※テーマのプラグインだけでなく、jqueryのプラグインもインストールしないとダメなので注意</p>
+
+<h2 id="おわりに:43f398bf0f7a6ce047950745ddfa1623">おわりに</h2>
+
+<p>これでテストもろもろ自動化だー</p>
+
+<h2 id="その他メモ:43f398bf0f7a6ce047950745ddfa1623">その他メモ</h2>
+
+<ul>
+<li>/etc/default/jenkinsでjava起動時に文字コードをutf-8にしても、コンソールのログで日本語が化ける？
+
+<ul>
+<li>/etc/default/jenkinsを変更前に実行したものは化けたまま。変更後に実行すると、化けない</li>
+<li>Jenkinsのバージョンを1.4.xから1.5.39にしたらオプションつけなくても化けなくなった？たぶん</li>
+<li>ちな、Macのbrewでインストールしたものは、日本語文字化け問題に悩まなかった。新し目のjenkinsはデフォがutf-8にでもなってんですかね</li>
+</ul></li>
+<li>brewでインストールすると、jenkinsユーザは作られない。ubuntuでインストールすると、jenkinsというユーザが作られ、jenkins権限でdeamonが立ち上がる
+
+<ul>
+<li>スクリプトでsudoするために、visudoで <code>jenkins ALL=(ALL) NOPASSWD:ALL</code> しておく</li>
+</ul></li>
+<li>workspaceの場所
+
+<ul>
+<li>brewでインストールした場合、~/.jenkins/ にできると思う</li>
+<li>ubuntuの場合、/var/lib/jenkins/ にある</li>
+</ul></li>
+<li>Macの場合、jenkinsの実行ユーザをちゃんと考えないとですね</li>
+</ul>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Jenkinsを使い始めたのでメモ。インストール方法とかプラグインとかテーマとか" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

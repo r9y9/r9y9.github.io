@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python Neural Networks Machine Larning on LESS IS MORE</title>
+    <link>http://r9y9.github.io/categories/python-neural-networks-machine-larning/</link>
+    <description>Recent content in Python Neural Networks Machine Larning on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 11 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://r9y9.github.io/categories/python-neural-networks-machine-larning/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PythonによるニューラルネットのToyコード</title>
+      <link>http://r9y9.github.io/2014/05/11/python-feed-forward-neural-network-toy-code/</link>
+      <pubDate>Sun, 11 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
+      <description>&lt;p&gt;1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。&lt;/p&gt;
+
+&lt;p&gt;このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python
+# coding: utf-8
+
+# ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の
+# デモコードです。
+# 誤差伝搬法によってニューラルネットを学習します。
+# XORの学習、テストの簡単なデモコードもついています
+# 2014/05/10 Ryuichi Yamamoto
+
+import numpy as np
+
+def sigmoid(x):
+    return 1.0 / (1.0 + np.exp(-x))
+
+def dsigmoid(y):
+    return y * (1.0 - y)
+
+class NeuralNet:
+    def __init__(self, num_input, num_hidden, num_output):
+        &amp;quot;&amp;quot;&amp;quot;
+        パラメータの初期化
+        &amp;quot;&amp;quot;&amp;quot;
+        # 入力層から隠れ層への重み行列
+        self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden))
+        self.hidden_bias = np.ones(num_hidden, dtype=float)
+        # 隠れ層から出力層への重み行列
+        self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output))
+        self.output_bias = np.ones(num_output, dtype=float)
+
+    def forward(self, x):
+        &amp;quot;&amp;quot;&amp;quot;
+        前向き伝搬の計算
+        &amp;quot;&amp;quot;&amp;quot;
+        h = sigmoid(np.dot(self.W1.T, x) + self.hidden_bias)
+        return sigmoid(np.dot(self.W2.T, h) + self.output_bias)
+
+    def cost(self, data, target):
+        &amp;quot;&amp;quot;&amp;quot;
+        最小化したい誤差関数
+        &amp;quot;&amp;quot;&amp;quot;
+        N = data.shape[0]
+        E = 0.0
+        for i in range(N):
+            y, t = self.forward(data[i]), target[i]
+            E += np.sum((y - t) * (y - t))
+        return 0.5 * E / float(N)
+
+    def train(self, data, target, epoches=30000, learning_rate=0.1,\
+              monitor_period=None):
+        &amp;quot;&amp;quot;&amp;quot;
+        Stochastic Gradient Decent (SGD) による学習
+        &amp;quot;&amp;quot;&amp;quot;
+        for epoch in range(epoches):
+            # 学習データから1サンプルをランダムに選ぶ
+            index = np.random.randint(0, data.shape[0])
+            x, t = data[index], target[index]
+
+            # 入力から出力まで前向きに信号を伝搬
+            h = sigmoid(np.dot(self.W1.T, x) + self.hidden_bias)
+            y = sigmoid(np.dot(self.W2.T, h) + self.output_bias)
+
+            # 隠れ層-&amp;gt;出力層の重みの修正量を計算
+            output_delta = (y - t) * dsigmoid(y)
+            grad_W2 = np.dot(np.atleast_2d(h).T, np.atleast_2d(output_delta))
+
+            # 隠れ層-&amp;gt;出力層の重みを更新
+            self.W2 -= learning_rate * grad_W2
+            self.output_bias -= learning_rate * output_delta
+
+            # 入力層-&amp;gt;隠れ層の重みの修正量を計算
+            hidden_delta = np.dot(self.W2, output_delta) * dsigmoid(h)
+            grad_W1 = np.dot(np.atleast_2d(x).T, np.atleast_2d(hidden_delta))
+            
+            # 入力層-&amp;gt;隠れ層の重みを更新
+            self.W1 -= learning_rate * grad_W1
+            self.hidden_bias -= learning_rate * hidden_delta
+
+            # 現在の目的関数の値を出力
+            if monitor_period != None and epoch % monitor_period == 0:
+                print &amp;quot;Epoch %d, Cost %f&amp;quot; % (epoch, self.cost(data, target))
+
+        print &amp;quot;Training finished.&amp;quot;
+
+    def predict(self, x):
+        &amp;quot;&amp;quot;&amp;quot;
+        出力層の最も反応するニューロンの番号を返します
+        &amp;quot;&amp;quot;&amp;quot;
+        return np.argmax(self.forward(x))
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=&amp;quot;Specify options&amp;quot;)
+    parser.add_argument(&amp;quot;--epoches&amp;quot;, dest=&amp;quot;epoches&amp;quot;, type=int, required=True)
+    parser.add_argument(&amp;quot;--learning_rate&amp;quot;, dest=&amp;quot;learning_rate&amp;quot;,\
+                        type=float, default=0.1)
+    parser.add_argument(&amp;quot;--hidden&amp;quot;, dest=&amp;quot;hidden&amp;quot;, type=int, default=20)
+    args = parser.parse_args()
+
+    nn = NeuralNet(2, args.hidden, 1)
+
+    data = np.array([[0, 0], [0 ,1], [1, 0], [1, 1]])
+    target = np.array([0, 1, 1, 0])
+
+    nn.train(data, target, args.epoches, args.learning_rate,\
+             monitor_period=1000)
+
+    for x in data:
+        print &amp;quot;%s : predicted %s&amp;quot; % (x, nn.forward(x))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;#!/usr/bin/python
+# coding: utf-8
+
+# MNISTを用いたニューラルネットによる手書き数字認識のデモコードです
+# 学習方法やパラメータによりますが、だいたい 90 ~ 97% くらいの精度出ます。
+# 使い方は、コードを読むか、
+# python mnist_net.py -h
+# としてください
+# 参考までに、
+# python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100
+# とすると、テストセットに対して、93.2%の正解率です
+# 僕の環境では、学習、認識合わせて（だいたい）5分くらいかかりました。
+# 2014/05/10 Ryuichi Yamamoto
+
+import numpy as np
+from sklearn.externals import joblib
+import cPickle
+import gzip
+import os
+
+# 作成したニューラルネットのパッケージ
+import net
+
+def load_mnist_dataset(dataset):
+    &amp;quot;&amp;quot;&amp;quot;
+    MNISTのデータセットをダウンロードします
+    &amp;quot;&amp;quot;&amp;quot;
+    # Download the MNIST dataset if it is not present
+    data_dir, data_file = os.path.split(dataset)
+    if (not os.path.isfile(dataset)) and data_file == &#39;mnist.pkl.gz&#39;:
+        import urllib
+        origin = &#39;http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz&#39;
+        print &#39;Downloading data from %s&#39; % origin
+        urllib.urlretrieve(origin, dataset)
+
+    f = gzip.open(dataset, &#39;rb&#39;)
+    train_set, valid_set, test_set = cPickle.load(f)
+    f.close()
+
+    return train_set, valid_set, test_set
+
+def augument_labels(labels, order):
+    &amp;quot;&amp;quot;&amp;quot;
+    1次元のラベルデータを、ラベルの種類数(order)次元に拡張します
+    &amp;quot;&amp;quot;&amp;quot;
+    new_labels = []
+    for i in range(labels.shape[0]):
+        v = np.zeros(order)
+        v[labels[i]] = 1
+        new_labels.append(v)
+    
+    return np.array(new_labels).reshape((labels.shape[0], order))        
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=&amp;quot;MNIST手書き数字認識のデモ&amp;quot;)
+    parser.add_argument(&amp;quot;--epoches&amp;quot;, dest=&amp;quot;epoches&amp;quot;, type=int, required=True)
+    parser.add_argument(&amp;quot;--learning_rate&amp;quot;, dest=&amp;quot;learning_rate&amp;quot;,\
+                        type=float, default=0.1)
+    parser.add_argument(&amp;quot;--hidden&amp;quot;, dest=&amp;quot;hidden&amp;quot;, type=int, default=100)
+    args = parser.parse_args()
+
+    train_set, valid_set, test_set = load_mnist_dataset(&amp;quot;mnist.pkl.gz&amp;quot;)
+    n_labels = 10 # 0,1,2,3,4,5,6,7,9
+    n_features = 28*28
+
+    # モデルを新しく作る
+    nn = net.NeuralNet(n_features, args.hidden, n_labels)
+
+    # モデルを読み込む
+    # nn = joblib.load(&amp;quot;./nn_mnist.pkl&amp;quot;)
+
+    nn.train(train_set[0], augument_labels(train_set[1], n_labels),\
+             args.epoches, args.learning_rate, monitor_period=2000)
+
+    ## テスト
+    test_data, labels = test_set
+    results = np.arange(len(test_data), dtype=np.int)
+    for n in range(len(test_data)):
+        results[n] = nn.predict(test_data[n])
+        # print &amp;quot;%d : predicted %s, expected %s&amp;quot; % (n, results[n], labels[n])
+    print &amp;quot;recognition rate: &amp;quot;, (results == labels).mean()
+    
+    # モデルを保存
+    model_filename = &amp;quot;nn_mnist.pkl&amp;quot;
+    joblib.dump(nn, model_filename, compress=9)
+    print &amp;quot;The model parameters are dumped to &amp;quot; + model_filename
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/python-neural-net-toy-codes&#34;&gt;https://github.com/r9y9/python-neural-net-toy-codes&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;以下のようなコマンドを叩いて、正解率が97%くらいになるまで学習してから入力層から隠れ層への重みを可視化してみた&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100 # epochesは適当に
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/nn_mnist_W1_100.png &#34;Input to Hidden weight filters after traingned on MNIST.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+
+&lt;p&gt;興味深いことに、RBMと違って重み行列の解釈はしにくい。生成モデルの尤度を最大化することと、誤差を最小化することはこんなにも違うんだなぁというこなみな感想&lt;/p&gt;
+
+&lt;p&gt;RBMについては、以下へ&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/&#34;&gt;Restricted Boltzmann Machines with MNIST - LESS IS MORE&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;おわり&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

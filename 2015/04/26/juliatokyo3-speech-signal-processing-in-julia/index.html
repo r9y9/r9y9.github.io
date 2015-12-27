@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>JuliaTokyo #3 Speech Signal Processing in Julia - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">JuliaTokyo #3 Speech Signal Processing in Julia</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2015-04-26">April 26, 2015</time></span>
+			<section itemprop="entry-text">
+				
+
+<p><a href="http://juliatokyo.connpass.com/event/13218/">JuliaTokyo #3</a>でLT発表してきました。前回の<a href="http://juliatokyo.connpass.com/event/8010/">JuliaTokyo #2</a>でも発表したので、二回目でした。</p>
+
+<h2 id="スライド:93d5f08b6d58e9f0bb0ccdef7a3c7900">スライド</h2>
+
+<div align="center">
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/h4geMoK1msYqdY" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/ryuichiy/juliatokyo-3-speech-signal-processing-in-julia-47403938" title="JuliaTokyo #3 Speech Signal Processing in Julia" target="_blank">JuliaTokyo #3 Speech Signal Processing in Julia</a> </strong> from <strong><a href="//www.slideshare.net/ryuichiy" target="_blank">Ryuichi YAMAMOTO</a></strong> </div>
+</div>
+
+<h2 id="コード:93d5f08b6d58e9f0bb0ccdef7a3c7900">コード</h2>
+
+<p><a href="https://github.com/r9y9/JuliaTokyo3">https://github.com/r9y9/JuliaTokyo3</a></p>
+
+<h2 id="三行まとめ:93d5f08b6d58e9f0bb0ccdef7a3c7900">三行まとめ</h2>
+
+<p>発表の内容を三行でまとめると、</p>
+
+<ul>
+<li>音声ファイルの読み込み（or 書き込み）は[WAV.jl]((<a href="https://github.com/dancasimiro/WAV.jl)を使おう">https://github.com/dancasimiro/WAV.jl)を使おう</a></li>
+<li>基本的なデジタル信号処理は <a href="https://github.com/JuliaDSP/DSP.jl">JuliaDSP/DSP.jl</a> をチェック（※JuliaDSPにはウェーブレットとかもあるよ）</li>
+<li>音声に特化した信号処理は、<a href="https://github.com/r9y9/WORLD.jl">r9y9/WORLD.jl</a> がオススメです</li>
+</ul>
+
+<p>という感じです。</p>
+
+<p>応用例として、歌声を分離する話（<a href="https://github.com/r9y9/RobustPCA.jl">デモコード</a>）、統計的声質変換（<a href="http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/">統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE</a>）、画像をスペクトログラムに足しこむ話とか、さっと紹介しました。</p>
+
+<h2 id="補足:93d5f08b6d58e9f0bb0ccdef7a3c7900">補足</h2>
+
+<p>僕が使う/作ったパッケージを、あとで見返せるように最後のスライドにまとめておいたのですが、改めてここで整理しておきます。</p>
+
+<ul>
+<li><a href="https://github.com/dancasimiro/WAV.jl">dancasimiro/WAV</a> WAVファイルの読み込み</li>
+<li><a href="https://github.com/JuliaDSP/DSP.jl">JuliaDSP/DSP</a> 窓関数、スペクトログラム、デジタルフィルタ</li>
+<li><a href="https://github.com/r9y9/WORLD.jl">r9y9/WORLD</a> 音声分析・合成フレームワーク</li>
+<li><a href="https://github.com/r9y9/MelGeneralizedCepstrums.jl">r9y9/MelGeneralizedCepstrums</a> メル一般化ケプストラム分析</li>
+<li><a href="https://github.com/r9y9/SynthesisFilters.jl">r9y9/SynthesisFilters</a> メル一般化ケプストラムからの波形合成</li>
+<li><a href="https://github.com/r9y9/SPTK.jl">r9y9/SPTK</a> 音声信号処理ツールキット</li>
+<li><a href="https://github.com/r9y9/RobustPCA.jl">r9y9/RobustPCA</a> ロバスト主成分分析(歌声分離へ応用)</li>
+<li><a href="https://github.com/r9y9/REAPER.jl">r9y9/REAPER</a> 基本周波数推定</li>
+<li><a href="https://github.com/r9y9/VoiceConversion.jl">r9y9/VoiceConversion</a> 統計的声質変換</li>
+</ul>
+
+<p>上から順に、<del>汎用的かなーと思います</del><sup class="footnote-ref" id="fnref:93d5f08b6d58e9f0bb0ccdef7a3c7900:1"><a rel="footnote" href="#fn:93d5f08b6d58e9f0bb0ccdef7a3c7900:1">1</a></sup>。僕が書いたパッケージの中では、<strong>WORLDのみ</strong>公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。</p>
+
+<h2 id="ざっくり感想:93d5f08b6d58e9f0bb0ccdef7a3c7900">ざっくり感想</h2>
+
+<ul>
+<li>＃Juliaわからん 本当に素晴らしいと思うので、僕も積極的に #Juliaわからん とつぶやいていこうと思います（詳しくは <a href="https://twitter.com/chezou">@chezou</a> さんの記事をどうぞ <a href="http://chezou.hatenablog.com/entry/2015/04/26/222518">#JuliaTokyo で #juliaわからん という雑なレポジトリを立てた話をしたら julia.tokyo ができてた  - once upon a time,</a>）。僕は、Julia に Theano が欲しいです。<code>T.grad</code> 強力すぎる</li>
+<li><code>ccall</code> かんたんとか言いましたが、ミスった書き方をしたときのエラーメッセージはあまり親切ではないので、つまずきやすいかも。僕は気合で何とかしています。</li>
+<li>Julia遅いんだけど？？？と言われたら、<a href="https://twitter.com/bicycle1885">@bicycle1885</a> さんの <a href="http://www.slideshare.net/KentaSato/whats-wrong-47403774">What&rsquo;s wrong with this Julia?</a> を投げつけようと思います。</li>
+<li>かなり聴衆が限定的になってしまう話をしてしまったので、次発表するならJulia 言語自体の話をしようかなと思いました</li>
+</ul>
+
+<h2 id="最後に:93d5f08b6d58e9f0bb0ccdef7a3c7900">最後に</h2>
+
+<p><a href="https://twitter.com/sorami">@sorami</a>さんを筆頭とする運営の方々、本当にありがとうございました！楽しかったです。</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:93d5f08b6d58e9f0bb0ccdef7a3c7900:1">とスライドに書いたけど、考えなおすと、僕が思う品質の高さ順、の方が正確です、失礼しました。MelGeneneralizedCepstrumsは一番気合入れて書いたけど、ユーザーがいるかといったらいないし、RobustPCAはさっと書いただけだけど、アルゴリズムとしては汎用的だし。またRobustPCAだけ毛色が違いますが、応用例で紹介したのでリストに入れておきました。
+ <a class="footnote-return" href="#fnref:93d5f08b6d58e9f0bb0ccdef7a3c7900:1"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="JuliaTokyo #3 Speech Signal Processing in Julia" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介 - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2015-12-22">December 22, 2015</time></span>
+			<section itemprop="entry-text">
+				
+
+<div align="center"><img src="/images/opencvjl_demo.jpg "OpenCV.jl based on Cxx.jl"" class="image"></div>
+
+<h2 id="はじめに:5a3acb20dd9b7b2cc1beb92d0c5772df">はじめに</h2>
+
+<p><a href="http://qiita.com/advent-calendar/2015/julialang">Julia Advent Calendar 2015</a> 22日目の記事です。</p>
+
+<p>Julia の C++ FFI (Foreign Function Interface) である <a href="https://github.com/Keno/Cxx.jl">Cxx.jl</a> をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。
+Cxx.jl の動作原理については、僕の理解が不十分なため簡単にしか紹介できませんが、そもそも使ったことがある人が稀だと思われるので、感想程度でも役に立てば幸いです。</p>
+
+<h2 id="cxx-jl-とは:5a3acb20dd9b7b2cc1beb92d0c5772df">Cxx.jl とは</h2>
+
+<p><a href="https://github.com/Keno/Cxx.jl">https://github.com/Keno/Cxx.jl</a></p>
+
+<p>簡単に説明すると、Cxx.jl とは、Julia から C++ を使用する（e.g. 関数呼び出し、メソッド呼び出し、メンバ変数へのアクセス、etc) ための機能を提供するパッケージです。C++のライブラリを活用したい、あるいはパフォーマンスがシビアな箇所で一部 C++ 使いたい（Cインタフェースを作りたくない<sup class="footnote-ref" id="fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:1"><a rel="footnote" href="#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:1">1</a></sup>）、といった場合に便利です。</p>
+
+<p>Cxx.jl の原理についてざっくりといえば、clang を用いて C++ から LLVM IR を生成し、llvmcall を用いて（Just in time に）コードを実行する、という方式のようです<sup class="footnote-ref" id="fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:2"><a rel="footnote" href="#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:2">2</a></sup></p>
+
+<p>Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード（+コメント）を、Cxx.jl を使うと何ができるのか知りたい場合は、Cxx.jl の README を御覧ください。</p>
+
+<p>以下、過去を思い出しながら感想を書いてみます</p>
+
+<h2 id="実際に使う前に:5a3acb20dd9b7b2cc1beb92d0c5772df">実際に使う前に</h2>
+
+<h3 id="pkg-build-cxx-を成功させることが困難:5a3acb20dd9b7b2cc1beb92d0c5772df">Pkg.build(&ldquo;Cxx&rdquo;) を成功させることが困難</h3>
+
+<p>そもそも使いはじめる前に、ビルドすることが困難でした。Cxx.jl を動作させるためには、</p>
+
+<ul>
+<li>julia</li>
+<li>llvm</li>
+<li>clang</li>
+<li>lldb</li>
+</ul>
+
+<p>の開発版が必要ですが、ビルドが難しい大きな原因は、動作することが保証された<strong>明確な revision が存在しない</strong>ことにあります。（なんじゃそれ、と思うかもしれませんが、まぁまだ安定版はリリースされていないので、、）</p>
+
+<p>今でこそ、llvm, clang, lldbは、Keno氏の fork の kf/gallium ブランチ使えばいいよと README に書いてありますが、僕が使い始めた二ヶ月ほど前は、開発版のllvmが必要だよ、くらいにしか書いていませんでした（参考: <a href="https://github.com/Keno/Cxx.jl/blob/3897e8720b683fe35e407f2128d14e41cec8e0dd/README.md">Cxx.jl/README</a>）。何度もllvmをビルドし直すのは、本当に苦行でした…</p>
+
+<p>参考：
+<blockquote class="twitter-tweet" lang="en"><p lang="ja" dir="ltr">今日だけでllvmをn回ビルドしてる（ビルドできたとは言ってない</p>&mdash; 山本りゅういち (@r9y9) <a href="https://twitter.com/r9y9/status/655000313112367104">October 16, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p><br></p>
+
+<p>思考停止の様子：
+<blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr">make -C deps clean-llvm &amp; make -j4</p>&mdash; 山本りゅういち (@r9y9) <a href="https://twitter.com/r9y9/status/670571501658251264">November 28, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p><br></p>
+
+<h3 id="cxx-jl-のビルドはどうするのが一番簡単なのか:5a3acb20dd9b7b2cc1beb92d0c5772df">Cxx.jl のビルドはどうするのが一番簡単なのか</h3>
+
+<p>さて、さらっと書きましたが、今では llvm, clang, lldb　のkf/gallium　ブランチを使えば、比較的簡単に、多少の試行錯誤<sup class="footnote-ref" id="fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:3"><a rel="footnote" href="#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:3">3</a></sup> で Cxx.jl をビルドして使えます。</p>
+
+<h3 id="開発版-llvm-と一緒に-julia-をビルドする:5a3acb20dd9b7b2cc1beb92d0c5772df">開発版 llvm と一緒に Julia をビルドする</h3>
+
+<p>Juliaをクローンしたディレクトリで、以下の様な <code>Make.user</code> ファイルを作成して make します。</p>
+
+<pre><code>override LLDB_VER=master
+override LLVM_VER=svn
+override LLVM_ASSERTIONS=1
+override BUILD_LLVM_CLANG=1
+override BUILD_LLDB=1
+override USE_LLVM_SHLIB=1
+override LLDB_DISABLE_PYTHON=1
+
+override LLVM_GIT_URL_LLVM=https://github.com/JuliaLang/llvm.git
+override LLVM_GIT_URL_LLDB=https://github.com/JuliaLang/lldb.git
+override LLVM_GIT_URL_CLANG=https://github.com/JuliaLang/clang.git
+override LLVM_GIT_VER=kf/gallium
+override LLVM_GIT_VER_LLDB=kf/gallium
+override LLVM_GIT_VER_CLANG=kf/gallium
+</code></pre>
+
+<p>一部、LLVM_ASSERSONS を有効にするなど、必ずしも必須でないものも含まれていますが、こちらが現状の推奨のようです。この設定で、僕はubuntu 14.04, osx 10.10 でビルドが通ることを確認しました<sup class="footnote-ref" id="fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:4"><a rel="footnote" href="#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:4">4</a></sup></p>
+
+<p>注意：すでに llvm や clang がローカルにクローン済の場合、<code>deps/srccache</code> 以下からクローン済みのソースを消してからビルドすることをおすすめします。すでにクローンされていて、upstream  の変更を取り入れたい場合は、</p>
+
+<pre><code class="language-bash">make -C deps update-llvm
+</code></pre>
+
+<p>とすると便利です。</p>
+
+<h3 id="cxx-jl-のインストール:5a3acb20dd9b7b2cc1beb92d0c5772df">Cxx.jl のインストール</h3>
+
+<pre><code class="language-jl">Pkg.clone(&quot;https://github.com/Keno/Cxx.jl.git&quot;)
+Pkg.build(&quot;Cxx&quot;)   
+</code></pre>
+
+<p>エラーがでなければ、インストール完了<sup class="footnote-ref" id="fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:5"><a rel="footnote" href="#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:5">5</a></sup>です。</p>
+
+<h2 id="実際に使ってみたあと:5a3acb20dd9b7b2cc1beb92d0c5772df">実際に使ってみたあと</h2>
+
+<p>さて、ようやくビルドもできて、ここからは使ってしばらくしての感想です。</p>
+
+<h3 id="julia-上で-c-の-syntax-がそのまま使える:5a3acb20dd9b7b2cc1beb92d0c5772df">Julia 上で C++ の syntax がそのまま使える</h3>
+
+<p>まず、簡単に Cxx.jl の機能を挙げると、重要なのは</p>
+
+<ul>
+<li><code>cxx&quot;...&quot;</code></li>
+<li><code>icxx&quot;...&quot;</code></li>
+<li><code>@cxx</code></li>
+</ul>
+
+<p>の三つです。以下、簡単に例をあげると、<code>cxx&quot;...&quot;</code> でC++ syntax を評価して：</p>
+
+<pre><code class="language-cpp">cxx&quot;#include &lt;iostream&gt;&quot;
+
+cxx&quot;&quot;&quot;
+namespace test {
+void f() {
+    std::cout &lt;&lt; &quot;Hello C++&quot; &lt;&lt; std::endl;
+}
+}
+&quot;&quot;&quot;
+</code></pre>
+
+<p><code>@cxx</code> マクロで C++ 関数を呼び出す：</p>
+
+<pre><code class="language-jl">@cxx test::f()  # Hello C++
+</code></pre>
+
+<p><code>cxx&quot;...&quot;</code>はグローバルスコープで評価されますが、<code>icxx&quot;...&quot;</code> を使えば、特定のスコープ内で C++ を使用することもできます。</p>
+
+<pre><code class="language-jl">for i in 1:10
+    icxx&quot;&quot;&quot;std::cout &lt;&lt; $i &lt;&lt; std::endl;&quot;&quot;&quot;
+end
+</code></pre>
+
+<p><code>ccall</code> のように、返り値、引数の型などを指定して実行するのではなく、C++ のsyntax をそのまま使ってコードが書ける、という点にびっくりしました。</p>
+
+<h3 id="template-も使える:5a3acb20dd9b7b2cc1beb92d0c5772df">template も使える</h3>
+
+<pre><code class="language-cpp">cxx&quot;&quot;&quot;
+template &lt;typename T&gt;
+T add(T x, T y) { return x + y; }
+&quot;&quot;&quot;
+</code></pre>
+
+<p>こんな感じで特殊化も可能</p>
+
+<pre><code class="language-cpp">cxx&quot;&quot;&quot;
+template &lt;&gt;
+int add&lt;int&gt;(int x, int y) { return x + y; }
+&quot;&quot;&quot;
+</code></pre>
+
+<p>書いてて気付きましたが、README には template について言及されていませんね。僕は、今のところ問題なく使えています。例には出していませんが、template class ももちろん使えます（例. <code>std::vector&lt;T&gt;</code>）。</p>
+
+<h3 id="その他雑記:5a3acb20dd9b7b2cc1beb92d0c5772df">その他雑記</h3>
+
+<ul>
+<li>Cxx.jl で使える C++ には制約がある（はず）だが、ここ二ヶ月使用した限りでは、大きな制約に出会ってないし、快適</li>
+<li>共有ライブラリの呼び出しは、<code>ccall</code> と違ってライブラリだけでなくヘッダーファイルも必要</li>
+<li><code>using Cxx</code> にはけっこう時間がかかる。僕の環境では約15秒だった</li>
+<li>たまに llvm error を吐いて落ちる。デバッグするには llvm, clang についてある程度知識がないと難しそう</li>
+<li>C++ REPL 便利</li>
+</ul>
+
+<p>という感じですかね。書き進むに連れて適当になってすいません、、、</p>
+
+<h2 id="cxx-jl-を使って作った成果物:5a3acb20dd9b7b2cc1beb92d0c5772df">Cxx.jl を使って作った成果物</h2>
+
+<p>まとめに入る前に、Cxx.jl を使って遊ぶ過程で作った成果物を、簡単なコメント付きで紹介します。</p>
+
+<h3 id="opencv-jl:5a3acb20dd9b7b2cc1beb92d0c5772df">OpenCV.jl</h3>
+
+<div align="center"><img src="/images/video_thresholding.gif "OpenCV.jl demo"" class="image"></div>
+
+<p><a href="https://github.com/r9y9/OpenCV.jl">https://github.com/r9y9/OpenCV.jl</a></p>
+
+<p>Cxx.jl の学習の題材として作りました。途中から cv::Mat 周りを真面目に作り始めたので、それなりに使えると思います。</p>
+
+<p>デザインポリシーとして、</p>
+
+<ul>
+<li>cv::Mat を <code>AbstractArray{T,N}</code> の subtype として Julia ライクに使えること</li>
+<li>cv::Mat と Julia の Array の相互変換をサポートすること</li>
+</ul>
+
+<p>を念頭において作りました。</p>
+
+<h3 id="libfreenect2-jl:5a3acb20dd9b7b2cc1beb92d0c5772df">LibFreenect2.jl</h3>
+
+<div align="center"><img src="/images/depth_streaming_example.gif "LibFreenect2.jl demo"" class="image"></div>
+
+<p><a href="https://github.com/r9y9/LibFreenect2.jl">https://github.com/r9y9/LibFreenect2.jl</a></p>
+
+<p>ちょうど仕事で kinect v2 を触っていたので、遊びがてらやってみました。</p>
+
+<h2 id="まとめ:5a3acb20dd9b7b2cc1beb92d0c5772df">まとめ</h2>
+
+<ul>
+<li>Cxx.jl をビルドするのはけっこう面倒ですが、C++を（主観ですが）ほとんど不自由なくJITライクに使えるので、非常に便利です</li>
+<li>二つほど C++ ライブラリのラッパーを作ってみましたが、簡単にできるので、みなさんもお試しあれ</li>
+<li>レッツ・トライ Cxx.jl！</li>
+</ul>
+
+<h2 id="おまけ:5a3acb20dd9b7b2cc1beb92d0c5772df">おまけ</h2>
+
+<p>現在 Julia community では、llvm 3.3 から llvm 3.7.1 に移行しようとする動きがあるので（ref: <a href="https://github.com/JuliaLang/julia/issues/9336">julia/issues/9336</a>, <a href="https://github.com/JuliaLang/julia/pull/14430">julia/pull/14430</a>）、移行後は、もう少しビルドが楽になるかもしれません。</p>
+
+<p>実は、この記事を読んでも、きっと今は　Cxx.jl をビルドできないんじゃないかなと思うんですが、もしどうしてもビルドしたい、ということであれば、僕のローカルの llvm, clang, lldb, julia の revision を調べて教えるので、言ってください。</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:5a3acb20dd9b7b2cc1beb92d0c5772df:1">例えば template を多用している場合、Cインタフェースを作るのは面倒です
+ <a class="footnote-return" href="#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:1"><sup>[return]</sup></a></li>
+<li id="fn:5a3acb20dd9b7b2cc1beb92d0c5772df:2">※正確に理解していないため、あまり宛てにしないでください）
+ <a class="footnote-return" href="#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:2"><sup>[return]</sup></a></li>
+<li id="fn:5a3acb20dd9b7b2cc1beb92d0c5772df:3">多少の試行錯誤、というのは、Julia と Cxx.jl のリビジョンは、経験的には必ずしも（特にJuliaの）masterで動作しないので、Julia と Cxx.jl を master から少し遡って、ビルドできるか試行錯誤する、という意味です
+ <a class="footnote-return" href="#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:3"><sup>[return]</sup></a></li>
+<li id="fn:5a3acb20dd9b7b2cc1beb92d0c5772df:4">ビルドが通ったことがある、の方が正確ですが
+ <a class="footnote-return" href="#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:4"><sup>[return]</sup></a></li>
+<li id="fn:5a3acb20dd9b7b2cc1beb92d0c5772df:5">なお、現状のJulia masterとCxx.jl masterでは、エラーが出ると踏んでおります、、、
+ <a class="footnote-return" href="#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:5"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+
