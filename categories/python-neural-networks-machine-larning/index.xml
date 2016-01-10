@@ -91,7 +91,7 @@ class NeuralNet:
             # 入力層-&amp;gt;隠れ層の重みの修正量を計算
             hidden_delta = np.dot(self.W2, output_delta) * dsigmoid(h)
             grad_W1 = np.dot(np.atleast_2d(x).T, np.atleast_2d(hidden_delta))
-            
+
             # 入力層-&amp;gt;隠れ層の重みを更新
             self.W1 -= learning_rate * grad_W1
             self.hidden_bias -= learning_rate * hidden_delta
@@ -180,7 +180,7 @@ def augument_labels(labels, order):
         v = np.zeros(order)
         v[labels[i]] = 1
         new_labels.append(v)
-    
+
     return np.array(new_labels).reshape((labels.shape[0], order))        
 
 if __name__ == &amp;quot;__main__&amp;quot;:
@@ -213,7 +213,7 @@ if __name__ == &amp;quot;__main__&amp;quot;:
         results[n] = nn.predict(test_data[n])
         # print &amp;quot;%d : predicted %s, expected %s&amp;quot; % (n, results[n], labels[n])
     print &amp;quot;recognition rate: &amp;quot;, (results == labels).mean()
-    
+
     # モデルを保存
     model_filename = &amp;quot;nn_mnist.pkl&amp;quot;
     joblib.dump(nn, model_filename, compress=9)
@@ -227,7 +227,7 @@ if __name__ == &amp;quot;__main__&amp;quot;:
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100 # epochesは適当に
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/nn_mnist_W1_100.png &#34;Input to Hidden weight filters after traingned on MNIST.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/nn_mnist_W1_100.png&#34; alt=&#34;Input to Hidden weight filters after trained on MNIST.&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
 &lt;p&gt;興味深いことに、RBMと違って重み行列の解釈はしにくい。生成モデルの尤度を最大化することと、誤差を最小化することはこんなにも違うんだなぁというこなみな感想&lt;/p&gt;
 
