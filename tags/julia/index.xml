@@ -219,7 +219,7 @@ elapsed time: 39.194405845 seconds
 
 &lt;p&gt;PCLを対話環境で使えるようになりました。快適です。また今回のラッピングを通して、PCLとは関係ありませんが、&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; でできないことはほぼないという所感を持ちました。C++ の対話環境（REPL）も付いているので、最強すぎますね。Cythonでもできるぞってことであれば、教えて下さい。僕もpythonから使えるのであれば使いたいです（でも作るのは面倒過ぎる気がするので手を出せない）。&lt;/p&gt;
 
-&lt;p&gt;僕にとって快適な環境はできましたが、&lt;a href=&#34;ttps://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; のビルドはかなり面倒なので（Juliaの開発版も必要ですし…）、きっと誰も使わないんだろうなー、、、&lt;/p&gt;
+&lt;p&gt;僕にとって快適な環境はできましたが、&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; のビルドはかなり面倒なので（Juliaの開発版も必要ですし…）、きっと誰も使わないんだろうなー、、、&lt;/p&gt;
 
 &lt;h2 id=&#34;参考:a1125853acd385d5194fb635fdbc0d66&#34;&gt;参考&lt;/h2&gt;
 
