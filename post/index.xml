@@ -6,8 +6,331 @@
     <description>Recent content in Posts on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 18 Jan 2016 00:44:46 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 24 Jan 2016 22:32:08 +0900</lastBuildDate>
     <atom:link href="http://r9y9.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Cxx.jlを用いてJulia expression/value をC&#43;&#43;に埋め込む実験</title>
+      <link>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</link>
+      <pubDate>Sun, 24 Jan 2016 22:32:08 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</guid>
+      <description>
+
+&lt;p&gt;Keno氏によるJuliaCon 2015 の発表 &lt;a href=&#34;https://www.youtube.com/watch?v=OB8BclL_Tmo&#34;&gt;Keno Fischer: Shaving the Yak&lt;/a&gt; でタイトルの内容が一部紹介されていて、便利そうだなと思い、色々試してみました。&lt;/p&gt;
+
+&lt;p&gt;&lt;div align=&#34;center&#34;&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/OB8BclL_Tmo&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;br/&gt;&lt;/p&gt;
+
+&lt;p&gt;発表の内容は大まかに、Keno氏がなぜCxx.jlを作ったのか、なぜJuliaを始めたのか、といったモチベーションの話から、Cxx.jlでできることについてlive programmingを交えての紹介、といった話になっています。50分とけっこう長いですが、面白いので興味のある方はどうぞ。この記事は、上の動画を見たあと、Cxx.jlと戯れた結果をまとめたものです。&lt;/p&gt;
+
+&lt;p&gt;以下、この記事の目次です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;前置き：C++をJulia上で使う&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;本編：JuliaのexpressionやvalueをC++に埋め込む&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;前置きが若干長いので、タイトルの内容が知りたい方は、飛ばして下さい。&lt;/p&gt;
+
+&lt;h2 id=&#34;前置き-c-をjulia上で使う:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;前置き：C++をJulia上で使う&lt;/h2&gt;
+
+&lt;p&gt;Cxx.jlを使えば、C++をJulia上で非常にスムーズに扱えうことができます。例えば、C++の&lt;code&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt;を使いたい、さらにはJuliaの&lt;code&gt;filter&lt;/code&gt;関数を&lt;code&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt;に対して使えるようにしたい、といった場合は、以下に示すように、ほんのすこしのコードを書くだけでできます。&lt;/p&gt;
+
+&lt;p&gt;準備：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;using Cxx
+import CxxStd: StdVector
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;filter&lt;/code&gt;関数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function Base.filter{T}(f, v::StdVector{T})
+    r = icxx&amp;quot;std::vector&amp;lt;$T&amp;gt;();&amp;quot;
+    for i in 0:length(v)-1
+        if f(T(v[i]))
+            push!(r, v[i])
+        end
+    end
+    r
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、&lt;code&gt;filter&lt;/code&gt;関数に出てくる、&lt;code&gt;length&lt;/code&gt;, &lt;code&gt;getindex&lt;/code&gt;, &lt;code&gt;push!&lt;/code&gt; は、Cxx..jlにそれぞれ以下のように定義されています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;Base.getindex(it::StdVector,i) = icxx&amp;quot;($(it))[$i];&amp;quot;
+Base.length(it::StdVector) = icxx&amp;quot;$(it).size();&amp;quot;
+Base.push!(v::StdVector,i) = icxx&amp;quot;$v.push_back($i);&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;計算結果を見やすくするために、&lt;code&gt;show&lt;/code&gt; 関数も定義しておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Base.show{T}(io::IO, v::StdVector{T})
+    println(io, &amp;quot;$(length(v))-element StdVector{$T}:&amp;quot;)
+    for i = 0:length(v)-1
+        println(io, T(v[i]))
+    end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行結果：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; v = icxx&amp;quot;std::vector&amp;lt;double&amp;gt;{1,2,3,4,5,6,7,8,9,10};&amp;quot;
+10-element StdVector{Float64}:
+1.0
+2.0
+3.0
+4.0
+5.0
+6.0
+7.0
+8.0
+9.0
+10.0
+
+julia&amp;gt; filter(x -&amp;gt; x &amp;gt; 5, v)
+5-element StdVector{Float64}:
+6.0
+7.0
+8.0
+9.0
+10.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単にできました。とても強力です。&lt;/p&gt;
+
+&lt;p&gt;さて、以降本編に入りたいと思いますが、Julia上でC++を使うのは簡単かつ、Cxx.jlの主な用途だとは思うのですが（少なくとも自分がそうでした）、逆はどうなのでしょうか？実は、limitationはあるものの、かなり面白いことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;juliaのexpressionやvalueをc-に埋め込む:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;JuliaのexpressionやvalueをC++に埋め込む&lt;/h2&gt;
+
+&lt;p&gt;まず簡単に、基本的な使い方を整理します。&lt;/p&gt;
+
+&lt;h3 id=&#34;valueを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;valueを埋める&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$(some_value)&lt;/code&gt; という書き方をします&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;
+julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getRandom() {
+           return $(rand(1:10));
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+julia&amp;gt; @cxx getRandom()
+2
+julia&amp;gt; @cxx getRandom()
+2
+julia&amp;gt; @cxx getRandom()
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;rand関数を評価したvalueを埋め込んでいるので、何度&lt;code&gt;getRandom&lt;/code&gt;を呼び出しても結果は同じになります。&lt;/p&gt;
+
+&lt;h3 id=&#34;expressionを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;expressionを埋める&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$:(some_expression)&lt;/code&gt; という書き方をします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getReallyRandom() {
+           return $:(rand(1:10));
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+julia&amp;gt; @cxx getReallyRandom()
+1
+julia&amp;gt; @cxx getReallyRandom()
+9
+julia&amp;gt; @cxx getReallyRandom()
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;期待した通りの動作になっていますね。&lt;/p&gt;
+
+&lt;h2 id=&#34;発展例:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;発展例&lt;/h2&gt;
+
+&lt;p&gt;さて、以下、もう少し発展的な例です。&lt;/p&gt;
+
+&lt;h3 id=&#34;c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-1:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (1)&lt;/h3&gt;
+
+&lt;p&gt;言葉にするとややこしいですが、例を見ればすぐにわかると思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       void test4(int N) {
+           for (int i = 0; i &amp;lt; N; ++i) {
+               $:(println(icxx&amp;quot;return i;&amp;quot;); nothing);
+           }
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+
+julia&amp;gt; @cxx test4(10)
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単に説明すると、C++のfor分の中で、Juliaのprintln関数を読んでいて、さらにprintlnの引数に、C++ expressionが渡されています。&lt;code&gt;icxx&amp;quot;return i;&amp;quot;&lt;/code&gt;という部分が重要で、これは C++ lambda&lt;code&gt;[&amp;amp;](){return i;)}&lt;/code&gt; に相当しています。中々キモい表記ですが、こんなこともできるようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-2:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (2)&lt;/h3&gt;
+
+&lt;p&gt;もう少し実用的な例です。C++関数の中で、Juliaのプログレスバーを使ってみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; using ProgressMeter
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       #include &amp;lt;iostream&amp;gt;
+       #include &amp;lt;cmath&amp;gt;
+
+       double FooBar(size_t N) {
+           double result = 0.0;
+           $:(global progress_meter = Progress(icxx&amp;quot;return N;&amp;quot;, 1); nothing);
+           for (size_t i = 0; i &amp;lt; N; ++i) {
+               result = log(1+i) + log(2+i);
+               $:(next!(progress_meter); nothing);
+           }
+           return result;
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+
+julia&amp;gt; @cxx FooBar(100000000)
+Progress: 100% Time: 0:00:18
+36.84136149790473
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;プログレスバーについては、&lt;a href=&#34;http://qiita.com/bicycle1885/items/6c7cd3d853e00ddfc250&#34;&gt;Juliaでプログレスバーの表示をする | qiitq&lt;/a&gt; を参考にどうぞ。このコードもなかなかきもいですが、期待した通りに、プログレスバーが表示されます。&lt;/p&gt;
+
+&lt;p&gt;さて、この例からは、Cxx.jlの（現在の）limitationが垣間見えるのですが、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Juliaのexpressionで定義したローカル変数は、C++的には同じ関数スコープであっても、Julia expressionからはアクセス不可（上記例では、&lt;code&gt;progress_meter&lt;/code&gt;をglobalにしないと、for文内のjulia expressionからは&lt;code&gt;progress_meter&lt;/code&gt; にアクセスできません）&lt;/li&gt;
+&lt;li&gt;随所にある&lt;code&gt;nothing&lt;/code&gt;にお気づきの人もいると思うのですが、C++ expression内のJulia expressionにさらにC++ expressionを埋め込む場合（※そういったexpressionのことを、&lt;strong&gt;nested expressions&lt;/strong&gt; と呼ぶんだと思います）、返り値は&lt;code&gt;Void&lt;/code&gt;型しか受け付けられません（&lt;code&gt;nothing&lt;/code&gt; をJulia expressionの末尾に置くことで、Julia expressionの返り値を&lt;code&gt;Void&lt;/code&gt;にしています）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;後者について、簡単に例をあげておきます。&lt;/p&gt;
+
+&lt;h4 id=&#34;ネストしていないからok:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;ネストしていないからOK&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getRandom2() {
+           int r = $:(rand(1:10));
+           return r;
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+
+julia&amp;gt; @cxx getRandom2()
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ネストしているからダメ:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;ネストしているからダメ&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;
+julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getRandom3(int hi) {
+           int r = $:(rand(1:icxx&amp;quot;return hi;&amp;quot;));
+           return r;
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+In file included from :1:
+__cxxjl_10.cpp:2:9: error: cannot initialize a variable of type &#39;int&#39; with an rvalue of type &#39;void&#39;
+    int r = __julia::call2([&amp;amp;](){ return hi; });
+        ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ERROR: Currently only `Void` is supported for nested expressions
+ in InstantiateSpecializations at /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:268
+ [inlined code] from /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:723
+ in anonymous at /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:759
+ in eval at ./boot.jl:265
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;nested expressionsで、返り値が&lt;code&gt;Void&lt;/code&gt;以外も取れるようになると、嬉しいなーと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;c-lambda-に-julia-expressionを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ lambda に Julia expressionを埋める&lt;/h3&gt;
+
+&lt;p&gt;これは現在、間接的にしかできませんでした。以下に例をあげます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;ulia&amp;gt; for f in [&amp;quot;iostream&amp;quot;, &amp;quot;thread&amp;quot;] cxxinclude(f) end
+
+julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getRandom() { return $:(rand(1:10)); }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+
+julia&amp;gt; th = icxx&amp;quot;&amp;quot;&amp;quot;
+           std::thread([]{
+               for (size_t i = 0; i &amp;lt; 10; ++i) {
+                   std::cout &amp;lt;&amp;lt; getRandom() &amp;lt;&amp;lt; std::endl;
+               }
+            });
+       &amp;quot;&amp;quot;&amp;quot;
+6
+10
+5
+6
+5
+3
+7
+2
+6
+9
+(class std::__1::thread) {
+}
+
+julia&amp;gt; @cxx th-&amp;gt;join()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;threadである必要はない例ですが、lambdaの例ということで。間接的にというのは、一度Julia関数をC++関数に埋め込んで、そのC++関数をlambdaの中で呼び出す、という意味です。&lt;/p&gt;
+
+&lt;p&gt;以下のようにJulia expressionを直接埋めようとすると、assertion failureで落ちるてしまうので、注意&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; th = icxx&amp;quot;&amp;quot;&amp;quot;
+           std::thread([]{
+               for (size_t i = 0; i &amp;lt; 10; ++i) {
+                   std::cout &amp;lt;&amp;lt; $:(rand(1:10)) &amp;lt;&amp;lt; std::endl;
+               }
+            });
+       &amp;quot;&amp;quot;&amp;quot;
+
+In file included from :1:
+:4:36: error: variable &#39;__juliavar1&#39; cannot be implicitly captured in a lambda with no capture-default specified
+            std::cout &amp;lt;&amp;lt; jl_apply0(__juliavar1) &amp;lt;&amp;lt; std::endl;
+                                   ^
+:1:1: note: &#39;__juliavar1&#39; declared here
+^
+:2:17: note: lambda expression begins here
+    std::thread([]{
+                ^
+Assertion failed: (V &amp;amp;&amp;amp; &amp;quot;DeclRefExpr not entered in LocalDeclMap?&amp;quot;), function EmitDeclRefLValue, file /Users/ryuyamamoto/julia/deps/srccache/llvm-3.7.1/tools/clang/lib/CodeGen/CGExpr.cpp, line 2000.
+zsh: abort      julia-master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例はこれで以上です。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;C++にJuliaを埋め込むといったことは今までほとんどしなかったのですが、今回色々試してみて、いくつかlimitationはあるものの非常に強力だと思いました。興味のある人は、C++にJuliaを埋め込む例は、&lt;a href=&#34;https://github.com/Keno/Gallium.jl&#34;&gt;Keno/Gallium.jl&lt;/a&gt; にいくつか見つかるので、参考になるかもしれません。&lt;/p&gt;
+
+&lt;p&gt;Keno氏の発表、とてもおもしろかったです。先週半ば頃、午前2時半くらいから見始めたのですが、面白くて一気に見てしまいました。いまllvm/clangについて勉強しているので、limitationの部分は、できれば自分でも解決可能かどうか、挑戦してみたいなと思っています。おしまい&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Cxx.jlの著者 &lt;a href=&#34;https://github.com/Keno&#34;&gt;Keno&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=OB8BclL_Tmo&#34;&gt;Keno Fischer: Shaving the Yak&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>対話環境でPoint Cloud Library (PCL) を使いたい</title>
@@ -1624,50 +1947,6 @@ Python: Mean elapsed time: 18.3550617 [sec]
 &lt;p&gt;p.s.&lt;/p&gt;
 
 &lt;p&gt;速攻でノッツさんフォローしました&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>SPTKのPythonラッパーを書いた</title>
-      <link>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</link>
-      <pubDate>Sun, 10 Aug 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</guid>
-      <description>
-
-&lt;h2 id=&#34;2015-09-06-追記:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;2015/09/06 追記&lt;/h2&gt;
-
-&lt;p&gt;ましなpythonラッパーを新しく作りました: &lt;a href=&#34;http://r9y9.github.io/blog/2015/09/06/pysptk/&#34;&gt;Pysptk: SPTKのpythonラッパーを作った (Part 2) - LESS IS MORE&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;2014-08-10-追記:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;2014/08/10 追記&lt;/h2&gt;
-
-&lt;p&gt;ipython notebookによる簡単なチュートリアルを貼っておきます&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/SPTK/blob/master/notebook/SPTK%20calling%20from%20python.ipynb&#34;&gt;SPTK を Pythonから呼ぶ | nbviewer&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;2014-11-09:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;2014/11/09&lt;/h2&gt;
-
-&lt;p&gt;タイポ修正しました…&lt;/p&gt;
-
-&lt;p&gt;scipy.mixture -&amp;gt; sklearn.mixture&lt;/p&gt;
-
-&lt;p&gt;SPTKの中で最も価値がある（と僕が思っている）メルケプストラム分析、メルケプストラムからの波形合成（MLSA filter）がpythonから可能になります。&lt;/p&gt;
-
-&lt;p&gt;ご自由にどうぞ&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK&#34;&gt;Speech Signal Processing Toolkit (SPTK) for API use with python | Github&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;注意ですが、&lt;code&gt;SPTK.h&lt;/code&gt;にある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？sklearn.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/&#34;&gt;Goで音声信号処理をしたいのでSPTKのGoラッパーを書く - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Goでも書いたのにPythonでも書いてしまった。&lt;/p&gt;
-
-&lt;p&gt;一年くらい前に元指導教員の先生と「Pythonから使えたらいいですよね」と話をしていました。先生、ようやく書きました。&lt;/p&gt;
 </description>
     </item>
     

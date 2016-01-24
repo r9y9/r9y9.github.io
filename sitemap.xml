@@ -3,8 +3,13 @@
   
   <url>
     <loc>http://r9y9.github.io/</loc>
-    <lastmod>2016-01-18T00:44:46+09:00</lastmod>
+    <lastmod>2016-01-24T22:32:08+09:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</loc>
+    <lastmod>2016-01-24T22:32:08+09:00</lastmod>
   </url>
   
   <url>

@@ -6,8 +6,571 @@
     <description>Recent content in Julia on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 09 Dec 2014 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Jan 2016 22:32:08 +0900</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/julia/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Cxx.jlを用いてJulia expression/value をC&#43;&#43;に埋め込む実験</title>
+      <link>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</link>
+      <pubDate>Sun, 24 Jan 2016 22:32:08 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</guid>
+      <description>
+
+&lt;p&gt;Keno氏によるJuliaCon 2015 の発表 &lt;a href=&#34;https://www.youtube.com/watch?v=OB8BclL_Tmo&#34;&gt;Keno Fischer: Shaving the Yak&lt;/a&gt; でタイトルの内容が一部紹介されていて、便利そうだなと思い、色々試してみました。&lt;/p&gt;
+
+&lt;p&gt;&lt;div align=&#34;center&#34;&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/OB8BclL_Tmo&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;br/&gt;&lt;/p&gt;
+
+&lt;p&gt;発表の内容は大まかに、Keno氏がなぜCxx.jlを作ったのか、なぜJuliaを始めたのか、といったモチベーションの話から、Cxx.jlでできることについてlive programmingを交えての紹介、といった話になっています。50分とけっこう長いですが、面白いので興味のある方はどうぞ。この記事は、上の動画を見たあと、Cxx.jlと戯れた結果をまとめたものです。&lt;/p&gt;
+
+&lt;p&gt;以下、この記事の目次です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;前置き：C++をJulia上で使う&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;本編：JuliaのexpressionやvalueをC++に埋め込む&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;前置きが若干長いので、タイトルの内容が知りたい方は、飛ばして下さい。&lt;/p&gt;
+
+&lt;h2 id=&#34;前置き-c-をjulia上で使う:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;前置き：C++をJulia上で使う&lt;/h2&gt;
+
+&lt;p&gt;Cxx.jlを使えば、C++をJulia上で非常にスムーズに扱えうことができます。例えば、C++の&lt;code&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt;を使いたい、さらにはJuliaの&lt;code&gt;filter&lt;/code&gt;関数を&lt;code&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt;に対して使えるようにしたい、といった場合は、以下に示すように、ほんのすこしのコードを書くだけでできます。&lt;/p&gt;
+
+&lt;p&gt;準備：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;using Cxx
+import CxxStd: StdVector
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;filter&lt;/code&gt;関数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function Base.filter{T}(f, v::StdVector{T})
+    r = icxx&amp;quot;std::vector&amp;lt;$T&amp;gt;();&amp;quot;
+    for i in 0:length(v)-1
+        if f(T(v[i]))
+            push!(r, v[i])
+        end
+    end
+    r
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、&lt;code&gt;filter&lt;/code&gt;関数に出てくる、&lt;code&gt;length&lt;/code&gt;, &lt;code&gt;getindex&lt;/code&gt;, &lt;code&gt;push!&lt;/code&gt; は、Cxx..jlにそれぞれ以下のように定義されています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;Base.getindex(it::StdVector,i) = icxx&amp;quot;($(it))[$i];&amp;quot;
+Base.length(it::StdVector) = icxx&amp;quot;$(it).size();&amp;quot;
+Base.push!(v::StdVector,i) = icxx&amp;quot;$v.push_back($i);&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;計算結果を見やすくするために、&lt;code&gt;show&lt;/code&gt; 関数も定義しておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Base.show{T}(io::IO, v::StdVector{T})
+    println(io, &amp;quot;$(length(v))-element StdVector{$T}:&amp;quot;)
+    for i = 0:length(v)-1
+        println(io, T(v[i]))
+    end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行結果：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; v = icxx&amp;quot;std::vector&amp;lt;double&amp;gt;{1,2,3,4,5,6,7,8,9,10};&amp;quot;
+10-element StdVector{Float64}:
+1.0
+2.0
+3.0
+4.0
+5.0
+6.0
+7.0
+8.0
+9.0
+10.0
+
+julia&amp;gt; filter(x -&amp;gt; x &amp;gt; 5, v)
+5-element StdVector{Float64}:
+6.0
+7.0
+8.0
+9.0
+10.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単にできました。とても強力です。&lt;/p&gt;
+
+&lt;p&gt;さて、以降本編に入りたいと思いますが、Julia上でC++を使うのは簡単かつ、Cxx.jlの主な用途だとは思うのですが（少なくとも自分がそうでした）、逆はどうなのでしょうか？実は、limitationはあるものの、かなり面白いことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;juliaのexpressionやvalueをc-に埋め込む:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;JuliaのexpressionやvalueをC++に埋め込む&lt;/h2&gt;
+
+&lt;p&gt;まず簡単に、基本的な使い方を整理します。&lt;/p&gt;
+
+&lt;h3 id=&#34;valueを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;valueを埋める&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$(some_value)&lt;/code&gt; という書き方をします&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;
+julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getRandom() {
+           return $(rand(1:10));
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+julia&amp;gt; @cxx getRandom()
+2
+julia&amp;gt; @cxx getRandom()
+2
+julia&amp;gt; @cxx getRandom()
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;rand関数を評価したvalueを埋め込んでいるので、何度&lt;code&gt;getRandom&lt;/code&gt;を呼び出しても結果は同じになります。&lt;/p&gt;
+
+&lt;h3 id=&#34;expressionを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;expressionを埋める&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;$:(some_expression)&lt;/code&gt; という書き方をします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getReallyRandom() {
+           return $:(rand(1:10));
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+julia&amp;gt; @cxx getReallyRandom()
+1
+julia&amp;gt; @cxx getReallyRandom()
+9
+julia&amp;gt; @cxx getReallyRandom()
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;期待した通りの動作になっていますね。&lt;/p&gt;
+
+&lt;h2 id=&#34;発展例:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;発展例&lt;/h2&gt;
+
+&lt;p&gt;さて、以下、もう少し発展的な例です。&lt;/p&gt;
+
+&lt;h3 id=&#34;c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-1:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (1)&lt;/h3&gt;
+
+&lt;p&gt;言葉にするとややこしいですが、例を見ればすぐにわかると思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       void test4(int N) {
+           for (int i = 0; i &amp;lt; N; ++i) {
+               $:(println(icxx&amp;quot;return i;&amp;quot;); nothing);
+           }
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+
+julia&amp;gt; @cxx test4(10)
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単に説明すると、C++のfor分の中で、Juliaのprintln関数を読んでいて、さらにprintlnの引数に、C++ expressionが渡されています。&lt;code&gt;icxx&amp;quot;return i;&amp;quot;&lt;/code&gt;という部分が重要で、これは C++ lambda&lt;code&gt;[&amp;amp;](){return i;)}&lt;/code&gt; に相当しています。中々キモい表記ですが、こんなこともできるようです。&lt;/p&gt;
+
+&lt;h3 id=&#34;c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-2:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (2)&lt;/h3&gt;
+
+&lt;p&gt;もう少し実用的な例です。C++関数の中で、Juliaのプログレスバーを使ってみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; using ProgressMeter
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       #include &amp;lt;iostream&amp;gt;
+       #include &amp;lt;cmath&amp;gt;
+
+       double FooBar(size_t N) {
+           double result = 0.0;
+           $:(global progress_meter = Progress(icxx&amp;quot;return N;&amp;quot;, 1); nothing);
+           for (size_t i = 0; i &amp;lt; N; ++i) {
+               result = log(1+i) + log(2+i);
+               $:(next!(progress_meter); nothing);
+           }
+           return result;
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+
+julia&amp;gt; @cxx FooBar(100000000)
+Progress: 100% Time: 0:00:18
+36.84136149790473
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;プログレスバーについては、&lt;a href=&#34;http://qiita.com/bicycle1885/items/6c7cd3d853e00ddfc250&#34;&gt;Juliaでプログレスバーの表示をする | qiitq&lt;/a&gt; を参考にどうぞ。このコードもなかなかきもいですが、期待した通りに、プログレスバーが表示されます。&lt;/p&gt;
+
+&lt;p&gt;さて、この例からは、Cxx.jlの（現在の）limitationが垣間見えるのですが、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Juliaのexpressionで定義したローカル変数は、C++的には同じ関数スコープであっても、Julia expressionからはアクセス不可（上記例では、&lt;code&gt;progress_meter&lt;/code&gt;をglobalにしないと、for文内のjulia expressionからは&lt;code&gt;progress_meter&lt;/code&gt; にアクセスできません）&lt;/li&gt;
+&lt;li&gt;随所にある&lt;code&gt;nothing&lt;/code&gt;にお気づきの人もいると思うのですが、C++ expression内のJulia expressionにさらにC++ expressionを埋め込む場合（※そういったexpressionのことを、&lt;strong&gt;nested expressions&lt;/strong&gt; と呼ぶんだと思います）、返り値は&lt;code&gt;Void&lt;/code&gt;型しか受け付けられません（&lt;code&gt;nothing&lt;/code&gt; をJulia expressionの末尾に置くことで、Julia expressionの返り値を&lt;code&gt;Void&lt;/code&gt;にしています）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;後者について、簡単に例をあげておきます。&lt;/p&gt;
+
+&lt;h4 id=&#34;ネストしていないからok:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;ネストしていないからOK&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getRandom2() {
+           int r = $:(rand(1:10));
+           return r;
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+
+julia&amp;gt; @cxx getRandom2()
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ネストしているからダメ:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;ネストしているからダメ&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;
+julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getRandom3(int hi) {
+           int r = $:(rand(1:icxx&amp;quot;return hi;&amp;quot;));
+           return r;
+       }
+       &amp;quot;&amp;quot;&amp;quot;
+In file included from :1:
+__cxxjl_10.cpp:2:9: error: cannot initialize a variable of type &#39;int&#39; with an rvalue of type &#39;void&#39;
+    int r = __julia::call2([&amp;amp;](){ return hi; });
+        ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ERROR: Currently only `Void` is supported for nested expressions
+ in InstantiateSpecializations at /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:268
+ [inlined code] from /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:723
+ in anonymous at /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:759
+ in eval at ./boot.jl:265
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;nested expressionsで、返り値が&lt;code&gt;Void&lt;/code&gt;以外も取れるようになると、嬉しいなーと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;c-lambda-に-julia-expressionを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ lambda に Julia expressionを埋める&lt;/h3&gt;
+
+&lt;p&gt;これは現在、間接的にしかできませんでした。以下に例をあげます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;ulia&amp;gt; for f in [&amp;quot;iostream&amp;quot;, &amp;quot;thread&amp;quot;] cxxinclude(f) end
+
+julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       int getRandom() { return $:(rand(1:10)); }
+       &amp;quot;&amp;quot;&amp;quot;
+true
+
+julia&amp;gt; th = icxx&amp;quot;&amp;quot;&amp;quot;
+           std::thread([]{
+               for (size_t i = 0; i &amp;lt; 10; ++i) {
+                   std::cout &amp;lt;&amp;lt; getRandom() &amp;lt;&amp;lt; std::endl;
+               }
+            });
+       &amp;quot;&amp;quot;&amp;quot;
+6
+10
+5
+6
+5
+3
+7
+2
+6
+9
+(class std::__1::thread) {
+}
+
+julia&amp;gt; @cxx th-&amp;gt;join()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;threadである必要はない例ですが、lambdaの例ということで。間接的にというのは、一度Julia関数をC++関数に埋め込んで、そのC++関数をlambdaの中で呼び出す、という意味です。&lt;/p&gt;
+
+&lt;p&gt;以下のようにJulia expressionを直接埋めようとすると、assertion failureで落ちるてしまうので、注意&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; th = icxx&amp;quot;&amp;quot;&amp;quot;
+           std::thread([]{
+               for (size_t i = 0; i &amp;lt; 10; ++i) {
+                   std::cout &amp;lt;&amp;lt; $:(rand(1:10)) &amp;lt;&amp;lt; std::endl;
+               }
+            });
+       &amp;quot;&amp;quot;&amp;quot;
+
+In file included from :1:
+:4:36: error: variable &#39;__juliavar1&#39; cannot be implicitly captured in a lambda with no capture-default specified
+            std::cout &amp;lt;&amp;lt; jl_apply0(__juliavar1) &amp;lt;&amp;lt; std::endl;
+                                   ^
+:1:1: note: &#39;__juliavar1&#39; declared here
+^
+:2:17: note: lambda expression begins here
+    std::thread([]{
+                ^
+Assertion failed: (V &amp;amp;&amp;amp; &amp;quot;DeclRefExpr not entered in LocalDeclMap?&amp;quot;), function EmitDeclRefLValue, file /Users/ryuyamamoto/julia/deps/srccache/llvm-3.7.1/tools/clang/lib/CodeGen/CGExpr.cpp, line 2000.
+zsh: abort      julia-master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例はこれで以上です。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;C++にJuliaを埋め込むといったことは今までほとんどしなかったのですが、今回色々試してみて、いくつかlimitationはあるものの非常に強力だと思いました。興味のある人は、C++にJuliaを埋め込む例は、&lt;a href=&#34;https://github.com/Keno/Gallium.jl&#34;&gt;Keno/Gallium.jl&lt;/a&gt; にいくつか見つかるので、参考になるかもしれません。&lt;/p&gt;
+
+&lt;p&gt;Keno氏の発表、とてもおもしろかったです。先週半ば頃、午前2時半くらいから見始めたのですが、面白くて一気に見てしまいました。いまllvm/clangについて勉強しているので、limitationの部分は、できれば自分でも解決可能かどうか、挑戦してみたいなと思っています。おしまい&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Cxx.jlの著者 &lt;a href=&#34;https://github.com/Keno&#34;&gt;Keno&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=OB8BclL_Tmo&#34;&gt;Keno Fischer: Shaving the Yak&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>対話環境でPoint Cloud Library (PCL) を使いたい</title>
+      <link>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</link>
+      <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
+      <description>
+
+&lt;p&gt;新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;point-cloud-library-pcl-とは:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Point Cloud Library (PCL) とは&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.pointclouds.org/&#34;&gt;http://www.pointclouds.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;問題:a1125853acd385d5194fb635fdbc0d66&#34;&gt;問題&lt;/h2&gt;
+
+&lt;p&gt;PCL はboost、Eigenに依存している、かつtemplateを多く使用しているため、PCLを使用したプロジェクトのコンパイル時間は非常に長くなるという問題があります。twitterで [PCL コンパイル] として検索すると、例えば以下の様なツイートが見つかりますが、完全に同意です。&lt;/p&gt;
+
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;PCLリンクしてるコードのコンパイルに一分半くらいかかる。つらい&lt;/p&gt;&amp;mdash; がらえもん(プログラム書く (@garaemon_coder) &lt;a href=&#34;https://twitter.com/garaemon_coder/status/632064713816305664&#34;&gt;August 14, 2015&lt;/a&gt;&lt;/blockquote&gt;
+
+&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;PCLはC++だしコンパイル遅いしで色々めんどくさい&lt;/p&gt;&amp;mdash; 動かないで点P (@initial_D_0601) &lt;a href=&#34;https://twitter.com/initial_D_0601/status/636013899486105600&#34;&gt;August 25, 2015&lt;/a&gt;&lt;/blockquote&gt;
+
+&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;PCLを使うプロジェクトのコンパイル時間かかりすぎて辛いわ&lt;/p&gt;&amp;mdash; kato tetsuro (@tkato_) &lt;a href=&#34;https://twitter.com/tkato_/status/662545461362847744&#34;&gt;November 6, 2015&lt;/a&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;boostへの依存関係が必須かどうかについては疑問が残りますが、点群処理ではパフォーマンスが求められることが多いと思われるので、C++で書かれていることは合理的に思います。とはいえ、コンパイル時間が長いのは試行錯誤するにはつらいです。&lt;/p&gt;
+
+&lt;h2 id=&#34;ではどうするか:a1125853acd385d5194fb635fdbc0d66&#34;&gt;ではどうするか&lt;/h2&gt;
+
+&lt;p&gt;試行錯誤のサイクルを速く回せるようにすることは僕にとって非常に重要だったのと、 C++で書かなければいけないという制約もなかった（※組み込み用途ではない）ので、対話的にPCLを使うために、僕は動的型付け言語でラッパーを作ることにしました。&lt;/p&gt;
+
+&lt;p&gt;参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+
+&lt;div align=&#34;center&#34;&gt;
+&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/vMvYpKqA5aLtI8&#34; width=&#34;595&#34; height=&#34;485&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/payashim/ssii-2015-hayashi&#34; title=&#34;コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi&#34; target=&#34;_blank&#34;&gt;コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/payashim&#34; target=&#34;_blank&#34;&gt;Masaki Hayashi&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;何で書くか:a1125853acd385d5194fb635fdbc0d66&#34;&gt;何で書くか&lt;/h2&gt;
+
+&lt;p&gt;世の中には色んなプログラミング言語があります。C++ライブラリのラッパー作るぞとなったとき、僕にとって選択肢は、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Python&lt;/li&gt;
+&lt;li&gt;Julia&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;の二択でした。それぞれ、以下のプロジェクトに頼れば templateを多用したライブラリのラップができそうだと思いました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://cython.org/&#34;&gt;Cython&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;pythonに関しては、すでに cythonで書かれた &lt;a href=&#34;https://github.com/strawlab/python-pcl&#34;&gt;strawlab/python-pcl&lt;/a&gt; というラッパーがあります。しかし、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;現在あまりメンテされていない&lt;/li&gt;
+&lt;li&gt;サポートされている機能も多くはない&lt;/li&gt;
+&lt;li&gt;templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. &lt;code&gt;pcl::PointCloud&amp;lt;T&amp;gt;&lt;/code&gt; は &lt;code&gt;PointCloud{T}&lt;/code&gt; と書ける&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;）&lt;/li&gt;
+&lt;li&gt;Cxx.jl を使えば JITライクに C++ を使える（試行錯誤できる）し、Juliaのほうがいいかな&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;といった理由から、Juliaで書くことにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;成果物:a1125853acd385d5194fb635fdbc0d66&#34;&gt;成果物&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/PCL.jl&#34;&gt;https://github.com/r9y9/PCL.jl&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5&#34;&gt;StatisticalOutlierRemovalのデモ | nbviewer&lt;/a&gt; こんな感じで、jupyter上で試行錯誤できるようになりましたとさ&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;a href=&#34;https://github.com/strawlab/python-pcl&#34;&gt;strawlab/python-pcl&lt;/a&gt; よりも多くのことができると思います。&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;PCLは非常に大きなライブラリのため、全ての機能をラップするつもりはありませんが、今後必要に応じて機能を追加するかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;適当なスクショ:a1125853acd385d5194fb635fdbc0d66&#34;&gt;適当なスクショ&lt;/h2&gt;
+
+&lt;p&gt;PCL.jl で、少なくとも最低限以下はできますということで。ソースコードは &lt;a href=&#34;https://github.com/r9y9/PCL.jl/tree/master/examples&#34;&gt;r9y9/PCL.jl/examples&lt;/a&gt; にあります。&lt;/p&gt;
+
+&lt;h3 id=&#34;pclvisualizer:a1125853acd385d5194fb635fdbc0d66&#34;&gt;PCLVisualizer&lt;/h3&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/milk_cartoon_all_small_clorox.gif&#34; /&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;3d-object-recognition-based-on-correspondence-grouping:a1125853acd385d5194fb635fdbc0d66&#34;&gt;3D Object Recognition based on Correspondence Grouping&lt;/h3&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/correspondence_grouping.png&#34; /&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;hypothesis-verification-for-3d-object-recognition:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Hypothesis Verification for 3D Object Recognition&lt;/h3&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/global_hypothesis_verification.png&#34; /&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;extracting-indices-from-a-pointcloud:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Extracting indices from a PointCloud&lt;/h3&gt;
+
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/extract_indices.png&#34; /&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;kinect-v2で遊ぶ:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Kinect v2で遊ぶ&lt;/h3&gt;
+
+&lt;p&gt;&lt;div align=&#34;center&#34;&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/rGdsNoK3n9Q&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;
+&lt;br/&gt;&lt;/p&gt;
+
+&lt;p&gt;画質低い &amp;amp; クロップが適当で一部しか見えませんが、諸々の処理を含めて fpsは15くらいでしょうか。depthとrgb imageのregistration、その結果の点群への変換に関しては、20~30fps程度でした。real-timeで点群を処理するようなアプリケーションを書く場合は、現実的にはC++で書くことになるかと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;余談:a1125853acd385d5194fb635fdbc0d66&#34;&gt;余談&lt;/h3&gt;
+
+&lt;p&gt;Kinect v2 から得たデータを点群に変換するのに、Juliaではパフォーマンスを出すのに苦労したのですが、結果面白い（キモい？）コードができたので、少し話はそれますが簡単に紹介しておきたいと思います。&lt;/p&gt;
+
+&lt;h4 id=&#34;depthとcolorを点群に変換する関数:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Depthとcolorを点群に変換する関数&lt;/h4&gt;
+
+&lt;p&gt;まず、コードを以下に示します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function getPointCloudXYZRGB(registration, undistorted, registered)
+    w = width(undistorted)
+    h = height(undistorted)
+    cloud = pcl.PointCloud{pcl.PointXYZRGB}(w, h)
+    icxx&amp;quot;$(cloud.handle)-&amp;gt;is_dense = false;&amp;quot;
+    pointsptr = icxx&amp;quot;&amp;amp;$(cloud.handle)-&amp;gt;points[0];&amp;quot;
+    icxx&amp;quot;&amp;quot;&amp;quot;
+    for (size_t ri = 0; ri &amp;lt; $h; ++ri) {
+        for (size_t ci = 0; ci &amp;lt; $w; ++ci) {
+            auto p = $(pointsptr) + $w * ri + ci;
+            $(registration)-&amp;gt;getPointXYZRGB($(undistorted.handle),
+                $(registered.handle), ri, ci, p-&amp;gt;x, p-&amp;gt;y, p-&amp;gt;z, p-&amp;gt;rgb);
+        }
+    }
+    &amp;quot;&amp;quot;&amp;quot;
+    cloud
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/PCL.jl/blob/bd6aefc72537761fa81244da512e2002bb1c4817/examples/libfreenect2_grabbar.jl#L12-L29&#34;&gt;r9y9/PCL.jl/examples/libfreenect2_grabbar.jl#L12-L29&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;syntax highlightとは何だったのか、と言いたくなるようなコードですが、performance heavy な部分は &lt;code&gt;icxx&amp;quot;&amp;quot;&amp;quot;...&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt; という形で、C++ で記述しています。Juliaのコード中で、こんなに自由にC++を使えるなんて、何というかキモいけど書いていて楽しいです。&lt;/p&gt;
+
+&lt;p&gt;なお、最初に書いたコードは、以下の様な感じでした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function getPointCloudXYZRGB(registration, undistorted, registered)
+    w = width(undistorted)
+    h = height(undistorted)
+    cloud = pcl.PointCloud{pcl.PointXYZRGB}(w, h)
+    icxx&amp;quot;$(cloud.handle)-&amp;gt;is_dense = true;&amp;quot;
+    pointsptr = icxx&amp;quot;&amp;amp;$(cloud.handle)-&amp;gt;points[0];&amp;quot;
+    for ri in 0:h-1
+        for ci in 0:w-1
+            p = icxx&amp;quot;$(pointsptr) + $w * $ri + $ci;&amp;quot;
+            x,y,z,r,g,b = getPointXYZRGB(registration, undistorted,
+                registered, ri, ci)
+            isnan(z) &amp;amp;&amp;amp; icxx&amp;quot;$(cloud.handle)-&amp;gt;is_dense = false;&amp;quot;
+            icxx&amp;quot;&amp;quot;&amp;quot;
+            $p-&amp;gt;x = $x;
+            $p-&amp;gt;y = $y;
+            $p-&amp;gt;z = $z;
+            $p-&amp;gt;r = $r;
+            $p-&amp;gt;g = $g;
+            $p-&amp;gt;b = $b;
+            &amp;quot;&amp;quot;&amp;quot;
+        end
+    end
+    cloud
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/PCL.jl/blob/bd6aefc72537761fa81244da512e2002bb1c4817/examples/libfreenect2_grabbar.jl#L12-L29&#34;&gt;r9y9/PCL.jl/examples/libfreenect2_grabbar.jl#L12-L29&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;このコードだと、forループの中でJulia関数の呼びだしが発生するため、実は重たい処理になっています。このコードだと、確かfps 3 とかそのくらいでした。関数呼び出しがボトルネックだと気づいて、&lt;code&gt;icxx&amp;quot;&amp;quot;&amp;quot;...&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt; でくるんで（一つの関数にすることで）高速化を図った次第です。&lt;/p&gt;
+
+&lt;h2 id=&#34;雑記:a1125853acd385d5194fb635fdbc0d66&#34;&gt;雑記&lt;/h2&gt;
+
+&lt;p&gt;以下、僕のmacbook proで &lt;code&gt;tic(); using PCL; toc()&lt;/code&gt; をした結果：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;julia&amp;gt; tic(); using PCL; toc()
+INFO: vtk include directory found: /usr/local/include/vtk-6.3
+INFO: Loading Cxx.jl...
+INFO: dlopen...
+INFO: vtk version: 6.3.0
+INFO: Including headers from system path: /usr/local/include
+INFO: pcl_version: 1.8
+INFO: Include pcl top-level headers
+  1.053026 seconds (91 allocations: 4.266 KB)
+INFO: Include pcl::common headers
+  5.433219 seconds (91 allocations: 4.078 KB)
+INFO: adding vtk and visualization module headers
+INFO: Include pcl::io headers
+  0.389614 seconds (195 allocations: 11.034 KB)
+INFO: Include pcl::registration headers
+  1.428106 seconds (195 allocations: 11.065 KB)
+INFO: Include pcl::recognition headers
+  1.154518 seconds (136 allocations: 6.141 KB)
+INFO: Include pcl::features headers
+  0.033937 seconds (181 allocations: 8.094 KB)
+INFO: Include pcl::filters headers
+  0.070545 seconds (316 allocations: 14.125 KB)
+INFO: Include pcl::kdtree headers
+  0.022809 seconds (91 allocations: 4.078 KB)
+INFO: Include pcl::sample_consensus headers
+  0.014600 seconds (91 allocations: 4.141 KB)
+INFO: Include pcl::segmentation headers
+  0.010710 seconds (46 allocations: 2.094 KB)
+INFO: FLANN version: 1.8.4
+elapsed time: 39.194405845 seconds
+39.194405845
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/PCL.jl/blob/9760565dd3b744e16733c54992551e4e0babc7ee/src/PCL.jl#L90-L101&#34;&gt;r9y9/PCL.jl/src/PCL.jl#L90-L101&lt;/a&gt; pcl/pcl_base.h. pcl/common/common_headers.h 当たりのパースに大分時間かかってますね、、。まぁ一度ロードしてしまえば、Juliaのプロセスをkillしないかぎり問題ないのですが。開発中は、頻繁にreloadする必要があって、辛かったです。&lt;/p&gt;
+
+&lt;p&gt;ロード時間が長い問題は、Cxx.jlにプリコンパイル（&lt;a href=&#34;https://github.com/Keno/Cxx.jl/issues/181&#34;&gt;Keno/Cxx.jl/issues/181&lt;/a&gt;）がサポートされれば、改善するかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;さいごに:a1125853acd385d5194fb635fdbc0d66&#34;&gt;さいごに&lt;/h2&gt;
+
+&lt;p&gt;PCLを対話環境で使えるようになりました。快適です。また今回のラッピングを通して、PCLとは関係ありませんが、&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; でできないことはほぼないという所感を持ちました。C++ の対話環境（REPL）も付いているので、最強すぎますね。Cythonでもできるぞってことであれば、教えて下さい。僕もpythonから使えるのであれば使いたいです（でも作るのは面倒過ぎる気がするので手を出せない）。&lt;/p&gt;
+
+&lt;p&gt;僕にとって快適な環境はできましたが、&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; のビルドはかなり面倒なので（Juliaの開発版も必要ですし…）、きっと誰も使わないんだろうなー、、、&lt;/p&gt;
+
+&lt;h2 id=&#34;参考:a1125853acd385d5194fb635fdbc0d66&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Keno/Cxx.jl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2015/12/22/cxx-jl/&#34;&gt;Cxx.jl を使ってみた感想 + OpenCV.jl, Libfreenect2.jl の紹介&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;僕、ラッパー作ってばっかり…
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;opencvはpythonラッパーについて触れられているのに、PCLのラッパーは無いだと？うーむ、じゃあ作ってみるかーと、思った気もします。
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;公式にサポートはされていますが、過去にcythonではまったことがあるので、懐疑的
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;cythonでも同じようにかけますが、pythonだと&lt;code&gt;PointCloud(dtype=T)&lt;/code&gt;みたいに書くことになるんですかね
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;PCLVisualizerはGUIで使った方が便利なので、JuliaのREPLから使うことが多いですが
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;python-pclよりもインストールは大変だと思いますが…
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>ccallにおけるポインタ周りのハマりどころとその解決法</title>
