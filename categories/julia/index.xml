@@ -6,8 +6,234 @@
     <description>Recent content in Julia on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 24 Jan 2016 22:32:08 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 23 Dec 2016 18:06:08 +0900</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/julia/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Juliaをソースからビルドする</title>
+      <link>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</link>
+      <pubDate>Fri, 23 Dec 2016 18:06:08 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2016/julialang&#34;&gt;Julia advent calendar 2016&lt;/a&gt; 23日目の記事です。&lt;/p&gt;
+
+&lt;h2 id=&#34;はじめに:787c00436bb80acba0860fc8b349f551&#34;&gt;はじめに&lt;/h2&gt;
+
+&lt;p&gt;Juilaを最も簡単にインストールする方法は、&lt;a href=&#34;http://julialang.org/downloads/&#34;&gt;公式のダウンロードページ&lt;/a&gt;からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:787c00436bb80acba0860fc8b349f551:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:787c00436bb80acba0860fc8b349f551:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。&lt;/p&gt;
+
+&lt;p&gt;僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:787c00436bb80acba0860fc8b349f551:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:787c00436bb80acba0860fc8b349f551:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;下準備:787c00436bb80acba0860fc8b349f551&#34;&gt;下準備&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git clone https://github.com/JuliaLang/julia &amp;amp;&amp;amp; cd julia
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ビルドのカスタマイズ方法:787c00436bb80acba0860fc8b349f551&#34;&gt;ビルドのカスタマイズ方法&lt;/h2&gt;
+
+&lt;p&gt;Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに &lt;code&gt;override LLVM_VER=3.7.1&lt;/code&gt; のような書き方で記述することで、カスタマイズ可能です（詳細は&lt;a href=&#34;https://github.com/JuliaLang/julia#source-download-and-compilation&#34;&gt;公式の説明&lt;/a&gt;をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;override LLVM_VER=3.7.1
+override LLVM_ASSERTIONS=1
+override BUILD_LLVM_CLANG=1
+override USE_LLVM_SHLIB=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとは、通常通りmakeコマンドを走らせることで、ビルドを行います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;make -j4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コア数は適当に指定します。llvm, openblasあたりのビルドが結構重いので、並列ビルドがオススメです。&lt;/p&gt;
+
+&lt;h2 id=&#34;僕がよく使うオプション:787c00436bb80acba0860fc8b349f551&#34;&gt;僕がよく使うオプション&lt;/h2&gt;
+
+&lt;p&gt;ここから、僕がよく使うオプションをいくつか解説します。&lt;/p&gt;
+
+&lt;h3 id=&#34;llvm-ver:787c00436bb80acba0860fc8b349f551&#34;&gt;LLVM_VER&lt;/h3&gt;
+
+&lt;p&gt;llvmのバージョンを表します。Julia上でC++を使いたいというcrazyな人に激推しの &lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Keno/Cxx.jl&lt;/a&gt; というパッケージがあるのですが、このパッケージはclangとllvmの3.7.1以上を必要とします（Cxx.jlについては、過去に何度か記事を書いたので、例えば &lt;a href=&#34;http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/&#34;&gt;Cxx.jlを用いてJulia expression/value をC++に埋め込む実験&lt;/a&gt; をご覧ください）。llvm 3.3がデフォルトだったJulia v0.4時代では、明示的に3.7.1と指定する必要がありました。いまは、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Julia v0.5の公式配布バイナリでも、&lt;code&gt;Pkg.add(&amp;quot;Cxx&amp;quot;)&lt;/code&gt;でインストールできるとされている（&lt;a href=&#34;https://github.com/Keno/Cxx.jl/issues/287&#34;&gt;Keno/Cxx.jl/#287&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;かつ現状のデフォルトバージョンが3.7.1 (もうすぐ3.9.1になりそうですが &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/19678/files&#34;&gt;JuliaLang/julia/#19768&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;なので、僕の場合は明示的にLLVM_VERを指定する必要はなくなってきましたが、例えば、LLVMのNVPTX backendを使ってJuliaでCUDAカーネルを書けるようにする &lt;a href=&#34;https://github.com/JuliaGPU/CUDAnative.jl&#34;&gt;JuliaGPU/CUDAnative.jl&lt;/a&gt; （要 llvm 3.9）のような、experimentalなパッケージを試したい場合など、LLVM_VERを指定したくなる場合もあるかと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;llvm-assertions:787c00436bb80acba0860fc8b349f551&#34;&gt;LLVM_ASSERTIONS&lt;/h3&gt;
+
+&lt;p&gt;LLVMをassert付きでビルドするかどうかを表します。ONにするとビルドかかる時間が長くなり、LLVMのパフォーマンスが若干落ちますが、デバッグには便利です。Juliaのコード生成周りでエラーを起こしやすいようなコードを書くときには、ONにしておくと便利です。&lt;/p&gt;
+
+&lt;h3 id=&#34;build-llvm-clang:787c00436bb80acba0860fc8b349f551&#34;&gt;BUILD_LLVM_CLANG&lt;/h3&gt;
+
+&lt;p&gt;llvmとあわせて、clangをビルドするかどうか、というオプションです。Cxx.jlに必要なので、僕はそのためにONにしています。その他必要なケースとしては、clangのaddress/memory sanitizerを使いたい場合が考えられます。詳細は&lt;a href=&#34;http://docs.julialang.org/en/stable/devdocs/sanitizers/&#34;&gt;devdocs/sanitizers&lt;/a&gt; をご覧ください。&lt;/p&gt;
+
+&lt;h2 id=&#34;cc-cxx:787c00436bb80acba0860fc8b349f551&#34;&gt;CC, CXX&lt;/h2&gt;
+
+&lt;p&gt;コンパイラの指定です。僕の場合 ubuntu 14.04では、（Cxx.jlのために）以下のように設定しています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;override CC=gcc-6
+override CXX=g++-6
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考: &lt;a href=&#34;https://github.com/r9y9/julia-cxx&#34;&gt;https://github.com/r9y9/julia-cxx&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;macOS では特に設定していませんが、Julia以外のプロジェクトをビルドするときに、たまに&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CXX=usr/local/bin/clang++ cmake ${path_to_project}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;のように、xcode付属のclangではなく、自前でビルドしたclangを使いたい場合などに、CC, CXXを指定したりします。&lt;/p&gt;
+
+&lt;h3 id=&#34;use-clang:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_CLANG&lt;/h3&gt;
+
+&lt;p&gt;clangを使ってビルドするかどうかを表します。gccを使いたくない、というときにオンにします。&lt;/p&gt;
+
+&lt;h3 id=&#34;use-llvm-shlib:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_LLVM_SHLIB&lt;/h3&gt;
+
+&lt;p&gt;llvmを共有ライブラリとしてビルドするかどうかを表します。v0.4ではデフォルトがオフで、v0.5からはオンになっています。llvmの共有ライブラリをdlopenして色々いじりたい場合（何度もアレですが、Cxx.jlを使いたい場合とか）は、オンにする必要があります。&lt;/p&gt;
+
+&lt;h3 id=&#34;use-system-lib-name:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_SYSTEM_${LIB_NAME}&lt;/h3&gt;
+
+&lt;p&gt;Juliaでは、デフォルトで依存ライブラリをソースからビルドします。システムにインストールされたライブラリを使用したい場合、USE_SYSTEM_XXX （e.g. &lt;code&gt;USE_SYSTEM_BLAS&lt;/code&gt;）をオンにします。ビルド時間を短縮することが可能です。&lt;/p&gt;
+
+&lt;p&gt;USE_SYSTEM_xxx にどのようなものがあるのかは、&lt;a href=&#34;https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Make.inc#L25-L47&#34;&gt;Make.inc&lt;/a&gt; をご覧ください。&lt;/p&gt;
+
+&lt;h2 id=&#34;便利そうなオプション:787c00436bb80acba0860fc8b349f551&#34;&gt;便利そうなオプション&lt;/h2&gt;
+
+&lt;h3 id=&#34;use-intel-mkl:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_INTEL_MKL&lt;/h3&gt;
+
+&lt;p&gt;MKLを使うかどうかを表します。MKLを持っている場合にオンにすれば、一部パフォーマンスが向上しそうですね。&lt;/p&gt;
+
+&lt;h3 id=&#34;use-gpl-libs:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_GPL_LIBS&lt;/h3&gt;
+
+&lt;p&gt;GPLのライブラリ（FFTWなど）を使用するかどうかを表します。使ったことはありませんが、Juliaを組み込みで使用したい場合に、便利かもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;ビルド時のtips:787c00436bb80acba0860fc8b349f551&#34;&gt;ビルド時のTips&lt;/h2&gt;
+
+&lt;p&gt;Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:787c00436bb80acba0860fc8b349f551:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:787c00436bb80acba0860fc8b349f551:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;llvm&lt;/li&gt;
+&lt;li&gt;openblas&lt;/li&gt;
+&lt;li&gt;libgit2&lt;/li&gt;
+&lt;li&gt;mbettls&lt;/li&gt;
+&lt;li&gt;libunwind&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに &lt;code&gt;make clean &amp;amp;&amp;amp; make&lt;/code&gt; をして、案の定駄目で、よくわからずに &lt;code&gt;make distcleannall&lt;/code&gt; してしまうこともありました（&lt;code&gt;distcleanall&lt;/code&gt;が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:787c00436bb80acba0860fc8b349f551:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:787c00436bb80acba0860fc8b349f551:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;。過去の失敗から、僕が学んできたTipsを紹介します。&lt;/p&gt;
+
+&lt;h3 id=&#34;プロジェクトトップmakefileのcleanコマンドを適切に使い分ける:787c00436bb80acba0860fc8b349f551&#34;&gt;プロジェクトトップMakefileのcleanコマンドを適切に使い分ける&lt;/h3&gt;
+
+&lt;p&gt;cleanコマンドにはさまざまなものがあります。ビルドのし直しが不要なものまでcleanして、無駄に時間を消費しないように、正しく使い分けましょう。以下、基本的なcleanコマンドを簡単にまとめます。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;コマンド&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;clean&lt;/td&gt;
+&lt;td&gt;Julia本体のclean&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;cleanall&lt;/td&gt;
+&lt;td&gt;Julia本体、flisp、libuvのclean&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;distclean&lt;/td&gt;
+&lt;td&gt;binary配布用の成果物をclean&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;distcleanall&lt;/td&gt;
+&lt;td&gt;deps以下の依存関係をすべてclean&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;よほどのことがない限り、 &lt;code&gt;make distcleanall&lt;/code&gt; を使わないようにしましょう。&lt;code&gt;make distclean&lt;/code&gt; はほとんど使う必要はないと思います。&lt;/p&gt;
+
+&lt;p&gt;コマンドの詳細、その他コマンドについては、&lt;a href=&#34;https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Makefile&#34;&gt;julia/Makefile&lt;/a&gt; をご覧ください&lt;/p&gt;
+
+&lt;h3 id=&#34;サブディレクトリのmakefileを使いわける:787c00436bb80acba0860fc8b349f551&#34;&gt;サブディレクトリのMakefileを使いわける&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;deps&lt;/strong&gt;: 依存関係&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;src&lt;/strong&gt;: コンパイラ (C, C++, flisp)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;base&lt;/strong&gt;: 標準ライブラリ (Julia)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;doc&lt;/strong&gt;: ドキュメント&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;など（一部です）、Makefileは復数のサブディレクトリにわかれています。依存関係のビルドに失敗した場合には、depsディレクトリ以下のMakefileが使えます。&lt;/p&gt;
+
+&lt;p&gt;depsディレクトリ以下、依存関係のcleanコマンドには、大きく以下の二種類があります。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;コマンド&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;clean-xxx&lt;/td&gt;
+&lt;td&gt;xxx の clean&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;distclean-xxx&lt;/td&gt;
+&lt;td&gt;xxx の clean と &lt;code&gt;rm -rf ビルドディレクトリ&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;例えばlibgit2のバージョンが変わってエラーが出たからといって、すべてをビルドし直す必要は基本的にはありません。まずは、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;make -C deps clean-libgit2 &amp;amp;&amp;amp; make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;としてビルドし直し、それでも駄目な場合は、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;make -C deps distclean-libgit2 &amp;amp;&amp;amp; make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;といった具合に、軽いcleanコマンドから順に試しましょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ:787c00436bb80acba0860fc8b349f551&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Make.user をプロジェクトトップに配置することで、ビルドをカスタマイズできます&lt;/li&gt;
+&lt;li&gt;ビルドに失敗したとき、良く考えずに &lt;code&gt;make distcleanall&lt;/code&gt; するのをやめましょう（自戒&lt;/li&gt;
+&lt;li&gt;サブディレクトリの Makefile を使い分けて、rebuildは最小限にしましょう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:787c00436bb80acba0860fc8b349f551:1&#34;&gt;大変ですよね
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:787c00436bb80acba0860fc8b349f551:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:787c00436bb80acba0860fc8b349f551:2&#34;&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;https://github.com/Keno/Cxx.jl&lt;/a&gt; です
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:787c00436bb80acba0860fc8b349f551:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:787c00436bb80acba0860fc8b349f551:3&#34;&gt;環境によります
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:787c00436bb80acba0860fc8b349f551:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:787c00436bb80acba0860fc8b349f551:4&#34;&gt;僕があほなだけの可能性が大いにあります
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:787c00436bb80acba0860fc8b349f551:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Cxx.jlを用いてJulia expression/value をC&#43;&#43;に埋め込む実験</title>
