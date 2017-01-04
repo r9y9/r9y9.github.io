@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -42,13 +42,13 @@ SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを�
 
 <p>Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の<a href="http://sp-tk.sourceforge.net/">SPTK</a> をGoから使えるようにする</p>
 
-<h2 id="cgo:64c059489388bf6d136fbf2a53724e24">cgo</h2>
+<h2 id="cgo">cgo</h2>
 
 <p>GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う <a href="http://golang.org/cmd/cgo/">http://golang.org/cmd/cgo/</a></p>
 
 <p>Cの関数や変数などには、 <code>C.</code> でアクセスできる</p>
 
-<h2 id="ラッパー:64c059489388bf6d136fbf2a53724e24">ラッパー</h2>
+<h2 id="ラッパー">ラッパー</h2>
 
 <p>例えば以下のように書く。MFCCの計算を例に上げる。必要に応じで<code>SPTK.h</code>に定義されている関数をラップする</p>
 

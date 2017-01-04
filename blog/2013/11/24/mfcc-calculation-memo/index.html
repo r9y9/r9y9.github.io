@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,11 +32,11 @@
 			<section itemprop="entry-text">
 				
 
-<h2 id="mfcc-とは:55c3b0df8e0bd60dcd959c499adb7c13">MFCC とは</h2>
+<h2 id="mfcc-とは">MFCC とは</h2>
 
 <p>Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。</p>
 
-<h3 id="算出手順:55c3b0df8e0bd60dcd959c499adb7c13">算出手順</h3>
+<h3 id="算出手順">算出手順</h3>
 
 <ul>
 <li>音声信号を適当な長さのフレームで切り出し</li>
@@ -48,29 +48,29 @@
 
 <p>以上。SPTKのmfccコマンドのソースもだいたいそうなってた。</p>
 
-<h3 id="さて:55c3b0df8e0bd60dcd959c499adb7c13">さて</h3>
+<h3 id="さて">さて</h3>
 
-<h4 id="ここに音声波形があるじゃろ:55c3b0df8e0bd60dcd959c499adb7c13">ここに音声波形があるじゃろ？？</h4>
+<h4 id="ここに音声波形があるじゃろ">ここに音声波形があるじゃろ？？</h4>
 
 <div align="center"><img src="/images/speech-signal.png "音声信号を適当な長さのフレームで切り出し"" class="image"></div>
 
-<h4 id="音声波形を窓がけして:55c3b0df8e0bd60dcd959c499adb7c13">音声波形を窓がけして…</h4>
+<h4 id="音声波形を窓がけして">音声波形を窓がけして…</h4>
 
 <div align="center"><img src="/images/windowed-signal.png "窓がけ"" class="image"></div>
 
-<h4 id="さらにフーリエ変換して対数取って:55c3b0df8e0bd60dcd959c499adb7c13">さらにフーリエ変換して対数取って…</h4>
+<h4 id="さらにフーリエ変換して対数取って">さらにフーリエ変換して対数取って…</h4>
 
 <div align="center"><img src="/images/log-amplitude.png "フーリエ変換して振幅スペクトルを求める"" class="image"></div>
 
-<h4 id="ここでメルフィルタバンクの出番じゃ:55c3b0df8e0bd60dcd959c499adb7c13">ここでメルフィルタバンクの出番じゃ</h4>
+<h4 id="ここでメルフィルタバンクの出番じゃ">ここでメルフィルタバンクの出番じゃ</h4>
 
 <div align="center"><img src="/images/after-mel-filterbank.png "メルフィルタバンクを掛けて、メル周波数スペクトルを求める"" class="image"></div>
 
-<h4 id="最後に離散コサイン変換で完成じゃ:55c3b0df8e0bd60dcd959c499adb7c13">最後に離散コサイン変換で完成じゃ</h4>
+<h4 id="最後に離散コサイン変換で完成じゃ">最後に離散コサイン変換で完成じゃ</h4>
 
 <div align="center"><img src="/images/MFCC.png "離散コサイン変換により、MFCCを求める"" class="image"></div>
 
-<h2 id="まとめ:55c3b0df8e0bd60dcd959c499adb7c13">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 
 <ul>
 <li>MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです</li>
@@ -78,7 +78,7 @@
 <li>間違ってるかもしれないけどご愛嬌</li>
 </ul>
 
-<h2 id="参考:55c3b0df8e0bd60dcd959c499adb7c13">参考</h2>
+<h2 id="参考">参考</h2>
 
 <ul>
 <li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf">L9: Cepstral analysis [PDF]</a></li>

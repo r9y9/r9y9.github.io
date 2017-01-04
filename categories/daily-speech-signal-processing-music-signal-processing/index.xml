@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Daily Speech Signal Processing Music Signal Processing on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/daily-speech-signal-processing-music-signal-processing/</link>
+    <link>http://r9y9.github.io/categories/daily-speech-signal-processing-music-signal-processing/index.xml</link>
     <description>Recent content in Daily Speech Signal Processing Music Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 15 Oct 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/daily-speech-signal-processing-music-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -57,7 +56,7 @@
 
 &lt;p&gt;今頑張って作ってるので、お楽しみに。ここに書くことで、後に引けなくする作戦です。&lt;/p&gt;
 
-&lt;h2 id=&#34;余談:edb08e42687be3464452e97ba5128bbc&#34;&gt;余談&lt;/h2&gt;
+&lt;h2 id=&#34;余談&#34;&gt;余談&lt;/h2&gt;
 
 &lt;p&gt;ライブラリ作ろうと思ったきっかけは、つい最近声質変換を作ろうとしたことにあります。自分の声を、好きな人の声に変えられたらおもしろいなぁと思って。何か火が着いちゃった時がありました。ただ、音声読み込み、FFT、ケプストラム、メルフィルタバンク、メルケプストラム、GMM、固有声空間の構築、MLSAフィルタ、短遅延アルゴリズム、overlapping addition合成（ry&lt;/p&gt;
 

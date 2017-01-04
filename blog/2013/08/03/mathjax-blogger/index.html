@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -34,11 +34,11 @@
 
 <p>Bloggerカスタマイズメモから、Mathjaxの部分を切り出して補足。ちょっとカスタマイズして書くことも増えたので。bloggerでの作業記録だけど、wordpressでもoctopressでもだいたい一緒</p>
 
-<h2 id="mathjax:cf84f8afe7a5d62f27ec81e5f69e4641">Mathjax</h2>
+<h2 id="mathjax">Mathjax</h2>
 
 <p>Latex形式の数式をレンダリングしてくれるエンジン。レンダリングに少し時間がかかるけど、それでも数式は綺麗だし画像じゃないから普通にコピーできるし、個人的にオススメ</p>
 
-<h3 id="使い方:cf84f8afe7a5d62f27ec81e5f69e4641">使い方</h3>
+<h3 id="使い方">使い方</h3>
 
 <pre><code class="language-latex">\begin{align}
 \sum_{i=1}^{n}i = \frac{1}{2}n(n+1)
@@ -55,7 +55,7 @@
 
 <p>他にもLaTeXの記法はまぁだいたい使えると思う。$$でインラインで書いてももちろんおｋ</p>
 
-<h3 id="導入方法:cf84f8afe7a5d62f27ec81e5f69e4641">導入方法</h3>
+<h3 id="導入方法">導入方法</h3>
 
 <p>bloggerのレイアウト編集画面で、html/javascriptのガジェットを追加して、そこにmathjaxを使うためのスクリプトを書くだけ。もしくは、htmlを編集して、<code>&lt;head&gt;&lt;/head&gt;</code>の中に直接書く。
 以下をコピペすればおｋ．</p>
@@ -83,7 +83,7 @@
 
 <p>これでlatexの文法で数式が書ける。らくちん。wordpressとかでももちろん使える</p>
 
-<h3 id="マクロの追加:cf84f8afe7a5d62f27ec81e5f69e4641">マクロの追加</h3>
+<h3 id="マクロの追加">マクロの追加</h3>
 
 <p>基本的にはここ→ <a href="http://irrep.blogspot.jp/2011/07/mathjax-in-blogger-ii.html">MathJax in Blogger (II)</a> に書いてあるとおりにやったけど、デフォではargmaxとかargminが使えないので、マクロを追加した。</p>
 

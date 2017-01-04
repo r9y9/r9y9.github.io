@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,13 +32,13 @@
 			<section itemprop="entry-text">
 				
 
-<h2 id="hpssとは-一行説明:0fa57022114ebdcc9ab940ca80953344">HPSSとは（一行説明）</h2>
+<h2 id="hpssとは-一行説明">HPSSとは（一行説明）</h2>
 
 <p>HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ</p>
 
 <p>アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる</p>
 
-<h2 id="実装:0fa57022114ebdcc9ab940ca80953344">実装</h2>
+<h2 id="実装">実装</h2>
 
 <p>調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ</p>
 
@@ -70,20 +70,20 @@
 
 <p>一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。</p>
 
-<h2 id="結果:0fa57022114ebdcc9ab940ca80953344">結果</h2>
+<h2 id="結果">結果</h2>
 
 <p>フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、<a href="http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html">歌もの音楽素材：歌入り素材系のフリー音楽素材一覧</a> から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
 18秒目くらいからを比較すると効果がわかりやすいです</p>
 
-<h3 id="元音源:0fa57022114ebdcc9ab940ca80953344">元音源</h3>
+<h3 id="元音源">元音源</h3>
 
 <iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442" width="100%"></iframe>
 
-<h3 id="hのみ取り出して再合成した音源:0fa57022114ebdcc9ab940ca80953344">Hのみ取り出して再合成した音源</h3>
+<h3 id="hのみ取り出して再合成した音源">Hのみ取り出して再合成した音源</h3>
 
 <iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534" width="100%"></iframe>
 
-<h3 id="pのみ取り出して再合成した音源:0fa57022114ebdcc9ab940ca80953344">Pのみ取り出して再合成した音源</h3>
+<h3 id="pのみ取り出して再合成した音源">Pのみ取り出して再合成した音源</h3>
 
 <iframe frameborder="no" height="166" scrolling="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599" width="100%"></iframe>
 
@@ -93,7 +93,7 @@
 
 <p>詳しくは論文へ（僕のじゃないけど</p>
 
-<h2 id="参考:0fa57022114ebdcc9ab940ca80953344">参考</h2>
+<h2 id="参考">参考</h2>
 
 <ul>
 <li><a href="http://ci.nii.ac.jp/naid/110007997346">橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.</a></li>

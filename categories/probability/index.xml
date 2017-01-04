@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Probability on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/probability/</link>
+    <link>http://r9y9.github.io/categories/probability/index.xml</link>
     <description>Recent content in Probability on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 31 Jul 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/probability/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -34,11 +33,11 @@
 
 &lt;p&gt;nokunoさんによるこの記事→ &lt;a href=&#34;http://d.hatena.ne.jp/nokuno/20111006/1317853653&#34;&gt;多項分布の最尤推定&lt;/a&gt; は、多項分布というよりカテゴリカル分布の話。本文には書いてあるけどね。あと最尤推定の結果はどちらにしろ同じなんだけどね&lt;/p&gt;
 
-&lt;h2 id=&#34;導出メモ:0a072047d6415735dde5d330d6716778&#34;&gt;導出メモ&lt;/h2&gt;
+&lt;h2 id=&#34;導出メモ&#34;&gt;導出メモ&lt;/h2&gt;
 
 &lt;p&gt;一応最尤推定をやってみる。前回のナイーブベイズのメモの時は省略したので。入力の変数を $ Y = {y_n}_{n=1}^{N} $ とする。&lt;/p&gt;
 
-&lt;h3 id=&#34;カテゴリカル分布:0a072047d6415735dde5d330d6716778&#34;&gt;カテゴリカル分布&lt;/h3&gt;
+&lt;h3 id=&#34;カテゴリカル分布&#34;&gt;カテゴリカル分布&lt;/h3&gt;
 
 &lt;div&gt;
 \begin{align}
@@ -48,7 +47,7 @@ p(l) = \pi_{l}, \hspace{2mm} \sum_{l=1}^{L}\pi_{l} = 1
 
 &lt;p&gt;ここで、$\pi_{l}$がパラメータ、lはカテゴリの番号&lt;/p&gt;
 
-&lt;h3 id=&#34;最尤推定:0a072047d6415735dde5d330d6716778&#34;&gt;最尤推定&lt;/h3&gt;
+&lt;h3 id=&#34;最尤推定&#34;&gt;最尤推定&lt;/h3&gt;
 
 &lt;p&gt;尤度関数を立てて、最大化することでパラメータを求める。各データは独立に生起すると仮定すると、尤度関数は以下のようになる。&lt;/p&gt;
 
@@ -76,7 +75,7 @@ L(Y; \theta) = \prod_{l=1}^{L}\pi_{l}^{N_{l}}
 \end{align}
 &lt;/div&gt;
 
-&lt;h3 id=&#34;ラグランジュの未定乗数法で解く:0a072047d6415735dde5d330d6716778&#34;&gt;ラグランジュの未定乗数法で解く&lt;/h3&gt;
+&lt;h3 id=&#34;ラグランジュの未定乗数法で解く&#34;&gt;ラグランジュの未定乗数法で解く&lt;/h3&gt;
 
 &lt;p&gt;nokunoさんの記事の通りだけど、一応手でも解いたのでメモ&lt;/p&gt;
 
@@ -119,7 +118,7 @@ G = \sum_{l=1}^{L} N_{l}\log \pi_{l} + \lambda \Bigl[ \sum_{l=1}^{L} \pi_{l} -1)
 
 &lt;p&gt;カテゴリの頻度を計算するだけ、カンタン！！&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:0a072047d6415735dde5d330d6716778&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Categorical_distribution&#34;&gt;Categorical distribution - Wikipedia&lt;/a&gt;&lt;/li&gt;

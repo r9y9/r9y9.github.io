@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,7 +32,7 @@
 			<section itemprop="entry-text">
 				
 
-<h2 id="はじめに:05f0d6745bdfc575870e417c91be03ad">はじめに</h2>
+<h2 id="はじめに">はじめに</h2>
 
 <p><a href="http://qiita.com/advent-calendar/2015/julialang">Julia Advent Calendar 2015</a> 8日目の記事です。</p>
 
@@ -40,11 +40,11 @@
 
 <p>記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。</p>
 
-<h2 id="問題:05f0d6745bdfc575870e417c91be03ad">問題</h2>
+<h2 id="問題">問題</h2>
 
 <p>新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。</p>
 
-<h3 id="a:05f0d6745bdfc575870e417c91be03ad">A</h3>
+<h3 id="a">A</h3>
 
 <pre><code class="language-jl">function f()
     x = (1.0 + 2.0)::Int
@@ -54,7 +54,7 @@ end
 f()
 </code></pre>
 
-<h3 id="b:05f0d6745bdfc575870e417c91be03ad">B</h3>
+<h3 id="b">B</h3>
 
 <pre><code class="language-jl">function g()
     x::Int = (1.0 + 2.0)
@@ -68,7 +68,7 @@ g()
 
 <p>この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。</p>
 
-<h2 id="a-値に対する-type-annotation:05f0d6745bdfc575870e417c91be03ad">A: 値に対する type annotation</h2>
+<h2 id="a-値に対する-type-annotation">A: 値に対する type annotation</h2>
 
 <p>Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「<code>(1.0 + 2.0)</code> という式を評価した値は、Int 型であることを保証する」となります。</p>
 
@@ -84,7 +84,7 @@ g()
 <pre><code class="language-jl">x = f(y)::Int
 </code></pre>
 
-<h2 id="b-変数に対する-type-annotation:05f0d6745bdfc575870e417c91be03ad">B: 変数に対する type annotation</h2>
+<h2 id="b-変数に対する-type-annotation">B: 変数に対する type annotation</h2>
 
 <p>Bの2行目では、変数に対して type annotation をしています。同じく日本語で説明すると、「<code>x</code>という変数に入る値は、Int 型であることを保証する」となります。また、値に対する annotation とは異なり<strong>スコープ</strong>を持ちます。</p>
 
@@ -92,7 +92,7 @@ g()
 
 <p>では、変数に対する type annotation はどのような場合に使うかというと、あるスコープの範囲で、代入によって変数の型が変わってしまうのを防ぐために使います。ある変数の型がスコープの範囲で不変というのはコンパイラにとっては嬉しい事で、パフォーマンスの向上に繋がります。Performance tips にもありますね（参考: <a href="http://docs.julialang.org/en/release-0.4/manual/performance-tips/#avoid-changing-the-type-of-a-variable">Performance tips / Avoid changing the type of a variable</a>）</p>
 
-<h2 id="違いまとめ:05f0d6745bdfc575870e417c91be03ad">違いまとめ</h2>
+<h2 id="違いまとめ">違いまとめ</h2>
 
 <p>ここまでの話から、違いをまとめると、以下のようになります。</p>
 
@@ -125,20 +125,20 @@ g()
 
 <p><br></p>
 
-<h2 id="最後に:05f0d6745bdfc575870e417c91be03ad">最後に</h2>
+<h2 id="最後に">最後に</h2>
 
 <p>type annotation を使うときは、値と変数に対する annotation の違いを意識して、使い分けましょう</p>
 
-<h2 id="問題の解答:05f0d6745bdfc575870e417c91be03ad">問題の解答</h2>
+<h2 id="問題の解答">問題の解答</h2>
 
 <ul>
 <li>A: typeassert に引っかかり、TypeError が吐かれる</li>
 <li>B: Int 型の 3 が返り値として得られる</li>
 </ul>
 
-<h2 id="おまけ問題:05f0d6745bdfc575870e417c91be03ad">おまけ問題</h2>
+<h2 id="おまけ問題">おまけ問題</h2>
 
-<h3 id="1:05f0d6745bdfc575870e417c91be03ad">1</h3>
+<h3 id="1">1</h3>
 
 <pre><code class="language-jl">function h()
     x::UInt8 = UInt8(0)
@@ -151,7 +151,7 @@ end
 println(typeof(h()))
 </code></pre>
 
-<h3 id="2:05f0d6745bdfc575870e417c91be03ad">2</h3>
+<h3 id="2">2</h3>
 
 <pre><code class="language-jl">function s()
     x::Int = Float64(0)
@@ -167,7 +167,7 @@ s()
 
 <p>解答は、各自REPLで実行して確認してみてください。長々と読んでくださりありがとうございました。</p>
 
-<h2 id="参考:05f0d6745bdfc575870e417c91be03ad">参考</h2>
+<h2 id="参考">参考</h2>
 
 <ul>
 <li><a href="http://docs.julialang.org/en/release-0.4/manual/types/?highlight=typeassert#type-declarations">公式ドキュメント / Type Declarations</a></li>

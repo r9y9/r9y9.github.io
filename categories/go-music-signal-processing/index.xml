@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Music Signal Processing on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/go-music-signal-processing/</link>
+    <link>http://r9y9.github.io/categories/go-music-signal-processing/index.xml</link>
     <description>Recent content in Go Music Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 28 Jan 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/go-music-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -78,7 +77,7 @@ func main() {
 
 &lt;p&gt;こんな感じでOK。Chromagramをgnuplot形式で標準出力に出力します&lt;/p&gt;
 
-&lt;h2 id=&#34;pitch-class-profile-pcp-in-go-code-https-github-com-r9y9-go-msptools-tree-master-pcp:a8dc4fa311816670f461934562727044&#34;&gt;Pitch Class Profile (PCP) in Go &lt;a href=&#34;https://github.com/r9y9/go-msptools/tree/master/pcp&#34;&gt;[Code]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;pitch-class-profile-pcp-in-go-code-https-github-com-r9y9-go-msptools-tree-master-pcp&#34;&gt;Pitch Class Profile (PCP) in Go &lt;a href=&#34;https://github.com/r9y9/go-msptools/tree/master/pcp&#34;&gt;[Code]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;どうやってクロマベクトルを計算しているかざっくり説明すると、&lt;/p&gt;
 

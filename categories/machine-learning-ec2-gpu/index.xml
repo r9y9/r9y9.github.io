@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine Learning Ec2 Gpu on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/machine-learning-ec2-gpu/</link>
+    <link>http://r9y9.github.io/categories/machine-learning-ec2-gpu/index.xml</link>
     <description>Recent content in Machine Learning Ec2 Gpu on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 20 Jul 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/machine-learning-ec2-gpu/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -19,7 +18,7 @@
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/dbm_learned_from_mnist.png &#34;Weight visualization of Restricted bolztomann machine trained on MNIST dataset.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;モチベーション:68d1f8d7ff10b8ba868651f1ccadb482&#34;&gt;モチベーション&lt;/h2&gt;
+&lt;h2 id=&#34;モチベーション&#34;&gt;モチベーション&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;手元のへぼマシンでニューラルネットの学習を回わす&lt;/li&gt;
@@ -37,7 +36,7 @@
 
 &lt;p&gt;さてさて、今回環境構築に少しはまったので、もうはまらないように簡単にまとめておきます。&lt;/p&gt;
 
-&lt;h2 id=&#34;結論:68d1f8d7ff10b8ba868651f1ccadb482&#34;&gt;結論&lt;/h2&gt;
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://aws.amazon.com/marketplace/pp/B00FYCDDTE&#34;&gt;Amazon Linux AMI with NVIDIA GRID GPU Driver on AWS Marketplace &lt;/a&gt;&lt;/p&gt;
 
@@ -47,7 +46,7 @@
 
 &lt;p&gt;イケイケと噂の音声認識ライブラリKaldiの&lt;a href=&#34;https://220-135-252-130.hinet-ip.hinet.net/speechwiki/index.php/Kaldi#installing_and_testing_CUDA-6.0_in_Ubuntu_14.04&#34;&gt;ドキュメントらしきもの&lt;/a&gt;を見ると、Ubuntu 14.04でもcuda 6.0インストールできるっぽいんですけどね…だめでした。頑張ればできるかもしれませんが、よほど強いメリットがない場合は、おとなしくpre-installされたインスタンスを使うのが吉だと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;セットアップ:68d1f8d7ff10b8ba868651f1ccadb482&#34;&gt;セットアップ&lt;/h2&gt;
+&lt;h2 id=&#34;セットアップ&#34;&gt;セットアップ&lt;/h2&gt;
 
 &lt;p&gt;↑で上げたインスタンスにはGPUドライバやCUDAは入っていますが、theanoもpylearn2もnumpyもscipyも入っていません。よって、それらは手動でインストールする必要があります。&lt;/p&gt;
 
@@ -116,11 +115,11 @@ cd ../..
 
 &lt;p&gt;僕がAMIを公開してもいいんですが、今のところする予定はありません&lt;/p&gt;
 
-&lt;h1 id=&#34;まとめ:68d1f8d7ff10b8ba868651f1ccadb482&#34;&gt;まとめ&lt;/h1&gt;
+&lt;h1 id=&#34;まとめ&#34;&gt;まとめ&lt;/h1&gt;
 
 &lt;p&gt;そこそこ良い計算環境がさくっとできました、まる。ラーメン食べたい&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:68d1f8d7ff10b8ba868651f1ccadb482&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://aws.amazon.com/jp/ec2/instance-types/&#34;&gt;インスタンスタイプ - Amazon EC2 (クラウド上の仮想サーバー Amazon Elastic Compute Cloud) | アマゾン ウェブ サービス（AWS 日本語）&lt;/a&gt;&lt;/li&gt;

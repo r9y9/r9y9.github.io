@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -43,7 +43,7 @@
 
 <p>この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい</p>
 
-<h2 id="cgo:8f8778b323e068c7df5b05f98d12ff4a">cgo</h2>
+<h2 id="cgo">cgo</h2>
 
 <blockquote>
 <p>Cgo enables the creation of Go packages that call C code.</p>
@@ -58,7 +58,7 @@
 
 <p>ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &ldquo;C&rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べる</p>
 
-<h2 id="基本的な使い方:8f8778b323e068c7df5b05f98d12ff4a">基本的な使い方</h2>
+<h2 id="基本的な使い方">基本的な使い方</h2>
 
 <p>まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う</p>
 
@@ -74,7 +74,7 @@ import &quot;C&quot;
 
 <p>これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる</p>
 
-<h2 id="外部ライブラリを呼ぶ:8f8778b323e068c7df5b05f98d12ff4a">外部ライブラリを呼ぶ</h2>
+<h2 id="外部ライブラリを呼ぶ">外部ライブラリを呼ぶ</h2>
 
 <p>通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いので、そのような場合には、ライブラリの依存関係をgoのコードに記述する</p>
 
@@ -89,11 +89,11 @@ import &quot;C&quot;
 
 <p>こんな感じ（<a href="http://golang.org/cmd/cgo/">Goの公式ページ</a>から参照）</p>
 
-<h2 id="tips:8f8778b323e068c7df5b05f98d12ff4a">Tips</h2>
+<h2 id="tips">Tips</h2>
 
 <p>さて、ここからTips。主に、<a href="ml.cs.yamanashi.ac.jp/world/">WORLD</a>のGoラッパーを書いていたときに得た知見です。ラッパーは、<a href="https://github.com/r9y9/go-world">Github</a>にあげた</p>
 
-<h2 id="1-goのスライスをcのポインタとして関数の引数に渡す:8f8778b323e068c7df5b05f98d12ff4a">1. GoのスライスをCのポインタとして関数の引数に渡す</h2>
+<h2 id="1-goのスライスをcのポインタとして関数の引数に渡す">1. GoのスライスをCのポインタとして関数の引数に渡す</h2>
 
 <p>例えば、[]float64 -&gt; double* のイメージ</p>
 
@@ -105,7 +105,7 @@ import &quot;C&quot;
 
 <p>のようにキャストしてやればOK</p>
 
-<h2 id="2-goのスライスのスライスをcのポインタのポインタとして関数の引数に渡す:8f8778b323e068c7df5b05f98d12ff4a">2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す</h2>
+<h2 id="2-goのスライスのスライスをcのポインタのポインタとして関数の引数に渡す">2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す</h2>
 
 <p>[][]float64 -&gt; double** のようなイメージ</p>
 
@@ -145,7 +145,7 @@ import &quot;C&quot;
 
 <p>です。</p>
 
-<h2 id="3-ポインタのポインタからスライスのスライスへの変換:8f8778b323e068c7df5b05f98d12ff4a">3. ポインタのポインタからスライスのスライスへの変換</h2>
+<h2 id="3-ポインタのポインタからスライスのスライスへの変換">3. ポインタのポインタからスライスのスライスへの変換</h2>
 
 <p>double** -&gt; [][]float64 のようなイメージ</p>
 
@@ -254,7 +254,7 @@ func Make2DCArrayAlternative(matrix [][]float64) []*C.double {
 }
 </code></pre>
 
-<h2 id="おわりに:8f8778b323e068c7df5b05f98d12ff4a">おわりに</h2>
+<h2 id="おわりに">おわりに</h2>
 
 <ul>
 <li>ポインタのポインタを引数に取る関数のラップはめんどくさい</li>
@@ -263,7 +263,7 @@ func Make2DCArrayAlternative(matrix [][]float64) []*C.double {
 <li>よりいい方法があれば教えて下さい</li>
 </ul>
 
-<h2 id="2014-08-10-追記:8f8778b323e068c7df5b05f98d12ff4a">2014/08/10 追記</h2>
+<h2 id="2014-08-10-追記">2014/08/10 追記</h2>
 
 <p>cgo使いにくいと書いたけど、あとから考えてみればcgoさんまじ使いやすかったです（遅い</p>
 

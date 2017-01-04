@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -46,7 +46,7 @@
 
 <p>(本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)</p>
 
-<h2 id="実験条件:f0c93013a6b645f898aa3f8f4bd6ff49">実験条件</h2>
+<h2 id="実験条件">実験条件</h2>
 
 <p>データベースはmnist。手書き数字認識で有名なアレ。学習の条件は、</p>
 
@@ -56,7 +56,7 @@
 <li>iterationの回数: 15</li>
 </ul>
 
-<h2 id="対数尤度の変化:f0c93013a6b645f898aa3f8f4bd6ff49">対数尤度の変化</h2>
+<h2 id="対数尤度の変化">対数尤度の変化</h2>
 
 <div align="center"><img src="/images/RBM_mnist_Hidden_500_log_likelihood.png "Pseudo log-likelihood on mnist databae."" class="image"></div>
 
@@ -81,13 +81,13 @@
 
 <p>尤度上がると安心する。厳密に対数尤度を計算することは難しいので、<a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a> にある擬似尤度を参考にした</p>
 
-<h2 id="学習時間:f0c93013a6b645f898aa3f8f4bd6ff49">学習時間</h2>
+<h2 id="学習時間">学習時間</h2>
 
 <p>うちのcore2duoのPCで4時間弱だった気がする（うろ覚え</p>
 
 <p>隠れ層のユニット数100だと、40分ほどだった</p>
 
-<h2 id="知見:f0c93013a6b645f898aa3f8f4bd6ff49">知見</h2>
+<h2 id="知見">知見</h2>
 
 <p>今の所、試行錯誤して自分が得た知見は、</p>
 
@@ -104,7 +104,7 @@
 
 <p>まぁだいたい <a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a> に書いてあるけど、実際に肌で感じて理解した。persistent CDはもうちょっと成果出て欲しい。データ変えると成果出るんかな？</p>
 
-<h2 id="コード:f0c93013a6b645f898aa3f8f4bd6ff49">コード</h2>
+<h2 id="コード">コード</h2>
 
 <p>コアの部分だけ、一応</p>
 
@@ -482,7 +482,7 @@ func (rbm *RBM) Train(data [][]float64, option TrainingOption) error {
 要望があったので、もろもろコードあげました
 <a href="https://github.com/r9y9/nnet">https://github.com/r9y9/nnet</a></p>
 
-<h2 id="参考資料:f0c93013a6b645f898aa3f8f4bd6ff49">参考資料</h2>
+<h2 id="参考資料">参考資料</h2>
 
 <ul>
 <li><a href="http://image.diku.dk/igel/paper/AItRBM-proof.pdf">An Introduction to Restricted Boltzmann Machines (PDF)</a></li>

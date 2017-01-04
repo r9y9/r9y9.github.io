@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Daily on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/daily/</link>
+    <link>http://r9y9.github.io/categories/daily/index.xml</link>
     <description>Recent content in Daily on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 03 Nov 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/daily/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -67,15 +66,15 @@
       <guid>http://r9y9.github.io/blog/2013/09/28/start-using-octopress/</guid>
       <description>
 
-&lt;h1 id=&#34;使い始めました:f038ec851174b33576311b86c3361f00&#34;&gt;使い始めました&lt;/h1&gt;
+&lt;h1 id=&#34;使い始めました&#34;&gt;使い始めました&lt;/h1&gt;
 
 &lt;p&gt;テストです&lt;/p&gt;
 
-&lt;h2 id=&#34;text:f038ec851174b33576311b86c3361f00&#34;&gt;Text&lt;/h2&gt;
+&lt;h2 id=&#34;text&#34;&gt;Text&lt;/h2&gt;
 
 &lt;p&gt;こんにちは。octopressを使い始めた。Hello Octopress!&lt;/p&gt;
 
-&lt;h2 id=&#34;code:f038ec851174b33576311b86c3361f00&#34;&gt;code&lt;/h2&gt;
+&lt;h2 id=&#34;code&#34;&gt;code&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;#include &amp;lt;iostream&amp;gt;
 
@@ -88,7 +87,7 @@ int main()
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;math:f038ec851174b33576311b86c3361f00&#34;&gt;Math&lt;/h2&gt;
+&lt;h2 id=&#34;math&#34;&gt;Math&lt;/h2&gt;
 
 &lt;div&gt;
 \begin{align}

@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Summer on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/summer/</link>
+    <link>http://r9y9.github.io/categories/summer/index.xml</link>
     <description>Recent content in Summer on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 01 Sep 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/summer/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -22,7 +21,7 @@
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&#34;収穫:c1fd5ee3bb2a63b5edaf4f906b3100ed&#34;&gt;収穫&lt;/h2&gt;
+&lt;h2 id=&#34;収穫&#34;&gt;収穫&lt;/h2&gt;
 
 &lt;p&gt;この夏いちばんの収穫はノッツさんという漫画家の方を知れたことだった。最高の夏だ&lt;/p&gt;
 </description>

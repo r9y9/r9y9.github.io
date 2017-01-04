@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,7 +32,7 @@
 			<section itemprop="entry-text">
 				
 
-<h2 id="はじめに:c8e0452ca4c557f980fa2fd4512b7ed4">はじめに</h2>
+<h2 id="はじめに">はじめに</h2>
 
 <p>シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。
 音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。
@@ -40,13 +40,13 @@
 
 <p>と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。</p>
 
-<h2 id="2014-10-19-追記:c8e0452ca4c557f980fa2fd4512b7ed4">2014/10/19 追記</h2>
+<h2 id="2014-10-19-追記">2014/10/19 追記</h2>
 
 <p>実装しました</p>
 
 <p><a href="https://github.com/r9y9/julia-nmf-ss-toy">https://github.com/r9y9/julia-nmf-ss-toy</a></p>
 
-<h2 id="nmfの問題設定:c8e0452ca4c557f980fa2fd4512b7ed4">NMFの問題設定</h2>
+<h2 id="nmfの問題設定">NMFの問題設定</h2>
 
 <p>NMFとは、与えられた行列を非負という制約の元で因子分解する方法のこと。
 音楽の場合、対象はスペクトログラムで、式で書くとわかりやすい。
@@ -71,7 +71,7 @@ NMFは、元の行列Yと分解後の行列の距離の最小化問題として�
 
 <p>すごくシンプル。Dは距離関数で色んなものがある。ユークリッド距離、KLダイバージェンス、板倉斎藤距離、βダイバージェンスとか。</p>
 
-<h2 id="ユークリッド距離の最小化:c8e0452ca4c557f980fa2fd4512b7ed4">ユークリッド距離の最小化</h2>
+<h2 id="ユークリッド距離の最小化">ユークリッド距離の最小化</h2>
 
 <p>ここではユークリッド距離（Frobeniusノルムともいう）として、二乗誤差最小化問題を解くことにする。
 一番簡単なので。最小化すべき目的関数は次のようになる。</p>
@@ -115,7 +115,7 @@ G := \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{
 
 <p>Gを最小化すれば、間接的に元の目的関数も小さくなる。</p>
 
-<h2 id="更新式の導出:c8e0452ca4c557f980fa2fd4512b7ed4">更新式の導出</h2>
+<h2 id="更新式の導出">更新式の導出</h2>
 
 <p>あとは更新式を導出するだけ。
 まず、目的関数を上から押さえるイメージで、イェンセンの不等式の等号条件から補助変数の更新式を求める。
@@ -154,7 +154,7 @@ U_{k,t} = U_{k,t}\frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}H_{\o
 \end{align}
 </div>
 
-<h2 id="行列表記で:c8e0452ca4c557f980fa2fd4512b7ed4">行列表記で</h2>
+<h2 id="行列表記で">行列表記で</h2>
 
 <p>これで終わり…ではなく、もう少しスマートに書きたい。
 ここで、少し実装を意識して行列表記を使って書きなおす。
@@ -172,7 +172,7 @@ U_{k,t} &= U_{k,t}\frac{[\mathbf{H}^{\mathrm{T}}\mathbf{Y}]_{k, t}}{[\mathbf{H}^
 元々の行列の要素が非負なら、掛けても非負のままですよってこと。
 NMFのアルゴリズムは、この更新式を目的関数が収束するまで計算するだけ、簡単。Pythonなら数行で書ける。</p>
 
-<h2 id="メモ:c8e0452ca4c557f980fa2fd4512b7ed4">メモ</h2>
+<h2 id="メモ">メモ</h2>
 
 <p>自分で導出していて思ったことをメモっておこうと思う。</p>
 

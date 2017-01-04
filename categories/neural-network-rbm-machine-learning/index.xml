@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Neural Network Rbm Machine Learning on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/neural-network-rbm-machine-learning/</link>
+    <link>http://r9y9.github.io/categories/neural-network-rbm-machine-learning/index.xml</link>
     <description>Recent content in Neural Network Rbm Machine Learning on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 06 Mar 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/neural-network-rbm-machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -31,7 +30,7 @@
 
 &lt;p&gt;(本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)&lt;/p&gt;
 
-&lt;h2 id=&#34;実験条件:f0c93013a6b645f898aa3f8f4bd6ff49&#34;&gt;実験条件&lt;/h2&gt;
+&lt;h2 id=&#34;実験条件&#34;&gt;実験条件&lt;/h2&gt;
 
 &lt;p&gt;データベースはmnist。手書き数字認識で有名なアレ。学習の条件は、&lt;/p&gt;
 
@@ -41,7 +40,7 @@
 &lt;li&gt;iterationの回数: 15&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;対数尤度の変化:f0c93013a6b645f898aa3f8f4bd6ff49&#34;&gt;対数尤度の変化&lt;/h2&gt;
+&lt;h2 id=&#34;対数尤度の変化&#34;&gt;対数尤度の変化&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/RBM_mnist_Hidden_500_log_likelihood.png &#34;Pseudo log-likelihood on mnist databae.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
@@ -66,13 +65,13 @@
 
 &lt;p&gt;尤度上がると安心する。厳密に対数尤度を計算することは難しいので、&lt;a href=&#34;http://deeplearning.net/tutorial/rbm.html&#34;&gt;Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial&lt;/a&gt; にある擬似尤度を参考にした&lt;/p&gt;
 
-&lt;h2 id=&#34;学習時間:f0c93013a6b645f898aa3f8f4bd6ff49&#34;&gt;学習時間&lt;/h2&gt;
+&lt;h2 id=&#34;学習時間&#34;&gt;学習時間&lt;/h2&gt;
 
 &lt;p&gt;うちのcore2duoのPCで4時間弱だった気がする（うろ覚え&lt;/p&gt;
 
 &lt;p&gt;隠れ層のユニット数100だと、40分ほどだった&lt;/p&gt;
 
-&lt;h2 id=&#34;知見:f0c93013a6b645f898aa3f8f4bd6ff49&#34;&gt;知見&lt;/h2&gt;
+&lt;h2 id=&#34;知見&#34;&gt;知見&lt;/h2&gt;
 
 &lt;p&gt;今の所、試行錯誤して自分が得た知見は、&lt;/p&gt;
 
@@ -89,7 +88,7 @@
 
 &lt;p&gt;まぁだいたい &lt;a href=&#34;http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf&#34;&gt;A Practical Guide to Training Restricted Boltzmann Machines (PDF)&lt;/a&gt; に書いてあるけど、実際に肌で感じて理解した。persistent CDはもうちょっと成果出て欲しい。データ変えると成果出るんかな？&lt;/p&gt;
 
-&lt;h2 id=&#34;コード:f0c93013a6b645f898aa3f8f4bd6ff49&#34;&gt;コード&lt;/h2&gt;
+&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
 
 &lt;p&gt;コアの部分だけ、一応&lt;/p&gt;
 
@@ -467,7 +466,7 @@ func (rbm *RBM) Train(data [][]float64, option TrainingOption) error {
 要望があったので、もろもろコードあげました
 &lt;a href=&#34;https://github.com/r9y9/nnet&#34;&gt;https://github.com/r9y9/nnet&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;参考資料:f0c93013a6b645f898aa3f8f4bd6ff49&#34;&gt;参考資料&lt;/h2&gt;
+&lt;h2 id=&#34;参考資料&#34;&gt;参考資料&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://image.diku.dk/igel/paper/AItRBM-proof.pdf&#34;&gt;An Introduction to Restricted Boltzmann Machines (PDF)&lt;/a&gt;&lt;/li&gt;

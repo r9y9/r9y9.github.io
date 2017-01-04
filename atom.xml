@@ -2,12 +2,65 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>LESS IS MORE</title>
-    <link>http://r9y9.github.io/</link>
+    <link>http://r9y9.github.io/index.xml</link>
     <description>Recent content on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 23 Dec 2016 18:06:08 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 04 Jan 2017 22:59:32 +0900</lastBuildDate>
     <atom:link href="http://r9y9.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>2017年の目標</title>
+      <link>http://r9y9.github.io/blog/2017/01/04/2017/</link>
+      <pubDate>Wed, 04 Jan 2017 22:59:32 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/01/04/2017/</guid>
+      <description>
+
+&lt;p&gt;こんばんは。年末に帰省して、東京に帰ってきて、今はポエムを書いています。xxxxの目標とか、書いてもどうせやらないし自己満足で終わるからいいやと、いつぞやから宣言するのをやめてしまったのですが、宣言すらしないとまったく危機感を持たず何もやらないということを身にしみつつあり、かつそういう事態を避けたいと思ったため、公に書いてみることにしました。今年もよろしくお願い申し上げます。&lt;/p&gt;
+
+&lt;h2 id=&#34;目標&#34;&gt;目標&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-keno-cxx-jl-https-github-com-keno-cxx-jl-cxxreplにcode-completion機能を実装する&#34;&gt;1. &lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Keno/Cxx.jl&lt;/a&gt; CxxREPLにCode completion機能を実装する&lt;/h3&gt;
+
+&lt;p&gt;関連issueは &lt;a href=&#34;https://github.com/Keno/Cxx.jl/issues/61&#34;&gt;Keno/Cxx.jl/#61&lt;/a&gt; です。&lt;/p&gt;
+
+&lt;p&gt;Cxx.jlにはプライベートでも仕事でも非常にお世話になっています。何か僕にできることがあればしたいという思いと、code completionないのつれえという思いとが合わさって、やりたいなと思っています。現状のCxx.jlでも十分生産性が向上しているのですが、code completionがあるとなお生産性が向上することは間違いなしです。&lt;/p&gt;
+
+&lt;p&gt;おまえまだC++使ってんのかよというつっこみもがないこともないですし、僕自身C++を避けようとしてGoを試してみたり（代替にはなりませんでした）、python書いたりしているのですが（C++から完全には逃げられませんでした）、とはいえ僕にとってはC++がふさわしい場面が多くあるのが現状です。C++の代替としてRustも気にはなっているのですが、まだしばらくはC++の既存の財産を活用せざるを得ないのでしょう、と思っています。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-llvm-clang-のコミッタになる&#34;&gt;2. llvm/clang のコミッタになる&lt;/h3&gt;
+
+&lt;p&gt;書いてて本当に震えるのですが、目標にしたいと思っています…&lt;/p&gt;
+
+&lt;p&gt;これそのものが目標というよりは、その1の副次的な結果として得られるものだと思っていますが、llvm/clangに対する理解度を定量的に見るためにも、宣言しておきたいと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-computer-visionのトップカンファ論文を月に一本継続的に読む&#34;&gt;3. Computer visionのトップカンファ論文を月に一本継続的に読む&lt;/h3&gt;
+
+&lt;p&gt;llvmのコミッタにもしなれたとしても、実際のところ会社の仕事にはあまり役に立ちません。会社ではComputer visionのチームに属しているので、仕事に直接活きるようなことも目標に設定したいと思いました。曖昧ではありますが、仕事のアウトプットとして、何らかを成果を残せればいいなと思います。One-shot learning、カラー画像からのデプス推定、カラー画像からの人物セグメンテーション、Depth map refinementなどは調べてやってみたい&lt;/p&gt;
+
+&lt;h2 id=&#34;追加目標-optional&#34;&gt;追加目標（optional）&lt;/h2&gt;
+
+&lt;h3 id=&#34;4-機械学習の復習&#34;&gt;4. 機械学習の復習&lt;/h3&gt;
+
+&lt;p&gt;もっぱらDeepで賑わっていますが、それはさておき、僕が最も機械学習について勉強していた院生時代から約4年経ち、かなり忘れているので、最近参入してきた人達に負けないためにも、基礎からやり直したいと思っています。もちろんDeep系にもキャッチアップしたいです（欲張り？&lt;/p&gt;
+
+&lt;h3 id=&#34;5-英語の勉強どうしよかな&#34;&gt;5. 英語の勉強どうしよかな&lt;/h3&gt;
+
+&lt;p&gt;どうしようかな。これたぶんやらないな&lt;/p&gt;
+
+&lt;h3 id=&#34;6-その他&#34;&gt;6. その他&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;お金をためる&lt;/li&gt;
+&lt;li&gt;引っ越しする&lt;/li&gt;
+&lt;li&gt;ofxUI に変わるGUIライブラリを見つける&lt;/li&gt;
+&lt;li&gt;本を読む&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;だらだら書いてみました。よろしくおねがいします&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Juliaをソースからビルドする</title>
@@ -19,18 +72,18 @@
 
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2016/julialang&#34;&gt;Julia advent calendar 2016&lt;/a&gt; 23日目の記事です。&lt;/p&gt;
 
-&lt;h2 id=&#34;はじめに:787c00436bb80acba0860fc8b349f551&#34;&gt;はじめに&lt;/h2&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
 
-&lt;p&gt;Juilaを最も簡単にインストールする方法は、&lt;a href=&#34;http://julialang.org/downloads/&#34;&gt;公式のダウンロードページ&lt;/a&gt;からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:787c00436bb80acba0860fc8b349f551:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:787c00436bb80acba0860fc8b349f551:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。&lt;/p&gt;
+&lt;p&gt;Juilaを最も簡単にインストールする方法は、&lt;a href=&#34;http://julialang.org/downloads/&#34;&gt;公式のダウンロードページ&lt;/a&gt;からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。&lt;/p&gt;
 
-&lt;p&gt;僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:787c00436bb80acba0860fc8b349f551:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:787c00436bb80acba0860fc8b349f551:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 
-&lt;h2 id=&#34;下準備:787c00436bb80acba0860fc8b349f551&#34;&gt;下準備&lt;/h2&gt;
+&lt;h2 id=&#34;下準備&#34;&gt;下準備&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git clone https://github.com/JuliaLang/julia &amp;amp;&amp;amp; cd julia
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;ビルドのカスタマイズ方法:787c00436bb80acba0860fc8b349f551&#34;&gt;ビルドのカスタマイズ方法&lt;/h2&gt;
+&lt;h2 id=&#34;ビルドのカスタマイズ方法&#34;&gt;ビルドのカスタマイズ方法&lt;/h2&gt;
 
 &lt;p&gt;Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに &lt;code&gt;override LLVM_VER=3.7.1&lt;/code&gt; のような書き方で記述することで、カスタマイズ可能です（詳細は&lt;a href=&#34;https://github.com/JuliaLang/julia#source-download-and-compilation&#34;&gt;公式の説明&lt;/a&gt;をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。&lt;/p&gt;
 
@@ -47,11 +100,11 @@ override USE_LLVM_SHLIB=1
 
 &lt;p&gt;コア数は適当に指定します。llvm, openblasあたりのビルドが結構重いので、並列ビルドがオススメです。&lt;/p&gt;
 
-&lt;h2 id=&#34;僕がよく使うオプション:787c00436bb80acba0860fc8b349f551&#34;&gt;僕がよく使うオプション&lt;/h2&gt;
+&lt;h2 id=&#34;僕がよく使うオプション&#34;&gt;僕がよく使うオプション&lt;/h2&gt;
 
 &lt;p&gt;ここから、僕がよく使うオプションをいくつか解説します。&lt;/p&gt;
 
-&lt;h3 id=&#34;llvm-ver:787c00436bb80acba0860fc8b349f551&#34;&gt;LLVM_VER&lt;/h3&gt;
+&lt;h3 id=&#34;llvm-ver&#34;&gt;LLVM_VER&lt;/h3&gt;
 
 &lt;p&gt;llvmのバージョンを表します。Julia上でC++を使いたいというcrazyな人に激推しの &lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Keno/Cxx.jl&lt;/a&gt; というパッケージがあるのですが、このパッケージはclangとllvmの3.7.1以上を必要とします（Cxx.jlについては、過去に何度か記事を書いたので、例えば &lt;a href=&#34;http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/&#34;&gt;Cxx.jlを用いてJulia expression/value をC++に埋め込む実験&lt;/a&gt; をご覧ください）。llvm 3.3がデフォルトだったJulia v0.4時代では、明示的に3.7.1と指定する必要がありました。いまは、&lt;/p&gt;
 
@@ -62,15 +115,15 @@ override USE_LLVM_SHLIB=1
 
 &lt;p&gt;なので、僕の場合は明示的にLLVM_VERを指定する必要はなくなってきましたが、例えば、LLVMのNVPTX backendを使ってJuliaでCUDAカーネルを書けるようにする &lt;a href=&#34;https://github.com/JuliaGPU/CUDAnative.jl&#34;&gt;JuliaGPU/CUDAnative.jl&lt;/a&gt; （要 llvm 3.9）のような、experimentalなパッケージを試したい場合など、LLVM_VERを指定したくなる場合もあるかと思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;llvm-assertions:787c00436bb80acba0860fc8b349f551&#34;&gt;LLVM_ASSERTIONS&lt;/h3&gt;
+&lt;h3 id=&#34;llvm-assertions&#34;&gt;LLVM_ASSERTIONS&lt;/h3&gt;
 
 &lt;p&gt;LLVMをassert付きでビルドするかどうかを表します。ONにするとビルドかかる時間が長くなり、LLVMのパフォーマンスが若干落ちますが、デバッグには便利です。Juliaのコード生成周りでエラーを起こしやすいようなコードを書くときには、ONにしておくと便利です。&lt;/p&gt;
 
-&lt;h3 id=&#34;build-llvm-clang:787c00436bb80acba0860fc8b349f551&#34;&gt;BUILD_LLVM_CLANG&lt;/h3&gt;
+&lt;h3 id=&#34;build-llvm-clang&#34;&gt;BUILD_LLVM_CLANG&lt;/h3&gt;
 
 &lt;p&gt;llvmとあわせて、clangをビルドするかどうか、というオプションです。Cxx.jlに必要なので、僕はそのためにONにしています。その他必要なケースとしては、clangのaddress/memory sanitizerを使いたい場合が考えられます。詳細は&lt;a href=&#34;http://docs.julialang.org/en/stable/devdocs/sanitizers/&#34;&gt;devdocs/sanitizers&lt;/a&gt; をご覧ください。&lt;/p&gt;
 
-&lt;h2 id=&#34;cc-cxx:787c00436bb80acba0860fc8b349f551&#34;&gt;CC, CXX&lt;/h2&gt;
+&lt;h2 id=&#34;cc-cxx&#34;&gt;CC, CXX&lt;/h2&gt;
 
 &lt;p&gt;コンパイラの指定です。僕の場合 ubuntu 14.04では、（Cxx.jlのために）以下のように設定しています。&lt;/p&gt;
 
@@ -87,33 +140,33 @@ override CXX=g++-6
 
 &lt;p&gt;のように、xcode付属のclangではなく、自前でビルドしたclangを使いたい場合などに、CC, CXXを指定したりします。&lt;/p&gt;
 
-&lt;h3 id=&#34;use-clang:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_CLANG&lt;/h3&gt;
+&lt;h3 id=&#34;use-clang&#34;&gt;USE_CLANG&lt;/h3&gt;
 
 &lt;p&gt;clangを使ってビルドするかどうかを表します。gccを使いたくない、というときにオンにします。&lt;/p&gt;
 
-&lt;h3 id=&#34;use-llvm-shlib:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_LLVM_SHLIB&lt;/h3&gt;
+&lt;h3 id=&#34;use-llvm-shlib&#34;&gt;USE_LLVM_SHLIB&lt;/h3&gt;
 
 &lt;p&gt;llvmを共有ライブラリとしてビルドするかどうかを表します。v0.4ではデフォルトがオフで、v0.5からはオンになっています。llvmの共有ライブラリをdlopenして色々いじりたい場合（何度もアレですが、Cxx.jlを使いたい場合とか）は、オンにする必要があります。&lt;/p&gt;
 
-&lt;h3 id=&#34;use-system-lib-name:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_SYSTEM_${LIB_NAME}&lt;/h3&gt;
+&lt;h3 id=&#34;use-system-lib-name&#34;&gt;USE_SYSTEM_${LIB_NAME}&lt;/h3&gt;
 
 &lt;p&gt;Juliaでは、デフォルトで依存ライブラリをソースからビルドします。システムにインストールされたライブラリを使用したい場合、USE_SYSTEM_XXX （e.g. &lt;code&gt;USE_SYSTEM_BLAS&lt;/code&gt;）をオンにします。ビルド時間を短縮することが可能です。&lt;/p&gt;
 
 &lt;p&gt;USE_SYSTEM_xxx にどのようなものがあるのかは、&lt;a href=&#34;https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Make.inc#L25-L47&#34;&gt;Make.inc&lt;/a&gt; をご覧ください。&lt;/p&gt;
 
-&lt;h2 id=&#34;便利そうなオプション:787c00436bb80acba0860fc8b349f551&#34;&gt;便利そうなオプション&lt;/h2&gt;
+&lt;h2 id=&#34;便利そうなオプション&#34;&gt;便利そうなオプション&lt;/h2&gt;
 
-&lt;h3 id=&#34;use-intel-mkl:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_INTEL_MKL&lt;/h3&gt;
+&lt;h3 id=&#34;use-intel-mkl&#34;&gt;USE_INTEL_MKL&lt;/h3&gt;
 
 &lt;p&gt;MKLを使うかどうかを表します。MKLを持っている場合にオンにすれば、一部パフォーマンスが向上しそうですね。&lt;/p&gt;
 
-&lt;h3 id=&#34;use-gpl-libs:787c00436bb80acba0860fc8b349f551&#34;&gt;USE_GPL_LIBS&lt;/h3&gt;
+&lt;h3 id=&#34;use-gpl-libs&#34;&gt;USE_GPL_LIBS&lt;/h3&gt;
 
 &lt;p&gt;GPLのライブラリ（FFTWなど）を使用するかどうかを表します。使ったことはありませんが、Juliaを組み込みで使用したい場合に、便利かもしれません。&lt;/p&gt;
 
-&lt;h2 id=&#34;ビルド時のtips:787c00436bb80acba0860fc8b349f551&#34;&gt;ビルド時のTips&lt;/h2&gt;
+&lt;h2 id=&#34;ビルド時のtips&#34;&gt;ビルド時のTips&lt;/h2&gt;
 
-&lt;p&gt;Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:787c00436bb80acba0860fc8b349f551:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:787c00436bb80acba0860fc8b349f551:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、&lt;/p&gt;
+&lt;p&gt;Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;llvm&lt;/li&gt;
@@ -123,9 +176,9 @@ override CXX=g++-6
 &lt;li&gt;libunwind&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに &lt;code&gt;make clean &amp;amp;&amp;amp; make&lt;/code&gt; をして、案の定駄目で、よくわからずに &lt;code&gt;make distcleannall&lt;/code&gt; してしまうこともありました（&lt;code&gt;distcleanall&lt;/code&gt;が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:787c00436bb80acba0860fc8b349f551:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:787c00436bb80acba0860fc8b349f551:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;。過去の失敗から、僕が学んできたTipsを紹介します。&lt;/p&gt;
+&lt;p&gt;あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに &lt;code&gt;make clean &amp;amp;&amp;amp; make&lt;/code&gt; をして、案の定駄目で、よくわからずに &lt;code&gt;make distcleannall&lt;/code&gt; してしまうこともありました（&lt;code&gt;distcleanall&lt;/code&gt;が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;。過去の失敗から、僕が学んできたTipsを紹介します。&lt;/p&gt;
 
-&lt;h3 id=&#34;プロジェクトトップmakefileのcleanコマンドを適切に使い分ける:787c00436bb80acba0860fc8b349f551&#34;&gt;プロジェクトトップMakefileのcleanコマンドを適切に使い分ける&lt;/h3&gt;
+&lt;h3 id=&#34;プロジェクトトップmakefileのcleanコマンドを適切に使い分ける&#34;&gt;プロジェクトトップMakefileのcleanコマンドを適切に使い分ける&lt;/h3&gt;
 
 &lt;p&gt;cleanコマンドにはさまざまなものがあります。ビルドのし直しが不要なものまでcleanして、無駄に時間を消費しないように、正しく使い分けましょう。以下、基本的なcleanコマンドを簡単にまとめます。&lt;/p&gt;
 
@@ -164,7 +217,7 @@ override CXX=g++-6
 
 &lt;p&gt;コマンドの詳細、その他コマンドについては、&lt;a href=&#34;https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Makefile&#34;&gt;julia/Makefile&lt;/a&gt; をご覧ください&lt;/p&gt;
 
-&lt;h3 id=&#34;サブディレクトリのmakefileを使いわける:787c00436bb80acba0860fc8b349f551&#34;&gt;サブディレクトリのMakefileを使いわける&lt;/h3&gt;
+&lt;h3 id=&#34;サブディレクトリのmakefileを使いわける&#34;&gt;サブディレクトリのMakefileを使いわける&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;deps&lt;/strong&gt;: 依存関係&lt;/li&gt;
@@ -210,7 +263,7 @@ override CXX=g++-6
 
 &lt;p&gt;といった具合に、軽いcleanコマンドから順に試しましょう。&lt;/p&gt;
 
-&lt;h2 id=&#34;まとめ:787c00436bb80acba0860fc8b349f551&#34;&gt;まとめ&lt;/h2&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Make.user をプロジェクトトップに配置することで、ビルドをカスタマイズできます&lt;/li&gt;
@@ -222,14 +275,14 @@ override CXX=g++-6
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:787c00436bb80acba0860fc8b349f551:1&#34;&gt;大変ですよね
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:787c00436bb80acba0860fc8b349f551:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:787c00436bb80acba0860fc8b349f551:2&#34;&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;https://github.com/Keno/Cxx.jl&lt;/a&gt; です
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:787c00436bb80acba0860fc8b349f551:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:787c00436bb80acba0860fc8b349f551:3&#34;&gt;環境によります
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:787c00436bb80acba0860fc8b349f551:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:787c00436bb80acba0860fc8b349f551:4&#34;&gt;僕があほなだけの可能性が大いにあります
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:787c00436bb80acba0860fc8b349f551:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;大変ですよね
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;https://github.com/Keno/Cxx.jl&lt;/a&gt; です
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;環境によります
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;僕があほなだけの可能性が大いにあります
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
@@ -261,7 +314,7 @@ override CXX=g++-6
 
 &lt;p&gt;前置きが若干長いので、タイトルの内容が知りたい方は、飛ばして下さい。&lt;/p&gt;
 
-&lt;h2 id=&#34;前置き-c-をjulia上で使う:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;前置き：C++をJulia上で使う&lt;/h2&gt;
+&lt;h2 id=&#34;前置き-c-をjulia上で使う&#34;&gt;前置き：C++をJulia上で使う&lt;/h2&gt;
 
 &lt;p&gt;Cxx.jlを使えば、C++をJulia上で非常にスムーズに扱うことができます。例えば、C++の&lt;code&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt;を使いたい、さらにはJuliaの&lt;code&gt;filter&lt;/code&gt;関数を&lt;code&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt;に対して使えるようにしたい、といった場合は、以下に示すように、ほんのすこしのコードを書くだけでできます。&lt;/p&gt;
 
@@ -329,11 +382,11 @@ julia&amp;gt; filter(x -&amp;gt; x &amp;gt; 5, v)
 
 &lt;p&gt;さて、以降本編に入りたいと思いますが、Julia上でC++を使うのは簡単かつ、Cxx.jlの主な用途だとは思うのですが（少なくとも自分がそうでした）、逆はどうなのでしょうか？実は、limitationはあるものの、かなり面白いことができます。&lt;/p&gt;
 
-&lt;h2 id=&#34;juliaのexpressionやvalueをc-に埋め込む:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;JuliaのexpressionやvalueをC++に埋め込む&lt;/h2&gt;
+&lt;h2 id=&#34;juliaのexpressionやvalueをc-に埋め込む&#34;&gt;JuliaのexpressionやvalueをC++に埋め込む&lt;/h2&gt;
 
 &lt;p&gt;まず簡単に、基本的な使い方を整理します。&lt;/p&gt;
 
-&lt;h3 id=&#34;valueを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;valueを埋める&lt;/h3&gt;
+&lt;h3 id=&#34;valueを埋める&#34;&gt;valueを埋める&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;$(some_value)&lt;/code&gt; という書き方をします&lt;/p&gt;
 
@@ -354,7 +407,7 @@ julia&amp;gt; @cxx getRandom()
 
 &lt;p&gt;rand関数を評価したvalueを埋め込んでいるので、何度&lt;code&gt;getRandom&lt;/code&gt;を呼び出しても結果は同じになります。&lt;/p&gt;
 
-&lt;h3 id=&#34;expressionを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;expressionを埋める&lt;/h3&gt;
+&lt;h3 id=&#34;expressionを埋める&#34;&gt;expressionを埋める&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;$:(some_expression)&lt;/code&gt; という書き方をします。&lt;/p&gt;
 
@@ -374,11 +427,11 @@ julia&amp;gt; @cxx getReallyRandom()
 
 &lt;p&gt;期待した通りの動作になっていますね。&lt;/p&gt;
 
-&lt;h2 id=&#34;発展例:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;発展例&lt;/h2&gt;
+&lt;h2 id=&#34;発展例&#34;&gt;発展例&lt;/h2&gt;
 
 &lt;p&gt;さて、以下、もう少し発展的な例です。&lt;/p&gt;
 
-&lt;h3 id=&#34;c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-1:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (1)&lt;/h3&gt;
+&lt;h3 id=&#34;c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-1&#34;&gt;C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (1)&lt;/h3&gt;
 
 &lt;p&gt;言葉にするとややこしいですが、例を見ればすぐにわかると思います。&lt;/p&gt;
 
@@ -406,7 +459,7 @@ julia&amp;gt; @cxx test4(10)
 
 &lt;p&gt;簡単に説明すると、C++のfor分の中で、Juliaのprintln関数を読んでいて、さらにprintlnの引数に、C++ expressionが渡されています。&lt;code&gt;icxx&amp;quot;return i;&amp;quot;&lt;/code&gt;という部分が重要で、これは C++ lambda&lt;code&gt;[&amp;amp;](){return i;)}&lt;/code&gt; に相当しています。中々キモい表記ですが、こんなこともできるようです。&lt;/p&gt;
 
-&lt;h3 id=&#34;c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-2:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (2)&lt;/h3&gt;
+&lt;h3 id=&#34;c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-2&#34;&gt;C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (2)&lt;/h3&gt;
 
 &lt;p&gt;もう少し実用的な例です。C++関数の中で、Juliaのプログレスバーを使ってみます。&lt;/p&gt;
 
@@ -445,7 +498,7 @@ Progress: 100% Time: 0:00:18
 
 &lt;p&gt;後者について、簡単に例をあげておきます。&lt;/p&gt;
 
-&lt;h4 id=&#34;ネストしていないからok:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;ネストしていないからOK&lt;/h4&gt;
+&lt;h4 id=&#34;ネストしていないからok&#34;&gt;ネストしていないからOK&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
        int getRandom2() {
@@ -459,7 +512,7 @@ julia&amp;gt; @cxx getRandom2()
 2
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;ネストしているからダメ:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;ネストしているからダメ&lt;/h3&gt;
+&lt;h3 id=&#34;ネストしているからダメ&#34;&gt;ネストしているからダメ&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-jlcon&#34;&gt;
 julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
@@ -481,7 +534,7 @@ ERROR: Currently only `Void` is supported for nested expressions
 
 &lt;p&gt;nested expressionsで、返り値が&lt;code&gt;Void&lt;/code&gt;以外も取れるようになると、嬉しいなーと思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;c-lambda-に-julia-expressionを埋める:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;C++ lambda に Julia expressionを埋める&lt;/h3&gt;
+&lt;h3 id=&#34;c-lambda-に-julia-expressionを埋める&#34;&gt;C++ lambda に Julia expressionを埋める&lt;/h3&gt;
 
 &lt;p&gt;これは現在、間接的にしかできませんでした。以下に例をあげます。&lt;/p&gt;
 
@@ -542,13 +595,13 @@ zsh: abort      julia-master
 
 &lt;p&gt;例はこれで以上です。&lt;/p&gt;
 
-&lt;h2 id=&#34;まとめ:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;まとめ&lt;/h2&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;p&gt;C++にJuliaを埋め込むといったことは今までほとんどしなかったのですが、今回色々試してみて、いくつかlimitationはあるものの非常に強力だと思いました。興味のある人は、C++にJuliaを埋め込む例は、&lt;a href=&#34;https://github.com/Keno/Gallium.jl&#34;&gt;Keno/Gallium.jl&lt;/a&gt; にいくつか見つかるので、参考になるかもしれません。&lt;/p&gt;
 
 &lt;p&gt;Keno氏の発表、とてもおもしろかったです。先週半ば頃、午前2時半くらいから見始めたのですが、面白くて一気に見てしまいました。いまllvm/clangについて勉強しているので、limitationの部分は、できれば自分でも解決可能かどうか、挑戦してみたいなと思っています。おしまい&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:9d858dd3a21ddb94afbee8833ac0bfa0&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Cxx.jlの著者 &lt;a href=&#34;https://github.com/Keno&#34;&gt;Keno&lt;/a&gt;&lt;/li&gt;
@@ -566,13 +619,13 @@ zsh: abort      julia-master
       <guid>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
       <description>
 
-&lt;p&gt;新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。&lt;/p&gt;
+&lt;p&gt;新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;point-cloud-library-pcl-とは:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Point Cloud Library (PCL) とは&lt;/h2&gt;
+&lt;h2 id=&#34;point-cloud-library-pcl-とは&#34;&gt;Point Cloud Library (PCL) とは&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.pointclouds.org/&#34;&gt;http://www.pointclouds.org/&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;問題:a1125853acd385d5194fb635fdbc0d66&#34;&gt;問題&lt;/h2&gt;
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
 
 &lt;p&gt;PCL はboost、Eigenに依存している、かつtemplateを多く使用しているため、PCLを使用したプロジェクトのコンパイル時間は非常に長くなるという問題があります。twitterで [PCL コンパイル] として検索すると、例えば以下の様なツイートが見つかりますが、完全に同意です。&lt;/p&gt;
 
@@ -586,17 +639,17 @@ zsh: abort      julia-master
 
 &lt;p&gt;boostへの依存関係が必須かどうかについては疑問が残りますが、点群処理ではパフォーマンスが求められることが多いと思われるので、C++で書かれていることは合理的に思います。とはいえ、コンパイル時間が長いのは試行錯誤するにはつらいです。&lt;/p&gt;
 
-&lt;h2 id=&#34;ではどうするか:a1125853acd385d5194fb635fdbc0d66&#34;&gt;ではどうするか&lt;/h2&gt;
+&lt;h2 id=&#34;ではどうするか&#34;&gt;ではどうするか&lt;/h2&gt;
 
 &lt;p&gt;試行錯誤のサイクルを速く回せるようにすることは僕にとって非常に重要だったのと、 C++で書かなければいけないという制約もなかった（※組み込み用途ではない）ので、対話的にPCLを使うために、僕は動的型付け言語でラッパーを作ることにしました。&lt;/p&gt;
 
-&lt;p&gt;参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 
 &lt;div align=&#34;center&#34;&gt;
 &lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/vMvYpKqA5aLtI8&#34; width=&#34;595&#34; height=&#34;485&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/payashim/ssii-2015-hayashi&#34; title=&#34;コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi&#34; target=&#34;_blank&#34;&gt;コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/payashim&#34; target=&#34;_blank&#34;&gt;Masaki Hayashi&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&#34;何で書くか:a1125853acd385d5194fb635fdbc0d66&#34;&gt;何で書くか&lt;/h2&gt;
+&lt;h2 id=&#34;何で書くか&#34;&gt;何で書くか&lt;/h2&gt;
 
 &lt;p&gt;世の中には色んなプログラミング言語があります。C++ライブラリのラッパー作るぞとなったとき、僕にとって選択肢は、&lt;/p&gt;
 
@@ -617,42 +670,42 @@ zsh: abort      julia-master
 &lt;ul&gt;
 &lt;li&gt;現在あまりメンテされていない&lt;/li&gt;
 &lt;li&gt;サポートされている機能も多くはない&lt;/li&gt;
-&lt;li&gt;templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
-&lt;li&gt;Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. &lt;code&gt;pcl::PointCloud&amp;lt;T&amp;gt;&lt;/code&gt; は &lt;code&gt;PointCloud{T}&lt;/code&gt; と書ける&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;）&lt;/li&gt;
+&lt;li&gt;templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. &lt;code&gt;pcl::PointCloud&amp;lt;T&amp;gt;&lt;/code&gt; は &lt;code&gt;PointCloud{T}&lt;/code&gt; と書ける&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;）&lt;/li&gt;
 &lt;li&gt;Cxx.jl を使えば JITライクに C++ を使える（試行錯誤できる）し、Juliaのほうがいいかな&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;といった理由から、Juliaで書くことにしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;成果物:a1125853acd385d5194fb635fdbc0d66&#34;&gt;成果物&lt;/h2&gt;
+&lt;h2 id=&#34;成果物&#34;&gt;成果物&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/PCL.jl&#34;&gt;https://github.com/r9y9/PCL.jl&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5&#34;&gt;StatisticalOutlierRemovalのデモ | nbviewer&lt;/a&gt; こんな感じで、jupyter上で試行錯誤できるようになりましたとさ&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;a href=&#34;https://github.com/strawlab/python-pcl&#34;&gt;strawlab/python-pcl&lt;/a&gt; よりも多くのことができると思います。&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5&#34;&gt;StatisticalOutlierRemovalのデモ | nbviewer&lt;/a&gt; こんな感じで、jupyter上で試行錯誤できるようになりましたとさ&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;a href=&#34;https://github.com/strawlab/python-pcl&#34;&gt;strawlab/python-pcl&lt;/a&gt; よりも多くのことができると思います。&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:6&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:6&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;PCLは非常に大きなライブラリのため、全ての機能をラップするつもりはありませんが、今後必要に応じて機能を追加するかもしれません。&lt;/p&gt;
 
-&lt;h2 id=&#34;適当なスクショ:a1125853acd385d5194fb635fdbc0d66&#34;&gt;適当なスクショ&lt;/h2&gt;
+&lt;h2 id=&#34;適当なスクショ&#34;&gt;適当なスクショ&lt;/h2&gt;
 
 &lt;p&gt;PCL.jl で、少なくとも最低限以下はできますということで。ソースコードは &lt;a href=&#34;https://github.com/r9y9/PCL.jl/tree/master/examples&#34;&gt;r9y9/PCL.jl/examples&lt;/a&gt; にあります。&lt;/p&gt;
 
-&lt;h3 id=&#34;pclvisualizer:a1125853acd385d5194fb635fdbc0d66&#34;&gt;PCLVisualizer&lt;/h3&gt;
+&lt;h3 id=&#34;pclvisualizer&#34;&gt;PCLVisualizer&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/milk_cartoon_all_small_clorox.gif&#34; /&gt;&lt;/div&gt;
 
-&lt;h3 id=&#34;3d-object-recognition-based-on-correspondence-grouping:a1125853acd385d5194fb635fdbc0d66&#34;&gt;3D Object Recognition based on Correspondence Grouping&lt;/h3&gt;
+&lt;h3 id=&#34;3d-object-recognition-based-on-correspondence-grouping&#34;&gt;3D Object Recognition based on Correspondence Grouping&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/correspondence_grouping.png&#34; /&gt;&lt;/div&gt;
 
-&lt;h3 id=&#34;hypothesis-verification-for-3d-object-recognition:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Hypothesis Verification for 3D Object Recognition&lt;/h3&gt;
+&lt;h3 id=&#34;hypothesis-verification-for-3d-object-recognition&#34;&gt;Hypothesis Verification for 3D Object Recognition&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/global_hypothesis_verification.png&#34; /&gt;&lt;/div&gt;
 
-&lt;h3 id=&#34;extracting-indices-from-a-pointcloud:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Extracting indices from a PointCloud&lt;/h3&gt;
+&lt;h3 id=&#34;extracting-indices-from-a-pointcloud&#34;&gt;Extracting indices from a PointCloud&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/extract_indices.png&#34; /&gt;&lt;/div&gt;
 
-&lt;h3 id=&#34;kinect-v2で遊ぶ:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Kinect v2で遊ぶ&lt;/h3&gt;
+&lt;h3 id=&#34;kinect-v2で遊ぶ&#34;&gt;Kinect v2で遊ぶ&lt;/h3&gt;
 
 &lt;p&gt;&lt;div align=&#34;center&#34;&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/rGdsNoK3n9Q&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;
@@ -660,11 +713,11 @@ zsh: abort      julia-master
 
 &lt;p&gt;画質低い &amp;amp; クロップが適当で一部しか見えませんが、諸々の処理を含めて fpsは15くらいでしょうか。depthとrgb imageのregistration、その結果の点群への変換に関しては、&lt;del&gt;20~30fps程度でした&lt;/del&gt; 測りなおしたら平均40fpsくらいはでてました。real-timeで点群を処理するようなアプリケーションを書く場合は、現実的にはC++で書くことになるかと思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;余談:a1125853acd385d5194fb635fdbc0d66&#34;&gt;余談&lt;/h3&gt;
+&lt;h3 id=&#34;余談&#34;&gt;余談&lt;/h3&gt;
 
 &lt;p&gt;Kinect v2 から得たデータを点群に変換するのに、Juliaではパフォーマンスを出すのに苦労したのですが、結果面白い（キモい？）コードができたので、少し話はそれますが簡単に紹介しておきたいと思います。&lt;/p&gt;
 
-&lt;h4 id=&#34;depthとcolorを点群に変換する関数:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Depthとcolorを点群に変換する関数&lt;/h4&gt;
+&lt;h4 id=&#34;depthとcolorを点群に変換する関数&#34;&gt;Depthとcolorを点群に変換する関数&lt;/h4&gt;
 
 &lt;p&gt;まず、コードを以下に示します。&lt;/p&gt;
 
@@ -723,7 +776,7 @@ end
 
 &lt;p&gt;このコードだと、forループの中でJulia関数の呼びだしが発生するため、実は重たい処理になっています。このコードだと、確かfps 3 とかそのくらいでした。関数呼び出しがボトルネックだと気づいて、&lt;code&gt;icxx&amp;quot;&amp;quot;&amp;quot;...&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt; でくるんで（一つの関数にすることで）高速化を図った次第です。&lt;/p&gt;
 
-&lt;h2 id=&#34;雑記:a1125853acd385d5194fb635fdbc0d66&#34;&gt;雑記&lt;/h2&gt;
+&lt;h2 id=&#34;雑記&#34;&gt;雑記&lt;/h2&gt;
 
 &lt;p&gt;以下、僕のmacbook proで &lt;code&gt;tic(); using PCL; toc()&lt;/code&gt; をした結果：&lt;/p&gt;
 
@@ -764,13 +817,13 @@ elapsed time: 39.194405845 seconds
 
 &lt;p&gt;ロード時間が長い問題は、Cxx.jlにプリコンパイル（&lt;a href=&#34;https://github.com/Keno/Cxx.jl/issues/181&#34;&gt;Keno/Cxx.jl/issues/181&lt;/a&gt;）がサポートされれば、改善するかもしれません。&lt;/p&gt;
 
-&lt;h2 id=&#34;さいごに:a1125853acd385d5194fb635fdbc0d66&#34;&gt;さいごに&lt;/h2&gt;
+&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
 
 &lt;p&gt;PCLを対話環境で使えるようになりました。快適です。また今回のラッピングを通して、PCLとは関係ありませんが、&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; でできないことはほぼないという所感を持ちました。C++ の対話環境（REPL）も付いているので、最強すぎますね。Cythonでもできるぞってことであれば、教えて下さい。僕もpythonから使えるのであれば使いたいです（でも作るのは面倒過ぎる気がするので手を出せない）。&lt;/p&gt;
 
 &lt;p&gt;僕にとって快適な環境はできましたが、&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; のビルドはかなり面倒なので（Juliaの開発版も必要ですし…）、きっと誰も使わないんだろうなー、、、&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:a1125853acd385d5194fb635fdbc0d66&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Keno/Cxx.jl&lt;/a&gt;&lt;/li&gt;
@@ -781,18 +834,18 @@ elapsed time: 39.194405845 seconds
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;僕、ラッパー作ってばっかり…
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;opencvはpythonラッパーについて触れられているのに、PCLのラッパーは無いだと？うーむ、じゃあ作ってみるかーと、思った気もします。
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;公式にサポートはされていますが、過去にcythonではまったことがあるので、懐疑的
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;cythonでも同じようにかけますが、pythonだと&lt;code&gt;PointCloud(dtype=T)&lt;/code&gt;みたいに書くことになるんですかね
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;PCLVisualizerはGUIで使った方が便利なので、JuliaのREPLから使うことが多いですが
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;python-pclよりもインストールは大変だと思いますが…
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;僕、ラッパー作ってばっかり…
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;opencvはpythonラッパーについて触れられているのに、PCLのラッパーは無いだと？うーむ、じゃあ作ってみるかーと、思った気もします。
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;公式にサポートはされていますが、過去にcythonではまったことがあるので、懐疑的
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;cythonでも同じようにかけますが、pythonだと&lt;code&gt;PointCloud(dtype=T)&lt;/code&gt;みたいに書くことになるんですかね
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34;&gt;PCLVisualizerはGUIで使った方が便利なので、JuliaのREPLから使うことが多いですが
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:6&#34;&gt;python-pclよりもインストールは大変だと思いますが…
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:6&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
@@ -808,28 +861,28 @@ elapsed time: 39.194405845 seconds
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/opencvjl_demo.jpg &#34;OpenCV.jl based on Cxx.jl&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;はじめに:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;はじめに&lt;/h2&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2015/julialang&#34;&gt;Julia Advent Calendar 2015&lt;/a&gt; 22日目の記事です。&lt;/p&gt;
 
 &lt;p&gt;Julia の C++ FFI (Foreign Function Interface) である &lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。
 Cxx.jl の動作原理については、僕の理解が不十分なため簡単にしか紹介できませんが、そもそも使ったことがある人が稀だと思われるので、感想程度でも役に立てば幸いです。&lt;/p&gt;
 
-&lt;h2 id=&#34;cxx-jl-とは:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;Cxx.jl とは&lt;/h2&gt;
+&lt;h2 id=&#34;cxx-jl-とは&#34;&gt;Cxx.jl とは&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;https://github.com/Keno/Cxx.jl&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;簡単に説明すると、Cxx.jl とは、Julia から C++ を使用する（e.g. 関数呼び出し、メソッド呼び出し、メンバ変数へのアクセス、etc) ための機能を提供するパッケージです。C++のライブラリを活用したい、あるいはパフォーマンスがシビアな箇所で一部 C++ 使いたい（Cインタフェースを作りたくない&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;）、といった場合に便利です。&lt;/p&gt;
+&lt;p&gt;簡単に説明すると、Cxx.jl とは、Julia から C++ を使用する（e.g. 関数呼び出し、メソッド呼び出し、メンバ変数へのアクセス、etc) ための機能を提供するパッケージです。C++のライブラリを活用したい、あるいはパフォーマンスがシビアな箇所で一部 C++ 使いたい（Cインタフェースを作りたくない&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;）、といった場合に便利です。&lt;/p&gt;
 
-&lt;p&gt;Cxx.jl の原理についてざっくりといえば、clang を用いて C++ から LLVM IR を生成し、llvmcall を用いて（Just in time に）コードを実行する、という方式のようです&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Cxx.jl の原理についてざっくりといえば、clang を用いて C++ から LLVM IR を生成し、llvmcall を用いて（Just in time に）コードを実行する、という方式のようです&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード（+コメント）を、Cxx.jl を使うと何ができるのか知りたい場合は、Cxx.jl の README を御覧ください。&lt;/p&gt;
 
 &lt;p&gt;以下、過去を思い出しながら感想を書いてみます&lt;/p&gt;
 
-&lt;h2 id=&#34;実際に使う前に:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;実際に使う前に&lt;/h2&gt;
+&lt;h2 id=&#34;実際に使う前に&#34;&gt;実際に使う前に&lt;/h2&gt;
 
-&lt;h3 id=&#34;pkg-build-cxx-を成功させることが困難:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;Pkg.build(&amp;ldquo;Cxx&amp;rdquo;) を成功させることが困難&lt;/h3&gt;
+&lt;h3 id=&#34;pkg-build-cxx-を成功させることが困難&#34;&gt;Pkg.build(&amp;ldquo;Cxx&amp;rdquo;) を成功させることが困難&lt;/h3&gt;
 
 &lt;p&gt;そもそも使いはじめる前に、ビルドすることが困難でした。Cxx.jl を動作させるためには、&lt;/p&gt;
 
@@ -856,11 +909,11 @@ Cxx.jl の動作原理については、僕の理解が不十分なため簡単�
 
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;cxx-jl-のビルドはどうするのが一番簡単なのか:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;Cxx.jl のビルドはどうするのが一番簡単なのか&lt;/h3&gt;
+&lt;h3 id=&#34;cxx-jl-のビルドはどうするのが一番簡単なのか&#34;&gt;Cxx.jl のビルドはどうするのが一番簡単なのか&lt;/h3&gt;
 
-&lt;p&gt;さて、さらっと書きましたが、今では llvm, clang, lldb　のkf/gallium　ブランチを使えば、比較的簡単に、多少の試行錯誤&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; で Cxx.jl をビルドして使えます。&lt;/p&gt;
+&lt;p&gt;さて、さらっと書きましたが、今では llvm, clang, lldb　のkf/gallium　ブランチを使えば、比較的簡単に、多少の試行錯誤&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; で Cxx.jl をビルドして使えます。&lt;/p&gt;
 
-&lt;h3 id=&#34;開発版-llvm-と一緒に-julia-をビルドする:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;開発版 llvm と一緒に Julia をビルドする&lt;/h3&gt;
+&lt;h3 id=&#34;開発版-llvm-と一緒に-julia-をビルドする&#34;&gt;開発版 llvm と一緒に Julia をビルドする&lt;/h3&gt;
 
 &lt;p&gt;Juliaをクローンしたディレクトリで、以下の様な &lt;code&gt;Make.user&lt;/code&gt; ファイルを作成して make します。&lt;/p&gt;
 
@@ -880,7 +933,7 @@ override LLVM_GIT_VER_LLDB=kf/gallium
 override LLVM_GIT_VER_CLANG=kf/gallium
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;一部、LLVM_ASSERSONS を有効にするなど、必ずしも必須でないものも含まれていますが、こちらが現状の推奨のようです。この設定で、僕はubuntu 14.04, osx 10.10 でビルドが通ることを確認しました&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;一部、LLVM_ASSERSONS を有効にするなど、必ずしも必須でないものも含まれていますが、こちらが現状の推奨のようです。この設定で、僕はubuntu 14.04, osx 10.10 でビルドが通ることを確認しました&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;注意：すでに llvm や clang がローカルにクローン済の場合、&lt;code&gt;deps/srccache&lt;/code&gt; 以下からクローン済みのソースを消してからビルドすることをおすすめします。すでにクローンされていて、upstream  の変更を取り入れたい場合は、&lt;/p&gt;
 
@@ -889,19 +942,19 @@ override LLVM_GIT_VER_CLANG=kf/gallium
 
 &lt;p&gt;とすると便利です。&lt;/p&gt;
 
-&lt;h3 id=&#34;cxx-jl-のインストール:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;Cxx.jl のインストール&lt;/h3&gt;
+&lt;h3 id=&#34;cxx-jl-のインストール&#34;&gt;Cxx.jl のインストール&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;Pkg.clone(&amp;quot;https://github.com/Keno/Cxx.jl.git&amp;quot;)
 Pkg.build(&amp;quot;Cxx&amp;quot;)   
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;エラーがでなければ、インストール完了&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5a3acb20dd9b7b2cc1beb92d0c5772df:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;です。&lt;/p&gt;
+&lt;p&gt;エラーがでなければ、インストール完了&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;です。&lt;/p&gt;
 
-&lt;h2 id=&#34;実際に使ってみたあと:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;実際に使ってみたあと&lt;/h2&gt;
+&lt;h2 id=&#34;実際に使ってみたあと&#34;&gt;実際に使ってみたあと&lt;/h2&gt;
 
 &lt;p&gt;さて、ようやくビルドもできて、ここからは使ってしばらくしての感想です。&lt;/p&gt;
 
-&lt;h3 id=&#34;julia-上で-c-の-syntax-がそのまま使える:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;Julia 上で C++ の syntax がそのまま使える&lt;/h3&gt;
+&lt;h3 id=&#34;julia-上で-c-の-syntax-がそのまま使える&#34;&gt;Julia 上で C++ の syntax がそのまま使える&lt;/h3&gt;
 
 &lt;p&gt;まず、簡単に Cxx.jl の機能を挙げると、重要なのは&lt;/p&gt;
 
@@ -938,7 +991,7 @@ end
 
 &lt;p&gt;&lt;code&gt;ccall&lt;/code&gt; のように、返り値、引数の型などを指定して実行するのではなく、C++ のsyntax をそのまま使ってコードが書ける、という点にびっくりしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;template-も使える:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;template も使える&lt;/h3&gt;
+&lt;h3 id=&#34;template-も使える&#34;&gt;template も使える&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;cxx&amp;quot;&amp;quot;&amp;quot;
 template &amp;lt;typename T&amp;gt;
@@ -956,7 +1009,7 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
 
 &lt;p&gt;書いてて気付きましたが、README には template について言及されていませんね。僕は、今のところ問題なく使えています。例には出していませんが、template class ももちろん使えます（例. &lt;code&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt;）。&lt;/p&gt;
 
-&lt;h3 id=&#34;その他雑記:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;その他雑記&lt;/h3&gt;
+&lt;h3 id=&#34;その他雑記&#34;&gt;その他雑記&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Cxx.jl で使える C++ には制約がある（はず）だが、ここ二ヶ月使用した限りでは、大きな制約に出会ってないし、快適&lt;/li&gt;
@@ -968,11 +1021,11 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
 
 &lt;p&gt;という感じですかね。書き進むに連れて適当になってすいません、、、&lt;/p&gt;
 
-&lt;h2 id=&#34;cxx-jl-を使って作った成果物:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;Cxx.jl を使って作った成果物&lt;/h2&gt;
+&lt;h2 id=&#34;cxx-jl-を使って作った成果物&#34;&gt;Cxx.jl を使って作った成果物&lt;/h2&gt;
 
 &lt;p&gt;まとめに入る前に、Cxx.jl を使って遊ぶ過程で作った成果物を、簡単なコメント付きで紹介します。&lt;/p&gt;
 
-&lt;h3 id=&#34;opencv-jl:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;OpenCV.jl&lt;/h3&gt;
+&lt;h3 id=&#34;opencv-jl&#34;&gt;OpenCV.jl&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/video_thresholding.gif &#34;OpenCV.jl demo&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
@@ -989,7 +1042,7 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
 
 &lt;p&gt;を念頭において作りました。&lt;/p&gt;
 
-&lt;h3 id=&#34;libfreenect2-jl:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;LibFreenect2.jl&lt;/h3&gt;
+&lt;h3 id=&#34;libfreenect2-jl&#34;&gt;LibFreenect2.jl&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/depth_streaming_example.gif &#34;LibFreenect2.jl demo&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
@@ -997,7 +1050,7 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
 
 &lt;p&gt;ちょうど仕事で kinect v2 を触っていたので、遊びがてらやってみました。&lt;/p&gt;
 
-&lt;h2 id=&#34;まとめ:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;まとめ&lt;/h2&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Cxx.jl をビルドするのはけっこう面倒ですが、C++を（主観ですが）ほとんど不自由なくJITライクに使えるので、非常に便利です&lt;/li&gt;
@@ -1005,13 +1058,13 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
 &lt;li&gt;レッツ・トライ Cxx.jl！&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;おまけ:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;おまけ&lt;/h2&gt;
+&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
 
 &lt;p&gt;現在 Julia community では、llvm 3.3 から llvm 3.7.1 に移行しようとする動きがあるので（ref: &lt;a href=&#34;https://github.com/JuliaLang/julia/issues/9336&#34;&gt;julia/issues/9336&lt;/a&gt;, &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/14430&#34;&gt;julia/pull/14430&lt;/a&gt;）、移行後は、もう少しビルドが楽になるかもしれません。&lt;/p&gt;
 
 &lt;p&gt;実は、この記事を読んでも、きっと今は　Cxx.jl をビルドできないんじゃないかなと思うんですが、もしどうしてもビルドしたい、ということであれば、僕のローカルの llvm, clang, lldb, julia の revision を調べて教えるので、言ってください。&lt;/p&gt;
 
-&lt;h3 id=&#34;2015-12-28-追記:5a3acb20dd9b7b2cc1beb92d0c5772df&#34;&gt;2015/12/28 追記&lt;/h3&gt;
+&lt;h3 id=&#34;2015-12-28-追記&#34;&gt;2015/12/28 追記&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/r9y9/items/37633ed37e22612b5224&#34;&gt;Cxx.jl を動作させるための julia, llvm, clang, lldb のコミットハッシュ | qiita&lt;/a&gt;&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
@@ -1019,16 +1072,16 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:5a3acb20dd9b7b2cc1beb92d0c5772df:1&#34;&gt;例えば template を多用している場合、Cインタフェースを作るのは面倒です
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:5a3acb20dd9b7b2cc1beb92d0c5772df:2&#34;&gt;※正確に理解していないため、あまり宛てにしないでください）
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:5a3acb20dd9b7b2cc1beb92d0c5772df:3&#34;&gt;多少の試行錯誤、というのは、Julia と Cxx.jl のリビジョンは、経験的には必ずしも（特にJuliaの）masterで動作しないので、Julia と Cxx.jl を master から少し遡って、ビルドできるか試行錯誤する、という意味です
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:5a3acb20dd9b7b2cc1beb92d0c5772df:4&#34;&gt;ビルドが通ったことがある、の方が正確ですが
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:5a3acb20dd9b7b2cc1beb92d0c5772df:5&#34;&gt;なお、現状のJulia masterとCxx.jl masterでは、エラーが出ると踏んでおります、、、
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5a3acb20dd9b7b2cc1beb92d0c5772df:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;例えば template を多用している場合、Cインタフェースを作るのは面倒です
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;※正確に理解していないため、あまり宛てにしないでください）
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;多少の試行錯誤、というのは、Julia と Cxx.jl のリビジョンは、経験的には必ずしも（特にJuliaの）masterで動作しないので、Julia と Cxx.jl を master から少し遡って、ビルドできるか試行錯誤する、という意味です
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;ビルドが通ったことがある、の方が正確ですが
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34;&gt;なお、現状のJulia masterとCxx.jl masterでは、エラーが出ると踏んでおります、、、
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
@@ -1042,7 +1095,7 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
       <guid>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
       <description>
 
-&lt;h2 id=&#34;はじめに:05f0d6745bdfc575870e417c91be03ad&#34;&gt;はじめに&lt;/h2&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2015/julialang&#34;&gt;Julia Advent Calendar 2015&lt;/a&gt; 8日目の記事です。&lt;/p&gt;
 
@@ -1050,11 +1103,11 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
 
 &lt;p&gt;記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。&lt;/p&gt;
 
-&lt;h2 id=&#34;問題:05f0d6745bdfc575870e417c91be03ad&#34;&gt;問題&lt;/h2&gt;
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
 
 &lt;p&gt;新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。&lt;/p&gt;
 
-&lt;h3 id=&#34;a:05f0d6745bdfc575870e417c91be03ad&#34;&gt;A&lt;/h3&gt;
+&lt;h3 id=&#34;a&#34;&gt;A&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function f()
     x = (1.0 + 2.0)::Int
@@ -1064,7 +1117,7 @@ end
 f()
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;b:05f0d6745bdfc575870e417c91be03ad&#34;&gt;B&lt;/h3&gt;
+&lt;h3 id=&#34;b&#34;&gt;B&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function g()
     x::Int = (1.0 + 2.0)
@@ -1078,7 +1131,7 @@ g()
 
 &lt;p&gt;この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。&lt;/p&gt;
 
-&lt;h2 id=&#34;a-値に対する-type-annotation:05f0d6745bdfc575870e417c91be03ad&#34;&gt;A: 値に対する type annotation&lt;/h2&gt;
+&lt;h2 id=&#34;a-値に対する-type-annotation&#34;&gt;A: 値に対する type annotation&lt;/h2&gt;
 
 &lt;p&gt;Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「&lt;code&gt;(1.0 + 2.0)&lt;/code&gt; という式を評価した値は、Int 型であることを保証する」となります。&lt;/p&gt;
 
@@ -1094,7 +1147,7 @@ g()
 &lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;x = f(y)::Int
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;b-変数に対する-type-annotation:05f0d6745bdfc575870e417c91be03ad&#34;&gt;B: 変数に対する type annotation&lt;/h2&gt;
+&lt;h2 id=&#34;b-変数に対する-type-annotation&#34;&gt;B: 変数に対する type annotation&lt;/h2&gt;
 
 &lt;p&gt;Bの2行目では、変数に対して type annotation をしています。同じく日本語で説明すると、「&lt;code&gt;x&lt;/code&gt;という変数に入る値は、Int 型であることを保証する」となります。また、値に対する annotation とは異なり&lt;strong&gt;スコープ&lt;/strong&gt;を持ちます。&lt;/p&gt;
 
@@ -1102,7 +1155,7 @@ g()
 
 &lt;p&gt;では、変数に対する type annotation はどのような場合に使うかというと、あるスコープの範囲で、代入によって変数の型が変わってしまうのを防ぐために使います。ある変数の型がスコープの範囲で不変というのはコンパイラにとっては嬉しい事で、パフォーマンスの向上に繋がります。Performance tips にもありますね（参考: &lt;a href=&#34;http://docs.julialang.org/en/release-0.4/manual/performance-tips/#avoid-changing-the-type-of-a-variable&#34;&gt;Performance tips / Avoid changing the type of a variable&lt;/a&gt;）&lt;/p&gt;
 
-&lt;h2 id=&#34;違いまとめ:05f0d6745bdfc575870e417c91be03ad&#34;&gt;違いまとめ&lt;/h2&gt;
+&lt;h2 id=&#34;違いまとめ&#34;&gt;違いまとめ&lt;/h2&gt;
 
 &lt;p&gt;ここまでの話から、違いをまとめると、以下のようになります。&lt;/p&gt;
 
@@ -1135,20 +1188,20 @@ g()
 
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;最後に:05f0d6745bdfc575870e417c91be03ad&#34;&gt;最後に&lt;/h2&gt;
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
 
 &lt;p&gt;type annotation を使うときは、値と変数に対する annotation の違いを意識して、使い分けましょう&lt;/p&gt;
 
-&lt;h2 id=&#34;問題の解答:05f0d6745bdfc575870e417c91be03ad&#34;&gt;問題の解答&lt;/h2&gt;
+&lt;h2 id=&#34;問題の解答&#34;&gt;問題の解答&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;A: typeassert に引っかかり、TypeError が吐かれる&lt;/li&gt;
 &lt;li&gt;B: Int 型の 3 が返り値として得られる&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;おまけ問題:05f0d6745bdfc575870e417c91be03ad&#34;&gt;おまけ問題&lt;/h2&gt;
+&lt;h2 id=&#34;おまけ問題&#34;&gt;おまけ問題&lt;/h2&gt;
 
-&lt;h3 id=&#34;1:05f0d6745bdfc575870e417c91be03ad&#34;&gt;1&lt;/h3&gt;
+&lt;h3 id=&#34;1&#34;&gt;1&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function h()
     x::UInt8 = UInt8(0)
@@ -1161,7 +1214,7 @@ end
 println(typeof(h()))
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;2:05f0d6745bdfc575870e417c91be03ad&#34;&gt;2&lt;/h3&gt;
+&lt;h3 id=&#34;2&#34;&gt;2&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function s()
     x::Int = Float64(0)
@@ -1177,7 +1230,7 @@ s()
 
 &lt;p&gt;解答は、各自REPLで実行して確認してみてください。長々と読んでくださりありがとうございました。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:05f0d6745bdfc575870e417c91be03ad&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://docs.julialang.org/en/release-0.4/manual/types/?highlight=typeassert#type-declarations&#34;&gt;公式ドキュメント / Type Declarations&lt;/a&gt;&lt;/li&gt;
@@ -1207,13 +1260,13 @@ s()
 
 &lt;p&gt;でインストールできるので、よろしければどうぞ&lt;/p&gt;
 
-&lt;h2 id=&#34;なぜ作ったのか:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;なぜ作ったのか&lt;/h2&gt;
+&lt;h2 id=&#34;なぜ作ったのか&#34;&gt;なぜ作ったのか&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;cythonとsphinxで遊んでたらできた&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;使い方:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;使い方&lt;/h2&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
 
 &lt;p&gt;以下のデモを参考にどうぞ&lt;/p&gt;
 
@@ -1222,15 +1275,15 @@ s()
 &lt;li&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/pysptk/blob/51c103e5a7e9746c96cd78043df4e48fe2d6a3a8/examples/Speech%20analysis%20and%20re-synthesis.ipynb&#34;&gt;Speech analysis and re-synthesis&lt;/a&gt;: 音声の分析・再合成のデモ。合成音声はnotebook上で再生できます&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;ドキュメント:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;ドキュメント&lt;/h2&gt;
+&lt;h2 id=&#34;ドキュメント&#34;&gt;ドキュメント&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://pysptk.readthedocs.org&#34;&gt;http://pysptk.readthedocs.org&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;ぼやき:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;ぼやき&lt;/h2&gt;
+&lt;h2 id=&#34;ぼやき&#34;&gt;ぼやき&lt;/h2&gt;
 
 &lt;p&gt;SPTKの関数、変な値入れるとexitしたりセグフォったりするので、ちゃんとテスト書いてほしいなあ&lt;/p&gt;
 
-&lt;h2 id=&#34;関連:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;関連&lt;/h2&gt;
+&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/08/10/sptk-from-python/&#34;&gt;SPTKのPythonラッパーを書いた - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
@@ -1246,13 +1299,13 @@ s()
       <guid>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
       <description>
 
-&lt;h2 id=&#34;hello:b1293c38eb762e796bd8325101b228bb&#34;&gt;hello&lt;/h2&gt;
+&lt;h2 id=&#34;hello&#34;&gt;hello&lt;/h2&gt;
 
 &lt;p&gt;遡ればもう約一年まえになるでしょうか、統計的声質遊びをしたいと思い、理論の勉強を始めたり、（特にJuliaで）コードを色々書いていました（お前ほんといろんな言語で遊んでるな、というツッコミはさておき）。&lt;a href=&#34;http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/&#34;&gt;統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE&lt;/a&gt; を書いていた当初は、当然自分のためだけに書いていて、まぁアレな出来でしたが、最近気を取り直して多少マシに仕上げましたので、何となくブログに書いてみようかなーと思った次第です。というわけで、最近公式に登録したいくつかのパッケージを、まとめて簡単に紹介します。&lt;/p&gt;
 
 &lt;p&gt;主な改善点は、windowsもちゃんとサポートするようにしたこと（誰得？）と、テストをきちんと書いたことと、julia的なインタフェースを意識するようにしたことですかね。3つ目はかなり曖昧ですが、まぁ気持ち使いやすくなったと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;パッケージ:b1293c38eb762e796bd8325101b228bb&#34;&gt;パッケージ&lt;/h2&gt;
+&lt;h2 id=&#34;パッケージ&#34;&gt;パッケージ&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/MelGeneralizedCepstrums.jl&#34;&gt;MelGeneralizedCepstrums.jl&lt;/a&gt;: メル一般化ケプストラム分析&lt;/li&gt;
@@ -1262,7 +1315,7 @@ s()
 
 &lt;p&gt;車輪の再発明はできるだけしたくなかったので、最初のほうはCライブラリのラッパーを書くことが多く、windowsとかめんどくさいしunix環境でしか動作確認してませんでしたが、&lt;a href=&#34;http://qiita.com/r9y9/items/e0567e2a21a5e3c36e51&#34;&gt;WindowsのJuliaから呼べるようなCライブラリの共有ライブラリ（DLL）を作る | qiita&lt;/a&gt; 重い腰を上げてwindowsでも動くように頑張ったことがあり（めんどくさいとか言って手を動かさないのホント良くないですね）、登録したパッケージはすべてwindowsでも動くようになりました。めでたし。&lt;a href=&#34;https://github.com/r9y9/WORLD.jl&#34;&gt;WORLD.jl&lt;/a&gt; もwindowsで動くようにしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;melgeneralizedcepstrums-jl:b1293c38eb762e796bd8325101b228bb&#34;&gt;MelGeneralizedCepstrums.jl&lt;/h2&gt;
+&lt;h2 id=&#34;melgeneralizedcepstrums-jl&#34;&gt;MelGeneralizedCepstrums.jl&lt;/h2&gt;
 
 &lt;p&gt;メルケプストラムの推定とか。いくつか例を載せておきます&lt;/p&gt;
 
@@ -1278,7 +1331,7 @@ s()
 
 &lt;p&gt;メルケプストラム分析、メル一般化ケプストラム分析に関しては、SPTKの実装をjuliaで再実装してみました。結果、速度は1.0 ~ 1.5倍程度でおさまって、かつ数値的な安定性は増しています（メモリ使用量はお察し）。まぁ僕が頑張ったからというわけでなく、単にJuliaの線形方程式ソルバーがSPTKのものより安定しているというのが理由です。&lt;/p&gt;
 
-&lt;h2 id=&#34;synthesisfilters-jl:b1293c38eb762e796bd8325101b228bb&#34;&gt;SynthesisFilters.jl&lt;/h2&gt;
+&lt;h2 id=&#34;synthesisfilters-jl&#34;&gt;SynthesisFilters.jl&lt;/h2&gt;
 
 &lt;p&gt;メルケプストラムからの波形合成とか。&lt;/p&gt;
 
@@ -1286,7 +1339,7 @@ s()
 
 &lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/SynthesisFilters.jl/blob/mix-excitation/examples/Introduction%20to%20SynthesisFilters.jl.ipynb&#34;&gt;mixed excitation（っぽいの）を使ったバージョンのノートブック&lt;/a&gt;: 実装に自信がないので、そのうち消すかも。聴覚的にはこっちのほうが良いです。&lt;/p&gt;
 
-&lt;h2 id=&#34;sptk-jl:b1293c38eb762e796bd8325101b228bb&#34;&gt;SPTK.jl&lt;/h2&gt;
+&lt;h2 id=&#34;sptk-jl&#34;&gt;SPTK.jl&lt;/h2&gt;
 
 &lt;p&gt;公式のSPTKではなく、僕が少しいじったSPTK（windowsで動くようにしたり、APIとして使いやすいように関数内でexitしてた部分を適切なreturn code返すようにしたり、swipeというF0抽出のインタフェースをexposeしたり、など）をベースにしています。&lt;/p&gt;
 
@@ -1296,7 +1349,7 @@ s()
 
 &lt;p&gt;例えば、メルケプストラム、ケプストラム、LPCなど、スペクトルパラメータの型に応じて、適切なフィルタ係数に変換する、合成フィルタを選択するなど、multiple dispatchを有効に活用して、よりシンプルなインタフェースを提供するようにしました（というか自分がミスりたくなかったからそうしました）。&lt;/p&gt;
 
-&lt;h2 id=&#34;おわり:b1293c38eb762e796bd8325101b228bb&#34;&gt;おわり&lt;/h2&gt;
+&lt;h2 id=&#34;おわり&#34;&gt;おわり&lt;/h2&gt;
 
 &lt;p&gt;かなり適当に書きましたが、最近の進捗は、Juliaで書いていたパッケージ多少改善して、公式に登録したくらいでした。進捗まじ少なめ。あと些細なことですが、ipython（ijulia）に音埋め込むのクッソ簡単にできてびっくりしました（なんで今までやらなかったんだろう）。&lt;a href=&#34;https://github.com/jfsantos&#34;&gt;@jfsantos&lt;/a&gt; に感謝&lt;/p&gt;
 </description>
@@ -1312,17 +1365,17 @@ s()
 
 &lt;p&gt;&lt;a href=&#34;http://juliatokyo.connpass.com/event/13218/&#34;&gt;JuliaTokyo #3&lt;/a&gt;でLT発表してきました。前回の&lt;a href=&#34;http://juliatokyo.connpass.com/event/8010/&#34;&gt;JuliaTokyo #2&lt;/a&gt;でも発表したので、二回目でした。&lt;/p&gt;
 
-&lt;h2 id=&#34;スライド:93d5f08b6d58e9f0bb0ccdef7a3c7900&#34;&gt;スライド&lt;/h2&gt;
+&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;
 &lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/h4geMoK1msYqdY&#34; width=&#34;595&#34; height=&#34;485&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/ryuichiy/juliatokyo-3-speech-signal-processing-in-julia-47403938&#34; title=&#34;JuliaTokyo #3 Speech Signal Processing in Julia&#34; target=&#34;_blank&#34;&gt;JuliaTokyo #3 Speech Signal Processing in Julia&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/ryuichiy&#34; target=&#34;_blank&#34;&gt;Ryuichi YAMAMOTO&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&#34;コード:93d5f08b6d58e9f0bb0ccdef7a3c7900&#34;&gt;コード&lt;/h2&gt;
+&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/JuliaTokyo3&#34;&gt;https://github.com/r9y9/JuliaTokyo3&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;三行まとめ:93d5f08b6d58e9f0bb0ccdef7a3c7900&#34;&gt;三行まとめ&lt;/h2&gt;
+&lt;h2 id=&#34;三行まとめ&#34;&gt;三行まとめ&lt;/h2&gt;
 
 &lt;p&gt;発表の内容を三行でまとめると、&lt;/p&gt;
 
@@ -1336,7 +1389,7 @@ s()
 
 &lt;p&gt;応用例として、歌声を分離する話（&lt;a href=&#34;https://github.com/r9y9/RobustPCA.jl&#34;&gt;デモコード&lt;/a&gt;）、統計的声質変換（&lt;a href=&#34;http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/&#34;&gt;統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE&lt;/a&gt;）、画像をスペクトログラムに足しこむ話とか、さっと紹介しました。&lt;/p&gt;
 
-&lt;h2 id=&#34;補足:93d5f08b6d58e9f0bb0ccdef7a3c7900&#34;&gt;補足&lt;/h2&gt;
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
 
 &lt;p&gt;僕が使う/作ったパッケージを、あとで見返せるように最後のスライドにまとめておいたのですが、改めてここで整理しておきます。&lt;/p&gt;
 
@@ -1352,9 +1405,9 @@ s()
 &lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;r9y9/VoiceConversion&lt;/a&gt; 統計的声質変換&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;上から順に、&lt;del&gt;汎用的かなーと思います&lt;/del&gt;&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:93d5f08b6d58e9f0bb0ccdef7a3c7900:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:93d5f08b6d58e9f0bb0ccdef7a3c7900:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。僕が書いたパッケージの中では、&lt;strong&gt;WORLDのみ&lt;/strong&gt;公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。&lt;/p&gt;
+&lt;p&gt;上から順に、&lt;del&gt;汎用的かなーと思います&lt;/del&gt;&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。僕が書いたパッケージの中では、&lt;strong&gt;WORLDのみ&lt;/strong&gt;公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。&lt;/p&gt;
 
-&lt;h2 id=&#34;ざっくり感想:93d5f08b6d58e9f0bb0ccdef7a3c7900&#34;&gt;ざっくり感想&lt;/h2&gt;
+&lt;h2 id=&#34;ざっくり感想&#34;&gt;ざっくり感想&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;＃Juliaわからん 本当に素晴らしいと思うので、僕も積極的に #Juliaわからん とつぶやいていこうと思います（詳しくは &lt;a href=&#34;https://twitter.com/chezou&#34;&gt;@chezou&lt;/a&gt; さんの記事をどうぞ &lt;a href=&#34;http://chezou.hatenablog.com/entry/2015/04/26/222518&#34;&gt;#JuliaTokyo で #juliaわからん という雑なレポジトリを立てた話をしたら julia.tokyo ができてた  - once upon a time,&lt;/a&gt;）。僕は、Julia に Theano が欲しいです。&lt;code&gt;T.grad&lt;/code&gt; 強力すぎる&lt;/li&gt;
@@ -1363,7 +1416,7 @@ s()
 &lt;li&gt;かなり聴衆が限定的になってしまう話をしてしまったので、次発表するならJulia 言語自体の話をしようかなと思いました&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;最後に:93d5f08b6d58e9f0bb0ccdef7a3c7900&#34;&gt;最後に&lt;/h2&gt;
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://twitter.com/sorami&#34;&gt;@sorami&lt;/a&gt;さんを筆頭とする運営の方々、本当にありがとうございました！楽しかったです。&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
@@ -1371,8 +1424,8 @@ s()
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:93d5f08b6d58e9f0bb0ccdef7a3c7900:1&#34;&gt;とスライドに書いたけど、考えなおすと、僕が思う品質の高さ順、の方が正確です、失礼しました。MelGeneneralizedCepstrumsは一番気合入れて書いたけど、ユーザーがいるかといったらいないし、RobustPCAはさっと書いただけだけど、アルゴリズムとしては汎用的だし。またRobustPCAだけ毛色が違いますが、応用例で紹介したのでリストに入れておきました。
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:93d5f08b6d58e9f0bb0ccdef7a3c7900:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;とスライドに書いたけど、考えなおすと、僕が思う品質の高さ順、の方が正確です、失礼しました。MelGeneneralizedCepstrumsは一番気合入れて書いたけど、ユーザーがいるかといったらいないし、RobustPCAはさっと書いただけだけど、アルゴリズムとしては汎用的だし。またRobustPCAだけ毛色が違いますが、応用例で紹介したのでリストに入れておきました。
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
@@ -1388,7 +1441,7 @@ s()
 
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2014/julialang&#34;&gt;Julia Advent Calendar 2014&lt;/a&gt; 9日目の記事です。&lt;/p&gt;
 
-&lt;h2 id=&#34;はじめに:4d037de2c6bae74ca497c1e416c33358&#34;&gt;はじめに&lt;/h2&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
 
 &lt;p&gt;CやFortranの関数をJuliaから呼ぶために使用する&lt;code&gt;ccall&lt;/code&gt;において、ポインタに関係するハマりどころとその解決法を紹介します。純粋なJuliaを使っている場合にはポインタを意識することはめったにないと思うので、&lt;code&gt;ccall&lt;/code&gt; を使う人（計算が重いボトルネック部分をCで書いてJuliaから呼びたい人、Cのライブラリのラッパーを書きたい/書いてる人）を主な読者と想定して記事を書きました（限定的でごめんなさい）。&lt;/p&gt;
 
@@ -1396,7 +1449,7 @@ s()
 
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;: 最新版の公式ドキュメントをいくつか引用していますが、ドキュメントは日々更新されていますので、この記事を読んで頂いた時点とは異なる可能性があることにご注意ください。&lt;/p&gt;
 
-&lt;h2 id=&#34;こんなとき:4d037de2c6bae74ca497c1e416c33358&#34;&gt;こんなとき&lt;/h2&gt;
+&lt;h2 id=&#34;こんなとき&#34;&gt;こんなとき&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;ccall&lt;/code&gt; を使う際に、ポインタに関する以下のような疑問を持つことがあります。&lt;/p&gt;
 
@@ -1408,7 +1461,7 @@ s()
 
 &lt;p&gt;一つ目は非常に簡単で、&lt;code&gt;Array&lt;/code&gt;（Cの関数が&lt;code&gt;double*&lt;/code&gt;を取るならば&lt;code&gt;Array{Float64,1}&lt;/code&gt;）をそのまま渡せばよいだけです。ドキュメントの&lt;a href=&#34;http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/#array-conversions&#34;&gt;Array Conversions&lt;/a&gt;にも書かれています。が、残りの二つに関してはハマりどころがあります。順に説明します。&lt;/p&gt;
 
-&lt;h2 id=&#34;構造体のポインタを引数に持つ関数のラッピングはどうすれば:4d037de2c6bae74ca497c1e416c33358&#34;&gt;構造体のポインタを引数に持つ関数のラッピングはどうすれば？&lt;/h2&gt;
+&lt;h2 id=&#34;構造体のポインタを引数に持つ関数のラッピングはどうすれば&#34;&gt;構造体のポインタを引数に持つ関数のラッピングはどうすれば？&lt;/h2&gt;
 
 &lt;p&gt;現状のドキュメントは少し不親切なので、引用した上で、整理します。&lt;/p&gt;
 
@@ -1424,11 +1477,11 @@ s()
 
 &lt;p&gt;と書かれています。つまり、一般には構造体は渡せないけどポインタ渡しはできるよ、ということです。&lt;/p&gt;
 
-&lt;p&gt;じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d037de2c6bae74ca497c1e416c33358:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d037de2c6bae74ca497c1e416c33358:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）&lt;/p&gt;
+&lt;p&gt;じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）&lt;/p&gt;
 
 &lt;p&gt;例を示します。&lt;/p&gt;
 
-&lt;h3 id=&#34;cコード:4d037de2c6bae74ca497c1e416c33358&#34;&gt;Cコード&lt;/h3&gt;
+&lt;h3 id=&#34;cコード&#34;&gt;Cコード&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;typedef struct {
    double a;
@@ -1448,7 +1501,7 @@ void reset(Foo* foo) {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;juliaコード:4d037de2c6bae74ca497c1e416c33358&#34;&gt;Juliaコード&lt;/h3&gt;
+&lt;h3 id=&#34;juliaコード&#34;&gt;Juliaコード&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;# Cの構造体 Foo に相当する型を宣言します
 immutable Foo
@@ -1474,7 +1527,7 @@ println(foo)
 
 &lt;p&gt;また、値渡しを可能にしようとする動きもあります（&lt;a href=&#34;https://github.com/JuliaLang/julia/pull/3466&#34;&gt;RFC: Make struct passing work properly #3466&lt;/a&gt;, &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/2818&#34;&gt;WIP: types as C-structs #2818&lt;/a&gt; マージ待ち）。&lt;/p&gt;
 
-&lt;h3 id=&#34;構造体渡しのまとめ:4d037de2c6bae74ca497c1e416c33358&#34;&gt;構造体渡しのまとめ&lt;/h3&gt;
+&lt;h3 id=&#34;構造体渡しのまとめ&#34;&gt;構造体渡しのまとめ&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Cの構造体に相当するJuliaの型を定義して、ポインタで渡せばOK&lt;/li&gt;
@@ -1482,7 +1535,7 @@ println(foo)
 &lt;li&gt;ポインタを受けることはできる（Ptr{Void}として受ける）&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;ポインタのポインタを引数に持つ-例-double-関数のラッピングは:4d037de2c6bae74ca497c1e416c33358&#34;&gt;ポインタのポインタを引数に持つ（例. &lt;code&gt;double**&lt;/code&gt;）関数のラッピングは？&lt;/h2&gt;
+&lt;h2 id=&#34;ポインタのポインタを引数に持つ-例-double-関数のラッピングは&#34;&gt;ポインタのポインタを引数に持つ（例. &lt;code&gt;double**&lt;/code&gt;）関数のラッピングは？&lt;/h2&gt;
 
 &lt;p&gt;さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。&lt;/p&gt;
 
@@ -1501,11 +1554,11 @@ println(foo)
 
 &lt;p&gt;という三点に分けて説明します。&lt;/p&gt;
 
-&lt;h3 id=&#34;1-どんな型で渡せばいいか:4d037de2c6bae74ca497c1e416c33358&#34;&gt;1. どんな型で渡せばいいか&lt;/h3&gt;
+&lt;h3 id=&#34;1-どんな型で渡せばいいか&#34;&gt;1. どんな型で渡せばいいか&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;Array{Ptr{Float64}}&lt;/code&gt; で渡せばよいです。外側のArrayは、&lt;code&gt;ccall&lt;/code&gt; がポインタに変換してくれるので、Juliaの型でいえば&lt;code&gt;Ptr{Ptr{Float64}}&lt;/code&gt;、Cの型で言えば&lt;code&gt;double**&lt;/code&gt;になるわけです。&lt;/p&gt;
 
-&lt;h3 id=&#34;2-どのように型を変換するか:4d037de2c6bae74ca497c1e416c33358&#34;&gt;2. どのように型を変換するか&lt;/h3&gt;
+&lt;h3 id=&#34;2-どのように型を変換するか&#34;&gt;2. どのように型を変換するか&lt;/h3&gt;
 
 &lt;p&gt;ここがハマりどころです。今回の例では、&lt;code&gt;Array{Float64,2}&lt;/code&gt; を &lt;code&gt;Array{Ptr{Float64},1}&lt;/code&gt; に変換すればよいので、例えば以下のような実装が思いつきます。&lt;/p&gt;
 
@@ -1524,7 +1577,7 @@ end
 &lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;dst[i] = pointer(src[:,i], 1)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;ここが間違っています。何が間違っているかというと、&lt;code&gt;pointer(src[:,i], 1)&lt;/code&gt;は一見&lt;code&gt;src&lt;/code&gt;の&lt;code&gt;i&lt;/code&gt;列目の先頭要素のポインタを指しているような気がしますが、&lt;code&gt;src[:,1]&lt;/code&gt;で &lt;code&gt;getindex&lt;/code&gt;という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの&lt;code&gt;i&lt;/code&gt;列目のポインタを指していない）点が間違っています&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d037de2c6bae74ca497c1e416c33358:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d037de2c6bae74ca497c1e416c33358:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。&lt;/p&gt;
+&lt;p&gt;ここが間違っています。何が間違っているかというと、&lt;code&gt;pointer(src[:,i], 1)&lt;/code&gt;は一見&lt;code&gt;src&lt;/code&gt;の&lt;code&gt;i&lt;/code&gt;列目の先頭要素のポインタを指しているような気がしますが、&lt;code&gt;src[:,1]&lt;/code&gt;で &lt;code&gt;getindex&lt;/code&gt;という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの&lt;code&gt;i&lt;/code&gt;列目のポインタを指していない）点が間違っています&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。&lt;/p&gt;
 
 &lt;p&gt;Array &lt;code&gt;A&lt;/code&gt;に対する syntax &lt;code&gt;X = A[I_1, I_2, ..., I_n]&lt;/code&gt; は &lt;code&gt;X = getindex(A, I_1, I_2, ..., I_n)&lt;/code&gt; と等価です。詳細は、&lt;a href=&#34;http://docs.julialang.org/en/latest/manual/arrays/&#34;&gt;Multi-dimensional Arrays&lt;/a&gt;や&lt;a href=&#34;http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex&#34;&gt;標準ライブラリのドキュメント&lt;/a&gt; を参考にしてください&lt;/p&gt;
 
@@ -1540,7 +1593,7 @@ function ptrarray2d{T&amp;lt;:Real}(src::Array{T,2})
 end
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;違いは &lt;code&gt;SubArray&lt;/code&gt;を使うようになった点です。&lt;code&gt;SubArray&lt;/code&gt;は、indexingを行うときにコピーを作らないので、期待した通りに&lt;code&gt;i&lt;/code&gt;列目の先頭要素のポインタを取得することができます。&lt;code&gt;SubArray&lt;/code&gt;について、以下引用しておきます&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d037de2c6bae74ca497c1e416c33358:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d037de2c6bae74ca497c1e416c33358:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;違いは &lt;code&gt;SubArray&lt;/code&gt;を使うようになった点です。&lt;code&gt;SubArray&lt;/code&gt;は、indexingを行うときにコピーを作らないので、期待した通りに&lt;code&gt;i&lt;/code&gt;列目の先頭要素のポインタを取得することができます。&lt;code&gt;SubArray&lt;/code&gt;について、以下引用しておきます&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;SubArray is a specialization of AbstractArray that performs indexing by reference rather than by copying. A SubArray is created with the sub() function, which is called the same way as getindex() (with an array and a series of index arguments). The result of sub() looks the same as the result of getindex(), except the data is left in place. sub() stores the input index vectors in a SubArray object, which can later be used to index the original array indirectly.&lt;/p&gt;
@@ -1548,7 +1601,7 @@ end
 
 &lt;p&gt;引用元: &lt;a href=&#34;http://docs.julialang.org/en/latest/manual/arrays/#implementation&#34;&gt;Multi-dimensional Arrays&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;3-変換した型をどのように元に戻すか:4d037de2c6bae74ca497c1e416c33358&#34;&gt;3. 変換した型をどのように元に戻すか&lt;/h3&gt;
+&lt;h3 id=&#34;3-変換した型をどのように元に戻すか&#34;&gt;3. 変換した型をどのように元に戻すか&lt;/h3&gt;
 
 &lt;p&gt;Juliaで計算結果（上の例でいう &lt;code&gt;double** output&lt;/code&gt;）を受け取りたい場合、ポインタに変換した値をJuliaのArrayに戻す必要があります（必ずしもそうではないですが、まぁほぼそうでしょう）。つまり、&lt;code&gt;Array(Ptr{Float64},1)&lt;/code&gt;を&lt;code&gt;Array{Float64,2}&lt;/code&gt;したいわけです。幸いにも、これは&lt;code&gt;pointer_to_array&lt;/code&gt;を使うと簡単にできます。コードを以下に示します。&lt;/p&gt;
 
@@ -1563,7 +1616,7 @@ end
 
 &lt;p&gt;&lt;code&gt;pointer_to_array&lt;/code&gt; は、その名前の通りの関数ですね。pointerをArrayに変換してくれます。&lt;/p&gt;
 
-&lt;h3 id=&#34;1-2-3-をまとめる:4d037de2c6bae74ca497c1e416c33358&#34;&gt;1, 2, 3 をまとめる&lt;/h3&gt;
+&lt;h3 id=&#34;1-2-3-をまとめる&#34;&gt;1, 2, 3 をまとめる&lt;/h3&gt;
 
 &lt;p&gt;最後に、1, 2, 3の内容をまとめて、ポインタのポインタを引数にもつ関数のラッパー例を書いておきます。&lt;/p&gt;
 
@@ -1588,14 +1641,14 @@ end
 end
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;ポインタのポインタまとめ:4d037de2c6bae74ca497c1e416c33358&#34;&gt;ポインタのポインタまとめ&lt;/h3&gt;
+&lt;h3 id=&#34;ポインタのポインタまとめ&#34;&gt;ポインタのポインタまとめ&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;Array&lt;/code&gt;のindexingはコピーを作るのである要素のポインタがほしい時は注意&lt;/li&gt;
 &lt;li&gt;行/列の先頭のポインタがほしいときは &lt;code&gt;SubArray&lt;/code&gt; を使いましょう&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;おわりに:4d037de2c6bae74ca497c1e416c33358&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;p&gt;ポインタにまつわるハマりどころとその解決法を紹介しました。今回紹介したものはすべて &lt;a href=&#34;https://github.com/r9y9/WORLD.jl&#34;&gt;WORLD.jl&lt;/a&gt; という &lt;a href=&#34;http://ml.cs.yamanashi.ac.jp/world/&#34;&gt;音声分析変換合成システムWORLD&lt;/a&gt; のラッパーを書いていたときに得た知見です。やっと&lt;code&gt;WORLD.jl&lt;/code&gt;が安定して動くようになってきて公式パッケージにしようかなぁと考えているところですので、興味のある方はぜひ触ってみてください。&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
@@ -1603,12 +1656,12 @@ end
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:4d037de2c6bae74ca497c1e416c33358:1&#34;&gt;immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/8948&#34;&gt;#8948&lt;/a&gt; にはそう書いてあります
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d037de2c6bae74ca497c1e416c33358:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:4d037de2c6bae74ca497c1e416c33358:2&#34;&gt;たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d037de2c6bae74ca497c1e416c33358:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:4d037de2c6bae74ca497c1e416c33358:3&#34;&gt;ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d037de2c6bae74ca497c1e416c33358:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/8948&#34;&gt;#8948&lt;/a&gt; にはそう書いてあります
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
@@ -1622,13 +1675,13 @@ end
       <guid>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
       <description>
 
-&lt;h2 id=&#34;はじめに:17c5c8e90f37fec202473edd8829bd90&#34;&gt;はじめに&lt;/h2&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
 
 &lt;p&gt;こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。&lt;/p&gt;
 
 &lt;p&gt;前回の記事（&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/&#34;&gt;統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE&lt;/a&gt;）では変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。&lt;/p&gt;
 
-&lt;h2 id=&#34;コード:17c5c8e90f37fec202473edd8829bd90&#34;&gt;コード&lt;/h2&gt;
+&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;https://github.com/r9y9/VoiceConversion.jl&lt;/a&gt;&lt;/p&gt;
 
@@ -1636,7 +1689,7 @@ end
 
 &lt;div align=&#34;center&#34;&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/39141184&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kentaroiizuka/julia-39141184&#34; title=&#34;プログラミング言語 Julia の紹介&#34; target=&#34;_blank&#34;&gt;プログラミング言語 Julia の紹介&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kentaroiizuka&#34; target=&#34;_blank&#34;&gt;Kentaro Iizuka&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;サードパーティライブラリ:17c5c8e90f37fec202473edd8829bd90&#34;&gt;サードパーティライブラリ&lt;/h2&gt;
+&lt;h2 id=&#34;サードパーティライブラリ&#34;&gt;サードパーティライブラリ&lt;/h2&gt;
 
 &lt;p&gt;声質変換は多くのコンポーネントによって成り立っていますが、すべてを自分で書くのは現実的ではありません。僕は、主に以下のライブラリを活用しています。&lt;/p&gt;
 
@@ -1648,9 +1701,9 @@ end
 
 &lt;p&gt;音声分析合成に関しては、アカデミック界隈ではよく使われている&lt;a href=&#34;http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html&#34;&gt;STRAIGHT&lt;/a&gt;がありますが、WORLDの方がライセンスもゆるくソースも公開されていて、かつ性能も劣らない（正確な話は、森勢先生の論文を参照してください）ので、おすすめです。&lt;/p&gt;
 
-&lt;h2 id=&#34;voiceconversion-jl-https-github-com-r9y9-voiceconversion-jl-でできること:17c5c8e90f37fec202473edd8829bd90&#34;&gt;&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;VoiceConversion.jl&lt;/a&gt; でできること&lt;/h2&gt;
+&lt;h2 id=&#34;voiceconversion-jl-https-github-com-r9y9-voiceconversion-jl-でできること&#34;&gt;&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;VoiceConversion.jl&lt;/a&gt; でできること&lt;/h2&gt;
 
-&lt;h3 id=&#34;追記-2015-01-07:17c5c8e90f37fec202473edd8829bd90&#34;&gt;追記 2015/01/07&lt;/h3&gt;
+&lt;h3 id=&#34;追記-2015-01-07&#34;&gt;追記 2015/01/07&lt;/h3&gt;
 
 &lt;p&gt;この記事を書いた段階のv0.0.1は、依存ライブラリの変更のため、現在は動きません。すみません。何のためのタグだ、という気がしてきますが、、最低限masterは動作するようにしますので、そちらをお試しください（基本的には、新しいコードの方が改善されています）。それでも動かないときは、issueを投げてください。&lt;/p&gt;
 
@@ -1669,23 +1722,23 @@ end
 
 &lt;p&gt;これらのうち、trajectory変換以外を紹介します。&lt;/p&gt;
 
-&lt;h2 id=&#34;チュートリアル-cmu-arcticを使ったgmmベースの声質変換-特徴抽出からパラレルデータの作成-gmmの学習-変換-合成処理まで:17c5c8e90f37fec202473edd8829bd90&#34;&gt;チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで）&lt;/h2&gt;
+&lt;h2 id=&#34;チュートリアル-cmu-arcticを使ったgmmベースの声質変換-特徴抽出からパラレルデータの作成-gmmの学習-変換-合成処理まで&#34;&gt;チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで）&lt;/h2&gt;
 
 &lt;p&gt;データセットに&lt;a href=&#34;http://festvox.org/cmu_arctic/&#34;&gt;CMU_ARCTIC&lt;/a&gt;を使って、GMMベースの声質変換（clb -&amp;gt; slt）を行う方法を説明します。なお、VoiceConversion.jl のv0.0.1を使います。ubuntuで主に動作確認をしていますが、macでも動くと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;0-前準備:17c5c8e90f37fec202473edd8829bd90&#34;&gt;0. 前準備&lt;/h2&gt;
+&lt;h2 id=&#34;0-前準備&#34;&gt;0. 前準備&lt;/h2&gt;
 
-&lt;h3 id=&#34;0-1-データセットのダウンロード:17c5c8e90f37fec202473edd8829bd90&#34;&gt;0.1. データセットのダウンロード&lt;/h3&gt;
+&lt;h3 id=&#34;0-1-データセットのダウンロード&#34;&gt;0.1. データセットのダウンロード&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://festvox.org/cmu_arctic/&#34;&gt;Festvox: CMU_ARCTIC Databases&lt;/a&gt; を使います。コマンド一発ですべてダウンロードする&lt;a href=&#34;https://gist.github.com/r9y9/ff67c05aeb87410eae2e&#34;&gt;スクリプト&lt;/a&gt;を書いたので、ご自由にどうぞ。&lt;/p&gt;
 
-&lt;h3 id=&#34;0-2-juliaのインストール:17c5c8e90f37fec202473edd8829bd90&#34;&gt;0.2. juliaのインストール&lt;/h3&gt;
+&lt;h3 id=&#34;0-2-juliaのインストール&#34;&gt;0.2. juliaのインストール&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://julialang.org/&#34;&gt;公式サイト&lt;/a&gt;からバイナリをダウンロードするか、&lt;a href=&#34;https://github.com/JuliaLang/julia&#34;&gt;githubのリポジトリ&lt;/a&gt;をクローンしてビルドしてください。バージョンは、現在の最新安定版のv0.3.2を使います。&lt;/p&gt;
 
 &lt;p&gt;記事内では、juliaの基本的な使い方については解説しないので、前もってある程度調べておいてもらえると、スムーズに読み進められるかと思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;0-3-voiceconversion-jl-のインストール:17c5c8e90f37fec202473edd8829bd90&#34;&gt;0.3. VoiceConversion.jl のインストール&lt;/h3&gt;
+&lt;h3 id=&#34;0-3-voiceconversion-jl-のインストール&#34;&gt;0.3. VoiceConversion.jl のインストール&lt;/h3&gt;
 
 &lt;p&gt;juliaを起動して、以下のコマンドを実行してください。&lt;/p&gt;
 
@@ -1700,11 +1753,11 @@ julia&amp;gt; Pkg.build(&amp;quot;VoiceConversion&amp;quot;)
 
 &lt;p&gt;これで準備は完了です！&lt;/p&gt;
 
-&lt;h2 id=&#34;1-音声波形からのメルケプストラムの抽出:17c5c8e90f37fec202473edd8829bd90&#34;&gt;1. 音声波形からのメルケプストラムの抽出&lt;/h2&gt;
+&lt;h2 id=&#34;1-音声波形からのメルケプストラムの抽出&#34;&gt;1. 音声波形からのメルケプストラムの抽出&lt;/h2&gt;
 
 &lt;p&gt;まずは、音声から声質変換に用いる特徴量を抽出します。特徴量としては、声質変換や音声合成の分野で広く使われているメルケプストラムを使います。メルケプストラムの抽出は、&lt;code&gt;scripts/mcep.jl&lt;/code&gt; を使うことでできます。&lt;/p&gt;
 
-&lt;h3 id=&#34;2014-11-15-追記:17c5c8e90f37fec202473edd8829bd90&#34;&gt;2014/11/15 追記&lt;/h3&gt;
+&lt;h3 id=&#34;2014-11-15-追記&#34;&gt;2014/11/15 追記&lt;/h3&gt;
 
 &lt;p&gt;実行前に、&lt;code&gt;julia&amp;gt; Pkg.add(&amp;quot;WAV&amp;quot;)&lt;/code&gt; として、WAVパッケージをインストールしておいてください。(2014/11/15時点のmasterでは自動でインストールされますが、v0.0.1ではインストールされません、すいません）。また、メルケプストラムの出力先ディレクトリは事前に作成しておいてください（最新のスクリプトでは自動で作成されます）。&lt;/p&gt;
 
@@ -1749,7 +1802,7 @@ ylim(-10, -2) # 見やすいように適当に決めました
 
 &lt;p&gt;こんな感じです。話者clbの&lt;code&gt;clb_a0028.wav&lt;/code&gt;を聞きながら、特徴量見てみてください。0次の成分からは、音量の大小が読み取れると思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;2-dpマッチングによるパラレルデータの作成:17c5c8e90f37fec202473edd8829bd90&#34;&gt;2. DPマッチングによるパラレルデータの作成&lt;/h2&gt;
+&lt;h2 id=&#34;2-dpマッチングによるパラレルデータの作成&#34;&gt;2. DPマッチングによるパラレルデータの作成&lt;/h2&gt;
 
 &lt;p&gt;次に、2話者分の特徴量を時間同期して連結します。基本的に声質変換では、音韻の違いによらない特徴量（非言語情報）の対応関係を学習するために、同一発話内容の特徴量を時間同期し（音韻の違いによる変動を可能な限りなくすため）、学習データとして用います。このデータのことを、パラレルデータと呼びます。&lt;/p&gt;
 
@@ -1813,7 +1866,7 @@ colorbar()
 
 &lt;p&gt;このパラレルデータを（複数の発話分さらに結合して）使って、特徴量の対応関係を学習していきます。モデルには、GMMを使います。&lt;/p&gt;
 
-&lt;h2 id=&#34;3-gmmの学習:17c5c8e90f37fec202473edd8829bd90&#34;&gt;3. GMMの学習&lt;/h2&gt;
+&lt;h2 id=&#34;3-gmmの学習&#34;&gt;3. GMMの学習&lt;/h2&gt;
 
 &lt;p&gt;GMMの学習には、&lt;code&gt;sklearn.mixture.GMM&lt;/code&gt; を使います。GMMは古典的な生成モデルで、実装は探せばたくさん見つかるので、既存の有用なライブラリを使えば十分です。（余談ですが、pythonのライブラリを簡単に呼べるのはjuliaの良いところの一つですね）&lt;/p&gt;
 
@@ -1854,7 +1907,7 @@ clim(0.0, 0.16)
 
 &lt;p&gt;まぁこんなもんですね。&lt;/p&gt;
 
-&lt;h2 id=&#34;4-音声分析合成worldを用いたgmmベースのframe-by-frame声質変換:17c5c8e90f37fec202473edd8829bd90&#34;&gt;4. 音声分析合成WORLDを用いたGMMベースのframe-by-frame声質変換&lt;/h2&gt;
+&lt;h2 id=&#34;4-音声分析合成worldを用いたgmmベースのframe-by-frame声質変換&#34;&gt;4. 音声分析合成WORLDを用いたGMMベースのframe-by-frame声質変換&lt;/h2&gt;
 
 &lt;p&gt;さて、ようやく声質変換の準備が整いました。学習したモデルを使って、GMMベースのframe-by-frame声質変換（clb -&amp;gt; slt ）をやってみましょう。具体的な変換アルゴリズムは、論文（例えば&lt;a href=&#34;http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf&#34;&gt;戸田先生のこれ&lt;/a&gt;）をチェックしてみてください。音声分析合成系にはWORLDを使います。&lt;/p&gt;
 
@@ -1875,21 +1928,21 @@ clim(0.0, 0.16)
 
 &lt;p&gt;上記のコマンドを実行すると、GMMベースのframe-by-frame声質変換の結果が音声ファイルに出力されます。以下に結果を貼っておくので、聞いてみてください。&lt;/p&gt;
 
-&lt;h3 id=&#34;変換元となる音声-clb-a0028:17c5c8e90f37fec202473edd8829bd90&#34;&gt;変換元となる音声 clb_a0028&lt;/h3&gt;
+&lt;h3 id=&#34;変換元となる音声-clb-a0028&#34;&gt;変換元となる音声 clb_a0028&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093202&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
-&lt;h3 id=&#34;変換目標となる話者-slt-a0028:17c5c8e90f37fec202473edd8829bd90&#34;&gt;変換目標となる話者 slt_a0028&lt;/h3&gt;
+&lt;h3 id=&#34;変換目標となる話者-slt-a0028&#34;&gt;変換目標となる話者 slt_a0028&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093240&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
-&lt;h3 id=&#34;変換結果-clb-to-slt-a0028:17c5c8e90f37fec202473edd8829bd90&#34;&gt;変換結果 clb_to_slt_a0028&lt;/h3&gt;
+&lt;h3 id=&#34;変換結果-clb-to-slt-a0028&#34;&gt;変換結果 clb_to_slt_a0028&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093403&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
 &lt;p&gt;話者性はなんとなく目標話者に近づいている気がしますが、音質が若干残念な感じですね。。&lt;/p&gt;
 
-&lt;h2 id=&#34;5-差分スペクトル補正に基づく声質変換:17c5c8e90f37fec202473edd8829bd90&#34;&gt;5. 差分スペクトル補正に基づく声質変換&lt;/h2&gt;
+&lt;h2 id=&#34;5-差分スペクトル補正に基づく声質変換&#34;&gt;5. 差分スペクトル補正に基づく声質変換&lt;/h2&gt;
 
 &lt;p&gt;最後に、より高品質な声質変換を達成可能な差分スペクトル補正に基づく声質変換を紹介します。差分スペクトル補正に基づく声質変換では、基本周波数や非周期性成分をいじれない代わりに音質はかなり改善します。以前書いた記事（&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/&#34;&gt;統計的声質変換クッソムズすぎワロタ - LESS IS MORE&lt;/a&gt;）から、着想に関連する部分を引用します。&lt;/p&gt;
 
@@ -1905,7 +1958,7 @@ clim(0.0, 0.16)
 
 &lt;p&gt;こばくん、論文を宣伝しておきますね＾＾&lt;/p&gt;
 
-&lt;h3 id=&#34;5-1-差分特徴量の学習:17c5c8e90f37fec202473edd8829bd90&#34;&gt;5.1 差分特徴量の学習&lt;/h3&gt;
+&lt;h3 id=&#34;5-1-差分特徴量の学習&#34;&gt;5.1 差分特徴量の学習&lt;/h3&gt;
 
 &lt;p&gt;さて、差分スペクトル補正に基づく声質変換行うには、変換元話者$X$と目標話者$Y$の特徴量の同時分布$P(X,Y)$を学習するのではなく、$P(X, Y-X)$ （日本語で書くとややこしいのですが、変換元話者の特徴量$X$と、変換元話者と目標話者の差分特徴量$Y-X$の同時分布）を学習します。これは、 &lt;code&gt;train_gmm.jl&lt;/code&gt; を使ってGMMを学習する際に、&lt;code&gt;--diff&lt;/code&gt; とオプションをつけるだけでできます。&lt;/p&gt;
 
@@ -1924,7 +1977,7 @@ clim(0.0, 0.16)
 
 &lt;p&gt;さっき学習したGMMとは、共分散はかなり形が違いますね。高次元成分でも、分散が比較的大きな値をとっているように見えます。形が異っているのは見てすぐにわかりますが、では具体的には何が異っているのか、それはなぜなのか、きちんと考えると面白そうですね。&lt;/p&gt;
 
-&lt;h3 id=&#34;5-2-mlsaフィルタによる声質変換:17c5c8e90f37fec202473edd8829bd90&#34;&gt;5.2 MLSAフィルタによる声質変換&lt;/h3&gt;
+&lt;h3 id=&#34;5-2-mlsaフィルタによる声質変換&#34;&gt;5.2 MLSAフィルタによる声質変換&lt;/h3&gt;
 
 &lt;p&gt;差分スペクトル補正に基づく声質変換では、WORLDを使って音声の分析合成を行うのではなく、生の音声波形を入力として、MLSAフィルタをかけるのみです。これは、 &lt;code&gt;scripts/diffvc.jl&lt;/code&gt; を使うと簡単にできます。&lt;/p&gt;
 
@@ -1933,26 +1986,26 @@ clim(0.0, 0.16)
 
 &lt;p&gt;さて、結果を聞いてみましょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;5-3-差分スペクトル補正に基づく声質変換結果:17c5c8e90f37fec202473edd8829bd90&#34;&gt;5.3 差分スペクトル補正に基づく声質変換結果&lt;/h3&gt;
+&lt;h3 id=&#34;5-3-差分スペクトル補正に基づく声質変換結果&#34;&gt;5.3 差分スペクトル補正に基づく声質変換結果&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093513&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
 &lt;p&gt;アイデアはシンプル、結果は良好、最高の手法ですね（べた褒め&lt;/p&gt;
 
-&lt;h2 id=&#34;おわりに:17c5c8e90f37fec202473edd8829bd90&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;p&gt;以上、長くなりましたが、統計的声質変換についてのチュートリアルはこれで終わります。誰の役に立つのか知らないけれど、役に立てば嬉しいです。トラジェクトリ変換やGVを考慮したバージョンなど、今回紹介していないものも実装しているので、詳しくは&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;Githubのリポジトリ&lt;/a&gt;をチェックしてください。バグをレポートしてくれたりすると、僕は喜びます。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:17c5c8e90f37fec202473edd8829bd90&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
-&lt;h3 id=&#34;以前書いた声質変換に関する記事:17c5c8e90f37fec202473edd8829bd90&#34;&gt;以前書いた声質変換に関する記事&lt;/h3&gt;
+&lt;h3 id=&#34;以前書いた声質変換に関する記事&#34;&gt;以前書いた声質変換に関する記事&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/&#34;&gt;統計的声質変換クッソムズすぎワロタ - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/&#34;&gt;統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;論文:17c5c8e90f37fec202473edd8829bd90&#34;&gt;論文&lt;/h3&gt;
+&lt;h3 id=&#34;論文&#34;&gt;論文&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf&#34;&gt;[Toda 2007] T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE
@@ -1961,13 +2014,13 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://isw3.naist.jp/~kazuhiro-k/resource/kobayashi14IS.pdf&#34;&gt;[Kobayashi 2014] Kobayashi, Kazuhiro, et al. &amp;ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&amp;rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;faq:17c5c8e90f37fec202473edd8829bd90&#34;&gt;FAQ&lt;/h2&gt;
+&lt;h2 id=&#34;faq&#34;&gt;FAQ&lt;/h2&gt;
 
-&lt;h3 id=&#34;前はpythonで書いてなかった:17c5c8e90f37fec202473edd8829bd90&#34;&gt;前はpythonで書いてなかった？&lt;/h3&gt;
+&lt;h3 id=&#34;前はpythonで書いてなかった&#34;&gt;前はpythonで書いてなかった？&lt;/h3&gt;
 
 &lt;p&gt;はい、&lt;a href=&#34;https://gist.github.com/r9y9/88bda659c97f46f42525&#34;&gt;https://gist.github.com/r9y9/88bda659c97f46f42525&lt;/a&gt; ですね。正確には、GMMの学習・変換処理はpythonで書いて、特徴抽出、パラレルデータの作成、波形合成はGo言語で書いていました。が、Goとpythonでデータのやりとり、Goとpythonをいったり来たりするのが面倒になってしまって、一つの言語に統一したいと思うようになりました。Goで機械学習は厳しいと感じていたので、pythonで書くかなぁと最初は思ったのですが、WORLDやSPTKなど、Cのライブラリをpythonから使うのが思いの他面倒だったので（&lt;a href=&#34;https://github.com/r9y9/SPTK&#34;&gt;SPTKのpythonラッパー&lt;/a&gt;は書きましたが）、Cやpythonとの連携がしやすく、スクリプト言語でありながらCに速度面で引けをとらないjuliaに興味があったので、juliaですべて完結するようにしました。かなり実験的な試みでしたが、今はかなり満足しています。juliaさいこー&lt;/p&gt;
 
-&lt;h3 id=&#34;新規性は:17c5c8e90f37fec202473edd8829bd90&#34;&gt;新規性は？&lt;/h3&gt;
+&lt;h3 id=&#34;新規性は&#34;&gt;新規性は？&lt;/h3&gt;
 
 &lt;p&gt;ありません&lt;/p&gt;
 </description>
@@ -1985,15 +2038,15 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
 
 &lt;p&gt;音楽に対してやってみたのですが、簡単な曲だったら、まぁぼちぼち期待通りに動いたかなぁという印象です。コードとノートを挙げたので、興味のある方はどうぞ。&lt;/p&gt;
 
-&lt;h2 id=&#34;github:ef918407e04816395b73d0bae03fa1a5&#34;&gt;Github&lt;/h2&gt;
+&lt;h2 id=&#34;github&#34;&gt;Github&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/julia-nmf-ss-toy&#34;&gt;https://github.com/r9y9/julia-nmf-ss-toy&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;ノート:ef918407e04816395b73d0bae03fa1a5&#34;&gt;ノート&lt;/h2&gt;
+&lt;h2 id=&#34;ノート&#34;&gt;ノート&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/julia-nmf-ss-toy/blob/master/NMF-based%20Music%20Source%20Separation%20Demo.ipynb&#34;&gt;NMF-based Music Source Separation Demo.ipynb | nbviewer&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;nmfのコード-julia:ef918407e04816395b73d0bae03fa1a5&#34;&gt;NMFのコード (Julia)&lt;/h2&gt;
+&lt;h2 id=&#34;nmfのコード-julia&#34;&gt;NMFのコード (Julia)&lt;/h2&gt;
 
 &lt;p&gt;NMFの実装の部分だけ抜き出しておきます。&lt;/p&gt;
 
@@ -2031,13 +2084,13 @@ end
 
 &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;21106ae0285e01327810268beacd0cf3&#34; data-ratio=&#34;1.77777777777778&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
 
-&lt;h2 id=&#34;発表概要:3ade576b5ea4fd8fe20cbf8aebe9a3fd&#34;&gt;発表概要&lt;/h2&gt;
+&lt;h2 id=&#34;発表概要&#34;&gt;発表概要&lt;/h2&gt;
 
 &lt;p&gt;C/C++ライブラリのラッパー（C++は現状のJuliaでは難しいけど）を作るときに、どうやってライブラリの依存関係を管理するか？という話です。結論としては、方法はいくつかありますが　BinDeps.jl というパッケージを使うのが楽で良いですよ、ということです。Githubのいろんなリポジトリをあさった僕の経験上、BinDeps.jl はバイナリの依存関係管理におけるデファクトスタンダードな気がしています。BinDeps.jl の使い方は、既存のパッケージのコードを読みまくって学ぶのがおすすめです。&lt;/p&gt;
 
 &lt;p&gt;さて、途中で書くのに疲れてしまったのですが、&lt;a href=&#34;http://qiita.com/r9y9/items/73806e3ce7f3a372d0b3&#34;&gt;自作のJuliaパッケージで、Cライブラリとの依存性を記述する - Qiita&lt;/a&gt; に以前似たような内容をまとめたので、併せてどうぞ。qiitaにも書きましたが、最適化関係のプロジェクトを集めた &lt;a href=&#34;http://www.juliaopt.org/&#34;&gt;JuliaOpt&lt;/a&gt; コミュニティでは、バイナリの依存関係管理にBinDeps.jlを使用することを推奨しています。&lt;/p&gt;
 
-&lt;h2 id=&#34;雑感:3ade576b5ea4fd8fe20cbf8aebe9a3fd&#34;&gt;雑感&lt;/h2&gt;
+&lt;h2 id=&#34;雑感&#34;&gt;雑感&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;勉強会にはデータ分析界隈の人が多い印象。音声系の人はとても少なかった。&lt;/li&gt;
@@ -2087,72 +2140,9 @@ end
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&#34;収穫:c1fd5ee3bb2a63b5edaf4f906b3100ed&#34;&gt;収穫&lt;/h2&gt;
+&lt;h2 id=&#34;収穫&#34;&gt;収穫&lt;/h2&gt;
 
 &lt;p&gt;この夏いちばんの収穫はノッツさんという漫画家の方を知れたことだった。最高の夏だ&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</title>
-      <link>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
-      <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
-      <description>
-
-&lt;p&gt;最近 &lt;a href=&#34;julialang.org&#34;&gt;Julia&lt;/a&gt; で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/BNMF.jl&#34;&gt;https://github.com/r9y9/BNMF.jl&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;元論文:
- &lt;a href=&#34;http://soundlab.cs.princeton.edu/publications/2010_icml_gapnmf.pdf&#34;&gt;Bayesian Nonparametric Matrix Factorization for Recorded Music&lt;/a&gt;
-by Matthew D. Hoffman et al. in ICML 2010.&lt;/p&gt;
-
-&lt;h2 id=&#34;デモ:ce798b422a097edc11b715bb27892d5d&#34;&gt;デモ&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb&#34;&gt;http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;適当な音声（音楽じゃなくてごめんなさい）に対して、GaP-NMFをfittingしてみた結果のメモです。$K=100$ で始めて、100回ほどイテレーションを回すと適度な数（12くらい）にtruncateしているのがわかると思います。予めモデルの複雑度を指定しなくても、データから適当な数を自動決定してくれる、ノンパラベイズの良いところですね。&lt;/p&gt;
-
-&lt;h2 id=&#34;ハマったところ:ce798b422a097edc11b715bb27892d5d&#34;&gt;ハマったところ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら &lt;a href=&#34;https://julia.readthedocs.org/en/latest/stdlib/base/?highlight=besselkx#Base.besselkx&#34;&gt;besselkx&lt;/a&gt; で、scipyで言うなら &lt;a href=&#34;http://students.mimuw.edu.pl/~pbechler/scipy_doc/generated/scipy.special.kve.html#scipy.special.kve&#34;&gt;scipy.special.kve&lt;/a&gt; です。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;雑感:ce798b422a097edc11b715bb27892d5d&#34;&gt;雑感&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒&lt;/li&gt;
-&lt;li&gt;というかJuliaがMatlabに似すぎ？&lt;/li&gt;
-&lt;li&gt;Gamma分布に従う乱数は、&lt;a href=&#34;https://github.com/JuliaStats/Distributions.jl&#34;&gt;Distributions,jl&lt;/a&gt; を使えばめっちゃ簡単に生成できた。素晴らしすぎる&lt;/li&gt;
-&lt;li&gt;行列演算がシンプルにかけてホント楽。pythonでもmatlabでもそうだけど（Goだとこれができないんですよ…）&lt;/li&gt;
-&lt;li&gt;第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;python版と速度比較:ce798b422a097edc11b715bb27892d5d&#34;&gt;Python版と速度比較&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/dawenl/bp_nmf/tree/master/code/gap_nmf&#34;&gt;bp_nmf/code/gap_nmf&lt;/a&gt; と比較します。matlabはもってないので比較対象からはずします、ごめんなさい&lt;/p&gt;
-
-&lt;p&gt;Gistにベンチマークに使ったスクリプトと実行結果のメモを置いときました
-&lt;a href=&#34;https://gist.github.com/r9y9/3d0c6a90dd155801c4c1&#34;&gt;https://gist.github.com/r9y9/3d0c6a90dd155801c4c1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;結果だけ書いておくと、あらゆる現実を（ry の音声にGaP-NMFをepochs=100でfittingするのにかかった時間は、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Julia: Mean elapsed time: 21.92968243 [sec]
-Python: Mean elapsed time: 18.3550617 [sec]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;という結果になりました。つまりJuliaのほうが1.2倍くらい遅かった（僕の実装が悪い可能性は十分ありますが）。どこがボトルネックになっているのか調べていないので、気が向いたら調べます。Juliaの方が速くなったらいいなー&lt;/p&gt;
-
-&lt;h2 id=&#34;おわりに:ce798b422a097edc11b715bb27892d5d&#34;&gt;おわりに&lt;/h2&gt;
-
-&lt;p&gt;GaP-NMFの実装チャレンジは二回目でした。（たぶん）一昨年、年末に実家に帰るときに、何を思ったのか急に実装したくなって、電車の中で論文を読んで家に着くなり実装するというエクストリームわけわからんことをしていましたが、その時はNaN and Inf地獄に負けてしまいました。Pythonで書いていましたが、今見るとそのコードマジクソでした。&lt;/p&gt;
-
-&lt;p&gt;そして二回目である今回、最初はmatlabコードを見ずに自力で書いていたんですが、またもやInf地獄に合いもうだめだと思って、matlabコードを写経しました。あんま成長していないようです（つらい）&lt;/p&gt;
-
-&lt;p&gt;Julia歴二週間くらいですが、良い感じなので使い続けて見ようと思います。&lt;/p&gt;
 </description>
     </item>
     

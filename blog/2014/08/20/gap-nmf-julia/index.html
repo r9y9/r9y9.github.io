@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -40,19 +40,19 @@
  <a href="http://soundlab.cs.princeton.edu/publications/2010_icml_gapnmf.pdf">Bayesian Nonparametric Matrix Factorization for Recorded Music</a>
 by Matthew D. Hoffman et al. in ICML 2010.</p>
 
-<h2 id="デモ:ce798b422a097edc11b715bb27892d5d">デモ</h2>
+<h2 id="デモ">デモ</h2>
 
 <p><a href="http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb">http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb</a></p>
 
 <p>適当な音声（音楽じゃなくてごめんなさい）に対して、GaP-NMFをfittingしてみた結果のメモです。$K=100$ で始めて、100回ほどイテレーションを回すと適度な数（12くらい）にtruncateしているのがわかると思います。予めモデルの複雑度を指定しなくても、データから適当な数を自動決定してくれる、ノンパラベイズの良いところですね。</p>
 
-<h2 id="ハマったところ:ce798b422a097edc11b715bb27892d5d">ハマったところ</h2>
+<h2 id="ハマったところ">ハマったところ</h2>
 
 <ul>
 <li>GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら <a href="https://julia.readthedocs.org/en/latest/stdlib/base/?highlight=besselkx#Base.besselkx">besselkx</a> で、scipyで言うなら <a href="http://students.mimuw.edu.pl/~pbechler/scipy_doc/generated/scipy.special.kve.html#scipy.special.kve">scipy.special.kve</a> です。</li>
 </ul>
 
-<h2 id="雑感:ce798b422a097edc11b715bb27892d5d">雑感</h2>
+<h2 id="雑感">雑感</h2>
 
 <ul>
 <li>MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒</li>
@@ -62,7 +62,7 @@ by Matthew D. Hoffman et al. in ICML 2010.</p>
 <li>第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。</li>
 </ul>
 
-<h2 id="python版と速度比較:ce798b422a097edc11b715bb27892d5d">Python版と速度比較</h2>
+<h2 id="python版と速度比較">Python版と速度比較</h2>
 
 <p><a href="https://github.com/dawenl/bp_nmf/tree/master/code/gap_nmf">bp_nmf/code/gap_nmf</a> と比較します。matlabはもってないので比較対象からはずします、ごめんなさい</p>
 
@@ -77,7 +77,7 @@ Python: Mean elapsed time: 18.3550617 [sec]
 
 <p>という結果になりました。つまりJuliaのほうが1.2倍くらい遅かった（僕の実装が悪い可能性は十分ありますが）。どこがボトルネックになっているのか調べていないので、気が向いたら調べます。Juliaの方が速くなったらいいなー</p>
 
-<h2 id="おわりに:ce798b422a097edc11b715bb27892d5d">おわりに</h2>
+<h2 id="おわりに">おわりに</h2>
 
 <p>GaP-NMFの実装チャレンジは二回目でした。（たぶん）一昨年、年末に実家に帰るときに、何を思ったのか急に実装したくなって、電車の中で論文を読んで家に着くなり実装するというエクストリームわけわからんことをしていましたが、その時はNaN and Inf地獄に負けてしまいました。Pythonで書いていましたが、今見るとそのコードマジクソでした。</p>
 

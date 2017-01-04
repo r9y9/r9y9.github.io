@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Qt Media Player on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/qt-media-player/</link>
+    <link>http://r9y9.github.io/categories/qt-media-player/index.xml</link>
     <description>Recent content in Qt Media Player on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 27 Oct 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/qt-media-player/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -33,7 +32,7 @@
 &lt;li&gt;&lt;a href=&#34;http://qt-project.org/doc/qt-5.0/qtmultimedia/qml-qtmultimedia5-mediaplayer.html&#34;&gt;MediaPlayer&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;メディアの再生:057c7df305b4456b64e5fc2562fc9963&#34;&gt;メディアの再生&lt;/h2&gt;
+&lt;h2 id=&#34;メディアの再生&#34;&gt;メディアの再生&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://qt-project.org/doc/qt-5.0/qtmultimedia/qmediaplayer.html&#34;&gt;QMediaPlayer Class&lt;/a&gt; から引用すれば、&lt;/p&gt;
 
@@ -48,7 +47,7 @@ player-&amp;gt;play();
 
 &lt;p&gt;Qt5 になってから、さらにMultimediaが進化したらしいので、これからも色々使っていきたい。特にグラフィック周りがすごくなったとかなってないとか。今試行錯誤中&lt;/p&gt;
 
-&lt;h2 id=&#34;qtめも:057c7df305b4456b64e5fc2562fc9963&#34;&gt;Qtめも&lt;/h2&gt;
+&lt;h2 id=&#34;qtめも&#34;&gt;Qtめも&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Resourceを登録するとき、ちゃんとリソースファイルを&amp;rdquo;保存&amp;rdquo;しないとdesigner上では登録したリソースが出てこない&lt;/li&gt;

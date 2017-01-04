@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -50,7 +50,7 @@
 
 <p>前置きが若干長いので、タイトルの内容が知りたい方は、飛ばして下さい。</p>
 
-<h2 id="前置き-c-をjulia上で使う:9d858dd3a21ddb94afbee8833ac0bfa0">前置き：C++をJulia上で使う</h2>
+<h2 id="前置き-c-をjulia上で使う">前置き：C++をJulia上で使う</h2>
 
 <p>Cxx.jlを使えば、C++をJulia上で非常にスムーズに扱うことができます。例えば、C++の<code>std::vector&lt;T&gt;</code>を使いたい、さらにはJuliaの<code>filter</code>関数を<code>std::vector&lt;T&gt;</code>に対して使えるようにしたい、といった場合は、以下に示すように、ほんのすこしのコードを書くだけでできます。</p>
 
@@ -118,11 +118,11 @@ julia&gt; filter(x -&gt; x &gt; 5, v)
 
 <p>さて、以降本編に入りたいと思いますが、Julia上でC++を使うのは簡単かつ、Cxx.jlの主な用途だとは思うのですが（少なくとも自分がそうでした）、逆はどうなのでしょうか？実は、limitationはあるものの、かなり面白いことができます。</p>
 
-<h2 id="juliaのexpressionやvalueをc-に埋め込む:9d858dd3a21ddb94afbee8833ac0bfa0">JuliaのexpressionやvalueをC++に埋め込む</h2>
+<h2 id="juliaのexpressionやvalueをc-に埋め込む">JuliaのexpressionやvalueをC++に埋め込む</h2>
 
 <p>まず簡単に、基本的な使い方を整理します。</p>
 
-<h3 id="valueを埋める:9d858dd3a21ddb94afbee8833ac0bfa0">valueを埋める</h3>
+<h3 id="valueを埋める">valueを埋める</h3>
 
 <p><code>$(some_value)</code> という書き方をします</p>
 
@@ -143,7 +143,7 @@ julia&gt; @cxx getRandom()
 
 <p>rand関数を評価したvalueを埋め込んでいるので、何度<code>getRandom</code>を呼び出しても結果は同じになります。</p>
 
-<h3 id="expressionを埋める:9d858dd3a21ddb94afbee8833ac0bfa0">expressionを埋める</h3>
+<h3 id="expressionを埋める">expressionを埋める</h3>
 
 <p><code>$:(some_expression)</code> という書き方をします。</p>
 
@@ -163,11 +163,11 @@ julia&gt; @cxx getReallyRandom()
 
 <p>期待した通りの動作になっていますね。</p>
 
-<h2 id="発展例:9d858dd3a21ddb94afbee8833ac0bfa0">発展例</h2>
+<h2 id="発展例">発展例</h2>
 
 <p>さて、以下、もう少し発展的な例です。</p>
 
-<h3 id="c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-1:9d858dd3a21ddb94afbee8833ac0bfa0">C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (1)</h3>
+<h3 id="c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-1">C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (1)</h3>
 
 <p>言葉にするとややこしいですが、例を見ればすぐにわかると思います。</p>
 
@@ -195,7 +195,7 @@ julia&gt; @cxx test4(10)
 
 <p>簡単に説明すると、C++のfor分の中で、Juliaのprintln関数を読んでいて、さらにprintlnの引数に、C++ expressionが渡されています。<code>icxx&quot;return i;&quot;</code>という部分が重要で、これは C++ lambda<code>[&amp;](){return i;)}</code> に相当しています。中々キモい表記ですが、こんなこともできるようです。</p>
 
-<h3 id="c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-2:9d858dd3a21ddb94afbee8833ac0bfa0">C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (2)</h3>
+<h3 id="c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-2">C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (2)</h3>
 
 <p>もう少し実用的な例です。C++関数の中で、Juliaのプログレスバーを使ってみます。</p>
 
@@ -234,7 +234,7 @@ Progress: 100% Time: 0:00:18
 
 <p>後者について、簡単に例をあげておきます。</p>
 
-<h4 id="ネストしていないからok:9d858dd3a21ddb94afbee8833ac0bfa0">ネストしていないからOK</h4>
+<h4 id="ネストしていないからok">ネストしていないからOK</h4>
 
 <pre><code class="language-jlcon">julia&gt; cxx&quot;&quot;&quot;
        int getRandom2() {
@@ -248,7 +248,7 @@ julia&gt; @cxx getRandom2()
 2
 </code></pre>
 
-<h3 id="ネストしているからダメ:9d858dd3a21ddb94afbee8833ac0bfa0">ネストしているからダメ</h3>
+<h3 id="ネストしているからダメ">ネストしているからダメ</h3>
 
 <pre><code class="language-jlcon">
 julia&gt; cxx&quot;&quot;&quot;
@@ -270,7 +270,7 @@ ERROR: Currently only `Void` is supported for nested expressions
 
 <p>nested expressionsで、返り値が<code>Void</code>以外も取れるようになると、嬉しいなーと思います。</p>
 
-<h3 id="c-lambda-に-julia-expressionを埋める:9d858dd3a21ddb94afbee8833ac0bfa0">C++ lambda に Julia expressionを埋める</h3>
+<h3 id="c-lambda-に-julia-expressionを埋める">C++ lambda に Julia expressionを埋める</h3>
 
 <p>これは現在、間接的にしかできませんでした。以下に例をあげます。</p>
 
@@ -331,13 +331,13 @@ zsh: abort      julia-master
 
 <p>例はこれで以上です。</p>
 
-<h2 id="まとめ:9d858dd3a21ddb94afbee8833ac0bfa0">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 
 <p>C++にJuliaを埋め込むといったことは今までほとんどしなかったのですが、今回色々試してみて、いくつかlimitationはあるものの非常に強力だと思いました。興味のある人は、C++にJuliaを埋め込む例は、<a href="https://github.com/Keno/Gallium.jl">Keno/Gallium.jl</a> にいくつか見つかるので、参考になるかもしれません。</p>
 
 <p>Keno氏の発表、とてもおもしろかったです。先週半ば頃、午前2時半くらいから見始めたのですが、面白くて一気に見てしまいました。いまllvm/clangについて勉強しているので、limitationの部分は、できれば自分でも解決可能かどうか、挑戦してみたいなと思っています。おしまい</p>
 
-<h2 id="参考:9d858dd3a21ddb94afbee8833ac0bfa0">参考</h2>
+<h2 id="参考">参考</h2>
 
 <ul>
 <li>Cxx.jlの著者 <a href="https://github.com/Keno">Keno</a></li>

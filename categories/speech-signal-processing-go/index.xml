@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Signal Processing Go on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/speech-signal-processing-go/</link>
+    <link>http://r9y9.github.io/categories/speech-signal-processing-go/index.xml</link>
     <description>Recent content in Speech Signal Processing Go on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 08 Jun 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/speech-signal-processing-go/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -17,7 +16,7 @@
       <guid>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
       <description>
 
-&lt;h1 id=&#34;c-からgoへ:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;C++からGoへ&lt;/h1&gt;
+&lt;h1 id=&#34;c-からgoへ&#34;&gt;C++からGoへ&lt;/h1&gt;
 
 &lt;p&gt;みなさん、C++で信号処理のアルゴリズムを書くのはつらいと思ったことはありませんか？C++で書くと速いのはいいけれど、いかんせん書くのが大変、コンパイルエラーは読みづらい、はたまたライブラリをビルドしようとしたら依存関係が上手く解決できず……そんな覚えはないでしょうか？謎のコンパイルエラーに悩みたくない、ガーベジコレクションほしい、Pythonのようにさくっと書きたい、型推論もほしい、でも動作は速い方がいい、そう思ったことはないでしょうか。&lt;/p&gt;
 
@@ -30,9 +29,9 @@
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/gossp&#34;&gt;https://github.com/r9y9/gossp&lt;/a&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;基礎:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;基礎&lt;/h1&gt;
+&lt;h1 id=&#34;基礎&#34;&gt;基礎&lt;/h1&gt;
 
-&lt;h2 id=&#34;wavファイルの読み込み-書き込み-wav-http-godoc-org-github-com-mjibson-go-dsp-wav:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;Wavファイルの読み込み/書き込み &lt;a href=&#34;http://godoc.org/github.com/mjibson/go-dsp/wav&#34;&gt;[wav]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;wavファイルの読み込み-書き込み-wav-http-godoc-org-github-com-mjibson-go-dsp-wav&#34;&gt;Wavファイルの読み込み/書き込み &lt;a href=&#34;http://godoc.org/github.com/mjibson/go-dsp/wav&#34;&gt;[wav]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/speech_signal.png &#34;Speech signal example.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
@@ -79,13 +78,13 @@ func main() {
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/go-dsp&#34;&gt;https://github.com/r9y9/go-dsp&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;高速フーリエ変換-fast-fourier-transform-fft-fft-http-godoc-org-github-com-mjibson-go-dsp-fft:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;高速フーリエ変換 (Fast Fourier Transform; FFT) &lt;a href=&#34;http://godoc.org/github.com/mjibson/go-dsp/fft&#34;&gt;[fft]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;高速フーリエ変換-fast-fourier-transform-fft-fft-http-godoc-org-github-com-mjibson-go-dsp-fft&#34;&gt;高速フーリエ変換 (Fast Fourier Transform; FFT) &lt;a href=&#34;http://godoc.org/github.com/mjibson/go-dsp/fft&#34;&gt;[fft]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;言わずとしれたFFTです。音のスペクトルを求めるのに必須の処理です。で、Goではどうすればいいのか？ということですが、こちらもすでに有用なライブラリが存在します。&lt;a href=&#34;https://github.com/mjibson/go-dsp&#34;&gt;GO-DSP&lt;/a&gt;に含まれる、fftパッケージを使いましょう。&lt;/p&gt;
 
 &lt;p&gt;このfftパッケージは、go routinesを使って平行化されているため速いです。僕は、1次元のフーリエ変換以外めったに使いませんが、N次元のフーリエ変換をサポートしているのもこのライブラリのいいところです。&lt;/p&gt;
 
-&lt;h3 id=&#34;参考:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;参考&lt;/h3&gt;
+&lt;h3 id=&#34;参考&#34;&gt;参考&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://mattjibson.com/blog/2013/01/04/go-dsp-fft-performance-with-go-routines/&#34;&gt;go-dsp FFT performance with go routines · Matt Jibson&lt;/a&gt;&lt;/li&gt;
@@ -105,7 +104,7 @@ func main() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;離散コサイン変換-discrete-cosine-transform-dct-dct-http-godoc-org-github-com-r9y9-gossp-dct:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;離散コサイン変換 (Discrete Cosine Transform; DCT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/dct&#34;&gt;[dct]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;離散コサイン変換-discrete-cosine-transform-dct-dct-http-godoc-org-github-com-r9y9-gossp-dct&#34;&gt;離散コサイン変換 (Discrete Cosine Transform; DCT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/dct&#34;&gt;[dct]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;DCTは、Mel-Frequency Cepstrum Coefficients (通称MFCC) 求めるのに必要な変換です。こちらは、残念ながら良さそうなライブラリがなかったので、自分で書きました。&lt;/p&gt;
 
@@ -126,9 +125,9 @@ func main() {
 
 &lt;p&gt;さて、基本的なところは一旦ここまでです。次からは、少し音声寄りの信号処理手法の紹介です。&lt;/p&gt;
 
-&lt;h1 id=&#34;時間周波数解析:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;時間周波数解析&lt;/h1&gt;
+&lt;h1 id=&#34;時間周波数解析&#34;&gt;時間周波数解析&lt;/h1&gt;
 
-&lt;h2 id=&#34;短時間フーリエ変換-short-time-fourier-transform-stft-stft-http-godoc-org-github-com-r9y9-gossp-stft:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;短時間フーリエ変換 (Short Time Fourier Transform; STFT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/stft&#34;&gt;[stft]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;短時間フーリエ変換-short-time-fourier-transform-stft-stft-http-godoc-org-github-com-r9y9-gossp-stft&#34;&gt;短時間フーリエ変換 (Short Time Fourier Transform; STFT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/stft&#34;&gt;[stft]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/stft.png &#34;STFT spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
@@ -187,7 +186,7 @@ func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
 sp &amp;quot;spectrogram.txt&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;逆短時間フーリエ変換-inverse-short-time-fourier-transform-istft-stft-http-godoc-org-github-com-r9y9-gossp-stft:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;逆短時間フーリエ変換 (Inverse Short Time Fourier Transform; ISTFT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/stft&#34;&gt;[stft]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;逆短時間フーリエ変換-inverse-short-time-fourier-transform-istft-stft-http-godoc-org-github-com-r9y9-gossp-stft&#34;&gt;逆短時間フーリエ変換 (Inverse Short Time Fourier Transform; ISTFT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/stft&#34;&gt;[stft]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;ISTFTは、STFTの逆変換でスペクトログラムから時間領域の信号に戻すために使います。スペクトログラムを加工するような音源分離、ノイズ除去手法を使う場合には、必須の処理です。これはstftと同じパッケージ下にあります。&lt;/p&gt;
 
@@ -206,7 +205,7 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;この辺を参考にしました。興味のある人は読んで見てください。&lt;/p&gt;
 
-&lt;h2 id=&#34;連続ウェーブレット変換-continuous-wavelet-transform-cwt:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;連続ウェーブレット変換 (Continuous Wavelet Transform; CWT)&lt;/h2&gt;
+&lt;h2 id=&#34;連続ウェーブレット変換-continuous-wavelet-transform-cwt&#34;&gt;連続ウェーブレット変換 (Continuous Wavelet Transform; CWT)&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/morlet_6_log.png &#34;Morlet Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
@@ -219,7 +218,7 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;コードは、テストがまだ通らないので開発中ということで…orz&lt;/p&gt;
 
-&lt;h2 id=&#34;逆連続ウェーブレット変換-inverse-continuous-wavelet-transform-icwt:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;逆連続ウェーブレット変換 (Inverse Continuous Wavelet Transform; ICWT)&lt;/h2&gt;
+&lt;h2 id=&#34;逆連続ウェーブレット変換-inverse-continuous-wavelet-transform-icwt&#34;&gt;逆連続ウェーブレット変換 (Inverse Continuous Wavelet Transform; ICWT)&lt;/h2&gt;
 
 &lt;p&gt;連続ウェーブレット変換の逆変換ですね。これもけっこう難しいです。こちらもまだテストに通っていないので、開発中です。&lt;/p&gt;
 
@@ -231,9 +230,9 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;※以降紹介するもののうち、多くは&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;SPTK&lt;/a&gt;のGo-portになっていて、一部はcgoを使ってラップしただけです（後々はpure goにしたいけれど、特にメルケプストラム分析あたりは難しいのでできていません）&lt;/p&gt;
 
-&lt;h1 id=&#34;音声分析系:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;音声分析系&lt;/h1&gt;
+&lt;h1 id=&#34;音声分析系&#34;&gt;音声分析系&lt;/h1&gt;
 
-&lt;h2 id=&#34;基本周波数推定-f0-http-godoc-org-github-com-r9y9-gossp-f0:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;基本周波数推定 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/f0&#34;&gt;[f0]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;基本周波数推定-f0-http-godoc-org-github-com-r9y9-gossp-f0&#34;&gt;基本周波数推定 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/f0&#34;&gt;[f0]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/arayuru_f0.png &#34;Fundamental frequency trajectory example.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
@@ -248,37 +247,37 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;以前、&lt;a href=&#34;https://github.com/r9y9/go-world&#34;&gt;GO-WORLD&lt;/a&gt;という音声分析合成系WORLDのGoラッパーを書いたので、それを使えばF0推定手法Dioが使えます。&lt;/p&gt;
 
-&lt;h3 id=&#34;参考-1:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;参考&lt;/h3&gt;
+&lt;h3 id=&#34;参考-1&#34;&gt;参考&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/03/22/go-world/&#34;&gt;音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;メルケプストラム分析-mgcep-http-godoc-org-github-com-r9y9-gossp-mgcep:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;メルケプストラム分析 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/mgcep&#34;&gt;[mgcep]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;メルケプストラム分析-mgcep-http-godoc-org-github-com-r9y9-gossp-mgcep&#34;&gt;メルケプストラム分析 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/mgcep&#34;&gt;[mgcep]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;音声合成界隈ではよく聞くメルケプストラム（※MFCCとは異なります）を求めるための分析手法です。メルケプストラムは、HMM（Hidden Markov Models; 隠れマルコフモデル）音声合成や統計的声質変換において、声道特徴（いわゆる、声質）のパラメータ表現としてよく使われています。メルケプストラムの前に、LPCとかPARCORとか色々あるのですが、現在のHMM音声合成で最もよく使われているのはメルケプストラムな気がするので、メルケプストラム分析があれば十分な気がします。&lt;/p&gt;
 
 &lt;p&gt;これは、SPTKをcgoを使ってラップしました&lt;/p&gt;
 
-&lt;h3 id=&#34;参考-2:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;参考&lt;/h3&gt;
+&lt;h3 id=&#34;参考-2&#34;&gt;参考&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://ci.nii.ac.jp/naid/40004638236/&#34;&gt;徳田恵一, 小林隆夫, 深田俊明, 斎藤博徳, 今井 聖, “メルケプストラムをパラメータとする音声のスペクトル推定,” 信学論(A), vol.J74-A, no.8, pp.1240–1248, Aug. 1991.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;メル一般化ケプストラム分析-mgcep-http-godoc-org-github-com-r9y9-gossp-mgcep:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;メル一般化ケプストラム分析 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/mgcep&#34;&gt;[mgcep]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;メル一般化ケプストラム分析-mgcep-http-godoc-org-github-com-r9y9-gossp-mgcep&#34;&gt;メル一般化ケプストラム分析 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/mgcep&#34;&gt;[mgcep]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;メル一般化ケプストラム分析は、その名の通りメルケプストラム分析を一般化したものです。メルケプストラム分析はもちろん、LPCも包含します（詳細は、参考文献をチェックしてみてください）。論文をいくつかあさっている限り、あんまり使われていない気はしますが、これもSPTKをラップしてGoから使えるようにしました。メルケプストラム分析もメル一般化ケプストラム分析に含まれるので、mgcepという一つのパッケージにしました。&lt;/p&gt;
 
-&lt;h3 id=&#34;参考-3:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;参考&lt;/h3&gt;
+&lt;h3 id=&#34;参考-3&#34;&gt;参考&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.utdallas.edu/~john.hanse/nPublications/JP-55-SpeechComm-Yapanel-Hansen-PMVDR-Feb08.pdf&#34;&gt;Tokuda, K., Masuko, T., Kobayashi, T., Imai, S., 1994. Mel-generalized Cepstral Analysis-A Uniﬁed Approach to Speech Spectral Estimation, ISCA ICSLP-94: Inter. Conf. Spoken Lang. Proc., Yokohama, Japan, pp. 1043–1046.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&#34;音声合成系:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;音声合成系&lt;/h1&gt;
+&lt;h1 id=&#34;音声合成系&#34;&gt;音声合成系&lt;/h1&gt;
 
-&lt;h2 id=&#34;励起信号の生成-excite-http-godoc-org-github-com-r9y9-gossp-excite:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;励起信号の生成 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/excite&#34;&gt;[excite]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;励起信号の生成-excite-http-godoc-org-github-com-r9y9-gossp-excite&#34;&gt;励起信号の生成 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/excite&#34;&gt;[excite]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/pulse_excite.png &#34;Exciation eignal.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
@@ -286,33 +285,33 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;高品質な波形合成が必要な場合は、WORLDやSTRAIGHTを使うのが良いです。&lt;/p&gt;
 
-&lt;h2 id=&#34;mlsa-mel-log-spectrum-approximation-デジタルフィルタ-vocoder-http-godoc-org-github-com-r9y9-gossp-vocoder:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;MLSA (Mel Log Spectrum Approximation) デジタルフィルタ &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/vocoder&#34;&gt;[vocoder]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;mlsa-mel-log-spectrum-approximation-デジタルフィルタ-vocoder-http-godoc-org-github-com-r9y9-gossp-vocoder&#34;&gt;MLSA (Mel Log Spectrum Approximation) デジタルフィルタ &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/vocoder&#34;&gt;[vocoder]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;MLSAフィルタは、メルケプストラムと励起信号から音声波形を合成するためのデジタルフィルタです。HMM音声合成の波形合成部で使われています（今もきっと）。Pure goで書き直しました。&lt;/p&gt;
 
 &lt;p&gt;昔、C++でも書いたことあります。&lt;/p&gt;
 
-&lt;h3 id=&#34;参考-4:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;参考&lt;/h3&gt;
+&lt;h3 id=&#34;参考-4&#34;&gt;参考&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/&#34;&gt;MLSA digital filter のC++実装 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;mglsa-mel-genaralized-log-spectrum-approximation-デジタルフィルタ-vocoder-http-godoc-org-github-com-r9y9-gossp-vocoder:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;MGLSA (Mel Genaralized-Log Spectrum Approximation) デジタルフィルタ &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/vocoder&#34;&gt;[vocoder]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;mglsa-mel-genaralized-log-spectrum-approximation-デジタルフィルタ-vocoder-http-godoc-org-github-com-r9y9-gossp-vocoder&#34;&gt;MGLSA (Mel Genaralized-Log Spectrum Approximation) デジタルフィルタ &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/vocoder&#34;&gt;[vocoder]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;MGLSAフィルタは、メル一般化ケプストラムから波形を合成するためのデジタルフィルタですね。これも pure goで書きました。&lt;/p&gt;
 
-&lt;h2 id=&#34;sptkの再実装について:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;&lt;strong&gt;※SPTKの再実装について&lt;/strong&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;sptkの再実装について&#34;&gt;&lt;strong&gt;※SPTKの再実装について&lt;/strong&gt;&lt;/h2&gt;
 
 &lt;p&gt;SPTKの実装をGoで書き直したものについては、SPTKの実装と結果が一致するかどうかを確認するテストを書いてあります。よって、誤った結果になるということは（計算誤差が影響する場合を除き）基本的にないので、お気になさらず。&lt;/p&gt;
 
-&lt;h2 id=&#34;高品質な音声分析変換合成系-world-go-world-http-godoc-org-github-com-r9y9-go-world:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;高品質な音声分析変換合成系 WORLD &lt;a href=&#34;http://godoc.org/github.com/r9y9/go-world&#34;&gt;[go-world]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;高品質な音声分析変換合成系-world-go-world-http-godoc-org-github-com-r9y9-go-world&#34;&gt;高品質な音声分析変換合成系 WORLD &lt;a href=&#34;http://godoc.org/github.com/r9y9/go-world&#34;&gt;[go-world]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/03/22/go-world/&#34;&gt;音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;以前WORLDのGoラッパーを書いたので、色々使えると思います。統計ベースの音声合成とか、声質変換とか。僕は声質変換に使おうと思ってラップしました。&lt;/p&gt;
 
-&lt;h1 id=&#34;おわりに:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;おわりに&lt;/h1&gt;
+&lt;h1 id=&#34;おわりに&#34;&gt;おわりに&lt;/h1&gt;
 
 &lt;p&gt;長々と書きましたが、Go言語での信号処理の基礎と、今まで整備してきた音声信号処理ライブラリを簡単に紹介しました。僕が書いたものは、まとめてGithubで公開しています。&lt;/p&gt;
 
@@ -322,9 +321,9 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;みなさん、Goで音声信号処理始めてみませんか？&lt;/p&gt;
 
-&lt;h1 id=&#34;余談:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;余談&lt;/h1&gt;
+&lt;h1 id=&#34;余談&#34;&gt;余談&lt;/h1&gt;
 
-&lt;h2 id=&#34;pythonではダメなの-その他言語は:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;Pythonではダメなの？その他言語は？&lt;/h2&gt;
+&lt;h2 id=&#34;pythonではダメなの-その他言語は&#34;&gt;Pythonではダメなの？その他言語は？&lt;/h2&gt;
 
 &lt;p&gt;なんでGoなの？と思う人がいると思います。冒頭にも書いたとおり、正直好きなのにすればいいですが、適当に書いて速いのがいいならC++だし、型を意識せずさくっと書きたいならPythonだし、そこそこ速くて型があって型推論もあって、とかだったらGoがいいかなと僕は思います。&lt;/p&gt;
 
@@ -333,7 +332,7 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;numpy, scipy, matplotlib, scikit-learnあたりが最強すぎるので、僕はpythonも良く使います。&lt;/p&gt;
 
-&lt;h2 id=&#34;きっかけ:4e4ea555e10fdd7db621e077aa0dd9ad&#34;&gt;きっかけ&lt;/h2&gt;
+&lt;h2 id=&#34;きっかけ&#34;&gt;きっかけ&lt;/h2&gt;
 
 &lt;p&gt;この記事を書いたきっかけは、友人にGoをおすすめしまくっていたのに全然聞いてくれなかったからでした。Goでも信号処理はできるよ&lt;/p&gt;
 </description>
@@ -347,7 +346,7 @@ sp &amp;quot;spectrogram.txt&amp;quot;
       <guid>http://r9y9.github.io/blog/2014/03/22/go-world/</guid>
       <description>
 
-&lt;h2 id=&#34;音声分析変換合成システムworld:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;音声分析変換合成システムWORLD&lt;/h2&gt;
+&lt;h2 id=&#34;音声分析変換合成システムworld&#34;&gt;音声分析変換合成システムWORLD&lt;/h2&gt;
 
 &lt;p&gt;WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ&lt;/p&gt;
 
@@ -355,7 +354,7 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ&lt;/p&gt;
 
-&lt;h2 id=&#34;go-world:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;GO-WORLD&lt;/h2&gt;
+&lt;h2 id=&#34;go-world&#34;&gt;GO-WORLD&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/go-world&#34;&gt;https://github.com/r9y9/go-world&lt;/a&gt;&lt;/p&gt;
 
@@ -363,9 +362,9 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;※ubuntu12.04でのみ動作確認してます。&lt;/p&gt;
 
-&lt;h2 id=&#34;準備:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;準備&lt;/h2&gt;
+&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
 
-&lt;h3 id=&#34;1-worldのインストール:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;1. WORLDのインストール&lt;/h3&gt;
+&lt;h3 id=&#34;1-worldのインストール&#34;&gt;1. WORLDのインストール&lt;/h3&gt;
 
 &lt;p&gt;まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました&lt;/p&gt;
 
@@ -379,48 +378,48 @@ sp &amp;quot;spectrogram.txt&amp;quot;
 
 &lt;p&gt;なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…&lt;/p&gt;
 
-&lt;h3 id=&#34;2-go-worldのインストール:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;2. GO-WORLDのインストール&lt;/h3&gt;
+&lt;h3 id=&#34;2-go-worldのインストール&#34;&gt;2. GO-WORLDのインストール&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;go get github.com/r9y9/go-world
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;簡単ですね！&lt;/p&gt;
 
-&lt;h2 id=&#34;使い方:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;使い方&lt;/h2&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
 
-&lt;h3 id=&#34;1-インポートする:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;1. インポートする&lt;/h3&gt;
+&lt;h3 id=&#34;1-インポートする&#34;&gt;1. インポートする&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;import &amp;quot;github.com/r9y9/go-world&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;2-worldのインスタンスを作る:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;2. worldのインスタンスを作る&lt;/h3&gt;
+&lt;h3 id=&#34;2-worldのインスタンスを作る&#34;&gt;2. worldのインスタンスを作る&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;w := world.New(sampleRate, framePeriod) // e.g. (44100, 5)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;3-好きなworldのメソッドを呼ぶ:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;3. 好きなworldのメソッドを呼ぶ&lt;/h3&gt;
+&lt;h3 id=&#34;3-好きなworldのメソッドを呼ぶ&#34;&gt;3. 好きなworldのメソッドを呼ぶ&lt;/h3&gt;
 
-&lt;h4 id=&#34;基本周波数の推定-dio:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;基本周波数の推定: Dio&lt;/h4&gt;
+&lt;h4 id=&#34;基本周波数の推定-dio&#34;&gt;基本周波数の推定: Dio&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id=&#34;スペクトル包絡の推定-star:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;スペクトル包絡の推定: Star&lt;/h4&gt;
+&lt;h4 id=&#34;スペクトル包絡の推定-star&#34;&gt;スペクトル包絡の推定: Star&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;spectrogram := w.Star(input, timeAxis, f0)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id=&#34;励起信号の推定-platinum:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;励起信号の推定: Platinum&lt;/h4&gt;
+&lt;h4 id=&#34;励起信号の推定-platinum&#34;&gt;励起信号の推定: Platinum&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;residual := w.Platinum(input, timeAxis, f0, spectrogram)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id=&#34;パラメータから音声の再合成-synthesis:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;パラメータから音声の再合成: Synthesis&lt;/h4&gt;
+&lt;h4 id=&#34;パラメータから音声の再合成-synthesis&#34;&gt;パラメータから音声の再合成: Synthesis&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;synthesized := w.Synthesis(f0, spectrogram, residual, len(input))
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;使い方例:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;使い方例.&lt;/h2&gt;
+&lt;h2 id=&#34;使い方例&#34;&gt;使い方例.&lt;/h2&gt;
 
 &lt;p&gt;音声（wavファイル）を分析して、パラメータから音声を再合成する例を紹介します。80行弱と少し長いですがはっつけておきます&lt;/p&gt;
 
@@ -514,14 +513,14 @@ func main() {
 
 &lt;p&gt;Goだとメモリ管理きにしなくていいしそこそこ速いし読みやすいし書きやすいし楽でいいですね（信者&lt;/p&gt;
 
-&lt;h2 id=&#34;おわりに:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;GoはC++ほど速くはないですが、C++の何倍も書きやすいし読みやすい（メンテしやすい）ので、個人的にオススメです（パフォーマンスが厳しく要求される場合には、C++の方がいいかもしれません）&lt;/li&gt;
 &lt;li&gt;WORLD良いソフトウェアなので使いましょう&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;ちなみに:bec113e130e13c2ead8f40ee7cfa5228&#34;&gt;ちなみに&lt;/h2&gt;
+&lt;h2 id=&#34;ちなみに&#34;&gt;ちなみに&lt;/h2&gt;
 
 &lt;p&gt;元はと言えば、オレオレ基本周波数推定（YINもどき）が微妙に精度悪くて代替を探していたとき、&lt;/p&gt;
 

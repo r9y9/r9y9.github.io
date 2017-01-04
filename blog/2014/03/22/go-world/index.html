@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,7 +32,7 @@
 			<section itemprop="entry-text">
 				
 
-<h2 id="音声分析変換合成システムworld:bec113e130e13c2ead8f40ee7cfa5228">音声分析変換合成システムWORLD</h2>
+<h2 id="音声分析変換合成システムworld">音声分析変換合成システムWORLD</h2>
 
 <p>WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ</p>
 
@@ -40,7 +40,7 @@
 
 <p>オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ</p>
 
-<h2 id="go-world:bec113e130e13c2ead8f40ee7cfa5228">GO-WORLD</h2>
+<h2 id="go-world">GO-WORLD</h2>
 
 <p><a href="https://github.com/r9y9/go-world">https://github.com/r9y9/go-world</a></p>
 
@@ -48,9 +48,9 @@
 
 <p>※ubuntu12.04でのみ動作確認してます。</p>
 
-<h2 id="準備:bec113e130e13c2ead8f40ee7cfa5228">準備</h2>
+<h2 id="準備">準備</h2>
 
-<h3 id="1-worldのインストール:bec113e130e13c2ead8f40ee7cfa5228">1. WORLDのインストール</h3>
+<h3 id="1-worldのインストール">1. WORLDのインストール</h3>
 
 <p>まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました</p>
 
@@ -64,48 +64,48 @@
 
 <p>なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…</p>
 
-<h3 id="2-go-worldのインストール:bec113e130e13c2ead8f40ee7cfa5228">2. GO-WORLDのインストール</h3>
+<h3 id="2-go-worldのインストール">2. GO-WORLDのインストール</h3>
 
 <pre><code class="language-bash">go get github.com/r9y9/go-world
 </code></pre>
 
 <p>簡単ですね！</p>
 
-<h2 id="使い方:bec113e130e13c2ead8f40ee7cfa5228">使い方</h2>
+<h2 id="使い方">使い方</h2>
 
-<h3 id="1-インポートする:bec113e130e13c2ead8f40ee7cfa5228">1. インポートする</h3>
+<h3 id="1-インポートする">1. インポートする</h3>
 
 <pre><code class="language-go">import &quot;github.com/r9y9/go-world&quot;
 </code></pre>
 
-<h3 id="2-worldのインスタンスを作る:bec113e130e13c2ead8f40ee7cfa5228">2. worldのインスタンスを作る</h3>
+<h3 id="2-worldのインスタンスを作る">2. worldのインスタンスを作る</h3>
 
 <pre><code class="language-go">w := world.New(sampleRate, framePeriod) // e.g. (44100, 5)
 </code></pre>
 
-<h3 id="3-好きなworldのメソッドを呼ぶ:bec113e130e13c2ead8f40ee7cfa5228">3. 好きなworldのメソッドを呼ぶ</h3>
+<h3 id="3-好きなworldのメソッドを呼ぶ">3. 好きなworldのメソッドを呼ぶ</h3>
 
-<h4 id="基本周波数の推定-dio:bec113e130e13c2ead8f40ee7cfa5228">基本周波数の推定: Dio</h4>
+<h4 id="基本周波数の推定-dio">基本周波数の推定: Dio</h4>
 
 <pre><code class="language-go">timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used
 </code></pre>
 
-<h4 id="スペクトル包絡の推定-star:bec113e130e13c2ead8f40ee7cfa5228">スペクトル包絡の推定: Star</h4>
+<h4 id="スペクトル包絡の推定-star">スペクトル包絡の推定: Star</h4>
 
 <pre><code class="language-go">spectrogram := w.Star(input, timeAxis, f0)
 </code></pre>
 
-<h4 id="励起信号の推定-platinum:bec113e130e13c2ead8f40ee7cfa5228">励起信号の推定: Platinum</h4>
+<h4 id="励起信号の推定-platinum">励起信号の推定: Platinum</h4>
 
 <pre><code class="language-go">residual := w.Platinum(input, timeAxis, f0, spectrogram)
 </code></pre>
 
-<h4 id="パラメータから音声の再合成-synthesis:bec113e130e13c2ead8f40ee7cfa5228">パラメータから音声の再合成: Synthesis</h4>
+<h4 id="パラメータから音声の再合成-synthesis">パラメータから音声の再合成: Synthesis</h4>
 
 <pre><code class="language-go">synthesized := w.Synthesis(f0, spectrogram, residual, len(input))
 </code></pre>
 
-<h2 id="使い方例:bec113e130e13c2ead8f40ee7cfa5228">使い方例.</h2>
+<h2 id="使い方例">使い方例.</h2>
 
 <p>音声（wavファイル）を分析して、パラメータから音声を再合成する例を紹介します。80行弱と少し長いですがはっつけておきます</p>
 
@@ -199,14 +199,14 @@ func main() {
 
 <p>Goだとメモリ管理きにしなくていいしそこそこ速いし読みやすいし書きやすいし楽でいいですね（信者</p>
 
-<h2 id="おわりに:bec113e130e13c2ead8f40ee7cfa5228">おわりに</h2>
+<h2 id="おわりに">おわりに</h2>
 
 <ul>
 <li>GoはC++ほど速くはないですが、C++の何倍も書きやすいし読みやすい（メンテしやすい）ので、個人的にオススメです（パフォーマンスが厳しく要求される場合には、C++の方がいいかもしれません）</li>
 <li>WORLD良いソフトウェアなので使いましょう</li>
 </ul>
 
-<h2 id="ちなみに:bec113e130e13c2ead8f40ee7cfa5228">ちなみに</h2>
+<h2 id="ちなみに">ちなみに</h2>
 
 <p>元はと言えば、オレオレ基本周波数推定（YINもどき）が微妙に精度悪くて代替を探していたとき、</p>
 

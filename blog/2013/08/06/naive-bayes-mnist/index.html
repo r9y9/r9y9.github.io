@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -40,14 +40,14 @@
 
 <p>結果だけ知りたい人へ：正解率  76 %くらいでした。まぁこんなもんですね</p>
 
-<h2 id="手書き数字認識:ed2dd43d838de3b647a0644f8209feb6">手書き数字認識</h2>
+<h2 id="手書き数字認識">手書き数字認識</h2>
 
 <p>手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。</p>
 
 <p>今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→<a href="http://yann.lecun.com/exdb/mnist/">THE MNIST DATABASE of handwritten digits</a>
 ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（<a href="http://deeplearning.net/tutorial/gettingstarted.html#gettingstarted">ここ</a>）、pythonのcPickleから読める形式に変換されているデータを使った。感謝</p>
 
-<h2 id="とりあえずやってみる:ed2dd43d838de3b647a0644f8209feb6">とりあえずやってみる</h2>
+<h2 id="とりあえずやってみる">とりあえずやってみる</h2>
 
 <pre><code class="language-bash">$ git clone https://github.com/r9y9/naive_bayes
 $ cd naive_bayes
@@ -64,7 +64,7 @@ $ python mnist_digit_recognition.py
 
 <p>実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。</p>
 
-<h2 id="学習されたgaussianの平均:ed2dd43d838de3b647a0644f8209feb6">学習されたGaussianの平均</h2>
+<h2 id="学習されたgaussianの平均">学習されたGaussianの平均</h2>
 
 <div align="center"><img src="/images/mnist_mean_of_gaussian.png "gaussian means"" class="image"></div>
 
@@ -72,7 +72,7 @@ $ python mnist_digit_recognition.py
 
 <p>それっぽい。学習データは50000サンプル</p>
 
-<h2 id="認識結果:ed2dd43d838de3b647a0644f8209feb6">認識結果</h2>
+<h2 id="認識結果">認識結果</h2>
 
 <p>時間がかかるけど、テストデータ10000個に対してやってみると、結果は以下のようになった。</p>
 
@@ -80,7 +80,7 @@ $ python mnist_digit_recognition.py
 
 <p>まぁナイーブベイズなんてこんなもん。もちろん、改善のしようはいくらでもあるけれども。ちなみにDeep learningのチュートリアルで使われてたDBN.pyだと0.987くらいだった。</p>
 
-<h2 id="感想:ed2dd43d838de3b647a0644f8209feb6">感想</h2>
+<h2 id="感想">感想</h2>
 
 <p>相関が強い特徴だと上手くいかんのは当たり前で、ピクセル毎にGaussianなんて作らずに（ピクセル間の相関を無視せずに）、少しまともな特徴抽出をかませば、8割りは超えるんじゃないかなぁと思う。</p>
 
@@ -88,7 +88,7 @@ $ python mnist_digit_recognition.py
 
 <p><a href="http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/">導出編→Naive Bayesの復習（導出編）</a></p>
 
-<h2 id="参考:ed2dd43d838de3b647a0644f8209feb6">参考</h2>
+<h2 id="参考">参考</h2>
 
 <ul>
 <li><a href="http://www.slideshare.net/shima__shima/python-13349162">機械学習のPythonとの出会い（１）：単純ベイズ基礎編 - slideshare</a></li>

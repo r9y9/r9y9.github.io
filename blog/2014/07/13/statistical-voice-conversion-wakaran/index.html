@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -36,7 +36,7 @@
 重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました
 <a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
 
-<h2 id="まえがき:ac8f489e034212a8a66b4627a57bdf8b">まえがき</h2>
+<h2 id="まえがき">まえがき</h2>
 
 <p>前回、<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ - LESS IS MORE</a> という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。</p>
 
@@ -51,11 +51,11 @@
 
 <p>ところで、結構いい感じにできたぜひゃっはーと思って、先輩に聞かせてみたら違いわかんねと言われて心が折れそうになりました。やはり現実はつらいです。</p>
 
-<h2 id="実装の話:ac8f489e034212a8a66b4627a57bdf8b">実装の話</h2>
+<h2 id="実装の話">実装の話</h2>
 
 <p>さて、今回は少し実装のことを書こうと思います。学習&amp;変換部分はPythonで書いています。その他はGo（※Goの話は書きません）。</p>
 
-<h2 id="トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz:ac8f489e034212a8a66b4627a57bdf8b">トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz</h2>
+<h2 id="トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz">トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz</h2>
 
 <p>前回トラジェクトリベースは処理が激重だと書きました。なんと、4秒程度の音声（フレームシフト5msで777フレーム）に対して変換部分に600秒ほどかかっていたのですが（重すぎワロタ）、結果から言えばPythonでも12秒くらいまでに高速化されました（混合数64, メルケプの次元数40+デルタ=80次元、分散共分散はfull）。本当にごめんなさい。</p>
 
@@ -68,7 +68,7 @@
 
 <p>です。特に後者はかなりパフォーマンスに影響していました</p>
 
-<h2 id="ナイーブな逆行列の計算:ac8f489e034212a8a66b4627a57bdf8b">ナイーブな逆行列の計算</h2>
+<h2 id="ナイーブな逆行列の計算">ナイーブな逆行列の計算</h2>
 
 <p><a href="http://d.hatena.ne.jp/sleepy_yoshi/20120513/p1">numpy.linalg.invとnumpy.linalg.solveを用いた逆行列計算 - 睡眠不足？！ (id:sleepy_yoshi)</a></p>
 
@@ -80,7 +80,7 @@
 
 <p>1.05倍の高速化（微妙）</p>
 
-<h2 id="スパース性の無視:ac8f489e034212a8a66b4627a57bdf8b">スパース性の無視</h2>
+<h2 id="スパース性の無視">スパース性の無視</h2>
 
 <ul>
 <li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007</a>.</li>
@@ -106,7 +106,7 @@
 <li><a href="http://lucidfrontier45.wordpress.com/2011/08/02/scipysparse_matmul/">scipy.sparseで疎行列の行列積 | frontier45</a></li>
 </ul>
 
-<h2 id="コード:ac8f489e034212a8a66b4627a57bdf8b">コード</h2>
+<h2 id="コード">コード</h2>
 
 <p>メモ的な意味で主要なコードを貼っておきます。
 <a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
@@ -377,14 +377,14 @@ class TrajectoryGMMMap(GMMMap):
         return y.reshape((T, D))
 </code></pre>
 
-<h2 id="結論:ac8f489e034212a8a66b4627a57bdf8b">結論</h2>
+<h2 id="結論">結論</h2>
 
 <ul>
 <li>疎行列の演算を考えるときは、間違ってもめんどくさいとか思わずに疎行列を積極的に使おう</li>
 <li>統計的声質変換ムズすぎ</li>
 </ul>
 
-<h2 id="おまけめも:ac8f489e034212a8a66b4627a57bdf8b">おまけめも</h2>
+<h2 id="おまけめも">おまけめも</h2>
 
 <p>僕が変換精度を改善するために考えていることのめも</p>
 

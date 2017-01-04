@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Cgo on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/go-cgo/</link>
+    <link>http://r9y9.github.io/categories/go-cgo/index.xml</link>
     <description>Recent content in Go Cgo on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 22 Mar 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/go-cgo/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -28,7 +27,7 @@
 
 &lt;p&gt;この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい&lt;/p&gt;
 
-&lt;h2 id=&#34;cgo:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;cgo&lt;/h2&gt;
+&lt;h2 id=&#34;cgo&#34;&gt;cgo&lt;/h2&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;Cgo enables the creation of Go packages that call C code.&lt;/p&gt;
@@ -43,7 +42,7 @@
 
 &lt;p&gt;ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &amp;ldquo;C&amp;rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べる&lt;/p&gt;
 
-&lt;h2 id=&#34;基本的な使い方:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;基本的な使い方&lt;/h2&gt;
+&lt;h2 id=&#34;基本的な使い方&#34;&gt;基本的な使い方&lt;/h2&gt;
 
 &lt;p&gt;まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う&lt;/p&gt;
 
@@ -59,7 +58,7 @@ import &amp;quot;C&amp;quot;
 
 &lt;p&gt;これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる&lt;/p&gt;
 
-&lt;h2 id=&#34;外部ライブラリを呼ぶ:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;外部ライブラリを呼ぶ&lt;/h2&gt;
+&lt;h2 id=&#34;外部ライブラリを呼ぶ&#34;&gt;外部ライブラリを呼ぶ&lt;/h2&gt;
 
 &lt;p&gt;通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いので、そのような場合には、ライブラリの依存関係をgoのコードに記述する&lt;/p&gt;
 
@@ -74,11 +73,11 @@ import &amp;quot;C&amp;quot;
 
 &lt;p&gt;こんな感じ（&lt;a href=&#34;http://golang.org/cmd/cgo/&#34;&gt;Goの公式ページ&lt;/a&gt;から参照）&lt;/p&gt;
 
-&lt;h2 id=&#34;tips:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;Tips&lt;/h2&gt;
+&lt;h2 id=&#34;tips&#34;&gt;Tips&lt;/h2&gt;
 
 &lt;p&gt;さて、ここからTips。主に、&lt;a href=&#34;ml.cs.yamanashi.ac.jp/world/&#34;&gt;WORLD&lt;/a&gt;のGoラッパーを書いていたときに得た知見です。ラッパーは、&lt;a href=&#34;https://github.com/r9y9/go-world&#34;&gt;Github&lt;/a&gt;にあげた&lt;/p&gt;
 
-&lt;h2 id=&#34;1-goのスライスをcのポインタとして関数の引数に渡す:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;1. GoのスライスをCのポインタとして関数の引数に渡す&lt;/h2&gt;
+&lt;h2 id=&#34;1-goのスライスをcのポインタとして関数の引数に渡す&#34;&gt;1. GoのスライスをCのポインタとして関数の引数に渡す&lt;/h2&gt;
 
 &lt;p&gt;例えば、[]float64 -&amp;gt; double* のイメージ&lt;/p&gt;
 
@@ -90,7 +89,7 @@ import &amp;quot;C&amp;quot;
 
 &lt;p&gt;のようにキャストしてやればOK&lt;/p&gt;
 
-&lt;h2 id=&#34;2-goのスライスのスライスをcのポインタのポインタとして関数の引数に渡す:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す&lt;/h2&gt;
+&lt;h2 id=&#34;2-goのスライスのスライスをcのポインタのポインタとして関数の引数に渡す&#34;&gt;2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す&lt;/h2&gt;
 
 &lt;p&gt;[][]float64 -&amp;gt; double** のようなイメージ&lt;/p&gt;
 
@@ -130,7 +129,7 @@ import &amp;quot;C&amp;quot;
 
 &lt;p&gt;です。&lt;/p&gt;
 
-&lt;h2 id=&#34;3-ポインタのポインタからスライスのスライスへの変換:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;3. ポインタのポインタからスライスのスライスへの変換&lt;/h2&gt;
+&lt;h2 id=&#34;3-ポインタのポインタからスライスのスライスへの変換&#34;&gt;3. ポインタのポインタからスライスのスライスへの変換&lt;/h2&gt;
 
 &lt;p&gt;double** -&amp;gt; [][]float64 のようなイメージ&lt;/p&gt;
 
@@ -239,7 +238,7 @@ func Make2DCArrayAlternative(matrix [][]float64) []*C.double {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;おわりに:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;ポインタのポインタを引数に取る関数のラップはめんどくさい&lt;/li&gt;
@@ -248,7 +247,7 @@ func Make2DCArrayAlternative(matrix [][]float64) []*C.double {
 &lt;li&gt;よりいい方法があれば教えて下さい&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;2014-08-10-追記:8f8778b323e068c7df5b05f98d12ff4a&#34;&gt;2014/08/10 追記&lt;/h2&gt;
+&lt;h2 id=&#34;2014-08-10-追記&#34;&gt;2014/08/10 追記&lt;/h2&gt;
 
 &lt;p&gt;cgo使いにくいと書いたけど、あとから考えてみればcgoさんまじ使いやすかったです（遅い&lt;/p&gt;
 

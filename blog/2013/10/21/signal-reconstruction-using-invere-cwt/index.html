@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -36,7 +36,7 @@
 
 <p><a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">Torrence, C. and G.P. Compo &ldquo;A Practical Guide to Wavelet Analysis&rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.</a></p>
 
-<h2 id="ウェーブレットの条件:420526900d8f003198bccc8f30c9555f">ウェーブレットの条件</h2>
+<h2 id="ウェーブレットの条件">ウェーブレットの条件</h2>
 
 <p>マザーウェーブレットはmorletを使う</p>
 
@@ -50,11 +50,11 @@
 
 <p>以下にいっぱい図を張る。軸は適当</p>
 
-<h2 id="元の信号:420526900d8f003198bccc8f30c9555f">元の信号</h2>
+<h2 id="元の信号">元の信号</h2>
 
 <div align="center"><img src="/images/wavelet/original_signal.png "The original signal"" class="image"></div>
 
-<h2 id="ウェーブレットスペクトログラム:420526900d8f003198bccc8f30c9555f">ウェーブレットスペクトログラム</h2>
+<h2 id="ウェーブレットスペクトログラム">ウェーブレットスペクトログラム</h2>
 
 <div align="center"><img src="/images/wavelet/morlet_wavelet_spectrogram.png "Morlet wavelet spectrogram"" class="image"></div>
 
@@ -65,7 +65,7 @@
 <p><a href="http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html">http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html</a>
 スケールのとり方はここを参考にするといい</p>
 
-<h2 id="再構成した信号:420526900d8f003198bccc8f30c9555f">再構成した信号</h2>
+<h2 id="再構成した信号">再構成した信号</h2>
 
 <div align="center"><img src="/images/wavelet/recostructed_signal.png "The recostructed signal"" class="image"></div>
 
@@ -73,11 +73,11 @@
 
 <p>が、実は少し誤差がある</p>
 
-<h2 id="重ねてプロット:420526900d8f003198bccc8f30c9555f">重ねてプロット</h2>
+<h2 id="重ねてプロット">重ねてプロット</h2>
 
 <div align="center"><img src="/images/wavelet/double_0.png "The original signal and recostructed signal"" class="image"></div>
 
-<h2 id="あっぷ:420526900d8f003198bccc8f30c9555f">あっぷ</h2>
+<h2 id="あっぷ">あっぷ</h2>
 
 <div align="center"><img src="/images/wavelet/double_1.png "The original signal and recostructed signal with zoom 1"" class="image"></div>
 
@@ -91,13 +91,13 @@
 
 <p>んー、まぁだいたいあってんじゃないですかね</p>
 
-<h2 id="誤差:420526900d8f003198bccc8f30c9555f">誤差</h2>
+<h2 id="誤差">誤差</h2>
 
 <p>平均誤差を計算すると、図の縦軸の量で考えて55.3994だった。16bitのwavが-32768〜32767なので、どうだろう、大きいのか小さいのかわからん</p>
 
 <p>ただ、再合成した音声を聞いた所それほど違和感はなかった。これはつまり、スペクトルいじる系の分析にSTFTがではなくウェーブレット使ってもいいんではないか？という考えが生まれますね。果たして、ウェーブレットが音声/音楽の分析にフーリエ変換ほど使われないのはなぜなのか、突き詰めたい</p>
 
-<h2 id="使った音声:420526900d8f003198bccc8f30c9555f">使った音声</h2>
+<h2 id="使った音声">使った音声</h2>
 
 <p>あなたが一番聞きたいと思った声が流れます、どうぞ</p>
 
@@ -105,13 +105,13 @@
 
 <p>スペクトログラム表示するのにサンプルが多いと大変なので、48kから10kにサンプリング周波数を落としたもの</p>
 
-<h2 id="再構成した音声:420526900d8f003198bccc8f30c9555f">再構成した音声</h2>
+<h2 id="再構成した音声">再構成した音声</h2>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/116227539"></iframe>
 
 <p>僕の耳では違いはわからない。サンプリング周波数によって誤差が大小する可能性はあるが、そこまで調査してない</p>
 
-<h2 id="メモ:420526900d8f003198bccc8f30c9555f">メモ</h2>
+<h2 id="メモ">メモ</h2>
 
 <p><a href="http://paos.colorado.edu/research/wavelets/wavelet3.html">http://paos.colorado.edu/research/wavelets/wavelet3.html</a>
 ここの最後に書かれている以下の文章、</p>
@@ -126,7 +126,7 @@
 
 <p>それぞれ、解決方法は思いつかないでもないけど、まだまとまってないので、解決したらまとめる、かもしれない。</p>
 
-<h2 id="さらにめも:420526900d8f003198bccc8f30c9555f">さらにめも</h2>
+<h2 id="さらにめも">さらにめも</h2>
 
 <ul>
 <li>practicalなんちゃらの、マザーウェーブレットを正規化する部分のmatlabコード、文献中の数式と若干違ってトリッキー。展開すれば一緒なんだけど、文献中の数式をそのまま書いたようになってないので、注意。ちょっと戸惑った</li>

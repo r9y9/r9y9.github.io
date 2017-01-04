@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mathjax Blogger on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/mathjax-blogger/</link>
+    <link>http://r9y9.github.io/categories/mathjax-blogger/index.xml</link>
     <description>Recent content in Mathjax Blogger on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 03 Aug 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/mathjax-blogger/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -19,11 +18,11 @@
 
 &lt;p&gt;Bloggerカスタマイズメモから、Mathjaxの部分を切り出して補足。ちょっとカスタマイズして書くことも増えたので。bloggerでの作業記録だけど、wordpressでもoctopressでもだいたい一緒&lt;/p&gt;
 
-&lt;h2 id=&#34;mathjax:cf84f8afe7a5d62f27ec81e5f69e4641&#34;&gt;Mathjax&lt;/h2&gt;
+&lt;h2 id=&#34;mathjax&#34;&gt;Mathjax&lt;/h2&gt;
 
 &lt;p&gt;Latex形式の数式をレンダリングしてくれるエンジン。レンダリングに少し時間がかかるけど、それでも数式は綺麗だし画像じゃないから普通にコピーできるし、個人的にオススメ&lt;/p&gt;
 
-&lt;h3 id=&#34;使い方:cf84f8afe7a5d62f27ec81e5f69e4641&#34;&gt;使い方&lt;/h3&gt;
+&lt;h3 id=&#34;使い方&#34;&gt;使い方&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-latex&#34;&gt;\begin{align}
 \sum_{i=1}^{n}i = \frac{1}{2}n(n+1)
@@ -40,7 +39,7 @@
 
 &lt;p&gt;他にもLaTeXの記法はまぁだいたい使えると思う。$$でインラインで書いてももちろんおｋ&lt;/p&gt;
 
-&lt;h3 id=&#34;導入方法:cf84f8afe7a5d62f27ec81e5f69e4641&#34;&gt;導入方法&lt;/h3&gt;
+&lt;h3 id=&#34;導入方法&#34;&gt;導入方法&lt;/h3&gt;
 
 &lt;p&gt;bloggerのレイアウト編集画面で、html/javascriptのガジェットを追加して、そこにmathjaxを使うためのスクリプトを書くだけ。もしくは、htmlを編集して、&lt;code&gt;&amp;lt;head&amp;gt;&amp;lt;/head&amp;gt;&lt;/code&gt;の中に直接書く。
 以下をコピペすればおｋ．&lt;/p&gt;
@@ -68,7 +67,7 @@
 
 &lt;p&gt;これでlatexの文法で数式が書ける。らくちん。wordpressとかでももちろん使える&lt;/p&gt;
 
-&lt;h3 id=&#34;マクロの追加:cf84f8afe7a5d62f27ec81e5f69e4641&#34;&gt;マクロの追加&lt;/h3&gt;
+&lt;h3 id=&#34;マクロの追加&#34;&gt;マクロの追加&lt;/h3&gt;
 
 &lt;p&gt;基本的にはここ→ &lt;a href=&#34;http://irrep.blogspot.jp/2011/07/mathjax-in-blogger-ii.html&#34;&gt;MathJax in Blogger (II)&lt;/a&gt; に書いてあるとおりにやったけど、デフォではargmaxとかargminが使えないので、マクロを追加した。&lt;/p&gt;
 

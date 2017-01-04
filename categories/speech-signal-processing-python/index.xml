@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Signal Processing Python on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/speech-signal-processing-python/</link>
+    <link>http://r9y9.github.io/categories/speech-signal-processing-python/index.xml</link>
     <description>Recent content in Speech Signal Processing Python on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 06 Sep 2015 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/speech-signal-processing-python/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -31,13 +30,13 @@
 
 &lt;p&gt;でインストールできるので、よろしければどうぞ&lt;/p&gt;
 
-&lt;h2 id=&#34;なぜ作ったのか:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;なぜ作ったのか&lt;/h2&gt;
+&lt;h2 id=&#34;なぜ作ったのか&#34;&gt;なぜ作ったのか&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;cythonとsphinxで遊んでたらできた&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;使い方:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;使い方&lt;/h2&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
 
 &lt;p&gt;以下のデモを参考にどうぞ&lt;/p&gt;
 
@@ -46,15 +45,15 @@
 &lt;li&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/pysptk/blob/51c103e5a7e9746c96cd78043df4e48fe2d6a3a8/examples/Speech%20analysis%20and%20re-synthesis.ipynb&#34;&gt;Speech analysis and re-synthesis&lt;/a&gt;: 音声の分析・再合成のデモ。合成音声はnotebook上で再生できます&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;ドキュメント:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;ドキュメント&lt;/h2&gt;
+&lt;h2 id=&#34;ドキュメント&#34;&gt;ドキュメント&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://pysptk.readthedocs.org&#34;&gt;http://pysptk.readthedocs.org&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;ぼやき:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;ぼやき&lt;/h2&gt;
+&lt;h2 id=&#34;ぼやき&#34;&gt;ぼやき&lt;/h2&gt;
 
 &lt;p&gt;SPTKの関数、変な値入れるとexitしたりセグフォったりするので、ちゃんとテスト書いてほしいなあ&lt;/p&gt;
 
-&lt;h2 id=&#34;関連:c62e4c75a9a71e9f9b743246c82ffb70&#34;&gt;関連&lt;/h2&gt;
+&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/08/10/sptk-from-python/&#34;&gt;SPTKのPythonラッパーを書いた - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
@@ -70,17 +69,17 @@
       <guid>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</guid>
       <description>
 
-&lt;h2 id=&#34;2015-09-06-追記:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;2015/09/06 追記&lt;/h2&gt;
+&lt;h2 id=&#34;2015-09-06-追記&#34;&gt;2015/09/06 追記&lt;/h2&gt;
 
 &lt;p&gt;ましなpythonラッパーを新しく作りました: &lt;a href=&#34;http://r9y9.github.io/blog/2015/09/06/pysptk/&#34;&gt;Pysptk: SPTKのpythonラッパーを作った (Part 2) - LESS IS MORE&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;2014-08-10-追記:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;2014/08/10 追記&lt;/h2&gt;
+&lt;h2 id=&#34;2014-08-10-追記&#34;&gt;2014/08/10 追記&lt;/h2&gt;
 
 &lt;p&gt;ipython notebookによる簡単なチュートリアルを貼っておきます&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/SPTK/blob/master/notebook/SPTK%20calling%20from%20python.ipynb&#34;&gt;SPTK を Pythonから呼ぶ | nbviewer&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;2014-11-09:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;2014/11/09&lt;/h2&gt;
+&lt;h2 id=&#34;2014-11-09&#34;&gt;2014/11/09&lt;/h2&gt;
 
 &lt;p&gt;タイポ修正しました…&lt;/p&gt;
 
@@ -94,7 +93,7 @@
 
 &lt;p&gt;注意ですが、&lt;code&gt;SPTK.h&lt;/code&gt;にある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？sklearn.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:20d58aa99306a37fd76ec81bf2bfd228&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/&#34;&gt;Goで音声信号処理をしたいのでSPTKのGoラッパーを書く - LESS IS MORE&lt;/a&gt;&lt;/li&gt;

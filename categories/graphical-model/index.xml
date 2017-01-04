@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Graphical Model on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/graphical-model/</link>
+    <link>http://r9y9.github.io/categories/graphical-model/index.xml</link>
     <description>Recent content in Graphical Model on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 01 Mar 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/graphical-model/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -34,7 +33,7 @@
 
 &lt;p&gt;ただ、少しスムーズに納得できないことがありまして…それは、MRFもCRFもグラフィカルモデルで書くと無向グラフとなること。識別モデルは無向グラフで生成モデルは有向グラフなんじゃ…？と思ってしまう人もいるんじゃないかと思う（いなかったらごめんなさい）。&lt;/p&gt;
 
-&lt;h2 id=&#34;グラフィカルモデルとしての表現:9e126f3cee1741eab4857d10d10dbf07&#34;&gt;グラフィカルモデルとしての表現&lt;/h2&gt;
+&lt;h2 id=&#34;グラフィカルモデルとしての表現&#34;&gt;グラフィカルモデルとしての表現&lt;/h2&gt;
 
 &lt;p&gt;一般に、生成モデルは有向グラフの形で記述され、識別モデルは無向グラフとして記述される。例えば、隠れマルコフモデル (HMM) は有向グラフで、条件付き確率場 (CRF) は無向グラフで表される。図を貼っておく&lt;/p&gt;
 
@@ -54,7 +53,7 @@
 
 &lt;p&gt;らしいです&lt;/p&gt;
 
-&lt;h2 id=&#34;結論:9e126f3cee1741eab4857d10d10dbf07&#34;&gt;結論&lt;/h2&gt;
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;生成モデル＝有向グラフ、識別モデル＝無向グラフで&lt;strong&gt;表されるとは限らない&lt;/strong&gt;&lt;/li&gt;
@@ -67,7 +66,7 @@
 
 &lt;p&gt;間違っていたら教えて下さい&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:9e126f3cee1741eab4857d10d10dbf07&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://metaoptimize.com/qa/questions/4021/what-is-exactly-the-difference-between-mrf-and-crf&#34;&gt;What is exactly the difference between MRF and CRF&lt;/a&gt;&lt;/li&gt;

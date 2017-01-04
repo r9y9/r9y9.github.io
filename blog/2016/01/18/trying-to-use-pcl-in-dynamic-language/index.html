@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,13 +32,13 @@
 			<section itemprop="entry-text">
 				
 
-<p>新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました<sup class="footnote-ref" id="fnref:a1125853acd385d5194fb635fdbc0d66:1"><a rel="footnote" href="#fn:a1125853acd385d5194fb635fdbc0d66:1">1</a></sup>。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。</p>
+<p>新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。</p>
 
-<h2 id="point-cloud-library-pcl-とは:a1125853acd385d5194fb635fdbc0d66">Point Cloud Library (PCL) とは</h2>
+<h2 id="point-cloud-library-pcl-とは">Point Cloud Library (PCL) とは</h2>
 
 <p><a href="http://www.pointclouds.org/">http://www.pointclouds.org/</a></p>
 
-<h2 id="問題:a1125853acd385d5194fb635fdbc0d66">問題</h2>
+<h2 id="問題">問題</h2>
 
 <p>PCL はboost、Eigenに依存している、かつtemplateを多く使用しているため、PCLを使用したプロジェクトのコンパイル時間は非常に長くなるという問題があります。twitterで [PCL コンパイル] として検索すると、例えば以下の様なツイートが見つかりますが、完全に同意です。</p>
 
@@ -52,17 +52,17 @@
 
 <p>boostへの依存関係が必須かどうかについては疑問が残りますが、点群処理ではパフォーマンスが求められることが多いと思われるので、C++で書かれていることは合理的に思います。とはいえ、コンパイル時間が長いのは試行錯誤するにはつらいです。</p>
 
-<h2 id="ではどうするか:a1125853acd385d5194fb635fdbc0d66">ではどうするか</h2>
+<h2 id="ではどうするか">ではどうするか</h2>
 
 <p>試行錯誤のサイクルを速く回せるようにすることは僕にとって非常に重要だったのと、 C++で書かなければいけないという制約もなかった（※組み込み用途ではない）ので、対話的にPCLを使うために、僕は動的型付け言語でラッパーを作ることにしました。</p>
 
-<p>参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています<sup class="footnote-ref" id="fnref:a1125853acd385d5194fb635fdbc0d66:2"><a rel="footnote" href="#fn:a1125853acd385d5194fb635fdbc0d66:2">2</a></sup>。</p>
+<p>参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。</p>
 
 <div align="center">
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/vMvYpKqA5aLtI8" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/payashim/ssii-2015-hayashi" title="コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi" target="_blank">コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi</a> </strong> from <strong><a href="//www.slideshare.net/payashim" target="_blank">Masaki Hayashi</a></strong> </div>
 </div>
 
-<h2 id="何で書くか:a1125853acd385d5194fb635fdbc0d66">何で書くか</h2>
+<h2 id="何で書くか">何で書くか</h2>
 
 <p>世の中には色んなプログラミング言語があります。C++ライブラリのラッパー作るぞとなったとき、僕にとって選択肢は、</p>
 
@@ -83,42 +83,42 @@
 <ul>
 <li>現在あまりメンテされていない</li>
 <li>サポートされている機能も多くはない</li>
-<li>templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった <sup class="footnote-ref" id="fnref:a1125853acd385d5194fb635fdbc0d66:3"><a rel="footnote" href="#fn:a1125853acd385d5194fb635fdbc0d66:3">3</a></sup></li>
-<li>Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. <code>pcl::PointCloud&lt;T&gt;</code> は <code>PointCloud{T}</code> と書ける<sup class="footnote-ref" id="fnref:a1125853acd385d5194fb635fdbc0d66:4"><a rel="footnote" href="#fn:a1125853acd385d5194fb635fdbc0d66:4">4</a></sup>）</li>
+<li>templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup></li>
+<li>Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. <code>pcl::PointCloud&lt;T&gt;</code> は <code>PointCloud{T}</code> と書ける<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup>）</li>
 <li>Cxx.jl を使えば JITライクに C++ を使える（試行錯誤できる）し、Juliaのほうがいいかな</li>
 </ul>
 
 <p>といった理由から、Juliaで書くことにしました。</p>
 
-<h2 id="成果物:a1125853acd385d5194fb635fdbc0d66">成果物</h2>
+<h2 id="成果物">成果物</h2>
 
 <p><a href="https://github.com/r9y9/PCL.jl">https://github.com/r9y9/PCL.jl</a></p>
 
-<p><a href="http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5">StatisticalOutlierRemovalのデモ | nbviewer</a> こんな感じで、jupyter上で試行錯誤できるようになりましたとさ<sup class="footnote-ref" id="fnref:a1125853acd385d5194fb635fdbc0d66:5"><a rel="footnote" href="#fn:a1125853acd385d5194fb635fdbc0d66:5">5</a></sup>。<a href="https://github.com/strawlab/python-pcl">strawlab/python-pcl</a> よりも多くのことができると思います。<sup class="footnote-ref" id="fnref:a1125853acd385d5194fb635fdbc0d66:6"><a rel="footnote" href="#fn:a1125853acd385d5194fb635fdbc0d66:6">6</a></sup></p>
+<p><a href="http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5">StatisticalOutlierRemovalのデモ | nbviewer</a> こんな感じで、jupyter上で試行錯誤できるようになりましたとさ<sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">5</a></sup>。<a href="https://github.com/strawlab/python-pcl">strawlab/python-pcl</a> よりも多くのことができると思います。<sup class="footnote-ref" id="fnref:6"><a rel="footnote" href="#fn:6">6</a></sup></p>
 
 <p>PCLは非常に大きなライブラリのため、全ての機能をラップするつもりはありませんが、今後必要に応じて機能を追加するかもしれません。</p>
 
-<h2 id="適当なスクショ:a1125853acd385d5194fb635fdbc0d66">適当なスクショ</h2>
+<h2 id="適当なスクショ">適当なスクショ</h2>
 
 <p>PCL.jl で、少なくとも最低限以下はできますということで。ソースコードは <a href="https://github.com/r9y9/PCL.jl/tree/master/examples">r9y9/PCL.jl/examples</a> にあります。</p>
 
-<h3 id="pclvisualizer:a1125853acd385d5194fb635fdbc0d66">PCLVisualizer</h3>
+<h3 id="pclvisualizer">PCLVisualizer</h3>
 
 <div align="center"><img src="/images/milk_cartoon_all_small_clorox.gif" /></div>
 
-<h3 id="3d-object-recognition-based-on-correspondence-grouping:a1125853acd385d5194fb635fdbc0d66">3D Object Recognition based on Correspondence Grouping</h3>
+<h3 id="3d-object-recognition-based-on-correspondence-grouping">3D Object Recognition based on Correspondence Grouping</h3>
 
 <div align="center"><img src="/images/correspondence_grouping.png" /></div>
 
-<h3 id="hypothesis-verification-for-3d-object-recognition:a1125853acd385d5194fb635fdbc0d66">Hypothesis Verification for 3D Object Recognition</h3>
+<h3 id="hypothesis-verification-for-3d-object-recognition">Hypothesis Verification for 3D Object Recognition</h3>
 
 <div align="center"><img src="/images/global_hypothesis_verification.png" /></div>
 
-<h3 id="extracting-indices-from-a-pointcloud:a1125853acd385d5194fb635fdbc0d66">Extracting indices from a PointCloud</h3>
+<h3 id="extracting-indices-from-a-pointcloud">Extracting indices from a PointCloud</h3>
 
 <div align="center"><img src="/images/extract_indices.png" /></div>
 
-<h3 id="kinect-v2で遊ぶ:a1125853acd385d5194fb635fdbc0d66">Kinect v2で遊ぶ</h3>
+<h3 id="kinect-v2で遊ぶ">Kinect v2で遊ぶ</h3>
 
 <p><div align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rGdsNoK3n9Q" frameborder="0" allowfullscreen></iframe></div>
@@ -126,11 +126,11 @@
 
 <p>画質低い &amp; クロップが適当で一部しか見えませんが、諸々の処理を含めて fpsは15くらいでしょうか。depthとrgb imageのregistration、その結果の点群への変換に関しては、<del>20~30fps程度でした</del> 測りなおしたら平均40fpsくらいはでてました。real-timeで点群を処理するようなアプリケーションを書く場合は、現実的にはC++で書くことになるかと思います。</p>
 
-<h3 id="余談:a1125853acd385d5194fb635fdbc0d66">余談</h3>
+<h3 id="余談">余談</h3>
 
 <p>Kinect v2 から得たデータを点群に変換するのに、Juliaではパフォーマンスを出すのに苦労したのですが、結果面白い（キモい？）コードができたので、少し話はそれますが簡単に紹介しておきたいと思います。</p>
 
-<h4 id="depthとcolorを点群に変換する関数:a1125853acd385d5194fb635fdbc0d66">Depthとcolorを点群に変換する関数</h4>
+<h4 id="depthとcolorを点群に変換する関数">Depthとcolorを点群に変換する関数</h4>
 
 <p>まず、コードを以下に示します。</p>
 
@@ -189,7 +189,7 @@ end
 
 <p>このコードだと、forループの中でJulia関数の呼びだしが発生するため、実は重たい処理になっています。このコードだと、確かfps 3 とかそのくらいでした。関数呼び出しがボトルネックだと気づいて、<code>icxx&quot;&quot;&quot;...&quot;&quot;&quot;</code> でくるんで（一つの関数にすることで）高速化を図った次第です。</p>
 
-<h2 id="雑記:a1125853acd385d5194fb635fdbc0d66">雑記</h2>
+<h2 id="雑記">雑記</h2>
 
 <p>以下、僕のmacbook proで <code>tic(); using PCL; toc()</code> をした結果：</p>
 
@@ -230,13 +230,13 @@ elapsed time: 39.194405845 seconds
 
 <p>ロード時間が長い問題は、Cxx.jlにプリコンパイル（<a href="https://github.com/Keno/Cxx.jl/issues/181">Keno/Cxx.jl/issues/181</a>）がサポートされれば、改善するかもしれません。</p>
 
-<h2 id="さいごに:a1125853acd385d5194fb635fdbc0d66">さいごに</h2>
+<h2 id="さいごに">さいごに</h2>
 
 <p>PCLを対話環境で使えるようになりました。快適です。また今回のラッピングを通して、PCLとは関係ありませんが、<a href="https://github.com/Keno/Cxx.jl">Cxx.jl</a> でできないことはほぼないという所感を持ちました。C++ の対話環境（REPL）も付いているので、最強すぎますね。Cythonでもできるぞってことであれば、教えて下さい。僕もpythonから使えるのであれば使いたいです（でも作るのは面倒過ぎる気がするので手を出せない）。</p>
 
 <p>僕にとって快適な環境はできましたが、<a href="https://github.com/Keno/Cxx.jl">Cxx.jl</a> のビルドはかなり面倒なので（Juliaの開発版も必要ですし…）、きっと誰も使わないんだろうなー、、、</p>
 
-<h2 id="参考:a1125853acd385d5194fb635fdbc0d66">参考</h2>
+<h2 id="参考">参考</h2>
 
 <ul>
 <li><a href="https://github.com/Keno/Cxx.jl">Keno/Cxx.jl</a></li>
@@ -247,18 +247,18 @@ elapsed time: 39.194405845 seconds
 <hr />
 
 <ol>
-<li id="fn:a1125853acd385d5194fb635fdbc0d66:1">僕、ラッパー作ってばっかり…
- <a class="footnote-return" href="#fnref:a1125853acd385d5194fb635fdbc0d66:1"><sup>[return]</sup></a></li>
-<li id="fn:a1125853acd385d5194fb635fdbc0d66:2">opencvはpythonラッパーについて触れられているのに、PCLのラッパーは無いだと？うーむ、じゃあ作ってみるかーと、思った気もします。
- <a class="footnote-return" href="#fnref:a1125853acd385d5194fb635fdbc0d66:2"><sup>[return]</sup></a></li>
-<li id="fn:a1125853acd385d5194fb635fdbc0d66:3">公式にサポートはされていますが、過去にcythonではまったことがあるので、懐疑的
- <a class="footnote-return" href="#fnref:a1125853acd385d5194fb635fdbc0d66:3"><sup>[return]</sup></a></li>
-<li id="fn:a1125853acd385d5194fb635fdbc0d66:4">cythonでも同じようにかけますが、pythonだと<code>PointCloud(dtype=T)</code>みたいに書くことになるんですかね
- <a class="footnote-return" href="#fnref:a1125853acd385d5194fb635fdbc0d66:4"><sup>[return]</sup></a></li>
-<li id="fn:a1125853acd385d5194fb635fdbc0d66:5">PCLVisualizerはGUIで使った方が便利なので、JuliaのREPLから使うことが多いですが
- <a class="footnote-return" href="#fnref:a1125853acd385d5194fb635fdbc0d66:5"><sup>[return]</sup></a></li>
-<li id="fn:a1125853acd385d5194fb635fdbc0d66:6">python-pclよりもインストールは大変だと思いますが…
- <a class="footnote-return" href="#fnref:a1125853acd385d5194fb635fdbc0d66:6"><sup>[return]</sup></a></li>
+<li id="fn:1">僕、ラッパー作ってばっかり…
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">opencvはpythonラッパーについて触れられているのに、PCLのラッパーは無いだと？うーむ、じゃあ作ってみるかーと、思った気もします。
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">公式にサポートはされていますが、過去にcythonではまったことがあるので、懐疑的
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:4">cythonでも同じようにかけますが、pythonだと<code>PointCloud(dtype=T)</code>みたいに書くことになるんですかね
+ <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
+<li id="fn:5">PCLVisualizerはGUIで使った方が便利なので、JuliaのREPLから使うことが多いですが
+ <a class="footnote-return" href="#fnref:5"><sup>[return]</sup></a></li>
+<li id="fn:6">python-pclよりもインストールは大変だと思いますが…
+ <a class="footnote-return" href="#fnref:6"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

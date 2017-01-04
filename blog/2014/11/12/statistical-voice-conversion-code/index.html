@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,13 +32,13 @@
 			<section itemprop="entry-text">
 				
 
-<h2 id="はじめに:17c5c8e90f37fec202473edd8829bd90">はじめに</h2>
+<h2 id="はじめに">はじめに</h2>
 
 <p>こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。</p>
 
 <p>前回の記事（<a href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/">統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE</a>）では変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。</p>
 
-<h2 id="コード:17c5c8e90f37fec202473edd8829bd90">コード</h2>
+<h2 id="コード">コード</h2>
 
 <p><a href="https://github.com/r9y9/VoiceConversion.jl">https://github.com/r9y9/VoiceConversion.jl</a></p>
 
@@ -46,7 +46,7 @@
 
 <div align="center"><iframe src="//www.slideshare.net/slideshow/embed_code/39141184" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/kentaroiizuka/julia-39141184" title="プログラミング言語 Julia の紹介" target="_blank">プログラミング言語 Julia の紹介</a> </strong> from <strong><a href="//www.slideshare.net/kentaroiizuka" target="_blank">Kentaro Iizuka</a></strong> </div></div>
 
-<h2 id="サードパーティライブラリ:17c5c8e90f37fec202473edd8829bd90">サードパーティライブラリ</h2>
+<h2 id="サードパーティライブラリ">サードパーティライブラリ</h2>
 
 <p>声質変換は多くのコンポーネントによって成り立っていますが、すべてを自分で書くのは現実的ではありません。僕は、主に以下のライブラリを活用しています。</p>
 
@@ -58,9 +58,9 @@
 
 <p>音声分析合成に関しては、アカデミック界隈ではよく使われている<a href="http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html">STRAIGHT</a>がありますが、WORLDの方がライセンスもゆるくソースも公開されていて、かつ性能も劣らない（正確な話は、森勢先生の論文を参照してください）ので、おすすめです。</p>
 
-<h2 id="voiceconversion-jl-https-github-com-r9y9-voiceconversion-jl-でできること:17c5c8e90f37fec202473edd8829bd90"><a href="https://github.com/r9y9/VoiceConversion.jl">VoiceConversion.jl</a> でできること</h2>
+<h2 id="voiceconversion-jl-https-github-com-r9y9-voiceconversion-jl-でできること"><a href="https://github.com/r9y9/VoiceConversion.jl">VoiceConversion.jl</a> でできること</h2>
 
-<h3 id="追記-2015-01-07:17c5c8e90f37fec202473edd8829bd90">追記 2015/01/07</h3>
+<h3 id="追記-2015-01-07">追記 2015/01/07</h3>
 
 <p>この記事を書いた段階のv0.0.1は、依存ライブラリの変更のため、現在は動きません。すみません。何のためのタグだ、という気がしてきますが、、最低限masterは動作するようにしますので、そちらをお試しください（基本的には、新しいコードの方が改善されています）。それでも動かないときは、issueを投げてください。</p>
 
@@ -79,23 +79,23 @@
 
 <p>これらのうち、trajectory変換以外を紹介します。</p>
 
-<h2 id="チュートリアル-cmu-arcticを使ったgmmベースの声質変換-特徴抽出からパラレルデータの作成-gmmの学習-変換-合成処理まで:17c5c8e90f37fec202473edd8829bd90">チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで）</h2>
+<h2 id="チュートリアル-cmu-arcticを使ったgmmベースの声質変換-特徴抽出からパラレルデータの作成-gmmの学習-変換-合成処理まで">チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで）</h2>
 
 <p>データセットに<a href="http://festvox.org/cmu_arctic/">CMU_ARCTIC</a>を使って、GMMベースの声質変換（clb -&gt; slt）を行う方法を説明します。なお、VoiceConversion.jl のv0.0.1を使います。ubuntuで主に動作確認をしていますが、macでも動くと思います。</p>
 
-<h2 id="0-前準備:17c5c8e90f37fec202473edd8829bd90">0. 前準備</h2>
+<h2 id="0-前準備">0. 前準備</h2>
 
-<h3 id="0-1-データセットのダウンロード:17c5c8e90f37fec202473edd8829bd90">0.1. データセットのダウンロード</h3>
+<h3 id="0-1-データセットのダウンロード">0.1. データセットのダウンロード</h3>
 
 <p><a href="http://festvox.org/cmu_arctic/">Festvox: CMU_ARCTIC Databases</a> を使います。コマンド一発ですべてダウンロードする<a href="https://gist.github.com/r9y9/ff67c05aeb87410eae2e">スクリプト</a>を書いたので、ご自由にどうぞ。</p>
 
-<h3 id="0-2-juliaのインストール:17c5c8e90f37fec202473edd8829bd90">0.2. juliaのインストール</h3>
+<h3 id="0-2-juliaのインストール">0.2. juliaのインストール</h3>
 
 <p><a href="http://julialang.org/">公式サイト</a>からバイナリをダウンロードするか、<a href="https://github.com/JuliaLang/julia">githubのリポジトリ</a>をクローンしてビルドしてください。バージョンは、現在の最新安定版のv0.3.2を使います。</p>
 
 <p>記事内では、juliaの基本的な使い方については解説しないので、前もってある程度調べておいてもらえると、スムーズに読み進められるかと思います。</p>
 
-<h3 id="0-3-voiceconversion-jl-のインストール:17c5c8e90f37fec202473edd8829bd90">0.3. VoiceConversion.jl のインストール</h3>
+<h3 id="0-3-voiceconversion-jl-のインストール">0.3. VoiceConversion.jl のインストール</h3>
 
 <p>juliaを起動して、以下のコマンドを実行してください。</p>
 
@@ -110,11 +110,11 @@ julia&gt; Pkg.build(&quot;VoiceConversion&quot;)
 
 <p>これで準備は完了です！</p>
 
-<h2 id="1-音声波形からのメルケプストラムの抽出:17c5c8e90f37fec202473edd8829bd90">1. 音声波形からのメルケプストラムの抽出</h2>
+<h2 id="1-音声波形からのメルケプストラムの抽出">1. 音声波形からのメルケプストラムの抽出</h2>
 
 <p>まずは、音声から声質変換に用いる特徴量を抽出します。特徴量としては、声質変換や音声合成の分野で広く使われているメルケプストラムを使います。メルケプストラムの抽出は、<code>scripts/mcep.jl</code> を使うことでできます。</p>
 
-<h3 id="2014-11-15-追記:17c5c8e90f37fec202473edd8829bd90">2014/11/15 追記</h3>
+<h3 id="2014-11-15-追記">2014/11/15 追記</h3>
 
 <p>実行前に、<code>julia&gt; Pkg.add(&quot;WAV&quot;)</code> として、WAVパッケージをインストールしておいてください。(2014/11/15時点のmasterでは自動でインストールされますが、v0.0.1ではインストールされません、すいません）。また、メルケプストラムの出力先ディレクトリは事前に作成しておいてください（最新のスクリプトでは自動で作成されます）。</p>
 
@@ -159,7 +159,7 @@ ylim(-10, -2) # 見やすいように適当に決めました
 
 <p>こんな感じです。話者clbの<code>clb_a0028.wav</code>を聞きながら、特徴量見てみてください。0次の成分からは、音量の大小が読み取れると思います。</p>
 
-<h2 id="2-dpマッチングによるパラレルデータの作成:17c5c8e90f37fec202473edd8829bd90">2. DPマッチングによるパラレルデータの作成</h2>
+<h2 id="2-dpマッチングによるパラレルデータの作成">2. DPマッチングによるパラレルデータの作成</h2>
 
 <p>次に、2話者分の特徴量を時間同期して連結します。基本的に声質変換では、音韻の違いによらない特徴量（非言語情報）の対応関係を学習するために、同一発話内容の特徴量を時間同期し（音韻の違いによる変動を可能な限りなくすため）、学習データとして用います。このデータのことを、パラレルデータと呼びます。</p>
 
@@ -223,7 +223,7 @@ colorbar()
 
 <p>このパラレルデータを（複数の発話分さらに結合して）使って、特徴量の対応関係を学習していきます。モデルには、GMMを使います。</p>
 
-<h2 id="3-gmmの学習:17c5c8e90f37fec202473edd8829bd90">3. GMMの学習</h2>
+<h2 id="3-gmmの学習">3. GMMの学習</h2>
 
 <p>GMMの学習には、<code>sklearn.mixture.GMM</code> を使います。GMMは古典的な生成モデルで、実装は探せばたくさん見つかるので、既存の有用なライブラリを使えば十分です。（余談ですが、pythonのライブラリを簡単に呼べるのはjuliaの良いところの一つですね）</p>
 
@@ -264,7 +264,7 @@ clim(0.0, 0.16)
 
 <p>まぁこんなもんですね。</p>
 
-<h2 id="4-音声分析合成worldを用いたgmmベースのframe-by-frame声質変換:17c5c8e90f37fec202473edd8829bd90">4. 音声分析合成WORLDを用いたGMMベースのframe-by-frame声質変換</h2>
+<h2 id="4-音声分析合成worldを用いたgmmベースのframe-by-frame声質変換">4. 音声分析合成WORLDを用いたGMMベースのframe-by-frame声質変換</h2>
 
 <p>さて、ようやく声質変換の準備が整いました。学習したモデルを使って、GMMベースのframe-by-frame声質変換（clb -&gt; slt ）をやってみましょう。具体的な変換アルゴリズムは、論文（例えば<a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">戸田先生のこれ</a>）をチェックしてみてください。音声分析合成系にはWORLDを使います。</p>
 
@@ -285,21 +285,21 @@ clim(0.0, 0.16)
 
 <p>上記のコマンドを実行すると、GMMベースのframe-by-frame声質変換の結果が音声ファイルに出力されます。以下に結果を貼っておくので、聞いてみてください。</p>
 
-<h3 id="変換元となる音声-clb-a0028:17c5c8e90f37fec202473edd8829bd90">変換元となる音声 clb_a0028</h3>
+<h3 id="変換元となる音声-clb-a0028">変換元となる音声 clb_a0028</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093202&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
-<h3 id="変換目標となる話者-slt-a0028:17c5c8e90f37fec202473edd8829bd90">変換目標となる話者 slt_a0028</h3>
+<h3 id="変換目標となる話者-slt-a0028">変換目標となる話者 slt_a0028</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093240&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
-<h3 id="変換結果-clb-to-slt-a0028:17c5c8e90f37fec202473edd8829bd90">変換結果 clb_to_slt_a0028</h3>
+<h3 id="変換結果-clb-to-slt-a0028">変換結果 clb_to_slt_a0028</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093403&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
 <p>話者性はなんとなく目標話者に近づいている気がしますが、音質が若干残念な感じですね。。</p>
 
-<h2 id="5-差分スペクトル補正に基づく声質変換:17c5c8e90f37fec202473edd8829bd90">5. 差分スペクトル補正に基づく声質変換</h2>
+<h2 id="5-差分スペクトル補正に基づく声質変換">5. 差分スペクトル補正に基づく声質変換</h2>
 
 <p>最後に、より高品質な声質変換を達成可能な差分スペクトル補正に基づく声質変換を紹介します。差分スペクトル補正に基づく声質変換では、基本周波数や非周期性成分をいじれない代わりに音質はかなり改善します。以前書いた記事（<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ - LESS IS MORE</a>）から、着想に関連する部分を引用します。</p>
 
@@ -315,7 +315,7 @@ clim(0.0, 0.16)
 
 <p>こばくん、論文を宣伝しておきますね＾＾</p>
 
-<h3 id="5-1-差分特徴量の学習:17c5c8e90f37fec202473edd8829bd90">5.1 差分特徴量の学習</h3>
+<h3 id="5-1-差分特徴量の学習">5.1 差分特徴量の学習</h3>
 
 <p>さて、差分スペクトル補正に基づく声質変換行うには、変換元話者$X$と目標話者$Y$の特徴量の同時分布$P(X,Y)$を学習するのではなく、$P(X, Y-X)$ （日本語で書くとややこしいのですが、変換元話者の特徴量$X$と、変換元話者と目標話者の差分特徴量$Y-X$の同時分布）を学習します。これは、 <code>train_gmm.jl</code> を使ってGMMを学習する際に、<code>--diff</code> とオプションをつけるだけでできます。</p>
 
@@ -334,7 +334,7 @@ clim(0.0, 0.16)
 
 <p>さっき学習したGMMとは、共分散はかなり形が違いますね。高次元成分でも、分散が比較的大きな値をとっているように見えます。形が異っているのは見てすぐにわかりますが、では具体的には何が異っているのか、それはなぜなのか、きちんと考えると面白そうですね。</p>
 
-<h3 id="5-2-mlsaフィルタによる声質変換:17c5c8e90f37fec202473edd8829bd90">5.2 MLSAフィルタによる声質変換</h3>
+<h3 id="5-2-mlsaフィルタによる声質変換">5.2 MLSAフィルタによる声質変換</h3>
 
 <p>差分スペクトル補正に基づく声質変換では、WORLDを使って音声の分析合成を行うのではなく、生の音声波形を入力として、MLSAフィルタをかけるのみです。これは、 <code>scripts/diffvc.jl</code> を使うと簡単にできます。</p>
 
@@ -343,26 +343,26 @@ clim(0.0, 0.16)
 
 <p>さて、結果を聞いてみましょう。</p>
 
-<h3 id="5-3-差分スペクトル補正に基づく声質変換結果:17c5c8e90f37fec202473edd8829bd90">5.3 差分スペクトル補正に基づく声質変換結果</h3>
+<h3 id="5-3-差分スペクトル補正に基づく声質変換結果">5.3 差分スペクトル補正に基づく声質変換結果</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093513&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
 <p>アイデアはシンプル、結果は良好、最高の手法ですね（べた褒め</p>
 
-<h2 id="おわりに:17c5c8e90f37fec202473edd8829bd90">おわりに</h2>
+<h2 id="おわりに">おわりに</h2>
 
 <p>以上、長くなりましたが、統計的声質変換についてのチュートリアルはこれで終わります。誰の役に立つのか知らないけれど、役に立てば嬉しいです。トラジェクトリ変換やGVを考慮したバージョンなど、今回紹介していないものも実装しているので、詳しくは<a href="https://github.com/r9y9/VoiceConversion.jl">Githubのリポジトリ</a>をチェックしてください。バグをレポートしてくれたりすると、僕は喜びます。</p>
 
-<h2 id="参考:17c5c8e90f37fec202473edd8829bd90">参考</h2>
+<h2 id="参考">参考</h2>
 
-<h3 id="以前書いた声質変換に関する記事:17c5c8e90f37fec202473edd8829bd90">以前書いた声質変換に関する記事</h3>
+<h3 id="以前書いた声質変換に関する記事">以前書いた声質変換に関する記事</h3>
 
 <ul>
 <li><a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ - LESS IS MORE</a></li>
 <li><a href="http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/">統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE</a></li>
 </ul>
 
-<h3 id="論文:17c5c8e90f37fec202473edd8829bd90">論文</h3>
+<h3 id="論文">論文</h3>
 
 <ul>
 <li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">[Toda 2007] T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE
@@ -371,13 +371,13 @@ Nov. 2007.</a></li>
 <li><a href="http://isw3.naist.jp/~kazuhiro-k/resource/kobayashi14IS.pdf">[Kobayashi 2014] Kobayashi, Kazuhiro, et al. &ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.</a></li>
 </ul>
 
-<h2 id="faq:17c5c8e90f37fec202473edd8829bd90">FAQ</h2>
+<h2 id="faq">FAQ</h2>
 
-<h3 id="前はpythonで書いてなかった:17c5c8e90f37fec202473edd8829bd90">前はpythonで書いてなかった？</h3>
+<h3 id="前はpythonで書いてなかった">前はpythonで書いてなかった？</h3>
 
 <p>はい、<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a> ですね。正確には、GMMの学習・変換処理はpythonで書いて、特徴抽出、パラレルデータの作成、波形合成はGo言語で書いていました。が、Goとpythonでデータのやりとり、Goとpythonをいったり来たりするのが面倒になってしまって、一つの言語に統一したいと思うようになりました。Goで機械学習は厳しいと感じていたので、pythonで書くかなぁと最初は思ったのですが、WORLDやSPTKなど、Cのライブラリをpythonから使うのが思いの他面倒だったので（<a href="https://github.com/r9y9/SPTK">SPTKのpythonラッパー</a>は書きましたが）、Cやpythonとの連携がしやすく、スクリプト言語でありながらCに速度面で引けをとらないjuliaに興味があったので、juliaですべて完結するようにしました。かなり実験的な試みでしたが、今はかなり満足しています。juliaさいこー</p>
 
-<h3 id="新規性は:17c5c8e90f37fec202473edd8829bd90">新規性は？</h3>
+<h3 id="新規性は">新規性は？</h3>
 
 <p>ありません</p>
 

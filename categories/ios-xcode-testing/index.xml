@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ios Xcode Testing on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/ios-xcode-testing/</link>
+    <link>http://r9y9.github.io/categories/ios-xcode-testing/index.xml</link>
     <description>Recent content in Ios Xcode Testing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 04 Feb 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/ios-xcode-testing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -17,7 +16,7 @@
       <guid>http://r9y9.github.io/blog/2014/02/04/ios-testing-tools/</guid>
       <description>
 
-&lt;h1 id=&#34;まとめ:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;まとめ&lt;/h1&gt;
+&lt;h1 id=&#34;まとめ&#34;&gt;まとめ&lt;/h1&gt;
 
 &lt;p&gt;結局どれがいいのか？時と場合によるが、自分の場合、以下の二つを使うのがベストではないかと考えた&lt;/p&gt;
 
@@ -30,15 +29,15 @@
 unit testに関しては以下の記事がよくまとまっているので、そちらを参照した方が良いです
 &lt;a href=&#34;http://magneticbear.com/lab/ios-unit-testing/&#34;&gt;http://magneticbear.com/lab/ios-unit-testing/&lt;/a&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;why-so:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;Why so?&lt;/h1&gt;
+&lt;h1 id=&#34;why-so&#34;&gt;Why so?&lt;/h1&gt;
 
-&lt;h2 id=&#34;単体テスト:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;単体テスト&lt;/h2&gt;
+&lt;h2 id=&#34;単体テスト&#34;&gt;単体テスト&lt;/h2&gt;
 
 &lt;p&gt;代表的なツールににApple製のSenTestingやXCTestがある。が、SenTestingはXcode 5に上がってからXcodeのデフォルトがXCTestになったので、新しいアプリではあえてSenTestingを使う必要はない（ちなみにSentTestingからXCTestへの変更は容易）。&lt;/p&gt;
 
 &lt;p&gt;KiwiかXCTestか、といった問題は、正直人によると思うが、RSpecに慣れてる人はKiwiのが使いやすいと思う。XCTestはデフォでサポートされているし使いやすいというメリットはあるが、Kiwiは&lt;a href=&#34;https://github.com/allending/Kiwi/wiki/Asynchronous-Testing&#34;&gt;Asynchronous Testing&lt;/a&gt; をデフォでサポートしてるというメリットもあるので、個人的にはKiwiを選択した。XCTestとかSenTestingでもAsynchronus testingは可能だけど若干めんどいし、非同期処理のテストのしやすさはやはり重要&lt;/p&gt;
 
-&lt;h2 id=&#34;結合テスト:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;結合テスト&lt;/h2&gt;
+&lt;h2 id=&#34;結合テスト&#34;&gt;結合テスト&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/hirayaCM/items/513786631575db8e1fb1&#34;&gt;iOSアプリのUIテストツール候補 | Qiita&lt;/a&gt; によくまとまってる。色々調べた結果、一番メジャーなのは &lt;a href=&#34;https://github.com/kif-framework/KIF&#34;&gt;KIF&lt;/a&gt; っぽい、かつKIFの方がgithubで人気だからいいんじゃねという短絡的発想です。その他ツールとの比較は、しばらくして気が向いたら書きます。。。&lt;/p&gt;
 
@@ -46,15 +45,15 @@ unit testに関しては以下の記事がよくまとまっているので、�
 
 &lt;p&gt;では、セットアップ方法についてまとめる。&lt;/p&gt;
 
-&lt;h1 id=&#34;kiwi-code-https-github-com-allending-kiwi:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;Kiwi &lt;a href=&#34;https://github.com/allending/Kiwi&#34;&gt;[code]&lt;/a&gt;&lt;/h1&gt;
+&lt;h1 id=&#34;kiwi-code-https-github-com-allending-kiwi&#34;&gt;Kiwi &lt;a href=&#34;https://github.com/allending/Kiwi&#34;&gt;[code]&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;基本的に、&lt;a href=&#34;https://github.com/allending/Kiwi/wiki/Getting-Started-with-Kiwi-2.0&#34;&gt;Getting Started with Kiwi 2.0&lt;/a&gt; を読めばわかる&lt;/p&gt;
 
-&lt;h2 id=&#34;kiwiのセットアップ:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;Kiwiのセットアップ&lt;/h2&gt;
+&lt;h2 id=&#34;kiwiのセットアップ&#34;&gt;Kiwiのセットアップ&lt;/h2&gt;
 
 &lt;p&gt;CocoaPodsを使う場合についてのみ記述する&lt;/p&gt;
 
-&lt;h3 id=&#34;xcode-5:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;Xcode 5&lt;/h3&gt;
+&lt;h3 id=&#34;xcode-5&#34;&gt;Xcode 5&lt;/h3&gt;
 
 &lt;p&gt;あらかじめXcodeでテスト用のターゲットを作成して、Podfileに以下を追加する。&lt;/p&gt;
 
@@ -63,7 +62,7 @@ unit testに関しては以下の記事がよくまとまっているので、�
 end
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;xcode-5未満:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;Xcode 5未満&lt;/h3&gt;
+&lt;h3 id=&#34;xcode-5未満&#34;&gt;Xcode 5未満&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;target :単体テストのターゲットの名前, :exclusive =&amp;gt; true do
    pod &#39;Kiwi&#39;
@@ -72,16 +71,16 @@ end
 
 &lt;p&gt;XCTestを使うかどうか、の違いです&lt;/p&gt;
 
-&lt;h2 id=&#34;インストール:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;インストール&lt;/h2&gt;
+&lt;h2 id=&#34;インストール&#34;&gt;インストール&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;pod install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;でOK、簡単。公式のtutorialは結構長いけど、基本的に確認するだけの作業&lt;/p&gt;
 
-&lt;h1 id=&#34;kif-code-https-github-com-kif-framework-kif:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;KIF &lt;a href=&#34;https://github.com/kif-framework/KIF&#34;&gt;[code]&lt;/a&gt;&lt;/h1&gt;
+&lt;h1 id=&#34;kif-code-https-github-com-kif-framework-kif&#34;&gt;KIF &lt;a href=&#34;https://github.com/kif-framework/KIF&#34;&gt;[code]&lt;/a&gt;&lt;/h1&gt;
 
-&lt;h2 id=&#34;podfile:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;Podfile&lt;/h2&gt;
+&lt;h2 id=&#34;podfile&#34;&gt;Podfile&lt;/h2&gt;
 
 &lt;p&gt;Xcodeで結合テスト用のターゲットを作成して、Podfileに以下を追加する&lt;/p&gt;
 
@@ -90,7 +89,7 @@ end
 end
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;インストール-1:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;インストール&lt;/h2&gt;
+&lt;h2 id=&#34;インストール-1&#34;&gt;インストール&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;pod install
 &lt;/code&gt;&lt;/pre&gt;
@@ -101,15 +100,15 @@ end
 
 &lt;p&gt;例えばこれ &lt;a href=&#34;https://github.com/ishkawa/KIFNextExample&#34;&gt;https://github.com/ishkawa/KIFNextExample&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;注意点:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;注意点&lt;/h2&gt;
+&lt;h2 id=&#34;注意点&#34;&gt;注意点&lt;/h2&gt;
 
 &lt;p&gt;KIFはXCTestではなくSenTestingをベースに作られてる（XCTestに対応しようとしてる&lt;a href=&#34;https://github.com/kif-framework/KIF/pull/313&#34;&gt;pull request&lt;/a&gt;もあるようだけど、まだ本家にmergeされてない）。よって、リンクするライブラリにはSenTestingを指定しないといけない。KiwiはXCTestを使ってるので、注意が必要&lt;/p&gt;
 
-&lt;h1 id=&#34;継続的インテグレーション:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;継続的インテグレーション?&lt;/h1&gt;
+&lt;h1 id=&#34;継続的インテグレーション&#34;&gt;継続的インテグレーション?&lt;/h1&gt;
 
 &lt;p&gt;Jenkins or Bots 使えばいいと思います。どっちもメリットデメリットがあって難しいよなーと思うけど、Jenkinsの方が柔軟性は圧倒的に高いので、Jenkinsを使おうと思ってます。&lt;/p&gt;
 
-&lt;h1 id=&#34;参考:33457980ab0fc71e5e563a7c9c89818d&#34;&gt;参考&lt;/h1&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.fastcolabs.com/3012626/open-company/finally-three-ways-to-automate-ios-app-testing&#34;&gt;Finally, Three Ways To Automate iOS App Testing  By Brad Heintz, James Paolantonio and Aaron Schildkrout&lt;/a&gt;&lt;/li&gt;

@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pcl on LESS IS MORE</title>
-    <link>http://r9y9.github.io/tags/pcl/</link>
+    <link>http://r9y9.github.io/tags/pcl/index.xml</link>
     <description>Recent content in Pcl on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 18 Jan 2016 00:44:46 +0900</lastBuildDate>
     <atom:link href="http://r9y9.github.io/tags/pcl/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -17,13 +16,13 @@
       <guid>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
       <description>
 
-&lt;p&gt;新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。&lt;/p&gt;
+&lt;p&gt;新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;point-cloud-library-pcl-とは:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Point Cloud Library (PCL) とは&lt;/h2&gt;
+&lt;h2 id=&#34;point-cloud-library-pcl-とは&#34;&gt;Point Cloud Library (PCL) とは&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.pointclouds.org/&#34;&gt;http://www.pointclouds.org/&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;問題:a1125853acd385d5194fb635fdbc0d66&#34;&gt;問題&lt;/h2&gt;
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
 
 &lt;p&gt;PCL はboost、Eigenに依存している、かつtemplateを多く使用しているため、PCLを使用したプロジェクトのコンパイル時間は非常に長くなるという問題があります。twitterで [PCL コンパイル] として検索すると、例えば以下の様なツイートが見つかりますが、完全に同意です。&lt;/p&gt;
 
@@ -37,17 +36,17 @@
 
 &lt;p&gt;boostへの依存関係が必須かどうかについては疑問が残りますが、点群処理ではパフォーマンスが求められることが多いと思われるので、C++で書かれていることは合理的に思います。とはいえ、コンパイル時間が長いのは試行錯誤するにはつらいです。&lt;/p&gt;
 
-&lt;h2 id=&#34;ではどうするか:a1125853acd385d5194fb635fdbc0d66&#34;&gt;ではどうするか&lt;/h2&gt;
+&lt;h2 id=&#34;ではどうするか&#34;&gt;ではどうするか&lt;/h2&gt;
 
 &lt;p&gt;試行錯誤のサイクルを速く回せるようにすることは僕にとって非常に重要だったのと、 C++で書かなければいけないという制約もなかった（※組み込み用途ではない）ので、対話的にPCLを使うために、僕は動的型付け言語でラッパーを作ることにしました。&lt;/p&gt;
 
-&lt;p&gt;参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 
 &lt;div align=&#34;center&#34;&gt;
 &lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/vMvYpKqA5aLtI8&#34; width=&#34;595&#34; height=&#34;485&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/payashim/ssii-2015-hayashi&#34; title=&#34;コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi&#34; target=&#34;_blank&#34;&gt;コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/payashim&#34; target=&#34;_blank&#34;&gt;Masaki Hayashi&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&#34;何で書くか:a1125853acd385d5194fb635fdbc0d66&#34;&gt;何で書くか&lt;/h2&gt;
+&lt;h2 id=&#34;何で書くか&#34;&gt;何で書くか&lt;/h2&gt;
 
 &lt;p&gt;世の中には色んなプログラミング言語があります。C++ライブラリのラッパー作るぞとなったとき、僕にとって選択肢は、&lt;/p&gt;
 
@@ -68,42 +67,42 @@
 &lt;ul&gt;
 &lt;li&gt;現在あまりメンテされていない&lt;/li&gt;
 &lt;li&gt;サポートされている機能も多くはない&lt;/li&gt;
-&lt;li&gt;templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
-&lt;li&gt;Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. &lt;code&gt;pcl::PointCloud&amp;lt;T&amp;gt;&lt;/code&gt; は &lt;code&gt;PointCloud{T}&lt;/code&gt; と書ける&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;）&lt;/li&gt;
+&lt;li&gt;templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. &lt;code&gt;pcl::PointCloud&amp;lt;T&amp;gt;&lt;/code&gt; は &lt;code&gt;PointCloud{T}&lt;/code&gt; と書ける&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;）&lt;/li&gt;
 &lt;li&gt;Cxx.jl を使えば JITライクに C++ を使える（試行錯誤できる）し、Juliaのほうがいいかな&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;といった理由から、Juliaで書くことにしました。&lt;/p&gt;
 
-&lt;h2 id=&#34;成果物:a1125853acd385d5194fb635fdbc0d66&#34;&gt;成果物&lt;/h2&gt;
+&lt;h2 id=&#34;成果物&#34;&gt;成果物&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/PCL.jl&#34;&gt;https://github.com/r9y9/PCL.jl&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5&#34;&gt;StatisticalOutlierRemovalのデモ | nbviewer&lt;/a&gt; こんな感じで、jupyter上で試行錯誤できるようになりましたとさ&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;a href=&#34;https://github.com/strawlab/python-pcl&#34;&gt;strawlab/python-pcl&lt;/a&gt; よりも多くのことができると思います。&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5&#34;&gt;StatisticalOutlierRemovalのデモ | nbviewer&lt;/a&gt; こんな感じで、jupyter上で試行錯誤できるようになりましたとさ&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;a href=&#34;https://github.com/strawlab/python-pcl&#34;&gt;strawlab/python-pcl&lt;/a&gt; よりも多くのことができると思います。&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:6&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:6&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;PCLは非常に大きなライブラリのため、全ての機能をラップするつもりはありませんが、今後必要に応じて機能を追加するかもしれません。&lt;/p&gt;
 
-&lt;h2 id=&#34;適当なスクショ:a1125853acd385d5194fb635fdbc0d66&#34;&gt;適当なスクショ&lt;/h2&gt;
+&lt;h2 id=&#34;適当なスクショ&#34;&gt;適当なスクショ&lt;/h2&gt;
 
 &lt;p&gt;PCL.jl で、少なくとも最低限以下はできますということで。ソースコードは &lt;a href=&#34;https://github.com/r9y9/PCL.jl/tree/master/examples&#34;&gt;r9y9/PCL.jl/examples&lt;/a&gt; にあります。&lt;/p&gt;
 
-&lt;h3 id=&#34;pclvisualizer:a1125853acd385d5194fb635fdbc0d66&#34;&gt;PCLVisualizer&lt;/h3&gt;
+&lt;h3 id=&#34;pclvisualizer&#34;&gt;PCLVisualizer&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/milk_cartoon_all_small_clorox.gif&#34; /&gt;&lt;/div&gt;
 
-&lt;h3 id=&#34;3d-object-recognition-based-on-correspondence-grouping:a1125853acd385d5194fb635fdbc0d66&#34;&gt;3D Object Recognition based on Correspondence Grouping&lt;/h3&gt;
+&lt;h3 id=&#34;3d-object-recognition-based-on-correspondence-grouping&#34;&gt;3D Object Recognition based on Correspondence Grouping&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/correspondence_grouping.png&#34; /&gt;&lt;/div&gt;
 
-&lt;h3 id=&#34;hypothesis-verification-for-3d-object-recognition:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Hypothesis Verification for 3D Object Recognition&lt;/h3&gt;
+&lt;h3 id=&#34;hypothesis-verification-for-3d-object-recognition&#34;&gt;Hypothesis Verification for 3D Object Recognition&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/global_hypothesis_verification.png&#34; /&gt;&lt;/div&gt;
 
-&lt;h3 id=&#34;extracting-indices-from-a-pointcloud:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Extracting indices from a PointCloud&lt;/h3&gt;
+&lt;h3 id=&#34;extracting-indices-from-a-pointcloud&#34;&gt;Extracting indices from a PointCloud&lt;/h3&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/extract_indices.png&#34; /&gt;&lt;/div&gt;
 
-&lt;h3 id=&#34;kinect-v2で遊ぶ:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Kinect v2で遊ぶ&lt;/h3&gt;
+&lt;h3 id=&#34;kinect-v2で遊ぶ&#34;&gt;Kinect v2で遊ぶ&lt;/h3&gt;
 
 &lt;p&gt;&lt;div align=&#34;center&#34;&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/rGdsNoK3n9Q&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;
@@ -111,11 +110,11 @@
 
 &lt;p&gt;画質低い &amp;amp; クロップが適当で一部しか見えませんが、諸々の処理を含めて fpsは15くらいでしょうか。depthとrgb imageのregistration、その結果の点群への変換に関しては、&lt;del&gt;20~30fps程度でした&lt;/del&gt; 測りなおしたら平均40fpsくらいはでてました。real-timeで点群を処理するようなアプリケーションを書く場合は、現実的にはC++で書くことになるかと思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;余談:a1125853acd385d5194fb635fdbc0d66&#34;&gt;余談&lt;/h3&gt;
+&lt;h3 id=&#34;余談&#34;&gt;余談&lt;/h3&gt;
 
 &lt;p&gt;Kinect v2 から得たデータを点群に変換するのに、Juliaではパフォーマンスを出すのに苦労したのですが、結果面白い（キモい？）コードができたので、少し話はそれますが簡単に紹介しておきたいと思います。&lt;/p&gt;
 
-&lt;h4 id=&#34;depthとcolorを点群に変換する関数:a1125853acd385d5194fb635fdbc0d66&#34;&gt;Depthとcolorを点群に変換する関数&lt;/h4&gt;
+&lt;h4 id=&#34;depthとcolorを点群に変換する関数&#34;&gt;Depthとcolorを点群に変換する関数&lt;/h4&gt;
 
 &lt;p&gt;まず、コードを以下に示します。&lt;/p&gt;
 
@@ -174,7 +173,7 @@ end
 
 &lt;p&gt;このコードだと、forループの中でJulia関数の呼びだしが発生するため、実は重たい処理になっています。このコードだと、確かfps 3 とかそのくらいでした。関数呼び出しがボトルネックだと気づいて、&lt;code&gt;icxx&amp;quot;&amp;quot;&amp;quot;...&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt; でくるんで（一つの関数にすることで）高速化を図った次第です。&lt;/p&gt;
 
-&lt;h2 id=&#34;雑記:a1125853acd385d5194fb635fdbc0d66&#34;&gt;雑記&lt;/h2&gt;
+&lt;h2 id=&#34;雑記&#34;&gt;雑記&lt;/h2&gt;
 
 &lt;p&gt;以下、僕のmacbook proで &lt;code&gt;tic(); using PCL; toc()&lt;/code&gt; をした結果：&lt;/p&gt;
 
@@ -215,13 +214,13 @@ elapsed time: 39.194405845 seconds
 
 &lt;p&gt;ロード時間が長い問題は、Cxx.jlにプリコンパイル（&lt;a href=&#34;https://github.com/Keno/Cxx.jl/issues/181&#34;&gt;Keno/Cxx.jl/issues/181&lt;/a&gt;）がサポートされれば、改善するかもしれません。&lt;/p&gt;
 
-&lt;h2 id=&#34;さいごに:a1125853acd385d5194fb635fdbc0d66&#34;&gt;さいごに&lt;/h2&gt;
+&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
 
 &lt;p&gt;PCLを対話環境で使えるようになりました。快適です。また今回のラッピングを通して、PCLとは関係ありませんが、&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; でできないことはほぼないという所感を持ちました。C++ の対話環境（REPL）も付いているので、最強すぎますね。Cythonでもできるぞってことであれば、教えて下さい。僕もpythonから使えるのであれば使いたいです（でも作るのは面倒過ぎる気がするので手を出せない）。&lt;/p&gt;
 
 &lt;p&gt;僕にとって快適な環境はできましたが、&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; のビルドはかなり面倒なので（Juliaの開発版も必要ですし…）、きっと誰も使わないんだろうなー、、、&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:a1125853acd385d5194fb635fdbc0d66&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Keno/Cxx.jl&lt;/a&gt;&lt;/li&gt;
@@ -232,18 +231,18 @@ elapsed time: 39.194405845 seconds
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;僕、ラッパー作ってばっかり…
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;opencvはpythonラッパーについて触れられているのに、PCLのラッパーは無いだと？うーむ、じゃあ作ってみるかーと、思った気もします。
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;公式にサポートはされていますが、過去にcythonではまったことがあるので、懐疑的
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;cythonでも同じようにかけますが、pythonだと&lt;code&gt;PointCloud(dtype=T)&lt;/code&gt;みたいに書くことになるんですかね
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;PCLVisualizerはGUIで使った方が便利なので、JuliaのREPLから使うことが多いですが
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;python-pclよりもインストールは大変だと思いますが…
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a1125853acd385d5194fb635fdbc0d66:6&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;僕、ラッパー作ってばっかり…
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;opencvはpythonラッパーについて触れられているのに、PCLのラッパーは無いだと？うーむ、じゃあ作ってみるかーと、思った気もします。
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;公式にサポートはされていますが、過去にcythonではまったことがあるので、懐疑的
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;cythonでも同じようにかけますが、pythonだと&lt;code&gt;PointCloud(dtype=T)&lt;/code&gt;みたいに書くことになるんですかね
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34;&gt;PCLVisualizerはGUIで使った方が便利なので、JuliaのREPLから使うことが多いですが
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:6&#34;&gt;python-pclよりもインストールは大変だと思いますが…
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:6&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>

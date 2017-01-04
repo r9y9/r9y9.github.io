@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jenkins on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/jenkins/</link>
+    <link>http://r9y9.github.io/categories/jenkins/index.xml</link>
     <description>Recent content in Jenkins on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 16 Nov 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/jenkins/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -19,11 +18,11 @@
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/jenkins_doony.png &#34;Jenkinsをdoonyというテーマにしたもの。jenkinsおじさんはいません&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;jenkinsとは:43f398bf0f7a6ce047950745ddfa1623&#34;&gt;Jenkinsとは&lt;/h2&gt;
+&lt;h2 id=&#34;jenkinsとは&#34;&gt;Jenkinsとは&lt;/h2&gt;
 
 &lt;p&gt;超高機能cronだと思えばいいよ（先輩より&lt;/p&gt;
 
-&lt;h2 id=&#34;ubuntu-12-04へのインストール:43f398bf0f7a6ce047950745ddfa1623&#34;&gt;Ubuntu 12.04へのインストール&lt;/h2&gt;
+&lt;h2 id=&#34;ubuntu-12-04へのインストール&#34;&gt;Ubuntu 12.04へのインストール&lt;/h2&gt;
 
 &lt;p&gt;以下のURLに従えばできる。&lt;/p&gt;
 
@@ -44,14 +43,14 @@ sudo apt-get install jenkins
 
 &lt;p&gt;※1の手順を省くと、少しバージョン（1.4.x）の古いjenkinsが入ってしまうので注意&lt;/p&gt;
 
-&lt;h2 id=&#34;mac-os-xへのインストール:43f398bf0f7a6ce047950745ddfa1623&#34;&gt;Mac OS Xへのインストール&lt;/h2&gt;
+&lt;h2 id=&#34;mac-os-xへのインストール&#34;&gt;Mac OS Xへのインストール&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;brew install jenkins
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;でおｋ。&lt;/p&gt;
 
-&lt;h2 id=&#34;プラグイン:43f398bf0f7a6ce047950745ddfa1623&#34;&gt;プラグイン&lt;/h2&gt;
+&lt;h2 id=&#34;プラグイン&#34;&gt;プラグイン&lt;/h2&gt;
 
 &lt;p&gt;インストールしたものをメモ。他にも便利なのはたくさんあると思う&lt;/p&gt;
 
@@ -66,7 +65,7 @@ sudo apt-get install jenkins
 &lt;li&gt;&lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/jQuery+Plugin&#34;&gt;Jenkins jQuery plugin&lt;/a&gt; テーマにDoonyを使うためにいる&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;テーマをdoonyにする:43f398bf0f7a6ce047950745ddfa1623&#34;&gt;テーマをDoonyにする&lt;/h2&gt;
+&lt;h2 id=&#34;テーマをdoonyにする&#34;&gt;テーマをDoonyにする&lt;/h2&gt;
 
 &lt;p&gt;見やすい、オススメ。気に入った。&lt;/p&gt;
 
@@ -82,7 +81,7 @@ sudo apt-get install jenkins
 
 &lt;p&gt;&lt;a href=&#34;http://safx-dev.blogspot.jp/2013/10/jenkinsuidoony.html&#34;&gt;JenkinsのUIをすっきり変化させるテーマdoonyを試す | Safx&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;必要なプラグイン:43f398bf0f7a6ce047950745ddfa1623&#34;&gt;必要なプラグイン&lt;/h3&gt;
+&lt;h3 id=&#34;必要なプラグイン&#34;&gt;必要なプラグイン&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Simple Theme Plugin&lt;/li&gt;
@@ -91,11 +90,11 @@ sudo apt-get install jenkins
 
 &lt;p&gt;※テーマのプラグインだけでなく、jqueryのプラグインもインストールしないとダメなので注意&lt;/p&gt;
 
-&lt;h2 id=&#34;おわりに:43f398bf0f7a6ce047950745ddfa1623&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;p&gt;これでテストもろもろ自動化だー&lt;/p&gt;
 
-&lt;h2 id=&#34;その他メモ:43f398bf0f7a6ce047950745ddfa1623&#34;&gt;その他メモ&lt;/h2&gt;
+&lt;h2 id=&#34;その他メモ&#34;&gt;その他メモ&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;/etc/default/jenkinsでjava起動時に文字コードをutf-8にしても、コンソールのログで日本語が化ける？

@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -34,7 +34,7 @@
 
 <p><a href="http://qiita.com/advent-calendar/2014/julialang">Julia Advent Calendar 2014</a> 9日目の記事です。</p>
 
-<h2 id="はじめに:4d037de2c6bae74ca497c1e416c33358">はじめに</h2>
+<h2 id="はじめに">はじめに</h2>
 
 <p>CやFortranの関数をJuliaから呼ぶために使用する<code>ccall</code>において、ポインタに関係するハマりどころとその解決法を紹介します。純粋なJuliaを使っている場合にはポインタを意識することはめったにないと思うので、<code>ccall</code> を使う人（計算が重いボトルネック部分をCで書いてJuliaから呼びたい人、Cのライブラリのラッパーを書きたい/書いてる人）を主な読者と想定して記事を書きました（限定的でごめんなさい）。</p>
 
@@ -42,7 +42,7 @@
 
 <p><strong>注意</strong>: 最新版の公式ドキュメントをいくつか引用していますが、ドキュメントは日々更新されていますので、この記事を読んで頂いた時点とは異なる可能性があることにご注意ください。</p>
 
-<h2 id="こんなとき:4d037de2c6bae74ca497c1e416c33358">こんなとき</h2>
+<h2 id="こんなとき">こんなとき</h2>
 
 <p><code>ccall</code> を使う際に、ポインタに関する以下のような疑問を持つことがあります。</p>
 
@@ -54,7 +54,7 @@
 
 <p>一つ目は非常に簡単で、<code>Array</code>（Cの関数が<code>double*</code>を取るならば<code>Array{Float64,1}</code>）をそのまま渡せばよいだけです。ドキュメントの<a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/#array-conversions">Array Conversions</a>にも書かれています。が、残りの二つに関してはハマりどころがあります。順に説明します。</p>
 
-<h2 id="構造体のポインタを引数に持つ関数のラッピングはどうすれば:4d037de2c6bae74ca497c1e416c33358">構造体のポインタを引数に持つ関数のラッピングはどうすれば？</h2>
+<h2 id="構造体のポインタを引数に持つ関数のラッピングはどうすれば">構造体のポインタを引数に持つ関数のラッピングはどうすれば？</h2>
 
 <p>現状のドキュメントは少し不親切なので、引用した上で、整理します。</p>
 
@@ -70,11 +70,11 @@
 
 <p>と書かれています。つまり、一般には構造体は渡せないけどポインタ渡しはできるよ、ということです。</p>
 
-<p>じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型<sup class="footnote-ref" id="fnref:4d037de2c6bae74ca497c1e416c33358:1"><a rel="footnote" href="#fn:4d037de2c6bae74ca497c1e416c33358:1">1</a></sup>をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）</p>
+<p>じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）</p>
 
 <p>例を示します。</p>
 
-<h3 id="cコード:4d037de2c6bae74ca497c1e416c33358">Cコード</h3>
+<h3 id="cコード">Cコード</h3>
 
 <pre><code class="language-c">typedef struct {
    double a;
@@ -94,7 +94,7 @@ void reset(Foo* foo) {
 }
 </code></pre>
 
-<h3 id="juliaコード:4d037de2c6bae74ca497c1e416c33358">Juliaコード</h3>
+<h3 id="juliaコード">Juliaコード</h3>
 
 <pre><code class="language-julia"># Cの構造体 Foo に相当する型を宣言します
 immutable Foo
@@ -120,7 +120,7 @@ println(foo)
 
 <p>また、値渡しを可能にしようとする動きもあります（<a href="https://github.com/JuliaLang/julia/pull/3466">RFC: Make struct passing work properly #3466</a>, <a href="https://github.com/JuliaLang/julia/pull/2818">WIP: types as C-structs #2818</a> マージ待ち）。</p>
 
-<h3 id="構造体渡しのまとめ:4d037de2c6bae74ca497c1e416c33358">構造体渡しのまとめ</h3>
+<h3 id="構造体渡しのまとめ">構造体渡しのまとめ</h3>
 
 <ul>
 <li>Cの構造体に相当するJuliaの型を定義して、ポインタで渡せばOK</li>
@@ -128,7 +128,7 @@ println(foo)
 <li>ポインタを受けることはできる（Ptr{Void}として受ける）</li>
 </ul>
 
-<h2 id="ポインタのポインタを引数に持つ-例-double-関数のラッピングは:4d037de2c6bae74ca497c1e416c33358">ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
+<h2 id="ポインタのポインタを引数に持つ-例-double-関数のラッピングは">ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
 
 <p>さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。</p>
 
@@ -147,11 +147,11 @@ println(foo)
 
 <p>という三点に分けて説明します。</p>
 
-<h3 id="1-どんな型で渡せばいいか:4d037de2c6bae74ca497c1e416c33358">1. どんな型で渡せばいいか</h3>
+<h3 id="1-どんな型で渡せばいいか">1. どんな型で渡せばいいか</h3>
 
 <p><code>Array{Ptr{Float64}}</code> で渡せばよいです。外側のArrayは、<code>ccall</code> がポインタに変換してくれるので、Juliaの型でいえば<code>Ptr{Ptr{Float64}}</code>、Cの型で言えば<code>double**</code>になるわけです。</p>
 
-<h3 id="2-どのように型を変換するか:4d037de2c6bae74ca497c1e416c33358">2. どのように型を変換するか</h3>
+<h3 id="2-どのように型を変換するか">2. どのように型を変換するか</h3>
 
 <p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64},1}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
 
@@ -170,7 +170,7 @@ end
 <pre><code class="language-julia">dst[i] = pointer(src[:,i], 1)
 </code></pre>
 
-<p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup class="footnote-ref" id="fnref:4d037de2c6bae74ca497c1e416c33358:2"><a rel="footnote" href="#fn:4d037de2c6bae74ca497c1e416c33358:2">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
+<p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
 
 <p>Array <code>A</code>に対する syntax <code>X = A[I_1, I_2, ..., I_n]</code> は <code>X = getindex(A, I_1, I_2, ..., I_n)</code> と等価です。詳細は、<a href="http://docs.julialang.org/en/latest/manual/arrays/">Multi-dimensional Arrays</a>や<a href="http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex">標準ライブラリのドキュメント</a> を参考にしてください</p>
 
@@ -186,7 +186,7 @@ function ptrarray2d{T&lt;:Real}(src::Array{T,2})
 end
 </code></pre>
 
-<p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup class="footnote-ref" id="fnref:4d037de2c6bae74ca497c1e416c33358:3"><a rel="footnote" href="#fn:4d037de2c6bae74ca497c1e416c33358:3">3</a></sup>。</p>
+<p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>。</p>
 
 <blockquote>
 <p>SubArray is a specialization of AbstractArray that performs indexing by reference rather than by copying. A SubArray is created with the sub() function, which is called the same way as getindex() (with an array and a series of index arguments). The result of sub() looks the same as the result of getindex(), except the data is left in place. sub() stores the input index vectors in a SubArray object, which can later be used to index the original array indirectly.</p>
@@ -194,7 +194,7 @@ end
 
 <p>引用元: <a href="http://docs.julialang.org/en/latest/manual/arrays/#implementation">Multi-dimensional Arrays</a></p>
 
-<h3 id="3-変換した型をどのように元に戻すか:4d037de2c6bae74ca497c1e416c33358">3. 変換した型をどのように元に戻すか</h3>
+<h3 id="3-変換した型をどのように元に戻すか">3. 変換した型をどのように元に戻すか</h3>
 
 <p>Juliaで計算結果（上の例でいう <code>double** output</code>）を受け取りたい場合、ポインタに変換した値をJuliaのArrayに戻す必要があります（必ずしもそうではないですが、まぁほぼそうでしょう）。つまり、<code>Array(Ptr{Float64},1)</code>を<code>Array{Float64,2}</code>したいわけです。幸いにも、これは<code>pointer_to_array</code>を使うと簡単にできます。コードを以下に示します。</p>
 
@@ -209,7 +209,7 @@ end
 
 <p><code>pointer_to_array</code> は、その名前の通りの関数ですね。pointerをArrayに変換してくれます。</p>
 
-<h3 id="1-2-3-をまとめる:4d037de2c6bae74ca497c1e416c33358">1, 2, 3 をまとめる</h3>
+<h3 id="1-2-3-をまとめる">1, 2, 3 をまとめる</h3>
 
 <p>最後に、1, 2, 3の内容をまとめて、ポインタのポインタを引数にもつ関数のラッパー例を書いておきます。</p>
 
@@ -234,14 +234,14 @@ end
 end
 </code></pre>
 
-<h3 id="ポインタのポインタまとめ:4d037de2c6bae74ca497c1e416c33358">ポインタのポインタまとめ</h3>
+<h3 id="ポインタのポインタまとめ">ポインタのポインタまとめ</h3>
 
 <ul>
 <li><code>Array</code>のindexingはコピーを作るのである要素のポインタがほしい時は注意</li>
 <li>行/列の先頭のポインタがほしいときは <code>SubArray</code> を使いましょう</li>
 </ul>
 
-<h2 id="おわりに:4d037de2c6bae74ca497c1e416c33358">おわりに</h2>
+<h2 id="おわりに">おわりに</h2>
 
 <p>ポインタにまつわるハマりどころとその解決法を紹介しました。今回紹介したものはすべて <a href="https://github.com/r9y9/WORLD.jl">WORLD.jl</a> という <a href="http://ml.cs.yamanashi.ac.jp/world/">音声分析変換合成システムWORLD</a> のラッパーを書いていたときに得た知見です。やっと<code>WORLD.jl</code>が安定して動くようになってきて公式パッケージにしようかなぁと考えているところですので、興味のある方はぜひ触ってみてください。</p>
 <div class="footnotes">
@@ -249,12 +249,12 @@ end
 <hr />
 
 <ol>
-<li id="fn:4d037de2c6bae74ca497c1e416c33358:1">immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも <a href="https://github.com/JuliaLang/julia/pull/8948">#8948</a> にはそう書いてあります
- <a class="footnote-return" href="#fnref:4d037de2c6bae74ca497c1e416c33358:1"><sup>[return]</sup></a></li>
-<li id="fn:4d037de2c6bae74ca497c1e416c33358:2">たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです
- <a class="footnote-return" href="#fnref:4d037de2c6bae74ca497c1e416c33358:2"><sup>[return]</sup></a></li>
-<li id="fn:4d037de2c6bae74ca497c1e416c33358:3">ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。
- <a class="footnote-return" href="#fnref:4d037de2c6bae74ca497c1e416c33358:3"><sup>[return]</sup></a></li>
+<li id="fn:1">immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも <a href="https://github.com/JuliaLang/julia/pull/8948">#8948</a> にはそう書いてあります
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

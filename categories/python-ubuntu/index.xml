@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python Ubuntu on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/python-ubuntu/</link>
+    <link>http://r9y9.github.io/categories/python-ubuntu/index.xml</link>
     <description>Recent content in Python Ubuntu on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 12 Aug 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/python-ubuntu/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -23,12 +22,12 @@
 ただやっぱり最新版を使いたいということがある。というわけでメモ。
 Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインストールできると思う）。&lt;/p&gt;
 
-&lt;h2 id=&#34;準備:81466911a07c8d8e39480995a86f5ecf&#34;&gt;準備&lt;/h2&gt;
+&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt-get install python python-dev gcc gfortran g++
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;numpyのインストール:81466911a07c8d8e39480995a86f5ecf&#34;&gt;Numpyのインストール&lt;/h2&gt;
+&lt;h2 id=&#34;numpyのインストール&#34;&gt;Numpyのインストール&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git clone https://github.com/numpy/numpy
 cd numpy
@@ -38,11 +37,11 @@ sudo python setup.py install
 
 &lt;p&gt;かんたん&lt;/p&gt;
 
-&lt;h2 id=&#34;scipyのインストール:81466911a07c8d8e39480995a86f5ecf&#34;&gt;Scipyのインストール&lt;/h2&gt;
+&lt;h2 id=&#34;scipyのインストール&#34;&gt;Scipyのインストール&lt;/h2&gt;
 
 &lt;p&gt;これがちょっとめんどい。numpyのようには行かなかった。2013/08/12&lt;/p&gt;
 
-&lt;h3 id=&#34;前準備:81466911a07c8d8e39480995a86f5ecf&#34;&gt;前準備&lt;/h3&gt;
+&lt;h3 id=&#34;前準備&#34;&gt;前準備&lt;/h3&gt;
 
 &lt;p&gt;以下をインストール&lt;/p&gt;
 
@@ -52,7 +51,7 @@ sudo python setup.py install
 &lt;li&gt;cython&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;cythonのインストール:81466911a07c8d8e39480995a86f5ecf&#34;&gt;cythonのインストール&lt;/h2&gt;
+&lt;h2 id=&#34;cythonのインストール&#34;&gt;cythonのインストール&lt;/h2&gt;
 
 &lt;p&gt;これ、apt-get install cython でも入るんだけど、バージョンが古いって怒られた。なので、cythonもソースからいれる&lt;/p&gt;
 
@@ -64,7 +63,7 @@ sudo python setup.py install
 
 &lt;p&gt;かんたん&lt;/p&gt;
 
-&lt;h2 id=&#34;blas-lapackのインストール:81466911a07c8d8e39480995a86f5ecf&#34;&gt;blas/lapackのインストール&lt;/h2&gt;
+&lt;h2 id=&#34;blas-lapackのインストール&#34;&gt;blas/lapackのインストール&lt;/h2&gt;
 
 &lt;p&gt;これはapt-getから入れればおｋ&lt;/p&gt;
 
@@ -73,7 +72,7 @@ sudo python setup.py install
 
 &lt;p&gt;scipyのINSTALL.txt （リンク）を見るに、libatlas3-base-devをインストールすれば良さそうだけど、ubuntu 12.04じゃ見つからんかった（2013/08/12時点で）。で、何となく試してたら、libblas-devとliblapack-devで行けた。&lt;/p&gt;
 
-&lt;h2 id=&#34;scipyのインストール-1:81466911a07c8d8e39480995a86f5ecf&#34;&gt;Scipyのインストール！&lt;/h2&gt;
+&lt;h2 id=&#34;scipyのインストール-1&#34;&gt;Scipyのインストール！&lt;/h2&gt;
 
 &lt;p&gt;これでやっとインストールできる&lt;/p&gt;
 

@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Voice Conversion Machine Learning Speech Signal Processing on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</link>
+    <link>http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/index.xml</link>
     <description>Recent content in Voice Conversion Machine Learning Speech Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 12 Nov 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -17,13 +16,13 @@
       <guid>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
       <description>
 
-&lt;h2 id=&#34;はじめに:17c5c8e90f37fec202473edd8829bd90&#34;&gt;はじめに&lt;/h2&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
 
 &lt;p&gt;こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。&lt;/p&gt;
 
 &lt;p&gt;前回の記事（&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/&#34;&gt;統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE&lt;/a&gt;）では変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。&lt;/p&gt;
 
-&lt;h2 id=&#34;コード:17c5c8e90f37fec202473edd8829bd90&#34;&gt;コード&lt;/h2&gt;
+&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;https://github.com/r9y9/VoiceConversion.jl&lt;/a&gt;&lt;/p&gt;
 
@@ -31,7 +30,7 @@
 
 &lt;div align=&#34;center&#34;&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/39141184&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kentaroiizuka/julia-39141184&#34; title=&#34;プログラミング言語 Julia の紹介&#34; target=&#34;_blank&#34;&gt;プログラミング言語 Julia の紹介&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kentaroiizuka&#34; target=&#34;_blank&#34;&gt;Kentaro Iizuka&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;サードパーティライブラリ:17c5c8e90f37fec202473edd8829bd90&#34;&gt;サードパーティライブラリ&lt;/h2&gt;
+&lt;h2 id=&#34;サードパーティライブラリ&#34;&gt;サードパーティライブラリ&lt;/h2&gt;
 
 &lt;p&gt;声質変換は多くのコンポーネントによって成り立っていますが、すべてを自分で書くのは現実的ではありません。僕は、主に以下のライブラリを活用しています。&lt;/p&gt;
 
@@ -43,9 +42,9 @@
 
 &lt;p&gt;音声分析合成に関しては、アカデミック界隈ではよく使われている&lt;a href=&#34;http://www.wakayama-u.ac.jp/~kawahara/STRAIGHTadv/index_j.html&#34;&gt;STRAIGHT&lt;/a&gt;がありますが、WORLDの方がライセンスもゆるくソースも公開されていて、かつ性能も劣らない（正確な話は、森勢先生の論文を参照してください）ので、おすすめです。&lt;/p&gt;
 
-&lt;h2 id=&#34;voiceconversion-jl-https-github-com-r9y9-voiceconversion-jl-でできること:17c5c8e90f37fec202473edd8829bd90&#34;&gt;&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;VoiceConversion.jl&lt;/a&gt; でできること&lt;/h2&gt;
+&lt;h2 id=&#34;voiceconversion-jl-https-github-com-r9y9-voiceconversion-jl-でできること&#34;&gt;&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;VoiceConversion.jl&lt;/a&gt; でできること&lt;/h2&gt;
 
-&lt;h3 id=&#34;追記-2015-01-07:17c5c8e90f37fec202473edd8829bd90&#34;&gt;追記 2015/01/07&lt;/h3&gt;
+&lt;h3 id=&#34;追記-2015-01-07&#34;&gt;追記 2015/01/07&lt;/h3&gt;
 
 &lt;p&gt;この記事を書いた段階のv0.0.1は、依存ライブラリの変更のため、現在は動きません。すみません。何のためのタグだ、という気がしてきますが、、最低限masterは動作するようにしますので、そちらをお試しください（基本的には、新しいコードの方が改善されています）。それでも動かないときは、issueを投げてください。&lt;/p&gt;
 
@@ -64,23 +63,23 @@
 
 &lt;p&gt;これらのうち、trajectory変換以外を紹介します。&lt;/p&gt;
 
-&lt;h2 id=&#34;チュートリアル-cmu-arcticを使ったgmmベースの声質変換-特徴抽出からパラレルデータの作成-gmmの学習-変換-合成処理まで:17c5c8e90f37fec202473edd8829bd90&#34;&gt;チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで）&lt;/h2&gt;
+&lt;h2 id=&#34;チュートリアル-cmu-arcticを使ったgmmベースの声質変換-特徴抽出からパラレルデータの作成-gmmの学習-変換-合成処理まで&#34;&gt;チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで）&lt;/h2&gt;
 
 &lt;p&gt;データセットに&lt;a href=&#34;http://festvox.org/cmu_arctic/&#34;&gt;CMU_ARCTIC&lt;/a&gt;を使って、GMMベースの声質変換（clb -&amp;gt; slt）を行う方法を説明します。なお、VoiceConversion.jl のv0.0.1を使います。ubuntuで主に動作確認をしていますが、macでも動くと思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;0-前準備:17c5c8e90f37fec202473edd8829bd90&#34;&gt;0. 前準備&lt;/h2&gt;
+&lt;h2 id=&#34;0-前準備&#34;&gt;0. 前準備&lt;/h2&gt;
 
-&lt;h3 id=&#34;0-1-データセットのダウンロード:17c5c8e90f37fec202473edd8829bd90&#34;&gt;0.1. データセットのダウンロード&lt;/h3&gt;
+&lt;h3 id=&#34;0-1-データセットのダウンロード&#34;&gt;0.1. データセットのダウンロード&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://festvox.org/cmu_arctic/&#34;&gt;Festvox: CMU_ARCTIC Databases&lt;/a&gt; を使います。コマンド一発ですべてダウンロードする&lt;a href=&#34;https://gist.github.com/r9y9/ff67c05aeb87410eae2e&#34;&gt;スクリプト&lt;/a&gt;を書いたので、ご自由にどうぞ。&lt;/p&gt;
 
-&lt;h3 id=&#34;0-2-juliaのインストール:17c5c8e90f37fec202473edd8829bd90&#34;&gt;0.2. juliaのインストール&lt;/h3&gt;
+&lt;h3 id=&#34;0-2-juliaのインストール&#34;&gt;0.2. juliaのインストール&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://julialang.org/&#34;&gt;公式サイト&lt;/a&gt;からバイナリをダウンロードするか、&lt;a href=&#34;https://github.com/JuliaLang/julia&#34;&gt;githubのリポジトリ&lt;/a&gt;をクローンしてビルドしてください。バージョンは、現在の最新安定版のv0.3.2を使います。&lt;/p&gt;
 
 &lt;p&gt;記事内では、juliaの基本的な使い方については解説しないので、前もってある程度調べておいてもらえると、スムーズに読み進められるかと思います。&lt;/p&gt;
 
-&lt;h3 id=&#34;0-3-voiceconversion-jl-のインストール:17c5c8e90f37fec202473edd8829bd90&#34;&gt;0.3. VoiceConversion.jl のインストール&lt;/h3&gt;
+&lt;h3 id=&#34;0-3-voiceconversion-jl-のインストール&#34;&gt;0.3. VoiceConversion.jl のインストール&lt;/h3&gt;
 
 &lt;p&gt;juliaを起動して、以下のコマンドを実行してください。&lt;/p&gt;
 
@@ -95,11 +94,11 @@ julia&amp;gt; Pkg.build(&amp;quot;VoiceConversion&amp;quot;)
 
 &lt;p&gt;これで準備は完了です！&lt;/p&gt;
 
-&lt;h2 id=&#34;1-音声波形からのメルケプストラムの抽出:17c5c8e90f37fec202473edd8829bd90&#34;&gt;1. 音声波形からのメルケプストラムの抽出&lt;/h2&gt;
+&lt;h2 id=&#34;1-音声波形からのメルケプストラムの抽出&#34;&gt;1. 音声波形からのメルケプストラムの抽出&lt;/h2&gt;
 
 &lt;p&gt;まずは、音声から声質変換に用いる特徴量を抽出します。特徴量としては、声質変換や音声合成の分野で広く使われているメルケプストラムを使います。メルケプストラムの抽出は、&lt;code&gt;scripts/mcep.jl&lt;/code&gt; を使うことでできます。&lt;/p&gt;
 
-&lt;h3 id=&#34;2014-11-15-追記:17c5c8e90f37fec202473edd8829bd90&#34;&gt;2014/11/15 追記&lt;/h3&gt;
+&lt;h3 id=&#34;2014-11-15-追記&#34;&gt;2014/11/15 追記&lt;/h3&gt;
 
 &lt;p&gt;実行前に、&lt;code&gt;julia&amp;gt; Pkg.add(&amp;quot;WAV&amp;quot;)&lt;/code&gt; として、WAVパッケージをインストールしておいてください。(2014/11/15時点のmasterでは自動でインストールされますが、v0.0.1ではインストールされません、すいません）。また、メルケプストラムの出力先ディレクトリは事前に作成しておいてください（最新のスクリプトでは自動で作成されます）。&lt;/p&gt;
 
@@ -144,7 +143,7 @@ ylim(-10, -2) # 見やすいように適当に決めました
 
 &lt;p&gt;こんな感じです。話者clbの&lt;code&gt;clb_a0028.wav&lt;/code&gt;を聞きながら、特徴量見てみてください。0次の成分からは、音量の大小が読み取れると思います。&lt;/p&gt;
 
-&lt;h2 id=&#34;2-dpマッチングによるパラレルデータの作成:17c5c8e90f37fec202473edd8829bd90&#34;&gt;2. DPマッチングによるパラレルデータの作成&lt;/h2&gt;
+&lt;h2 id=&#34;2-dpマッチングによるパラレルデータの作成&#34;&gt;2. DPマッチングによるパラレルデータの作成&lt;/h2&gt;
 
 &lt;p&gt;次に、2話者分の特徴量を時間同期して連結します。基本的に声質変換では、音韻の違いによらない特徴量（非言語情報）の対応関係を学習するために、同一発話内容の特徴量を時間同期し（音韻の違いによる変動を可能な限りなくすため）、学習データとして用います。このデータのことを、パラレルデータと呼びます。&lt;/p&gt;
 
@@ -208,7 +207,7 @@ colorbar()
 
 &lt;p&gt;このパラレルデータを（複数の発話分さらに結合して）使って、特徴量の対応関係を学習していきます。モデルには、GMMを使います。&lt;/p&gt;
 
-&lt;h2 id=&#34;3-gmmの学習:17c5c8e90f37fec202473edd8829bd90&#34;&gt;3. GMMの学習&lt;/h2&gt;
+&lt;h2 id=&#34;3-gmmの学習&#34;&gt;3. GMMの学習&lt;/h2&gt;
 
 &lt;p&gt;GMMの学習には、&lt;code&gt;sklearn.mixture.GMM&lt;/code&gt; を使います。GMMは古典的な生成モデルで、実装は探せばたくさん見つかるので、既存の有用なライブラリを使えば十分です。（余談ですが、pythonのライブラリを簡単に呼べるのはjuliaの良いところの一つですね）&lt;/p&gt;
 
@@ -249,7 +248,7 @@ clim(0.0, 0.16)
 
 &lt;p&gt;まぁこんなもんですね。&lt;/p&gt;
 
-&lt;h2 id=&#34;4-音声分析合成worldを用いたgmmベースのframe-by-frame声質変換:17c5c8e90f37fec202473edd8829bd90&#34;&gt;4. 音声分析合成WORLDを用いたGMMベースのframe-by-frame声質変換&lt;/h2&gt;
+&lt;h2 id=&#34;4-音声分析合成worldを用いたgmmベースのframe-by-frame声質変換&#34;&gt;4. 音声分析合成WORLDを用いたGMMベースのframe-by-frame声質変換&lt;/h2&gt;
 
 &lt;p&gt;さて、ようやく声質変換の準備が整いました。学習したモデルを使って、GMMベースのframe-by-frame声質変換（clb -&amp;gt; slt ）をやってみましょう。具体的な変換アルゴリズムは、論文（例えば&lt;a href=&#34;http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf&#34;&gt;戸田先生のこれ&lt;/a&gt;）をチェックしてみてください。音声分析合成系にはWORLDを使います。&lt;/p&gt;
 
@@ -270,21 +269,21 @@ clim(0.0, 0.16)
 
 &lt;p&gt;上記のコマンドを実行すると、GMMベースのframe-by-frame声質変換の結果が音声ファイルに出力されます。以下に結果を貼っておくので、聞いてみてください。&lt;/p&gt;
 
-&lt;h3 id=&#34;変換元となる音声-clb-a0028:17c5c8e90f37fec202473edd8829bd90&#34;&gt;変換元となる音声 clb_a0028&lt;/h3&gt;
+&lt;h3 id=&#34;変換元となる音声-clb-a0028&#34;&gt;変換元となる音声 clb_a0028&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093202&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
-&lt;h3 id=&#34;変換目標となる話者-slt-a0028:17c5c8e90f37fec202473edd8829bd90&#34;&gt;変換目標となる話者 slt_a0028&lt;/h3&gt;
+&lt;h3 id=&#34;変換目標となる話者-slt-a0028&#34;&gt;変換目標となる話者 slt_a0028&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093240&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
-&lt;h3 id=&#34;変換結果-clb-to-slt-a0028:17c5c8e90f37fec202473edd8829bd90&#34;&gt;変換結果 clb_to_slt_a0028&lt;/h3&gt;
+&lt;h3 id=&#34;変換結果-clb-to-slt-a0028&#34;&gt;変換結果 clb_to_slt_a0028&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093403&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
 &lt;p&gt;話者性はなんとなく目標話者に近づいている気がしますが、音質が若干残念な感じですね。。&lt;/p&gt;
 
-&lt;h2 id=&#34;5-差分スペクトル補正に基づく声質変換:17c5c8e90f37fec202473edd8829bd90&#34;&gt;5. 差分スペクトル補正に基づく声質変換&lt;/h2&gt;
+&lt;h2 id=&#34;5-差分スペクトル補正に基づく声質変換&#34;&gt;5. 差分スペクトル補正に基づく声質変換&lt;/h2&gt;
 
 &lt;p&gt;最後に、より高品質な声質変換を達成可能な差分スペクトル補正に基づく声質変換を紹介します。差分スペクトル補正に基づく声質変換では、基本周波数や非周期性成分をいじれない代わりに音質はかなり改善します。以前書いた記事（&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/&#34;&gt;統計的声質変換クッソムズすぎワロタ - LESS IS MORE&lt;/a&gt;）から、着想に関連する部分を引用します。&lt;/p&gt;
 
@@ -300,7 +299,7 @@ clim(0.0, 0.16)
 
 &lt;p&gt;こばくん、論文を宣伝しておきますね＾＾&lt;/p&gt;
 
-&lt;h3 id=&#34;5-1-差分特徴量の学習:17c5c8e90f37fec202473edd8829bd90&#34;&gt;5.1 差分特徴量の学習&lt;/h3&gt;
+&lt;h3 id=&#34;5-1-差分特徴量の学習&#34;&gt;5.1 差分特徴量の学習&lt;/h3&gt;
 
 &lt;p&gt;さて、差分スペクトル補正に基づく声質変換行うには、変換元話者$X$と目標話者$Y$の特徴量の同時分布$P(X,Y)$を学習するのではなく、$P(X, Y-X)$ （日本語で書くとややこしいのですが、変換元話者の特徴量$X$と、変換元話者と目標話者の差分特徴量$Y-X$の同時分布）を学習します。これは、 &lt;code&gt;train_gmm.jl&lt;/code&gt; を使ってGMMを学習する際に、&lt;code&gt;--diff&lt;/code&gt; とオプションをつけるだけでできます。&lt;/p&gt;
 
@@ -319,7 +318,7 @@ clim(0.0, 0.16)
 
 &lt;p&gt;さっき学習したGMMとは、共分散はかなり形が違いますね。高次元成分でも、分散が比較的大きな値をとっているように見えます。形が異っているのは見てすぐにわかりますが、では具体的には何が異っているのか、それはなぜなのか、きちんと考えると面白そうですね。&lt;/p&gt;
 
-&lt;h3 id=&#34;5-2-mlsaフィルタによる声質変換:17c5c8e90f37fec202473edd8829bd90&#34;&gt;5.2 MLSAフィルタによる声質変換&lt;/h3&gt;
+&lt;h3 id=&#34;5-2-mlsaフィルタによる声質変換&#34;&gt;5.2 MLSAフィルタによる声質変換&lt;/h3&gt;
 
 &lt;p&gt;差分スペクトル補正に基づく声質変換では、WORLDを使って音声の分析合成を行うのではなく、生の音声波形を入力として、MLSAフィルタをかけるのみです。これは、 &lt;code&gt;scripts/diffvc.jl&lt;/code&gt; を使うと簡単にできます。&lt;/p&gt;
 
@@ -328,26 +327,26 @@ clim(0.0, 0.16)
 
 &lt;p&gt;さて、結果を聞いてみましょう。&lt;/p&gt;
 
-&lt;h3 id=&#34;5-3-差分スペクトル補正に基づく声質変換結果:17c5c8e90f37fec202473edd8829bd90&#34;&gt;5.3 差分スペクトル補正に基づく声質変換結果&lt;/h3&gt;
+&lt;h3 id=&#34;5-3-差分スペクトル補正に基づく声質変換結果&#34;&gt;5.3 差分スペクトル補正に基づく声質変換結果&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/176093513&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
 &lt;p&gt;アイデアはシンプル、結果は良好、最高の手法ですね（べた褒め&lt;/p&gt;
 
-&lt;h2 id=&#34;おわりに:17c5c8e90f37fec202473edd8829bd90&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;p&gt;以上、長くなりましたが、統計的声質変換についてのチュートリアルはこれで終わります。誰の役に立つのか知らないけれど、役に立てば嬉しいです。トラジェクトリ変換やGVを考慮したバージョンなど、今回紹介していないものも実装しているので、詳しくは&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;Githubのリポジトリ&lt;/a&gt;をチェックしてください。バグをレポートしてくれたりすると、僕は喜びます。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:17c5c8e90f37fec202473edd8829bd90&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
-&lt;h3 id=&#34;以前書いた声質変換に関する記事:17c5c8e90f37fec202473edd8829bd90&#34;&gt;以前書いた声質変換に関する記事&lt;/h3&gt;
+&lt;h3 id=&#34;以前書いた声質変換に関する記事&#34;&gt;以前書いた声質変換に関する記事&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/&#34;&gt;統計的声質変換クッソムズすぎワロタ - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/&#34;&gt;統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;論文:17c5c8e90f37fec202473edd8829bd90&#34;&gt;論文&lt;/h3&gt;
+&lt;h3 id=&#34;論文&#34;&gt;論文&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf&#34;&gt;[Toda 2007] T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE
@@ -356,13 +355,13 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://isw3.naist.jp/~kazuhiro-k/resource/kobayashi14IS.pdf&#34;&gt;[Kobayashi 2014] Kobayashi, Kazuhiro, et al. &amp;ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&amp;rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;faq:17c5c8e90f37fec202473edd8829bd90&#34;&gt;FAQ&lt;/h2&gt;
+&lt;h2 id=&#34;faq&#34;&gt;FAQ&lt;/h2&gt;
 
-&lt;h3 id=&#34;前はpythonで書いてなかった:17c5c8e90f37fec202473edd8829bd90&#34;&gt;前はpythonで書いてなかった？&lt;/h3&gt;
+&lt;h3 id=&#34;前はpythonで書いてなかった&#34;&gt;前はpythonで書いてなかった？&lt;/h3&gt;
 
 &lt;p&gt;はい、&lt;a href=&#34;https://gist.github.com/r9y9/88bda659c97f46f42525&#34;&gt;https://gist.github.com/r9y9/88bda659c97f46f42525&lt;/a&gt; ですね。正確には、GMMの学習・変換処理はpythonで書いて、特徴抽出、パラレルデータの作成、波形合成はGo言語で書いていました。が、Goとpythonでデータのやりとり、Goとpythonをいったり来たりするのが面倒になってしまって、一つの言語に統一したいと思うようになりました。Goで機械学習は厳しいと感じていたので、pythonで書くかなぁと最初は思ったのですが、WORLDやSPTKなど、Cのライブラリをpythonから使うのが思いの他面倒だったので（&lt;a href=&#34;https://github.com/r9y9/SPTK&#34;&gt;SPTKのpythonラッパー&lt;/a&gt;は書きましたが）、Cやpythonとの連携がしやすく、スクリプト言語でありながらCに速度面で引けをとらないjuliaに興味があったので、juliaですべて完結するようにしました。かなり実験的な試みでしたが、今はかなり満足しています。juliaさいこー&lt;/p&gt;
 
-&lt;h3 id=&#34;新規性は:17c5c8e90f37fec202473edd8829bd90&#34;&gt;新規性は？&lt;/h3&gt;
+&lt;h3 id=&#34;新規性は&#34;&gt;新規性は？&lt;/h3&gt;
 
 &lt;p&gt;ありません&lt;/p&gt;
 </description>
@@ -380,7 +379,7 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
 重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました
 &lt;a href=&#34;https://gist.github.com/r9y9/88bda659c97f46f42525&#34;&gt;https://gist.github.com/r9y9/88bda659c97f46f42525&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;まえがき:ac8f489e034212a8a66b4627a57bdf8b&#34;&gt;まえがき&lt;/h2&gt;
+&lt;h2 id=&#34;まえがき&#34;&gt;まえがき&lt;/h2&gt;
 
 &lt;p&gt;前回、&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/&#34;&gt;統計的声質変換クッソムズすぎワロタ - LESS IS MORE&lt;/a&gt; という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。&lt;/p&gt;
 
@@ -395,11 +394,11 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
 
 &lt;p&gt;ところで、結構いい感じにできたぜひゃっはーと思って、先輩に聞かせてみたら違いわかんねと言われて心が折れそうになりました。やはり現実はつらいです。&lt;/p&gt;
 
-&lt;h2 id=&#34;実装の話:ac8f489e034212a8a66b4627a57bdf8b&#34;&gt;実装の話&lt;/h2&gt;
+&lt;h2 id=&#34;実装の話&#34;&gt;実装の話&lt;/h2&gt;
 
 &lt;p&gt;さて、今回は少し実装のことを書こうと思います。学習&amp;amp;変換部分はPythonで書いています。その他はGo（※Goの話は書きません）。&lt;/p&gt;
 
-&lt;h2 id=&#34;トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz:ac8f489e034212a8a66b4627a57bdf8b&#34;&gt;トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz&lt;/h2&gt;
+&lt;h2 id=&#34;トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz&#34;&gt;トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz&lt;/h2&gt;
 
 &lt;p&gt;前回トラジェクトリベースは処理が激重だと書きました。なんと、4秒程度の音声（フレームシフト5msで777フレーム）に対して変換部分に600秒ほどかかっていたのですが（重すぎワロタ）、結果から言えばPythonでも12秒くらいまでに高速化されました（混合数64, メルケプの次元数40+デルタ=80次元、分散共分散はfull）。本当にごめんなさい。&lt;/p&gt;
 
@@ -412,7 +411,7 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
 
 &lt;p&gt;です。特に後者はかなりパフォーマンスに影響していました&lt;/p&gt;
 
-&lt;h2 id=&#34;ナイーブな逆行列の計算:ac8f489e034212a8a66b4627a57bdf8b&#34;&gt;ナイーブな逆行列の計算&lt;/h2&gt;
+&lt;h2 id=&#34;ナイーブな逆行列の計算&#34;&gt;ナイーブな逆行列の計算&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://d.hatena.ne.jp/sleepy_yoshi/20120513/p1&#34;&gt;numpy.linalg.invとnumpy.linalg.solveを用いた逆行列計算 - 睡眠不足？！ (id:sleepy_yoshi)&lt;/a&gt;&lt;/p&gt;
 
@@ -424,7 +423,7 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
 
 &lt;p&gt;1.05倍の高速化（微妙）&lt;/p&gt;
 
-&lt;h2 id=&#34;スパース性の無視:ac8f489e034212a8a66b4627a57bdf8b&#34;&gt;スパース性の無視&lt;/h2&gt;
+&lt;h2 id=&#34;スパース性の無視&#34;&gt;スパース性の無視&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf&#34;&gt;T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007&lt;/a&gt;.&lt;/li&gt;
@@ -450,7 +449,7 @@ Nov. 2007.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://lucidfrontier45.wordpress.com/2011/08/02/scipysparse_matmul/&#34;&gt;scipy.sparseで疎行列の行列積 | frontier45&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;コード:ac8f489e034212a8a66b4627a57bdf8b&#34;&gt;コード&lt;/h2&gt;
+&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
 
 &lt;p&gt;メモ的な意味で主要なコードを貼っておきます。
 &lt;a href=&#34;https://gist.github.com/r9y9/88bda659c97f46f42525&#34;&gt;https://gist.github.com/r9y9/88bda659c97f46f42525&lt;/a&gt;&lt;/p&gt;
@@ -721,14 +720,14 @@ class TrajectoryGMMMap(GMMMap):
         return y.reshape((T, D))
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;結論:ac8f489e034212a8a66b4627a57bdf8b&#34;&gt;結論&lt;/h2&gt;
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;疎行列の演算を考えるときは、間違ってもめんどくさいとか思わずに疎行列を積極的に使おう&lt;/li&gt;
 &lt;li&gt;統計的声質変換ムズすぎ&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;おまけめも:ac8f489e034212a8a66b4627a57bdf8b&#34;&gt;おまけめも&lt;/h2&gt;
+&lt;h2 id=&#34;おまけめも&#34;&gt;おまけめも&lt;/h2&gt;
 
 &lt;p&gt;僕が変換精度を改善するために考えていることのめも&lt;/p&gt;
 
@@ -753,7 +752,7 @@ class TrajectoryGMMMap(GMMMap):
       <guid>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</guid>
       <description>
 
-&lt;h2 id=&#34;2014-10-12-追記:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;2014/10/12 追記&lt;/h2&gt;
+&lt;h2 id=&#34;2014-10-12-追記&#34;&gt;2014/10/12 追記&lt;/h2&gt;
 
 &lt;p&gt;少なくともGVのコードに致命的なバグがあったことがわかりました。よって、あまりあてにしないでください…（ごめんなさい&lt;/p&gt;
 
@@ -767,7 +766,7 @@ class TrajectoryGMMMap(GMMMap):
 &lt;li&gt;&lt;a href=&#34;http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf&#34;&gt;T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;gmmベースの声質変換の基本:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;GMMベースの声質変換の基本&lt;/h2&gt;
+&lt;h2 id=&#34;gmmベースの声質変換の基本&#34;&gt;GMMベースの声質変換の基本&lt;/h2&gt;
 
 &lt;p&gt;シンプルなGMMベースの声質変換は大きく二つのフェーズに分けられます。&lt;/p&gt;
 
@@ -797,7 +796,7 @@ class TrajectoryGMMMap(GMMMap):
 
 &lt;p&gt;ちなみに僕はscipy.mixture.GMMを使いました。HTKヤダー&lt;/p&gt;
 
-&lt;h2 id=&#34;やってみる:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;やってみる&lt;/h2&gt;
+&lt;h2 id=&#34;やってみる&#34;&gt;やってみる&lt;/h2&gt;
 
 &lt;p&gt;さて、実際にやってみます。データベースには、&lt;a href=&#34;ht
 tp://www.festvox.org/cmu_arctic/&#34;&gt;CMU_ARCTIC speech synthesis databases&lt;/a&gt;を使います。今回は、女性話者の二人を使いました。&lt;/p&gt;
@@ -806,33 +805,33 @@ tp://www.festvox.org/cmu_arctic/&#34;&gt;CMU_ARCTIC speech synthesis databases&l
 
 &lt;p&gt;学習では、学習サンプル10641フレーム（23フレーズ）、GMMの混合数64、full-covarianceで学習しました。&lt;/p&gt;
 
-&lt;h3 id=&#34;変換元となる話者-参照話者:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;変換元となる話者（参照話者）&lt;/h3&gt;
+&lt;h3 id=&#34;変換元となる話者-参照話者&#34;&gt;変換元となる話者（参照話者）&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362625&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
-&lt;h3 id=&#34;変換対象となる話者-目標話者:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;変換対象となる話者（目標話者）&lt;/h3&gt;
+&lt;h3 id=&#34;変換対象となる話者-目標話者&#34;&gt;変換対象となる話者（目標話者）&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362613&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
-&lt;h3 id=&#34;gmmベースのframe-by-frameな声質変換の結果:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;GMMベースのframe-by-frameな声質変換の結果&lt;/h3&gt;
+&lt;h3 id=&#34;gmmベースのframe-by-frameな声質変換の結果&#34;&gt;GMMベースのframe-by-frameな声質変換の結果&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371966&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
 &lt;p&gt;はぁー、正直聞けたもんじゃないですね。声質は目標話者に近づいている感がありますが、何分音質が悪い。学習条件を色々変えて試行錯誤しましたけどダメでした&lt;/p&gt;
 
-&lt;h2 id=&#34;gmmベースの声質変換の弱点:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;GMMベースの声質変換の弱点&lt;/h2&gt;
+&lt;h2 id=&#34;gmmベースの声質変換の弱点&#34;&gt;GMMベースの声質変換の弱点&lt;/h2&gt;
 
 &lt;p&gt;さて、なぜダメかを考えます。もう考えつくされてる感あるけど、大事なところだけ整理します&lt;/p&gt;
 
-&lt;h3 id=&#34;フレーム毎に独立な変換処理:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;フレーム毎に独立な変換処理&lt;/h3&gt;
+&lt;h3 id=&#34;フレーム毎に独立な変換処理&#34;&gt;フレーム毎に独立な変換処理&lt;/h3&gt;
 
 &lt;p&gt;まず、音声が時間的に独立なわけないですよね。フレームごとに独立に変換すると、時間的に不連続な点が出てきてしまいます。その結果、ちょっとノイジーな音声になってしまったのではないかと考えられます。&lt;/p&gt;
 
-&lt;p&gt;これに対する解決法としては、戸田先生の論文にあるように、動的特徴量も併せてGMMを学習して、系列全体の確率が最大となるように変換を考えるトラジェクトリベースのパラメータ生成方法があります。&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:fc7f6d91f62cb3ed962d8be11623fbc8:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:fc7f6d91f62cb3ed962d8be11623fbc8:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;これに対する解決法としては、戸田先生の論文にあるように、動的特徴量も併せてGMMを学習して、系列全体の確率が最大となるように変換を考えるトラジェクトリベースのパラメータ生成方法があります。&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;さて、やってみます。参照音声、目標音声は↑で使ったサンプルと同じです。&lt;/p&gt;
 
-&lt;h3 id=&#34;トラジェクトリベースの声質変換の結果:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;トラジェクトリベースの声質変換の結果&lt;/h3&gt;
+&lt;h3 id=&#34;トラジェクトリベースの声質変換の結果&#34;&gt;トラジェクトリベースの声質変換の結果&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371969&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
@@ -846,7 +845,7 @@ tp://www.festvox.org/cmu_arctic/&#34;&gt;CMU_ARCTIC speech synthesis databases&l
 &lt;li&gt;&lt;a href=&#34;http://koasas.kaist.ac.kr/bitstream/10203/17632/1/25.pdf&#34;&gt;Kim, E.K., Lee, S., Oh, Y.-H. (1997). &amp;ldquo;Hidden Markov Model Based Voice Conversion Using Dynamic Characteristics of Speaker&amp;rdquo;, Proc. of Eurospeech’97, Rhodes, Greece, pp. 2519-2522.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;過剰な平滑化:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;過剰な平滑化&lt;/h3&gt;
+&lt;h3 id=&#34;過剰な平滑化&#34;&gt;過剰な平滑化&lt;/h3&gt;
 
 &lt;p&gt;これはGMMに限った話ではないですが、GMMベースのFrame-by-Frameな声質変換の場合でいえば、変換後の特徴量は条件付き期待値を取ることになるので、まぁ常識的に考えて平滑化されますよね。&lt;/p&gt;
 
@@ -854,17 +853,17 @@ tp://www.festvox.org/cmu_arctic/&#34;&gt;CMU_ARCTIC speech synthesis databases&l
 
 &lt;p&gt;さて、やってみます。wktk&lt;/p&gt;
 
-&lt;h3 id=&#34;gvを考慮したトラジェクトリベースの声質変換の結果:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;GVを考慮したトラジェクトリベースの声質変換の結果&lt;/h3&gt;
+&lt;h3 id=&#34;gvを考慮したトラジェクトリベースの声質変換の結果&#34;&gt;GVを考慮したトラジェクトリベースの声質変換の結果&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371971&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
 &lt;p&gt;多少ましになった気もしなくもないけど、やっぱり音質はいまいちですね。そして計算量は激マシします。本当につらい。学会で聞いたGVありの音声はもっと改善してた気がするんだけどなー音声合成の話だけど。僕の実装が間違ってるんですかね…&lt;/p&gt;
 
-&lt;h2 id=&#34;ムズすぎわろた:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;ムズすぎわろた&lt;/h2&gt;
+&lt;h2 id=&#34;ムズすぎわろた&#34;&gt;ムズすぎわろた&lt;/h2&gt;
 
 &lt;p&gt;以上、いくつか試しましたが、統計的声質変換は激ムズだということがわかりました。え、ここで終わるの？という感じですが、最後に一つ別の手法を紹介します。&lt;/p&gt;
 
-&lt;h2 id=&#34;差分スペクトル補正に基づく統計的声質変換:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;差分スペクトル補正に基づく統計的声質変換&lt;/h2&gt;
+&lt;h2 id=&#34;差分スペクトル補正に基づく統計的声質変換&#34;&gt;差分スペクトル補正に基づく統計的声質変換&lt;/h2&gt;
 
 &lt;p&gt;これまでは、音声を基本周波数、非周期性成分、スペクトル包絡に分解して、スペクトル包絡を表す特徴量を変換し、変換後の特徴量を元に波形を再合成していました。ただ、よくよく考えると、そもそも基本周波数、非周期性成分をいじる必要がない場合であれば、わざわざ分解して再合成する必要なくね？声質の部分のみ変換するようなフィルタかけてやればよくね？という考えが生まれます。実は、そういったアイデアに基づく素晴らしい手法があります。それが、差分スペクトル補正に基づく声質変換です。&lt;/p&gt;
 
@@ -874,26 +873,26 @@ tp://www.festvox.org/cmu_arctic/&#34;&gt;CMU_ARCTIC speech synthesis databases&l
 
 &lt;p&gt;では、やってみます。歌声ではなく話し声ですが。他の声質変換の結果とも聴き比べてみてください。&lt;/p&gt;
 
-&lt;h3 id=&#34;差分スペクトル補正に基づく声質変換の結果:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;差分スペクトル補正に基づく声質変換の結果&lt;/h3&gt;
+&lt;h3 id=&#34;差分スペクトル補正に基づく声質変換の結果&#34;&gt;差分スペクトル補正に基づく声質変換の結果&lt;/h3&gt;
 
 &lt;iframe width=&#34;100%&#34; height=&#34;166&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362603&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&#34;&gt;&lt;/iframe&gt;
 
 &lt;p&gt;かなり音声の自然性は上がりましたね。これはヘタすると騙されるレベル。本当に素晴らしいです。しかも簡単にできるので、お勧めです。↑のは、GMMに基づくframe-by-frameな変換です。計算量も軽いので、リアルタイムでもいけますね。&lt;/p&gt;
 
-&lt;h2 id=&#34;おわりに:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;おわりに&lt;/h2&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 
 &lt;p&gt;声質変換であれこれ試行錯誤して、ようやくスタートラインにたてた感があります。今後は新しい方法を考えようかなーと思ってます。&lt;/p&gt;
 
 &lt;p&gt;おわり&lt;/p&gt;
 
-&lt;h2 id=&#34;おわび:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;おわび&lt;/h2&gt;
+&lt;h2 id=&#34;おわび&#34;&gt;おわび&lt;/h2&gt;
 
 &lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p&gt;お盆の間に学習ベースの声質変換のプログラム書く（宿題） &lt;a href=&#34;https://twitter.com/hashtag/%E5%AE%A3%E8%A8%80?src=hash&#34;&gt;#宣言&lt;/a&gt;&lt;/p&gt;&amp;mdash; 山本りゅういち (@r9y9) &lt;a href=&#34;https://twitter.com/r9y9/statuses/366928228465655808&#34;&gt;August 12, 2013&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;約1年かかりました……。本当に申し訳ありませんでした(´･_･`)&lt;/p&gt;
 
-&lt;h2 id=&#34;追記:fc7f6d91f62cb3ed962d8be11623fbc8&#34;&gt;追記&lt;/h2&gt;
+&lt;h2 id=&#34;追記&#34;&gt;追記&lt;/h2&gt;
 
 &lt;p&gt;Twitterで教えてもらいました。トラジェクトリベースで学習も変換も行う研究もありました&lt;/p&gt;
 
@@ -904,8 +903,8 @@ tp://www.festvox.org/cmu_arctic/&#34;&gt;CMU_ARCTIC speech synthesis databases&l
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:fc7f6d91f62cb3ed962d8be11623fbc8:1&#34;&gt;ただ、これはトラジェクトリベースのパラメータ生成法の提案であって、トラジェクトリモデル自体を学習してるわけではないんだよなー。普通に考えると学習もトラジェクトリで考える方法があっていい気がするが、 &lt;del&gt;まだ見てないですね。&lt;/del&gt; ありました。追記参照
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:fc7f6d91f62cb3ed962d8be11623fbc8:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;ただ、これはトラジェクトリベースのパラメータ生成法の提案であって、トラジェクトリモデル自体を学習してるわけではないんだよなー。普通に考えると学習もトラジェクトリで考える方法があっていい気がするが、 &lt;del&gt;まだ見てないですね。&lt;/del&gt; ありました。追記参照
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>

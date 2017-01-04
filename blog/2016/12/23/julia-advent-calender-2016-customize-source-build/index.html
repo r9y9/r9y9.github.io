@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -34,18 +34,18 @@
 
 <p><a href="http://qiita.com/advent-calendar/2016/julialang">Julia advent calendar 2016</a> 23日目の記事です。</p>
 
-<h2 id="はじめに:787c00436bb80acba0860fc8b349f551">はじめに</h2>
+<h2 id="はじめに">はじめに</h2>
 
-<p>Juilaを最も簡単にインストールする方法は、<a href="http://julialang.org/downloads/">公式のダウンロードページ</a>からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが<sup class="footnote-ref" id="fnref:787c00436bb80acba0860fc8b349f551:1"><a rel="footnote" href="#fn:787c00436bb80acba0860fc8b349f551:1">1</a></sup>、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。</p>
+<p>Juilaを最も簡単にインストールする方法は、<a href="http://julialang.org/downloads/">公式のダウンロードページ</a>からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。</p>
 
-<p>僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです<sup class="footnote-ref" id="fnref:787c00436bb80acba0860fc8b349f551:2"><a rel="footnote" href="#fn:787c00436bb80acba0860fc8b349f551:2">2</a></sup>。</p>
+<p>僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。</p>
 
-<h2 id="下準備:787c00436bb80acba0860fc8b349f551">下準備</h2>
+<h2 id="下準備">下準備</h2>
 
 <pre><code class="language-bash">git clone https://github.com/JuliaLang/julia &amp;&amp; cd julia
 </code></pre>
 
-<h2 id="ビルドのカスタマイズ方法:787c00436bb80acba0860fc8b349f551">ビルドのカスタマイズ方法</h2>
+<h2 id="ビルドのカスタマイズ方法">ビルドのカスタマイズ方法</h2>
 
 <p>Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに <code>override LLVM_VER=3.7.1</code> のような書き方で記述することで、カスタマイズ可能です（詳細は<a href="https://github.com/JuliaLang/julia#source-download-and-compilation">公式の説明</a>をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。</p>
 
@@ -62,11 +62,11 @@ override USE_LLVM_SHLIB=1
 
 <p>コア数は適当に指定します。llvm, openblasあたりのビルドが結構重いので、並列ビルドがオススメです。</p>
 
-<h2 id="僕がよく使うオプション:787c00436bb80acba0860fc8b349f551">僕がよく使うオプション</h2>
+<h2 id="僕がよく使うオプション">僕がよく使うオプション</h2>
 
 <p>ここから、僕がよく使うオプションをいくつか解説します。</p>
 
-<h3 id="llvm-ver:787c00436bb80acba0860fc8b349f551">LLVM_VER</h3>
+<h3 id="llvm-ver">LLVM_VER</h3>
 
 <p>llvmのバージョンを表します。Julia上でC++を使いたいというcrazyな人に激推しの <a href="https://github.com/Keno/Cxx.jl">Keno/Cxx.jl</a> というパッケージがあるのですが、このパッケージはclangとllvmの3.7.1以上を必要とします（Cxx.jlについては、過去に何度か記事を書いたので、例えば <a href="http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/">Cxx.jlを用いてJulia expression/value をC++に埋め込む実験</a> をご覧ください）。llvm 3.3がデフォルトだったJulia v0.4時代では、明示的に3.7.1と指定する必要がありました。いまは、</p>
 
@@ -77,15 +77,15 @@ override USE_LLVM_SHLIB=1
 
 <p>なので、僕の場合は明示的にLLVM_VERを指定する必要はなくなってきましたが、例えば、LLVMのNVPTX backendを使ってJuliaでCUDAカーネルを書けるようにする <a href="https://github.com/JuliaGPU/CUDAnative.jl">JuliaGPU/CUDAnative.jl</a> （要 llvm 3.9）のような、experimentalなパッケージを試したい場合など、LLVM_VERを指定したくなる場合もあるかと思います。</p>
 
-<h3 id="llvm-assertions:787c00436bb80acba0860fc8b349f551">LLVM_ASSERTIONS</h3>
+<h3 id="llvm-assertions">LLVM_ASSERTIONS</h3>
 
 <p>LLVMをassert付きでビルドするかどうかを表します。ONにするとビルドかかる時間が長くなり、LLVMのパフォーマンスが若干落ちますが、デバッグには便利です。Juliaのコード生成周りでエラーを起こしやすいようなコードを書くときには、ONにしておくと便利です。</p>
 
-<h3 id="build-llvm-clang:787c00436bb80acba0860fc8b349f551">BUILD_LLVM_CLANG</h3>
+<h3 id="build-llvm-clang">BUILD_LLVM_CLANG</h3>
 
 <p>llvmとあわせて、clangをビルドするかどうか、というオプションです。Cxx.jlに必要なので、僕はそのためにONにしています。その他必要なケースとしては、clangのaddress/memory sanitizerを使いたい場合が考えられます。詳細は<a href="http://docs.julialang.org/en/stable/devdocs/sanitizers/">devdocs/sanitizers</a> をご覧ください。</p>
 
-<h2 id="cc-cxx:787c00436bb80acba0860fc8b349f551">CC, CXX</h2>
+<h2 id="cc-cxx">CC, CXX</h2>
 
 <p>コンパイラの指定です。僕の場合 ubuntu 14.04では、（Cxx.jlのために）以下のように設定しています。</p>
 
@@ -102,33 +102,33 @@ override CXX=g++-6
 
 <p>のように、xcode付属のclangではなく、自前でビルドしたclangを使いたい場合などに、CC, CXXを指定したりします。</p>
 
-<h3 id="use-clang:787c00436bb80acba0860fc8b349f551">USE_CLANG</h3>
+<h3 id="use-clang">USE_CLANG</h3>
 
 <p>clangを使ってビルドするかどうかを表します。gccを使いたくない、というときにオンにします。</p>
 
-<h3 id="use-llvm-shlib:787c00436bb80acba0860fc8b349f551">USE_LLVM_SHLIB</h3>
+<h3 id="use-llvm-shlib">USE_LLVM_SHLIB</h3>
 
 <p>llvmを共有ライブラリとしてビルドするかどうかを表します。v0.4ではデフォルトがオフで、v0.5からはオンになっています。llvmの共有ライブラリをdlopenして色々いじりたい場合（何度もアレですが、Cxx.jlを使いたい場合とか）は、オンにする必要があります。</p>
 
-<h3 id="use-system-lib-name:787c00436bb80acba0860fc8b349f551">USE_SYSTEM_${LIB_NAME}</h3>
+<h3 id="use-system-lib-name">USE_SYSTEM_${LIB_NAME}</h3>
 
 <p>Juliaでは、デフォルトで依存ライブラリをソースからビルドします。システムにインストールされたライブラリを使用したい場合、USE_SYSTEM_XXX （e.g. <code>USE_SYSTEM_BLAS</code>）をオンにします。ビルド時間を短縮することが可能です。</p>
 
 <p>USE_SYSTEM_xxx にどのようなものがあるのかは、<a href="https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Make.inc#L25-L47">Make.inc</a> をご覧ください。</p>
 
-<h2 id="便利そうなオプション:787c00436bb80acba0860fc8b349f551">便利そうなオプション</h2>
+<h2 id="便利そうなオプション">便利そうなオプション</h2>
 
-<h3 id="use-intel-mkl:787c00436bb80acba0860fc8b349f551">USE_INTEL_MKL</h3>
+<h3 id="use-intel-mkl">USE_INTEL_MKL</h3>
 
 <p>MKLを使うかどうかを表します。MKLを持っている場合にオンにすれば、一部パフォーマンスが向上しそうですね。</p>
 
-<h3 id="use-gpl-libs:787c00436bb80acba0860fc8b349f551">USE_GPL_LIBS</h3>
+<h3 id="use-gpl-libs">USE_GPL_LIBS</h3>
 
 <p>GPLのライブラリ（FFTWなど）を使用するかどうかを表します。使ったことはありませんが、Juliaを組み込みで使用したい場合に、便利かもしれません。</p>
 
-<h2 id="ビルド時のtips:787c00436bb80acba0860fc8b349f551">ビルド時のTips</h2>
+<h2 id="ビルド時のtips">ビルド時のTips</h2>
 
-<p>Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります<sup class="footnote-ref" id="fnref:787c00436bb80acba0860fc8b349f551:3"><a rel="footnote" href="#fn:787c00436bb80acba0860fc8b349f551:3">3</a></sup>。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、</p>
+<p>Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、</p>
 
 <ul>
 <li>llvm</li>
@@ -138,9 +138,9 @@ override CXX=g++-6
 <li>libunwind</li>
 </ul>
 
-<p>あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに <code>make clean &amp;&amp; make</code> をして、案の定駄目で、よくわからずに <code>make distcleannall</code> してしまうこともありました（<code>distcleanall</code>が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）<sup class="footnote-ref" id="fnref:787c00436bb80acba0860fc8b349f551:4"><a rel="footnote" href="#fn:787c00436bb80acba0860fc8b349f551:4">4</a></sup>。過去の失敗から、僕が学んできたTipsを紹介します。</p>
+<p>あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに <code>make clean &amp;&amp; make</code> をして、案の定駄目で、よくわからずに <code>make distcleannall</code> してしまうこともありました（<code>distcleanall</code>が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup>。過去の失敗から、僕が学んできたTipsを紹介します。</p>
 
-<h3 id="プロジェクトトップmakefileのcleanコマンドを適切に使い分ける:787c00436bb80acba0860fc8b349f551">プロジェクトトップMakefileのcleanコマンドを適切に使い分ける</h3>
+<h3 id="プロジェクトトップmakefileのcleanコマンドを適切に使い分ける">プロジェクトトップMakefileのcleanコマンドを適切に使い分ける</h3>
 
 <p>cleanコマンドにはさまざまなものがあります。ビルドのし直しが不要なものまでcleanして、無駄に時間を消費しないように、正しく使い分けましょう。以下、基本的なcleanコマンドを簡単にまとめます。</p>
 
@@ -179,7 +179,7 @@ override CXX=g++-6
 
 <p>コマンドの詳細、その他コマンドについては、<a href="https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Makefile">julia/Makefile</a> をご覧ください</p>
 
-<h3 id="サブディレクトリのmakefileを使いわける:787c00436bb80acba0860fc8b349f551">サブディレクトリのMakefileを使いわける</h3>
+<h3 id="サブディレクトリのmakefileを使いわける">サブディレクトリのMakefileを使いわける</h3>
 
 <ul>
 <li><strong>deps</strong>: 依存関係</li>
@@ -225,7 +225,7 @@ override CXX=g++-6
 
 <p>といった具合に、軽いcleanコマンドから順に試しましょう。</p>
 
-<h2 id="まとめ:787c00436bb80acba0860fc8b349f551">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 
 <ul>
 <li>Make.user をプロジェクトトップに配置することで、ビルドをカスタマイズできます</li>
@@ -237,14 +237,14 @@ override CXX=g++-6
 <hr />
 
 <ol>
-<li id="fn:787c00436bb80acba0860fc8b349f551:1">大変ですよね
- <a class="footnote-return" href="#fnref:787c00436bb80acba0860fc8b349f551:1"><sup>[return]</sup></a></li>
-<li id="fn:787c00436bb80acba0860fc8b349f551:2"><a href="https://github.com/Keno/Cxx.jl">https://github.com/Keno/Cxx.jl</a> です
- <a class="footnote-return" href="#fnref:787c00436bb80acba0860fc8b349f551:2"><sup>[return]</sup></a></li>
-<li id="fn:787c00436bb80acba0860fc8b349f551:3">環境によります
- <a class="footnote-return" href="#fnref:787c00436bb80acba0860fc8b349f551:3"><sup>[return]</sup></a></li>
-<li id="fn:787c00436bb80acba0860fc8b349f551:4">僕があほなだけの可能性が大いにあります
- <a class="footnote-return" href="#fnref:787c00436bb80acba0860fc8b349f551:4"><sup>[return]</sup></a></li>
+<li id="fn:1">大変ですよね
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2"><a href="https://github.com/Keno/Cxx.jl">https://github.com/Keno/Cxx.jl</a> です
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">環境によります
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:4">僕があほなだけの可能性が大いにあります
+ <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

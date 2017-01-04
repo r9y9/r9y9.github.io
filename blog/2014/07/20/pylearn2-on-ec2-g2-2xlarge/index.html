@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -34,7 +34,7 @@
 
 <div align="center"><img src="/images/dbm_learned_from_mnist.png "Weight visualization of Restricted bolztomann machine trained on MNIST dataset."" class="image"></div>
 
-<h2 id="モチベーション:68d1f8d7ff10b8ba868651f1ccadb482">モチベーション</h2>
+<h2 id="モチベーション">モチベーション</h2>
 
 <ul>
 <li>手元のへぼマシンでニューラルネットの学習を回わす</li>
@@ -52,7 +52,7 @@
 
 <p>さてさて、今回環境構築に少しはまったので、もうはまらないように簡単にまとめておきます。</p>
 
-<h2 id="結論:68d1f8d7ff10b8ba868651f1ccadb482">結論</h2>
+<h2 id="結論">結論</h2>
 
 <p><a href="https://aws.amazon.com/marketplace/pp/B00FYCDDTE">Amazon Linux AMI with NVIDIA GRID GPU Driver on AWS Marketplace </a></p>
 
@@ -62,7 +62,7 @@
 
 <p>イケイケと噂の音声認識ライブラリKaldiの<a href="https://220-135-252-130.hinet-ip.hinet.net/speechwiki/index.php/Kaldi#installing_and_testing_CUDA-6.0_in_Ubuntu_14.04">ドキュメントらしきもの</a>を見ると、Ubuntu 14.04でもcuda 6.0インストールできるっぽいんですけどね…だめでした。頑張ればできるかもしれませんが、よほど強いメリットがない場合は、おとなしくpre-installされたインスタンスを使うのが吉だと思います。</p>
 
-<h2 id="セットアップ:68d1f8d7ff10b8ba868651f1ccadb482">セットアップ</h2>
+<h2 id="セットアップ">セットアップ</h2>
 
 <p>↑で上げたインスタンスにはGPUドライバやCUDAは入っていますが、theanoもpylearn2もnumpyもscipyも入っていません。よって、それらは手動でインストールする必要があります。</p>
 
@@ -131,11 +131,11 @@ cd ../..
 
 <p>僕がAMIを公開してもいいんですが、今のところする予定はありません</p>
 
-<h1 id="まとめ:68d1f8d7ff10b8ba868651f1ccadb482">まとめ</h1>
+<h1 id="まとめ">まとめ</h1>
 
 <p>そこそこ良い計算環境がさくっとできました、まる。ラーメン食べたい</p>
 
-<h2 id="参考:68d1f8d7ff10b8ba868651f1ccadb482">参考</h2>
+<h2 id="参考">参考</h2>
 
 <ul>
 <li><a href="http://aws.amazon.com/jp/ec2/instance-types/">インスタンスタイプ - Amazon EC2 (クラウド上の仮想サーバー Amazon Elastic Compute Cloud) | アマゾン ウェブ サービス（AWS 日本語）</a></li>

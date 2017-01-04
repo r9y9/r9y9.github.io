@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Book on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/book/</link>
+    <link>http://r9y9.github.io/categories/book/index.xml</link>
     <description>Recent content in Book on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 27 Jul 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/book/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -20,7 +19,7 @@
 &lt;div align=&#34;center&#34;&gt;
 &lt;a href=&#34;http://www.amazon.co.jp/exec/obidos/ASIN/4774149934/ryry-22/&#34; target=&#34;_blank&#34;&gt;&lt;img alt=&#34;日本語入力を支える技術　～変わり続けるコンピュータと言葉の世界 (WEB+DB PRESS plus)&#34; height=&#34;500&#34; src=&#34;http://ecx.images-amazon.com/images/I/51DjOK-jLoL.jpg&#34; title=&#34;日本語入力を支える技術　～変わり続けるコンピュータと言葉の世界 (WEB+DB PRESS plus)&#34; width=&#34;354&#34; /&gt;&lt;/a&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;感想:3bf57d31dca06e12cac4d1fb2e126082&#34;&gt;感想&lt;/h2&gt;
+&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;自然言語処理はあまり詳しくないけど、さっと読んで全然わからんということはなかった&lt;/li&gt;

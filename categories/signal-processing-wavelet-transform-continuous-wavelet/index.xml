@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Signal Processing Wavelet Transform Continuous Wavelet on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</link>
+    <link>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/index.xml</link>
     <description>Recent content in Signal Processing Wavelet Transform Continuous Wavelet on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 01 Jun 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -33,35 +32,35 @@
 
 &lt;p&gt;分析に使った音声は、&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/&#34;&gt;逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE&lt;/a&gt; で使ったのと同じ&lt;/p&gt;
 
-&lt;h2 id=&#34;morlet:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;Morlet&lt;/h2&gt;
+&lt;h2 id=&#34;morlet&#34;&gt;Morlet&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/morlet_6.png &#34;Morlet Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;paul:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;Paul&lt;/h2&gt;
+&lt;h2 id=&#34;paul&#34;&gt;Paul&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/paul_4.png &#34;Paul Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;dog:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;DOG&lt;/h2&gt;
+&lt;h2 id=&#34;dog&#34;&gt;DOG&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/dog_6.png &#34;DOG Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
 &lt;p&gt;対数を取ると、以下のような感じ&lt;/p&gt;
 
-&lt;h2 id=&#34;morlet-1:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;Morlet&lt;/h2&gt;
+&lt;h2 id=&#34;morlet-1&#34;&gt;Morlet&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/morlet_6_log.png &#34;Morlet Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;paul-1:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;Paul&lt;/h2&gt;
+&lt;h2 id=&#34;paul-1&#34;&gt;Paul&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/paul_4_log.png &#34;Paul Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;dog-1:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;DOG&lt;/h2&gt;
+&lt;h2 id=&#34;dog-1&#34;&gt;DOG&lt;/h2&gt;
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/dog_6_log.png &#34;DOG Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
 &lt;p&gt;Paulは時間解像度は高いけど周波数解像度はいまいちなので、音声とかには向かないのかなー。DOGはMorletとPaulの中間くらいの位置づけの様子。DOGはorderを上げればMorletっぽくなるけど、Morletの方がやっぱ使いやすいなーという印象。&lt;/p&gt;
 
-&lt;h2 id=&#34;スケールから周波数への変換:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;スケールから周波数への変換&lt;/h2&gt;
+&lt;h2 id=&#34;スケールから周波数への変換&#34;&gt;スケールから周波数への変換&lt;/h2&gt;
 
 &lt;p&gt;実は今日まで知らなかったんだけど、マザーウェーブレットによっては時間領域でのスケールの逆数は必ずしも周波数領域での周波数に対応するとは限らないそう。というかずれる（詳細はPractical Guideの3.hを参照）。上で書いた厳密には違うというのは、これが理由。&lt;/p&gt;
 
@@ -84,7 +83,7 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 
 &lt;p&gt;おわり&lt;/p&gt;
 
-&lt;h2 id=&#34;参考:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34;&gt;Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.&lt;/a&gt;&lt;/li&gt;
@@ -92,7 +91,7 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 &lt;li&gt;&lt;a href=&#34;http://www.hulinks.co.jp/support/flexpro/v7/dataanalysis_cwt.html&#34;&gt;HULINKS | テクニカルサポート | FlexPro | 連続ウェーブレット変換 (CWT)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;前書いた記事:e3f8e297f02d99dc14354d79a7a34b9f&#34;&gt;前書いた記事&lt;/h3&gt;
+&lt;h3 id=&#34;前書いた記事&#34;&gt;前書いた記事&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/&#34;&gt;FFTを使った連続ウェーブレット変換の高速化 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
@@ -111,13 +110,13 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/gabor_wavelet_nnmnkwii.png &#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using Open Jalk)&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;そもそもウェーブレット変換って何:109658ed75bbd5763a630c0da13d7312&#34;&gt;そもそもウェーブレット変換って何&lt;/h2&gt;
+&lt;h2 id=&#34;そもそもウェーブレット変換って何&#34;&gt;そもそもウェーブレット変換って何&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/%E3%82%A6%E3%82%A7%E3%83%BC%E3%83%96%E3%83%AC%E3%83%83%E3%83%88%E5%A4%89%E6%8F%9B&#34;&gt;Jump to wikipedia&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、STFTでいう窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと&lt;/p&gt;
 
-&lt;h2 id=&#34;高速化の仕組み:109658ed75bbd5763a630c0da13d7312&#34;&gt;高速化の仕組み&lt;/h2&gt;
+&lt;h2 id=&#34;高速化の仕組み&#34;&gt;高速化の仕組み&lt;/h2&gt;
 
 &lt;p&gt;さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。&lt;/p&gt;
 
@@ -133,7 +132,7 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 
 &lt;p&gt;色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です&lt;/p&gt;
 
-&lt;h2 id=&#34;a-practical-guide-to-wavelet-analysis-web-http-paos-colorado-edu-research-wavelets-pdf-http-paos-colorado-edu-research-wavelets-bams-79-01-0061-pdf:109658ed75bbd5763a630c0da13d7312&#34;&gt;A Practical Guide to Wavelet Analysis &lt;a href=&#34;http://paos.colorado.edu/research/wavelets/&#34;&gt;[web]&lt;/a&gt; &lt;a href=&#34;http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;a-practical-guide-to-wavelet-analysis-web-http-paos-colorado-edu-research-wavelets-pdf-http-paos-colorado-edu-research-wavelets-bams-79-01-0061-pdf&#34;&gt;A Practical Guide to Wavelet Analysis &lt;a href=&#34;http://paos.colorado.edu/research/wavelets/&#34;&gt;[web]&lt;/a&gt; &lt;a href=&#34;http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;結論から言えばここが一番わかりやすかった。&lt;/p&gt;
 
@@ -156,7 +155,7 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 
 &lt;p&gt;その他、fortanコードなどいくつかあるので、それらはウェブサイトからどうぞ&lt;/p&gt;
 
-&lt;h2 id=&#34;matlab:109658ed75bbd5763a630c0da13d7312&#34;&gt;Matlab&lt;/h2&gt;
+&lt;h2 id=&#34;matlab&#34;&gt;Matlab&lt;/h2&gt;
 
 &lt;p&gt;mathworksさんのwavelet toolboxのドキュメントもよかった。ここから上記のpracticalなんちゃらのリンクもある&lt;/p&gt;
 
@@ -168,7 +167,7 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 
 &lt;p&gt;コードは転がってないですね。まぁ有料なので&lt;/p&gt;
 
-&lt;h2 id=&#34;日本語でわかりやすいもの:109658ed75bbd5763a630c0da13d7312&#34;&gt;日本語でわかりやすいもの&lt;/h2&gt;
+&lt;h2 id=&#34;日本語でわかりやすいもの&#34;&gt;日本語でわかりやすいもの&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html&#34;&gt;C/C++言語でガボールウェーブレット変換により時間周波数解析を行うサンプルプログラム&lt;/a&gt;
@@ -188,11 +187,11 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;書籍:109658ed75bbd5763a630c0da13d7312&#34;&gt;書籍&lt;/h2&gt;
+&lt;h2 id=&#34;書籍&#34;&gt;書籍&lt;/h2&gt;
 
 &lt;p&gt;今回は調べてない。数年前にちょいちょい調べたことがあるけど忘れた&lt;/p&gt;
 
-&lt;h2 id=&#34;その他:109658ed75bbd5763a630c0da13d7312&#34;&gt;その他&lt;/h2&gt;
+&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://code.google.com/p/tspl/source/browse/trunk/include/cwt-impl.h?spec=svn2&amp;amp;r=2&#34;&gt;tspl Signal Processing Library in C++&lt;/a&gt;
@@ -214,11 +213,11 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;さいごに:109658ed75bbd5763a630c0da13d7312&#34;&gt;さいごに&lt;/h2&gt;
+&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
 
 &lt;p&gt;以上。ウェーブレット変換は難しいことがわかった（こなみ）。ウェーブレットの利点欠点については書かなかったけれど、音声や音楽を解析したい場合に、時間周波数解析によく用いられる短時間フーリエ解析よりもウェーブレット解析の方が望ましい場合は非常によくあると思っているので、ぜひもっと使われてほしいですね。作ってるライブラリには必ず入れます。&lt;/p&gt;
 
-&lt;h2 id=&#34;ちなみに:109658ed75bbd5763a630c0da13d7312&#34;&gt;ちなみに&lt;/h2&gt;
+&lt;h2 id=&#34;ちなみに&#34;&gt;ちなみに&lt;/h2&gt;
 
 &lt;p&gt;計算コストがそこまでボトルネックにならないなら、畳み込みでウェーブレット計算してもいいんじゃないかと思ってる。FFTを使う方法の場合、あるスケールパラメータに対する時間方向のウェーブレット変換係数を一気に求められても、あるシフトパラメータに対する周波数方向のウェーブレット変換係数（つまりある時間でのスペクトルのようなもの）は一気に求められない気がしている。つまり、STFTみたいな形でインクリメンタルにスペクトルは求めにくいんじゃないかってこと（少なくとも自明には思えない）。畳み込み計算するなら、間違いなくできるけど。このあたり理解がまだあやふやなので、間違ってる可能性大&lt;/p&gt;
 

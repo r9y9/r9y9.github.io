@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -49,11 +49,11 @@
 
 <p>nokunoさんによるこの記事→ <a href="http://d.hatena.ne.jp/nokuno/20111006/1317853653">多項分布の最尤推定</a> は、多項分布というよりカテゴリカル分布の話。本文には書いてあるけどね。あと最尤推定の結果はどちらにしろ同じなんだけどね</p>
 
-<h2 id="導出メモ:0a072047d6415735dde5d330d6716778">導出メモ</h2>
+<h2 id="導出メモ">導出メモ</h2>
 
 <p>一応最尤推定をやってみる。前回のナイーブベイズのメモの時は省略したので。入力の変数を $ Y = {y_n}_{n=1}^{N} $ とする。</p>
 
-<h3 id="カテゴリカル分布:0a072047d6415735dde5d330d6716778">カテゴリカル分布</h3>
+<h3 id="カテゴリカル分布">カテゴリカル分布</h3>
 
 <div>
 \begin{align}
@@ -63,7 +63,7 @@ p(l) = \pi_{l}, \hspace{2mm} \sum_{l=1}^{L}\pi_{l} = 1
 
 <p>ここで、$\pi_{l}$がパラメータ、lはカテゴリの番号</p>
 
-<h3 id="最尤推定:0a072047d6415735dde5d330d6716778">最尤推定</h3>
+<h3 id="最尤推定">最尤推定</h3>
 
 <p>尤度関数を立てて、最大化することでパラメータを求める。各データは独立に生起すると仮定すると、尤度関数は以下のようになる。</p>
 
@@ -91,7 +91,7 @@ L(Y; \theta) = \prod_{l=1}^{L}\pi_{l}^{N_{l}}
 \end{align}
 </div>
 
-<h3 id="ラグランジュの未定乗数法で解く:0a072047d6415735dde5d330d6716778">ラグランジュの未定乗数法で解く</h3>
+<h3 id="ラグランジュの未定乗数法で解く">ラグランジュの未定乗数法で解く</h3>
 
 <p>nokunoさんの記事の通りだけど、一応手でも解いたのでメモ</p>
 
@@ -134,7 +134,7 @@ G = \sum_{l=1}^{L} N_{l}\log \pi_{l} + \lambda \Bigl[ \sum_{l=1}^{L} \pi_{l} -1)
 
 <p>カテゴリの頻度を計算するだけ、カンタン！！</p>
 
-<h2 id="参考:0a072047d6415735dde5d330d6716778">参考</h2>
+<h2 id="参考">参考</h2>
 
 <ul>
 <li><a href="http://en.wikipedia.org/wiki/Categorical_distribution">Categorical distribution - Wikipedia</a></li>

@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Speech Signal Processing on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/go-speech-signal-processing/</link>
+    <link>http://r9y9.github.io/categories/go-speech-signal-processing/index.xml</link>
     <description>Recent content in Go Speech Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 10 Feb 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/go-speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -27,13 +26,13 @@ SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを�
 
 &lt;p&gt;Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;SPTK&lt;/a&gt; をGoから使えるようにする&lt;/p&gt;
 
-&lt;h2 id=&#34;cgo:64c059489388bf6d136fbf2a53724e24&#34;&gt;cgo&lt;/h2&gt;
+&lt;h2 id=&#34;cgo&#34;&gt;cgo&lt;/h2&gt;
 
 &lt;p&gt;GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う &lt;a href=&#34;http://golang.org/cmd/cgo/&#34;&gt;http://golang.org/cmd/cgo/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Cの関数や変数などには、 &lt;code&gt;C.&lt;/code&gt; でアクセスできる&lt;/p&gt;
 
-&lt;h2 id=&#34;ラッパー:64c059489388bf6d136fbf2a53724e24&#34;&gt;ラッパー&lt;/h2&gt;
+&lt;h2 id=&#34;ラッパー&#34;&gt;ラッパー&lt;/h2&gt;
 
 &lt;p&gt;例えば以下のように書く。MFCCの計算を例に上げる。必要に応じで&lt;code&gt;SPTK.h&lt;/code&gt;に定義されている関数をラップする&lt;/p&gt;
 

@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Python Machine Learning on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/go-python-machine-learning/</link>
+    <link>http://r9y9.github.io/categories/go-python-machine-learning/index.xml</link>
     <description>Recent content in Go Python Machine Learning on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 29 Jul 2014 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/go-python-machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -19,11 +18,11 @@
 
 &lt;p&gt;いまいち成果出ないので気分転換にブログをだらだら書いてみるテストです。&lt;/p&gt;
 
-&lt;h2 id=&#34;まえがき:77474c7b3ef8467b79027776aa355213&#34;&gt;まえがき&lt;/h2&gt;
+&lt;h2 id=&#34;まえがき&#34;&gt;まえがき&lt;/h2&gt;
 
 &lt;p&gt;半年くらい前に、某深層学習に興味を持ってやってみようかなーと思っていた時期があって、その時にGoでいくつかニューラルネットを書きました（参考：&lt;a href=&#34;http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/&#34;&gt;Restricted Boltzmann Machines with MNIST - LESS IS MORE&lt;/a&gt;、&lt;a href=&#34;https://github.com/r9y9/nnet&#34;&gt;githubに上げたコード&lt;/a&gt;）。なぜGoだったかというと、僕がGoに興味を持ち始めていたからというのが大きいです。Goを知る前は、たくさん計算するようなコードを書くときはC++だったけれど、C++は色々つらいものがあるし、GoはC++には速度面で劣るもののそこそこ速く、かつスクリプト的な書きやすさもあります。C++のデバッグやメンテに費やす膨大な時間に比べれば、計算時間が1.5~2倍に増えるくらい気にしないというスタンスで、僕はC++のかわりGoを使おうとしていました（※今でも間違っているとは思いませんが、とはいえ、厳しいパフォーマンスを求められる場合や既存の資産を有効活用したい場合など、必要な場面ではC++を書いています）。&lt;/p&gt;
 
-&lt;h2 id=&#34;goで機械学習:77474c7b3ef8467b79027776aa355213&#34;&gt;Goで機械学習&lt;/h2&gt;
+&lt;h2 id=&#34;goで機械学習&#34;&gt;Goで機械学習&lt;/h2&gt;
 
 &lt;p&gt;僕は機械学習がけっこう好きなので、Goでコード書くかーと思っていたのですが、結果としてまったく捗りませんでした。ニューラルネットをてきとーに書いたくらいです。&lt;/p&gt;
 
@@ -36,7 +35,7 @@
 
 &lt;p&gt;自分で作るかー、という考えも生まれなかったことはないですが、端的に言えばそれを行うだけのやる気がありませんでした。まぁ本当に必要だったら多少難しくてもやるのですが、ほら、僕達にはpythonがあるじゃないですか…&lt;/p&gt;
 
-&lt;h2 id=&#34;pythonで機械学習:77474c7b3ef8467b79027776aa355213&#34;&gt;Pythonで機械学習&lt;/h2&gt;
+&lt;h2 id=&#34;pythonで機械学習&#34;&gt;Pythonで機械学習&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://www.google.co.jp/search?q=python+%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&amp;amp;oq=python+%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&#34;&gt;python 機械学習 - Google 検索&lt;/a&gt; 約 119,000 件（2014/07/29現在）&lt;/p&gt;
 
@@ -50,7 +49,7 @@
 
 &lt;p&gt;pythonの機械学習ライブラリは、&lt;a href=&#34;http://scikit-learn.org/stable/&#34;&gt;scikit-learn&lt;/a&gt; が特に有名でしょうか。僕もちょいちょい使います。使っていて最近おどろいたのは、scipy.mixtureには通常のGMMだけでなく変分GMM、無限混合GMMも入っていることですよね。自分で実装しようとしたら、たぶんとても大変です。昔変分GMMの更新式を導出したことがありますが、何度も心が折れそうになりました。いやー、いい時代になったもんですよ…（遠い目&lt;/p&gt;
 
-&lt;h2 id=&#34;pythonでニューラルネット-pylearn2を使おう:77474c7b3ef8467b79027776aa355213&#34;&gt;Pythonでニューラルネット（pylearn2を使おう）&lt;/h2&gt;
+&lt;h2 id=&#34;pythonでニューラルネット-pylearn2を使おう&#34;&gt;Pythonでニューラルネット（pylearn2を使おう）&lt;/h2&gt;
 
 &lt;p&gt;Deep何とかを含め流行りのニューラルネットが使える機械学習のライブラリでは、僕は &lt;a href=&#34;https://github.com/lisa-lab/pylearn2&#34;&gt;pylearn2&lt;/a&gt; がよさ気だなーと思っています。理由は、高速かつ拡張性が高いからです。pylearn2は、数学的な記号表現からGPUコード（GPUがなければCPU向けのコード）を生成するmathコンパイラ &lt;a href=&#34;https://github.com/Theano/Theano&#34;&gt;Theano&lt;/a&gt; で書かれているためpythonでありながら高速で、かつ機械学習に置いて重要なコンポーネントであるデータ、モデル、アルゴリズムが上手く分離されて設計されているのがいいところかなと思います（全部ごっちゃに書いていませんか？僕はそうですごめんなさい。データはともかくモデルと学習を上手く切り分けるの難しい）。A Machine Learning library based on Theanoとのことですが、Deep learningで有名な &lt;a href=&#34;http://lisa.iro.umontreal.ca/index_en.html&#34;&gt;lisa lab&lt;/a&gt; 発ということもあり、ニューラルネットのライブラリという印象が少し強いですね。&lt;/p&gt;
 
@@ -68,7 +67,7 @@
 
 &lt;p&gt;pylearn2、コードやドキュメント、活発なgithubでの開発、議論を見ていて、素晴らしいなーと思いました（まだ使い始めたばかりの僕の意見にあまり信憑性はないのですが…）。僕もこれくらい汎用性、拡張性のあるコードを書きたい人生でした…（自分の書いたニューラルネットのコードを見ながら）&lt;/p&gt;
 
-&lt;h2 id=&#34;pylearn2は遅いって:77474c7b3ef8467b79027776aa355213&#34;&gt;Pylearn2は遅いって？&lt;/h2&gt;
+&lt;h2 id=&#34;pylearn2は遅いって&#34;&gt;Pylearn2は遅いって？&lt;/h2&gt;
 
 &lt;p&gt;本当に速さを求めるなら &lt;a href=&#34;https://code.google.com/p/cuda-convnet2/&#34;&gt;cuda-convnet2&lt;/a&gt; や &lt;a href=&#34;http://caffe.berkeleyvision.org/&#34;&gt;Cafee&lt;/a&gt;、もしくは直でcudaのAPIをだな…と言いたいところですが、確かにpylearn2は他の深層学習のライブラリに比べて遅いようです。最近、Convolutional Neural Network (CNN) に関するベンチマークがGithubで公開されていました。&lt;/p&gt;
 
@@ -78,7 +77,7 @@
 
 &lt;p&gt;さてさて、本当はここから僕が書いたGoのニューラルネットのコードがいかにクソかという話を書こうかと思ったのですが、長くなったのでまた今度にします。&lt;/p&gt;
 
-&lt;h2 id=&#34;まとめ:77474c7b3ef8467b79027776aa355213&#34;&gt;まとめ&lt;/h2&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Goでニューラルネットとか機械学習をやるのは現状しんどいし（&lt;a href=&#34;https://github.com/sjwhitworth/golearn&#34;&gt;golearn&lt;/a&gt;とかあるけど、まだまだearly stage）、おとなしくpython使うのが無難&lt;/li&gt;

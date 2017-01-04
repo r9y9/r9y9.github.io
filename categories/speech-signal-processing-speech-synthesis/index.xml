@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Signal Processing Speech Synthesis on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</link>
+    <link>http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/index.xml</link>
     <description>Recent content in Speech Signal Processing Speech Synthesis on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 01 Dec 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -21,7 +20,7 @@
 
 &lt;p&gt;Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;SPTK&lt;/a&gt;のmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。&lt;/p&gt;
 
-&lt;h1 id=&#34;mlsa-filter-h:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;mlsa_filter.h&lt;/h1&gt;
+&lt;h1 id=&#34;mlsa-filter-h&#34;&gt;mlsa_filter.h&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://gist.github.com/r9y9/7735120&#34;&gt;https://gist.github.com/r9y9/7735120&lt;/a&gt;&lt;/p&gt;
 
@@ -213,7 +212,7 @@ double mlsa_filter::filter(const double x, const Vector&amp;amp; b)
 } // end namespace sp
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h1 id=&#34;使い方:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;使い方&lt;/h1&gt;
+&lt;h1 id=&#34;使い方&#34;&gt;使い方&lt;/h1&gt;
 
 &lt;p&gt;mlsa_filter.hをインクルードすればおｋ&lt;/p&gt;
 
@@ -230,7 +229,7 @@ sp::mlsa_filter mlsa_f(order, alpha, n_pade);
 出力一サンプル = mlsa_f.filter(入力一サンプル, フィルタ係数);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h1 id=&#34;何で再実装したのか:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;何で再実装したのか&lt;/h1&gt;
+&lt;h1 id=&#34;何で再実装したのか&#34;&gt;何で再実装したのか&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;mlsa filterをC++的なインタフェースで使いたかった&lt;/li&gt;
@@ -244,7 +243,7 @@ sp::mlsa_filter mlsa_f(order, alpha, n_pade);
 &lt;p&gt;車輪の再開発はあんま良くないと思ってるけど許して。
 誰かがリファクタせないかんのだ&lt;/p&gt;
 
-&lt;h1 id=&#34;感想:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;感想&lt;/h1&gt;
+&lt;h1 id=&#34;感想&#34;&gt;感想&lt;/h1&gt;
 
 &lt;p&gt;SPTKのmlsa filterは、正直に言うとこれまで読んできたコードの中で一二を争うほど難解でした（いうてC言語はあまり読んできてないので、Cだとこれが普通なのかもしれないけど）。特に、元コードの d: delayという変数の使われ方が複雑過ぎて、とても読みにくくございました。MLSAフィルタは複数のbase filterのcascade接続で表されるわけだけど、それぞれの遅延が一つのdという変数で管理されていたのです。つまり、&lt;/p&gt;
 
@@ -258,7 +257,7 @@ sp::mlsa_filter mlsa_f(order, alpha, n_pade);
 
 &lt;p&gt;改善しようと思って、base filterというクラスを作ってそのクラスの状態として各フィルタの遅延を持たせて、見通しを良くしました&lt;/p&gt;
 
-&lt;h2 id=&#34;さいごに:b5c0418169b57a0cd7b1f7eae664e0a3&#34;&gt;さいごに&lt;/h2&gt;
+&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
 
 &lt;p&gt;MLSAフィルタ、難しいですね（小並感&lt;/p&gt;
 
@@ -292,7 +291,7 @@ sp::mlsa_filter mlsa_f(order, alpha, n_pade);
 
 &lt;p&gt;(実装だけであれば、実はそんなに難しくなかった 2013/09後半)&lt;/p&gt;
 
-&lt;h3 id=&#34;追記-2015-02-25:a7fa5b1ffe2a5c219043d49e3f8e00d9&#34;&gt;追記 2015/02/25&lt;/h3&gt;
+&lt;h3 id=&#34;追記-2015-02-25&#34;&gt;追記 2015/02/25&lt;/h3&gt;
 
 &lt;p&gt;誤解を生む表現があったので、直しました&lt;/p&gt;
 </description>

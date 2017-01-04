@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -34,13 +34,13 @@
 
 <div align="center"><img src="/images/gabor_wavelet_nnmnkwii.png "An example of Gabor Wavelet spectrogram (the original wav file is generated using Open Jalk)"" class="image"></div>
 
-<h2 id="そもそもウェーブレット変換って何:109658ed75bbd5763a630c0da13d7312">そもそもウェーブレット変換って何</h2>
+<h2 id="そもそもウェーブレット変換って何">そもそもウェーブレット変換って何</h2>
 
 <p><a href="http://ja.wikipedia.org/wiki/%E3%82%A6%E3%82%A7%E3%83%BC%E3%83%96%E3%83%AC%E3%83%83%E3%83%88%E5%A4%89%E6%8F%9B">Jump to wikipedia</a></p>
 
 <p>いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、STFTでいう窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと</p>
 
-<h2 id="高速化の仕組み:109658ed75bbd5763a630c0da13d7312">高速化の仕組み</h2>
+<h2 id="高速化の仕組み">高速化の仕組み</h2>
 
 <p>さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。</p>
 
@@ -56,7 +56,7 @@
 
 <p>色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です</p>
 
-<h2 id="a-practical-guide-to-wavelet-analysis-web-http-paos-colorado-edu-research-wavelets-pdf-http-paos-colorado-edu-research-wavelets-bams-79-01-0061-pdf:109658ed75bbd5763a630c0da13d7312">A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">[PDF]</a></h2>
+<h2 id="a-practical-guide-to-wavelet-analysis-web-http-paos-colorado-edu-research-wavelets-pdf-http-paos-colorado-edu-research-wavelets-bams-79-01-0061-pdf">A Practical Guide to Wavelet Analysis <a href="http://paos.colorado.edu/research/wavelets/">[web]</a> <a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf">[PDF]</a></h2>
 
 <p>結論から言えばここが一番わかりやすかった。</p>
 
@@ -79,7 +79,7 @@
 
 <p>その他、fortanコードなどいくつかあるので、それらはウェブサイトからどうぞ</p>
 
-<h2 id="matlab:109658ed75bbd5763a630c0da13d7312">Matlab</h2>
+<h2 id="matlab">Matlab</h2>
 
 <p>mathworksさんのwavelet toolboxのドキュメントもよかった。ここから上記のpracticalなんちゃらのリンクもある</p>
 
@@ -91,7 +91,7 @@
 
 <p>コードは転がってないですね。まぁ有料なので</p>
 
-<h2 id="日本語でわかりやすいもの:109658ed75bbd5763a630c0da13d7312">日本語でわかりやすいもの</h2>
+<h2 id="日本語でわかりやすいもの">日本語でわかりやすいもの</h2>
 
 <ul>
 <li><a href="http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html">C/C++言語でガボールウェーブレット変換により時間周波数解析を行うサンプルプログラム</a>
@@ -111,11 +111,11 @@
 </ul></li>
 </ul>
 
-<h2 id="書籍:109658ed75bbd5763a630c0da13d7312">書籍</h2>
+<h2 id="書籍">書籍</h2>
 
 <p>今回は調べてない。数年前にちょいちょい調べたことがあるけど忘れた</p>
 
-<h2 id="その他:109658ed75bbd5763a630c0da13d7312">その他</h2>
+<h2 id="その他">その他</h2>
 
 <ul>
 <li><a href="https://code.google.com/p/tspl/source/browse/trunk/include/cwt-impl.h?spec=svn2&amp;r=2">tspl Signal Processing Library in C++</a>
@@ -137,11 +137,11 @@
 </ul></li>
 </ul>
 
-<h2 id="さいごに:109658ed75bbd5763a630c0da13d7312">さいごに</h2>
+<h2 id="さいごに">さいごに</h2>
 
 <p>以上。ウェーブレット変換は難しいことがわかった（こなみ）。ウェーブレットの利点欠点については書かなかったけれど、音声や音楽を解析したい場合に、時間周波数解析によく用いられる短時間フーリエ解析よりもウェーブレット解析の方が望ましい場合は非常によくあると思っているので、ぜひもっと使われてほしいですね。作ってるライブラリには必ず入れます。</p>
 
-<h2 id="ちなみに:109658ed75bbd5763a630c0da13d7312">ちなみに</h2>
+<h2 id="ちなみに">ちなみに</h2>
 
 <p>計算コストがそこまでボトルネックにならないなら、畳み込みでウェーブレット計算してもいいんじゃないかと思ってる。FFTを使う方法の場合、あるスケールパラメータに対する時間方向のウェーブレット変換係数を一気に求められても、あるシフトパラメータに対する周波数方向のウェーブレット変換係数（つまりある時間でのスペクトルのようなもの）は一気に求められない気がしている。つまり、STFTみたいな形でインクリメンタルにスペクトルは求めにくいんじゃないかってこと（少なくとも自明には思えない）。畳み込み計算するなら、間違いなくできるけど。このあたり理解がまだあやふやなので、間違ってる可能性大</p>
 

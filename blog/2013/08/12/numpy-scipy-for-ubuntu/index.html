@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -38,12 +38,12 @@
 ただやっぱり最新版を使いたいということがある。というわけでメモ。
 Ubuntu 12.04 desktopを想定する（他でもほぼ同様の手順でインストールできると思う）。</p>
 
-<h2 id="準備:81466911a07c8d8e39480995a86f5ecf">準備</h2>
+<h2 id="準備">準備</h2>
 
 <pre><code class="language-bash">sudo apt-get install python python-dev gcc gfortran g++
 </code></pre>
 
-<h2 id="numpyのインストール:81466911a07c8d8e39480995a86f5ecf">Numpyのインストール</h2>
+<h2 id="numpyのインストール">Numpyのインストール</h2>
 
 <pre><code class="language-bash">git clone https://github.com/numpy/numpy
 cd numpy
@@ -53,11 +53,11 @@ sudo python setup.py install
 
 <p>かんたん</p>
 
-<h2 id="scipyのインストール:81466911a07c8d8e39480995a86f5ecf">Scipyのインストール</h2>
+<h2 id="scipyのインストール">Scipyのインストール</h2>
 
 <p>これがちょっとめんどい。numpyのようには行かなかった。2013/08/12</p>
 
-<h3 id="前準備:81466911a07c8d8e39480995a86f5ecf">前準備</h3>
+<h3 id="前準備">前準備</h3>
 
 <p>以下をインストール</p>
 
@@ -67,7 +67,7 @@ sudo python setup.py install
 <li>cython</li>
 </ul>
 
-<h2 id="cythonのインストール:81466911a07c8d8e39480995a86f5ecf">cythonのインストール</h2>
+<h2 id="cythonのインストール">cythonのインストール</h2>
 
 <p>これ、apt-get install cython でも入るんだけど、バージョンが古いって怒られた。なので、cythonもソースからいれる</p>
 
@@ -79,7 +79,7 @@ sudo python setup.py install
 
 <p>かんたん</p>
 
-<h2 id="blas-lapackのインストール:81466911a07c8d8e39480995a86f5ecf">blas/lapackのインストール</h2>
+<h2 id="blas-lapackのインストール">blas/lapackのインストール</h2>
 
 <p>これはapt-getから入れればおｋ</p>
 
@@ -88,7 +88,7 @@ sudo python setup.py install
 
 <p>scipyのINSTALL.txt （リンク）を見るに、libatlas3-base-devをインストールすれば良さそうだけど、ubuntu 12.04じゃ見つからんかった（2013/08/12時点で）。で、何となく試してたら、libblas-devとliblapack-devで行けた。</p>
 
-<h2 id="scipyのインストール-1:81466911a07c8d8e39480995a86f5ecf">Scipyのインストール！</h2>
+<h2 id="scipyのインストール-1">Scipyのインストール！</h2>
 
 <p>これでやっとインストールできる</p>
 

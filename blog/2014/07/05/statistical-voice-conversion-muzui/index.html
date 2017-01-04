@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.16-DEV" />
+<meta name="generator" content="Hugo 0.19-DEV" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,7 +32,7 @@
 			<section itemprop="entry-text">
 				
 
-<h2 id="2014-10-12-追記:fc7f6d91f62cb3ed962d8be11623fbc8">2014/10/12 追記</h2>
+<h2 id="2014-10-12-追記">2014/10/12 追記</h2>
 
 <p>少なくともGVのコードに致命的なバグがあったことがわかりました。よって、あまりあてにしないでください…（ごめんなさい</p>
 
@@ -46,7 +46,7 @@
 <li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007</a>.</li>
 </ul>
 
-<h2 id="gmmベースの声質変換の基本:fc7f6d91f62cb3ed962d8be11623fbc8">GMMベースの声質変換の基本</h2>
+<h2 id="gmmベースの声質変換の基本">GMMベースの声質変換の基本</h2>
 
 <p>シンプルなGMMベースの声質変換は大きく二つのフェーズに分けられます。</p>
 
@@ -76,7 +76,7 @@
 
 <p>ちなみに僕はscipy.mixture.GMMを使いました。HTKヤダー</p>
 
-<h2 id="やってみる:fc7f6d91f62cb3ed962d8be11623fbc8">やってみる</h2>
+<h2 id="やってみる">やってみる</h2>
 
 <p>さて、実際にやってみます。データベースには、<a href="ht
 tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を使います。今回は、女性話者の二人を使いました。</p>
@@ -85,33 +85,33 @@ tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を�
 
 <p>学習では、学習サンプル10641フレーム（23フレーズ）、GMMの混合数64、full-covarianceで学習しました。</p>
 
-<h3 id="変換元となる話者-参照話者:fc7f6d91f62cb3ed962d8be11623fbc8">変換元となる話者（参照話者）</h3>
+<h3 id="変換元となる話者-参照話者">変換元となる話者（参照話者）</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362625&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
-<h3 id="変換対象となる話者-目標話者:fc7f6d91f62cb3ed962d8be11623fbc8">変換対象となる話者（目標話者）</h3>
+<h3 id="変換対象となる話者-目標話者">変換対象となる話者（目標話者）</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362613&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
-<h3 id="gmmベースのframe-by-frameな声質変換の結果:fc7f6d91f62cb3ed962d8be11623fbc8">GMMベースのframe-by-frameな声質変換の結果</h3>
+<h3 id="gmmベースのframe-by-frameな声質変換の結果">GMMベースのframe-by-frameな声質変換の結果</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371966&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
 <p>はぁー、正直聞けたもんじゃないですね。声質は目標話者に近づいている感がありますが、何分音質が悪い。学習条件を色々変えて試行錯誤しましたけどダメでした</p>
 
-<h2 id="gmmベースの声質変換の弱点:fc7f6d91f62cb3ed962d8be11623fbc8">GMMベースの声質変換の弱点</h2>
+<h2 id="gmmベースの声質変換の弱点">GMMベースの声質変換の弱点</h2>
 
 <p>さて、なぜダメかを考えます。もう考えつくされてる感あるけど、大事なところだけ整理します</p>
 
-<h3 id="フレーム毎に独立な変換処理:fc7f6d91f62cb3ed962d8be11623fbc8">フレーム毎に独立な変換処理</h3>
+<h3 id="フレーム毎に独立な変換処理">フレーム毎に独立な変換処理</h3>
 
 <p>まず、音声が時間的に独立なわけないですよね。フレームごとに独立に変換すると、時間的に不連続な点が出てきてしまいます。その結果、ちょっとノイジーな音声になってしまったのではないかと考えられます。</p>
 
-<p>これに対する解決法としては、戸田先生の論文にあるように、動的特徴量も併せてGMMを学習して、系列全体の確率が最大となるように変換を考えるトラジェクトリベースのパラメータ生成方法があります。<sup class="footnote-ref" id="fnref:fc7f6d91f62cb3ed962d8be11623fbc8:1"><a rel="footnote" href="#fn:fc7f6d91f62cb3ed962d8be11623fbc8:1">1</a></sup></p>
+<p>これに対する解決法としては、戸田先生の論文にあるように、動的特徴量も併せてGMMを学習して、系列全体の確率が最大となるように変換を考えるトラジェクトリベースのパラメータ生成方法があります。<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup></p>
 
 <p>さて、やってみます。参照音声、目標音声は↑で使ったサンプルと同じです。</p>
 
-<h3 id="トラジェクトリベースの声質変換の結果:fc7f6d91f62cb3ed962d8be11623fbc8">トラジェクトリベースの声質変換の結果</h3>
+<h3 id="トラジェクトリベースの声質変換の結果">トラジェクトリベースの声質変換の結果</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371969&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
@@ -125,7 +125,7 @@ tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を�
 <li><a href="http://koasas.kaist.ac.kr/bitstream/10203/17632/1/25.pdf">Kim, E.K., Lee, S., Oh, Y.-H. (1997). &ldquo;Hidden Markov Model Based Voice Conversion Using Dynamic Characteristics of Speaker&rdquo;, Proc. of Eurospeech’97, Rhodes, Greece, pp. 2519-2522.</a></li>
 </ul>
 
-<h3 id="過剰な平滑化:fc7f6d91f62cb3ed962d8be11623fbc8">過剰な平滑化</h3>
+<h3 id="過剰な平滑化">過剰な平滑化</h3>
 
 <p>これはGMMに限った話ではないですが、GMMベースのFrame-by-Frameな声質変換の場合でいえば、変換後の特徴量は条件付き期待値を取ることになるので、まぁ常識的に考えて平滑化されますよね。</p>
 
@@ -133,17 +133,17 @@ tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を�
 
 <p>さて、やってみます。wktk</p>
 
-<h3 id="gvを考慮したトラジェクトリベースの声質変換の結果:fc7f6d91f62cb3ed962d8be11623fbc8">GVを考慮したトラジェクトリベースの声質変換の結果</h3>
+<h3 id="gvを考慮したトラジェクトリベースの声質変換の結果">GVを考慮したトラジェクトリベースの声質変換の結果</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157371971&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
 <p>多少ましになった気もしなくもないけど、やっぱり音質はいまいちですね。そして計算量は激マシします。本当につらい。学会で聞いたGVありの音声はもっと改善してた気がするんだけどなー音声合成の話だけど。僕の実装が間違ってるんですかね…</p>
 
-<h2 id="ムズすぎわろた:fc7f6d91f62cb3ed962d8be11623fbc8">ムズすぎわろた</h2>
+<h2 id="ムズすぎわろた">ムズすぎわろた</h2>
 
 <p>以上、いくつか試しましたが、統計的声質変換は激ムズだということがわかりました。え、ここで終わるの？という感じですが、最後に一つ別の手法を紹介します。</p>
 
-<h2 id="差分スペクトル補正に基づく統計的声質変換:fc7f6d91f62cb3ed962d8be11623fbc8">差分スペクトル補正に基づく統計的声質変換</h2>
+<h2 id="差分スペクトル補正に基づく統計的声質変換">差分スペクトル補正に基づく統計的声質変換</h2>
 
 <p>これまでは、音声を基本周波数、非周期性成分、スペクトル包絡に分解して、スペクトル包絡を表す特徴量を変換し、変換後の特徴量を元に波形を再合成していました。ただ、よくよく考えると、そもそも基本周波数、非周期性成分をいじる必要がない場合であれば、わざわざ分解して再合成する必要なくね？声質の部分のみ変換するようなフィルタかけてやればよくね？という考えが生まれます。実は、そういったアイデアに基づく素晴らしい手法があります。それが、差分スペクトル補正に基づく声質変換です。</p>
 
@@ -153,26 +153,26 @@ tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を�
 
 <p>では、やってみます。歌声ではなく話し声ですが。他の声質変換の結果とも聴き比べてみてください。</p>
 
-<h3 id="差分スペクトル補正に基づく声質変換の結果:fc7f6d91f62cb3ed962d8be11623fbc8">差分スペクトル補正に基づく声質変換の結果</h3>
+<h3 id="差分スペクトル補正に基づく声質変換の結果">差分スペクトル補正に基づく声質変換の結果</h3>
 
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/157362603&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
 <p>かなり音声の自然性は上がりましたね。これはヘタすると騙されるレベル。本当に素晴らしいです。しかも簡単にできるので、お勧めです。↑のは、GMMに基づくframe-by-frameな変換です。計算量も軽いので、リアルタイムでもいけますね。</p>
 
-<h2 id="おわりに:fc7f6d91f62cb3ed962d8be11623fbc8">おわりに</h2>
+<h2 id="おわりに">おわりに</h2>
 
 <p>声質変換であれこれ試行錯誤して、ようやくスタートラインにたてた感があります。今後は新しい方法を考えようかなーと思ってます。</p>
 
 <p>おわり</p>
 
-<h2 id="おわび:fc7f6d91f62cb3ed962d8be11623fbc8">おわび</h2>
+<h2 id="おわび">おわび</h2>
 
 <p><blockquote class="twitter-tweet" lang="en"><p>お盆の間に学習ベースの声質変換のプログラム書く（宿題） <a href="https://twitter.com/hashtag/%E5%AE%A3%E8%A8%80?src=hash">#宣言</a></p>&mdash; 山本りゅういち (@r9y9) <a href="https://twitter.com/r9y9/statuses/366928228465655808">August 12, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
 
 <p>約1年かかりました……。本当に申し訳ありませんでした(´･_･`)</p>
 
-<h2 id="追記:fc7f6d91f62cb3ed962d8be11623fbc8">追記</h2>
+<h2 id="追記">追記</h2>
 
 <p>Twitterで教えてもらいました。トラジェクトリベースで学習も変換も行う研究もありました</p>
 
@@ -183,8 +183,8 @@ tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を�
 <hr />
 
 <ol>
-<li id="fn:fc7f6d91f62cb3ed962d8be11623fbc8:1">ただ、これはトラジェクトリベースのパラメータ生成法の提案であって、トラジェクトリモデル自体を学習してるわけではないんだよなー。普通に考えると学習もトラジェクトリで考える方法があっていい気がするが、 <del>まだ見てないですね。</del> ありました。追記参照
- <a class="footnote-return" href="#fnref:fc7f6d91f62cb3ed962d8be11623fbc8:1"><sup>[return]</sup></a></li>
+<li id="fn:1">ただ、これはトラジェクトリベースのパラメータ生成法の提案であって、トラジェクトリモデル自体を学習してるわけではないんだよなー。普通に考えると学習もトラジェクトリで考える方法があっていい気がするが、 <del>まだ見てないですね。</del> ありました。追記参照
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
 
