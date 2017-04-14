@@ -157,11 +157,6 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2014/02/04/ios-testing-tools/</loc>
-    <lastmod>2014-02-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</loc>
     <lastmod>2014-02-02T00:00:00+00:00</lastmod>
   </url>
@@ -174,11 +169,6 @@
   <url>
     <loc>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</loc>
     <lastmod>2014-01-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/12/23/emacs-sublime-text-like-theme/</loc>
-    <lastmod>2013-12-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -197,11 +187,6 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2013/11/16/start-using-jenkins/</loc>
-    <lastmod>2013-11-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</loc>
     <lastmod>2013-11-16T00:00:00+00:00</lastmod>
   </url>
@@ -209,11 +194,6 @@
   <url>
     <loc>http://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</loc>
     <lastmod>2013-11-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/10/27/qt-mediaplayer-demo/</loc>
-    <lastmod>2013-10-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -232,21 +212,6 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2013/10/15/signal-processing-library/</loc>
-    <lastmod>2013-10-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/10/03/blogger-to-github-pages/</loc>
-    <lastmod>2013-10-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/09/28/start-using-octopress/</loc>
-    <lastmod>2013-09-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</loc>
     <lastmod>2013-09-23T00:00:00+00:00</lastmod>
   </url>
@@ -257,38 +222,8 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2013/09/07/math-eng-ml-programming/</loc>
-    <lastmod>2013-09-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/08/12/bash-check-commend-existence/</loc>
-    <lastmod>2013-08-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/08/12/numpy-scipy-for-ubuntu/</loc>
-    <lastmod>2013-08-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/08/12/apt-commend-check/</loc>
-    <lastmod>2013-08-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/08/11/emacs-24-for-ubuntu12-04/</loc>
-    <lastmod>2013-08-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</loc>
     <lastmod>2013-08-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/08/03/mathjax-blogger/</loc>
-    <lastmod>2013-08-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -302,35 +237,8 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2013/07/27/blogger-custom/</loc>
-    <lastmod>2013-07-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/07/27/mig-ricty-font-install/</loc>
-    <lastmod>2013-07-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</loc>
     <lastmod>2013-07-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/blog/2013/07/27/nlp-ime-book-read/</loc>
-    <lastmod>2013-07-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/blogger/</loc>
-    <lastmod>2013-07-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/book/</loc>
-    <lastmod>2013-07-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -341,24 +249,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/daily/</loc>
     <lastmod>2013-11-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/daily-speech-signal-processing-music-signal-processing/</loc>
-    <lastmod>2013-10-15T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/emacs/</loc>
-    <lastmod>2013-12-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/font/</loc>
-    <lastmod>2013-07-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -401,18 +291,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/inverse-continous-wavelet-transform-wavelet-transform-signal-reconstruction-signal-processing/</loc>
     <lastmod>2013-10-21T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/ios-xcode-testing/</loc>
-    <lastmod>2014-02-04T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/jenkins/</loc>
-    <lastmod>2013-11-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -489,12 +367,6 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/mathjax-blogger/</loc>
-    <lastmod>2013-08-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/</loc>
     <lastmod>2013-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -503,12 +375,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/neural-network-rbm-machine-learning/</loc>
     <lastmod>2014-03-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/package-management/</loc>
-    <lastmod>2013-08-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -539,24 +405,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/python-scipy/</loc>
     <lastmod>2014-08-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/python-ubuntu/</loc>
-    <lastmod>2013-08-12T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/qt-media-player/</loc>
-    <lastmod>2013-10-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/shell-script/</loc>
-    <lastmod>2013-08-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
