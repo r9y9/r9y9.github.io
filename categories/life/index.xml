@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Life on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/life/index.xml</link>
+    <link>http://r9y9.github.io/categories/life/</link>
     <description>Recent content in Life on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/life/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 20 Aug 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/life/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>夏休みと人生</title>
@@ -14,18 +17,11 @@
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2014/08/20/life/</guid>
-      <description>&lt;p&gt;&lt;div align=&#34;center&#34;&gt;
-&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p&gt;&lt;a href=&#34;http://t.co/pm6uDKoAg6&#34;&gt;pic.twitter.com/pm6uDKoAg6&lt;/a&gt;&lt;/p&gt;&amp;mdash; ノッツ@ソラミちゃんの唄②発売中 (@knotscream) &lt;a href=&#34;https://twitter.com/knotscream/statuses/501511644359303168&#34;&gt;August 18, 2014&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-&lt;a href=&#34;http://snn.getnews.jp/archives/388418&#34;&gt;http://snn.getnews.jp/archives/388418&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;こんな夏休みを過ごしたい人生だったよ&lt;/p&gt;
-
-&lt;p&gt;p.s.&lt;/p&gt;
-
-&lt;p&gt;速攻でノッツさんフォローしました&lt;/p&gt;
-</description>
+      <description>pic.twitter.com/pm6uDKoAg6
+&amp;mdash; ノッツ@ソラミちゃんの唄②発売中 (@knotscream) August 18, 2014   http://snn.getnews.jp/archives/388418
+こんな夏休みを過ごしたい人生だったよ
+p.s.
+速攻でノッツさんフォローしました</description>
     </item>
     
   </channel>

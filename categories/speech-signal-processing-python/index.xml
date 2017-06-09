@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Signal Processing Python on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/speech-signal-processing-python/index.xml</link>
+    <link>http://r9y9.github.io/categories/speech-signal-processing-python/</link>
     <description>Recent content in Speech Signal Processing Python on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/speech-signal-processing-python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Sep 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/speech-signal-processing-python/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>pysptk: SPTKのpythonラッパーを作った (part 2)</title>
@@ -14,51 +17,14 @@
       <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2015/09/06/pysptk/</guid>
-      <description>
-
-&lt;p&gt;2015/09/05:&lt;/p&gt;
-
-&lt;div align=&#34;center&#34;&gt;
-&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://t.co/WFBmYEIVce&#34;&gt;https://t.co/WFBmYEIVce&lt;/a&gt; SPTKのpythonラッパー（マシなやつ）完成&amp;#10;ドキュメント &lt;a href=&#34;http://t.co/jYhw1y3Bzg&#34;&gt;http://t.co/jYhw1y3Bzg&lt;/a&gt;&amp;#10;pip install pysptk でインストールできるようになりました。pypi童貞捨てれた&lt;/p&gt;&amp;mdash; 山本りゅういち (@r9y9) &lt;a href=&#34;https://twitter.com/r9y9/status/639848868075560960&#34;&gt;September 4, 2015&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;p&gt;ずいぶん前に、swig遊びをしがてらpythonのラッパーを書いていたんですが、cythonを使って新しく作りなおしました。かなりパワーアップしました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pip install pysptk
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;でインストールできるので、よろしければどうぞ&lt;/p&gt;
-
-&lt;h2 id=&#34;なぜ作ったのか&#34;&gt;なぜ作ったのか&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;cythonとsphinxで遊んでたらできた&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
-
-&lt;p&gt;以下のデモを参考にどうぞ&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/pysptk/blob/51c103e5a7e9746c96cd78043df4e48fe2d6a3a8/examples/pysptk%20introduction.ipynb&#34;&gt;Introduction to pysptk&lt;/a&gt;: メル一般化ケプストラム分析とか&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/pysptk/blob/51c103e5a7e9746c96cd78043df4e48fe2d6a3a8/examples/Speech%20analysis%20and%20re-synthesis.ipynb&#34;&gt;Speech analysis and re-synthesis&lt;/a&gt;: 音声の分析・再合成のデモ。合成音声はnotebook上で再生できます&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;ドキュメント&#34;&gt;ドキュメント&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://pysptk.readthedocs.org&#34;&gt;http://pysptk.readthedocs.org&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;ぼやき&#34;&gt;ぼやき&lt;/h2&gt;
-
-&lt;p&gt;SPTKの関数、変な値入れるとexitしたりセグフォったりするので、ちゃんとテスト書いてほしいなあ&lt;/p&gt;
-
-&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/08/10/sptk-from-python/&#34;&gt;SPTKのPythonラッパーを書いた - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description> 2015/09/05:
+https://t.co/WFBmYEIVce SPTKのpythonラッパー（マシなやつ）完成&amp;#10;ドキュメント http://t.co/jYhw1y3Bzg&amp;#10;pip install pysptk でインストールできるようになりました。pypi童貞捨てれた
+&amp;mdash; 山本りゅういち (@r9y9) September 4, 2015   ずいぶん前に、swig遊びをしがてらpythonのラッパーを書いていたんですが、cythonを使って新しく作りなおしました。かなりパワーアップしました。
+pip install pysptk  でインストールできるので、よろしければどうぞ
+なぜ作ったのか  cythonとsphinxで遊んでたらできた  使い方 以下のデモを参考にどうぞ
+ Introduction to pysptk: メル一般化ケプストラム分析とか Speech analysis and re-synthesis: 音声の分析・再合成のデモ。合成音声はnotebook上で再生できます  ドキュメント http://pysptk.readthedocs.org
+ぼやき SPTKの関数、変な値入れるとexitしたりセグフォったりするので、ちゃんとテスト書いてほしいなあ
+関連  SPTKのPythonラッパーを書いた - LESS IS MORE  </description>
     </item>
     
     <item>
@@ -67,42 +33,17 @@
       <pubDate>Sun, 10 Aug 2014 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</guid>
-      <description>
-
-&lt;h2 id=&#34;2015-09-06-追記&#34;&gt;2015/09/06 追記&lt;/h2&gt;
-
-&lt;p&gt;ましなpythonラッパーを新しく作りました: &lt;a href=&#34;http://r9y9.github.io/blog/2015/09/06/pysptk/&#34;&gt;Pysptk: SPTKのpythonラッパーを作った (Part 2) - LESS IS MORE&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;2014-08-10-追記&#34;&gt;2014/08/10 追記&lt;/h2&gt;
-
-&lt;p&gt;ipython notebookによる簡単なチュートリアルを貼っておきます&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/SPTK/blob/master/notebook/SPTK%20calling%20from%20python.ipynb&#34;&gt;SPTK を Pythonから呼ぶ | nbviewer&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;2014-11-09&#34;&gt;2014/11/09&lt;/h2&gt;
-
-&lt;p&gt;タイポ修正しました…&lt;/p&gt;
-
-&lt;p&gt;scipy.mixture -&amp;gt; sklearn.mixture&lt;/p&gt;
-
-&lt;p&gt;SPTKの中で最も価値がある（と僕が思っている）メルケプストラム分析、メルケプストラムからの波形合成（MLSA filter）がpythonから可能になります。&lt;/p&gt;
-
-&lt;p&gt;ご自由にどうぞ&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK&#34;&gt;Speech Signal Processing Toolkit (SPTK) for API use with python | Github&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;注意ですが、&lt;code&gt;SPTK.h&lt;/code&gt;にある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？sklearn.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/&#34;&gt;Goで音声信号処理をしたいのでSPTKのGoラッパーを書く - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Goでも書いたのにPythonでも書いてしまった。&lt;/p&gt;
-
-&lt;p&gt;一年くらい前に元指導教員の先生と「Pythonから使えたらいいですよね」と話をしていました。先生、ようやく書きました。&lt;/p&gt;
-</description>
+      <description>2015/09/06 追記 ましなpythonラッパーを新しく作りました: Pysptk: SPTKのpythonラッパーを作った (Part 2) - LESS IS MORE
+2014/08/10 追記 ipython notebookによる簡単なチュートリアルを貼っておきます
+SPTK を Pythonから呼ぶ | nbviewer
+2014/11/09 タイポ修正しました…
+scipy.mixture -&amp;gt; sklearn.mixture
+SPTKの中で最も価値がある（と僕が思っている）メルケプストラム分析、メルケプストラムからの波形合成（MLSA filter）がpythonから可能になります。
+ご自由にどうぞ
+Speech Signal Processing Toolkit (SPTK) for API use with python | Github
+注意ですが、SPTK.hにある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？sklearn.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。
+参考  Goで音声信号処理をしたいのでSPTKのGoラッパーを書く - LESS IS MORE  Goでも書いたのにPythonでも書いてしまった。
+一年くらい前に元指導教員の先生と「Pythonから使えたらいいですよね」と話をしていました。先生、ようやく書きました。</description>
     </item>
     
   </channel>

@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Speech Signal Processing on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/go-speech-signal-processing/index.xml</link>
+    <link>http://r9y9.github.io/categories/go-speech-signal-processing/</link>
     <description>Recent content in Go Speech Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/go-speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Feb 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/go-speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Goで音声信号処理をしたいのでSPTKのGoラッパーを書く</title>
@@ -14,63 +17,15 @@
       <pubDate>Mon, 10 Feb 2014 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</guid>
-      <description>
-
-&lt;p&gt;2014/07/22 追記：&lt;br /&gt;
-パッケージの一部として書きました（&lt;a href=&#34;http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/&#34;&gt;GOSSP - Go言語で音声信号処理 - LESS IS MORE&lt;/a&gt;を参照）。
-SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ&lt;/p&gt;
-
-&lt;p&gt;&amp;ndash;&lt;/p&gt;
-
-&lt;p&gt;Goが最近オススメです（n度目&lt;/p&gt;
-
-&lt;p&gt;Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34;&gt;SPTK&lt;/a&gt; をGoから使えるようにする&lt;/p&gt;
-
-&lt;h2 id=&#34;cgo&#34;&gt;cgo&lt;/h2&gt;
-
-&lt;p&gt;GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う &lt;a href=&#34;http://golang.org/cmd/cgo/&#34;&gt;http://golang.org/cmd/cgo/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Cの関数や変数などには、 &lt;code&gt;C.&lt;/code&gt; でアクセスできる&lt;/p&gt;
-
-&lt;h2 id=&#34;ラッパー&#34;&gt;ラッパー&lt;/h2&gt;
-
-&lt;p&gt;例えば以下のように書く。MFCCの計算を例に上げる。必要に応じで&lt;code&gt;SPTK.h&lt;/code&gt;に定義されている関数をラップする&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package sptk
-
-// #cgo pkg-config: SPTK
-// #include &amp;lt;stdio.h&amp;gt;
-// #include &amp;lt;SPTK/SPTK.h&amp;gt;
-import &amp;quot;C&amp;quot;
-
-func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 {
-	// Convert go bool to C.Boolean (so annoying..
-	var dftmodeInGo, usehammingInGo C.Boolean
-	if dftmode {
-		dftmodeInGo = 1
-	} else {
-		dftmodeInGo = 0
-	}
-	if usehamming {
-		usehammingInGo = 1
-	} else {
-		usehammingInGo = 0
-	}
-
-	resultBuffer := make([]float64, m)
-	C.mfcc((*_Ctype_double)(&amp;amp;audioBuffer[0]), (*_Ctype_double)(&amp;amp;resultBuffer[0]), C.double(sampleRate), C.double(alpha), C.double(eps), C.int(wlng), C.int(flng), C.int(m), C.int(n), C.int(ceplift), dftmodeInGo, usehammingInGo)
-	return resultBuffer
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このパッケージを使う前に、 &lt;a href=&#34;https://github.com/r9y9/SPTK&#34;&gt;https://github.com/r9y9/SPTK&lt;/a&gt; を使ってSPTKをインストールする。本家のを使ってもいいですが、その場合は #cgo の設定が変わると思います。公式のSPTK、pkg-configに対応してくれんかな…&lt;/p&gt;
-
-&lt;p&gt;最初は、LDFLAGS つけ忘れてて、symbol not foundってなってつらまった。次回から気をつけよう&lt;/p&gt;
-
-&lt;p&gt;SPTKの、特に（メル）ケプストラム分析当たりは本当に難しいので、論文読んで実装するのも大変だし中身がわからなくてもラップする方が合理的、という結論に至りました。簡単なもの（例えば、メルケプからMLSA filterの係数への変換とか）は、依存関係を少なくするためにもGo nativeで書きなおした方がいいです&lt;/p&gt;
-
-&lt;p&gt;コードは気が向いたら上げる&lt;/p&gt;
-</description>
+      <description>2014/07/22 追記：
+パッケージの一部として書きました（GOSSP - Go言語で音声信号処理 - LESS IS MOREを参照）。 SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ
+&amp;ndash;
+Goが最近オススメです（n度目
+Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製のSPTK をGoから使えるようにする
+cgo GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う http://golang.org/cmd/cgo/
+Cの関数や変数などには、 C. でアクセスできる
+ラッパー 例えば以下のように書く。MFCCの計算を例に上げる。必要に応じでSPTK.hに定義されている関数をラップする
+package sptk // #cgo pkg-config: SPTK // #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;SPTK/SPTK.h&amp;gt; import &amp;quot;C&amp;quot; func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 { // Convert go bool to C.Boolean (so annoying.. var dftmodeInGo, usehammingInGo C.Boolean if dftmode { dftmodeInGo = 1 } else { dftmodeInGo = 0 } if usehamming { usehammingInGo = 1 } else { usehammingInGo = 0 } resultBuffer := make([]float64, m) C.</description>
     </item>
     
   </channel>

@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python Scipy on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/python-scipy/index.xml</link>
+    <link>http://r9y9.github.io/categories/python-scipy/</link>
     <description>Recent content in Python Scipy on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/python-scipy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 05 Aug 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/python-scipy/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Tokyo.Scipyに参加してきた</title>
@@ -14,48 +17,12 @@
       <pubDate>Tue, 05 Aug 2014 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</guid>
-      <description>
-
-&lt;h2 id=&#34;tokyo-scipy-https-github-com-tokyo-scipy-archive&#34;&gt;&lt;a href=&#34;https://github.com/tokyo-scipy/archive&#34;&gt;Tokyo.SciPy&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;ハッシュタグ: &lt;a href=&#34;https://twitter.com/search?q=%23tokyoscipy&amp;amp;src=tyah&#34;&gt;#tokyoscipy&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Tokyo.Scipy は科学技術計算で Python を利用するための勉強会です．&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;とのことです。最近、python/numpy/scipyによくお世話になっているので、参加してみました。雑感をメモしておきます。&lt;/p&gt;
-
-&lt;h2 id=&#34;tokyo-scipy-006-https-github-com-tokyo-scipy-archive-tree-master-006&#34;&gt;&lt;a href=&#34;https://github.com/tokyo-scipy/archive/tree/master/006&#34;&gt;Tokyo.Scipy 006&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;第6回のようでした。プログラムだけさっとまとめると、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;そこそこ大規模Python並列/パイプライン処理入門 w/o MapReduceレジーム (柏野雄太 @yutakashino) 45分&lt;/li&gt;
-&lt;li&gt;初心者が陥るN個の罠。いざ進めNumpy/Scipyの道 (@nezuq) 15分&lt;/li&gt;
-&lt;li&gt;Making computations reproducible (@fuzzysphere) 30分&lt;/li&gt;
-&lt;li&gt;IPython Notebookで始めるデータ分析と可視化 (杜世橋 @lucidfrontier45) 30分&lt;/li&gt;
-&lt;li&gt;PyMCがあれば，ベイズ推定でもう泣いたりなんかしない (神嶌敏弘 @shima__shima) 45分&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;という感じ。僕的には、@shima__shima 先生の発表が目当てだった&lt;/p&gt;
-
-&lt;h2 id=&#34;雑感&#34;&gt;雑感&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;今回（？）はscipyの話はほとんどなかった。pythonを使った科学技術計算に関する幅広いトピックを扱ってる印象。&lt;/li&gt;
-&lt;li&gt;ipython はやっぱ便利ですね。僕も良く使います&lt;/li&gt;
-&lt;li&gt;@shima__shima 先生の発表がとてもわかりやすかったので、本当に参考にしたい&lt;/li&gt;
-&lt;li&gt;正直もっとコアな話もあっていいのでは、と思った&lt;/li&gt;
-&lt;li&gt;懇親会で気づいたが、意外と音声信号処理やってる（た）人がいてびっくりした&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/scikit-learn/scikit-learn&#34;&gt;scikit-learn&lt;/a&gt; を初期の頃に作られてた方 &lt;a href=&#34;https://twitter.com/cournape&#34;&gt;@cournape&lt;/a&gt; がいてびっくり。開発当初はGMMとSVMくらいしかなくて全然ユーザーがつかなかったなどなど、裏話を色々聞けた&lt;/li&gt;
-&lt;li&gt;フランス人の「たぶん大丈夫」は絶対無理の意（わろた&lt;/li&gt;
-&lt;li&gt;Rust, juliaがいいと教えてもらった。うちjuliaは今やってみてるがなかなかいい&lt;/li&gt;
-&lt;li&gt;発表でも話題に上がったけど、Pandasがいいという話を聞いたので、試してみたい&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;運営の方々、発表された方々、ありがとうございました。僕も機会が合えば何か発表したい&lt;/p&gt;
-</description>
+      <description>Tokyo.SciPy ハッシュタグ: #tokyoscipy
+ Tokyo.Scipy は科学技術計算で Python を利用するための勉強会です．
+ とのことです。最近、python/numpy/scipyによくお世話になっているので、参加してみました。雑感をメモしておきます。
+Tokyo.Scipy 006 第6回のようでした。プログラムだけさっとまとめると、
+ そこそこ大規模Python並列/パイプライン処理入門 w/o MapReduceレジーム (柏野雄太 @yutakashino) 45分 初心者が陥るN個の罠。いざ進めNumpy/Scipyの道 (@nezuq) 15分 Making computations reproducible (@fuzzysphere) 30分 IPython Notebookで始めるデータ分析と可視化 (杜世橋 @lucidfrontier45) 30分 PyMCがあれば，ベイズ推定でもう泣いたりなんかしない (神嶌敏弘 @shima__shima) 45分  という感じ。僕的には、@shima__shima 先生の発表が目当てだった
+雑感  今回（？）はscipyの話はほとんどなかった。pythonを使った科学技術計算に関する幅広いトピックを扱ってる印象。 ipython はやっぱ便利ですね。僕も良く使います @shima__shima 先生の発表がとてもわかりやすかったので、本当に参考にしたい 正直もっとコアな話もあっていいのでは、と思った 懇親会で気づいたが、意外と音声信号処理やってる（た）人がいてびっくりした scikit-learn を初期の頃に作られてた方 @cournape がいてびっくり。開発当初はGMMとSVMくらいしかなくて全然ユーザーがつかなかったなどなど、裏話を色々聞けた フランス人の「たぶん大丈夫」は絶対無理の意（わろた Rust, juliaがいいと教えてもらった。うちjuliaは今やってみてるがなかなかいい 発表でも話題に上がったけど、Pandasがいいという話を聞いたので、試してみたい  運営の方々、発表された方々、ありがとうございました。僕も機会が合えば何か発表したい</description>
     </item>
     
   </channel>

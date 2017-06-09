@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Music Signal Processing Source Separation Matrix Factorization on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/index.xml</link>
+    <link>http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/</link>
     <description>Recent content in Music Signal Processing Source Separation Matrix Factorization on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 14 Sep 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>調波打楽器音分離（HPSS）を試す</title>
@@ -14,75 +17,16 @@
       <pubDate>Sat, 14 Sep 2013 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2013/09/14/hpss/</guid>
-      <description>
-
-&lt;h2 id=&#34;hpssとは-一行説明&#34;&gt;HPSSとは（一行説明）&lt;/h2&gt;
-
-&lt;p&gt;HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ&lt;/p&gt;
-
-&lt;p&gt;アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる&lt;/p&gt;
-
-&lt;h2 id=&#34;実装&#34;&gt;実装&lt;/h2&gt;
-
-&lt;p&gt;調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ&lt;/p&gt;
-
-&lt;div&gt;
-\begin{align}
-|H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
-\end{align}
-&lt;/div&gt;
-
-&lt;div&gt;
-\begin{align}
-|P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
-\end{align}
-&lt;/div&gt;
-
-&lt;p&gt;ただし&lt;/p&gt;
-
-&lt;div&gt;
-\begin{align}
-|W_{t,k}| = |H_{t,k}| + |P_{t,k}|
-\end{align}
-&lt;/div&gt;
-
-&lt;p&gt;絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。&lt;/p&gt;
-
-&lt;p&gt;HPSSの論文はたくさんあるけど、日本語でかつ丁寧な &lt;a href=&#34;http://ci.nii.ac.jp/naid/110007997346&#34;&gt;&amp;ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&amp;rdquo;&lt;/a&gt; を参考にした。&lt;/p&gt;
-
-&lt;p&gt;H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ&lt;/p&gt;
-
-&lt;p&gt;一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。&lt;/p&gt;
-
-&lt;h2 id=&#34;結果&#34;&gt;結果&lt;/h2&gt;
-
-&lt;p&gt;フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、&lt;a href=&#34;http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html&#34;&gt;歌もの音楽素材：歌入り素材系のフリー音楽素材一覧&lt;/a&gt; から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
-18秒目くらいからを比較すると効果がわかりやすいです&lt;/p&gt;
-
-&lt;h3 id=&#34;元音源&#34;&gt;元音源&lt;/h3&gt;
-
-&lt;iframe frameborder=&#34;no&#34; height=&#34;166&#34; scrolling=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442&#34; width=&#34;100%&#34;&gt;&lt;/iframe&gt;
-
-&lt;h3 id=&#34;hのみ取り出して再合成した音源&#34;&gt;Hのみ取り出して再合成した音源&lt;/h3&gt;
-
-&lt;iframe frameborder=&#34;no&#34; height=&#34;166&#34; scrolling=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534&#34; width=&#34;100%&#34;&gt;&lt;/iframe&gt;
-
-&lt;h3 id=&#34;pのみ取り出して再合成した音源&#34;&gt;Pのみ取り出して再合成した音源&lt;/h3&gt;
-
-&lt;iframe frameborder=&#34;no&#34; height=&#34;166&#34; scrolling=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599&#34; width=&#34;100%&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん&lt;/p&gt;
-
-&lt;p&gt;コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ&lt;/p&gt;
-
-&lt;p&gt;詳しくは論文へ（僕のじゃないけど&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://ci.nii.ac.jp/naid/110007997346&#34;&gt;橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &amp;ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&amp;rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>HPSSとは（一行説明） HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ
+アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる
+実装 調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ
+ \begin{align} |H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2} \end{align}   \begin{align} |P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2} \end{align}  ただし
+ \begin{align} |W_{t,k}| = |H_{t,k}| + |P_{t,k}| \end{align}  絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。
+HPSSの論文はたくさんあるけど、日本語でかつ丁寧な &amp;ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&amp;rdquo; を参考にした。
+H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ
+一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。
+結果 フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、歌もの音楽素材：歌入り素材系のフリー音楽素材一覧 から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。 18秒目くらいからを比較すると効果がわかりやすいです
+元音源  Hのみ取り出して再合成した音源  Pのみ取り出して再合成した音源  それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</description>
     </item>
     
   </channel>

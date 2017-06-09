@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julia Speech Signal Processing Machine Learning on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/index.xml</link>
+    <link>http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</link>
     <description>Recent content in Julia Speech Signal Processing Machine Learning on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Apr 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>JuliaTokyo #3 Speech Signal Processing in Julia</title>
@@ -14,74 +17,14 @@
       <pubDate>Sun, 26 Apr 2015 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;http://juliatokyo.connpass.com/event/13218/&#34;&gt;JuliaTokyo #3&lt;/a&gt;でLT発表してきました。前回の&lt;a href=&#34;http://juliatokyo.connpass.com/event/8010/&#34;&gt;JuliaTokyo #2&lt;/a&gt;でも発表したので、二回目でした。&lt;/p&gt;
-
-&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;
-
-&lt;div align=&#34;center&#34;&gt;
-&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/h4geMoK1msYqdY&#34; width=&#34;595&#34; height=&#34;485&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/ryuichiy/juliatokyo-3-speech-signal-processing-in-julia-47403938&#34; title=&#34;JuliaTokyo #3 Speech Signal Processing in Julia&#34; target=&#34;_blank&#34;&gt;JuliaTokyo #3 Speech Signal Processing in Julia&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/ryuichiy&#34; target=&#34;_blank&#34;&gt;Ryuichi YAMAMOTO&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/JuliaTokyo3&#34;&gt;https://github.com/r9y9/JuliaTokyo3&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;三行まとめ&#34;&gt;三行まとめ&lt;/h2&gt;
-
-&lt;p&gt;発表の内容を三行でまとめると、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;音声ファイルの読み込み（or 書き込み）は[WAV.jl]((&lt;a href=&#34;https://github.com/dancasimiro/WAV.jl)を使おう&#34;&gt;https://github.com/dancasimiro/WAV.jl)を使おう&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;基本的なデジタル信号処理は &lt;a href=&#34;https://github.com/JuliaDSP/DSP.jl&#34;&gt;JuliaDSP/DSP.jl&lt;/a&gt; をチェック（※JuliaDSPにはウェーブレットとかもあるよ）&lt;/li&gt;
-&lt;li&gt;音声に特化した信号処理は、&lt;a href=&#34;https://github.com/r9y9/WORLD.jl&#34;&gt;r9y9/WORLD.jl&lt;/a&gt; がオススメです&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;という感じです。&lt;/p&gt;
-
-&lt;p&gt;応用例として、歌声を分離する話（&lt;a href=&#34;https://github.com/r9y9/RobustPCA.jl&#34;&gt;デモコード&lt;/a&gt;）、統計的声質変換（&lt;a href=&#34;http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/&#34;&gt;統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE&lt;/a&gt;）、画像をスペクトログラムに足しこむ話とか、さっと紹介しました。&lt;/p&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;p&gt;僕が使う/作ったパッケージを、あとで見返せるように最後のスライドにまとめておいたのですが、改めてここで整理しておきます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/dancasimiro/WAV.jl&#34;&gt;dancasimiro/WAV&lt;/a&gt; WAVファイルの読み込み&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/JuliaDSP/DSP.jl&#34;&gt;JuliaDSP/DSP&lt;/a&gt; 窓関数、スペクトログラム、デジタルフィルタ&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/WORLD.jl&#34;&gt;r9y9/WORLD&lt;/a&gt; 音声分析・合成フレームワーク&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/MelGeneralizedCepstrums.jl&#34;&gt;r9y9/MelGeneralizedCepstrums&lt;/a&gt; メル一般化ケプストラム分析&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/SynthesisFilters.jl&#34;&gt;r9y9/SynthesisFilters&lt;/a&gt; メル一般化ケプストラムからの波形合成&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK.jl&#34;&gt;r9y9/SPTK&lt;/a&gt; 音声信号処理ツールキット&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/RobustPCA.jl&#34;&gt;r9y9/RobustPCA&lt;/a&gt; ロバスト主成分分析(歌声分離へ応用)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/REAPER.jl&#34;&gt;r9y9/REAPER&lt;/a&gt; 基本周波数推定&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/VoiceConversion.jl&#34;&gt;r9y9/VoiceConversion&lt;/a&gt; 統計的声質変換&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上から順に、&lt;del&gt;汎用的かなーと思います&lt;/del&gt;&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。僕が書いたパッケージの中では、&lt;strong&gt;WORLDのみ&lt;/strong&gt;公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。&lt;/p&gt;
-
-&lt;h2 id=&#34;ざっくり感想&#34;&gt;ざっくり感想&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;＃Juliaわからん 本当に素晴らしいと思うので、僕も積極的に #Juliaわからん とつぶやいていこうと思います（詳しくは &lt;a href=&#34;https://twitter.com/chezou&#34;&gt;@chezou&lt;/a&gt; さんの記事をどうぞ &lt;a href=&#34;http://chezou.hatenablog.com/entry/2015/04/26/222518&#34;&gt;#JuliaTokyo で #juliaわからん という雑なレポジトリを立てた話をしたら julia.tokyo ができてた  - once upon a time,&lt;/a&gt;）。僕は、Julia に Theano が欲しいです。&lt;code&gt;T.grad&lt;/code&gt; 強力すぎる&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ccall&lt;/code&gt; かんたんとか言いましたが、ミスった書き方をしたときのエラーメッセージはあまり親切ではないので、つまずきやすいかも。僕は気合で何とかしています。&lt;/li&gt;
-&lt;li&gt;Julia遅いんだけど？？？と言われたら、&lt;a href=&#34;https://twitter.com/bicycle1885&#34;&gt;@bicycle1885&lt;/a&gt; さんの &lt;a href=&#34;http://www.slideshare.net/KentaSato/whats-wrong-47403774&#34;&gt;What&amp;rsquo;s wrong with this Julia?&lt;/a&gt; を投げつけようと思います。&lt;/li&gt;
-&lt;li&gt;かなり聴衆が限定的になってしまう話をしてしまったので、次発表するならJulia 言語自体の話をしようかなと思いました&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://twitter.com/sorami&#34;&gt;@sorami&lt;/a&gt;さんを筆頭とする運営の方々、本当にありがとうございました！楽しかったです。&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34;&gt;とスライドに書いたけど、考えなおすと、僕が思う品質の高さ順、の方が正確です、失礼しました。MelGeneneralizedCepstrumsは一番気合入れて書いたけど、ユーザーがいるかといったらいないし、RobustPCAはさっと書いただけだけど、アルゴリズムとしては汎用的だし。またRobustPCAだけ毛色が違いますが、応用例で紹介したのでリストに入れておきました。
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-</description>
+      <description>JuliaTokyo #3でLT発表してきました。前回のJuliaTokyo #2でも発表したので、二回目でした。
+スライド   JuliaTokyo #3 Speech Signal Processing in Julia  from Ryuichi YAMAMOTO   コード https://github.com/r9y9/JuliaTokyo3
+三行まとめ 発表の内容を三行でまとめると、
+ 音声ファイルの読み込み（or 書き込み）は[WAV.jl]((https://github.com/dancasimiro/WAV.jl)を使おう 基本的なデジタル信号処理は JuliaDSP/DSP.jl をチェック（※JuliaDSPにはウェーブレットとかもあるよ） 音声に特化した信号処理は、r9y9/WORLD.jl がオススメです  という感じです。
+応用例として、歌声を分離する話（デモコード）、統計的声質変換（統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE）、画像をスペクトログラムに足しこむ話とか、さっと紹介しました。
+補足 僕が使う/作ったパッケージを、あとで見返せるように最後のスライドにまとめておいたのですが、改めてここで整理しておきます。
+ dancasimiro/WAV WAVファイルの読み込み JuliaDSP/DSP 窓関数、スペクトログラム、デジタルフィルタ r9y9/WORLD 音声分析・合成フレームワーク r9y9/MelGeneralizedCepstrums メル一般化ケプストラム分析 r9y9/SynthesisFilters メル一般化ケプストラムからの波形合成 r9y9/SPTK 音声信号処理ツールキット r9y9/RobustPCA ロバスト主成分分析(歌声分離へ応用) r9y9/REAPER 基本周波数推定 r9y9/VoiceConversion 統計的声質変換  上から順に、汎用的かなーと思います1。僕が書いたパッケージの中では、WORLDのみ公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。
+ざっくり感想  ＃Juliaわからん 本当に素晴らしいと思うので、僕も積極的に #Juliaわからん とつぶやいていこうと思います（詳しくは @chezou さんの記事をどうぞ #JuliaTokyo で #juliaわからん という雑なレポジトリを立てた話をしたら julia.</description>
     </item>
     
   </channel>

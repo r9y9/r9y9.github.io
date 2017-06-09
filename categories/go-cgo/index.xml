@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Cgo on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/go-cgo/index.xml</link>
+    <link>http://r9y9.github.io/categories/go-cgo/</link>
     <description>Recent content in Go Cgo on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/go-cgo/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Mar 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/go-cgo/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>cgo の基本的な使い方とポインタ周りのTips (Go v1.2)</title>
@@ -14,245 +17,21 @@
       <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</guid>
-      <description>
-
-&lt;p&gt;C/C++ライブラリのGoラッパーを書くためには、cgoというパッケージを使うのだけど、特にCのポインタ周りにハマりどころが多かったので、少しまとめとく&lt;/p&gt;
-
-&lt;p&gt;cgoの基礎については、以下の二つを読むことを推奨&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://golang.org/cmd/cgo/&#34;&gt;http://golang.org/cmd/cgo/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://code.google.com/p/go-wiki/wiki/cgo&#34;&gt;https://code.google.com/p/go-wiki/wiki/cgo&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい&lt;/p&gt;
-
-&lt;h2 id=&#34;cgo&#34;&gt;cgo&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Cgo enables the creation of Go packages that call C code.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://golang.org/cmd/cgo/&#34;&gt;http://golang.org/cmd/cgo/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;cgoとは、GoからCの関数/型にアクセスするために用いるパッケージのこと。cgoを使えば、GoからCのコードが呼べる。つまり、&lt;strong&gt;Cで書かれたライブラリが、Goでも再利用できる&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;なお、go v1.2 から、C++もサポートされている様子
-&lt;a href=&#34;http://golang.org/doc/go1.2#cgo_and_cpp&#34;&gt;http://golang.org/doc/go1.2#cgo_and_cpp&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &amp;ldquo;C&amp;rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べる&lt;/p&gt;
-
-&lt;h2 id=&#34;基本的な使い方&#34;&gt;基本的な使い方&lt;/h2&gt;
-
-&lt;p&gt;まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;import &amp;quot;C&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;import文のすぐ上のコメントにinclude &amp;lt;ヘッダ.h&amp;gt; と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書く&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;// #include &amp;lt;stdio.h&amp;gt;
-// #include &amp;lt;stdlib.h&amp;gt;
-import &amp;quot;C&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる&lt;/p&gt;
-
-&lt;h2 id=&#34;外部ライブラリを呼ぶ&#34;&gt;外部ライブラリを呼ぶ&lt;/h2&gt;
-
-&lt;p&gt;通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いので、そのような場合には、ライブラリの依存関係をgoのコードに記述する&lt;/p&gt;
-
-&lt;p&gt;cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができる&lt;/p&gt;
-
-&lt;p&gt;pkg-configを使うと 、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;// #cgo pkg-config: png cairo
-// #include &amp;lt;png.h&amp;gt;
-import &amp;quot;C&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;こんな感じ（&lt;a href=&#34;http://golang.org/cmd/cgo/&#34;&gt;Goの公式ページ&lt;/a&gt;から参照）&lt;/p&gt;
-
-&lt;h2 id=&#34;tips&#34;&gt;Tips&lt;/h2&gt;
-
-&lt;p&gt;さて、ここからTips。主に、&lt;a href=&#34;ml.cs.yamanashi.ac.jp/world/&#34;&gt;WORLD&lt;/a&gt;のGoラッパーを書いていたときに得た知見です。ラッパーは、&lt;a href=&#34;https://github.com/r9y9/go-world&#34;&gt;Github&lt;/a&gt;にあげた&lt;/p&gt;
-
-&lt;h2 id=&#34;1-goのスライスをcのポインタとして関数の引数に渡す&#34;&gt;1. GoのスライスをCのポインタとして関数の引数に渡す&lt;/h2&gt;
-
-&lt;p&gt;例えば、[]float64 -&amp;gt; double* のイメージ&lt;/p&gt;
-
-&lt;p&gt;これは比較的簡単にできる。以前qiitaにも書いた
-&lt;a href=&#34;http://qiita.com/r9y9/items/e6d879c9b7d4f2697593&#34;&gt;http://qiita.com/r9y9/items/e6d879c9b7d4f2697593&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;(*C.double)(&amp;amp;slice[0])
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;のようにキャストしてやればOK&lt;/p&gt;
-
-&lt;h2 id=&#34;2-goのスライスのスライスをcのポインタのポインタとして関数の引数に渡す&#34;&gt;2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す&lt;/h2&gt;
-
-&lt;p&gt;[][]float64 -&amp;gt; double** のようなイメージ&lt;/p&gt;
-
-&lt;p&gt;例として、worldから引っ張ってきた以下のようなCの関数を考える&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;void Star(double *x, int x_length, int fs, double *time_axis, double *f0,
-  int f0_length, double **spectrogram);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;**spectrogramには処理結果が格納される。もちろん処理結果はGoの型で扱いたいんだが、では&lt;strong&gt;**spectrogramにどうやってGoの型を渡すか？&lt;/strong&gt;ということが問題になる&lt;/p&gt;
-
-&lt;p&gt;doubleの二次元配列なので、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;s := [][]float64
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;というスライスのスライスを考えて、キャストして渡したいところだけど、結論から言うとこれはできない&lt;/p&gt;
-
-&lt;p&gt;ではどうするかというと、苦肉の策として、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;wspace := make([]*C.double, len(f0))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;というスライスを考えて、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;(**C.double)(&amp;amp;wspace[0])
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;とすれば、double**として関数の引数に渡すことができる。他にも方法がある気がするが、これでも期待通りの動作をする（あまりハックっぽいことしたくない…&lt;/p&gt;
-
-&lt;p&gt;まとめると、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;[][]float64 -&amp;gt; double**はできないが、&lt;/li&gt;
-&lt;li&gt;[]*C.double -&amp;gt; double**はできる。よって、一応Goの型をdouble**に渡すことはできる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;です。&lt;/p&gt;
-
-&lt;h2 id=&#34;3-ポインタのポインタからスライスのスライスへの変換&#34;&gt;3. ポインタのポインタからスライスのスライスへの変換&lt;/h2&gt;
-
-&lt;p&gt;double** -&amp;gt; [][]float64 のようなイメージ&lt;/p&gt;
-
-&lt;p&gt;Tipsその2の例より、Cの関数の処理が終われば**spectrogramにデータが格納される。もちろん処理結果はGoの型で扱いたいので、[][]float64 にしたい。ただし、先程の例では、Cの関数に渡した型は実際には []*C.doubleで、Cの型を含んでいる。&lt;/p&gt;
-
-&lt;p&gt;そこで、次に問題になるのは、&lt;strong&gt;[]*C.doubleにから[][]float64 に変換するにはどうするか？&lt;/strong&gt;ということ。そして、これも面倒です…（※節の頭でdouble** -&amp;gt; [][]float64と書いたけど、正確には []*C.double -&amp;gt; [][]float64）&lt;/p&gt;
-
-&lt;p&gt;結論から言えば、直接の変換は難しいけど中間変数をかませばできる&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;[]bytes型でtmp変数を作り、&lt;code&gt;C.GoBytes&lt;/code&gt; を使って*C.double -&amp;gt; []bytes にコピー&lt;/li&gt;
-&lt;li&gt;encoding/binaryパッケージを使って、[]bytes -&amp;gt; []float64 に書き込み&lt;/li&gt;
-&lt;li&gt;この処理をsliceOfSlices[0], sliceOfSlices[1], &amp;hellip; に対して繰り返す&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以上。とても面倒ですね…&lt;/p&gt;
-
-&lt;p&gt;さて、結局上のStarのラッパーは以下のようになった&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {
-	FFTSize := C.size_t(C.GetFFTSizeForStar(C.int(fs)))
-	numFreqBins := FFTSize/2 + 1
-
-	// Create workspace
-	wspace := make([]*C.double, len(f0))
-	for i := range wspace {
-		wspace[i] = (*C.double)(C.malloc(byteSizeOfFloat64 * numFreqBins))
-		defer C.free(unsafe.Pointer(wspace[i]))
-	}
-
-	// Perform star
-	C.Star((*C.double)(&amp;amp;x[0]),
-		C.int(len(x)),
-		C.int(fs),
-		(*C.double)(&amp;amp;timeAxis[0]),
-		(*C.double)(&amp;amp;f0[0]),
-		C.int(len(f0)),
-		(**C.double)(&amp;amp;wspace[0]))
-
-	// Copy to go slice
-	spectrogram := make([][]float64, len(f0))
-	for i := range spectrogram {
-		spectrogram[i] = CArrayToGoSlice(wspace[i], C.int(numFreqBins))
-	}
-
-	return spectrogram
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上で使っているutility function&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func CArrayToGoSlice(array *C.double, length C.int) []float64 {
-	slice := make([]float64, int(length))
-	b := C.GoBytes(unsafe.Pointer(array), C.int(byteSizeOfFloat64*length))
-	err := binary.Read(bytes.NewReader(b), binary.LittleEndian, slice)
-	if err != nil {
-		panic(err)
-	}
-	return slice
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;[]*C.double のスライスを作り、作業領域のメモリを確保する（Tips2の内容+メモリ確保）&lt;/li&gt;
-&lt;li&gt;[]*C.double のスライスをdouble** にキャストして、Cの関数を実行（Tips2の内容）&lt;/li&gt;
-&lt;li&gt;[]*C.double から[][]float64に変換する（Tips3の内容）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;という手順になってます&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;※2013/03/27 追記&lt;/strong&gt;
-:もっとシンプルかつ効率的（copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]*double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]*doubleから[][]float64に変換する必要はなかった。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {
-	FFTSize := C.size_t(C.GetFFTSizeForStar(C.int(fs)))
-	numFreqBins := C.size_t(FFTSize/2 + 1)
-
-	spectrogram := make([][]float64, len(f0))
-	for i := range spectrogram {
-		spectrogram[i] = make([]float64, numFreqBins)
-	}
-
-	spectrogramUsedInC := Make2DCArrayAlternative(spectrogram)
-
-	// Perform star
-	C.Star((*C.double)(&amp;amp;x[0]),
-		C.int(len(x)),
-		C.int(fs),
-		(*C.double)(&amp;amp;timeAxis[0]),
-		(*C.double)(&amp;amp;f0[0]),
-		C.int(len(f0)),
-		(**C.double)(&amp;amp;spectrogramUsedInC[0]))
-
-	return spectrogram
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;
-func Make2DCArrayAlternative(matrix [][]float64) []*C.double {
-	alternative := make([]*C.double, len(matrix))
-	for i := range alternative {
-		// DO NOT free because the source slice is managed by Go
-		alternative[i] = (*C.double)(&amp;amp;matrix[i][0])
-	}
-	return alternative
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ポインタのポインタを引数に取る関数のラップはめんどくさい&lt;/li&gt;
-&lt;li&gt;Goは使いやすいのに &lt;del&gt;cgoは使いにくい&lt;/del&gt;&lt;/li&gt;
-&lt;li&gt;cgoつらい&lt;/li&gt;
-&lt;li&gt;よりいい方法があれば教えて下さい&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;2014-08-10-追記&#34;&gt;2014/08/10 追記&lt;/h2&gt;
-
-&lt;p&gt;cgo使いにくいと書いたけど、あとから考えてみればcgoさんまじ使いやすかったです（遅い&lt;/p&gt;
-
-&lt;p&gt;Juliaのccallはもっと使いやすい。&lt;/p&gt;
-</description>
+      <description>C/C++ライブラリのGoラッパーを書くためには、cgoというパッケージを使うのだけど、特にCのポインタ周りにハマりどころが多かったので、少しまとめとく
+cgoの基礎については、以下の二つを読むことを推奨
+ http://golang.org/cmd/cgo/ https://code.google.com/p/go-wiki/wiki/cgo  この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい
+cgo  Cgo enables the creation of Go packages that call C code.
+ http://golang.org/cmd/cgo/
+cgoとは、GoからCの関数/型にアクセスするために用いるパッケージのこと。cgoを使えば、GoからCのコードが呼べる。つまり、Cで書かれたライブラリが、Goでも再利用できる。
+なお、go v1.2 から、C++もサポートされている様子 http://golang.org/doc/go1.2#cgo_and_cpp
+ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &amp;ldquo;C&amp;rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べる
+基本的な使い方 まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う
+import &amp;quot;C&amp;quot;  import文のすぐ上のコメントにinclude &amp;lt;ヘッダ.h&amp;gt; と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書く
+// #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;stdlib.h&amp;gt; import &amp;quot;C&amp;quot;  これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる
+外部ライブラリを呼ぶ 通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いので、そのような場合には、ライブラリの依存関係をgoのコードに記述する
+cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができる
+pkg-configを使うと 、
+// #cgo pkg-config: png cairo // #include &amp;lt;png.h&amp;gt; import &amp;quot;C&amp;quot;  こんな感じ（Goの公式ページから参照）</description>
     </item>
     
   </channel>

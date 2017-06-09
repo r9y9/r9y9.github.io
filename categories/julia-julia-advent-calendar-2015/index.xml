@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julia Julia Advent Calendar 2015 on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/index.xml</link>
+    <link>http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</link>
     <description>Recent content in Julia Julia Advent Calendar 2015 on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 22 Dec 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</title>
@@ -14,234 +17,16 @@
       <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</guid>
-      <description>
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/opencvjl_demo.jpg &#34;OpenCV.jl based on Cxx.jl&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2015/julialang&#34;&gt;Julia Advent Calendar 2015&lt;/a&gt; 22日目の記事です。&lt;/p&gt;
-
-&lt;p&gt;Julia の C++ FFI (Foreign Function Interface) である &lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;Cxx.jl&lt;/a&gt; をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。
-Cxx.jl の動作原理については、僕の理解が不十分なため簡単にしか紹介できませんが、そもそも使ったことがある人が稀だと思われるので、感想程度でも役に立てば幸いです。&lt;/p&gt;
-
-&lt;h2 id=&#34;cxx-jl-とは&#34;&gt;Cxx.jl とは&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34;&gt;https://github.com/Keno/Cxx.jl&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;簡単に説明すると、Cxx.jl とは、Julia から C++ を使用する（e.g. 関数呼び出し、メソッド呼び出し、メンバ変数へのアクセス、etc) ための機能を提供するパッケージです。C++のライブラリを活用したい、あるいはパフォーマンスがシビアな箇所で一部 C++ 使いたい（Cインタフェースを作りたくない&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;）、といった場合に便利です。&lt;/p&gt;
-
-&lt;p&gt;Cxx.jl の原理についてざっくりといえば、clang を用いて C++ から LLVM IR を生成し、llvmcall を用いて（Just in time に）コードを実行する、という方式のようです&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード（+コメント）を、Cxx.jl を使うと何ができるのか知りたい場合は、Cxx.jl の README を御覧ください。&lt;/p&gt;
-
-&lt;p&gt;以下、過去を思い出しながら感想を書いてみます&lt;/p&gt;
-
-&lt;h2 id=&#34;実際に使う前に&#34;&gt;実際に使う前に&lt;/h2&gt;
-
-&lt;h3 id=&#34;pkg-build-cxx-を成功させることが困難&#34;&gt;Pkg.build(&amp;ldquo;Cxx&amp;rdquo;) を成功させることが困難&lt;/h3&gt;
-
-&lt;p&gt;そもそも使いはじめる前に、ビルドすることが困難でした。Cxx.jl を動作させるためには、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;julia&lt;/li&gt;
-&lt;li&gt;llvm&lt;/li&gt;
-&lt;li&gt;clang&lt;/li&gt;
-&lt;li&gt;lldb&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;の開発版が必要ですが、ビルドが難しい大きな原因は、動作することが保証された&lt;strong&gt;明確な revision が存在しない&lt;/strong&gt;ことにあります。（なんじゃそれ、と思うかもしれませんが、まぁまだ安定版はリリースされていないので、、）&lt;/p&gt;
-
-&lt;p&gt;今でこそ、llvm, clang, lldbは、Keno氏の fork の kf/gallium ブランチ使えばいいよと README に書いてありますが、僕が使い始めた二ヶ月ほど前は、開発版のllvmが必要だよ、くらいにしか書いていませんでした（参考: &lt;a href=&#34;https://github.com/Keno/Cxx.jl/blob/3897e8720b683fe35e407f2128d14e41cec8e0dd/README.md&#34;&gt;Cxx.jl/README&lt;/a&gt;）。何度もllvmをビルドし直すのは、本当に苦行でした…&lt;/p&gt;
-
-&lt;p&gt;参考：
-&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;今日だけでllvmをn回ビルドしてる（ビルドできたとは言ってない&lt;/p&gt;&amp;mdash; 山本りゅういち (@r9y9) &lt;a href=&#34;https://twitter.com/r9y9/status/655000313112367104&#34;&gt;October 16, 2015&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;思考停止の様子：
-&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;make -C deps clean-llvm &amp;amp; make -j4&lt;/p&gt;&amp;mdash; 山本りゅういち (@r9y9) &lt;a href=&#34;https://twitter.com/r9y9/status/670571501658251264&#34;&gt;November 28, 2015&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;cxx-jl-のビルドはどうするのが一番簡単なのか&#34;&gt;Cxx.jl のビルドはどうするのが一番簡単なのか&lt;/h3&gt;
-
-&lt;p&gt;さて、さらっと書きましたが、今では llvm, clang, lldb　のkf/gallium　ブランチを使えば、比較的簡単に、多少の試行錯誤&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; で Cxx.jl をビルドして使えます。&lt;/p&gt;
-
-&lt;h3 id=&#34;開発版-llvm-と一緒に-julia-をビルドする&#34;&gt;開発版 llvm と一緒に Julia をビルドする&lt;/h3&gt;
-
-&lt;p&gt;Juliaをクローンしたディレクトリで、以下の様な &lt;code&gt;Make.user&lt;/code&gt; ファイルを作成して make します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;override LLDB_VER=master
-override LLVM_VER=svn
-override LLVM_ASSERTIONS=1
-override BUILD_LLVM_CLANG=1
-override BUILD_LLDB=1
-override USE_LLVM_SHLIB=1
-override LLDB_DISABLE_PYTHON=1
-
-override LLVM_GIT_URL_LLVM=https://github.com/JuliaLang/llvm.git
-override LLVM_GIT_URL_LLDB=https://github.com/JuliaLang/lldb.git
-override LLVM_GIT_URL_CLANG=https://github.com/JuliaLang/clang.git
-override LLVM_GIT_VER=kf/gallium
-override LLVM_GIT_VER_LLDB=kf/gallium
-override LLVM_GIT_VER_CLANG=kf/gallium
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;一部、LLVM_ASSERSONS を有効にするなど、必ずしも必須でないものも含まれていますが、こちらが現状の推奨のようです。この設定で、僕はubuntu 14.04, osx 10.10 でビルドが通ることを確認しました&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;注意：すでに llvm や clang がローカルにクローン済の場合、&lt;code&gt;deps/srccache&lt;/code&gt; 以下からクローン済みのソースを消してからビルドすることをおすすめします。すでにクローンされていて、upstream  の変更を取り入れたい場合は、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;make -C deps update-llvm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;とすると便利です。&lt;/p&gt;
-
-&lt;h3 id=&#34;cxx-jl-のインストール&#34;&gt;Cxx.jl のインストール&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;Pkg.clone(&amp;quot;https://github.com/Keno/Cxx.jl.git&amp;quot;)
-Pkg.build(&amp;quot;Cxx&amp;quot;)   
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;エラーがでなければ、インストール完了&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;です。&lt;/p&gt;
-
-&lt;h2 id=&#34;実際に使ってみたあと&#34;&gt;実際に使ってみたあと&lt;/h2&gt;
-
-&lt;p&gt;さて、ようやくビルドもできて、ここからは使ってしばらくしての感想です。&lt;/p&gt;
-
-&lt;h3 id=&#34;julia-上で-c-の-syntax-がそのまま使える&#34;&gt;Julia 上で C++ の syntax がそのまま使える&lt;/h3&gt;
-
-&lt;p&gt;まず、簡単に Cxx.jl の機能を挙げると、重要なのは&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;cxx&amp;quot;...&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;icxx&amp;quot;...&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;@cxx&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;の三つです。以下、簡単に例をあげると、&lt;code&gt;cxx&amp;quot;...&amp;quot;&lt;/code&gt; でC++ syntax を評価して：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;cxx&amp;quot;#include &amp;lt;iostream&amp;gt;&amp;quot;
-
-cxx&amp;quot;&amp;quot;&amp;quot;
-namespace test {
-void f() {
-    std::cout &amp;lt;&amp;lt; &amp;quot;Hello C++&amp;quot; &amp;lt;&amp;lt; std::endl;
-}
-}
-&amp;quot;&amp;quot;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;@cxx&lt;/code&gt; マクロで C++ 関数を呼び出す：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;@cxx test::f()  # Hello C++
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;cxx&amp;quot;...&amp;quot;&lt;/code&gt;はグローバルスコープで評価されますが、&lt;code&gt;icxx&amp;quot;...&amp;quot;&lt;/code&gt; を使えば、特定のスコープ内で C++ を使用することもできます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;for i in 1:10
-    icxx&amp;quot;&amp;quot;&amp;quot;std::cout &amp;lt;&amp;lt; $i &amp;lt;&amp;lt; std::endl;&amp;quot;&amp;quot;&amp;quot;
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;ccall&lt;/code&gt; のように、返り値、引数の型などを指定して実行するのではなく、C++ のsyntax をそのまま使ってコードが書ける、という点にびっくりしました。&lt;/p&gt;
-
-&lt;h3 id=&#34;template-も使える&#34;&gt;template も使える&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;cxx&amp;quot;&amp;quot;&amp;quot;
-template &amp;lt;typename T&amp;gt;
-T add(T x, T y) { return x + y; }
-&amp;quot;&amp;quot;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;こんな感じで特殊化も可能&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;cxx&amp;quot;&amp;quot;&amp;quot;
-template &amp;lt;&amp;gt;
-int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
-&amp;quot;&amp;quot;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;書いてて気付きましたが、README には template について言及されていませんね。僕は、今のところ問題なく使えています。例には出していませんが、template class ももちろん使えます（例. &lt;code&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt;）。&lt;/p&gt;
-
-&lt;h3 id=&#34;その他雑記&#34;&gt;その他雑記&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Cxx.jl で使える C++ には制約がある（はず）だが、ここ二ヶ月使用した限りでは、大きな制約に出会ってないし、快適&lt;/li&gt;
-&lt;li&gt;共有ライブラリの呼び出しは、&lt;code&gt;ccall&lt;/code&gt; と違ってライブラリだけでなくヘッダーファイルも必要&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;using Cxx&lt;/code&gt; にはけっこう時間がかかる。僕の環境では約15秒だった&lt;/li&gt;
-&lt;li&gt;たまに llvm error を吐いて落ちる。デバッグするには llvm, clang についてある程度知識がないと難しそう&lt;/li&gt;
-&lt;li&gt;C++ REPL 便利&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;という感じですかね。書き進むに連れて適当になってすいません、、、&lt;/p&gt;
-
-&lt;h2 id=&#34;cxx-jl-を使って作った成果物&#34;&gt;Cxx.jl を使って作った成果物&lt;/h2&gt;
-
-&lt;p&gt;まとめに入る前に、Cxx.jl を使って遊ぶ過程で作った成果物を、簡単なコメント付きで紹介します。&lt;/p&gt;
-
-&lt;h3 id=&#34;opencv-jl&#34;&gt;OpenCV.jl&lt;/h3&gt;
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/video_thresholding.gif &#34;OpenCV.jl demo&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/OpenCV.jl&#34;&gt;https://github.com/r9y9/OpenCV.jl&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Cxx.jl の学習の題材として作りました。途中から cv::Mat 周りを真面目に作り始めたので、それなりに使えると思います。&lt;/p&gt;
-
-&lt;p&gt;デザインポリシーとして、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;cv::Mat を &lt;code&gt;AbstractArray{T,N}&lt;/code&gt; の subtype として Julia ライクに使えること&lt;/li&gt;
-&lt;li&gt;cv::Mat と Julia の Array の相互変換をサポートすること&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;を念頭において作りました。&lt;/p&gt;
-
-&lt;h3 id=&#34;libfreenect2-jl&#34;&gt;LibFreenect2.jl&lt;/h3&gt;
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/depth_streaming_example.gif &#34;LibFreenect2.jl demo&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/LibFreenect2.jl&#34;&gt;https://github.com/r9y9/LibFreenect2.jl&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;ちょうど仕事で kinect v2 を触っていたので、遊びがてらやってみました。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Cxx.jl をビルドするのはけっこう面倒ですが、C++を（主観ですが）ほとんど不自由なくJITライクに使えるので、非常に便利です&lt;/li&gt;
-&lt;li&gt;二つほど C++ ライブラリのラッパーを作ってみましたが、簡単にできるので、みなさんもお試しあれ&lt;/li&gt;
-&lt;li&gt;レッツ・トライ Cxx.jl！&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;おまけ&#34;&gt;おまけ&lt;/h2&gt;
-
-&lt;p&gt;現在 Julia community では、llvm 3.3 から llvm 3.7.1 に移行しようとする動きがあるので（ref: &lt;a href=&#34;https://github.com/JuliaLang/julia/issues/9336&#34;&gt;julia/issues/9336&lt;/a&gt;, &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/14430&#34;&gt;julia/pull/14430&lt;/a&gt;）、移行後は、もう少しビルドが楽になるかもしれません。&lt;/p&gt;
-
-&lt;p&gt;実は、この記事を読んでも、きっと今は　Cxx.jl をビルドできないんじゃないかなと思うんですが、もしどうしてもビルドしたい、ということであれば、僕のローカルの llvm, clang, lldb, julia の revision を調べて教えるので、言ってください。&lt;/p&gt;
-
-&lt;h3 id=&#34;2015-12-28-追記&#34;&gt;2015/12/28 追記&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://qiita.com/r9y9/items/37633ed37e22612b5224&#34;&gt;Cxx.jl を動作させるための julia, llvm, clang, lldb のコミットハッシュ | qiita&lt;/a&gt;&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34;&gt;例えば template を多用している場合、Cインタフェースを作るのは面倒です
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:2&#34;&gt;※正確に理解していないため、あまり宛てにしないでください）
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:3&#34;&gt;多少の試行錯誤、というのは、Julia と Cxx.jl のリビジョンは、経験的には必ずしも（特にJuliaの）masterで動作しないので、Julia と Cxx.jl を master から少し遡って、ビルドできるか試行錯誤する、という意味です
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:4&#34;&gt;ビルドが通ったことがある、の方が正確ですが
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:5&#34;&gt;なお、現状のJulia masterとCxx.jl masterでは、エラーが出ると踏んでおります、、、
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-</description>
+      <description>はじめに Julia Advent Calendar 2015 22日目の記事です。
+Julia の C++ FFI (Foreign Function Interface) である Cxx.jl をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。 Cxx.jl の動作原理については、僕の理解が不十分なため簡単にしか紹介できませんが、そもそも使ったことがある人が稀だと思われるので、感想程度でも役に立てば幸いです。
+Cxx.jl とは https://github.com/Keno/Cxx.jl
+簡単に説明すると、Cxx.jl とは、Julia から C++ を使用する（e.g. 関数呼び出し、メソッド呼び出し、メンバ変数へのアクセス、etc) ための機能を提供するパッケージです。C++のライブラリを活用したい、あるいはパフォーマンスがシビアな箇所で一部 C++ 使いたい（Cインタフェースを作りたくない1）、といった場合に便利です。
+Cxx.jl の原理についてざっくりといえば、clang を用いて C++ から LLVM IR を生成し、llvmcall を用いて（Just in time に）コードを実行する、という方式のようです2
+Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード（+コメント）を、Cxx.jl を使うと何ができるのか知りたい場合は、Cxx.jl の README を御覧ください。
+以下、過去を思い出しながら感想を書いてみます
+実際に使う前に Pkg.build(&amp;ldquo;Cxx&amp;rdquo;) を成功させることが困難 そもそも使いはじめる前に、ビルドすることが困難でした。Cxx.jl を動作させるためには、
+ julia llvm clang lldb  の開発版が必要ですが、ビルドが難しい大きな原因は、動作することが保証された明確な revision が存在しないことにあります。（なんじゃそれ、と思うかもしれませんが、まぁまだ安定版はリリースされていないので、、）
+今でこそ、llvm, clang, lldbは、Keno氏の fork の kf/gallium ブランチ使えばいいよと README に書いてありますが、僕が使い始めた二ヶ月ほど前は、開発版のllvmが必要だよ、くらいにしか書いていませんでした（参考: Cxx.</description>
     </item>
     
     <item>
@@ -250,149 +35,14 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
       <pubDate>Tue, 08 Dec 2015 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
-      <description>
-
-&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2015/julialang&#34;&gt;Julia Advent Calendar 2015&lt;/a&gt; 8日目の記事です。&lt;/p&gt;
-
-&lt;p&gt;この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。&lt;/p&gt;
-
-&lt;p&gt;記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。&lt;/p&gt;
-
-&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
-
-&lt;p&gt;新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。&lt;/p&gt;
-
-&lt;h3 id=&#34;a&#34;&gt;A&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function f()
-    x = (1.0 + 2.0)::Int
-    return x
-end
-
-f()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;b&#34;&gt;B&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function g()
-    x::Int = (1.0 + 2.0)
-    return x
-end
-
-g()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。&lt;/p&gt;
-
-&lt;p&gt;この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。&lt;/p&gt;
-
-&lt;h2 id=&#34;a-値に対する-type-annotation&#34;&gt;A: 値に対する type annotation&lt;/h2&gt;
-
-&lt;p&gt;Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「&lt;code&gt;(1.0 + 2.0)&lt;/code&gt; という式を評価した値は、Int 型であることを保証する」となります。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;(1.0 + 2.0)&lt;/code&gt; を評価した値は &lt;code&gt;3.0&lt;/code&gt; であり、 Float64の型を持ちます。したがって &lt;code&gt;Float64 != Int&lt;/code&gt; であるため、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ERROR: TypeError: typeassert: expected Int64, got Float64
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;のような typeassert のエラーが吐かれます。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;(1.0 + 2.0)&lt;/code&gt;を評価した値の型は一見して明らかため、実用的な例ではありませんが、例えば関数の返り値の型は一見してわからないことがあるので、例えば以下のような書き方は有用な場合もあると思います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;x = f(y)::Int
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;b-変数に対する-type-annotation&#34;&gt;B: 変数に対する type annotation&lt;/h2&gt;
-
-&lt;p&gt;Bの2行目では、変数に対して type annotation をしています。同じく日本語で説明すると、「&lt;code&gt;x&lt;/code&gt;という変数に入る値は、Int 型であることを保証する」となります。また、値に対する annotation とは異なり&lt;strong&gt;スコープ&lt;/strong&gt;を持ちます。&lt;/p&gt;
-
-&lt;p&gt;前述したとおり、&lt;code&gt;(1.0 + 2.0)&lt;/code&gt; を評価した値は &lt;code&gt;3.0&lt;/code&gt; であり、Float64の型を持ちます。一方で、&lt;code&gt;x&lt;/code&gt; は Int型の値を持つ変数として宣言されているため、この場合、Float64型である &lt;code&gt;(1.0 + 2.0)&lt;/code&gt; を、Int 型に変換するような処理が&lt;strong&gt;暗黙的に&lt;/strong&gt;行われます。したがって、変換可能な場合には（B の例がそうです）、エラーは起きません。暗黙的に処理が行われるというのは、知らないと予期せぬバグに遭遇することになるため、気をつける必要があります。&lt;/p&gt;
-
-&lt;p&gt;では、変数に対する type annotation はどのような場合に使うかというと、あるスコープの範囲で、代入によって変数の型が変わってしまうのを防ぐために使います。ある変数の型がスコープの範囲で不変というのはコンパイラにとっては嬉しい事で、パフォーマンスの向上に繋がります。Performance tips にもありますね（参考: &lt;a href=&#34;http://docs.julialang.org/en/release-0.4/manual/performance-tips/#avoid-changing-the-type-of-a-variable&#34;&gt;Performance tips / Avoid changing the type of a variable&lt;/a&gt;）&lt;/p&gt;
-
-&lt;h2 id=&#34;違いまとめ&#34;&gt;違いまとめ&lt;/h2&gt;
-
-&lt;p&gt;ここまでの話から、違いをまとめると、以下のようになります。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type annotation の種類&lt;/th&gt;
-&lt;th&gt;typeassert error　&lt;/th&gt;
-&lt;th&gt;暗黙的な型変換　&lt;/th&gt;
-&lt;th&gt;スコープ　&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;値に対する type annotation&lt;/td&gt;
-&lt;td&gt;あり&lt;/td&gt;
-&lt;td&gt;なし&lt;/td&gt;
-&lt;td&gt;なし&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;変数に対する type annotation 　&lt;/td&gt;
-&lt;td&gt;なし&lt;/td&gt;
-&lt;td&gt;あり&lt;/td&gt;
-&lt;td&gt;あり&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
-
-&lt;p&gt;type annotation を使うときは、値と変数に対する annotation の違いを意識して、使い分けましょう&lt;/p&gt;
-
-&lt;h2 id=&#34;問題の解答&#34;&gt;問題の解答&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;A: typeassert に引っかかり、TypeError が吐かれる&lt;/li&gt;
-&lt;li&gt;B: Int 型の 3 が返り値として得られる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;おまけ問題&#34;&gt;おまけ問題&lt;/h2&gt;
-
-&lt;h3 id=&#34;1&#34;&gt;1&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function h()
-    x::UInt8 = UInt8(0)
-    x = Float64(0.0)
-    x
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;# なんと表示されるでしょうか？
-println(typeof(h()))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;2&#34;&gt;2&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;function s()
-    x::Int = Float64(0)
-    x = UInt8(0)
-    x = Float32(0.5)
-    x
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;# なんと表示されるでしょうか？
-s()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;解答は、各自REPLで実行して確認してみてください。長々と読んでくださりありがとうございました。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://docs.julialang.org/en/release-0.4/manual/types/?highlight=typeassert#type-declarations&#34;&gt;公式ドキュメント / Type Declarations&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>はじめに Julia Advent Calendar 2015 8日目の記事です。
+この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。
+記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。
+問題 新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。
+A function f() x = (1.0 + 2.0)::Int return x end f()  B function g() x::Int = (1.0 + 2.0) return x end g()  なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。
+この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。
+A: 値に対する type annotation Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「(1.0 + 2.0) という式を評価した値は、Int 型であることを保証する」となります。
+(1.0 + 2.0) を評価した値は 3.</description>
     </item>
     
   </channel>

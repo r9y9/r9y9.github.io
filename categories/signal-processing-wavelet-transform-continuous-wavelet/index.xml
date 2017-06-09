@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Signal Processing Wavelet Transform Continuous Wavelet on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/index.xml</link>
+    <link>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</link>
     <description>Recent content in Signal Processing Wavelet Transform Continuous Wavelet on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <atom:link href="http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 01 Jun 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG</title>
@@ -14,90 +17,19 @@
       <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</guid>
-      <description>
-
-&lt;p&gt;「ウェーブレット変換って難しいんじゃ…マザーウェーブレット？よくわかんない…」&lt;/p&gt;
-
-&lt;p&gt;大丈夫、そんな人には以下の文献がお勧めです&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34;&gt;Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;前置きはさておき、上の文献を参考にMorlet, Paul, DOG (Derivative of Gaussian) の代表的な3つのマザーウェーブレットで音声に対してウェーブレット変換をしてみたので、メモがてら結果を貼っておく&lt;/p&gt;
-
-&lt;p&gt;図の横軸はサンプルで、縦軸は周波数Hz（対数目盛り）にした&lt;/p&gt;
-
-&lt;p&gt;マザーウェーブレットのパラメータは、Morletは $\omega_{0} = 6.0$、Paulは $M = 4$、DOGは $M = 6$&lt;/p&gt;
-
-&lt;p&gt;スケールは、min=55hzで、25cent毎に8オクターブ分取った※厳密には違うのでごめんなさい&lt;/p&gt;
-
-&lt;p&gt;分析に使った音声は、&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/&#34;&gt;逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE&lt;/a&gt; で使ったのと同じ&lt;/p&gt;
-
-&lt;h2 id=&#34;morlet&#34;&gt;Morlet&lt;/h2&gt;
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/morlet_6.png &#34;Morlet Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;paul&#34;&gt;Paul&lt;/h2&gt;
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/paul_4.png &#34;Paul Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;dog&#34;&gt;DOG&lt;/h2&gt;
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/dog_6.png &#34;DOG Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;p&gt;対数を取ると、以下のような感じ&lt;/p&gt;
-
-&lt;h2 id=&#34;morlet-1&#34;&gt;Morlet&lt;/h2&gt;
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/morlet_6_log.png &#34;Morlet Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;paul-1&#34;&gt;Paul&lt;/h2&gt;
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/paul_4_log.png &#34;Paul Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;dog-1&#34;&gt;DOG&lt;/h2&gt;
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/dog_6_log.png &#34;DOG Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;p&gt;Paulは時間解像度は高いけど周波数解像度はいまいちなので、音声とかには向かないのかなー。DOGはMorletとPaulの中間くらいの位置づけの様子。DOGはorderを上げればMorletっぽくなるけど、Morletの方がやっぱ使いやすいなーという印象。&lt;/p&gt;
-
-&lt;h2 id=&#34;スケールから周波数への変換&#34;&gt;スケールから周波数への変換&lt;/h2&gt;
-
-&lt;p&gt;実は今日まで知らなかったんだけど、マザーウェーブレットによっては時間領域でのスケールの逆数は必ずしも周波数領域での周波数に対応するとは限らないそう。というかずれる（詳細はPractical Guideの3.hを参照）。上で書いた厳密には違うというのは、これが理由。&lt;/p&gt;
-
-&lt;p&gt;ただし、スケールから周波数への変換はマザーウェーブレットから一意に決まるようなので、正しい周波数を求めることは可能。上に貼った図は、Practical Guideにしたがってスケールから周波数に変換している。&lt;/p&gt;
-
-&lt;p&gt;例えば、$f = \frac{1}{s}$となるようにスケールを与えていたとき、$\omega_0 = 6.0$のMorletを使ったウェーブレット変換の真の周波数は、&lt;/p&gt;
-
-&lt;div&gt;
-\begin{align}
-f&#39; &amp;= \frac{\omega_0 + \sqrt{2+\omega_{0}^2}}{4\pi s} \\
-&amp;= \frac{0.96801330919}{s} \\
-&amp;= 0.96801330919f
-\end{align}
-&lt;/div&gt; 
-
-&lt;p&gt;となる。
-$\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので今まで気づかなかった…&lt;/p&gt;
-
-&lt;p&gt;めんどくさい。これを知ってからちょっとウェーブレット嫌いになった。でもめげない&lt;/p&gt;
-
-&lt;p&gt;おわり&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34;&gt;Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.mark-bishop.net/signals/CWTReconstructionFactors.pdf&#34;&gt;Continuous Wavelet Transform Reconstruction Factors for Selected Wavelets&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.hulinks.co.jp/support/flexpro/v7/dataanalysis_cwt.html&#34;&gt;HULINKS | テクニカルサポート | FlexPro | 連続ウェーブレット変換 (CWT)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;前書いた記事&#34;&gt;前書いた記事&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/&#34;&gt;FFTを使った連続ウェーブレット変換の高速化 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/&#34;&gt;逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>「ウェーブレット変換って難しいんじゃ…マザーウェーブレット？よくわかんない…」
+大丈夫、そんな人には以下の文献がお勧めです
+Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.
+前置きはさておき、上の文献を参考にMorlet, Paul, DOG (Derivative of Gaussian) の代表的な3つのマザーウェーブレットで音声に対してウェーブレット変換をしてみたので、メモがてら結果を貼っておく
+図の横軸はサンプルで、縦軸は周波数Hz（対数目盛り）にした
+マザーウェーブレットのパラメータは、Morletは $\omega_{0} = 6.0$、Paulは $M = 4$、DOGは $M = 6$
+スケールは、min=55hzで、25cent毎に8オクターブ分取った※厳密には違うのでごめんなさい
+分析に使った音声は、逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE で使ったのと同じ
+Morlet  Paul  DOG  対数を取ると、以下のような感じ
+Morlet  Paul  DOG  Paulは時間解像度は高いけど周波数解像度はいまいちなので、音声とかには向かないのかなー。DOGはMorletとPaulの中間くらいの位置づけの様子。DOGはorderを上げればMorletっぽくなるけど、Morletの方がやっぱ使いやすいなーという印象。
+スケールから周波数への変換 実は今日まで知らなかったんだけど、マザーウェーブレットによっては時間領域でのスケールの逆数は必ずしも周波数領域での周波数に対応するとは限らないそう。というかずれる（詳細はPractical Guideの3.hを参照）。上で書いた厳密には違うというのは、これが理由。
+ただし、スケールから周波数への変換はマザーウェーブレットから一意に決まるようなので、正しい周波数を求めることは可能。上に貼った図は、Practical Guideにしたがってスケールから周波数に変換している。
+例えば、$f = \frac{1}{s}$となるようにスケールを与えていたとき、$\omega_0 = 6.0$のMorletを使ったウェーブレット変換の真の周波数は、</description>
     </item>
     
     <item>
@@ -106,123 +38,20 @@ $\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので�
       <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</guid>
-      <description>
-
-&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;http://r9y9.github.io/images/gabor_wavelet_nnmnkwii.png &#34;An example of Gabor Wavelet spectrogram (the original wav file is generated using Open Jalk)&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;そもそもウェーブレット変換って何&#34;&gt;そもそもウェーブレット変換って何&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/%E3%82%A6%E3%82%A7%E3%83%BC%E3%83%96%E3%83%AC%E3%83%83%E3%83%88%E5%A4%89%E6%8F%9B&#34;&gt;Jump to wikipedia&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、STFTでいう窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと&lt;/p&gt;
-
-&lt;h2 id=&#34;高速化の仕組み&#34;&gt;高速化の仕組み&lt;/h2&gt;
-
-&lt;p&gt;さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。&lt;/p&gt;
-
-&lt;p&gt;つまり、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;入力信号とマザーウェーブレットをそれぞれフーリエ変換する&lt;/li&gt;
-&lt;li&gt;掛け算する&lt;/li&gt;
-&lt;li&gt;逆フーリエ変換する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;というプロセスでウェーブレット変換を求めることができて、かつフーリエ変換にはFFTという高速なアルゴリズムが存在するので、計算を高速化できるという仕組み。まぁ原理としてはシンプルなんだけど以外と面倒くさい（気のせい？）。&lt;/p&gt;
-
-&lt;p&gt;色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です&lt;/p&gt;
-
-&lt;h2 id=&#34;a-practical-guide-to-wavelet-analysis-web-http-paos-colorado-edu-research-wavelets-pdf-http-paos-colorado-edu-research-wavelets-bams-79-01-0061-pdf&#34;&gt;A Practical Guide to Wavelet Analysis &lt;a href=&#34;http://paos.colorado.edu/research/wavelets/&#34;&gt;[web]&lt;/a&gt; &lt;a href=&#34;http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;結論から言えばここが一番わかりやすかった。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;実装よりで理論の解説がある&lt;/li&gt;
-&lt;li&gt;matlab/fortran のコードがある&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;がいいところ&lt;/p&gt;
-
-&lt;p&gt;基本的にはこれ読めばわかる。数学全然わからん俺でも読めた。特に、離散表現でのウェーブレットについても書かれているのは良い。連続ウェーブレットといっても、デジタル信号処理で扱う上では離散化しないといけないわけなので&lt;/p&gt;
-
-&lt;p&gt;さて、僕が参考にしたmatlabコードへの直リンクは以下&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/wave_matlab/wave_bases.m&#34;&gt;マザーウェーブレットの周波数応答の計算部分&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/wave_matlab/wavelet.m&#34;&gt;連続ウェーブレット変換の本体&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/wave_matlab/wavetest.m&#34;&gt;連続ウェーブレット変換のテストコード&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;その他、fortanコードなどいくつかあるので、それらはウェブサイトからどうぞ&lt;/p&gt;
-
-&lt;h2 id=&#34;matlab&#34;&gt;Matlab&lt;/h2&gt;
-
-&lt;p&gt;mathworksさんのwavelet toolboxのドキュメントもよかった。ここから上記のpracticalなんちゃらのリンクもある&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.mathworks.co.jp/jp/help/wavelet/gs/continuous-wavelet-transform.html&#34;&gt;Continuous Wavelet Transform&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.mathworks.co.jp/jp/help/wavelet/ref/cwtft.html&#34;&gt;Continuous wavelet transform using FFT algorithm&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.mathworks.co.jp/jp/help/wavelet/ref/icwtft.html&#34;&gt;Inverse CWT&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;コードは転がってないですね。まぁ有料なので&lt;/p&gt;
-
-&lt;h2 id=&#34;日本語でわかりやすいもの&#34;&gt;日本語でわかりやすいもの&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html&#34;&gt;C/C++言語でガボールウェーブレット変換により時間周波数解析を行うサンプルプログラム&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ここは本当に素晴らしい。何年か前にも参考にさせて頂きました。&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.hulinks.co.jp/support/flexpro/v7/dataanalysis_cwt.html&#34;&gt;連続ウェーブレット変換 (CWT) - FlexPro 7 日本語版サポート情報&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;日本語で丁寧に書かれてる。内容自体は、practicalなんちゃらと似ている&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.makino.ecei.tohoku.ac.jp/~aito/wavelet/&#34;&gt;東北大学 伊藤先生の講義資料&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;数少ない日本語でのウェーブレットに関する資料。ただし連続ウェーブレットについてはあんまり解説はない。C言語のサンプル付き&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;書籍&#34;&gt;書籍&lt;/h2&gt;
-
-&lt;p&gt;今回は調べてない。数年前にちょいちょい調べたことがあるけど忘れた&lt;/p&gt;
-
-&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://code.google.com/p/tspl/source/browse/trunk/include/cwt-impl.h?spec=svn2&amp;amp;r=2&#34;&gt;tspl Signal Processing Library in C++&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;連続ウェーブレット変換/逆変換のC++実装。細部までコードは追えてないけど、それっぽいコードがある（俺が読んだ記事とはマザーウェーブレットのnormalizationが違う気もする…&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://dsp.stackexchange.com/questions/10979/inverse-continuous-wavelet-transform-and-matlab&#34;&gt;Inverse Continuous Wavelet Transform and matlab - dsp StackExchange&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;逆連続ウェーブレット変換教えてーっていう質問。ここでpracticalなんちゃらを知った&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://staff.aist.go.jp/h.fujihara/voice_conversion/&#34;&gt;混合音中の歌声の声質変換手法&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ガチ技術。元産総研の藤原さんが研究開発したもの。&lt;a href=&#34;http://staff.aist.go.jp/m.goto/PAPER/SIGMUS201007fujihara.pdf&#34;&gt;論文(PDF)&lt;/a&gt;の方に少し説明がある。&lt;/li&gt;
-&lt;li&gt;声質変換でウェーブレット使うのは僕が知る限りではこれくらい&lt;/li&gt;
-&lt;li&gt;ちなみに結果めっちゃすごい&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
-
-&lt;p&gt;以上。ウェーブレット変換は難しいことがわかった（こなみ）。ウェーブレットの利点欠点については書かなかったけれど、音声や音楽を解析したい場合に、時間周波数解析によく用いられる短時間フーリエ解析よりもウェーブレット解析の方が望ましい場合は非常によくあると思っているので、ぜひもっと使われてほしいですね。作ってるライブラリには必ず入れます。&lt;/p&gt;
-
-&lt;h2 id=&#34;ちなみに&#34;&gt;ちなみに&lt;/h2&gt;
-
-&lt;p&gt;計算コストがそこまでボトルネックにならないなら、畳み込みでウェーブレット計算してもいいんじゃないかと思ってる。FFTを使う方法の場合、あるスケールパラメータに対する時間方向のウェーブレット変換係数を一気に求められても、あるシフトパラメータに対する周波数方向のウェーブレット変換係数（つまりある時間でのスペクトルのようなもの）は一気に求められない気がしている。つまり、STFTみたいな形でインクリメンタルにスペクトルは求めにくいんじゃないかってこと（少なくとも自明には思えない）。畳み込み計算するなら、間違いなくできるけど。このあたり理解がまだあやふやなので、間違ってる可能性大&lt;/p&gt;
-
-&lt;p&gt;さらにちなみに、僕が作ってたリアルタイムで動く自動伴奏システムは畳み込みでウェーブレット変換してたよ。ウェーブレットよりもアルゴリズムのほうがボトルネックになっていたので全然気にならなかった。参考まで&lt;/p&gt;
-</description>
+      <description>そもそもウェーブレット変換って何 Jump to wikipedia
+いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、STFTでいう窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと
+高速化の仕組み さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。
+つまり、
+ 入力信号とマザーウェーブレットをそれぞれフーリエ変換する 掛け算する 逆フーリエ変換する  というプロセスでウェーブレット変換を求めることができて、かつフーリエ変換にはFFTという高速なアルゴリズムが存在するので、計算を高速化できるという仕組み。まぁ原理としてはシンプルなんだけど以外と面倒くさい（気のせい？）。
+色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です
+A Practical Guide to Wavelet Analysis [web] [PDF] 結論から言えばここが一番わかりやすかった。
+ 実装よりで理論の解説がある matlab/fortran のコードがある  がいいところ
+基本的にはこれ読めばわかる。数学全然わからん俺でも読めた。特に、離散表現でのウェーブレットについても書かれているのは良い。連続ウェーブレットといっても、デジタル信号処理で扱う上では離散化しないといけないわけなので
+さて、僕が参考にしたmatlabコードへの直リンクは以下
+ マザーウェーブレットの周波数応答の計算部分 連続ウェーブレット変換の本体 連続ウェーブレット変換のテストコード  その他、fortanコードなどいくつかあるので、それらはウェブサイトからどうぞ
+Matlab mathworksさんのwavelet toolboxのドキュメントもよかった。ここから上記のpracticalなんちゃらのリンクもある
+ Continuous Wavelet Transform Continuous wavelet transform using FFT algorithm Inverse CWT  コードは転がってないですね。まぁ有料なので
+日本語でわかりやすいもの  C/C++言語でガボールウェーブレット変換により時間周波数解析を行うサンプルプログラム  ここは本当に素晴らしい。何年か前にも参考にさせて頂きました。  連続ウェーブレット変換 (CWT) - FlexPro 7 日本語版サポート情報  日本語で丁寧に書かれてる。内容自体は、practicalなんちゃらと似ている  東北大学 伊藤先生の講義資料  数少ない日本語でのウェーブレットに関する資料。ただし連続ウェーブレットについてはあんまり解説はない。C言語のサンプル付き   書籍 今回は調べてない。数年前にちょいちょい調べたことがあるけど忘れた</description>
     </item>
     
   </channel>
