@@ -6,10 +6,19 @@
     <description>Recent content in Tags on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 23 Dec 2016 18:06:08 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 16 Aug 2017 03:00:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dnn</title>
+      <link>http://r9y9.github.io/tags/dnn/</link>
+      <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/dnn/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Julia</title>
@@ -17,6 +26,15 @@
       <pubDate>Fri, 23 Dec 2016 18:06:08 +0900</pubDate>
       
       <guid>http://r9y9.github.io/tags/julia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Merlin</title>
+      <link>http://r9y9.github.io/tags/merlin/</link>
+      <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/merlin/</guid>
       <description></description>
     </item>
     
@@ -35,6 +53,15 @@
       <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
       
       <guid>http://r9y9.github.io/tags/pcl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Speech</title>
+      <link>http://r9y9.github.io/tags/speech/</link>
+      <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/speech/</guid>
       <description></description>
     </item>
     

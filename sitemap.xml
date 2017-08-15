@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</loc>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://r9y9.github.io/blog/2017/06/09/nlp100/</loc>
     <lastmod>2017-06-09T21:58:50+09:00</lastmod>
   </url>
@@ -258,6 +263,12 @@
   </url>
   
   <url>
+    <loc>http://r9y9.github.io/tags/dnn/</loc>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://r9y9.github.io/categories/go/</loc>
     <lastmod>2014-02-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -337,7 +348,7 @@
   
   <url>
     <loc>http://r9y9.github.io/</loc>
-    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -368,6 +379,12 @@
   <url>
     <loc>http://r9y9.github.io/categories/machine-learning-matrix-factorization/</loc>
     <lastmod>2014-10-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/tags/merlin/</loc>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -403,7 +420,7 @@
   
   <url>
     <loc>http://r9y9.github.io/post/</loc>
-    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -415,7 +432,7 @@
   
   <url>
     <loc>http://r9y9.github.io/categories/python/</loc>
-    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -434,6 +451,12 @@
   <url>
     <loc>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</loc>
     <lastmod>2014-06-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/tags/speech/</loc>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -468,6 +491,12 @@
   </url>
   
   <url>
+    <loc>http://r9y9.github.io/categories/speech-synthesis/</loc>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://r9y9.github.io/categories/summer/</loc>
     <lastmod>2014-09-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -475,7 +504,7 @@
   
   <url>
     <loc>http://r9y9.github.io/tags/</loc>
-    <lastmod>2016-12-23T18:06:08+09:00</lastmod>
+    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   

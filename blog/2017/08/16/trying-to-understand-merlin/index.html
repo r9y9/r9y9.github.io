@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.20.5" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>DNN統計的音声合成ツールキット Merlin の中身を理解をする - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">DNN統計的音声合成ツールキット Merlin の中身を理解をする</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-08-16">August 16, 2017</time></span>
+			<section itemprop="entry-text">
+				
+
+<p>この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。
+なお、HMM音声合成について簡単に理解していること（HMMとは、状態とは、フルコンテキストラベルとは、くらい）を前提とします。</p>
+
+<h2 id="はじめに">はじめに</h2>
+
+<p>Merlinの概要については以下をご覧ください。</p>
+
+<ul>
+<li><a href="http://ssw9.net/papers/ssw9_PS2-13_Wu.pdf">Wu, Zhizheng, Oliver Watts, and Simon King. &ldquo;Merlin: An open source neural network speech synthesis system.&rdquo; Proc. SSW, Sunnyvale, USA (2016).</a></li>
+<li><a href="http://ssw9.net/papers/ssw9_DS-3_Ronanki.pdf">&ldquo;A Demonstration of the
+Merlin Open Source Neural Network Speech Synthesis System&rdquo;</a></li>
+<li><a href="https://cstr-edinburgh.github.io/merlin/">公式ドキュメント</a></li>
+</ul>
+
+<p>Merlinにはデモスクリプトがついています。基本的にユーザが使うインタフェースはrun_merlin.pyというコマンドラインスクリプトで、
+デモスクリプトではrun_merlin.pyに用途に応じた設定ファイルを与えることで、継続長モデルの学習/音響モデルの学習/パラメータ生成など、音声合成に必要なステップを実現しています。</p>
+
+<p>デモスクリプトを実行すると、音声データ (wav) と言語特徴量（HTSのフルコンテキストラベル）から、変換音声が合成されるところまでまるっとやってくれるのですが、それだけでは内部で何をやっているのか、理解することはできません。
+ツールキットを使う目的が、自分が用意したデータセットで音声合成器を作りたい、といった場合には、特に内部を知る必要はありません。
+また、設定ファイルをちょこっといじるだけでこと済むのであれば、知る必要はないかもしれません。
+しかし、モデル構造を変えたい、学習アルゴリズムを変えたい、ポストフィルタを入れたい、といったように、少し進んだ使い方をしようとすれば、内部構造を理解しないとできないことも多いと思います。</p>
+
+<p>run_merlin.py はあらゆる処理 (具体的にはあとで述べます) のエントリーポイントになっているがゆえに、コードはなかなかに複雑になっています<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。この記事では、run_merlin.pyがいったい何をしているのかを読み解いた結果をまとめます。</p>
+
+<h2 id="merlinでは提供しないこと">Merlinでは提供しないこと</h2>
+
+<p>Merlinが何を提供してくれるのかを理解する前に、何を提供しないのか、をざっくりと整理します。以下のとおりです。</p>
+
+<ul>
+<li>Text-processing (<strong>Frontend</strong>)</li>
+<li>Speech analysis/synthesis (<strong>Backend</strong>)</li>
+</ul>
+
+<p>HTSと同様に、frontend, backendといった部分は提供していません。Merlinの論文にもあるように、HTSの影響を受けているようです。</p>
+
+<p>Frontendには、英語ならFestival、BackendにはWORLDやSTRAIGHTを使ってよろしくやってね、というスタンスです。
+Backendに関しては、Merlinのインストールガイドにあるように、WOLRDをインストールするように促されます。</p>
+
+<p>デモスクリプトでは、Frontendによって生成されたフルコンテキストラベル（HTS書式）が事前に同梱されているので、Festivalをインストールする必要はありません。
+misc以下に、Festivalを使ってフルコンテキストラベルを作るスクリプト (make_labels) があるので、デモデータ以外のデータセットを使う場合は、それを使います。</p>
+
+<h2 id="steps">Steps</h2>
+
+<p>本編です。slt_arcticのデモスクリプトに従い、いくらかのステップに分けて、詳細に見ていきます。なお、以下デモスクリプトと書いた際には、slt_arcticのデモスクリプトを指すものとします。</p>
+
+<ul>
+<li>継続長モデルの学習</li>
+<li>音響モデルの学習</li>
+<li>変換音声の合成</li>
+</ul>
+
+<p>なお、Merlinのスクリプトによってはかれるデータは、基本的に</p>
+
+<pre><code class="language-py">x.astype(np.float32).tofile(&quot;foobar.bin&quot;)
+</code></pre>
+
+<p>といった感じで、32bit浮動小数点のnumpyの配列がヘッダなしのバイナリフォーマットで保存されています。デバッグ時には、</p>
+
+<pre><code class="language-py">np.fromfile(&quot;foobar.bin&quot;, dtype=np.float32)
+</code></pre>
+
+<p>として、ファイルを読み込んでインスペクトするのが便利です。注意事項として、ややこしいことに、拡張子は信頼できません。<code>.lab</code> という拡張子であっても、フルコンテキストラベルのテキストファイルである場合もあれば、上述のようにバイナリフォーマットである可能性もあります。つらいですね！</p>
+
+<h3 id="継続長モデルの学習">継続長モデルの学習</h3>
+
+<p>継続長モデルとは、言語特徴量から、継続長を予測するモデルです。Merlinでは、phone-level / state-level のどちらかを選択可能です。Merlinの提供するDNN音声合成では、継続長の予測→音響特徴量の予測→合成、といったスタイルをとります。
+デフォルトでは、state-levelで継続長（具体的には一状態当たりの継続フレーム数）を予測します。状態レベルのアライメントのほうが、時間解像度の高いコンテキストを得られ、結果音声合成の品質が良くなるので、デフォルトになっているのだと思います。 <a href="https://github.com/CSTR-Edinburgh/merlin/issues/18">https://github.com/CSTR-Edinburgh/merlin/issues/18</a> に少し議論があります。</p>
+
+<p>デモスクリプトを実行すると、 <code>experiments/slt_arctic_demo/duration_model/</code> 以下に継続長モデル用のデータがは出力されます。いくつか重要なものについて、以下に示します。</p>
+
+<h4 id="data">data</h4>
+
+<ul>
+<li><code>label_phone_align</code>: 音素レベルでのフルコンテキストラベルです</li>
+<li><code>dur</code>: 状態別継続長です。正確には、<code>T</code> をフルコンテキストラベル中の音素数として、<code>(T, 5)</code> の配列が発話ごとに保存されます。5は音素あたりのHMMの状態数で、慣例的に？5が使用されているような気がします。</li>
+</ul>
+
+<h4 id="inter-module">inter_module</h4>
+
+<p>中間結果のファイル群です</p>
+
+<ul>
+<li><code>binary_label_416/</code>: HTS形式の質問ファイルを元に生成した、言語特徴量行列です。デモスクリプトでは、416個の質問があるので、一状態あたり416次元の特徴ベクトルになります。binaryな特徴量（母音か否か）と連続的な特徴量（単語中のsylalbleの数等）があります。<code>(T, 416)</code> の行列が、発話ごとに保存されています。</li>
+<li><code>label_norm_HTS_416.dat</code>: 416次元の特徴ベクトルの正規化に必要な情報です。デモスクリプトでは、言語特徴量に関してはmin/max正規化が行われるので、minおよびmaxの416次元のベクトル（計416*2次元）が保存されています。</li>
+<li><code>nn_dur_5/</code>: 無音区間が除去された、状態別継続長です。フォルダ名からは察することは難しいですが、無音区間が除去されています。</li>
+<li><code>nn_no_silence_lab_416/</code>: 無音区間が除去された、言語特徴量行列です。</li>
+<li><code>nn_no_silence_lab_norm_416/</code>: 無音区間が除去された、min/max正規化された言語特徴量行列です。</li>
+<li><code>nn_norm_dur_5/</code> 無音区間が除去された、mean/variance正規化された状態別継続長です。</li>
+<li><code>norm_info_dur_5_MVN.dat</code>: 継続長の正規化に必要な情報です。具体的には、Mean-variance正規化（N(0, 1)になるようにする）が行われるので、平均と標準偏差（not 分散）が入っています。状態レベルでのアライメントを使用する場合は、5*2で計10次元のベクトルです。</li>
+<li><code>ref_data/</code>: RMSEなどの評価基準を計算する際に使われる継続長のテストデータです。<code>data/dur</code> ディレクトリの継続長データを元に、無音区間が除去されたものです</li>
+<li><code>var/</code>: 継続長の分散（not 標準偏差）です。パラメータ生成 (MLPG) に使われる想定のデータです</li>
+</ul>
+
+<p>けっこうたくさんありますね。これだけでも、いかに多くのことがrun_merlin.pyによってなされているか、わかるかと思います。</p>
+
+<h4 id="入力-出力">入力/出力</h4>
+
+<p>中間ファイルがたくさんあってややこしいですが、整理すると、ネットワーク学習に用いる入力と出力は以下になります。</p>
+
+<ul>
+<li>入力: <code>nn_no_silence_lab_norm_416</code>, 一発話あたりの特徴量のshape: <code>(T, 416)</code></li>
+<li>出力: <code>nn_norm_dur_5</code>, 一発話あたりの特徴量のshape: <code>(T, 5)</code></li>
+</ul>
+
+<p>学習されたモデルは、 <code>nnets_model</code>というフォルダに保存されます。</p>
+
+<h3 id="音響モデルの学習">音響モデルの学習</h3>
+
+<p>音響モデルとは、言語特徴量からメルケプストラム、F0、非周期性成分などの音響特徴量を予測するモデルです。Merlinのデモスクリプトでは、</p>
+
+<ul>
+<li>メルケプストラム: 60次元（動的特徴量を合わせると、180次元)</li>
+<li>対数F0: 1次元（動的特徴量を合わせると、3次元)</li>
+<li>有声 or 無声フラグ (voiced/unvoiced; vuv): 1次元</li>
+<li>非周期性成分: 1次元（動的特徴量を合わせると、3次元)</li>
+</ul>
+
+<p>の計187次元の音響特徴量を予測するモデルを考えます。継続長モデルのときと同様に、出力されるファイルについていくらか説明します。</p>
+
+<h4 id="data-1">data</h4>
+
+<ul>
+<li><code>bap</code>: 発話毎に計算された非周期性成分が入っています。bapはband averaged aperiodicityの略です（専門家の人にとっては当たり前かと思いますが、一応</li>
+<li><code>label_phone_align</code>: phone-levelでアライメントされたHTSのコンテキストラベルが入っています。デフォルトの設定では使いません。</li>
+<li><code>label_state_align</code>: state-levelでアライメントされたHTSのコンテキストラベルが入っています</li>
+<li><code>lf0</code>: 対数F0です。なお、WORLDではかれるF0は無声区間で0を取りますが、無声区間の部分を線形補間することによって、非ゼロの値で補完しています。</li>
+<li><code>mgc</code>: メルケプストラムです（フォルダ名は、慣習的にメル一般化ケプストラムを表す <code>mgc</code>となっていますが、デモスクリプトでは実際にはメルケプストラムです）</li>
+</ul>
+
+<h4 id="inter-module-1">inter_module</h4>
+
+<ul>
+<li><code>binary_label_425/</code>: 言語特徴量の行列です。継続長モデルの場合と違って、フレーム単位で生成されているのと、フレーム単位ならではの特徴量（音素中の何フレーム目なのか、等）が追加されています。フレーム数を <code>T</code> として、 <code>(T, 425)</code> の配列が発話ごとに保存されています。</li>
+<li><code>label_norm_HTS_425.dat</code>: 言語特徴量のmin/max正規化に必要なmin/maxのベクトルです。</li>
+<li><code>nn_mgc_lf0_vuv_bap_187/</code>: mgc, lf0, vuv, bapを結合した音響特徴量です。よくcmp (composed featureから来ていると思われる) と表されるものです。ディレクトリ名からは判別が付きませんが、無音区間は削除されています。ややこしい</li>
+<li><code>nn_no_silence_lab_425/</code>: <code>binary_label_425</code> の言語特徴量から無音区間を削除したものです</li>
+<li><code>nn_no_silence_lab_norm_425/</code>: それをさらにmin/max正規化したものです</li>
+<li><code>nn_norm_mgc_lf0_vuv_bap_187/</code>: <code>nn_mgc_lf0_vuv_bap_187/</code>の音響特徴量をN(0, 1)になるようにmean/variance正規化したものです</li>
+<li><code>norm_info_mgc_lf0_vuv_bap_187_MVN.dat</code>: 音響特徴量の正規化に必要な、平均と標準偏差です</li>
+<li><code>var/</code>: mgc, lf0, bap, vuvそれぞれの分散です。このうちvuvは、パラメータ生成時にMLPGを行いませんが、保存はされています。</li>
+</ul>
+
+<h4 id="入力-出力-1">入力/出力</h4>
+
+<p>継続長モデルの場合と同様の中間特徴量が出力されています。改めて整理すると、音響モデルの学習に使用する入力と出力は、以下のとおりです。</p>
+
+<ul>
+<li>入力: <code>nn_no_silence_lab_norm_425/</code>, 一発話あたりの特徴量のshape: <code>(T, 425)</code></li>
+<li>出力: <code>nn_norm_mgc_lf0_vuv_bap_187</code>, 一発話あたりの特徴量のshape: <code>(T, 187)</code></li>
+</ul>
+
+<p>学習されたモデルは、 <code>nnets_model</code>というフォルダに保存されます。</p>
+
+<h3 id="波形生成">波形生成</h3>
+
+<p>得られた継続長モデルと音響モデルから、波形を生成する処理は、大雑把にいって以下の手順で行われます。</p>
+
+<ul>
+<li>フルコンテキストラベルから得られる言語特徴量を元に、継続長モデルを使って継続長を予測する</li>
+<li>予測された継続長を使って、フルコンテキストラベルを書き換える。より具体的には、状態毎の start_time, end_time の部分を書き換える。</li>
+<li>書き換えられたフルコンテキストラベルから、音響モデル用のフレームレベルの言語特徴量を計算し、音響モデルを使って音響特徴量を予測する</li>
+<li>予測された音響特徴量（static + delta + delta-delta) から、静的特徴量をMLPGによって生成する。MLPGによって生成するのは、mgc, lf0, bapのみで、vuvについてはそのまま使う。波形合成にはvuvを直接使うのではなく、vuv &lt; 0.5以下のf0を0として扱う。</li>
+<li>生成されたメルケプストラムに対して、Merlinお手製ポストフィルタを掛ける</li>
+<li>得られた音響特徴量 (mgc, f0, bap) から、WORLDを使って波形合成をする</li>
+</ul>
+
+<p>以上です。Merlinの良い所の一つに、ログをたくさんはいてくれるというのがあります。しかし、このうちポストフィルタ（デフォルトでONです）に関しては一切（デフォルトでは）ログがはかれず、気づくのに時間がかかりました。<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup></p>
+
+<p>また、個人的な感覚ですが、このポストフィルタの影響は絶大に思いました。コードを見て、何をしているのか僕には理解できませんでしたが、ヒューリスティックな方法も含んでいるように思いました。興味のある方は、 波形合成用のconfファイルを開いて、</p>
+
+<pre><code>[Waveform]
+do_post_filtering: False
+</code></pre>
+
+<p>のように、<code>[Waveform]</code> セクションに <code>do_post_filtering</code> という項目を加えて、生成結果を聴き比べてみることをおすすめします。ポストフィルタによって劇的に音質が改善されているのがわかると思います。さらに興味のある方は、コードを読んでみてください。参考文献も探しましたが、僕には見つかりませんでした。ご存知の方がいれば教えていただきたいです。</p>
+
+<h2 id="おわりに">おわりに</h2>
+
+<p>Merlin、最初は使いにくいなと思っていましたが、頑張って読んでみれば、とても勉強になりました。後半はだれて、適当なまとめになってしまったかもしれません、すいません。もろもろの不満から<a href="https://github.com/r9y9/nnmnkwii">新しいツール</a>を作りましたが、それはまた別の機会に紹介したいと思います。ありがとうございました。</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1"><a href="http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html">http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html</a> によれば、This is a very clearly written Python script だそうです…。僕に読解力がないだけの可能性があります
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">自分で作ったモデルが、どうしてもmerlinに勝てない、なぜだ、と悩んでいたとき、Merlinに言及している論文の一つに、ポストフィルタを使っているとの記述があり、探ってみるとたしかにあった、という感じでした。
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="DNN統計的音声合成ツールキット Merlin の中身を理解をする" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+
