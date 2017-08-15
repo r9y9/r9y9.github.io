@@ -311,14 +311,14 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/julia/</loc>
-    <lastmod>2016-12-23T18:06:08+09:00</lastmod>
+    <loc>http://r9y9.github.io/categories/julia/</loc>
+    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/julia/</loc>
-    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
+    <loc>http://r9y9.github.io/tags/julia/</loc>
+    <lastmod>2016-12-23T18:06:08+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -401,13 +401,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/nlp/</loc>
+    <loc>http://r9y9.github.io/categories/nlp/</loc>
     <lastmod>2017-06-09T21:58:50+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/nlp/</loc>
+    <loc>http://r9y9.github.io/tags/nlp/</loc>
     <lastmod>2017-06-09T21:58:50+09:00</lastmod>
     <priority>0</priority>
   </url>
