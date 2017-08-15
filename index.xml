@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>LESS IS MORE</title>
+    <link>http://r9y9.github.io/</link>
+    <description>Recent content on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Wed, 16 Aug 2017 03:00:00 +0900</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>DNN統計的音声合成ツールキット Merlin の中身を理解をする</title>
+      <link>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
+      <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
+      <description>この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。 なお、HMM音声合成について簡単に理解していること（HMMとは、状態とは、フルコンテキストラベルとは、くらい）を前提とします。
+はじめに Merlinの概要については以下をご覧ください。
+ Wu, Zhizheng, Oliver Watts, and Simon King. &amp;ldquo;Merlin: An open source neural network speech synthesis system.&amp;rdquo; Proc. SSW, Sunnyvale, USA (2016). &amp;ldquo;A Demonstration of the Merlin Open Source Neural Network Speech Synthesis System&amp;rdquo; 公式ドキュメント  Merlinにはデモスクリプトがついています。基本的にユーザが使うインタフェースはrun_merlin.pyというコマンドラインスクリプトで、 デモスクリプトではrun_merlin.pyに用途に応じた設定ファイルを与えることで、継続長モデルの学習/音響モデルの学習/パラメータ生成など、音声合成に必要なステップを実現しています。
+デモスクリプトを実行すると、音声データ (wav) と言語特徴量（HTSのフルコンテキストラベル）から、変換音声が合成されるところまでまるっとやってくれるのですが、それだけでは内部で何をやっているのか、理解することはできません。 ツールキットを使う目的が、自分が用意したデータセットで音声合成器を作りたい、といった場合には、特に内部を知る必要はありません。 また、設定ファイルをちょこっといじるだけでこと済むのであれば、知る必要はないかもしれません。 しかし、モデル構造を変えたい、学習アルゴリズムを変えたい、ポストフィルタを入れたい、といったように、少し進んだ使い方をしようとすれば、内部構造を理解しないとできないことも多いと思います。
+run_merlin.py はあらゆる処理 (具体的にはあとで述べます) のエントリーポイントになっているがゆえに、コードはなかなかに複雑になっています1。この記事では、run_merlin.pyがいったい何をしているのかを読み解いた結果をまとめます。
+Merlinでは提供しないこと Merlinが何を提供してくれるのかを理解する前に、何を提供しないのか、をざっくりと整理します。以下のとおりです。
+ Text-processing (Frontend) Speech analysis/synthesis (Backend)  HTSと同様に、frontend, backendといった部分は提供していません。Merlinの論文にもあるように、HTSの影響を受けているようです。
+Frontendには、英語ならFestival、BackendにはWORLDやSTRAIGHTを使ってよろしくやってね、というスタンスです。 Backendに関しては、Merlinのインストールガイドにあるように、WOLRDをインストールするように促されます。
+デモスクリプトでは、Frontendによって生成されたフルコンテキストラベル（HTS書式）が事前に同梱されているので、Festivalをインストールする必要はありません。 misc以下に、Festivalを使ってフルコンテキストラベルを作るスクリプト (make_labels) があるので、デモデータ以外のデータセットを使う場合は、それを使います。</description>
+    </item>
+    
+    <item>
+      <title>言語処理100本ノック 2015 をすべてやりました</title>
+      <link>http://r9y9.github.io/blog/2017/06/09/nlp100/</link>
+      <pubDate>Fri, 09 Jun 2017 21:58:50 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/06/09/nlp100/</guid>
+      <description>   本家サイト: http://www.cl.ecei.tohoku.ac.jp/nlp100/ 僕が書いたコード: https://github.com/r9y9/nlp100  最近、自然言語処理(NLP)を勉強しようという熱が出ました。ある自然言語処理の問題を解きたかったのですが、 無知のためにか直感がまったく働かず、これはまずいと感じたので、 入門的なのに手を出そうと思った次第です。 結果、毎日やりつづけて、12日かかりました（上図は、横軸が日付、縦軸が達成した問題数です。図はseabornで適当に作りました）。 速度重視1で問題を解きましたが、思ったよりうまく進まず大変だった、というのが正直な感想です。以下、雑多な感想です。
+ mecab, cabocha, CoreNLPの解析結果をパースするコードを書くのは、ただただ面倒に感じた NER実装しろ、みたいな問題があったらより楽しかったかなと思った 正規表現をまったく使いこなせていなかったことがわかったので、勉強し直せてよかった 全体を通して、第9章のword embeddingを自前で作る部分が一番楽しかった うろ覚えですが2、問題文中に表現が正確でない（と感じる）部分があって、困惑したことがあった 9割python、1割juliaで書きましたが、sklearn, numpy, scipyなどを使わなくてよい、かつ速度が重要な場合は、簡単に速くできるのでjulia良い python、ライブラリが充実しすぎていて本当に楽 素人の言語処理100本ノック:まとめ - Qiita がとても丁寧で、解いたはいいものの自信がないときなどに、ちょくちょく見ていました。参考になりました  今後 深層学習による自然言語処理を買ったので3、それを読んで、自然言語処理の勉強を続けようと思います。
+ ナイーブな実装多し、コピペ多し、descriptiveでない変数名多し、等 [return] 掘り返して探す気力がない・・・ [return] Amazonによると、僕は5/29に買っている模様。なお現在の進捗は0 [return]   </description>
+    </item>
+    
+    <item>
+      <title>2017年の目標</title>
+      <link>http://r9y9.github.io/blog/2017/01/04/2017/</link>
+      <pubDate>Wed, 04 Jan 2017 22:59:32 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/01/04/2017/</guid>
+      <description>こんばんは。年末に帰省して、東京に帰ってきて、今はポエムを書いています。xxxxの目標とか、書いてもどうせやらないし自己満足で終わるからいいやと、いつぞやから宣言するのをやめてしまったのですが、宣言すらしないとまったく危機感を持たず何もやらないということを身にしみつつあり、かつそういう事態を避けたいと思ったため、公に書いてみることにしました。今年もよろしくお願い申し上げます。
+目標 1. Keno/Cxx.jl CxxREPLにCode completion機能を実装する 関連issueは Keno/Cxx.jl/#61 です。
+Cxx.jlにはプライベートでも仕事でも非常にお世話になっています。何か僕にできることがあればしたいという思いと、code completionないのつれえという思いとが合わさって、やりたいなと思っています。現状のCxx.jlでも十分生産性が向上しているのですが、code completionがあるとなお生産性が向上することは間違いなしです。
+おまえまだC++使ってんのかよというつっこみもがないこともないですし、僕自身C++を避けようとしてGoを試してみたり（代替にはなりませんでした）、python書いたりしているのですが（C++から完全には逃げられませんでした）、とはいえ僕にとってはC++がふさわしい場面が多くあるのが現状です。C++の代替としてRustも気にはなっているのですが、まだしばらくはC++の既存の財産を活用せざるを得ないのでしょう、と思っています。
+2. llvm/clang のコミッタになる 書いてて本当に震えるのですが、目標にしたいと思っています…
+これそのものが目標というよりは、その1の副次的な結果として得られるものだと思っていますが、llvm/clangに対する理解度を定量的に見るためにも、宣言しておきたいと思います。
+3. Computer visionのトップカンファ論文を月に一本継続的に読む llvmのコミッタにもしなれたとしても、実際のところ会社の仕事にはあまり役に立ちません。会社ではComputer visionのチームに属しているので、仕事に直接活きるようなことも目標に設定したいと思いました。曖昧ではありますが、仕事のアウトプットとして、何らかを成果を残せればいいなと思います。One-shot learning、カラー画像からのデプス推定、カラー画像からの人物セグメンテーション、Depth map refinementなどは調べてやってみたい
+追加目標（optional） 4. 機械学習の復習 もっぱらDeepで賑わっていますが、それはさておき、僕が最も機械学習について勉強していた院生時代から約4年経ち、かなり忘れているので、最近参入してきた人達に負けないためにも、基礎からやり直したいと思っています。もちろんDeep系にもキャッチアップしたいです（欲張り？
+5. 英語の勉強どうしよかな どうしようかな。これたぶんやらないな
+6. その他  お金をためる 引っ越しする ofxUI に変わるGUIライブラリを見つける 本を読む  だらだら書いてみました。よろしくおねがいします</description>
+    </item>
+    
+    <item>
+      <title>Juliaをソースからビルドする</title>
+      <link>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</link>
+      <pubDate>Fri, 23 Dec 2016 18:06:08 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</guid>
+      <description>Julia advent calendar 2016 23日目の記事です。
+はじめに Juilaを最も簡単にインストールする方法は、公式のダウンロードページからバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが1、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。
+僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです2。
+下準備 git clone https://github.com/JuliaLang/julia &amp;amp;&amp;amp; cd julia  ビルドのカスタマイズ方法 Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに override LLVM_VER=3.7.1 のような書き方で記述することで、カスタマイズ可能です（詳細は公式の説明をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。
+override LLVM_VER=3.7.1 override LLVM_ASSERTIONS=1 override BUILD_LLVM_CLANG=1 override USE_LLVM_SHLIB=1  あとは、通常通りmakeコマンドを走らせることで、ビルドを行います。
+make -j4  コア数は適当に指定します。llvm, openblasあたりのビルドが結構重いので、並列ビルドがオススメです。
+僕がよく使うオプション ここから、僕がよく使うオプションをいくつか解説します。
+LLVM_VER llvmのバージョンを表します。Julia上でC++を使いたいというcrazyな人に激推しの Keno/Cxx.jl というパッケージがあるのですが、このパッケージはclangとllvmの3.7.1以上を必要とします（Cxx.jlについては、過去に何度か記事を書いたので、例えば Cxx.jlを用いてJulia expression/value をC++に埋め込む実験 をご覧ください）。llvm 3.3がデフォルトだったJulia v0.4時代では、明示的に3.7.1と指定する必要がありました。いまは、
+ Julia v0.5の公式配布バイナリでも、Pkg.add(&amp;quot;Cxx&amp;quot;)でインストールできるとされている（Keno/Cxx.jl/#287） かつ現状のデフォルトバージョンが3.7.1 (もうすぐ3.9.1になりそうですが JuliaLang/julia/#19768)  なので、僕の場合は明示的にLLVM_VERを指定する必要はなくなってきましたが、例えば、LLVMのNVPTX backendを使ってJuliaでCUDAカーネルを書けるようにする JuliaGPU/CUDAnative.jl （要 llvm 3.9）のような、experimentalなパッケージを試したい場合など、LLVM_VERを指定したくなる場合もあるかと思います。
+LLVM_ASSERTIONS LLVMをassert付きでビルドするかどうかを表します。ONにするとビルドかかる時間が長くなり、LLVMのパフォーマンスが若干落ちますが、デバッグには便利です。Juliaのコード生成周りでエラーを起こしやすいようなコードを書くときには、ONにしておくと便利です。
+BUILD_LLVM_CLANG llvmとあわせて、clangをビルドするかどうか、というオプションです。Cxx.jlに必要なので、僕はそのためにONにしています。その他必要なケースとしては、clangのaddress/memory sanitizerを使いたい場合が考えられます。詳細はdevdocs/sanitizers をご覧ください。</description>
+    </item>
+    
+    <item>
+      <title>Cxx.jlを用いてJulia expression/value をC&#43;&#43;に埋め込む実験</title>
+      <link>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</link>
+      <pubDate>Sun, 24 Jan 2016 22:32:08 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</guid>
+      <description>Keno氏によるJuliaCon 2015 の発表 Keno Fischer: Shaving the Yak でタイトルの内容が一部紹介されていて、便利そうだなと思い、色々試してみました。
+  
+発表の内容は大まかに、Keno氏がなぜCxx.jlを作ったのか、なぜJuliaを始めたのか、といったモチベーションの話から、Cxx.jlでできることについてlive programmingを交えての紹介、といった話になっています。50分とけっこう長いですが、面白いので興味のある方はどうぞ。この記事は、上の動画を見たあと、Cxx.jlと戯れた結果をまとめたものです。
+以下、この記事の目次です。
+ 前置き：C++をJulia上で使う 本編：JuliaのexpressionやvalueをC++に埋め込む  前置きが若干長いので、タイトルの内容が知りたい方は、飛ばして下さい。
+前置き：C++をJulia上で使う Cxx.jlを使えば、C++をJulia上で非常にスムーズに扱うことができます。例えば、C++のstd::vector&amp;lt;T&amp;gt;を使いたい、さらにはJuliaのfilter関数をstd::vector&amp;lt;T&amp;gt;に対して使えるようにしたい、といった場合は、以下に示すように、ほんのすこしのコードを書くだけでできます。
+準備：
+using Cxx import CxxStd: StdVector  filter関数：
+function Base.filter{T}(f, v::StdVector{T}) r = icxx&amp;quot;std::vector&amp;lt;$T&amp;gt;();&amp;quot; for i in 0:length(v)-1 if f(T(v[i])) push!(r, v[i]) end end r end  なお、filter関数に出てくる、length, getindex, push! は、Cxx..jlにそれぞれ以下のように定義されています。
+Base.getindex(it::StdVector,i) = icxx&amp;quot;($(it))[$i];&amp;quot; Base.length(it::StdVector) = icxx&amp;quot;$(it).size();&amp;quot; Base.push!(v::StdVector,i) = icxx&amp;quot;$v.push_back($i);&amp;quot;  計算結果を見やすくするために、show 関数も定義しておきます。
+function Base.show{T}(io::IO, v::StdVector{T}) println(io, &amp;quot;$(length(v))-element StdVector{$T}:&amp;quot;) for i = 0:length(v)-1 println(io, T(v[i])) end end  実行結果：</description>
+    </item>
+    
+    <item>
+      <title>対話環境でPoint Cloud Library (PCL) を使いたい</title>
+      <link>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</link>
+      <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
+      <description>新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました1。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。
+Point Cloud Library (PCL) とは http://www.pointclouds.org/
+問題 PCL はboost、Eigenに依存している、かつtemplateを多く使用しているため、PCLを使用したプロジェクトのコンパイル時間は非常に長くなるという問題があります。twitterで [PCL コンパイル] として検索すると、例えば以下の様なツイートが見つかりますが、完全に同意です。
+ PCLリンクしてるコードのコンパイルに一分半くらいかかる。つらい
+&amp;mdash; がらえもん(プログラム書く (@garaemon_coder) August 14, 2015 PCLはC++だしコンパイル遅いしで色々めんどくさい
+&amp;mdash; 動かないで点P (@initial_D_0601) August 25, 2015 PCLを使うプロジェクトのコンパイル時間かかりすぎて辛いわ
+&amp;mdash; kato tetsuro (@tkato_) November 6, 2015 boostへの依存関係が必須かどうかについては疑問が残りますが、点群処理ではパフォーマンスが求められることが多いと思われるので、C++で書かれていることは合理的に思います。とはいえ、コンパイル時間が長いのは試行錯誤するにはつらいです。
+ではどうするか 試行錯誤のサイクルを速く回せるようにすることは僕にとって非常に重要だったのと、 C++で書かなければいけないという制約もなかった（※組み込み用途ではない）ので、対話的にPCLを使うために、僕は動的型付け言語でラッパーを作ることにしました。
+参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています2。
+  コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi  from Masaki Hayashi   何で書くか 世の中には色んなプログラミング言語があります。C++ライブラリのラッパー作るぞとなったとき、僕にとって選択肢は、
+ Python Julia  の二択でした。それぞれ、以下のプロジェクトに頼れば templateを多用したライブラリのラップができそうだと思いました。
+ Cython Cxx.jl  pythonに関しては、すでに cythonで書かれた strawlab/python-pcl というラッパーがあります。しかし、</description>
+    </item>
+    
+    <item>
+      <title>Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</title>
+      <link>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</link>
+      <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</guid>
+      <description>はじめに Julia Advent Calendar 2015 22日目の記事です。
+Julia の C++ FFI (Foreign Function Interface) である Cxx.jl をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。 Cxx.jl の動作原理については、僕の理解が不十分なため簡単にしか紹介できませんが、そもそも使ったことがある人が稀だと思われるので、感想程度でも役に立てば幸いです。
+Cxx.jl とは https://github.com/Keno/Cxx.jl
+簡単に説明すると、Cxx.jl とは、Julia から C++ を使用する（e.g. 関数呼び出し、メソッド呼び出し、メンバ変数へのアクセス、etc) ための機能を提供するパッケージです。C++のライブラリを活用したい、あるいはパフォーマンスがシビアな箇所で一部 C++ 使いたい（Cインタフェースを作りたくない1）、といった場合に便利です。
+Cxx.jl の原理についてざっくりといえば、clang を用いて C++ から LLVM IR を生成し、llvmcall を用いて（Just in time に）コードを実行する、という方式のようです2
+Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード（+コメント）を、Cxx.jl を使うと何ができるのか知りたい場合は、Cxx.jl の README を御覧ください。
+以下、過去を思い出しながら感想を書いてみます
+実際に使う前に Pkg.build(&amp;ldquo;Cxx&amp;rdquo;) を成功させることが困難 そもそも使いはじめる前に、ビルドすることが困難でした。Cxx.jl を動作させるためには、
+ julia llvm clang lldb  の開発版が必要ですが、ビルドが難しい大きな原因は、動作することが保証された明確な revision が存在しないことにあります。（なんじゃそれ、と思うかもしれませんが、まぁまだ安定版はリリースされていないので、、）
+今でこそ、llvm, clang, lldbは、Keno氏の fork の kf/gallium ブランチ使えばいいよと README に書いてありますが、僕が使い始めた二ヶ月ほど前は、開発版のllvmが必要だよ、くらいにしか書いていませんでした（参考: Cxx.</description>
+    </item>
+    
+    <item>
+      <title>Julia: 値と変数に対する Type Annotation の違い</title>
+      <link>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</link>
+      <pubDate>Tue, 08 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
+      <description>はじめに Julia Advent Calendar 2015 8日目の記事です。
+この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。
+記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。
+問題 新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。
+A function f() x = (1.0 + 2.0)::Int return x end f()  B function g() x::Int = (1.0 + 2.0) return x end g()  なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。
+この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。
+A: 値に対する type annotation Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「(1.0 + 2.0) という式を評価した値は、Int 型であることを保証する」となります。
+(1.0 + 2.0) を評価した値は 3.</description>
+    </item>
+    
+    <item>
+      <title>pysptk: SPTKのpythonラッパーを作った (part 2)</title>
+      <link>http://r9y9.github.io/blog/2015/09/06/pysptk/</link>
+      <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2015/09/06/pysptk/</guid>
+      <description> 2015/09/05:
+https://t.co/WFBmYEIVce SPTKのpythonラッパー（マシなやつ）完成&amp;#10;ドキュメント http://t.co/jYhw1y3Bzg&amp;#10;pip install pysptk でインストールできるようになりました。pypi童貞捨てれた
+&amp;mdash; 山本りゅういち (@r9y9) September 4, 2015   ずいぶん前に、swig遊びをしがてらpythonのラッパーを書いていたんですが、cythonを使って新しく作りなおしました。かなりパワーアップしました。
+pip install pysptk  でインストールできるので、よろしければどうぞ
+なぜ作ったのか  cythonとsphinxで遊んでたらできた  使い方 以下のデモを参考にどうぞ
+ Introduction to pysptk: メル一般化ケプストラム分析とか Speech analysis and re-synthesis: 音声の分析・再合成のデモ。合成音声はnotebook上で再生できます  ドキュメント http://pysptk.readthedocs.org
+ぼやき SPTKの関数、変な値入れるとexitしたりセグフォったりするので、ちゃんとテスト書いてほしいなあ
+関連  SPTKのPythonラッパーを書いた - LESS IS MORE  </description>
+    </item>
+    
+    <item>
+      <title>最近の音声信号処理遊びの進捗</title>
+      <link>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
+      <pubDate>Sun, 23 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
+      <description>hello 遡ればもう約一年まえになるでしょうか、統計的声質遊びをしたいと思い、理論の勉強を始めたり、（特にJuliaで）コードを色々書いていました（お前ほんといろんな言語で遊んでるな、というツッコミはさておき）。統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE を書いていた当初は、当然自分のためだけに書いていて、まぁアレな出来でしたが、最近気を取り直して多少マシに仕上げましたので、何となくブログに書いてみようかなーと思った次第です。というわけで、最近公式に登録したいくつかのパッケージを、まとめて簡単に紹介します。
+主な改善点は、windowsもちゃんとサポートするようにしたこと（誰得？）と、テストをきちんと書いたことと、julia的なインタフェースを意識するようにしたことですかね。3つ目はかなり曖昧ですが、まぁ気持ち使いやすくなったと思います。
+パッケージ  MelGeneralizedCepstrums.jl: メル一般化ケプストラム分析 SynthesisFilters.jl: メル一般化ケプストラムからの音声波形合成 SPTK.jl: SPTKのラッパー  車輪の再発明はできるだけしたくなかったので、最初のほうはCライブラリのラッパーを書くことが多く、windowsとかめんどくさいしunix環境でしか動作確認してませんでしたが、WindowsのJuliaから呼べるようなCライブラリの共有ライブラリ（DLL）を作る | qiita 重い腰を上げてwindowsでも動くように頑張ったことがあり（めんどくさいとか言って手を動かさないのホント良くないですね）、登録したパッケージはすべてwindowsでも動くようになりました。めでたし。WORLD.jl もwindowsで動くようにしました。
+MelGeneralizedCepstrums.jl メルケプストラムの推定とか。いくつか例を載せておきます
+詳細はこちらのノートブックへ
+メルケプストラム分析、メル一般化ケプストラム分析に関しては、SPTKの実装をjuliaで再実装してみました。結果、速度は1.0 ~ 1.5倍程度でおさまって、かつ数値的な安定性は増しています（メモリ使用量はお察し）。まぁ僕が頑張ったからというわけでなく、単にJuliaの線形方程式ソルバーがSPTKのものより安定しているというのが理由です。
+SynthesisFilters.jl メルケプストラムからの波形合成とか。
+詳細はこちらのノートブックへ。いくつかの音声合成フィルタの合成音をノートブック上で比較することができます。
+mixed excitation（っぽいの）を使ったバージョンのノートブック: 実装に自信がないので、そのうち消すかも。聴覚的にはこっちのほうが良いです。
+SPTK.jl 公式のSPTKではなく、僕が少しいじったSPTK（windowsで動くようにしたり、APIとして使いやすいように関数内でexitしてた部分を適切なreturn code返すようにしたり、swipeというF0抽出のインタフェースをexposeしたり、など）をベースにしています。
+デモ用のノートブック
+MelGeneralizedCepstrums.jl と SynthesiFilters.jl は、ほとんどSPTK.jlで成り立っています。本質的に SPTK.jl にできて MelGeneralizedCepstrums.jl と SynthesiFilters.jlにできないことは基本的にないのですが、後者の方が、より簡単な、Julia的なインタフェースになっています。
+例えば、メルケプストラム、ケプストラム、LPCなど、スペクトルパラメータの型に応じて、適切なフィルタ係数に変換する、合成フィルタを選択するなど、multiple dispatchを有効に活用して、よりシンプルなインタフェースを提供するようにしました（というか自分がミスりたくなかったからそうしました）。
+おわり かなり適当に書きましたが、最近の進捗は、Juliaで書いていたパッケージ多少改善して、公式に登録したくらいでした。進捗まじ少なめ。あと些細なことですが、ipython（ijulia）に音埋め込むのクッソ簡単にできてびっくりしました（なんで今までやらなかったんだろう）。@jfsantos に感謝</description>
+    </item>
+    
+    <item>
+      <title>JuliaTokyo #3 Speech Signal Processing in Julia</title>
+      <link>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</link>
+      <pubDate>Sun, 26 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</guid>
+      <description>JuliaTokyo #3でLT発表してきました。前回のJuliaTokyo #2でも発表したので、二回目でした。
+スライド   JuliaTokyo #3 Speech Signal Processing in Julia  from Ryuichi YAMAMOTO   コード https://github.com/r9y9/JuliaTokyo3
+三行まとめ 発表の内容を三行でまとめると、
+ 音声ファイルの読み込み（or 書き込み）は[WAV.jl]((https://github.com/dancasimiro/WAV.jl)を使おう 基本的なデジタル信号処理は JuliaDSP/DSP.jl をチェック（※JuliaDSPにはウェーブレットとかもあるよ） 音声に特化した信号処理は、r9y9/WORLD.jl がオススメです  という感じです。
+応用例として、歌声を分離する話（デモコード）、統計的声質変換（統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE）、画像をスペクトログラムに足しこむ話とか、さっと紹介しました。
+補足 僕が使う/作ったパッケージを、あとで見返せるように最後のスライドにまとめておいたのですが、改めてここで整理しておきます。
+ dancasimiro/WAV WAVファイルの読み込み JuliaDSP/DSP 窓関数、スペクトログラム、デジタルフィルタ r9y9/WORLD 音声分析・合成フレームワーク r9y9/MelGeneralizedCepstrums メル一般化ケプストラム分析 r9y9/SynthesisFilters メル一般化ケプストラムからの波形合成 r9y9/SPTK 音声信号処理ツールキット r9y9/RobustPCA ロバスト主成分分析(歌声分離へ応用) r9y9/REAPER 基本周波数推定 r9y9/VoiceConversion 統計的声質変換  上から順に、汎用的かなーと思います1。僕が書いたパッケージの中では、WORLDのみ公式パッケージにしています。理由は単純で、その他のパッケージはあまりユーザがいないだろうなーと思ったからです。かなりマニアックであったり、今後の方針が決まってなかったり（ごめんなさい）、応用的過ぎて全然汎用的でなかったり。WORLDは自信を持ってオススメできますので、Juliaで音声信号処理をやってみようかなと思った方は、ぜひお試しください。
+ざっくり感想  ＃Juliaわからん 本当に素晴らしいと思うので、僕も積極的に #Juliaわからん とつぶやいていこうと思います（詳しくは @chezou さんの記事をどうぞ #JuliaTokyo で #juliaわからん という雑なレポジトリを立てた話をしたら julia.</description>
+    </item>
+    
+    <item>
+      <title>ccallにおけるポインタ周りのハマりどころとその解決法</title>
+      <link>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</link>
+      <pubDate>Tue, 09 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</guid>
+      <description>Julia Advent Calendar 2014 9日目の記事です。
+はじめに CやFortranの関数をJuliaから呼ぶために使用するccallにおいて、ポインタに関係するハマりどころとその解決法を紹介します。純粋なJuliaを使っている場合にはポインタを意識することはめったにないと思うので、ccall を使う人（計算が重いボトルネック部分をCで書いてJuliaから呼びたい人、Cのライブラリのラッパーを書きたい/書いてる人）を主な読者と想定して記事を書きました（限定的でごめんなさい）。
+困った時は、公式ドキュメントの Calling C and Fortran Code を参考にしましょう。
+注意: 最新版の公式ドキュメントをいくつか引用していますが、ドキュメントは日々更新されていますので、この記事を読んで頂いた時点とは異なる可能性があることにご注意ください。
+こんなとき ccall を使う際に、ポインタに関する以下のような疑問を持つことがあります。
+ ポインタを引数に持つ（例. double*）関数のラッピングはどうすればいいのか？ 構造体のポインタを引数に持つ関数のラッピングはどうすれば？ ポインタのポインタを引数に持つ（例. double**）関数のラッピングは？  一つ目は非常に簡単で、Array（Cの関数がdouble*を取るならばArray{Float64,1}）をそのまま渡せばよいだけです。ドキュメントのArray Conversionsにも書かれています。が、残りの二つに関してはハマりどころがあります。順に説明します。
+構造体のポインタを引数に持つ関数のラッピングはどうすれば？ 現状のドキュメントは少し不親切なので、引用した上で、整理します。
+Calling C and Fortran Code より引用: &amp;gt; Currently, it is not possible to pass structs and other non-primitive types from Julia to C libraries. However, C functions that generate and use opaque struct types by passing pointers to them can return such values to Julia as Ptr{Void}, which can then be passed to other C functions as Ptr{Void}.</description>
+    </item>
+    
+    <item>
+      <title>統計的声質変換クッソムズすぎワロタ（チュートリアル編）</title>
+      <link>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</link>
+      <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
+      <description>はじめに こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。
+前回の記事（統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE）では変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。
+コード https://github.com/r9y9/VoiceConversion.jl
+Julia という言語で書かれています。Juliaがどんな言語かをさっと知るのには、以下のスライドがお勧めです。人それぞれ好きな言語で書けばいいと思いますが、個人的にJuliaで書くことになった経緯は、最後の方に簡単にまとめました。
+  プログラミング言語 Julia の紹介  from Kentaro Iizuka  サードパーティライブラリ 声質変換は多くのコンポーネントによって成り立っていますが、すべてを自分で書くのは現実的ではありません。僕は、主に以下のライブラリを活用しています。
+ WORLD - 音声分析合成のフレームワークとして、あるいは単にスペクトル包絡を抽出するツールとして使っています。Juliaラッパーを書きました。 SPTK - メル対数スペクトル近似（Mel-Log Spectrum Approximation; MLSA）フィルタを変換処理に使っています。これもJuliaラッパーを書きました。 sklearn - sklearn.mixture をGMMの学習に使っています。pythonのライブラリは、juliaから簡単に呼べます。  音声分析合成に関しては、アカデミック界隈ではよく使われているSTRAIGHTがありますが、WORLDの方がライセンスもゆるくソースも公開されていて、かつ性能も劣らない（正確な話は、森勢先生の論文を参照してください）ので、おすすめです。
+VoiceConversion.jl でできること 追記 2015/01/07 この記事を書いた段階のv0.0.1は、依存ライブラリの変更のため、現在は動きません。すみません。何のためのタグだ、という気がしてきますが、、最低限masterは動作するようにしますので、そちらをお試しください（基本的には、新しいコードの方が改善されています）。それでも動かないときは、issueを投げてください。
+2014/11/10現在（v0.0.1のタグを付けました）、できることは以下の通りです（外部ライブラリを叩いているものを含む）。
+ 音声波形からのメルケプストラムの抽出 DPマッチングによるパラレルデータの作成 GMMの学習 GMMベースのframe-by-frame特徴量変換 GMMベースのtrajectory特徴量変換 GMMベースのtrajectory特徴量変換（GV考慮版） 音声分析合成系WORLDを使った声質変換 MLSAフィルタを使った差分スペクトルに基づく声質変換  これらのうち、trajectory変換以外を紹介します。
+チュートリアル：CMU_ARCTICを使ったGMMベースの声質変換（特徴抽出からパラレルデータの作成、GMMの学習、変換・合成処理まで） データセットにCMU_ARCTICを使って、GMMベースの声質変換（clb -&amp;gt; slt）を行う方法を説明します。なお、VoiceConversion.jl のv0.0.1を使います。ubuntuで主に動作確認をしていますが、macでも動くと思います。
+0. 前準備 0.1. データセットのダウンロード Festvox: CMU_ARCTIC Databases を使います。コマンド一発ですべてダウンロードするスクリプトを書いたので、ご自由にどうぞ。</description>
+    </item>
+    
+    <item>
+      <title>NMFで音源分離を試してみる</title>
+      <link>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</link>
+      <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</guid>
+      <description>ずーーっと前に、 NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE で実際に実装してみてやってみると書いていたのに、まったくやっていなかったことに気づいたのでやりました。
+音楽に対してやってみたのですが、簡単な曲だったら、まぁぼちぼち期待通りに動いたかなぁという印象です。コードとノートを挙げたので、興味のある方はどうぞ。
+Github https://github.com/r9y9/julia-nmf-ss-toy
+ノート NMF-based Music Source Separation Demo.ipynb | nbviewer
+NMFのコード (Julia) NMFの実装の部分だけ抜き出しておきます。
+function nmf_euc(Y::AbstractMatrix, K::Int=4; maxiter::Int=100) H = rand(size(Y, 1), K) U = rand(K, size(Y, 2)) const ϵ = 1.0e-21 for i=1:maxiter H = H .* (Y*U&#39;) ./ (H*U*U&#39; + ϵ) U = U .* (H&#39;*Y) ./ (H&#39;*H*U + ϵ) U = U ./ maximum(U) end return H, U end  いやー簡単ですねー。NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。</description>
+    </item>
+    
+    <item>
+      <title>JuliaTokyo #2でBinDeps.jl についてLTしてきた</title>
+      <link>http://r9y9.github.io/blog/2014/09/30/juliatokyo2/</link>
+      <pubDate>Tue, 30 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/09/30/juliatokyo2/</guid>
+      <description>JuliaTokyo #2 - connpass
+ 発表概要 C/C++ライブラリのラッパー（C++は現状のJuliaでは難しいけど）を作るときに、どうやってライブラリの依存関係を管理するか？という話です。結論としては、方法はいくつかありますが　BinDeps.jl というパッケージを使うのが楽で良いですよ、ということです。Githubのいろんなリポジトリをあさった僕の経験上、BinDeps.jl はバイナリの依存関係管理におけるデファクトスタンダードな気がしています。BinDeps.jl の使い方は、既存のパッケージのコードを読みまくって学ぶのがおすすめです。
+さて、途中で書くのに疲れてしまったのですが、自作のJuliaパッケージで、Cライブラリとの依存性を記述する - Qiita に以前似たような内容をまとめたので、併せてどうぞ。qiitaにも書きましたが、最適化関係のプロジェクトを集めた JuliaOpt コミュニティでは、バイナリの依存関係管理にBinDeps.jlを使用することを推奨しています。
+雑感  勉強会にはデータ分析界隈の人が多い印象。音声系の人はとても少なかった。 R人気だった Go使ってる！って人と合わなかった（つらい） @show マクロ最高 unicode最高 懇親会では、なぜか途中から深層学習やベイズの話をしていた… いい忘れたけど僕もnightly build勢でした。毎日あたたかみのある手動pull &amp;amp; make をしています。 Julia の話ができて楽しかったので、また参加したいなー  LTで MeCab.jl について話をしてくれたchezouさんが、ちょうどBinDeps.jl に興味を持たれているようだったので、勉強会のあとに BinDeps.jl を使ってバイナリの管理を実装して、プルリクをしてみました。参考になればうれしいなーと思います。
+おしまい。</description>
+    </item>
+    
+    <item>
+      <title>SPTKのJuliaラッパーも書いた</title>
+      <link>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</link>
+      <pubDate>Mon, 15 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</guid>
+      <description>夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。
+Julia wrapper for Speech Signal Processing Toolkit (SPTK) | Github
+かれこれ、Go, Python, Juliaと、3つの言語でラッパーを書いてしまいました。どれだけSPTK好きなんだと。そしてどれだけ言語触ってるんだ絞れと。うーん、とはいえどれも良いところと悪いところがあってですね（何も言ってない）、難しい…
+おしまい</description>
+    </item>
+    
+    <item>
+      <title>最高の夏</title>
+      <link>http://r9y9.github.io/blog/2014/09/01/summer/</link>
+      <pubDate>Mon, 01 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/09/01/summer/</guid>
+      <description>pic.twitter.com/VMToqJ7PCB
+&amp;mdash; ノッツ@ソラミちゃんの唄②発売中 (@knotscream) August 30, 2014   収穫 この夏いちばんの収穫はノッツさんという漫画家の方を知れたことだった。最高の夏だ</description>
+    </item>
+    
+    <item>
+      <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</title>
+      <link>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
+      <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
+      <description>最近 Julia で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）
+https://github.com/r9y9/BNMF.jl
+元論文: Bayesian Nonparametric Matrix Factorization for Recorded Music by Matthew D. Hoffman et al. in ICML 2010.
+デモ http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb
+適当な音声（音楽じゃなくてごめんなさい）に対して、GaP-NMFをfittingしてみた結果のメモです。$K=100$ で始めて、100回ほどイテレーションを回すと適度な数（12くらい）にtruncateしているのがわかると思います。予めモデルの複雑度を指定しなくても、データから適当な数を自動決定してくれる、ノンパラベイズの良いところですね。
+ハマったところ  GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら besselkx で、scipyで言うなら scipy.special.kve です。  雑感  MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒 というかJuliaがMatlabに似すぎ？ Gamma分布に従う乱数は、Distributions,jl を使えばめっちゃ簡単に生成できた。素晴らしすぎる 行列演算がシンプルにかけてホント楽。pythonでもmatlabでもそうだけど（Goだとこれができないんですよ…） 第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。  Python版と速度比較 bp_nmf/code/gap_nmf と比較します。matlabはもってないので比較対象からはずします、ごめんなさい
+Gistにベンチマークに使ったスクリプトと実行結果のメモを置いときました https://gist.github.com/r9y9/3d0c6a90dd155801c4c1
+結果だけ書いておくと、あらゆる現実を（ry の音声にGaP-NMFをepochs=100でfittingするのにかかった時間は、
+Julia: Mean elapsed time: 21.92968243 [sec] Python: Mean elapsed time: 18.3550617 [sec]  という結果になりました。つまりJuliaのほうが1.</description>
+    </item>
+    
+    <item>
+      <title>夏休みと人生</title>
+      <link>http://r9y9.github.io/blog/2014/08/20/life/</link>
+      <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/08/20/life/</guid>
+      <description>pic.twitter.com/pm6uDKoAg6
+&amp;mdash; ノッツ@ソラミちゃんの唄②発売中 (@knotscream) August 18, 2014   http://snn.getnews.jp/archives/388418
+こんな夏休みを過ごしたい人生だったよ
+p.s.
+速攻でノッツさんフォローしました</description>
+    </item>
+    
+    <item>
+      <title>SPTKのPythonラッパーを書いた</title>
+      <link>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</link>
+      <pubDate>Sun, 10 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</guid>
+      <description>2015/09/06 追記 ましなpythonラッパーを新しく作りました: Pysptk: SPTKのpythonラッパーを作った (Part 2) - LESS IS MORE
+2014/08/10 追記 ipython notebookによる簡単なチュートリアルを貼っておきます
+SPTK を Pythonから呼ぶ | nbviewer
+2014/11/09 タイポ修正しました…
+scipy.mixture -&amp;gt; sklearn.mixture
+SPTKの中で最も価値がある（と僕が思っている）メルケプストラム分析、メルケプストラムからの波形合成（MLSA filter）がpythonから可能になります。
+ご自由にどうぞ
+Speech Signal Processing Toolkit (SPTK) for API use with python | Github
+注意ですが、SPTK.hにある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？sklearn.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。
+参考  Goで音声信号処理をしたいのでSPTKのGoラッパーを書く - LESS IS MORE  Goでも書いたのにPythonでも書いてしまった。
+一年くらい前に元指導教員の先生と「Pythonから使えたらいいですよね」と話をしていました。先生、ようやく書きました。</description>
+    </item>
+    
+    <item>
+      <title>Tokyo.Scipyに参加してきた</title>
+      <link>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</link>
+      <pubDate>Tue, 05 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</guid>
+      <description>Tokyo.SciPy ハッシュタグ: #tokyoscipy
+ Tokyo.Scipy は科学技術計算で Python を利用するための勉強会です．
+ とのことです。最近、python/numpy/scipyによくお世話になっているので、参加してみました。雑感をメモしておきます。
+Tokyo.Scipy 006 第6回のようでした。プログラムだけさっとまとめると、
+ そこそこ大規模Python並列/パイプライン処理入門 w/o MapReduceレジーム (柏野雄太 @yutakashino) 45分 初心者が陥るN個の罠。いざ進めNumpy/Scipyの道 (@nezuq) 15分 Making computations reproducible (@fuzzysphere) 30分 IPython Notebookで始めるデータ分析と可視化 (杜世橋 @lucidfrontier45) 30分 PyMCがあれば，ベイズ推定でもう泣いたりなんかしない (神嶌敏弘 @shima__shima) 45分  という感じ。僕的には、@shima__shima 先生の発表が目当てだった
+雑感  今回（？）はscipyの話はほとんどなかった。pythonを使った科学技術計算に関する幅広いトピックを扱ってる印象。 ipython はやっぱ便利ですね。僕も良く使います @shima__shima 先生の発表がとてもわかりやすかったので、本当に参考にしたい 正直もっとコアな話もあっていいのでは、と思った 懇親会で気づいたが、意外と音声信号処理やってる（た）人がいてびっくりした scikit-learn を初期の頃に作られてた方 @cournape がいてびっくり。開発当初はGMMとSVMくらいしかなくて全然ユーザーがつかなかったなどなど、裏話を色々聞けた フランス人の「たぶん大丈夫」は絶対無理の意（わろた Rust, juliaがいいと教えてもらった。うちjuliaは今やってみてるがなかなかいい 発表でも話題に上がったけど、Pandasがいいという話を聞いたので、試してみたい  運営の方々、発表された方々、ありがとうございました。僕も機会が合えば何か発表したい</description>
+    </item>
+    
+    <item>
+      <title>Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね</title>
+      <link>http://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</link>
+      <pubDate>Tue, 29 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</guid>
+      <description>いまいち成果出ないので気分転換にブログをだらだら書いてみるテストです。
+まえがき 半年くらい前に、某深層学習に興味を持ってやってみようかなーと思っていた時期があって、その時にGoでいくつかニューラルネットを書きました（参考：Restricted Boltzmann Machines with MNIST - LESS IS MORE、githubに上げたコード）。なぜGoだったかというと、僕がGoに興味を持ち始めていたからというのが大きいです。Goを知る前は、たくさん計算するようなコードを書くときはC++だったけれど、C++は色々つらいものがあるし、GoはC++には速度面で劣るもののそこそこ速く、かつスクリプト的な書きやすさもあります。C++のデバッグやメンテに費やす膨大な時間に比べれば、計算時間が1.5~2倍に増えるくらい気にしないというスタンスで、僕はC++のかわりGoを使おうとしていました（※今でも間違っているとは思いませんが、とはいえ、厳しいパフォーマンスを求められる場合や既存の資産を有効活用したい場合など、必要な場面ではC++を書いています）。
+Goで機械学習 僕は機械学習がけっこう好きなので、Goでコード書くかーと思っていたのですが、結果としてまったく捗りませんでした。ニューラルネットをてきとーに書いたくらいです。
+検索するとわかりますが、現状、他の主流な言語に比べて圧倒的に数値計算のライブラリが少ないです。特に、線形代数、行列演算のデファクト的なライブラリがないのはつらいです。いくつか代表的なものをあげます。
+ skelterjohn/go.matrix - もうまったくメンテされていないし、たぶんするつもりはないと思います。使い勝手は、僕にとってはそんなに悪くなかった（試しにNMFを書いてみた）ですが、実装は純粋なGoで書かれていて、GPUを使って計算するのが流行りな時代では、例えば大きなニューラルネットをパラメータを変えながら何度も学習するのにはしんどいと思いました。 gonum/matrix - 比較的最近出てきたライブラリで、biogo から行列演算に関する部分を切り出して作られたもののようです。行列演算の内部でblasを使っていて、かつ将来的にはcublasにも対応したい、みたいな投稿をGoogle Groupsで見たのもあって、半年くらい前にはgoで行列演算を行うならこのライブラリを使うべきだと判断しました（以前けっこう調べました：gonum/matrix のデザインコンセプトに関するメモ - Qiita）。しかし、それほど頻繁にアップデートされていませんし、機能もまだ少ないです。  自分で作るかー、という考えも生まれなかったことはないですが、端的に言えばそれを行うだけのやる気がありませんでした。まぁ本当に必要だったら多少難しくてもやるのですが、ほら、僕達にはpythonがあるじゃないですか…
+Pythonで機械学習 python 機械学習 - Google 検索 約 119,000 件（2014/07/29現在）
+もうみんなやってますよね。
+Golang 機械学習 - Google 検索 約 9,130 件（2014/07/29現在）
+いつかpythonのように増えるんでしょうか。正直に言って、わかりません（正確には、あんま考えていませんごめんなさい）
+さて、僕もよくpython使います。機械学習のコードを書くときは、だいたいpythonを使うようになりました（昔はC++で書いていました）。なぜかって、numpy, scipyのおかげで、とても簡潔に、かつ上手く書けばそこそこ速く書けるからです。加えて、ライブラリがとても豊富なんですよね、機械学習にかかわらず。numpy, scipyに加えて、matplotlibという優秀な描画ライブラリがあるのが、僕がpythonを使う大きな理由になっています。
+pythonの機械学習ライブラリは、scikit-learn が特に有名でしょうか。僕もちょいちょい使います。使っていて最近おどろいたのは、scipy.mixtureには通常のGMMだけでなく変分GMM、無限混合GMMも入っていることですよね。自分で実装しようとしたら、たぶんとても大変です。昔変分GMMの更新式を導出したことがありますが、何度も心が折れそうになりました。いやー、いい時代になったもんですよ…（遠い目
+Pythonでニューラルネット（pylearn2を使おう） Deep何とかを含め流行りのニューラルネットが使える機械学習のライブラリでは、僕は pylearn2 がよさ気だなーと思っています。理由は、高速かつ拡張性が高いからです。pylearn2は、数学的な記号表現からGPUコード（GPUがなければCPU向けのコード）を生成するmathコンパイラ Theano で書かれているためpythonでありながら高速で、かつ機械学習に置いて重要なコンポーネントであるデータ、モデル、アルゴリズムが上手く分離されて設計されているのがいいところかなと思います（全部ごっちゃに書いていませんか？僕はそうですごめんなさい。データはともかくモデルと学習を上手く切り分けるの難しい）。A Machine Learning library based on Theanoとのことですが、Deep learningで有名な lisa lab 発ということもあり、ニューラルネットのライブラリという印象が少し強いですね。
+一つ重要なこととして、このライブラリはかなり研究者向けです。ブラックボックスとして使うのではなく、中身を読んで必要に応じて自分で拡張を書きたい人に向いているかと思います。</description>
+    </item>
+    
+    <item>
+      <title>Pylearn2, theanoをEC2 g2.x2large で動かす方法</title>
+      <link>http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</link>
+      <pubDate>Sun, 20 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</guid>
+      <description>モチベーション  手元のへぼマシンでニューラルネットの学習を回わす 半日たっても終わらない 最近だとGPU使って計算を高速化するのが流行りだが、手元にGPUはない  Deep Learning in Python with Pylearn2 and Amazon EC2
+手元にGPUがない…？大丈夫！Amazon EC2を使えば良さそう！！！
+というわけで、めんどくさいと言わずにec2にお手軽計算環境を整えます。ec2でGPUが乗ったものだと、g2.2xlargeがよさそうですね。
+ちなみに↑の図、pylearn2のtutorialのRestricted Bolzmann MachinesをMNISTで学習した結果なんですが、手元のマシンだとだいたい6時間くらい？（忘れた）だったのがg2.2xlargeだと30分もかかってない（ごめんなさい時間図るの忘れた）。$0.65/hourと安いんだし（他のインスタンスに比べればそりゃ高いけど）、もう手元のマシンで計算するの時間の無駄だしやめようと思います。
+さてさて、今回環境構築に少しはまったので、もうはまらないように簡単にまとめておきます。
+結論 Amazon Linux AMI with NVIDIA GRID GPU Driver on AWS Marketplace 
+すでにNVIDIAのドライバとCUDA（5.5）が入ったインスタンスをベースに使いましょう。
+EC2(g2.2xlarge)でOpenGLを使う方法 で挙げられているように普通のlinuxを使う方法もありますが、ハマる可能性大です。僕はubuntuが使いたかったので最初はubuntu 14.04 server でドライバ、cuda (5.5 or 6.0) のインストールを試しましたが同じように失敗しました。
+イケイケと噂の音声認識ライブラリKaldiのドキュメントらしきものを見ると、Ubuntu 14.04でもcuda 6.0インストールできるっぽいんですけどね…だめでした。頑張ればできるかもしれませんが、よほど強いメリットがない場合は、おとなしくpre-installされたインスタンスを使うのが吉だと思います。
+セットアップ ↑で上げたインスタンスにはGPUドライバやCUDAは入っていますが、theanoもpylearn2もnumpyもscipyも入っていません。よって、それらは手動でインストールする必要があります。
+というわけで、インストールするシェルをメモって置きます。試行錯誤したあとに適当にまとめたshellなので、なんか抜けてたらごめんなさい。
+https://gist.github.com/r9y9/50f13ba28b5b158c25ae
+#!/bin/bash # Pylearn2 setup script for Amazon Linux AMI with NVIDIA GRID GPU Driver. # http://goo.gl/3KeXXW sudo yum update -y sudo yum install -y emacs tmux python-pip sudo yum install -y python-devel git blas-devel lapack-devel # numpy, scipy, matplotlib, etc.</description>
+    </item>
+    
+    <item>
+      <title>統計的声質変換クッソムズすぎワロタ（実装の話）</title>
+      <link>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</link>
+      <pubDate>Sun, 13 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</guid>
+      <description>2014/07/28 追記：
+重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました https://gist.github.com/r9y9/88bda659c97f46f42525
+まえがき 前回、統計的声質変換クッソムズすぎワロタ - LESS IS MORE という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。
+Twitter引用: 統計的声質変換クッソムズすぎワロタ - LESS IS MORE http://t.co/8RkeXIf6Ym @r9y9さんから ムズすぎと言いながら，最後の音はしっかり出ているあたり凄いなぁ．
+&amp;mdash; M. Morise (忍者系研究者) (@m_morise) July 5, 2014 
+@ballforest 従来のパラメータ変換と比較すると、音質は従来よりもよさそうな気はしますがスペクトル包絡の性差ががっつりと影響しそうな気もするんですよね。
+&amp;mdash; 縄文人（妖精系研究者なのです） (@dicekicker) July 5, 2014 
+異性間に関しては、実験が必要ですね。異性間だとF0が結構変わってくると思いますが、差分スペクトル補正の場合そもそもF0をいじらないという前提なので、F0とスペクトル包絡が完全に独立でない（ですよね？）以上、同姓間に比べて音質は劣化する気はします。簡単にやったところ、少なくとも僕の主観的には劣化しました
+ところで、結構いい感じにできたぜひゃっはーと思って、先輩に聞かせてみたら違いわかんねと言われて心が折れそうになりました。やはり現実はつらいです。
+実装の話 さて、今回は少し実装のことを書こうと思います。学習&amp;amp;変換部分はPythonで書いています。その他はGo（※Goの話は書きません）。
+トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz 前回トラジェクトリベースは処理が激重だと書きました。なんと、4秒程度の音声（フレームシフト5msで777フレーム）に対して変換部分に600秒ほどかかっていたのですが（重すぎワロタ）、結果から言えばPythonでも12秒くらいまでに高速化されました（混合数64, メルケプの次元数40+デルタ=80次元、分散共分散はfull）。本当にごめんなさい。
+何ヶ月か前、ノリでトラジェクトリベースの変換を実装しようと思ってサクッと書いたのがそのままで、つまりとても効率の悪い実装になっていました。具体的には放置していた問題が二つあって、
+ ナイーブな逆行列の計算 スパース性の無視  です。特に後者はかなりパフォーマンスに影響していました
+ナイーブな逆行列の計算 numpy.linalg.invとnumpy.linalg.solveを用いた逆行列計算 - 睡眠不足？！ (id:sleepy_yoshi)
+numpy.linalg.invを使っていましたよね。しかもnumpy.linalg.solveのほうが速いことを知っていながら。一ヶ月前の自分を問い詰めたい。numpy.linalg.solveで置き換えたら少し速くなりました。
+ 600秒 -&amp;gt; 570秒 （うろ覚え）  1.05倍の高速化（微妙）
+スパース性の無視  T. Toda, A.</description>
+    </item>
+    
+    <item>
+      <title>統計的声質変換クッソムズすぎワロタ</title>
+      <link>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</link>
+      <pubDate>Sat, 05 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</guid>
+      <description>2014/10/12 追記 少なくともGVのコードに致命的なバグがあったことがわかりました。よって、あまりあてにしないでください…（ごめんなさい
+こんにちは。
+最近、統計的声質変換の勉強をしていました。で、メジャーなGMM（混合ガウスモデル）ベースの変換を色々やってみたので、ちょろっと書きます。実は（というほどでもない?）シンプルなGMMベースの方法だと音質クッソ悪くなってしまうんですが、色々試してやっとまともに聞ける音質になったので、試行錯誤の形跡を残しておくとともに、音声サンプルを貼っておきます。ガチ勢の方はゆるりと見守ってください
+基本的に、以下の論文を参考にしています
+ T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007.  GMMベースの声質変換の基本 シンプルなGMMベースの声質変換は大きく二つのフェーズに分けられます。
+ 参照話者と目標話者のスペクトル特徴量の結合GMM $P(x,y)$を学習する 入力$x$が与えらたとき、$P(y|x)$が最大となるようにスペクトル特徴量を変換する  あらかじめ話者間の関係をデータから学習しておくことで、未知の入力が来た時にも変換が可能になるわけです。
+具体的な変換プロセスとしては、音声を
+ 基本周波数 非周期性成分 スペクトル包絡  の3つに分解し、スペクトル包絡の部分（≒声質を表す特徴量）に対して変換を行い、最後に波形を再合成するといった方法がよく用いられます。基本周波数や非周期性成分も変換することがありますが、ここではとりあえず扱いません
+シンプルな方法では、フレームごとに独立に変換を行います。
+GMMベースのポイントは、東大の齋藤先生の以下のツイートを引用しておきます。
+@shurabaP GMMベースの声質変換の肝は、入力xが与えられた時の出力yの条件付き確率P(y|x) が最大になるようにyを選ぶという確率的な考えです。私のショボい自作スクリプトですが、HTKを使ったGMMの学習レシピは研究室内部用に作ってあるので、もし必要なら公開しますよ。
+&amp;mdash; Daisuke Saito (@dsk_saito) March 17, 2011</description>
+    </item>
+    
+    <item>
+      <title>GOSSP - Go言語で音声信号処理</title>
+      <link>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</link>
+      <pubDate>Sun, 08 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
+      <description>C++からGoへ みなさん、C++で信号処理のアルゴリズムを書くのはつらいと思ったことはありませんか？C++で書くと速いのはいいけれど、いかんせん書くのが大変、コンパイルエラーは読みづらい、はたまたライブラリをビルドしようとしたら依存関係が上手く解決できず……そんな覚えはないでしょうか？謎のコンパイルエラーに悩みたくない、ガーベジコレクションほしい、Pythonのようにさくっと書きたい、型推論もほしい、でも動作は速い方がいい、そう思ったことはないでしょうか。
+そこでGoです。もちろん、そういった思いに完全に答えてくれるわけではありませんが、厳しいパフォーマンスを要求される場合でなければ、Goの方が良い場合も多いと僕は思っています。 とはいえ、まだ比較的新しい言語のため、ライブラリは少なく信号処理を始めるのも大変です。というわけで、僕がC++をやめてGoに移行したことを思い出し、Goでの信号処理の基礎と、今まで整備してきたGoでの音声信号処理ライブラリを紹介します。
+Goの良いところ/悪いところについては書きません。正直、本当は何の言語でもいいと思っていますが、僕はGoが好きなので、ちょっとでもGoで信号処理したいと思う人が増えるといいなーと思って書いてみます。
+あとで書きますが、僕が書いたコードで使えそうなものは、以下にまとめました。
+https://github.com/r9y9/gossp
+基礎 Wavファイルの読み込み/書き込み [wav]  まずは音声ファイルの読み込みですね。wavファイルの読み込みさえできれば十分でしょう。
+これは、すでに有用なライブラリが存在します。GO-DSP とういデジタル信号処理のライブラリに含まれるwavパッケージを使いましょう。
+次のように書くことができます。
+package main import ( &amp;quot;fmt&amp;quot; &amp;quot;github.com/mjibson/go-dsp/wav&amp;quot; &amp;quot;log&amp;quot; &amp;quot;os&amp;quot; ) func main() { // ファイルのオープン file, err := os.Open(&amp;quot;./test.wav&amp;quot;) if err != nil { log.Fatal(err) } // Wavファイルの読み込み w, werr := wav.ReadWav(file) if werr != nil { log.Fatal(werr) } // データを表示 for i, val := range w.Data { fmt.Println(i, val) } }  簡単ですね。
+Goはウェブ周りの標準パッケージが充実しているので、以前qiitaに書いた記事のように、wavファイルを受け取って何らかの処理をする、みたいなサーバも簡単に書くことができます</description>
+    </item>
+    
+    <item>
+      <title>連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG</title>
+      <link>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</link>
+      <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</guid>
+      <description>「ウェーブレット変換って難しいんじゃ…マザーウェーブレット？よくわかんない…」
+大丈夫、そんな人には以下の文献がお勧めです
+Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.
+前置きはさておき、上の文献を参考にMorlet, Paul, DOG (Derivative of Gaussian) の代表的な3つのマザーウェーブレットで音声に対してウェーブレット変換をしてみたので、メモがてら結果を貼っておく
+図の横軸はサンプルで、縦軸は周波数Hz（対数目盛り）にした
+マザーウェーブレットのパラメータは、Morletは $\omega_{0} = 6.0$、Paulは $M = 4$、DOGは $M = 6$
+スケールは、min=55hzで、25cent毎に8オクターブ分取った※厳密には違うのでごめんなさい
+分析に使った音声は、逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE で使ったのと同じ
+Morlet  Paul  DOG  対数を取ると、以下のような感じ
+Morlet  Paul  DOG  Paulは時間解像度は高いけど周波数解像度はいまいちなので、音声とかには向かないのかなー。DOGはMorletとPaulの中間くらいの位置づけの様子。DOGはorderを上げればMorletっぽくなるけど、Morletの方がやっぱ使いやすいなーという印象。
+スケールから周波数への変換 実は今日まで知らなかったんだけど、マザーウェーブレットによっては時間領域でのスケールの逆数は必ずしも周波数領域での周波数に対応するとは限らないそう。というかずれる（詳細はPractical Guideの3.hを参照）。上で書いた厳密には違うというのは、これが理由。
+ただし、スケールから周波数への変換はマザーウェーブレットから一意に決まるようなので、正しい周波数を求めることは可能。上に貼った図は、Practical Guideにしたがってスケールから周波数に変換している。
+例えば、$f = \frac{1}{s}$となるようにスケールを与えていたとき、$\omega_0 = 6.0$のMorletを使ったウェーブレット変換の真の周波数は、</description>
+    </item>
+    
+    <item>
+      <title>PythonによるニューラルネットのToyコード</title>
+      <link>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</link>
+      <pubDate>Sun, 11 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
+      <description>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。
+このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）
+#!/usr/bin/python # coding: utf-8 # ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の # デモコードです。 # 誤差伝搬法によってニューラルネットを学習します。 # XORの学習、テストの簡単なデモコードもついています # 2014/05/10 Ryuichi Yamamoto import numpy as np def sigmoid(x): return 1.0 / (1.0 + np.exp(-x)) def dsigmoid(y): return y * (1.0 - y) class NeuralNet: def __init__(self, num_input, num_hidden, num_output): &amp;quot;&amp;quot;&amp;quot; パラメータの初期化 &amp;quot;&amp;quot;&amp;quot; # 入力層から隠れ層への重み行列 self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden)) self.hidden_bias = np.ones(num_hidden, dtype=float) # 隠れ層から出力層への重み行列 self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output)) self.</description>
+    </item>
+    
+    <item>
+      <title>cgo の基本的な使い方とポインタ周りのTips (Go v1.2)</title>
+      <link>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</link>
+      <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</guid>
+      <description>C/C++ライブラリのGoラッパーを書くためには、cgoというパッケージを使うのだけど、特にCのポインタ周りにハマりどころが多かったので、少しまとめとく
+cgoの基礎については、以下の二つを読むことを推奨
+ http://golang.org/cmd/cgo/ https://code.google.com/p/go-wiki/wiki/cgo  この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい
+cgo  Cgo enables the creation of Go packages that call C code.
+ http://golang.org/cmd/cgo/
+cgoとは、GoからCの関数/型にアクセスするために用いるパッケージのこと。cgoを使えば、GoからCのコードが呼べる。つまり、Cで書かれたライブラリが、Goでも再利用できる。
+なお、go v1.2 から、C++もサポートされている様子 http://golang.org/doc/go1.2#cgo_and_cpp
+ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &amp;ldquo;C&amp;rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べる
+基本的な使い方 まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う
+import &amp;quot;C&amp;quot;  import文のすぐ上のコメントにinclude &amp;lt;ヘッダ.h&amp;gt; と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書く
+// #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;stdlib.h&amp;gt; import &amp;quot;C&amp;quot;  これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる
+外部ライブラリを呼ぶ 通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いので、そのような場合には、ライブラリの依存関係をgoのコードに記述する
+cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができる
+pkg-configを使うと 、
+// #cgo pkg-config: png cairo // #include &amp;lt;png.h&amp;gt; import &amp;quot;C&amp;quot;  こんな感じ（Goの公式ページから参照）</description>
+    </item>
+    
+    <item>
+      <title>音声分析変換合成システムWORLDのGoラッパーを書いた</title>
+      <link>http://r9y9.github.io/blog/2014/03/22/go-world/</link>
+      <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/03/22/go-world/</guid>
+      <description>音声分析変換合成システムWORLD WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ
+http://ml.cs.yamanashi.ac.jp/world/
+オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ
+GO-WORLD https://github.com/r9y9/go-world
+使い方について、ほんの少し解説を書きます
+※ubuntu12.04でのみ動作確認してます。
+準備 1. WORLDのインストール まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました
+https://github.com/r9y9/world
+./waf configure &amp;amp;&amp;amp; ./waf sudo ./waf install  でインストールできます。
+なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…
+2. GO-WORLDのインストール go get github.com/r9y9/go-world  簡単ですね！
+使い方 1. インポートする import &amp;quot;github.com/r9y9/go-world&amp;quot;  2. worldのインスタンスを作る w := world.New(sampleRate, framePeriod) // e.g. (44100, 5)  3. 好きなworldのメソッドを呼ぶ 基本周波数の推定: Dio timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used  スペクトル包絡の推定: Star spectrogram := w.Star(input, timeAxis, f0)  励起信号の推定: Platinum residual := w.</description>
+    </item>
+    
+    <item>
+      <title>Restricted Boltzmann Machines with MNIST</title>
+      <link>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</link>
+      <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</guid>
+      <description>ディープ某を使った研究を再現してみたくて、最近某ニューラルネットに手を出し始めた。で、手始めにRestricted Boltzmann Machinesを実装してみたので、
+ MNISTを使って学習した結果の重み（22*22=484個）を貼っとく（↑） 得た知見をまとめとく Goのコード貼っとく  ってな感じで書いておく
+(本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)
+実験条件 データベースはmnist。手書き数字認識で有名なアレ。学習の条件は、
+ 隠れ層のユニット数: 500 mini-batch size: 20 iterationの回数: 15  対数尤度の変化  以下グラフに表示している生データ
+0 -196.59046099622128 1 -70.31708616742365 2 -65.29499371647965 3 -62.37983267378022 4 -61.5359019358253 5 -60.917772257650164 6 -59.64207778426757 7 -59.42201674307857 8 -59.18497336138633 9 -58.277168243126305 10 -58.36279288392401 11 -58.57805165724595 12 -57.71043215987184 13 -58.17783142034138 14 -57.53629129936344  尤度上がると安心する。厳密に対数尤度を計算することは難しいので、Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial にある擬似尤度を参考にした
+学習時間 うちのcore2duoのPCで4時間弱だった気がする（うろ覚え
+隠れ層のユニット数100だと、40分ほどだった
+知見 今の所、試行錯誤して自分が得た知見は、</description>
+    </item>
+    
+    <item>
+      <title>マルコフ確率場 (MRF) と条件付き確率場 (CRF) の違い</title>
+      <link>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</link>
+      <pubDate>Sat, 01 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</guid>
+      <description>一番の違いは、生成モデルか識別モデルか、ということ。それぞれ、
+ Markov Random Fields (MRF) は生成モデル Conditional Random Fields (CRF) は識別モデル  です。
+ What is exactly the difference between MRF and CRF  ここを見ると割とすっきりする。
+ただ、少しスムーズに納得できないことがありまして…それは、MRFもCRFもグラフィカルモデルで書くと無向グラフとなること。識別モデルは無向グラフで生成モデルは有向グラフなんじゃ…？と思ってしまう人もいるんじゃないかと思う（いなかったらごめんなさい）。
+グラフィカルモデルとしての表現 一般に、生成モデルは有向グラフの形で記述され、識別モデルは無向グラフとして記述される。例えば、隠れマルコフモデル (HMM) は有向グラフで、条件付き確率場 (CRF) は無向グラフで表される。図を貼っておく
+ その道の人には、馴染みのある図だと思う（ｼｭｳﾛﾝから引っ張ってきた）。グレーの○が観測変数、白い○が隠れ変数です
+ここで重要なのは、例外もあるということ。具体的には、タイトルにあるMRFは生成モデルだけど無向グラフで書かれる。MRFというと、例えばRestricted Boltzmann Machine とかね！
+単純なことだけど、これを知らないとMRFについて学習するときにつっかかってしまうので注意
+An Introduction to Conditional Random Fields の2.2 Generative versus Discriminative Models から引用すると、
+ Because a generative model takes the form p(y,x) = p(y)p(x|y), it is often natural to represent a generative model by a directed graph in which in outputs y topologically precede the inputs.</description>
+    </item>
+    
+    <item>
+      <title>Goで音声信号処理をしたいのでSPTKのGoラッパーを書く</title>
+      <link>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</link>
+      <pubDate>Mon, 10 Feb 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</guid>
+      <description>2014/07/22 追記：
+パッケージの一部として書きました（GOSSP - Go言語で音声信号処理 - LESS IS MOREを参照）。 SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ
+&amp;ndash;
+Goが最近オススメです（n度目
+Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製のSPTK をGoから使えるようにする
+cgo GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う http://golang.org/cmd/cgo/
+Cの関数や変数などには、 C. でアクセスできる
+ラッパー 例えば以下のように書く。MFCCの計算を例に上げる。必要に応じでSPTK.hに定義されている関数をラップする
+package sptk // #cgo pkg-config: SPTK // #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;SPTK/SPTK.h&amp;gt; import &amp;quot;C&amp;quot; func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 { // Convert go bool to C.Boolean (so annoying.. var dftmodeInGo, usehammingInGo C.Boolean if dftmode { dftmodeInGo = 1 } else { dftmodeInGo = 0 } if usehamming { usehammingInGo = 1 } else { usehammingInGo = 0 } resultBuffer := make([]float64, m) C.</description>
+    </item>
+    
+    <item>
+      <title>Goに関する良記事</title>
+      <link>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</link>
+      <pubDate>Sun, 02 Feb 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</guid>
+      <description>いくつか見つけたのでメモる
+Why We Think GoLang Is Ready For Early Stage Startups とあるスタートアップがウェブでGoを使うという意思決定をした理由、その決断に至るまでのプロセスが書かれている。また、その過程でGoを使うことによる利点・欠点が簡潔にまとめられてる。参考になった
+Go Getter - Performance comparison to C++ business card ray tracer  GoとC++のパフォーマンスの比較。Ray tracingというCGの手法を用いて比較をしていて、Goでも最適化するとC++並のスピード出ますよ（そしてC++と違ってGCあるしマルチコアにも簡単にできるしGoいいよ）って話。（自分へのメモのため画像を拝借していますが、意味がわからないと思うので元記事を参照してください）
+ただoptimized Go vs un-optimized C++なので注意。Goの最適化が主旨の記事です
+Go Getter Part 2 - Now with C++ optimizations  さっきの続きで、こちらでは最適化したC++と比較されてる。OpenMP使って並列化してるようだけど、あれ、まだC++の方が遅い・・（正直意外
+Go Getter Part 3 - Further optimizations and a multi-threaded C++ version  これで最後。C++（とGo）をめちゃくちゃ最適化した、って奴ですね。C++の方が二倍程度速くなったよう。 ただ、やっぱC++の方が良かった、というよりGoがC++並になるのも時間の問題って感じですね。
+さて このまとめで何が言いたかったというと
+「Goを使わない選択肢がない」
+まぁ半分冗談（ケースバイケースだし）ですが、僕のようにC++をメインで使っているけど不満ありまくりな人は、一度Go使ってみてもいいんじゃないでしょうか、と思います。C++の百倍書きやすいです</description>
+    </item>
+    
+    <item>
+      <title>Goでクロマベクトルを求める</title>
+      <link>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</link>
+      <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</guid>
+      <description>Chromagram。ドレミの歌の冒頭を分析した結果です
+package main import ( &amp;quot;fmt&amp;quot; &amp;quot;github.com/mjibson/go-dsp/wav&amp;quot; &amp;quot;github.com/r9y9/go-msptools/pcp&amp;quot; &amp;quot;log&amp;quot; &amp;quot;os&amp;quot; ) func main() { // reading data file, err := os.Open(&amp;quot;/path/to/file.wav&amp;quot;) if err != nil { log.Fatal(err) } defer file.Close() wav, werr := wav.ReadWav(file) if werr != nil { log.Fatal(werr) } // convert to []float64 from []int data := make([]float64, len(wav.Data[0])) for i := range data { data[i] = float64(wav.Data[0][i]) } // settings for analysis frameShift := int(float64(wav.SampleRate) / 100.</description>
+    </item>
+    
+    <item>
+      <title>Goで信号処理</title>
+      <link>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</link>
+      <pubDate>Mon, 27 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</guid>
+      <description> 最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う
+Goの良い所  デフォでたくさん便利なパッケージがある。http, json, os, &amp;hellip; パッケージのインストールはとても簡単。go getするだけ デフォでテストの枠組みがある gofmtでコードのformattingしてくれるので書き方で迷わなくて良い 使わないパッケージをimportするとコンパイルエラーになるし自然と疎結合なコードを書くようになる 並列処理を言語レベルでサポート GCあるのでメモリ管理なんてしなくていい 全般的にC++より書きやすい（ここ重要） そこそこ速い（C++よりは遅いけど）  ホントはPythonでさくっと書きたいけどパフォーマンスもほしいからC++で書くかー（嫌だけど）。と思ってた自分にはちょうどいい
+Goの悪い所（主にC++と比べて）  ちょっと遅い。さっと試したウェーブレット変換は、1.5倍くらい遅かった気がする（うろ覚え） C++やpythonに比べるとライブラリは少ない 言語仕様とかそのへんが優れてるかどうかは判断つきませんごめんなさい  Go-msptools 2014/07/22 追記：
+Go-msptoolsはGOSSPに吸収されました。（GOSSP - Go言語で音声信号処理 - LESS IS MOREを参照）
+おまけ：音の信号処理に役立ちそうなライブラリ  go-dsp portaudio-go  </description>
+    </item>
+    
+    <item>
+      <title>MLSA digital filter のC&#43;&#43;実装</title>
+      <link>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
+      <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
+      <description>MLSAフィルタわからんという記事を書いて早2ヶ月、ようやく出来た。
+Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。SPTKのmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。
+mlsa_filter.h https://gist.github.com/r9y9/7735120
+#pragma once #include &amp;lt;cmath&amp;gt; #include &amp;lt;memory&amp;gt; #include &amp;lt;vector&amp;gt; #include &amp;lt;cassert&amp;gt; namespace sp { /** * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter) */ class mlsa_base_filter { public: mlsa_base_filter(const int order, const double alpha); template &amp;lt;class Vector&amp;gt; double filter(const double x, const Vector&amp;amp; b); private: mlsa_base_filter(); double alpha_; std::vector&amp;lt;double&amp;gt; delay_; }; mlsa_base_filter::mlsa_base_filter(const int order, const double alpha) : alpha_(alpha), delay_(order+1) { } template &amp;lt;class Vector&amp;gt; double mlsa_base_filter::filter(const double x, const Vector&amp;amp; b) { double result = 0.</description>
+    </item>
+    
+    <item>
+      <title>SPTKをC&#43;&#43;から使えるようにする</title>
+      <link>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</link>
+      <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</guid>
+      <description>音声信号処理ツールキットSPTKをC++から使おうと思ったら意外とハマってしまったので、
+ C++から使えるようにC++コンパイラでコンパイルできるようにした 使いやすいようにwafを組み込みんだ  リポジトリ: https://github.com/r9y9/SPTK
+というわけで、使い方について簡単に書いておく
+SPTK について  SPTKを使うと何ができるか: SPTKの使い方 (1) インストール・波形描画・音声再生 | 人工知能に関する断創録 SPTKとは: Speech Signal Processing Toolkit (SPTK)  SPTK with waf SPTK with wafは、SPTKをwafでビルド管理できるようにしたものです。
+ SPTKを共有ライブラリとしてインストールできます。 C、C++の好きな方でコンパイルできます。 wafが使えます（速い、出力がキレイ） 自分のC、C++コードからSPTKのメソッドを呼べます。 コマンドラインツールはインストールされません。  コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。
+環境  Unix系  Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み
+SPTKのインストール リポジトリをクローンしたあと、
+Build  ./waf configure &amp;amp;&amp;amp; ./waf  Build with clang++  CXX=clang++ ./waf configure &amp;amp;&amp;amp; ./waf  Build with gcc  git checkout c .</description>
+    </item>
+    
+    <item>
+      <title>MFCCの計算方法についてメモ</title>
+      <link>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</link>
+      <pubDate>Sun, 24 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</guid>
+      <description> MFCC とは Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。
+算出手順  音声信号を適当な長さのフレームで切り出し 窓がけ フーリエ変換して対数振幅スペクトルを求める メルフィルタバンクを掛けて、メル周波数スペクトルを求める 離散コサイン変換により、MFCCを求める  以上。SPTKのmfccコマンドのソースもだいたいそうなってた。
+さて ここに音声波形があるじゃろ？？  音声波形を窓がけして…  さらにフーリエ変換して対数取って…  ここでメルフィルタバンクの出番じゃ  最後に離散コサイン変換で完成じゃ  まとめ  MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです 正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。 間違ってるかもしれないけどご愛嬌  参考  L9: Cepstral analysis [PDF] メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版 メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録  </description>
+    </item>
+    
+    <item>
+      <title>スペクトログラムとメル周波数スペクトログラムの可視化</title>
+      <link>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</link>
+      <pubDate>Sat, 16 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</guid>
+      <description> やったので貼っとくだけ
+  低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。
+今回は振幅を対数を取って表示した（ちなみに）。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に合うようにメル周波数に変換して次元圧縮するイメージ。
+解説は、メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録 を見よう。素晴らしいです
+僕はと言えば特に解説する気も起きないので、C++コードでも貼っとこう（※間違ってたので、とりあえず消しました
+まとめ メルフィルタバンクかけるクラス作ってたら数時間潰した
+参考  メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録  とても参考にしました。ただ、フィルタバンクかける際に正規化してない？元のスケールを保つために、上のコードでは正規化するようにした(ここの図のようなイメージ）   </description>
+    </item>
+    
+    <item>
+      <title>MIT Media Lab 特別フォーラムに参加してきた</title>
+      <link>http://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</link>
+      <pubDate>Sun, 03 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</guid>
+      <description>TOKYO DESIGNES WEEK MIT Media Lab 特別フォーラム
+すごい刺激になった。悔しかった。このままで終わりたくない。世の中にはすごい人がいる中で、自分が大したことも為せないでいること、ビジョンを持てていないこと、自分がとても小さな人間だと感じた。石井先生の話の一つに「ビジョンを持て」っていうのがあったけど、僕にはビジョンが圧倒的に欠けてると思った。
+メディアラボの学生の発表は、内容に興味を感じたのはもちろん、プレゼンテーションの魅せ方が上手かった。一番面白かったのはsuper shoes。プレゼンの魅せ方も一際良かったし話の構成もわかりやすくて、super shoes自体も面白かった。自分の行きたい所、食べたいもの、聴きたい音楽、それらに合わせて道案内してくれる靴。
+石井先生の話では、今の僕に一番響いたのは「屈辱力」という言葉だった。理由は単純で、今の僕が一番頻繁に感じている感情だから。石井先生の言葉で「出杭力」とか有名だけど、それはもうすでに身に染みてるので。打たれても打たれてもやるしかない。何度叩かれようが、出すぎるまでやる。
+とはいえ、なかなか思ったようにできない。努力は最低条件と思っているが、十分にできていない。理想と現実のギャップが大きくて、毎日悔しいと感じる。恥ずかしい話ですね、こういうの書いてしまうあたり。僕は弱音はかずに頑張れるほど強くない・・・。
+話がそれてしまったけど、それはさておき、パーティーで石井先生と話したとき、悔しいのは誰でも感じること、そこから何が出来るかが大事、的なことを言われた（はず…緊張していてうろ覚え…）。当たり前なんですけどね。最近、どうも悔しさの数だけ強くなれると思っていた節があるけど、正確にはそれは違って、強くなるチャンスが得られる、が正しいと思う。悔しさを感じただけでは、変われない。行動に移さないと行けない。変わるために、自分で一歩踏み出さねければならない。
+最近、いつも通り毎日悔しいけど、その分楽しいよね。Mかもしれない。成長するって、人間の本質的な欲求の一つなんじゃないか（適当
+っと、すごい恥ずかしいことを書いてしまった。ただせっかくなので、思ったことを残しておこうと思った。
+Xiao Xiaoのピアノ、良かったよね。プレゼンもとても良かった。日本語しゃべってるXiao Xiaoに惚れた
+趣向は違うけれど、自動伴奏紹介すればよかったよ。お前何やってんの？って言われて何も語れないとか、いやだなぁって思う。せっかく修士でやったんだし、もっとブラッシュアップして、使えるレベルにまで持っていきたい。僕だって、何のビジョンもなく自動伴奏やってたわけじゃないんだし。
+当面やりたいことが、また増えた。
+感じたこと一行まとめ
+「なぜを突き詰めて、自分の本当にやりたいことを理解して、ビジョンを持ってひたすら進む」
+ところでどうでもいいけど、最近、さくら荘7.5巻の生徒会長のはうはうな彼女、って短編読みましたが、はうはうかわいいですね</description>
+    </item>
+    
+    <item>
+      <title>逆連続ウェーブレット変換による信号の再構成</title>
+      <link>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</link>
+      <pubDate>Mon, 21 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</guid>
+      <description>やったのでメモ。おそらく正しくできたと思う。結果貼っとく。ウェーブレットの参考は以下の文献
+Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.
+ウェーブレットの条件 マザーウェーブレットはmorletを使う
+ \begin{align} \psi_{0}(\eta) = \pi^{-1/4}e^{i\omega_{0}\eta}e^{-\eta^{2}/2} \end{align}  文献に従って$\omega_{0} = 6.0$とした。
+以下にいっぱい図を張る。軸は適当
+元の信号  ウェーブレットスペクトログラム  Gaborではなく、Morletで求めたもの。スケールは、min=55hzで、25cent毎に8オクターブ分取った。一サンプル毎にウェーブレット変換を求めてるので、前回の記事でガボールウェーブレットで求めた奴よりよっぽど解像度高いっすね（前のは10ms毎だった、書いてなかったけど）。見てて綺麗（こなみ
+計算はFFT使ってるので速い
+http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html スケールのとり方はここを参考にするといい
+再構成した信号  連続ウェーブレットの逆変換は、フーリエ変換と違ってそんなシンプルじゃないんだけど、結果から言えばウェーブレット変換の実数部を足しあわせて適当にスケールすれば元の信号が再構成できるみたい。ほんまかと思って実際にやってみたけど、できた
+が、実は少し誤差がある
+重ねてプロット  あっぷ      んー、まぁだいたいあってんじゃないですかね
+誤差 平均誤差を計算すると、図の縦軸の量で考えて55.3994だった。16bitのwavが-32768〜32767なので、どうだろう、大きいのか小さいのかわからん
+ただ、再合成した音声を聞いた所それほど違和感はなかった。これはつまり、スペクトルいじる系の分析にSTFTがではなくウェーブレット使ってもいいんではないか？という考えが生まれますね。果たして、ウェーブレットが音声/音楽の分析にフーリエ変換ほど使われないのはなぜなのか、突き詰めたい
+使った音声 あなたが一番聞きたいと思った声が流れます、どうぞ
+ スペクトログラム表示するのにサンプルが多いと大変なので、48kから10kにサンプリング周波数を落としたもの
+再構成した音声  僕の耳では違いはわからない。サンプリング周波数によって誤差が大小する可能性はあるが、そこまで調査してない
+メモ http://paos.colorado.edu/research/wavelets/wavelet3.html ここの最後に書かれている以下の文章、
+ One problem with performing the wavelet transform in Fourier space is that this assumes the time series is periodic.</description>
+    </item>
+    
+    <item>
+      <title>FFTを使った連続ウェーブレット変換の高速化</title>
+      <link>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</link>
+      <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</guid>
+      <description>そもそもウェーブレット変換って何 Jump to wikipedia
+いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、STFTでいう窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと
+高速化の仕組み さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。
+つまり、
+ 入力信号とマザーウェーブレットをそれぞれフーリエ変換する 掛け算する 逆フーリエ変換する  というプロセスでウェーブレット変換を求めることができて、かつフーリエ変換にはFFTという高速なアルゴリズムが存在するので、計算を高速化できるという仕組み。まぁ原理としてはシンプルなんだけど以外と面倒くさい（気のせい？）。
+色々調べたので、メモ代わりにまとめておく。解説ではなくリンク集です
+A Practical Guide to Wavelet Analysis [web] [PDF] 結論から言えばここが一番わかりやすかった。
+ 実装よりで理論の解説がある matlab/fortran のコードがある  がいいところ
+基本的にはこれ読めばわかる。数学全然わからん俺でも読めた。特に、離散表現でのウェーブレットについても書かれているのは良い。連続ウェーブレットといっても、デジタル信号処理で扱う上では離散化しないといけないわけなので
+さて、僕が参考にしたmatlabコードへの直リンクは以下
+ マザーウェーブレットの周波数応答の計算部分 連続ウェーブレット変換の本体 連続ウェーブレット変換のテストコード  その他、fortanコードなどいくつかあるので、それらはウェブサイトからどうぞ
+Matlab mathworksさんのwavelet toolboxのドキュメントもよかった。ここから上記のpracticalなんちゃらのリンクもある
+ Continuous Wavelet Transform Continuous wavelet transform using FFT algorithm Inverse CWT  コードは転がってないですね。まぁ有料なので
+日本語でわかりやすいもの  C/C++言語でガボールウェーブレット変換により時間周波数解析を行うサンプルプログラム  ここは本当に素晴らしい。何年か前にも参考にさせて頂きました。  連続ウェーブレット変換 (CWT) - FlexPro 7 日本語版サポート情報  日本語で丁寧に書かれてる。内容自体は、practicalなんちゃらと似ている  東北大学 伊藤先生の講義資料  数少ない日本語でのウェーブレットに関する資料。ただし連続ウェーブレットについてはあんまり解説はない。C言語のサンプル付き   書籍 今回は調べてない。数年前にちょいちょい調べたことがあるけど忘れた</description>
+    </item>
+    
+    <item>
+      <title>短時間フーリエ変換と連続ウェーブレット変換のvisualization</title>
+      <link>http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</link>
+      <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</guid>
+      <description> STFT(短時間フーリエ変換)によるスペクトログラム  STFTによるスペクトログラム（Y軸を対数にしたもの）  連続ガボールウェーブレット変換によるスペクトログラム  メモリも軸も無くて発表資料に貼ったら間違いなく怒られる奴だけど許して。でもだいたいの違いはわかると思う。図はgnuplotで作りました
+STFTのlog-y-axisと比べるとよくわかるけど、ウェーブレットは低域もちゃんと綺麗にとれてますね。
+みんなもっとウェーブレット変換使おう（提案
+分析に使った音声 決して聞いてはならない
+ </description>
+    </item>
+    
+    <item>
+      <title>MLSA フィルタの実装</title>
+      <link>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</link>
+      <pubDate>Mon, 23 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</guid>
+      <description>音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ
+と、前置きはさておき、MLSAフィルタの実装を見つけたのでメモ。ここ最近ちょくちょく調べているが、SPTK以外で初めて見つけた。
+Realisation and Simulation of the Mel Log Spectrum Approximation Filter | Simple4All Internship Report
+Simple4Allという音声技術系のコミュニティの、学生さんのインターンの成果らしい。ちらっと調べてたら山岸先生も参加してる（た？）っぽい。
+上のreportで引用されているように、MLSA filterの実現方法については、益子さんのD論に詳しく書いてあることがわかった。今井先生の論文と併せて読んでみようと思う。
+T. Masuko, &amp;ldquo;HMM-Based Speech Synthesis and Its Applications&amp;rdquo;, Ph.D Thesis, 2002.
+もう正直わからんしブラックボックスでもいいから既存のツール使うかーと諦めかけていたところで割りと丁寧な実装付き解説を見つけたので、もう一度勉強して実装してみようと思い直した。
+機械学習にかまけて信号処理をちゃんと勉強していなかったつけがきている。LMA filterもMLSA filterも、本当にわからなくてツライ……
+(実装だけであれば、実はそんなに難しくなかった 2013/09後半)
+追記 2015/02/25 誤解を生む表現があったので、直しました</description>
+    </item>
+    
+    <item>
+      <title>調波打楽器音分離（HPSS）を試す</title>
+      <link>http://r9y9.github.io/blog/2013/09/14/hpss/</link>
+      <pubDate>Sat, 14 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/09/14/hpss/</guid>
+      <description>HPSSとは（一行説明） HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ
+アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる
+実装 調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ
+ \begin{align} |H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2} \end{align}   \begin{align} |P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2} \end{align}  ただし
+ \begin{align} |W_{t,k}| = |H_{t,k}| + |P_{t,k}| \end{align}  絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。
+HPSSの論文はたくさんあるけど、日本語でかつ丁寧な &amp;ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&amp;rdquo; を参考にした。
+H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ
+一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。
+結果 フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、歌もの音楽素材：歌入り素材系のフリー音楽素材一覧 から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。 18秒目くらいからを比較すると効果がわかりやすいです
+元音源  Hのみ取り出して再合成した音源  Pのみ取り出して再合成した音源  それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん</description>
+    </item>
+    
+    <item>
+      <title>Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</title>
+      <link>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</link>
+      <pubDate>Tue, 06 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</guid>
+      <description> 前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…
+そもそもナイーブベイズやろうとしてたのも、MNISTのdigit recognitionがやりたかったからなので、実際にやってみた。
+コードはgithubに置いた https://github.com/r9y9/naive_bayes
+結果だけ知りたい人へ：正解率 76 %くらいでした。まぁこんなもんですね
+手書き数字認識 手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。
+今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→THE MNIST DATABASE of handwritten digits ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（ここ）、pythonのcPickleから読める形式に変換されているデータを使った。感謝
+とりあえずやってみる $ git clone https://github.com/r9y9/naive_bayes $ cd naive_bayes $ python mnist_digit_recognition.py  プログラムの中身は以下のようになってる。
+ MNISTデータセットのダウンロード モデルの学習 テスト  実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。
+学習されたGaussianの平均  学習されたGaussianの平均をプロットしたもの。上のコードを実行すると表示される。
+それっぽい。学習データは50000サンプル
+認識結果 時間がかかるけど、テストデータ10000個に対してやってみると、結果は以下のようになった。
+0.7634 (7634/10000)
+まぁナイーブベイズなんてこんなもん。もちろん、改善のしようはいくらでもあるけれども。ちなみにDeep learningのチュートリアルで使われてたDBN.pyだと0.987くらいだった。
+感想 相関が強い特徴だと上手くいかんのは当たり前で、ピクセル毎にGaussianなんて作らずに（ピクセル間の相関を無視せずに）、少しまともな特徴抽出をかませば、8割りは超えるんじゃないかなぁと思う。
+あとこれ、実装してても機械学習的な面白さがまったくない（上がれ目的関数ｩｩーー！的な）ので、あまりおすすめしません。おわり。
+導出編→Naive Bayesの復習（導出編）
+参考  機械学習のPythonとの出会い（１）：単純ベイズ基礎編 - slideshare  </description>
+    </item>
+    
+    <item>
+      <title>Multinomial distributionとCategorical distributionの違い</title>
+      <link>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</link>
+      <pubDate>Wed, 31 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</guid>
+      <description>些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。
+結論としては、多項分布のn=1の特殊な場合がカテゴリカル分布ですよってこと。以下少しまとめる。
+分布を仮定する離散変数をカテゴリと呼ぶとして、
+ 多項分布は、n回試行したときに各カテゴリが何回出るかを表す確率分布 多項分布は、二項分布を多カテゴリに一般化したもの カテゴリカル分布は、多項分布のn=1の場合に相当する カテゴリカル分布は、ベルヌーイ分布を多カテゴリに一般化したもの  以上
+nokunoさんによるこの記事→ 多項分布の最尤推定 は、多項分布というよりカテゴリカル分布の話。本文には書いてあるけどね。あと最尤推定の結果はどちらにしろ同じなんだけどね
+導出メモ 一応最尤推定をやってみる。前回のナイーブベイズのメモの時は省略したので。入力の変数を $ Y = {y_n}_{n=1}^{N} $ とする。
+カテゴリカル分布  \begin{align} p(l) = \pi_{l}, \hspace{2mm} \sum_{l=1}^{L}\pi_{l} = 1 \end{align}  ここで、$\pi_{l}$がパラメータ、lはカテゴリの番号
+最尤推定 尤度関数を立てて、最大化することでパラメータを求める。各データは独立に生起すると仮定すると、尤度関数は以下のようになる。
+ \begin{align} L(Y; \theta) = \prod_{n=1}^{N} \pi_{y_{n}} \end{align}  $\theta$はパラメータの集合ということで。
+ラベルlの出現回数を$N_{l} = \sum_{n=1}^{N} \delta (y_{n} = l)$とすると、次のように書き直せる。
+ \begin{align} L(Y; \theta) = \prod_{l=1}^{L}\pi_{l}^{N_{l}} \end{align}  よって、対数尤度は以下のようになる。
+ \begin{align} \log L(Y; \theta) = \sum_{l=1}^{L} N_{l}\log \pi_{l} \end{align}  ラグランジュの未定乗数法で解く nokunoさんの記事の通りだけど、一応手でも解いたのでメモ</description>
+    </item>
+    
+    <item>
+      <title>Naive Bayesの復習（導出編）</title>
+      <link>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</link>
+      <pubDate>Sun, 28 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</guid>
+      <description>すぐ忘れるのでメモ。ナイーブベイズの学習アルゴリズムの導出とか、そもそもナイーブベイズが定番過ぎて意外とやったことなかった気もするので、復習がてらやってみた。
+ちょっと修正 2013/07/30
+ ナイーブベイズについて整理 学習アルゴリズムの導出  Naive bayes （ナイーブベイズ） スパムフィルタで使われたことで有名な確率モデルで、シンプルだけどそこそこ実用的なのが良い所。Naive bayesという名前は、特徴ベクトル間に条件付き独立性を仮定してることにある（実際は相関あることが多いけど、まぁ簡単のためって感じ）。具体的に例を挙げて言うと、例えば文書分類タスクの場合、各単語は独立に生起するという仮定を置くことに相当する。
+まずはモデルを書き下す。入力データを$\mathbf{x}$（D次元）、ラベルを$y$（離散値）とすると、ナイーブベイズでは以下のように同時確率をモデル化する。
+ \begin{align} p(\mathbf{x}, y) &amp;= p(y)p(\mathbf{x}|y)\\ &amp;= p(y)p(x_{1}, x_{2}, \dots, x_{D}|y)\\ &amp;= p(y)\prod_{d=1}^{D} p(x_{d}|y) \end{align}  カンタン。基本的にdは次元に対するインデックス、nはデータに対するインデックスとして書く。
+ポイントは特徴ベクトル間に条件付き独立性の仮定を置いていること（二度目）で、それによってパラメータの数が少なくて済む。
+分類 一番確率の高いラベルを選べばいい。数式で書くと以下のようになる。
+ \begin{align} \hat{y} &amp;= \argmax_{y} [p(y|\mathbf{x})]\\ &amp;= \argmax_{y} [p(\mathbf{x}, y)]\\ &amp;= \argmax_{y} \Bigl[ p(y)\prod_{d=1}^{D} p(x_{d}|y)\Bigr] \end{align}  argmaxを取る上では、$y$に依存しない項は無視していいので、事後確率の最大化は、同時確率の最大化に等しくなる。
+学習アルゴリズムの導出 ここからが本番。学習データを$X = {\mathbf{x}_{n}}_{n=1}^{N}$、対応する正解ラベルを$Y = {y_n}_{n=1}^{N} $として、最尤推定により学習アルゴリズムを導出する。実際はMAP推定をすることが多いけど、今回は省略。拡張は簡単。
+尤度関数 各サンプルが独立に生起したと仮定すると、尤度関数は以下のように書ける。
+ \begin{align} L(X,Y; \mathbf{\theta}) &amp;= \prod_{n=1}^{N}p(y_{n})p(\mathbf{x_{n}}|y_{n})\\ &amp;= \prod_{n=1}^{N} \Bigl[ p(y_{n})\prod_{d=1}^{D}p(x_{nd}|y_{n})\Bigr] \end{align}  対数を取って、</description>
+    </item>
+    
+    <item>
+      <title>NMFアルゴリズムの導出（ユークリッド距離版）</title>
+      <link>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</link>
+      <pubDate>Sat, 27 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</guid>
+      <description>はじめに シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。 音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。 実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。
+と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。
+2014/10/19 追記 実装しました
+https://github.com/r9y9/julia-nmf-ss-toy
+NMFの問題設定 NMFとは、与えられた行列を非負という制約の元で因子分解する方法のこと。 音楽の場合、対象はスペクトログラムで、式で書くとわかりやすい。 スペクトログラムを $\mathbf{Y}: [\Omega \times T] $ とすると、
+ \begin{align} \mathbf{Y} \simeq \mathbf{H} \mathbf{U} \end{align}  となる、$\mathbf{H}: [\Omega \times K]、\mathbf{U}: [K \times T]$ を求めるのがNMFの問題。 ここで、Hが基底、Uがアクティビティ行列に相当する。 NMFは、元の行列Yと分解後の行列の距離の最小化問題として定式化できる。
+ \begin{align} \mathbf{H}, \mathbf{U} = \mathop{\rm arg~min}\limits_{\mathbf{H}, \mathbf{U}} D (\mathbf{Y}|\mathbf{H}\mathbf{U}), \hspace{3mm} {\rm subect\ to} \hspace{3mm} H_{\omega,k}, U_{k, t}  0 \end{align}  すごくシンプル。Dは距離関数で色んなものがある。ユークリッド距離、KLダイバージェンス、板倉斎藤距離、βダイバージェンスとか。
+ユークリッド距離の最小化 ここではユークリッド距離（Frobeniusノルムともいう）として、二乗誤差最小化問題を解くことにする。 一番簡単なので。最小化すべき目的関数は次のようになる。
+ \begin{align} D (\mathbf{Y}|\mathbf{H}\mathbf{U}) =&amp; || \mathbf{Y}-\mathbf{HU}||_{F} \\ =&amp; \sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2} \end{align}  行列同士の二乗誤差の最小化は、要素毎の二乗誤差の和の最小化ということですね。展開すると、次のようになる。</description>
+    </item>
+    
+  </channel>
+</rss>
