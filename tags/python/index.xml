@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Speech Synthesis on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/speech-synthesis/</link>
-    <description>Recent content in Speech Synthesis on LESS IS MORE</description>
+    <title>Python on LESS IS MORE</title>
+    <link>http://r9y9.github.io/tags/python/</link>
+    <description>Recent content in Python on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 16 Aug 2017 23:10:56 +0900</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -29,23 +29,6 @@ https://t.co/p8MnOxkVoH Library to build speech synthesis systems designed for e
 以上が、僕が新しくツール作ろうと思った理由です。
 特徴 さて、Merlinに対する敬意と不満から生まれたツールでありますが、その特徴を簡単にまとめます。
  対話環境 での使用を前提に、設計されています。コマンドラインツールはありません。ユーザが必要に応じて作ればよい、という考えです。 DNN音声合成のデモをノートブック形式で提供しています。 大規模データでも扱えるように、データセットとデータセットのイテレーション（フレーム毎、発話毎の両方）のユーティリティが提供されています Merlinとは異なり、音響モデルは提供しません。自分で実装する必要があります（が、今の時代簡単ですよね、lstmでも数行で書けるので 任意の深層学習フレームワークと併せて使えるように、設計されています3（autogradパッケージのみ、今のところPyTorch依存です 言語特徴量の抽出の部分は、Merlinのコードをリファクタして用いています。そのせいもあって、Merlinのデモと同等のパフォーマンスを簡単に実現できます。  対象ユーザ まずはじめに、大雑把にいって、音声合成の研究（or その真似事）をしてみたい人が主な対象です。 自前のデータを元に、ブラックボックスでいいので音声合成エンジンを作りたい、という人には厳しいかもしれません。その前提を元に、少し整理します。</description>
-    </item>
-    
-    <item>
-      <title>DNN統計的音声合成ツールキット Merlin の中身を理解をする</title>
-      <link>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
-      <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
-      
-      <guid>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
-      <description>この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。 なお、HMM音声合成について簡単に理解していること（HMMとは、状態とは、フルコンテキストラベルとは、くらい）を前提とします。
-はじめに Merlinの概要については以下をご覧ください。
- Wu, Zhizheng, Oliver Watts, and Simon King. &amp;ldquo;Merlin: An open source neural network speech synthesis system.&amp;rdquo; Proc. SSW, Sunnyvale, USA (2016). &amp;ldquo;A Demonstration of the Merlin Open Source Neural Network Speech Synthesis System&amp;rdquo; 公式ドキュメント  Merlinにはデモスクリプトがついています。基本的にユーザが使うインタフェースはrun_merlin.pyというコマンドラインスクリプトで、 デモスクリプトではrun_merlin.pyに用途に応じた設定ファイルを与えることで、継続長モデルの学習/音響モデルの学習/パラメータ生成など、音声合成に必要なステップを実現しています。
-デモスクリプトを実行すると、音声データ (wav) と言語特徴量（HTSのフルコンテキストラベル）から、変換音声が合成されるところまでまるっとやってくれるのですが、それだけでは内部で何をやっているのか、理解することはできません。 ツールキットを使う目的が、自分が用意したデータセットで音声合成器を作りたい、といった場合には、特に内部を知る必要はありません。 また、設定ファイルをちょこっといじるだけでこと済むのであれば、知る必要はないかもしれません。 しかし、モデル構造を変えたい、学習アルゴリズムを変えたい、ポストフィルタを入れたい、といったように、少し進んだ使い方をしようとすれば、内部構造を理解しないとできないことも多いと思います。
-run_merlin.py はあらゆる処理 (具体的にはあとで述べます) のエントリーポイントになっているがゆえに、コードはなかなかに複雑になっています1。この記事では、run_merlin.pyがいったい何をしているのかを読み解いた結果をまとめます。
-Merlinでは提供しないこと Merlinが何を提供してくれるのかを理解する前に、何を提供しないのか、をざっくりと整理します。以下のとおりです。
- Text-processing (Frontend) Speech analysis/synthesis (Backend)  HTSと同様に、frontend, backendといった部分は提供していません。Merlinの論文にもあるように、HTSの影響を受けているようです。
-Frontendには、英語ならFestival、BackendにはWORLDやSTRAIGHTを使ってよろしくやってね、というスタンスです。 Backendに関しては、Merlinのインストールガイドにあるように、WOLRDをインストールするように促されます。
-デモスクリプトでは、Frontendによって生成されたフルコンテキストラベル（HTS書式）が事前に同梱されているので、Festivalをインストールする必要はありません。 misc以下に、Festivalを使ってフルコンテキストラベルを作るスクリプト (make_labels) があるので、デモデータ以外のデータセットを使う場合は、それを使います。</description>
     </item>
     
   </channel>
