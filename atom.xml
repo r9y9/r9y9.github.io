@@ -6,10 +6,22 @@
     <description>Recent content on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 03 Oct 2017 23:17:09 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 05 Oct 2017 23:25:36 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【声質変換編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
+      <link>http://r9y9.github.io/blog/2017/10/05/ganvc/</link>
+      <pubDate>Thu, 05 Oct 2017 23:25:36 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/10/05/ganvc/</guid>
+      <description>2017年9月末に、表題の 論文 が公開されたのと、nnmnkwii という designed for easy and fast prototyping を目指すライブラリを作ったのもあるので、実装してみました。僕が実験した限りでは、声質変換 (Voice conversion; VC) では安定して良くなりました（音声合成ではまだ実験中です）。この記事では、声質変換について僕が実験した結果をまとめようと思います。音声合成については、また後日まとめます
+ コードはこちら: r9y9/gantts | PyTorch implementation of GAN-based text-to-speech and voice conversion (VC)  (TTSのコードも一緒です) 音声サンプルを聴きたい方はこちら: The effects of adversarial training in voice conversion | nbviewer (※解説はまったくありませんのであしからず)  なお、厳密に同じ結果を再現しようとは思っていません。同様のアイデアを試す、といったことに主眼を置いています。コードに関しては、ここに貼った結果を再現できるように気をつけました。
+概要 一言でいえば、音響モデルの学習に Generative Adversarial Net (GAN) を導入する、といったものです。少し具体的には、
+ 音響モデル（生成モデル）が生成した音響特徴量を偽物か本物かを見分けようとする識別モデルと、 生成誤差を小さくしつつ (Minimum Generation Error loss; MGE loss の最小化) 、生成した特徴量を識別モデルに本物だと誤認識させようとする (Adversarial loss; ADV loss の最小化) 生成モデル  を交互に学習することで、自然音声の特徴量と生成した特徴量の分布を近づけるような、より良い音響モデルを獲得する、といった方法です。</description>
+    </item>
     
     <item>
       <title>About me</title>

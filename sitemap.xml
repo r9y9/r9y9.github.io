@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://r9y9.github.io/blog/2017/10/05/ganvc/</loc>
+    <lastmod>2017-10-05T23:25:36+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://r9y9.github.io/about/</loc>
     <lastmod>2017-10-03T23:17:09+09:00</lastmod>
   </url>
@@ -358,7 +363,7 @@
   
   <url>
     <loc>http://r9y9.github.io/</loc>
-    <lastmod>2017-10-03T23:17:09+09:00</lastmod>
+    <lastmod>2017-10-05T23:25:36+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -430,7 +435,7 @@
   
   <url>
     <loc>http://r9y9.github.io/post/</loc>
-    <lastmod>2017-08-16T23:10:56+09:00</lastmod>
+    <lastmod>2017-10-05T23:25:36+09:00</lastmod>
     <priority>0</priority>
   </url>
   
