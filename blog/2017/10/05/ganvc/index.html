@@ -89,7 +89,7 @@
 <pre><code>./vc_demo.sh ~/data/cmu_arctic
 </code></pre>
 
-<p>なお実行には、GPUメモリが4GBくらいは必要です（バッチサイズ32の場合）。GTX 1080Ti + i7-7700K の計算環境で、約1時間半くらいで終わります。スクリプト実行が完了すれば、<code>generated</code> ディレクトリに、ベースライン/GAN それぞれで変換した音声が出力されます。以下に順に示す図については、デモノートブックにあります。</p>
+<p>なお実行には、GPUメモリが4GBくらいは必要です（バッチサイズ32の場合）。GTX 1080Ti + i7-7700K の計算環境で、約1時間半くらいで終わります。スクリプト実行が完了すれば、<code>generated</code> ディレクトリに、ベースライン/GAN それぞれで変換した音声が出力されます。以下に順に示す図については、<a href="http://nbviewer.jupyter.org/github/r9y9/gantts/blob/master/notebooks/Test%20VC.ipynb">デモノートブック</a> を実行すると作ることができます。</p>
 
 <h3 id="変換音声の比較">変換音声の比較</h3>
 
@@ -101,6 +101,8 @@
 <li><strong>MGE Loss</strong> を最小化して得られたモデルによる変換音声</li>
 <li><strong>MGE loss + ADV loss</strong> を最小化して得られたモデルによる変換音声</li>
 </ol>
+
+<p>比較しやすいように、音量はsoxで正規化しました。</p>
 
 <p><strong>arctic_a0496</strong></p>
 
@@ -260,7 +262,7 @@ Your browser does not support the audio element.
 
 <h2 id="参考">参考</h2>
 
-<p>Arxivのあるペーパーだけでなく、その他いろいろ参考にしました。ありがとうございます。</p>
+<p>Arxivにあるペーパーだけでなく、その他いろいろ参考にしました。ありがとうございます。</p>
 
 <ul>
 <li><a href="https://arxiv.org/abs/1709.08041">Yuki Saito, Shinnosuke Takamichi, Hiroshi Saruwatari, &ldquo;Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks&rdquo;, arXiv:1709.08041 [cs.SD], Sep. 2017</a></li>
