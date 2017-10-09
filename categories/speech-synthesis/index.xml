@@ -6,10 +6,37 @@
     <description>Recent content in Speech Synthesis on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 16 Aug 2017 23:10:56 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 09 Oct 2017 20:00:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/categories/speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【音声合成編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
+      <link>http://r9y9.github.io/blog/2017/10/09/gantts/</link>
+      <pubDate>Mon, 09 Oct 2017 20:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/10/09/gantts/</guid>
+      <description>論文リンク: arXiv:1709.08041
+前回の記事 の続きです。音響モデルの学習にGANを使うというアイデアは、声質変換だけでなく音声合成にも応用できます。CMU ARCTIC を使った英語音声合成の実験を行って、ある程度良い結果がでたので、まとめようと思います。音声サンプルだけ聴きたい方は真ん中の方まで読み飛ばしてください。
+ コードはこちら: r9y9/gantts | PyTorch implementation of GAN-based text-to-speech and voice conversion (VC)  (VCのコードも一緒です) 音声サンプル付きデモノートブックはこちら: The effects of adversarial training in text-to-speech synthesis | nbviewer  前回の記事でも書いた注意書きですが、厳密に同じ結果を再現しようとは思っていません。同様のアイデアを試す、といったことに主眼を置いています。
+実験 実験条件 CMU ARCTIC から、話者 slt のwavデータそれぞれ1131発話すべてを用います。 Merlin の slt デモの条件と同様に、1000を学習用、126を評価用、残り5をテスト用にします。継続長モデル（state-level）には Bidirectional-LSTM RNN を、音響モデルには Feed-forward型 のニューラルネットを使用しました1。継続長モデル、音響モデルの両方にGANを取り入れました。論文の肝である ADV loss についてですが、mgcのみ（0次は除く）を使って計算するパターンと、mgc + lf0で計算するパターンとで比較しました2。
+実験の結果 (ADV loss: mgcのみ) は、 a5ec247 をチェックアウトして、下記のシェルを実行すると再現できます。
+./tts_demo.sh tts_test  データのダウンロード、特徴抽出、モデル学習、音声サンプル合成まで一通り行われます。tts_test の部分は何でもよいです。tensorboard用に吐くログイベント名、モデル出力先、音声サンプル出力先の決定に使われます。詳細はコードを参照ください。 (ADV loss: mgc + lf0) の結果は、ハイパーパラメータを下記のように変更してシェルを実行すると再現できます。</description>
+    </item>
+    
+    <item>
+      <title>【声質変換編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
+      <link>http://r9y9.github.io/blog/2017/10/05/ganvc/</link>
+      <pubDate>Thu, 05 Oct 2017 23:25:36 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/10/05/ganvc/</guid>
+      <description>論文リンク: arXiv:1709.08041
+2017年9月末に、表題の 論文 が公開されたのと、nnmnkwii という designed for easy and fast prototyping を目指すライブラリを作ったのもあるので、実装してみました。僕が実験した限りでは、声質変換 (Voice conversion; VC) では安定して良くなりました（音声合成ではまだ実験中です）。この記事では、声質変換について僕が実験した結果をまとめようと思います。音声合成については、また後日まとめます
+ コードはこちら: r9y9/gantts | PyTorch implementation of GAN-based text-to-speech and voice conversion (VC)  (TTSのコードも一緒です) 音声サンプルを聴きたい方はこちら: The effects of adversarial training in voice conversion | nbviewer (※解説はまったくありませんのであしからず)  なお、厳密に同じ結果を再現しようとは思っていません。同様のアイデアを試す、といったことに主眼を置いています。コードに関しては、ここに貼った結果を再現できるように気をつけました。
+概要 一言でいえば、音響モデルの学習に Generative Adversarial Net (GAN) を導入する、といったものです。少し具体的には、
+ 音響モデル（生成モデル）が生成した音響特徴量を偽物か本物かを見分けようとする識別モデルと、 生成誤差を小さくしつつ (Minimum Generation Error loss; MGE loss の最小化) 、生成した特徴量を識別モデルに本物だと誤認識させようとする (Adversarial loss; ADV loss の最小化) 生成モデル  を交互に学習することで、自然音声の特徴量と生成した特徴量の分布を近づけるような、より良い音響モデルを獲得する、といった方法です。</description>
+    </item>
     
     <item>
       <title>DNN音声合成のためのライブラリの紹介とDNN日本語音声合成の実装例</title>
