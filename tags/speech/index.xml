@@ -6,10 +6,28 @@
     <description>Recent content in Speech on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 09 Oct 2017 20:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 10 Oct 2017 11:45:32 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/tags/speech/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GAN 日本語音声合成 [arXiv:1709.08041]</title>
+      <link>http://r9y9.github.io/blog/2017/10/10/gantts-jp/</link>
+      <pubDate>Tue, 10 Oct 2017 11:45:32 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/10/10/gantts-jp/</guid>
+      <description>論文リンク: arXiv:1709.08041
+前回の記事 の続きです。これでこのシリーズは終わりの予定です。
+前回は英語音声合成でしたが、以前書いた DNN日本語音声合成の記事 で使ったデータと同じものを使い、日本語音声合成をやってみましたので、結果を残しておきます。
+実験 実験条件 HTSのNIT-ATR503のデモデータ (ライセンス) から、wavデータ503発話を用います。442を学習用、56を評価用、残り5をテスト用にします（※英語音声とtrain/evalの比率は同じです）。継続長モデルは、state-levelではなくphone-levelです。サンプリング周波数が48kHzなので、mgcの次元を25から60に増やしました。モデル構造は、すべて英語音声合成の場合と同じです。ADV loss は0次を除くmgcを用いて計算しました。F0は入れていません。
+gantts の jpブランチ をチェックアウトして、以下のシェルを実行すると、ここに貼った結果が得られます。
+ ./jp_tts_demo.sh jp_tts_order59  ただし、シェル中に、HTS_ROOT という変数があり、シェル実行前に、環境に合わせてディレクトリを指定する必要があります。
+diff --git a/jp_tts_demo.sh b/jp_tts_demo.sh index 7a8f12c..b18e604 100755 --- a/jp_tts_demo.sh +++ b/jp_tts_demo.sh @@ -8,7 +8,7 @@ experiment_id=$1 fs=48000 # Needs adjastment -HTS_DEMO_ROOT=~/local/HTS-demo_NIT-ATR503-M001 +HTS_DEMO_ROOT=HTS日本語デモの場所を指定してください # Flags run_duration_training=1  変換音声の比較 音響モデルのみ適用  自然音声 ベースライン GAN  の順に音声を貼ります。聴きやすいように、soxで音量を正規化しています。
+nitech_jp_atr503_m001_j49
+Your browser does not support the audio element. 
+Your browser does not support the audio element.</description>
+    </item>
     
     <item>
       <title>【音声合成編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
