@@ -6,10 +6,26 @@
     <description>Recent content in Speech on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 10 Oct 2017 11:45:32 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 15 Oct 2017 14:00:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/tags/speech/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</title>
+      <link>http://r9y9.github.io/blog/2017/10/15/tacotron/</link>
+      <pubDate>Sun, 15 Oct 2017 14:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/10/15/tacotron/</guid>
+      <description>Googleが2017年4月に発表したEnd-to-Endの音声合成モデル Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL] に興味があったので、自分でも同様のモデルを実装して実験してみました。結果わかったことなどをまとめておこうと思います。
+GoogleによるTacotronの音声サンプルは、 https://google.github.io/tacotron/ から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは Test Tacotron.ipynb | nbviewer から聴くことができます。
+とても長い記事になってしまったので、結論のみ知りたい方は、一番最後まで飛ばしてください。最後の方のまとめセクションに、実験した上で僕が得た知見がまとまっています。
+概要 論文のタイトルにもある通り、End-to-Endを目指しています。典型的な（複雑にあなりがちな）音声合成システムの構成要素である、
+ 言語依存のテキスト処理フロントエンド 言語特徴量と音響特徴量のマッピング (HMMなりDNNなり) 波形合成のボコーダ  を一つのモデルで達成しようとする、attention付きseq2seqモデル を提案しています。ただし、Toward とあるように、完全にEnd-to-Endではなく、ネットワークは波形ではなく 振幅スペクトログラム を出力し、Griffin limの方法によって位相を復元し、逆逆短時間フーリエ変換をすることによって、最終的な波形を得ます。根本にあるアイデア自体はシンプルですが、そのようなEnd-to-Endに近いモデルで高品質な音声合成を実現するのは困難であるため、論文では学習を上手くいくようするためのいくつかのテクニックを提案する、といった主張です。以下にいくつかピックアップします。
+ エンコーダに CBFG (1-D convolution bank + highway network + bidirectional GRU) というモジュールを使う デコーダの出力をスペクトログラムではなく（より低次元の）メル周波数スペクトログラム にする。スペクトログラムはアライメントを学習するには冗長なため。 スペクトログラムは、メル周波数スペクトログラムに対して CBFG を通して得る  その他、BatchNormalizationを入れたり、Dropoutを入れたり、GRUをスタックしたり、と色々ありますが、正直なところ、どれがどのくらい効果があるのかはわかっていません（調べるには、途方もない時間がかかります）が、論文の主張によると、これらが有効なようです。
+既存実装 Googleは実装を公開していませんが、オープンソース実装がいくつかあります。
+ https://github.com/Kyubyong/tacotron https://github.com/barronalex/Tacotron https://github.com/keithito/tacotron  自分で実装する前に、上記をすべてを簡単に試したり、生成される音声サンプルを比較した上で、僕は keithito/tacotron が一番良いように思いました。最も良いと思った点は、keithito さんは、LJ Speech Dataset という単一話者の英語読み上げ音声 *約24時間のデータセットを構築 なお、上記3つすべてで学習スクリプトを回して音声サンプルを得る、程度のことは試しましたが、僕がコードレベルで読んだのは keithito/tacotron のみです。読んだコードは、tensorflowに詳しくない僕でも読めるもので、とても構造化されていて読みやすかったです。</description>
+    </item>
     
     <item>
       <title>GAN 日本語音声合成 [arXiv:1709.08041]</title>

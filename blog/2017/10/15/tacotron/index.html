@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.20.5" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL] - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-10-15">October 15, 2017</time></span>
+			<section itemprop="entry-text">
+				
+
+<p>Googleが2017年4月に発表したEnd-to-Endの音声合成モデル <a href="https://arxiv.org/abs/1703.10135">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</a> に興味があったので、自分でも同様のモデルを実装して実験してみました。結果わかったことなどをまとめておこうと思います。</p>
+
+<p>GoogleによるTacotronの音声サンプルは、 <a href="https://google.github.io/tacotron/">https://google.github.io/tacotron/</a> から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは  <a href="http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/master/notebooks/Test%20Tacotron.ipynb">Test Tacotron.ipynb | nbviewer</a> から聴くことができます。</p>
+
+<p>とても長い記事になってしまったので、結論のみ知りたい方は、一番最後まで飛ばしてください。最後の方のまとめセクションに、実験した上で僕が得た知見がまとまっています。</p>
+
+<h2 id="概要">概要</h2>
+
+<p>論文のタイトルにもある通り、End-to-Endを目指しています。典型的な（複雑にあなりがちな）音声合成システムの構成要素である、</p>
+
+<ul>
+<li>言語依存のテキスト処理フロントエンド</li>
+<li>言語特徴量と音響特徴量のマッピング (HMMなりDNNなり)</li>
+<li>波形合成のボコーダ</li>
+</ul>
+
+<p>を一つのモデルで達成しようとする、<strong>attention付きseq2seqモデル</strong> を提案しています。ただし、<strong>Toward</strong> とあるように、完全にEnd-to-Endではなく、ネットワークは波形ではなく <strong>振幅スペクトログラム</strong> を出力し、Griffin limの方法によって位相を復元し、逆逆短時間フーリエ変換をすることによって、最終的な波形を得ます。根本にあるアイデア自体はシンプルですが、そのようなEnd-to-Endに近いモデルで高品質な音声合成を実現するのは困難であるため、論文では学習を上手くいくようするためのいくつかのテクニックを提案する、といった主張です。以下にいくつかピックアップします。</p>
+
+<ul>
+<li>エンコーダに <strong>CBFG</strong> (1-D convolution bank + highway network + bidirectional GRU) というモジュールを使う</li>
+<li>デコーダの出力をスペクトログラムではなく（より低次元の）<strong>メル周波数スペクトログラム</strong> にする。スペクトログラムはアライメントを学習するには冗長なため。</li>
+<li>スペクトログラムは、メル周波数スペクトログラムに対して <strong>CBFG</strong> を通して得る</li>
+</ul>
+
+<p>その他、BatchNormalizationを入れたり、Dropoutを入れたり、GRUをスタックしたり、と色々ありますが、正直なところ、どれがどのくらい効果があるのかはわかっていません（調べるには、途方もない時間がかかります）が、論文の主張によると、これらが有効なようです。</p>
+
+<h2 id="既存実装">既存実装</h2>
+
+<p>Googleは実装を公開していませんが、オープンソース実装がいくつかあります。</p>
+
+<ul>
+<li><a href="https://github.com/Kyubyong/tacotron">https://github.com/Kyubyong/tacotron</a></li>
+<li><a href="https://github.com/barronalex/Tacotron">https://github.com/barronalex/Tacotron</a></li>
+<li><a href="https://github.com/keithito/tacotron">https://github.com/keithito/tacotron</a></li>
+</ul>
+
+<p>自分で実装する前に、上記をすべてを簡単に試したり、生成される音声サンプルを比較した上で、僕は <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> が一番良いように思いました。最も良いと思った点は、keithito さんは、<a href="https://keithito.com/LJ-Speech-Dataset/">LJ Speech Dataset</a> という単一話者の英語読み上げ音声 *<em>約24時間のデータセットを構築</em>
+なお、上記3つすべてで学習スクリプトを回して音声サンプルを得る、程度のことは試しましたが、僕がコードレベルで読んだのは <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> のみです。読んだコードは、tensorflowに詳しくない僕でも読めるもので、とても構造化されていて読みやすかったです。</p>
+
+<h2 id="自前実装">自前実装</h2>
+
+<p>勉強も兼ねて、PyTorchでスクラッチから書きました。その結果が <a href="https://github.com/r9y9/tacotron_pytorch">https://github.com/r9y9/tacotron_pytorch</a> です。</p>
+
+<p>先にいくつか結論を書いておくと、</p>
+
+<ul>
+<li>音の品質は、<a href="https://github.com/keithito/tacotron">keithito/tacotron</a> の方が良く感じました（同じモデルの実装を心がけたのに…つらい…）。ただ、データセットの音声には残響が乗っていて、生成された音声が元音声に近いのかというのは、僕には判断がつきにくいです。記事の後半に比較できるようにサンプルを貼っておきますので、気になる方はチェックしてみてください</li>
+<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a> では長い入力だと合成に失敗する一方で<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">1</a></sup>、僕の実装では比較的長くてもある程度合成できるようです。なぜのかを突き詰めるには、TensorFlowのseq2seq APIの <strong>コード</strong> (APIは抽象化されすぎていてdocstringからではよくわからないので…) を読みとく必要があるかなと思っています（やっていませんすいません</li>
+</ul>
+
+<h2 id="実験">実験</h2>
+
+<p>基本的には <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> の学習スクリプトと同じで、<a href="https://keithito.com/LJ-Speech-Dataset/">LJ Speech Dataset</a> を使って学習させました。テキスト処理、音声処理 (Griffin lim等) には既存のコードをそのまま使用し、モデル部分のみ自分で置き換えました。実験では、</p>
+
+<ul>
+<li>attention付きseq2seqの肝である、アライメントがどのように学習されていくのか</li>
+<li>学習が進むにつれて、生成される音声はどのように変わっていくのか</li>
+<li>学習されたモデルは、汎化性能はどの程度なのか（未知文章、長い文章、スペルミスに対してパフォーマンスはどう変わるのか、等）</li>
+</ul>
+
+<p>を探っていきます。</p>
+
+<h3 id="アライメントの学習過程の可視化">アライメントの学習過程の可視化</h3>
+
+<p>通常のseq2seqは、エンコーダRNNによって得た最後のタイムステップにおける隠れ層の状態を、デコーダのRNNの初期状態として渡します。一方attentiont付きのseq2seqモデルでは、デコーダRNNは各タイムステップで、エンコーダRNNの各タイムステップにおける隠れ層の状態を重みづけて使用し、その重みも学習します。attention付きのseq2seqでは、アライメントがきちんと（曖昧な表現ですが）学習されているかを可視化してチェックするのが、学習がきちんと進んでいるのか確認するのに便利です。</p>
+
+<p>以下に、47000 step (epochではありません。僕の計算環境 GTX 1080Ti で半日かからないくらい) iterationしたときのアライメント結果と、47000 stepの時点での予測された音声サンプルを示します。なお、gifにおける各画像は、データセットをランダムにサンプルした際のアライメントであり、ある同じ音声に対するアライメントではありません。Tacotron論文には、Bahdanau Attentionを使用したとありますが、<a href="https://github.com/keithito/tacotron/issues/24">keithito/tacotron #24 Try Monotonic Attention</a> によると、Tacotron論文の第一著者は新しいバージョンのTacotronでは Monotonic attentionを使用しているらしいということから、Monotonic Attentionでも試してみました。あとでわかったのですが、長文（200文字、数文とか）を合成しようとすると途中でアライメントがスキップすることが多々見受けられたので、そういった場合に、monotonicという制約が上手く働くのだと思います。</p>
+
+<p>以下の順でgifを貼ります。</p>
+
+<ul>
+<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a>, Bahdanau attention</li>
+<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a>, Bahdanau-style monotonic attention</li>
+<li><a href="https://github.com/r9y9/tacotron_pytorch">r9y9/tacotron_pytorch</a>, Bahdanau attention</li>
+</ul>
+
+<p><strong>keithito: Bahdanau Attention</strong></p>
+
+<div align="center"><img src="/images/tacotron-tf-alignment_47000steps.gif" /></div>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/step-47000-audio-tf.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><strong>keithito: (Bahdanau-style) Monotonic Attention</strong></p>
+
+<div align="center"><img src="/images/tacotron-tf-monotonic-alignment_47000steps.gif" /></div>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/step-47000-audio-tf-monotonic.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><strong>自前実装: Bahdanau Attention</strong></p>
+
+<div align="center"><img src="/images/tacotron-alignment_47000steps.gif" /></div>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/step-47000-audio-pt.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>Monotonicかどうかで比較すると、Monotonic attentionの方がアライメントがかなり安定しているように見えます。しかし、Githubのスレッドにあった音声サンプルを聴くと、音質的な意味では大きな違いがないように思ったのと、収束速度（簡単に試したところ、アライメントがまともになりだすstepは20000くらいで、ほぼ同じでした）も同じに思えました。一方で自前実装は、アライメントがまともになるstepが10000くらいとやや早く、またシャープに見えます。</p>
+
+<p>音声サンプルの方ですが、既存実装は両者ともそれなりにまともです。一方自前実装では、まだかなりノイジーです。できるだけtf実装と同じようにつくり、実験条件も同じにしたつもりですが、何か間違っているかもしれません。が、イテレーションを十分に回すと、一応音声はそれなりに出るようになります。</p>
+
+<p>音声サンプルに関する注意点としては、これはデコードの際に教師データを使っているので、この時点でのモデル使って、同等の音質の音声を生成できるとは限りません。学習時には、デコーダの各タイムステップで教師データのスペクトログラム（正確には、デコーダの出力はメル周波数スペクトログラム）を入力とする一方で、評価時には、デコーダ自身が出力したスペクトログラムを次のタイムステップの入力に用います。評価時には、一度変なスペクトログラムを出力してしまったら、エラーが蓄積していってどんどん変な出力をするようになってしまうことは想像に難しくないと思います。seq2seqモデルのデコードにはビームサーチが代表的なものとしてありますが、Tacotronでは単純にgreedy decodingをします。</p>
+
+<h3 id="学習が進むにつれて-生成される音声はどのように変わっていくのか">学習が進むにつれて、生成される音声はどのように変わっていくのか</h3>
+
+<p>さて、ここからは自前実装のみでの実験結果です。約10日、70万step程度学習させましたので、5000, 10000, 50000, そのあとは10万から10万ステップごとに70万ステップまでそれぞれで音声を生成して、どのようになっているのかを見ていきます。</p>
+
+<h4 id="例文1">例文1</h4>
+
+<p>Hi, my name is Tacotron. I&rsquo;m still learning a lot from data.</p>
+
+<p>(56 chars, 14 words)</p>
+
+<p>step 5000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step5000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 10000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step10000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 50000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step50000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 100000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step100000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 200000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step200000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 300000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step300000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 400000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step400000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 500000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step500000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 600000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step600000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 700000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/0_step700000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>だいたい20万ステップ（学習二日くらい）から、まともな音声になっているように感じます。細かいところでは、<code>Hi,</code> <code>Tacotron</code> という部分が少し発音しにくそうです。データセットにはこのような話し言葉のようなものが少ないのと、<code>Tacotron</code> という単語が英語らしさ的な意味で怪しいから（造語ですよね、たぶん）と考えられます。</p>
+
+<h4 id="例文2">例文2</h4>
+
+<p><a href="https://en.wikipedia.org/wiki/Python_(programming_language">https://en.wikipedia.org/wiki/Python_(programming_language</a>) より引用：</p>
+
+<p>Python is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.</p>
+
+<p>(144 chars, 23 words)</p>
+
+<p>step 5000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step5000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 10000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step10000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 50000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step50000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 100000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step100000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 200000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step200000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 300000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step300000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 400000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step400000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 500000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step500000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 600000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step600000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>step 700000</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/progress/1_step700000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p>だいたい20万ステップから、まともな音声になっているように思います。</p>
+
+<h3 id="モデルの汎化性能について調査">モデルの汎化性能について調査</h3>
+
+<p>以下、72万ステップ（一週間くらい）学習させたモデルを使って、いろんな入力でテストした結果です。音声と合わせてアライメントも貼っておきます。</p>
+
+<h4 id="適当な未知入力">適当な未知入力</h4>
+
+<p>データセットには存在しない文章を使ってテストしてみました。ところどころ（非ネイティブの僕にでも）不自然だと感じるところが見られますが、とはいえまぁまぁいい感じではないでしょうか。(google translateで同じ文章を合成してみて比べても、そんなに悪くない気がしました)</p>
+
+<p><a href="https://en.wikipedia.org/wiki/PyPy">https://en.wikipedia.org/wiki/PyPy</a> より：</p>
+
+<p>PyPy is an alternate implementation of the Python programming language written in Python.</p>
+
+<p>(89 chars, 14 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/0_unknown/0_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/0_unknown/0_step720000_alignment.png" /></div>
+
+<p><a href="https://en.wikipedia.org/wiki/NumPy">https://en.wikipedia.org/wiki/NumPy</a> より：</p>
+
+<p>NumPy is a library for the Python programming language, adding support for large, multi-dimensional arrays and matrices, along with a large collection of high-level mathematical functions to operate on these arrays.</p>
+
+<p>(215 chars, 35 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/0_unknown/1_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/0_unknown/1_step720000_alignment.png" /></div>
+
+<p><a href="https://numba.pydata.org/">https://numba.pydata.org/</a> より：</p>
+
+<p>Numba gives you the power to speed up your applications with high performance functions written directly in Python.</p>
+
+<p>(115 chars, 19 words)</p>
+
+<p><audio controls="controls" >は
+<source src="/audio/tacotron/0_unknown/2_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/0_unknown/2_step720000_alignment.png" /></div>
+
+<h4 id="スペルミス">スペルミス</h4>
+
+<p>スペルミスがある場合に、合成結果はどうなるのか、といったテストです。<a href="https://google.github.io/tacotron/">Googleのデモ</a>にあるように、ある程度ロバスト（少なくとも全体が破綻するといったことはない）のように思いました。</p>
+
+<p>Thisss isrealy awhsome.</p>
+
+<p>(23 chars, 4 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/1_spell/0_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/1_spell/0_step720000_alignment.png" /></div>
+
+<p>This is really awesome.</p>
+
+<p>(23 chars, 5 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/1_spell/1_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/1_spell/1_step720000_alignment.png" /></div>
+
+<p>I cannnnnot believe it.</p>
+
+<p>(23 chars, 5 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/1_spell/2_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/1_spell/2_step720000_alignment.png" /></div>
+
+<p>I cannot believe it.</p>
+
+<p>(20 chars, 6 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/1_spell/3_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/1_spell/3_step720000_alignment.png" /></div>
+
+<h4 id="中-少し長めの文章">中〜少し長めの文章</h4>
+
+<p>だいたい250文字を越えたくらいで、単語がスキップされるなどの現象が多く確認されました。データセットは基本的に短い文章の集まりなのが理由に思います。前述の通り、monotonic attentionを使えば、原理的にはスキップされにくくなると思います。</p>
+
+<p><a href="https://arxiv.org/abs/1703.10135">https://arxiv.org/abs/1703.10135</a> より引用：</p>
+
+<p>A text-to-speech synthesis system typically consists of multiple stages, such as a text analysis frontend, an acoustic model and an audio synthesis module.</p>
+
+<p>(155 chars, 26 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/2_long/1_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/2_long/1_step720000_alignment.png" /></div>
+
+<p><a href="https://americanliterature.com/childrens-stories/little-red-riding-hood">https://americanliterature.com/childrens-stories/little-red-riding-hood</a> より引用：</p>
+
+<p>Once upon a time there was a dear little girl who was loved by every one who looked at her, but most of all by her grandmother, and there was nothing that she would not have given to the child.</p>
+
+<p>(193 chars, 43 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/2_long/0_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/2_long/0_step720000_alignment.png" /></div>
+
+<p><a href="https://arxiv.org/abs/1703.10135">https://arxiv.org/abs/1703.10135</a> より引用：</p>
+
+<p>A text-to-speech synthesis system typically consists of multiple stages, such as a text analysis frontend, an acoustic model and an audio synthesis module. Building these components often requires extensive domain expertise and may contain brittle design choices.</p>
+
+<p>(263 chars, 41 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/2_long/2_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/2_long/2_step720000_alignment.png" /></div>
+
+<p><a href="https://americanliterature.com/childrens-stories/little-red-riding-hood">https://americanliterature.com/childrens-stories/little-red-riding-hood</a> より引用：</p>
+
+<p>Once upon a time there was a dear little girl who was loved by every one who looked at her, but most of all by her grandmother, and there was nothing that she would not have given to the child. Once she gave her a little cap of red velvet, which suited her so well
+ that she would never wear anything else. So she was always called Little Red Riding Hood.</p>
+
+<p>(354 chars, 77 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/2_long/3_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/2_long/3_step720000_alignment.png" /></div>
+
+<h3 id="googleのデモと比較">Googleのデモと比較</h3>
+
+<p><a href="https://google.github.io/tacotron/">https://google.github.io/tacotron/</a> の音声サンプルと同じ文章で試します。大文字小文字の区別は今回学習したモデルでは区別しないので、一部例文は除いています。いくつか気づいたことを挙げておくと、</p>
+
+<ul>
+<li>He has read the whole thing. / He reads book. のように、readの読みが動詞の活用形によって変わるような場合なのですが、上手く行くときといかないときがありました。イテレーションを進めていく上で、ロスは下がり続ける一方で、きちんと区別して発音できるようになったりできなくなってしまったり、というのを繰り返していました。</li>
+<li><code>?</code> が文末につくことで、イントネーションが変わってくれることを期待しましたが、データセット中に <code>?</code> が少なすぎたのか、あまりうまくいかなかったように思います。</li>
+<li>out-of-domainの文章にもロバストのように思いましたが、二個目の例文のような、（複雑な？）専門用語の発音は、厳しい感じがしました。</li>
+</ul>
+
+<p>Generative adversarial network or variational auto-encoder.</p>
+
+<p>(59 chars, 7 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/0_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/0_step720000_alignment.png" /></div>
+
+<p>Basilar membrane and otolaryngology are not auto-correlations.</p>
+
+<p>(62 chars, 8 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/1_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/1_step720000_alignment.png" /></div>
+
+<p>He has read the whole thing.</p>
+
+<p>(28 chars, 7 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/2_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/2_step720000_alignment.png" /></div>
+
+<p>He reads books.</p>
+
+<p>(15 chars, 4 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/3_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/3_step720000_alignment.png" /></div>
+
+<p>Thisss isrealy awhsome.</p>
+
+<p>(23 chars, 4 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/4_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/4_step720000_alignment.png" /></div>
+
+<p>This is your personal assistant, Google Home.</p>
+
+<p>(45 chars, 9 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/5_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/5_step720000_alignment.png" /></div>
+
+<p>This is your personal assistant Google Home.</p>
+
+<p>(44 chars, 8 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/6_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/6_step720000_alignment.png" /></div>
+
+<p>The quick brown fox jumps over the lazy dog.</p>
+
+<p>(44 chars, 10 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/7_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/7_step720000_alignment.png" /></div>
+
+<p>Does the quick brown fox jump over the lazy dog?</p>
+
+<p>(51 chars, 11 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/4_google_demo/8_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/4_google_demo/8_step720000_alignment.png" /></div>
+
+<h3 id="keithito-tacotron-との比較">keithito/tacotron との比較</h3>
+
+<p><a href="https://keithito.github.io/audio-samples/">https://keithito.github.io/audio-samples/</a> の audio samples で使われている文章に対するテストです。比較しやすいように、比較対象の音声も合わせて貼っておきます。自前実装で生成したもの、<a href="https://github.com/keithito/tacotron">keithito/tacotron</a> で生成したもの、の順です。</p>
+
+<p>Scientists at the CERN laboratory say they have discovered a new particle.</p>
+
+<p>(74 chars, 13 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/3_keithito/0_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/keithito/eval-877000-0.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/3_keithito/0_step720000_alignment.png" /></div>
+
+<p>There&rsquo;s a way to measure the acute emotional intelligence that has never gone out of style.</p>
+
+<p>(91 chars, 18 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/3_keithito/1_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/keithito/eval-877000-1.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/3_keithito/1_step720000_alignment.png" /></div>
+
+<p>President Trump met with other leaders at the Group of 20 conference.</p>
+
+<p>(69 chars, 13 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/3_keithito/2_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/keithito/eval-877000-2.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/3_keithito/2_step720000_alignment.png" /></div>
+
+<p>The Senate&rsquo;s bill to repeal and replace the Affordable Care Act is now imperiled.</p>
+
+<p>(81 chars, 16 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/3_keithito/3_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/keithito/eval-877000-3.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/3_keithito/3_step720000_alignment.png" /></div>
+
+<p>Generative adversarial network or variational auto-encoder.</p>
+
+<p>(59 chars, 7 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/3_keithito/4_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/keithito/eval-877000-4.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/3_keithito/4_step720000_alignment.png" /></div>
+
+<p>The buses aren&rsquo;t the problem, they actually provide a solution.</p>
+
+<p>(63 chars, 13 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/3_keithito/5_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/keithito/eval-877000-5.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/3_keithito/5_step720000_alignment.png" /></div>
+
+<h3 id="ground-truth-との比較">Ground truth との比較</h3>
+
+<p>最後に、元のデータセットとの比較です。学習データからサンプルを取ってきて比較します。自前実装で生成したもの、ground truthの順に貼ります。</p>
+
+<p>Printing, in the only sense with which we are at present concerned, differs from most if not from all the arts and crafts represented in the Exhibition.</p>
+
+<p>(152 chars, 30 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/5_ljspeech_sample/0_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/lj/LJ001-0001.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/5_ljspeech_sample/0_step720000_alignment.png" /></div>
+
+<p>in being comparatively modern.</p>
+
+<p>(30 chars, 5 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/5_ljspeech_sample/1_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/lj/LJ001-0002.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/5_ljspeech_sample/1_step720000_alignment.png" /></div>
+
+<p>For although the Chinese took impressions from wood blocks engraved in relief for centuries before the woodcutters of the Netherlands, by a similar process.</p>
+
+<p>(156 chars, 26 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/5_ljspeech_sample/2_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/lj/LJ001-0003.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/5_ljspeech_sample/2_step720000_alignment.png" /></div>
+
+<p>produced the block books, which were the immediate predecessors of the true printed book,</p>
+
+<p>(89 chars, 16 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/5_ljspeech_sample/3_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/lj/LJ001-0004.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/5_ljspeech_sample/3_step720000_alignment.png" /></div>
+
+<p>the invention of movable metal letters in the middle of the fifteenth century may justly be considered as the invention of the art of printing.</p>
+
+<p>(143 chars, 26 words)</p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/5_ljspeech_sample/4_step720000.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<p><audio controls="controls" >
+<source src="/audio/tacotron/lj/LJ001-0005.mp3" autoplay/>
+Your browser does not support the audio element.
+</audio></p>
+
+<div align="center"><img src="/audio/tacotron/5_ljspeech_sample/4_step720000_alignment.png" /></div>
+
+<p>元音声があまり良いクリーンな音声ではないとはいえ、まー元音声とは大きな違いがありますねー、、厳しいです。スペクトログラム（貼ってないですが、すいません）を見ている限りでは、明らかに高周波数成分が抜け落ちているのはわかっています。ナイーブなアイデアではありますが、GANを導入すると良くなるのではないかと思っています。</p>
+
+<h3 id="おまけ-生成する度に変わる音声">おまけ：生成する度に変わる音声</h3>
+
+<p>実験する過程で副次的に得られた結果ではあるのですが、テスト時に一部dropoutを有効にしていると<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">2</a></sup>、生成する度に音声が異なる（韻律が微妙に変わる）、といった現象を経験しています。以下、前に検証した際の実験ノートのリンクを貼っておきます。</p>
+
+<p><a href="http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times">http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times</a></p>
+
+<h2 id="まとめ-感想など">まとめ &amp; 感想など</h2>
+
+<ul>
+<li>Tacotronを実装しました <a href="https://github.com/r9y9/tacotron_pytorch">https://github.com/r9y9/tacotron_pytorch</a></li>
+<li>24時間のデータセットに対して、20万ステップ程度（数日くらい）学習させたらそれなりにまともな音声が生成できるようになりました。70万ステップ（一週間と少しくらい）学習させましたが、ずっとロスは下がり続ける一方で、50万くらいからはあまり大きな品質改善は見られなかったように思います。</li>
+<li>Googleの論文と（ほぼ<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">3</a></sup>）同じように実装したつもりですが、品質はそこまで高くならなかったように思います。End-to-end では、 <strong>データの量と品質</strong> がかなり重要なので、それが主な原因だと思っています。（僕の実装に、多少バグがあるかもしれませんが、、、</li>
+<li>EOS (End-of-sentence) では、理想的には要素がすべて0のスペクトログラムが出力されるはずなのですが、実際にはやはりそうもいかないので、判定には以下のようなしきい値処理を用いました。ここで貼った音声は全部この仕組みで動いており、単純ですがそれなりに上手く機能しているようです。</li>
+</ul>
+
+<pre><code class="language-py">def is_end_of_frames(output, eps=0.2):
+    return (output.data &lt;= eps).all()
+</code></pre>
+
+<ul>
+<li>論文からは非自明な点の一つとして、エンコーダの出力のうち、入力のゼロ詰めした部分をマスキングするかどうか、といった点があります。これは、既存実装によってもまちまちで、例えば <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> ではマスキングしていませんが、<a href="https://github.com/barronalex/Tacotron/blob/2de9e507456cbe2b680cbc6b2beb6a761bd2eebd/models/tacotron.py#L51">barronalex/Tacotron</a> ではマスクしています。僕はマスクする場合としない場合と両方試したのですが（ここに貼った結果は、マスクしていない場合のものです）、マスクしないほうが若干良くなったような気もします。理想的にはマスクするべきだと思ったのですが、実際に試したところどちらかが圧倒的に悪いという結果ではではなく、正直なところ断定はしにくいです。発見した大きな違いの一つは、マスクなしの場合はアテンションは大まかにmonotonicになる一方で、マスクありの場合は、無音区間ではエンコーダ出力の冒頭にアテンションの重みが大きくなる（ので、monotonicではない）、と言ったことがありました。マスクありの音声サンプル、アライメントの可視化は、（少し古いですが）<a href="http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/bdad19fdff22016c7457a979707655bb7a605cd8/notebooks/Test%20Tacotron.ipynb">ここ</a> にあります。参考までに、Tensorflowでエンコーダの出力マスクする場合は、<code>memory_sequence_length</code> を指定します</li>
+<li>実装してみて、たまたま得られた結果ではあるのですが、テスト時にdropoutを使っている都合上、生成する度に音声が若干変わる（場合によっては韻律等）場合があります。<a href="http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times">http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times</a></li>
+<li>日本語でやったり、multi-speaker でやったりしたかったのですが、とにかく実験に時間がかかるので、今のところ僕の中では優先度が低めになってしまいました。時間と計算資源に余裕があれば、やりたいのですが…</li>
+<li>日本語でやるには、英語と同じようにはいきません。というのも、char-levelで考えた際に、語彙が大きすぎるので。やるならば、十分大きな日本語テキストコーパスからembeddingを別途学習して（Tacotronでは、モデル自体にembeddingが入っています）、その他の部分を音声つきコーパスで学習する、といった方法が良いかなと思います。CSJコーパスは結構向いているんじゃないかと思っています。</li>
+<li>multi-speakerモデルを考える場合、どこにembeddingを差し込むのか、といったことが重要になってきますが、<a href="https://github.com/keithito/tacotron/issues/18">keithito/tacotron/issues/18</a> や <a href="https://github.com/keithito/tacotron/issues/24">keithito/tacotron/issues/24</a> に少し議論があるので、興味のある人は見てみるとよいかもしれません。DeepVoiceの論文も参考になるかと思います</li>
+<li>最新のtensorflowでは、griffin lim や stft（GPUで走る、勾配が求められる）が実装されているので、tacotronモデルを少し拡張して、サンプルレベルでロスを考える、といったことが簡単に試せると思います（ある意味WaveNetです）。ただし、ものすごく計算リソースを必要とするのが容易に想像がつくので、僕はやっていません。GPU落ちてこないかな、、、</li>
+<li>Tacotronの拡張として、speaker embedding以外にも、いろんな潜在変数を埋め込んでみると、楽しそうに思いました。例えば話速、感情とか。</li>
+<li>TensorFlowのseq2seqあたりのドキュメント/コードをよく読んでいたのですが、APIが抽象化されすぎていてつらいなと思いました。AttentionWrapper、コードを読まずに挙動を理解するのは無理なのではと思いました <a href="https://github.com/r9y9/tacotron_pytorch/issues/2#issuecomment-334255759">https://github.com/r9y9/tacotron_pytorch/issues/2#issuecomment-334255759</a></li>
+<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a> は本当によく書かれているなと思ったので、Tensorflowに長けている方には、おすすめです</li>
+<li>僕の実装では、バッチサイズ32でGPUメモリ5, 6GB程度しか食わないので、Tacotronは比較的軽いモデルなのだなーと思いました。物体検出で有名な single shot multibox detector (通称SSD) なんかは、バッチサイズ16とかでも平気で12GBとか使ってくるので（一年近く前の経験ですが）、無限にGPUリソースがほしくなってきます</li>
+<li>これが僕にとって、はじめてまともにseq2seqを実装した経験でした。色々勉強したのですが、Attention mechanism に関しては、 <a href="http://colinraffel.com/blog/online-and-linear-time-attention-by-enforcing-monotonic-alignments.html">http://colinraffel.com/blog/online-and-linear-time-attention-by-enforcing-monotonic-alignments.html</a> がとても参考になりました。あとで知ったのですが、monotonic attentionの著者は僕が昔から使っている音楽信号処理のライブラリ <a href="https://github.com/librosa/librosa">librosa</a> のコミッタでした（僕も弱小コミッタの一人）。とても便利で、よくテストされているので、おすすめです。オープンソースのTacotron実装でも、音声処理にも使われています</li>
+</ul>
+
+<h2 id="おわりに">おわりに</h2>
+
+<p>End-to-End 音声合成は、言語処理のフロントエンドを（最低限の前処理を除き）必要としないという素晴らしさがあります。SampleRNN、Char2wavと他にも色々ありますが、今後もっと発展していくのではないかと思っています。おしまい。</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="https://arxiv.org/abs/1703.10135">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135</a></li>
+</ul>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:2"><a href="https://github.com/keithito/tacotron/pull/43#issuecomment-332068107">https://github.com/keithito/tacotron/pull/43#issuecomment-332068107</a>
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">dropoutを切ってしまうと、アライメントが死んでしまうというバグ？に苦しんでおり…未だ原因を突き止められていません
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:4">たとえばロスはちょっと違って、高周波数帯域に比べて低周波数帯域の重みを少し大きくしていたりしています。これは既存のtf実装に従いました。
+ <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+
