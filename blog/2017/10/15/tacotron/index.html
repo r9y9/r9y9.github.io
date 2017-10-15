@@ -34,7 +34,7 @@
 
 <p>Googleが2017年4月に発表したEnd-to-Endの音声合成モデル <a href="https://arxiv.org/abs/1703.10135">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</a> に興味があったので、自分でも同様のモデルを実装して実験してみました。結果わかったことなどをまとめておこうと思います。</p>
 
-<p>GoogleによるTacotronの音声サンプルは、 <a href="https://google.github.io/tacotron/">https://google.github.io/tacotron/</a> から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは  <a href="http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/master/notebooks/Test%20Tacotron.ipynb">Test Tacotron.ipynb | nbviewer</a> から聴くことができます。</p>
+<p>GoogleによるTacotronの音声サンプルは、 <a href="https://google.github.io/tacotron/">https://google.github.io/tacotron/</a> から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは  <a href="http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/f98eda7336726cdfe4ab97ae867cc7f71353de50/notebooks/Test%20Tacotron.ipynb">Test Tacotron.ipynb | nbviewer</a><sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> から聴くことができます。</p>
 
 <p>とても長い記事になってしまったので、結論のみ知りたい方は、一番最後まで飛ばしてください。最後の方のまとめセクションに、実験した上で僕が得た知見がまとまっています。</p>
 
@@ -68,8 +68,9 @@
 <li><a href="https://github.com/keithito/tacotron">https://github.com/keithito/tacotron</a></li>
 </ul>
 
-<p>自分で実装する前に、上記をすべてを簡単に試したり、生成される音声サンプルを比較した上で、僕は <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> が一番良いように思いました。最も良いと思った点は、keithito さんは、<a href="https://keithito.com/LJ-Speech-Dataset/">LJ Speech Dataset</a> という単一話者の英語読み上げ音声 *<em>約24時間のデータセットを構築</em>
-なお、上記3つすべてで学習スクリプトを回して音声サンプルを得る、程度のことは試しましたが、僕がコードレベルで読んだのは <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> のみです。読んだコードは、tensorflowに詳しくない僕でも読めるもので、とても構造化されていて読みやすかったです。</p>
+<p>自分で実装する前に、上記をすべてを簡単に試したり、生成される音声サンプルを比較した上で、僕は <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> が一番良いように思いました。最も良いと思った点は、keithito さんは、<a href="https://keithito.com/LJ-Speech-Dataset/">LJ Speech Dataset</a> という単一話者の英語読み上げ音声 <strong>約24時間のデータセットを構築</strong> し、それを <strong>public domainで公開</strong> していることです。このデータセットは貴重です。<a href="https://keithito.github.io/audio-samples/">デモ音声サンプル</a>は、そのデータセットを使った結果でもあり、他と比べてとても高品質に感じました。自分でも試してみて、1時間程度で英語らしき音声が生成できるようになったのと、さらに数時間でアライメントも学習されることを確認しました。</p>
+
+<p>なお、上記3つすべてで学習スクリプトを回して音声サンプルを得る、程度のことは試しましたが、僕がコードレベルで読んだのは <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> のみです。読んだコードは、TensorFlowに詳しくない僕でも読めるもので、とても構造化されていて読みやすかったです。</p>
 
 <h2 id="自前実装">自前実装</h2>
 
@@ -79,7 +80,7 @@
 
 <ul>
 <li>音の品質は、<a href="https://github.com/keithito/tacotron">keithito/tacotron</a> の方が良く感じました（同じモデルの実装を心がけたのに…つらい…）。ただ、データセットの音声には残響が乗っていて、生成された音声が元音声に近いのかというのは、僕には判断がつきにくいです。記事の後半に比較できるようにサンプルを貼っておきますので、気になる方はチェックしてみてください</li>
-<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a> では長い入力だと合成に失敗する一方で<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">1</a></sup>、僕の実装では比較的長くてもある程度合成できるようです。なぜのかを突き詰めるには、TensorFlowのseq2seq APIの <strong>コード</strong> (APIは抽象化されすぎていてdocstringからではよくわからないので…) を読みとく必要があるかなと思っています（やっていませんすいません</li>
+<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a> では長い入力だと合成に失敗する一方で<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>、僕の実装では比較的長くてもある程度合成できるようです。なぜのかを突き詰めるには、TensorFlowのseq2seq APIの <strong>コード</strong> (APIは抽象化されすぎていてdocstringからではよくわからないので…) を読みとく必要があるかなと思っています（やっていませんすいません</li>
 </ul>
 
 <h2 id="実験">実験</h2>
@@ -92,7 +93,7 @@
 <li>学習されたモデルは、汎化性能はどの程度なのか（未知文章、長い文章、スペルミスに対してパフォーマンスはどう変わるのか、等）</li>
 </ul>
 
-<p>を探っていきます。</p>
+<p>を探っていきました。</p>
 
 <h3 id="アライメントの学習過程の可視化">アライメントの学習過程の可視化</h3>
 
@@ -748,11 +749,11 @@ Your browser does not support the audio element.
 
 <div align="center"><img src="/audio/tacotron/5_ljspeech_sample/4_step720000_alignment.png" /></div>
 
-<p>元音声があまり良いクリーンな音声ではないとはいえ、まー元音声とは大きな違いがありますねー、、厳しいです。スペクトログラム（貼ってないですが、すいません）を見ている限りでは、明らかに高周波数成分が抜け落ちているのはわかっています。ナイーブなアイデアではありますが、GANを導入すると良くなるのではないかと思っています。</p>
+<p>元音声があまり良いクリーンな音声ではないとはいえ、まー元音声とは大きな違いがありますねー、、厳しいです。スペクトログラムを見ている限りでは（貼ってないですが、すいません）、明らかに高周波数成分の予測が上手く言っていないことはわかっています。ナイーブなアイデアではありますが、GANを導入すると良くなるのではないかと思っています。</p>
 
 <h3 id="おまけ-生成する度に変わる音声">おまけ：生成する度に変わる音声</h3>
 
-<p>実験する過程で副次的に得られた結果ではあるのですが、テスト時に一部dropoutを有効にしていると<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">2</a></sup>、生成する度に音声が異なる（韻律が微妙に変わる）、といった現象を経験しています。以下、前に検証した際の実験ノートのリンクを貼っておきます。</p>
+<p>実験する過程で副次的に得られた結果ではあるのですが、テスト時に一部dropoutを有効にしていると<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>、生成する度に音声が異なる（韻律が微妙に変わる）、といった現象を経験しています。以下、前に検証した際の実験ノートのリンクを貼っておきます。</p>
 
 <p><a href="http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times">http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times</a></p>
 
@@ -761,7 +762,7 @@ Your browser does not support the audio element.
 <ul>
 <li>Tacotronを実装しました <a href="https://github.com/r9y9/tacotron_pytorch">https://github.com/r9y9/tacotron_pytorch</a></li>
 <li>24時間のデータセットに対して、20万ステップ程度（数日くらい）学習させたらそれなりにまともな音声が生成できるようになりました。70万ステップ（一週間と少しくらい）学習させましたが、ずっとロスは下がり続ける一方で、50万くらいからはあまり大きな品質改善は見られなかったように思います。</li>
-<li>Googleの論文と（ほぼ<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">3</a></sup>）同じように実装したつもりですが、品質はそこまで高くならなかったように思います。End-to-end では、 <strong>データの量と品質</strong> がかなり重要なので、それが主な原因だと思っています。（僕の実装に、多少バグがあるかもしれませんが、、、</li>
+<li>Googleの論文と（ほぼ<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup>）同じように実装したつもりですが、品質はそこまで高くならなかったように思います。End-to-end では、 <strong>データの量と品質</strong> がかなり重要なので、それが主な原因だと思っています。（僕の実装に、多少バグがあるかもしれませんが、、、</li>
 <li>EOS (End-of-sentence) では、理想的には要素がすべて0のスペクトログラムが出力されるはずなのですが、実際にはやはりそうもいかないので、判定には以下のようなしきい値処理を用いました。ここで貼った音声は全部この仕組みで動いており、単純ですがそれなりに上手く機能しているようです。</li>
 </ul>
 
@@ -770,16 +771,15 @@ Your browser does not support the audio element.
 </code></pre>
 
 <ul>
-<li>論文からは非自明な点の一つとして、エンコーダの出力のうち、入力のゼロ詰めした部分をマスキングするかどうか、といった点があります。これは、既存実装によってもまちまちで、例えば <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> ではマスキングしていませんが、<a href="https://github.com/barronalex/Tacotron/blob/2de9e507456cbe2b680cbc6b2beb6a761bd2eebd/models/tacotron.py#L51">barronalex/Tacotron</a> ではマスクしています。僕はマスクする場合としない場合と両方試したのですが（ここに貼った結果は、マスクしていない場合のものです）、マスクしないほうが若干良くなったような気もします。理想的にはマスクするべきだと思ったのですが、実際に試したところどちらかが圧倒的に悪いという結果ではではなく、正直なところ断定はしにくいです。発見した大きな違いの一つは、マスクなしの場合はアテンションは大まかにmonotonicになる一方で、マスクありの場合は、無音区間ではエンコーダ出力の冒頭にアテンションの重みが大きくなる（ので、monotonicではない）、と言ったことがありました。マスクありの音声サンプル、アライメントの可視化は、（少し古いですが）<a href="http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/bdad19fdff22016c7457a979707655bb7a605cd8/notebooks/Test%20Tacotron.ipynb">ここ</a> にあります。参考までに、Tensorflowでエンコーダの出力マスクする場合は、<code>memory_sequence_length</code> を指定します</li>
-<li>実装してみて、たまたま得られた結果ではあるのですが、テスト時にdropoutを使っている都合上、生成する度に音声が若干変わる（場合によっては韻律等）場合があります。<a href="http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times">http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times</a></li>
+<li>論文からは非自明な点の一つとして、エンコーダの出力のうち、入力のゼロ詰めした部分をマスキングするかどうか、といった点があります。これは、既存実装によってもまちまちで、例えば <a href="https://github.com/keithito/tacotron">keithito/tacotron</a> ではマスキングしていませんが、<a href="https://github.com/barronalex/Tacotron/blob/2de9e507456cbe2b680cbc6b2beb6a761bd2eebd/models/tacotron.py#L51">barronalex/Tacotron</a> ではマスクしています。僕はマスクする場合としない場合と両方試したのですが（ここに貼った結果は、マスクしていない場合のものです）、マスクしないほうが若干良くなったような気もします。理想的にはマスクするべきだと思ったのですが、実際に試したところどちらかが圧倒的に悪いという結果ではありませんでした。発見した大きな違いの一つは、マスクなしの場合はアテンションは大まかにmonotonicになる一方で、マスクありの場合は、無音区間ではエンコーダ出力の冒頭にアテンションの重みが大きくなる（ので、monotonicではない）、と言ったことがありました。マスクありの音声サンプル、アライメントの可視化は、（少し古いですが）<a href="http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/bdad19fdff22016c7457a979707655bb7a605cd8/notebooks/Test%20Tacotron.ipynb">ここ</a> にあります。参考までに、Tensorflowでエンコーダの出力マスクする場合は、<code>memory_sequence_length</code> を指定します <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/seq2seq/BahdanauAttention">https://www.tensorflow.org/api_docs/python/tf/contrib/seq2seq/BahdanauAttention</a></li>
 <li>日本語でやったり、multi-speaker でやったりしたかったのですが、とにかく実験に時間がかかるので、今のところ僕の中では優先度が低めになってしまいました。時間と計算資源に余裕があれば、やりたいのですが…</li>
 <li>日本語でやるには、英語と同じようにはいきません。というのも、char-levelで考えた際に、語彙が大きすぎるので。やるならば、十分大きな日本語テキストコーパスからembeddingを別途学習して（Tacotronでは、モデル自体にembeddingが入っています）、その他の部分を音声つきコーパスで学習する、といった方法が良いかなと思います。CSJコーパスは結構向いているんじゃないかと思っています。</li>
 <li>multi-speakerモデルを考える場合、どこにembeddingを差し込むのか、といったことが重要になってきますが、<a href="https://github.com/keithito/tacotron/issues/18">keithito/tacotron/issues/18</a> や <a href="https://github.com/keithito/tacotron/issues/24">keithito/tacotron/issues/24</a> に少し議論があるので、興味のある人は見てみるとよいかもしれません。DeepVoiceの論文も参考になるかと思います</li>
-<li>最新のtensorflowでは、griffin lim や stft（GPUで走る、勾配が求められる）が実装されているので、tacotronモデルを少し拡張して、サンプルレベルでロスを考える、といったことが簡単に試せると思います（ある意味WaveNetです）。ただし、ものすごく計算リソースを必要とするのが容易に想像がつくので、僕はやっていません。GPU落ちてこないかな、、、</li>
+<li>最新のTensorFlowでは、griffin lim や stft（GPUで走る、勾配が求められる）が実装されているので、tacotronモデルを少し拡張して、サンプルレベルでロスを考える、といったことが簡単に試せると思います（ある意味WaveNetです）。ただし、ものすごく計算リソースを必要とするのが容易に想像がつくので、僕はやっていません。GPU落ちてこないかな、、、</li>
 <li>Tacotronの拡張として、speaker embedding以外にも、いろんな潜在変数を埋め込んでみると、楽しそうに思いました。例えば話速、感情とか。</li>
-<li>TensorFlowのseq2seqあたりのドキュメント/コードをよく読んでいたのですが、APIが抽象化されすぎていてつらいなと思いました。AttentionWrapper、コードを読まずに挙動を理解するのは無理なのではと思いました <a href="https://github.com/r9y9/tacotron_pytorch/issues/2#issuecomment-334255759">https://github.com/r9y9/tacotron_pytorch/issues/2#issuecomment-334255759</a></li>
-<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a> は本当によく書かれているなと思ったので、Tensorflowに長けている方には、おすすめです</li>
-<li>僕の実装では、バッチサイズ32でGPUメモリ5, 6GB程度しか食わないので、Tacotronは比較的軽いモデルなのだなーと思いました。物体検出で有名な single shot multibox detector (通称SSD) なんかは、バッチサイズ16とかでも平気で12GBとか使ってくるので（一年近く前の経験ですが）、無限にGPUリソースがほしくなってきます</li>
+<li>TensorFlowのseq2seqあたりのドキュメント/コードをよく読んでいたのですが、APIが抽象化されすぎていてつらいなと思いました。例えばAttentionWrapper、コードを読まずに挙動を理解するのは無理なのではと思いました <a href="https://github.com/r9y9/tacotron_pytorch/issues/2#issuecomment-334255759">https://github.com/r9y9/tacotron_pytorch/issues/2#issuecomment-334255759</a></li>
+<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a> は本当によく書かれているなと思ったので、TensorFlowに長けている方には、おすすめです</li>
+<li>僕の実装では、バッチサイズ32でGPUメモリ5GB程度しか食わないので、Tacotronは比較的軽いモデルなのだなーと思いました。物体検出で有名な single shot multibox detector (通称SSD) なんかは、バッチサイズ16とかでも平気で12GBとか使ってくるので（一年近く前の経験ですが）、無限にGPUリソースがほしくなってきます</li>
 <li>これが僕にとって、はじめてまともにseq2seqを実装した経験でした。色々勉強したのですが、Attention mechanism に関しては、 <a href="http://colinraffel.com/blog/online-and-linear-time-attention-by-enforcing-monotonic-alignments.html">http://colinraffel.com/blog/online-and-linear-time-attention-by-enforcing-monotonic-alignments.html</a> がとても参考になりました。あとで知ったのですが、monotonic attentionの著者は僕が昔から使っている音楽信号処理のライブラリ <a href="https://github.com/librosa/librosa">librosa</a> のコミッタでした（僕も弱小コミッタの一人）。とても便利で、よくテストされているので、おすすめです。オープンソースのTacotron実装でも、音声処理にも使われています</li>
 </ul>
 
@@ -797,6 +797,8 @@ Your browser does not support the audio element.
 <hr />
 
 <ol>
+<li id="fn:1">URLには現時点のgitのコミットハッシュが入っています。最新版は、 <a href="https://github.com/r9y9/tacotron_pytorch">https://github.com/r9y9/tacotron_pytorch</a> から直接辿ってください。
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 <li id="fn:2"><a href="https://github.com/keithito/tacotron/pull/43#issuecomment-332068107">https://github.com/keithito/tacotron/pull/43#issuecomment-332068107</a>
  <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
 <li id="fn:3">dropoutを切ってしまうと、アライメントが死んでしまうというバグ？に苦しんでおり…未だ原因を突き止められていません
