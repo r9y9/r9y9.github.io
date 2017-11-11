@@ -32,28 +32,125 @@
 			<section itemprop="entry-text">
 				
 
-<h2 id="名前">名前</h2>
+<h2 id="name">Name</h2>
 
 <p>山本 龍一 / Ryuichi Yamamoto</p>
 
-<h2 id="問い合わせ先">問い合わせ先</h2>
+<h2 id="contact-information">Contact information</h2>
 
 <ul>
-<li><a href="https://twitter.com/r9y9">Twitter</a></li>
 <li><a href="https://github.com/r9y9">Github</a></li>
+<li><a href="https://twitter.com/r9y9">Twitter</a></li>
+<li>zryuichi [at] gmail.com</li>
 </ul>
 
-<h2 id="経歴">経歴</h2>
+<h2 id="interests">Interests</h2>
 
 <ul>
-<li>現在: 自由にしています</li>
-<li>2013年4月 ~ 2017年4月: チームラボ株式会社 コンピュータビジョンチーム エンジニア</li>
-<li>2013年4月: 名古屋工業大学大学院工学研究科情報工学専攻 博士前期課程修了</li>
+<li>Machine learning and its application to music and audio signals</li>
+<li>Statistical voice conversion and text-to-speech synthesis</li>
+<li>Music information retrieval</li>
 </ul>
 
-<h2 id="発表文献">発表文献</h2>
+<h2 id="work-experience">Work experience</h2>
 
-<p><a href="http://www.mmsp.nitech.ac.jp/~ryuichi/">http://www.mmsp.nitech.ac.jp/~ryuichi/</a> に学生時代の発表文献が書かれています</p>
+<ul>
+<li>Present: 自由にしています</li>
+<li>2013 Apr. ~ 2017 Apr: Computer vision engineer @ チームラボ株式会社</li>
+</ul>
+
+<h2 id="education">Education</h2>
+
+<ul>
+<li>2013: M.S. in Computer Science @ Nagoya Institute of Technology
+
+<ul>
+<li>Thesis title: 多声演奏に頑健な音響信号と楽譜のアライメントと自動伴奏への応用に関する研究（Robust Polyphonic Audio-to-score Alignment and Its Application to Automatic Accompaniment）</li>
+</ul></li>
+<li>2011: B.S in Computer Science  @ Nagoya Institute of Technology</li>
+</ul>
+
+<h2 id="software">Software</h2>
+
+<h3 id="library">Library</h3>
+
+<ul>
+<li><a href="https://github.com/r9y9/nnmnkwii">nnmnkwii</a>: Library to build speech synthesis systems designed for easy and fast prototyping.</li>
+<li><a href="https://github.com/r9y9/pysptk">pysptk</a>: A python wrapper for Speech Signal Processing Toolkit (SPTK).</li>
+<li><a href="https://github.com/r9y9/pylibfreenect2">pylibfreenect2</a>: A python interface for libfreenect2 for python 2.7 and 3.x.</li>
+</ul>
+
+<h3 id="code-to-reproduce">Code to reproduce</h3>
+
+<ul>
+<li><a href="https://github.com/r9y9/tacotron_pytorch">tacotron_pytorch</a>: PyTorch implementation of Tacotron speech synthesis model.
+
+<ul>
+<li><a href="https://arxiv.org/abs/1703.10135">Yuxuan Wang, RJ Skerry-Ryan, Daisy Stanton, et al., &ldquo;Tacotron: Towards End-to-End Speech Synthesis&rdquo;,   arXiv:1703.10135, Apr. 2017.</a></li>
+</ul></li>
+<li><a href="https://github.com/r9y9/gantts">gantts</a>: PyTorch implementation of GAN-based text-to-speech synthesis and voice conversion (VC).
+
+<ul>
+<li><a href="http://ieeexplore.ieee.org/abstract/document/8063435/">Saito, Yuki, Shinnosuke Takamichi, and Hiroshi Saruwatari. &ldquo;Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks.&rdquo; IEEE/ACM Transactions on Audio, Speech, and Language Processing (2017).</a></li>
+<li><a href="https://arxiv.org/abs/1707.01670">Shan Yang, Lei Xie, Xiao Chen, Xiaoyan Lou, Xuan Zhu, Dongyan Huang, Haizhou Li, &ldquo;Statistical Parametric Speech Synthesis Using Generative Adversarial Networks Under A Multi-task Learning Framework&rdquo;,     arXiv:1707.01670, Jul 2017.</a></li>
+</ul></li>
+</ul>
+
+<h2 id="contributions-to-open-source-projects">Contributions to open-source projects</h2>
+
+<ul>
+<li><a href="https://github.com/librosa/librosa">librosa</a>: Python library for audio and music analysis.
+
+<ul>
+<li>Inverse short-time fourier transform (ISTFT) refinement (<a href="https://github.com/librosa/librosa/pull/235">#235</a>) and bug fixes.</li>
+</ul></li>
+<li><a href="https://github.com/CSTR-Edinburgh/merlin">merlin</a>: The Neural Network (NN) based Speech Synthesis System.
+
+<ul>
+<li>Add python3 support (<a href="https://github.com/CSTR-Edinburgh/merlin/pull/181">#181</a>), CI integration (<a href="https://github.com/CSTR-Edinburgh/merlin/pull/263">#263</a>) and misc bug fixes.</li>
+</ul></li>
+<li><a href="http://sp-tk.sourceforge.net/">SPTK</a>: Speech Signal Processing Toolkit (SPTK)
+
+<ul>
+<li>Bug report and bug fixes.</li>
+</ul></li>
+<li><a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder">Python-Wrapper-for-World-Vocoder</a>: A Python wrapper for the high-quality vocoder &ldquo;World&rdquo;
+
+<ul>
+<li>Add support for spectral envelope encode/decode functions (<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder/pull/8">#8</a>) and misc improvements.</li>
+</ul></li>
+<li><a href="https://github.com/k2kobayashi/sprocket">sprocket</a>: A voice conversion toolkit intended to be used as baseline for <a href="http://www.vc-challenge.org/">voice conversion challenge 2016</a>.
+
+<ul>
+<li>Design discussion, integrate WORLD vocoder and bug fixes.</li>
+</ul></li>
+</ul>
+
+<h2 id="competitions">Competitions</h2>
+
+<ul>
+<li><a href="https://deepanalytics.jp/compe/36">第1回 FR FRONTIER ：ファッション画像における洋服の「色」分類</a> 8 / 218 位.</li>
+<li><a href="https://deepanalytics.jp/compe/32">【(1)料理領域検出部門】人工知能技術戦略会議主催 第1回AIチャレンジコンテスト
+</a>: 10 / 37 位.</li>
+</ul>
+
+<h2 id="research-projects">Research projects</h2>
+
+<ul>
+<li>2012 - 2013: MIDI入力自動伴奏システムの研究、開発 <a href="http://hil.t.u-tokyo.ac.jp/software/Eurydice/">[デモ動画]</a></li>
+<li>2013 - 2014: Ryry: 音響入力自動伴奏システムの研究、開発 <a href="https://www.youtube.com/watch?v=qQHNUk6ufK8">[デモ動画]</a></li>
+</ul>
+
+<h2 id="awards">Awards</h2>
+
+<ul>
+<li>2013: 日本音響学会学生優秀発表賞 @ 第7回（2013年春季研究発表会）<a href="http://www.asj.gr.jp/recommending/07_gakusei.html">参考URL</a></li>
+<li>2012: 日本音響学会東海支部優秀発表賞 <a href="http://www.asj-tokai.jp/activities/awardees">参考URL</a></li>
+</ul>
+
+<h2 id="publications">Publications</h2>
+
+<p><a href="https://scholar.google.co.jp/citations?user=PpjbClsAAAAJ&amp;hl=ja">https://scholar.google.co.jp/citations?user=PpjbClsAAAAJ&amp;hl=ja</a></p>
 
 				
 <div class="social">
