@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://r9y9.github.io/blog/2017/11/23/dctts/</loc>
+    <lastmod>2017-11-23T19:30:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://r9y9.github.io/blog/2017/11/12/jsut_ver1/</loc>
     <lastmod>2017-11-12T03:00:00+09:00</lastmod>
   </url>
@@ -311,7 +316,7 @@
   
   <url>
     <loc>http://r9y9.github.io/tags/dnn/</loc>
-    <lastmod>2017-10-15T14:00:00+09:00</lastmod>
+    <lastmod>2017-11-23T19:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -401,7 +406,7 @@
   
   <url>
     <loc>http://r9y9.github.io/</loc>
-    <lastmod>2017-11-12T03:00:00+09:00</lastmod>
+    <lastmod>2017-11-23T19:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -473,7 +478,7 @@
   
   <url>
     <loc>http://r9y9.github.io/post/</loc>
-    <lastmod>2017-11-12T03:00:00+09:00</lastmod>
+    <lastmod>2017-11-23T19:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -491,7 +496,7 @@
   
   <url>
     <loc>http://r9y9.github.io/categories/python/</loc>
-    <lastmod>2017-10-15T14:00:00+09:00</lastmod>
+    <lastmod>2017-11-23T19:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -515,7 +520,7 @@
   
   <url>
     <loc>http://r9y9.github.io/tags/speech/</loc>
-    <lastmod>2017-11-12T03:00:00+09:00</lastmod>
+    <lastmod>2017-11-23T19:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -557,7 +562,7 @@
   
   <url>
     <loc>http://r9y9.github.io/categories/speech-synthesis/</loc>
-    <lastmod>2017-11-12T03:00:00+09:00</lastmod>
+    <lastmod>2017-11-23T19:30:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -6,10 +6,23 @@
     <description>Recent content in Posts on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 12 Nov 2017 03:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 23 Nov 2017 19:30:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</title>
+      <link>http://r9y9.github.io/blog/2017/11/23/dctts/</link>
+      <pubDate>Thu, 23 Nov 2017 19:30:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/11/23/dctts/</guid>
+      <description>論文リンク: arXiv:1710.08969 コード: https://github.com/r9y9/deepvoice3_pytorch  三行まとめ  arXiv:1710.08969: Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. を読んで、実装しました RNNではなくCNNを使うのが肝で、オープンソースTacotronと同等以上の品質でありながら、高速に (一日程度で) 学習できる のが売りのようです。 LJSpeech Dataset を使って、英語TTSモデルを作りました（学習時間一日くらい）。完全再現とまではいきませんが、大まかに論文の主張を確認できました。  前置き 本当は DeepVoice3 の実装をしていたのですが、どうも上手くいかなかったので気分を変えてやってみました。 以前 Tacotronに関する長いブログ記事 (リンク) を書いてしまったのですが、読む方も書く方もつらいので、簡潔にまとめることにしました。興味のある人は続きもどうぞ。
+概要 End-to-endテキスト音声合成 (Text-to-speech synthesis; TTS) のための Attention付き畳み込みニューラルネット (CNN) が提案されています。SampleRNN, Char2Wav, Tacotronなどの従来提案されてきたRNNをベースとする方法では、モデルの構造上計算が並列化しにくく、 学習/推論に時間がかかることが問題としてありました。本論文では、主に以下の二つのアイデアによって、従来法より速く学習できるモデルを提案しています。
+ RNNではなくCNNを使うこと (参考論文: arXiv:1705.03122) Attentionがmotonicになりやすくする効果を持つLossを考えること (Guided attention)  実験では、オープンソースTacotron (keithito/tacotron) の12日学習されたモデルと比較し、主観評価により同等以上の品質が得られたことが示されています。
+DeepVoice3 との違い ほぼ同時期に発表されたDeepVoice3も同じく、CNNをベースとするものです。論文を読みましたが、モチベーションとアプローチの基本は DeepVoice3 と同じに思いました。しかし、ネットワーク構造は DeepVoice3とは大きく異なります。いくつか提案法の特徴を挙げると、以下のとおりです。
+ ネットワークが深い（DeepVoice3だとEncoder, Decoder, Converter それぞれ10未満ですが、この論文ではDecoderだけで20以上）。すべてにおいて深いです。カーネルサイズは3と小さいです1 Fully-connected layer ではなく1x1 convolutionを使っています チャンネル数が大きい（256とか512とか、さらにネットワーク内で二倍になっていたりする）。DeepVoice3だとEncoderは64です レイヤーの深さに対して指数上に大きくなるDilationを使っています（DeepVoiceではすべてdilation=1） アテンションレイヤーは一つ（DeepVoice3は複数  DeepVoice3は、arXiv:1705.</description>
+    </item>
     
     <item>
       <title>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]</title>
