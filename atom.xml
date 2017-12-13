@@ -6,10 +6,29 @@
     <description>Recent content on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 23 Nov 2017 19:30:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 13 Dec 2017 13:00:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</title>
+      <link>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</link>
+      <pubDate>Wed, 13 Dec 2017 13:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</guid>
+      <description>論文リンク: arXiv:1710.07654 コード: https://github.com/r9y9/deepvoice3_pytorch  三行まとめ  arXiv:1710.07654: Deep Voice 3: 2000-Speaker Neural Text-to-Speech を読んで、単一話者の場合のモデルを実装しました（複数話者の場合は、今実験中です (deepvoice3_pytorch/#6) arXiv:1710.08969 と同じく、RNNではなくCNNを使うのが肝です 例によって LJSpeech Dataset を使って、英語TTSモデルを作りました（学習時間半日くらい）。論文に記載のハイパーパラメータでは良い結果が得られなかったのですが、arXiv:1710.08969 のアイデアをいくつか借りることで、良い結果を得ることができました。  概要 前回の記事 で紹介した方法と、モチベーション、基本的な方法論はまったく同じのため省略します。モデルのアーキテクチャが異なりますが、その点についても前回述べたので、そちらを参照ください。 今回の記事では、DeepVoice3のアーキテクチャをベースにした方法での実験結果をまとめます。
+予備実験 はじめに、可能な限り論文に忠実に、論文に記載のモデルアーキテクチャ、ハイパーパラメータで、レイヤー数やConvレイヤーのカーネル数を若干増やしたモデルで試しました。（増やさないと、LJSpeechではイントネーションが怪しい音声が生成されてしまいました）。しかし、どうもビブラートがかかったような音声が生成される傾向にありました。色々試行錯誤して改良したのですが、詳細は後述するとして、改良前/改良後の音声サンプルを以下に示します。
+Generative adversarial network or variational auto-encoder.
+(59 chars, 7 words)
+改良前：
+Your browser does not support the audio element. 
+改良後：
+Your browser does not support the audio element. 
+いかがでしょうか。結構違いますよね。なお、改良前のモデルは53万イテレーション、改良後は21万イテレーション学習しました。回数を増やせばいいというものではないようです（当たり前ですが）。結論からいうと、モデルの自由度が足りなかったのが品質が向上しにくかった原因ではないかと考えています。
+実験 前回と同じく LJSpeech Dataset を使って、11時間くらい（21万ステップ）学習しました。モデルは、DeepVoice3で提案されているものを少しいじりました。どのような変更をしたのか、以下にまとめます。
+ Encoder: レイヤー数を増やし、チャンネル数を大きくしました。代わりにカーネル数は7から3に減らしました Decoder: メル周波数スペクトログラムの複数フレームをDecoderの1-stepで予測するのではなく、arXiv:1710.</description>
+    </item>
     
     <item>
       <title>Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</title>
