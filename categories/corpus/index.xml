@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Corpus on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/corpus/</link>
+    <link>http://r9y9.github.io/categories/corpus/</link>
     <description>Recent content in Corpus on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 12 Nov 2017 03:00:00 +0900</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/corpus/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/corpus/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]</title>
-      <link>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</link>
+      <link>http://r9y9.github.io/blog/2017/11/12/jsut_ver1/</link>
       <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</guid>
+      <guid>http://r9y9.github.io/blog/2017/11/12/jsut_ver1/</guid>
       <description>コーパス配布先リンク: JSUT (Japanese speech corpus of Saruwatari Lab, University of Tokyo) - Shinnosuke Takamichi (高道 慎之介) 論文リンク: arXiv:1711.00354  三行まとめ  日本語End-to-end音声合成に使えるコーパスは神、ありがとうございます クリーンな音声であるとはいえ、冒頭/末尾の無音区間は削除されていない、またボタンポチッみたいな音も稀に入っているので注意 僕が行った無音区間除去の方法（Juliusで音素アライメントを取って云々）を記録しておくので、必要になった方は参考にどうぞ。ラベルファイルだけほしい人は連絡ください  JSUT とは ツイート引用： フリーの日本語音声コーパス（単一話者による10時間データ）を公開しました．音声研究等にお役立てください．https://t.co/94ShJY44mA pic.twitter.com/T0etDwD7cS
 &amp;mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) October 26, 2017  
 つい先月、JSUT という、日本語 End-to-end 音声合成の研究に使えることを前提に作られた、フリーの大規模音声コーパスが公開されました。詳細は上記リンク先を見てもらうとして、簡単に特徴をまとめると、以下のとおりです。

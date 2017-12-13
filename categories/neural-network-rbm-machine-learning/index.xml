@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Neural Network Rbm Machine Learning on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/neural-network-rbm-machine-learning/</link>
+    <link>http://r9y9.github.io/categories/neural-network-rbm-machine-learning/</link>
     <description>Recent content in Neural Network Rbm Machine Learning on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Thu, 06 Mar 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/neural-network-rbm-machine-learning/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/neural-network-rbm-machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Restricted Boltzmann Machines with MNIST</title>
-      <link>https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</link>
+      <link>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</link>
       <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</guid>
+      <guid>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</guid>
       <description>ディープ某を使った研究を再現してみたくて、最近某ニューラルネットに手を出し始めた。で、手始めにRestricted Boltzmann Machinesを実装してみたので、
  MNISTを使って学習した結果の重み（22*22=484個）を貼っとく（↑） 得た知見をまとめとく Goのコード貼っとく  ってな感じで書いておく
 (本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)

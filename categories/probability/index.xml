@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Probability on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/probability/</link>
+    <link>http://r9y9.github.io/categories/probability/</link>
     <description>Recent content in Probability on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 31 Jul 2013 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/probability/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/probability/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Multinomial distributionとCategorical distributionの違い</title>
-      <link>https://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</link>
+      <link>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</link>
       <pubDate>Wed, 31 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</guid>
+      <guid>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</guid>
       <description>些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。
 結論としては、多項分布のn=1の特殊な場合がカテゴリカル分布ですよってこと。以下少しまとめる。
 分布を仮定する離散変数をカテゴリと呼ぶとして、

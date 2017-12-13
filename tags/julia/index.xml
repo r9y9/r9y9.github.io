@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julia on LESS IS MORE</title>
-    <link>https://r9y9.github.io/tags/julia/</link>
+    <link>http://r9y9.github.io/tags/julia/</link>
     <description>Recent content in Julia on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Fri, 23 Dec 2016 18:06:08 +0900</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/tags/julia/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/tags/julia/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Juliaをソースからビルドする</title>
-      <link>https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</link>
+      <link>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</link>
       <pubDate>Fri, 23 Dec 2016 18:06:08 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</guid>
+      <guid>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</guid>
       <description>Julia advent calendar 2016 23日目の記事です。
 はじめに Juilaを最も簡単にインストールする方法は、公式のダウンロードページからバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが1、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。
 僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです2。
@@ -32,10 +32,10 @@ BUILD_LLVM_CLANG llvmとあわせて、clangをビルドするかどうか、と
     
     <item>
       <title>Cxx.jlを用いてJulia expression/value をC&#43;&#43;に埋め込む実験</title>
-      <link>https://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</link>
+      <link>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</link>
       <pubDate>Sun, 24 Jan 2016 22:32:08 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</guid>
+      <guid>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</guid>
       <description>Keno氏によるJuliaCon 2015 の発表 Keno Fischer: Shaving the Yak でタイトルの内容が一部紹介されていて、便利そうだなと思い、色々試してみました。
   
 発表の内容は大まかに、Keno氏がなぜCxx.jlを作ったのか、なぜJuliaを始めたのか、といったモチベーションの話から、Cxx.jlでできることについてlive programmingを交えての紹介、といった話になっています。50分とけっこう長いですが、面白いので興味のある方はどうぞ。この記事は、上の動画を見たあと、Cxx.jlと戯れた結果をまとめたものです。
@@ -51,10 +51,10 @@ function Base.show{T}(io::IO, v::StdVector{T}) println(io, &amp;quot;$(length(v)
     
     <item>
       <title>対話環境でPoint Cloud Library (PCL) を使いたい</title>
-      <link>https://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</link>
+      <link>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</link>
       <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
+      <guid>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
       <description>新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました1。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。
 Point Cloud Library (PCL) とは http://www.pointclouds.org/
 問題 PCL はboost、Eigenに依存している、かつtemplateを多く使用しているため、PCLを使用したプロジェクトのコンパイル時間は非常に長くなるという問題があります。twitterで [PCL コンパイル] として検索すると、例えば以下の様なツイートが見つかりますが、完全に同意です。

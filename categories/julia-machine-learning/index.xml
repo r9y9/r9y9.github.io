@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julia Machine Learning on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/julia-machine-learning/</link>
+    <link>http://r9y9.github.io/categories/julia-machine-learning/</link>
     <description>Recent content in Julia Machine Learning on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 20 Aug 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/julia-machine-learning/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/julia-machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</title>
-      <link>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
+      <link>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
       <description>最近 Julia で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）
 https://github.com/r9y9/BNMF.jl
 元論文: Bayesian Nonparametric Matrix Factorization for Recorded Music by Matthew D. Hoffman et al. in ICML 2010.

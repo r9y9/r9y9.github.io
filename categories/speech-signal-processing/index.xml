@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Signal Processing on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/speech-signal-processing/</link>
+    <link>http://r9y9.github.io/categories/speech-signal-processing/</link>
     <description>Recent content in Speech Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 01 Dec 2013 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>SPTKをC&#43;&#43;から使えるようにする</title>
-      <link>https://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</link>
+      <link>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</link>
       <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</guid>
+      <guid>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</guid>
       <description>音声信号処理ツールキットSPTKをC++から使おうと思ったら意外とハマってしまったので、
  C++から使えるようにC++コンパイラでコンパイルできるようにした 使いやすいようにwafを組み込みんだ  リポジトリ: https://github.com/r9y9/SPTK
 というわけで、使い方について簡単に書いておく
@@ -29,10 +29,10 @@ Build  ./waf configure &amp;amp;&amp;amp; ./waf  Build with clang++  CXX=clang++
     
     <item>
       <title>MFCCの計算方法についてメモ</title>
-      <link>https://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</link>
+      <link>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</link>
       <pubDate>Sun, 24 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</guid>
+      <guid>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</guid>
       <description> MFCC とは Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。
 算出手順  音声信号を適当な長さのフレームで切り出し 窓がけ フーリエ変換して対数振幅スペクトルを求める メルフィルタバンクを掛けて、メル周波数スペクトルを求める 離散コサイン変換により、MFCCを求める  以上。SPTKのmfccコマンドのソースもだいたいそうなってた。
 さて ここに音声波形があるじゃろ？？  音声波形を窓がけして…  さらにフーリエ変換して対数取って…  ここでメルフィルタバンクの出番じゃ  最後に離散コサイン変換で完成じゃ  まとめ  MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです 正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。 間違ってるかもしれないけどご愛嬌  参考  L9: Cepstral analysis [PDF] メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版 メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録  </description>
@@ -40,10 +40,10 @@ Build  ./waf configure &amp;amp;&amp;amp; ./waf  Build with clang++  CXX=clang++
     
     <item>
       <title>スペクトログラムとメル周波数スペクトログラムの可視化</title>
-      <link>https://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</link>
+      <link>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</link>
       <pubDate>Sat, 16 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</guid>
+      <guid>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</guid>
       <description> やったので貼っとくだけ
   低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。
 今回は振幅を対数を取って表示した（ちなみに）。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に合うようにメル周波数に変換して次元圧縮するイメージ。

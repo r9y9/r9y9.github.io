@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Speech Signal Processing on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/go-speech-signal-processing/</link>
+    <link>http://r9y9.github.io/categories/go-speech-signal-processing/</link>
     <description>Recent content in Go Speech Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Mon, 10 Feb 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/go-speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/go-speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Goで音声信号処理をしたいのでSPTKのGoラッパーを書く</title>
-      <link>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</link>
+      <link>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</link>
       <pubDate>Mon, 10 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</guid>
+      <guid>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</guid>
       <description>2014/07/22 追記：
 パッケージの一部として書きました（GOSSP - Go言語で音声信号処理 - LESS IS MOREを参照）。 SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ
 &amp;ndash;

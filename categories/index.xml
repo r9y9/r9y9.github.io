@@ -2,335 +2,335 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/</link>
+    <link>http://r9y9.github.io/categories/</link>
     <description>Recent content in Categories on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     
-	<atom:link href="https://r9y9.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Corpus</title>
-      <link>https://r9y9.github.io/categories/corpus/</link>
+      <link>http://r9y9.github.io/categories/corpus/</link>
       <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/categories/corpus/</guid>
+      <guid>http://r9y9.github.io/categories/corpus/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Daily</title>
-      <link>https://r9y9.github.io/categories/daily/</link>
+      <link>http://r9y9.github.io/categories/daily/</link>
       <pubDate>Sun, 03 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/daily/</guid>
+      <guid>http://r9y9.github.io/categories/daily/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go</title>
-      <link>https://r9y9.github.io/categories/go/</link>
+      <link>http://r9y9.github.io/categories/go/</link>
       <pubDate>Sun, 02 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/go/</guid>
+      <guid>http://r9y9.github.io/categories/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go Cgo</title>
-      <link>https://r9y9.github.io/categories/go-cgo/</link>
+      <link>http://r9y9.github.io/categories/go-cgo/</link>
       <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/go-cgo/</guid>
+      <guid>http://r9y9.github.io/categories/go-cgo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go Music Signal Processing</title>
-      <link>https://r9y9.github.io/categories/go-music-signal-processing/</link>
+      <link>http://r9y9.github.io/categories/go-music-signal-processing/</link>
       <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/go-music-signal-processing/</guid>
+      <guid>http://r9y9.github.io/categories/go-music-signal-processing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go Python Machine Learning</title>
-      <link>https://r9y9.github.io/categories/go-python-machine-learning/</link>
+      <link>http://r9y9.github.io/categories/go-python-machine-learning/</link>
       <pubDate>Tue, 29 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/go-python-machine-learning/</guid>
+      <guid>http://r9y9.github.io/categories/go-python-machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go Speech Signal Processing</title>
-      <link>https://r9y9.github.io/categories/go-speech-signal-processing/</link>
+      <link>http://r9y9.github.io/categories/go-speech-signal-processing/</link>
       <pubDate>Mon, 10 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/go-speech-signal-processing/</guid>
+      <guid>http://r9y9.github.io/categories/go-speech-signal-processing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Graphical Model</title>
-      <link>https://r9y9.github.io/categories/graphical-model/</link>
+      <link>http://r9y9.github.io/categories/graphical-model/</link>
       <pubDate>Sat, 01 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/graphical-model/</guid>
+      <guid>http://r9y9.github.io/categories/graphical-model/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Inverse Continous Wavelet Transform Wavelet Transform Signal Reconstruction Signal Processing</title>
-      <link>https://r9y9.github.io/categories/inverse-continous-wavelet-transform-wavelet-transform-signal-reconstruction-signal-processing/</link>
+      <link>http://r9y9.github.io/categories/inverse-continous-wavelet-transform-wavelet-transform-signal-reconstruction-signal-processing/</link>
       <pubDate>Mon, 21 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/inverse-continous-wavelet-transform-wavelet-transform-signal-reconstruction-signal-processing/</guid>
+      <guid>http://r9y9.github.io/categories/inverse-continous-wavelet-transform-wavelet-transform-signal-reconstruction-signal-processing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Julia</title>
-      <link>https://r9y9.github.io/categories/julia/</link>
+      <link>http://r9y9.github.io/categories/julia/</link>
       <pubDate>Fri, 09 Jun 2017 21:58:50 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/categories/julia/</guid>
+      <guid>http://r9y9.github.io/categories/julia/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Julia Julia Advent Calendar 2015</title>
-      <link>https://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</link>
+      <link>http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</link>
       <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</guid>
+      <guid>http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Julia Juliatokyo Bindeps</title>
-      <link>https://r9y9.github.io/categories/julia-juliatokyo-bindeps/</link>
+      <link>http://r9y9.github.io/categories/julia-juliatokyo-bindeps/</link>
       <pubDate>Tue, 30 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/julia-juliatokyo-bindeps/</guid>
+      <guid>http://r9y9.github.io/categories/julia-juliatokyo-bindeps/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Julia Machine Learning</title>
-      <link>https://r9y9.github.io/categories/julia-machine-learning/</link>
+      <link>http://r9y9.github.io/categories/julia-machine-learning/</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/julia-machine-learning/</guid>
+      <guid>http://r9y9.github.io/categories/julia-machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Julia Speech Signal Processing Machine Learning</title>
-      <link>https://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</link>
+      <link>http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</link>
       <pubDate>Sun, 26 Apr 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</guid>
+      <guid>http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Life</title>
-      <link>https://r9y9.github.io/categories/life/</link>
+      <link>http://r9y9.github.io/categories/life/</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/life/</guid>
+      <guid>http://r9y9.github.io/categories/life/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Machine Learning</title>
-      <link>https://r9y9.github.io/categories/machine-learning/</link>
+      <link>http://r9y9.github.io/categories/machine-learning/</link>
       <pubDate>Sun, 28 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/machine-learning/</guid>
+      <guid>http://r9y9.github.io/categories/machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Machine Learning Digit Recognition</title>
-      <link>https://r9y9.github.io/categories/machine-learning-digit-recognition/</link>
+      <link>http://r9y9.github.io/categories/machine-learning-digit-recognition/</link>
       <pubDate>Tue, 06 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/machine-learning-digit-recognition/</guid>
+      <guid>http://r9y9.github.io/categories/machine-learning-digit-recognition/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Machine Learning Ec2 Gpu</title>
-      <link>https://r9y9.github.io/categories/machine-learning-ec2-gpu/</link>
+      <link>http://r9y9.github.io/categories/machine-learning-ec2-gpu/</link>
       <pubDate>Sun, 20 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/machine-learning-ec2-gpu/</guid>
+      <guid>http://r9y9.github.io/categories/machine-learning-ec2-gpu/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Machine Learning Matrix Factorization</title>
-      <link>https://r9y9.github.io/categories/machine-learning-matrix-factorization/</link>
+      <link>http://r9y9.github.io/categories/machine-learning-matrix-factorization/</link>
       <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/machine-learning-matrix-factorization/</guid>
+      <guid>http://r9y9.github.io/categories/machine-learning-matrix-factorization/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Music Signal Processing Source Separation Matrix Factorization</title>
-      <link>https://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/</link>
+      <link>http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/</link>
       <pubDate>Sat, 14 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/</guid>
+      <guid>http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Neural Network Rbm Machine Learning</title>
-      <link>https://r9y9.github.io/categories/neural-network-rbm-machine-learning/</link>
+      <link>http://r9y9.github.io/categories/neural-network-rbm-machine-learning/</link>
       <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/neural-network-rbm-machine-learning/</guid>
+      <guid>http://r9y9.github.io/categories/neural-network-rbm-machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Nlp</title>
-      <link>https://r9y9.github.io/categories/nlp/</link>
+      <link>http://r9y9.github.io/categories/nlp/</link>
       <pubDate>Fri, 09 Jun 2017 21:58:50 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/categories/nlp/</guid>
+      <guid>http://r9y9.github.io/categories/nlp/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Probability</title>
-      <link>https://r9y9.github.io/categories/probability/</link>
+      <link>http://r9y9.github.io/categories/probability/</link>
       <pubDate>Wed, 31 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/probability/</guid>
+      <guid>http://r9y9.github.io/categories/probability/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>https://r9y9.github.io/categories/python/</link>
+      <link>http://r9y9.github.io/categories/python/</link>
       <pubDate>Wed, 13 Dec 2017 12:15:00 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/categories/python/</guid>
+      <guid>http://r9y9.github.io/categories/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python Neural Networks Machine Larning</title>
-      <link>https://r9y9.github.io/categories/python-neural-networks-machine-larning/</link>
+      <link>http://r9y9.github.io/categories/python-neural-networks-machine-larning/</link>
       <pubDate>Sun, 11 May 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/python-neural-networks-machine-larning/</guid>
+      <guid>http://r9y9.github.io/categories/python-neural-networks-machine-larning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python Scipy</title>
-      <link>https://r9y9.github.io/categories/python-scipy/</link>
+      <link>http://r9y9.github.io/categories/python-scipy/</link>
       <pubDate>Tue, 05 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/python-scipy/</guid>
+      <guid>http://r9y9.github.io/categories/python-scipy/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Signal Processing Wavelet Transform Continuous Wavelet</title>
-      <link>https://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</link>
+      <link>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</link>
       <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</guid>
+      <guid>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Speech Signal Processing</title>
-      <link>https://r9y9.github.io/categories/speech-signal-processing/</link>
+      <link>http://r9y9.github.io/categories/speech-signal-processing/</link>
       <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/speech-signal-processing/</guid>
+      <guid>http://r9y9.github.io/categories/speech-signal-processing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Speech Signal Processing Go</title>
-      <link>https://r9y9.github.io/categories/speech-signal-processing-go/</link>
+      <link>http://r9y9.github.io/categories/speech-signal-processing-go/</link>
       <pubDate>Sun, 08 Jun 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/speech-signal-processing-go/</guid>
+      <guid>http://r9y9.github.io/categories/speech-signal-processing-go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Speech Signal Processing Julia</title>
-      <link>https://r9y9.github.io/categories/speech-signal-processing-julia/</link>
+      <link>http://r9y9.github.io/categories/speech-signal-processing-julia/</link>
       <pubDate>Sun, 23 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/speech-signal-processing-julia/</guid>
+      <guid>http://r9y9.github.io/categories/speech-signal-processing-julia/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Speech Signal Processing Python</title>
-      <link>https://r9y9.github.io/categories/speech-signal-processing-python/</link>
+      <link>http://r9y9.github.io/categories/speech-signal-processing-python/</link>
       <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/speech-signal-processing-python/</guid>
+      <guid>http://r9y9.github.io/categories/speech-signal-processing-python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Speech Signal Processing Speech Synthesis</title>
-      <link>https://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</link>
+      <link>http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</link>
       <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</guid>
+      <guid>http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Speech Synthesis</title>
-      <link>https://r9y9.github.io/categories/speech-synthesis/</link>
+      <link>http://r9y9.github.io/categories/speech-synthesis/</link>
       <pubDate>Wed, 13 Dec 2017 12:15:00 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/categories/speech-synthesis/</guid>
+      <guid>http://r9y9.github.io/categories/speech-synthesis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Summer</title>
-      <link>https://r9y9.github.io/categories/summer/</link>
+      <link>http://r9y9.github.io/categories/summer/</link>
       <pubDate>Mon, 01 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/summer/</guid>
+      <guid>http://r9y9.github.io/categories/summer/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Voice Conversion Machine Learning Speech Signal Processing</title>
-      <link>https://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</link>
+      <link>http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</link>
       <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</guid>
+      <guid>http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Wavelet Transform Short Time Fourier Transform Signal Processing Visualization</title>
-      <link>https://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</link>
+      <link>http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</link>
       <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</guid>
+      <guid>http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</guid>
       <description></description>
     </item>
     

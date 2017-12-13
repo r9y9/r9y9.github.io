@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Music Signal Processing on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/go-music-signal-processing/</link>
+    <link>http://r9y9.github.io/categories/go-music-signal-processing/</link>
     <description>Recent content in Go Music Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Tue, 28 Jan 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/go-music-signal-processing/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/go-music-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Goでクロマベクトルを求める</title>
-      <link>https://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</link>
+      <link>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</link>
       <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</guid>
+      <guid>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</guid>
       <description>Chromagram。ドレミの歌の冒頭を分析した結果です
 package main import ( &amp;quot;fmt&amp;quot; &amp;quot;github.com/mjibson/go-dsp/wav&amp;quot; &amp;quot;github.com/r9y9/go-msptools/pcp&amp;quot; &amp;quot;log&amp;quot; &amp;quot;os&amp;quot; ) func main() { // reading data file, err := os.Open(&amp;quot;/path/to/file.wav&amp;quot;) if err != nil { log.Fatal(err) } defer file.Close() wav, werr := wav.ReadWav(file) if werr != nil { log.Fatal(werr) } // convert to []float64 from []int data := make([]float64, len(wav.Data[0])) for i := range data { data[i] = float64(wav.Data[0][i]) } // settings for analysis frameShift := int(float64(wav.SampleRate) / 100.</description>
     </item>

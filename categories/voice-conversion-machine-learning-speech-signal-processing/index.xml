@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Voice Conversion Machine Learning Speech Signal Processing on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</link>
+    <link>http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</link>
     <description>Recent content in Voice Conversion Machine Learning Speech Signal Processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 12 Nov 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ（チュートリアル編）</title>
-      <link>https://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</link>
+      <link>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</link>
       <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
+      <guid>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
       <description>はじめに こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。
 前回の記事（統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE）では変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。
 コード https://github.com/r9y9/VoiceConversion.jl
@@ -32,10 +32,10 @@ VoiceConversion.jl でできること 追記 2015/01/07 この記事を書いた
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ（実装の話）</title>
-      <link>https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</link>
+      <link>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</link>
       <pubDate>Sun, 13 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</guid>
+      <guid>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</guid>
       <description>2014/07/28 追記：
 重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました https://gist.github.com/r9y9/88bda659c97f46f42525
 まえがき 前回、統計的声質変換クッソムズすぎワロタ - LESS IS MORE という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。
@@ -57,10 +57,10 @@ numpy.linalg.invを使っていましたよね。しかもnumpy.linalg.solveの�
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ</title>
-      <link>https://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</link>
+      <link>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</link>
       <pubDate>Sat, 05 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</guid>
+      <guid>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</guid>
       <description>2014/10/12 追記 少なくともGVのコードに致命的なバグがあったことがわかりました。よって、あまりあてにしないでください…（ごめんなさい
 こんにちは。
 最近、統計的声質変換の勉強をしていました。で、メジャーなGMM（混合ガウスモデル）ベースの変換を色々やってみたので、ちょろっと書きます。実は（というほどでもない?）シンプルなGMMベースの方法だと音質クッソ悪くなってしまうんですが、色々試してやっとまともに聞ける音質になったので、試行錯誤の形跡を残しておくとともに、音声サンプルを貼っておきます。ガチ勢の方はゆるりと見守ってください

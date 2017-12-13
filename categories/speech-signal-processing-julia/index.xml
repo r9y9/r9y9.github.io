@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Signal Processing Julia on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/speech-signal-processing-julia/</link>
+    <link>http://r9y9.github.io/categories/speech-signal-processing-julia/</link>
     <description>Recent content in Speech Signal Processing Julia on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 23 Aug 2015 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/speech-signal-processing-julia/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/speech-signal-processing-julia/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>最近の音声信号処理遊びの進捗</title>
-      <link>https://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
+      <link>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
       <pubDate>Sun, 23 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
       <description>hello 遡ればもう約一年まえになるでしょうか、統計的声質遊びをしたいと思い、理論の勉強を始めたり、（特にJuliaで）コードを色々書いていました（お前ほんといろんな言語で遊んでるな、というツッコミはさておき）。統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE を書いていた当初は、当然自分のためだけに書いていて、まぁアレな出来でしたが、最近気を取り直して多少マシに仕上げましたので、何となくブログに書いてみようかなーと思った次第です。というわけで、最近公式に登録したいくつかのパッケージを、まとめて簡単に紹介します。
 主な改善点は、windowsもちゃんとサポートするようにしたこと（誰得？）と、テストをきちんと書いたことと、julia的なインタフェースを意識するようにしたことですかね。3つ目はかなり曖昧ですが、まぁ気持ち使いやすくなったと思います。
 パッケージ  MelGeneralizedCepstrums.jl: メル一般化ケプストラム分析 SynthesisFilters.jl: メル一般化ケプストラムからの音声波形合成 SPTK.jl: SPTKのラッパー  車輪の再発明はできるだけしたくなかったので、最初のほうはCライブラリのラッパーを書くことが多く、windowsとかめんどくさいしunix環境でしか動作確認してませんでしたが、WindowsのJuliaから呼べるようなCライブラリの共有ライブラリ（DLL）を作る | qiita 重い腰を上げてwindowsでも動くように頑張ったことがあり（めんどくさいとか言って手を動かさないのホント良くないですね）、登録したパッケージはすべてwindowsでも動くようになりました。めでたし。WORLD.jl もwindowsで動くようにしました。
@@ -35,10 +35,10 @@ MelGeneralizedCepstrums.jl と SynthesiFilters.jl は、ほとんどSPTK.jlで�
     
     <item>
       <title>SPTKのJuliaラッパーも書いた</title>
-      <link>https://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</link>
+      <link>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</link>
       <pubDate>Mon, 15 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</guid>
+      <guid>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</guid>
       <description>夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。
 Julia wrapper for Speech Signal Processing Toolkit (SPTK) | Github
 かれこれ、Go, Python, Juliaと、3つの言語でラッパーを書いてしまいました。どれだけSPTK好きなんだと。そしてどれだけ言語触ってるんだ絞れと。うーん、とはいえどれも良いところと悪いところがあってですね（何も言ってない）、難しい…

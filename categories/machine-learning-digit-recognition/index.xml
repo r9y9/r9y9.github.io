@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine Learning Digit Recognition on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/machine-learning-digit-recognition/</link>
+    <link>http://r9y9.github.io/categories/machine-learning-digit-recognition/</link>
     <description>Recent content in Machine Learning Digit Recognition on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Tue, 06 Aug 2013 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/machine-learning-digit-recognition/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/machine-learning-digit-recognition/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</title>
-      <link>https://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</link>
+      <link>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</link>
       <pubDate>Tue, 06 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</guid>
+      <guid>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</guid>
       <description> 前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…
 そもそもナイーブベイズやろうとしてたのも、MNISTのdigit recognitionがやりたかったからなので、実際にやってみた。
 コードはgithubに置いた https://github.com/r9y9/naive_bayes

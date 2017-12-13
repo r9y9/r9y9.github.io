@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Cgo on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/go-cgo/</link>
+    <link>http://r9y9.github.io/categories/go-cgo/</link>
     <description>Recent content in Go Cgo on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sat, 22 Mar 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/go-cgo/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/go-cgo/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>cgo の基本的な使い方とポインタ周りのTips (Go v1.2)</title>
-      <link>https://r9y9.github.io/blog/2014/03/22/cgo-tips/</link>
+      <link>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</link>
       <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/03/22/cgo-tips/</guid>
+      <guid>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</guid>
       <description>C/C++ライブラリのGoラッパーを書くためには、cgoというパッケージを使うのだけど、特にCのポインタ周りにハマりどころが多かったので、少しまとめとく
 cgoの基礎については、以下の二つを読むことを推奨
  http://golang.org/cmd/cgo/ https://code.google.com/p/go-wiki/wiki/cgo  この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine Learning Ec2 Gpu on LESS IS MORE</title>
-    <link>https://r9y9.github.io/categories/machine-learning-ec2-gpu/</link>
+    <link>http://r9y9.github.io/categories/machine-learning-ec2-gpu/</link>
     <description>Recent content in Machine Learning Ec2 Gpu on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 20 Jul 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/categories/machine-learning-ec2-gpu/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/categories/machine-learning-ec2-gpu/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Pylearn2, theanoをEC2 g2.x2large で動かす方法</title>
-      <link>https://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</link>
+      <link>http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</link>
       <pubDate>Sun, 20 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</guid>
+      <guid>http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</guid>
       <description>モチベーション  手元のへぼマシンでニューラルネットの学習を回わす 半日たっても終わらない 最近だとGPU使って計算を高速化するのが流行りだが、手元にGPUはない  Deep Learning in Python with Pylearn2 and Amazon EC2
 手元にGPUがない…？大丈夫！Amazon EC2を使えば良さそう！！！
 というわけで、めんどくさいと言わずにec2にお手軽計算環境を整えます。ec2でGPUが乗ったものだと、g2.2xlargeがよさそうですね。

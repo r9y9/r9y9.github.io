@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Synthesis on LESS IS MORE</title>
-    <link>https://r9y9.github.io/tags/speech-synthesis/</link>
+    <link>http://r9y9.github.io/tags/speech-synthesis/</link>
     <description>Recent content in Speech Synthesis on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 16 Aug 2017 23:10:56 +0900</lastBuildDate>
     
-	<atom:link href="https://r9y9.github.io/tags/speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://r9y9.github.io/tags/speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>DNN音声合成のためのライブラリの紹介とDNN日本語音声合成の実装例</title>
-      <link>https://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</link>
+      <link>http://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</link>
       <pubDate>Wed, 16 Aug 2017 23:10:56 +0900</pubDate>
       
-      <guid>https://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</guid>
+      <guid>http://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</guid>
       <description>nnmnkwii というDNN音声合成のためのライブラリを公開しましたので、その紹介をします。
 https://t.co/p8MnOxkVoH Library to build speech synthesis systems designed for easy and fast prototyping. Open sourced:)
 &amp;mdash; 山本りゅういち (@r9y9) August 14, 2017 
