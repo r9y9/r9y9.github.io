@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.20.5" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017] - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017]</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-12-14">December 14, 2017</time></span>
+			<section itemprop="entry-text">
+				
+
+<p>Line <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html</a></p>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_1.png" alt="png" /></p>
+
+<p>VBar <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html</a></p>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_3.png" alt="png" /></p>
+
+<p>HBar <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html</a></p>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_5.png" alt="png" /></p>
+
+<p>ImageRGBA <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html</a></p>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_7.png" alt="png" /></p>
+
+<p>ImageRGBA <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html</a></p>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_9.png" alt="png" /></p>
+
+<h2 id="前置き">前置き</h2>
+
+<p><a href="https://qiita.com/advent-calendar/2017/jupyter">Jupyter Advent Calendar 2017</a> 14日目の記事です。この記事は、Jupyter notebookで作成したものをnbconvertでmarkdownに変換し、手で少し修正して作りました。読み物としてはこの記事を、実行するにはノートブックの方を参照していただくのが良いかと思います。</p>
+
+<ul>
+<li><a href="https://gist.github.com/r9y9/d57e797c28f6cdc4e44264411c21b76f">ノートブック (gist)</a></li>
+<li><a href="http://nbviewer.jupyter.org/gist/r9y9/d57e797c28f6cdc4e44264411c21b76f">nbviewer</a></li>
+</ul>
+
+<h2 id="概要">概要</h2>
+
+<p>適当なニューラルネットの学習過程の可視化（ロス、正解率の遷移等）を題材にして、<a href="https://bokeh.pydata.org/en/latest/">Bokeh</a>を使って動的にグラフを更新していくことによる可視化の実用例を紹介します。このノートブックの冒頭に、最後まで実行すると得られるグラフ一覧をまとめました。どうやってグラフを作るのか知りたい方は続きを読んでもらえればと思います。Bokehの詳細な使い方は、公式ドキュメントを参考にしてください。</p>
+
+<p>なお、ここで紹介する例は、僕が過去に出た機械学習のコンペ (<a href="https://deepanalytics.jp/compe/36?tab=compedetail">https://deepanalytics.jp/compe/36?tab=compedetail</a>) で実際に使用したコードからほぼ取ってきました（8/218位でした）。グラフを動的に更新する方法は <a href="https://bokeh.pydata.org/en/latest/docs/user_guide/notebook.html#notebook-handles">公式ドキュメント</a> に記述されていますが、そのサンプルの内容は「円を描画して色を変える」といった実用性皆無のものであること、またググっても例が多く見つからないことから、このような紹介記事を書くことにしました。参考になれば幸いです。</p>
+
+<p>余談ではありますが、こと機械学習に関しては、tensorboardを使ったほうが簡単で良いと思います。僕は最近そうしています。 <a href="https://qiita.com/r9y9/items/d54162d37ec4f110f4b4">https://qiita.com/r9y9/items/d54162d37ec4f110f4b4</a>. 色なり位置なり大きさなりを柔軟にカスタマイズしたい、あるいはノートブックで処理を完結させたい、と言った場合には、ここで紹介する方法も良いかもしれません。</p>
+
+<pre><code class="language-python">%pylab inline
+</code></pre>
+
+<pre><code>Populating the interactive namespace from numpy and matplotlib
+</code></pre>
+
+<pre><code class="language-python">from IPython.display import HTML, Image
+import IPython
+from os.path import exists
+
+def summary():
+    baseurl = &quot;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&quot;
+    for (name, figname, url) in [
+        (&quot;Line&quot;, &quot;line&quot;, &quot;line.html&quot;),
+        (&quot;VBar&quot;, &quot;vbar&quot;, &quot;vbar.html&quot;),
+        (&quot;HBar&quot;, &quot;hbar&quot;, &quot;hbar.html&quot;),
+        (&quot;ImageRGBA&quot;, &quot;gray_image&quot;, &quot;image_rgba.html&quot;),
+        (&quot;ImageRGBA&quot;, &quot;inferno_image&quot;, &quot;image_rgba.html&quot;),
+        ]:
+        gif = &quot;./fig/{}.gif&quot;.format(figname)
+        print(&quot;\n&quot;,name, baseurl + url)
+        if exists(gif):
+            with open(gif, 'rb') as f:
+                IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
+
+summary()
+</code></pre>
+
+<p>(※ブログ先頭に貼ったので省略します)</p>
+
+<pre><code class="language-python"># True にしてノートブックを実行すると、上記gifの元となる画像を保存し、最後にgifを生成する
+save_img = False
+if save_img:
+    import os
+    from os.path import exists
+    if not exists(&quot;./fig&quot;):
+        os.makedirs(&quot;./fig&quot;)
+    toolbar_location = None
+else:
+    toolbar_location = &quot;above&quot;
+
+# bokehで描画したグラフはnotebookに残らないので、Trueの場合は代わりに事前に保存してあるgifを描画する
+# もしローカルで実行するときは、Falseにしてください
+show_static = True
+</code></pre>
+
+<h2 id="準備">準備</h2>
+
+<p>先述の通り、ニューラルネットの学習過程の可視化を題材として、Jupyter上でのBokehの使い方を紹介していきたいと思います。今回は、PyTorch (v0.3.0) を使ってニューラルネットの学習のコードを書きました。</p>
+
+<p><a href="https://github.com/pytorch/examples/tree/master/mnist">https://github.com/pytorch/examples/tree/master/mnist</a> をベースに、可視化しやすいように少しいじりました。</p>
+
+<pre><code class="language-python">import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torchvision import datasets, transforms
+from torch.autograd import Variable
+import numpy as np
+</code></pre>
+
+<h3 id="data">Data</h3>
+
+<pre><code class="language-python">use_cuda = torch.cuda.is_available()
+
+batch_size = 128
+
+kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+train_loader = torch.utils.data.DataLoader(
+    datasets.MNIST('./data', train=True, download=True,
+                   transform=transforms.Compose([
+                       transforms.ToTensor()
+                   ])),
+    batch_size=batch_size, shuffle=True, **kwargs)
+test_loader = torch.utils.data.DataLoader(
+    datasets.MNIST('./data', train=False, transform=transforms.Compose([
+                       transforms.ToTensor(),
+                   ])),
+    batch_size=batch_size, shuffle=False, **kwargs)
+
+data_loaders = {&quot;train&quot;: train_loader, &quot;test&quot;:test_loader}
+</code></pre>
+
+<h3 id="model">Model</h3>
+
+<p>簡単な畳み込みニューラルネットです。</p>
+
+<pre><code class="language-python">class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
+        self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
+        self.conv2_drop = nn.Dropout2d()
+        self.fc1 = nn.Linear(320, 50)
+        self.fc2 = nn.Linear(50, 10)
+
+    def forward(self, x):
+        x = F.relu(F.max_pool2d(self.conv1(x), 2))
+        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
+        x = x.view(-1, 320)
+        x = F.relu(self.fc1(x))
+        x = F.dropout(x, training=self.training)
+        x = self.fc2(x)
+        return F.log_softmax(x, dim=-1)
+</code></pre>
+
+<h3 id="train-loop">Train loop</h3>
+
+<pre><code class="language-python">from tqdm import tnrange
+</code></pre>
+
+<pre><code class="language-python">epochs = 20
+
+def __train_loop(model, data_loaders, optimizer, epoch, phase):
+    model = model.train() if phase == &quot;train&quot; else model.eval()
+    running_loss = 0
+    running_corrects = 0
+    corrects = [0]*10
+    counts = [0]*10
+    for batch_idx, (x, y) in enumerate(data_loaders[phase]):
+        x = x.cuda() if use_cuda else x
+        y = y.cuda() if use_cuda else y
+        x, y = Variable(x), Variable(y)
+        optimizer.zero_grad()
+        y_hat = model(x)
+
+        # loss
+        loss = F.nll_loss(y_hat, y)
+
+        # update
+        if phase == &quot;train&quot;:
+            loss.backward()
+            optimizer.step()
+        running_loss += loss.data[0]
+
+        # predict
+        preds = torch.max(y_hat.data, 1)[1]
+        match = (preds == y.data).cpu()
+        running_corrects += match.sum()
+
+        # カテゴリごとの正解率を出すのにほしい
+        for i in range(len(match)):
+            if match.view(-1)[i] &gt; 0:
+                corrects[y.data.view(-1)[i]] += 1
+        for i in range(len(match)):
+            counts[y.data.view(-1)[i]] += 1
+
+    # epoch-wise metrics
+    l = running_loss / len(data_loaders[phase])
+    acc = running_corrects / len(data_loaders[phase].dataset)
+    return {&quot;loss&quot;: l, &quot;acc&quot;: acc, &quot;corrects&quot;: corrects, &quot;counts&quot;: counts}
+
+def train_loop(model, data_loaders, optimizer, epochs=12, callback=None):
+    history = {&quot;train&quot;: {}, &quot;test&quot;: {}}
+    for epoch in tnrange(epochs):
+        for phase in [&quot;train&quot;, &quot;test&quot;]:
+            d = __train_loop(model, data_loaders, optimizer, epoch, phase)
+            for k,v in d.items():
+                try:
+                    history[phase][k].append(v)
+                except KeyError:
+                    history[phase][k] = [v]
+
+            # ここでグラフの更新を呼ぶ想定です
+            if callback is not None:
+                callback.on_epoch_end(epoch, phase, history)
+    return history
+</code></pre>
+
+<h2 id="本編">本編</h2>
+
+<h3 id="0-matplotlib">0. Matplotlib</h3>
+
+<p>まずはじめに、動的ではない（静的な）グラフの例を示します。手書き数字認識のような識別タスクにおいて、最も一般的であると思われる評価尺度として、ロスと正解率を可視化します。<code>train_loop</code>関数は、返り値にロスと正解率のhistoryを返すようにしたので、それを使ってグラフを作ります。</p>
+
+<p>図の作成にはいろんなツールがあると思うのですが、matplotlibが定番で（僕は）大きな不満もないので、よく使っています。</p>
+
+<pre><code class="language-python">model = Net().cuda() if use_cuda else Net()
+optimizer = optim.Adadelta(model.parameters())
+history = train_loop(model, data_loaders, optimizer, epochs)
+print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
+print(&quot;Test acc: {:.3f}&quot;.format(history[&quot;test&quot;][&quot;acc&quot;][-1]))
+</code></pre>
+
+<pre><code>Test loss: 0.111
+Test acc: 0.989
+</code></pre>
+
+<pre><code class="language-python">matplotlib.pyplot.figure(figsize=(16,6))
+subplot(1,2,1)
+plot(history[&quot;train&quot;][&quot;loss&quot;], linewidth=3, color=&quot;red&quot;, label=&quot;train loss&quot;)
+plot(history[&quot;test&quot;][&quot;loss&quot;], linewidth=3, color=&quot;blue&quot;, label=&quot;test lsos&quot;)
+xlabel(&quot;epoch&quot;, fontsize=16)
+legend(prop={&quot;size&quot;: 16})
+subplot(1,2,2)
+plot(history[&quot;train&quot;][&quot;acc&quot;], linewidth=3, color=&quot;red&quot;, label=&quot;train acc&quot;)
+plot(history[&quot;test&quot;][&quot;acc&quot;], linewidth=3, color=&quot;blue&quot;, label=&quot;test acc&quot;)
+xlabel(&quot;epoch&quot;, fontsize=16)
+</code></pre>
+
+<pre><code>&lt;matplotlib.text.Text at 0x7f16fa9ca438&gt;
+</code></pre>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_16_1.png" alt="png" /></p>
+
+<h3 id="1-line">1. Line</h3>
+
+<p>次に、上記の線グラフを、Bokehを使って作ってみます。これには、 <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html</a> が使えます。</p>
+
+<p>bokehで作ったグラフをnotebookにinline plotするためには、<a href="https://bokeh.pydata.org/en/latest/docs/reference/io.html#bokeh.io.output_notebook">bokeh.io.output_notebook</a> を呼び出しておく必要があります。</p>
+
+<pre><code class="language-python">import bokeh
+import bokeh.io
+from bokeh.io import push_notebook, show, output_notebook
+from bokeh.plotting import figure
+try:
+    # 少し古いbokehだとこっち
+    from bokeh.io import gridplot
+except ImportError:
+    from bokeh.layouts import gridplot
+
+output_notebook()
+</code></pre>
+
+<p>次に定義する <code>LinePlotsCallback</code> は、グラフの情報をプロパティに保持し、<code>on_epoch_end</code> で学習結果のhisotoryを受け取って、ロスと正解率のグラフを更新します。 historyには、今回の場合は、</p>
+
+<ul>
+<li>ロス (float)</li>
+<li>正解率 (float)</li>
+<li>カテゴリ毎の総サンプル数 (list)</li>
+<li>カテゴリ毎の正解サンプル数 (list)</li>
+</ul>
+
+<p>の4つを含めるように実装しました (<code>train_loop</code> 関数を参照)。<code>LinePlotsCallback</code> では、このうちロスと正解率を随時受け取って、グラフを更新します。<code>Line</code> オブジェクトの更新には、<code>data_source.data[&quot;x&quot;]</code>, <code>data_source.data[&quot;y&quot;]</code> に随時値を追加していくことで行います。</p>
+
+<p>以降示すグラフでも同じなのですが、グラフを生成する基本的な手順をまとめると、</p>
+
+<ul>
+<li><a href="https://bokeh.pydata.org/en/latest/docs/reference/plotting.html">bokeh.plotting.figure</a> により、figureオブジェクトを生成する</li>
+<li>生成したfigureオブジェクトに対して、線グラフ、棒グラフといったパーツ (レンダラ、bokehでは<a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs.html">glyphs</a>と呼ぶ) を生成する</li>
+<li>(今回は格子状に図を配置したかったので）複数のfigureオブジェクトをgrid上にレイアウトする</li>
+</ul>
+
+<p>となっています。格子状に配置しない場合は最後のステップは不要ですが、便利なので使います。</p>
+
+<p>グラフの更新は、レンダラに値をセットしたあとに、<a href="https://bokeh.pydata.org/en/latest/docs/reference/io.html#bokeh.io.push_notebook">bokeh.io.push_notebook</a> を呼び出すことで行います。</p>
+
+<pre><code class="language-python">class LinePlotsCallback(object):
+    def __init__(self, epochs=epochs, batch_size=batch_size):
+        # Epoch毎
+        p1 = figure(title=&quot;Loss&quot;, plot_height=300, plot_width=350,
+                        y_range=(0, 0.5), x_range=(-1, epochs+1))
+        p2 = figure(title=&quot;Acc&quot;, plot_height=300, plot_width=350,
+                        y_range=(0.8, 1.0), x_range=(-1, epochs+1))
+
+        self.renderers = {&quot;train&quot;:{}, &quot;test&quot;:{}}
+
+        # 赤: train, 青: テスト
+        for phase, c in [(&quot;train&quot;, &quot;red&quot;), (&quot;test&quot;, &quot;blue&quot;)]:
+            for (p, key) in [(p1, &quot;loss&quot;), (p2, &quot;acc&quot;)]:
+                self.renderers[phase][key] = p.line([], [], color=c, line_width=3)
+
+        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
+
+
+    def on_epoch_end(self, epoch, phase, history):
+        for key in [&quot;loss&quot;, &quot;acc&quot;]:
+            self.renderers[phase][key].data_source.data[&quot;x&quot;].append(epoch)
+            self.renderers[phase][key].data_source.data[&quot;y&quot;].append(history[phase][key][-1])
+        push_notebook()
+        if save_img:
+            bokeh.io.export_png(self.graph, &quot;fig/{:02d}_line.png&quot;.format(epoch))
+</code></pre>
+
+<pre><code class="language-python">callback = LinePlotsCallback()
+if show_static:
+    if exists(&quot;fig/line.gif&quot;):
+        with open(&quot;fig/line.gif&quot;, 'rb') as f:
+            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+</code></pre>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_21_0.png" alt="png" /></p>
+
+<pre><code class="language-python">model = Net().cuda() if use_cuda else Net()
+optimizer = optim.Adadelta(model.parameters())
+history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
+print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
+print(&quot;Test acc: {:.3f}&quot;.format(history[&quot;test&quot;][&quot;acc&quot;][-1]))
+</code></pre>
+
+<pre><code>Test loss: 0.113
+Test acc: 0.990
+</code></pre>
+
+<h3 id="2-vbar">2. VBar</h3>
+
+<p>データセット全体の正解率だけでなく、カテゴリ毎の正解率などの尺度を知りたい時がよくあります。次は、数字の各カテゴリごとにどのくらい正解しているのか、といった尺度を可視化するために、縦棒グラフを作ってみます。これには、 <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html</a> が使えます。on_epoch_endで渡されるhistoryのうち、</p>
+
+<ul>
+<li>カテゴリ毎の総サンプル数 (list)</li>
+<li>カテゴリ毎の正解サンプル数 (list)</li>
+</ul>
+
+<p>の二つを使って動的にグラフを更新します。</p>
+
+<p><code>Line</code> オブジェクトの更新は、<code>data_source.data[&quot;x&quot;]</code>, <code>data_source.data[&quot;y&quot;]</code> に値を追加していくことで行いましたが、<code>VBar</code>オブジェクトの場合は、<code>data_source.data[&quot;top&quot;]</code> に値をセットします。下向きの棒グラフが作りたい場合は、<code>data_source.data[&quot;bottom&quot;]</code> に値をセットすればOKです。</p>
+
+<pre><code class="language-python">class VBarPlotsCallback(object):
+    def __init__(self, epochs=epochs, batch_size=batch_size):
+        # Epoch毎
+        p1 = figure(title=&quot;Category-wise correctness (train)&quot;,
+                    plot_height=300, plot_width=350, y_range=(0, 7000))
+        p2 = figure(title=&quot;Category-wise correctness (test)&quot;,
+                    plot_height=300, plot_width=350, y_range=(0, 1500))
+
+        self.renderers = {&quot;train&quot;:{}, &quot;test&quot;:{}}
+
+        bar_opts = dict(width=0.8, alpha=0.5)
+        for phase, p in [(&quot;train&quot;, p1), (&quot;test&quot;, p2)]:
+            for (key, c) in [(&quot;corrects&quot;, &quot;blue&quot;), (&quot;counts&quot;, &quot;red&quot;)]:
+                self.renderers[phase][key] = p.vbar(
+                    x=np.arange(0,10), top=[0]*10, name=&quot;test&quot;, color=c, **bar_opts)
+
+        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
+
+    def on_epoch_end(self, epoch, phase, history):
+        for key in [&quot;counts&quot;, &quot;corrects&quot;]:
+            self.renderers[phase][key].data_source.data[&quot;top&quot;] = history[phase][key][-1]
+            push_notebook()
+        if save_img:
+            bokeh.io.export_png(self.graph, &quot;fig/{:02d}_vbar.png&quot;.format(epoch))
+</code></pre>
+
+<pre><code class="language-python">callback = VBarPlotsCallback()
+if show_static:
+    if exists(&quot;fig/vbar.gif&quot;):
+        with open(&quot;fig/vbar.gif&quot;, 'rb') as f:
+            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+</code></pre>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_25_0.png" alt="png" /></p>
+
+<pre><code class="language-python">model = Net().cuda() if use_cuda else Net()
+optimizer = optim.Adadelta(model.parameters())
+history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
+print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
+print(&quot;Test acc: {:.3f}&quot;.format(history[&quot;test&quot;][&quot;acc&quot;][-1]))
+</code></pre>
+
+<pre><code>Test loss: 0.115
+Test acc: 0.989
+</code></pre>
+
+<h3 id="3-hbar">3. HBar</h3>
+
+<p>HBarと非常に似たグラフとして、横向きの棒グラフである <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html</a> があります。VBarの場合と同様に、カテゴリ毎の正解サンプル数を可視化してみます。本質的に可視化する情報は変わりませんが、あくまでデモということで。</p>
+
+<p><code>HBar</code>オブジェクトの更新は、<code>data_source.data[&quot;right&quot;]</code> or <code>data_source.data[&quot;left&quot;]</code> に値をセットすればOKです。</p>
+
+<pre><code class="language-python">class HBarPlotsCallback(object):
+    def __init__(self, epochs=epochs, batch_size=batch_size):
+        # Epoch毎
+        p1 = figure(title=&quot;Category-wise correctness (train)&quot;,
+                    plot_height=300, plot_width=350, x_range=(0, 7000))
+        p2 = figure(title=&quot;Category-wise correctness (test)&quot;,
+                    plot_height=300, plot_width=350, x_range=(0, 1500))
+
+        self.renderers = {&quot;train&quot;:{}, &quot;test&quot;:{}}
+
+        bar_opts = dict(height=0.8, alpha=0.5)
+        for phase, p in [(&quot;train&quot;, p1), (&quot;test&quot;, p2)]:
+            for (key, c) in [(&quot;corrects&quot;, &quot;blue&quot;), (&quot;counts&quot;, &quot;green&quot;)]:
+                self.renderers[phase][key] = p.hbar(
+                    y=np.arange(0,10), right=[0]*10, name=&quot;test&quot;, color=c, **bar_opts)
+
+        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
+
+    def on_epoch_end(self, epoch, phase, history):
+        for key in [&quot;counts&quot;, &quot;corrects&quot;]:
+            self.renderers[phase][key].data_source.data[&quot;right&quot;] = history[phase][key][-1]
+            push_notebook()
+        if save_img:
+            bokeh.io.export_png(self.graph, &quot;fig/{:02d}_hbar.png&quot;.format(epoch))
+</code></pre>
+
+<pre><code class="language-python">callback = HBarPlotsCallback()
+if show_static:
+    if exists(&quot;fig/hbar.gif&quot;):
+        with open(&quot;fig/hbar.gif&quot;, 'rb') as f:
+            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+</code></pre>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_29_0.png" alt="png" /></p>
+
+<pre><code class="language-python">model = Net().cuda() if use_cuda else Net()
+optimizer = optim.Adadelta(model.parameters())
+history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
+print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
+print(&quot;Test acc: {:.3f}&quot;.format(history[&quot;test&quot;][&quot;acc&quot;][-1]))
+</code></pre>
+
+<pre><code>Test loss: 0.116
+Test acc: 0.989
+</code></pre>
+
+<h3 id="5-image">5. Image</h3>
+
+<p>最後に、<a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html</a> を使って、画像を可視化する例を紹介します。例えば生成モデルを学習するときなど、学習の過程で、その生成サンプルを可視化したい場合がよくあるので、そういった場合に使えます。</p>
+
+<p>最初に実装したモデルは手書き数字認識のための識別モデルだったため、趣向を変えて、生成モデルである Variational Auto-encoder (VAE) を使います。識別モデルの学習と生成モデルの学習は少し毛色が違うので、（ほとんど同じですが、簡単のため）併せて学習用のコードを書き換えました。</p>
+
+<h4 id="vae">VAE</h4>
+
+<p><a href="https://github.com/pytorch/examples/tree/master/vae">https://github.com/pytorch/examples/tree/master/vae</a></p>
+
+<pre><code class="language-python">class VAE(nn.Module):
+    def __init__(self):
+        super(VAE, self).__init__()
+
+        self.fc1 = nn.Linear(784, 400)
+        self.fc21 = nn.Linear(400, 20)
+        self.fc22 = nn.Linear(400, 20)
+        self.fc3 = nn.Linear(20, 400)
+        self.fc4 = nn.Linear(400, 784)
+
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+
+    def encode(self, x):
+        h1 = self.relu(self.fc1(x))
+        return self.fc21(h1), self.fc22(h1)
+
+    def reparameterize(self, mu, logvar):
+        if self.training:
+            std = logvar.mul(0.5).exp_()
+            eps = Variable(std.data.new(std.size()).normal_())
+            return eps.mul(std).add_(mu)
+        else:
+            return mu
+
+    def decode(self, z):
+        h3 = self.relu(self.fc3(z))
+        return self.sigmoid(self.fc4(h3))
+
+    def forward(self, x):
+        mu, logvar = self.encode(x.view(-1, 784))
+        z = self.reparameterize(mu, logvar)
+        return self.decode(z), mu, logvar
+
+def loss_function(recon_x, x, mu, logvar):
+    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784))
+
+    # see Appendix B from VAE paper:
+    # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
+    # https://arxiv.org/abs/1312.6114
+    # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
+    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+    # Normalise by same number of elements as in reconstruction
+    KLD /= batch_size * 784
+
+    return BCE + KLD
+</code></pre>
+
+<h4 id="training-loop">Training loop</h4>
+
+<pre><code class="language-python">def __train_loop_vae(model, data_loaders, optimizer, epoch, phase):
+    model = model.train() if phase == &quot;train&quot; else model.eval()
+    running_loss = 0
+    recon_batch_first, target = None, None
+    for batch_idx, (x, _) in enumerate(data_loaders[phase]):
+        x = x.cuda() if use_cuda else x
+        x = Variable(x)
+        optimizer.zero_grad()
+        y_hat = model(x)
+
+        # loss
+        recon_batch, mu, logvar = model(x)
+        loss = loss_function(recon_batch, x, mu, logvar)
+
+        # update
+        if phase == &quot;train&quot;:
+            loss.backward()
+            optimizer.step()
+        running_loss += loss.data[0]
+
+        if target is None:
+            target = x
+            recon_batch_first = recon_batch
+
+    # epoch-wise metrics
+    l = running_loss / len(data_loaders[phase])
+    return {&quot;loss&quot;: l, &quot;recon&quot;: recon_batch_first.data.cpu(), &quot;target&quot;: target.data.cpu()}
+
+def train_loop_vae(model, data_loaders, optimizer, epochs=12, callback=None):
+    history = {&quot;train&quot;: {}, &quot;test&quot;: {}}
+    for epoch in tnrange(epochs):
+        for phase in [&quot;train&quot;, &quot;test&quot;]:
+            d = __train_loop_vae(model, data_loaders, optimizer, epoch, phase)
+            for k,v in d.items():
+                try:
+                    history[phase][k].append(v)
+                except KeyError:
+                    history[phase][k] = [v]
+
+            if callback is not None:
+                callback.on_epoch_end(epoch, phase, history)
+    return history
+</code></pre>
+
+<p>さて、準備は終わりです。</p>
+
+<p>次に示す <code>ImagePlotsCallback</code> は、<code>on_epoch_end</code> で学習結果のhisotoryを受け取って、VAEを通して復元した画像と、復元したい対象の画像を動的に更新します。ImageRGBA の場合は、<code>data_source.data[&quot;image&quot;]</code> に配列をセットすることで、更新することができます。</p>
+
+<p>注意事項として、モノクロ画像を描画する際には、適当なカラーマップをかけて、(w, h) -&gt; (w, h, 4) の配列にしておく必要があります。</p>
+
+<pre><code class="language-python">from torchvision.utils import make_grid
+from matplotlib.pyplot import cm
+
+def _to_img(batch, cmap=cm.gray):
+    # 128は多かったので半分にします
+    _batch_size = batch_size // 2
+    batch = batch[:_batch_size]
+
+    batch = batch.view(-1,1,28,28)
+    grid = make_grid(batch, nrow=int(np.sqrt(_batch_size)))[0].numpy()
+    # Force squared
+    l = np.min(grid.shape)
+    grid = grid[:l, :l]
+    img = np.uint8(cmap(grid) * 255)
+    return img
+
+class ImagePlotsCallback(object):
+    def __init__(self, epochs=epochs, batch_size=batch_size, cmap=cm.gray):
+        x_range, y_range = (-0.5, 10.5), (-0.5, 10.5)
+        p1 = figure(title=&quot;Reconstructed (train)&quot;,
+                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
+        p2 = figure(title=&quot;Target (train)&quot;,
+                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
+        p3 = figure(title=&quot;Reconstructed (test)&quot;,
+                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
+        p4 = figure(title=&quot;Target (test)&quot;,
+                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
+        self.cmap = cmap
+
+        self.renderers = {&quot;train&quot;:{}, &quot;test&quot;:{}}
+        empty = torch.zeros(batch_size,1,28,28)
+        empty = _to_img(empty, self.cmap)
+        # to adjast aspect ratio
+        r = empty.shape[0]/empty.shape[1]
+
+        # https://github.com/bokeh/bokeh/issues/1666
+        for k, p in [(&quot;recon&quot;, p1), (&quot;target&quot;, p2)]:
+            self.renderers[&quot;train&quot;][k] = p.image_rgba(image=[empty[::-1]], x=[0], y=[0], dw=[10], dh=[r*10])
+        for k, p in [(&quot;recon&quot;, p3), (&quot;target&quot;, p4)]:
+            self.renderers[&quot;test&quot;][k] = p.image_rgba(image=[empty[::-1]], x=[0], y=[0], dw=[10], dh=[r*10])
+
+        self.graph = gridplot([p1, p2, p3, p4], ncols=2, toolbar_location=toolbar_location)
+
+    def on_epoch_end(self, epoch, phase, history):
+        for k in [&quot;recon&quot;, &quot;target&quot;]:
+            self.renderers[phase][k].data_source.data[&quot;image&quot;] = [_to_img(history[phase][k][-1], self.cmap)[::-1]]
+        push_notebook()
+
+        if save_img:
+            bokeh.io.export_png(self.graph, &quot;fig/{:02d}_{}_image.png&quot;.format(epoch, self.cmap.name))
+</code></pre>
+
+<pre><code class="language-python"># グレースケール
+callback = ImagePlotsCallback(cmap=cm.gray)
+if show_static:
+    if exists(&quot;fig/gray_image.gif&quot;):
+        with open(&quot;fig/gray_image.gif&quot;, 'rb') as f:
+            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+</code></pre>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_38_0.png" alt="png" /></p>
+
+<pre><code class="language-python"># gifを作ったときに見やすいように、shuffle=Falseにする
+kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+train_loader = torch.utils.data.DataLoader(
+    datasets.MNIST('./data', train=True, download=True,
+                   transform=transforms.Compose([
+                       transforms.ToTensor()
+                   ])),
+    batch_size=batch_size, shuffle=False, **kwargs)
+test_loader = torch.utils.data.DataLoader(
+    datasets.MNIST('./data', train=False, transform=transforms.Compose([
+                       transforms.ToTensor(),
+                   ])),
+    batch_size=batch_size, shuffle=False, **kwargs)
+
+data_loaders = {&quot;train&quot;: train_loader, &quot;test&quot;:test_loader}
+</code></pre>
+
+<pre><code class="language-python">model = VAE().cuda() if use_cuda else VAE()
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
+history = train_loop_vae(model, data_loaders, optimizer, epochs, callback=callback)
+print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
+</code></pre>
+
+<pre><code>Test loss: 0.133
+</code></pre>
+
+<p>本質的な違いはありませんが、異なるカラーマップを試してみます。</p>
+
+<pre><code class="language-python">gradient = np.linspace(0,1,256)
+gradient = np.vstack((gradient, gradient))
+pyplot.figure(figsize=(16,0.5))
+imshow(gradient, aspect=&quot;auto&quot;, cmap=cm.inferno)
+axis(&quot;off&quot;);
+</code></pre>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_42_0.png" alt="png" /></p>
+
+<pre><code class="language-python">callback = ImagePlotsCallback(cmap=cm.inferno)
+if show_static:
+    if exists(&quot;fig/inferno_image.gif&quot;):
+        with open(&quot;fig/inferno_image.gif&quot;, 'rb') as f:
+            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+</code></pre>
+
+<p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_43_0.png" alt="png" /></p>
+
+<pre><code class="language-python">model = VAE().cuda() if use_cuda else VAE()
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
+history = train_loop_vae(model, data_loaders, optimizer, epochs, callback=callback)
+print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
+</code></pre>
+
+<pre><code>Test loss: 0.133
+</code></pre>
+
+<h2 id="おわりに">おわりに</h2>
+
+<p>Bokehによるグラフ作成は、少しとっつきにくいかもしれませんが（matplotlibとかではレンダラとか意識しないですよね）、慣れれば柔軟性が高く、便利なのではないかと思います。</p>
+
+<p>今回の記事を書くにあたっては、bokeh v0.12.9 を使いました。もしローカルでnotebookを実行する場合は、バージョンを揃えることをおすすめします。</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="https://qiita.com/driller/items/0730325bf5c1cd689979">ipywidgetsとBokeh使ってインタラクティブな可視化をする - Qiita</a></li>
+<li><a href="https://qiita.com/y__sama/items/654ed8ab7464718876f9">Jupyter Notebookを動的に使ってみる - Qiita</a></li>
+<li><a href="https://bokeh.pydata.org/en/latest/">Welcome to Bokeh — Bokeh 0.12.12 documentation</a></li>
+<li><a href="https://qiita.com/r9y9/items/d54162d37ec4f110f4b4">PyTorchで学習の過程を確認したいときはtensorboardXを使うのが良かったです -　Qiita</a></li>
+</ul>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017]" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+

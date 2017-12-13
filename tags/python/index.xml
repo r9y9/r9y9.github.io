@@ -6,10 +6,28 @@
     <description>Recent content in Python on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 16 Aug 2017 23:10:56 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 14 Dec 2017 00:00:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017]</title>
+      <link>http://r9y9.github.io/blog/2017/12/14/jupyter-bokeh/</link>
+      <pubDate>Thu, 14 Dec 2017 00:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/12/14/jupyter-bokeh/</guid>
+      <description>Line https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html
+VBar https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html
+HBar https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html
+ImageRGBA https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html
+ImageRGBA https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html
+前置き Jupyter Advent Calendar 2017 14日目の記事です。この記事は、Jupyter notebookで作成したものをnbconvertでmarkdownに変換し、手で少し修正して作りました。読み物としてはこの記事を、実行するにはノートブックの方を参照していただくのが良いかと思います。
+ ノートブック (gist) nbviewer  概要 適当なニューラルネットの学習過程の可視化（ロス、正解率の遷移等）を題材にして、Bokehを使って動的にグラフを更新していくことによる可視化の実用例を紹介します。このノートブックの冒頭に、最後まで実行すると得られるグラフ一覧をまとめました。どうやってグラフを作るのか知りたい方は続きを読んでもらえればと思います。Bokehの詳細な使い方は、公式ドキュメントを参考にしてください。
+なお、ここで紹介する例は、僕が過去に出た機械学習のコンペ (https://deepanalytics.jp/compe/36?tab=compedetail) で実際に使用したコードからほぼ取ってきました（8/218位でした）。グラフを動的に更新する方法は 公式ドキュメント に記述されていますが、そのサンプルの内容は「円を描画して色を変える」といった実用性皆無のものであること、またググっても例が多く見つからないことから、このような紹介記事を書くことにしました。参考になれば幸いです。
+余談ではありますが、こと機械学習に関しては、tensorboardを使ったほうが簡単で良いと思います。僕は最近そうしています。 https://qiita.com/r9y9/items/d54162d37ec4f110f4b4. 色なり位置なり大きさなりを柔軟にカスタマイズしたい、あるいはノートブックで処理を完結させたい、と言った場合には、ここで紹介する方法も良いかもしれません。
+%pylab inline  Populating the interactive namespace from numpy and matplotlib  from IPython.display import HTML, Image import IPython from os.path import exists def summary(): baseurl = &amp;quot;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&amp;quot; for (name, figname, url) in [ (&amp;quot;Line&amp;quot;, &amp;quot;line&amp;quot;, &amp;quot;line.html&amp;quot;), (&amp;quot;VBar&amp;quot;, &amp;quot;vbar&amp;quot;, &amp;quot;vbar.</description>
+    </item>
     
     <item>
       <title>DNN音声合成のためのライブラリの紹介とDNN日本語音声合成の実装例</title>
