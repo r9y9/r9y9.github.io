@@ -6,7 +6,7 @@
     <description>Recent content in Python on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 14 Dec 2017 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 14 Dec 2017 00:00:30 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017]</title>
       <link>http://r9y9.github.io/blog/2017/12/14/jupyter-bokeh/</link>
-      <pubDate>Thu, 14 Dec 2017 00:00:00 +0900</pubDate>
+      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
       
       <guid>http://r9y9.github.io/blog/2017/12/14/jupyter-bokeh/</guid>
       <description>Line https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html
