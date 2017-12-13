@@ -6,7 +6,7 @@
     <description>Recent content in Speech Synthesis on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 13 Dec 2017 13:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 13 Dec 2017 12:15:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/categories/speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</title>
       <link>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</link>
-      <pubDate>Wed, 13 Dec 2017 13:00:00 +0900</pubDate>
+      <pubDate>Wed, 13 Dec 2017 12:15:00 +0900</pubDate>
       
       <guid>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</guid>
       <description>論文リンク: arXiv:1710.07654 コード: https://github.com/r9y9/deepvoice3_pytorch  三行まとめ  arXiv:1710.07654: Deep Voice 3: 2000-Speaker Neural Text-to-Speech を読んで、単一話者の場合のモデルを実装しました（複数話者の場合は、今実験中です (deepvoice3_pytorch/#6) arXiv:1710.08969 と同じく、RNNではなくCNNを使うのが肝です 例によって LJSpeech Dataset を使って、英語TTSモデルを作りました（学習時間半日くらい）。論文に記載のハイパーパラメータでは良い結果が得られなかったのですが、arXiv:1710.08969 のアイデアをいくつか借りることで、良い結果を得ることができました。  概要 前回の記事 で紹介した方法と、モチベーション、基本的な方法論はまったく同じのため省略します。モデルのアーキテクチャが異なりますが、その点についても前回述べたので、そちらを参照ください。 今回の記事では、DeepVoice3のアーキテクチャをベースにした方法での実験結果をまとめます。
