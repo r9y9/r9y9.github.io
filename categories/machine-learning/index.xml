@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine Learning on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/machine-learning/</link>
+    <link>https://r9y9.github.io/categories/machine-learning/</link>
     <description>Recent content in Machine Learning on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 28 Jul 2013 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Naive Bayesの復習（導出編）</title>
-      <link>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</link>
+      <link>https://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</link>
       <pubDate>Sun, 28 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</guid>
+      <guid>https://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</guid>
       <description>すぐ忘れるのでメモ。ナイーブベイズの学習アルゴリズムの導出とか、そもそもナイーブベイズが定番過ぎて意外とやったことなかった気もするので、復習がてらやってみた。
 ちょっと修正 2013/07/30
  ナイーブベイズについて整理 学習アルゴリズムの導出  Naive bayes （ナイーブベイズ） スパムフィルタで使われたことで有名な確率モデルで、シンプルだけどそこそこ実用的なのが良い所。Naive bayesという名前は、特徴ベクトル間に条件付き独立性を仮定してることにある（実際は相関あることが多いけど、まぁ簡単のためって感じ）。具体的に例を挙げて言うと、例えば文書分類タスクの場合、各単語は独立に生起するという仮定を置くことに相当する。

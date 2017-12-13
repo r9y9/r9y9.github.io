@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pcl on LESS IS MORE</title>
-    <link>http://r9y9.github.io/tags/pcl/</link>
+    <link>https://r9y9.github.io/tags/pcl/</link>
     <description>Recent content in Pcl on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Mon, 18 Jan 2016 00:44:46 +0900</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/tags/pcl/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/tags/pcl/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>対話環境でPoint Cloud Library (PCL) を使いたい</title>
-      <link>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</link>
+      <link>https://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</link>
       <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
+      <guid>https://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
       <description>新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました1。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。
 Point Cloud Library (PCL) とは http://www.pointclouds.org/
 問題 PCL はboost、Eigenに依存している、かつtemplateを多く使用しているため、PCLを使用したプロジェクトのコンパイル時間は非常に長くなるという問題があります。twitterで [PCL コンパイル] として検索すると、例えば以下の様なツイートが見つかりますが、完全に同意です。

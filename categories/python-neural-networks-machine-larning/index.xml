@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python Neural Networks Machine Larning on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/python-neural-networks-machine-larning/</link>
+    <link>https://r9y9.github.io/categories/python-neural-networks-machine-larning/</link>
     <description>Recent content in Python Neural Networks Machine Larning on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 11 May 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/python-neural-networks-machine-larning/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/python-neural-networks-machine-larning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>PythonによるニューラルネットのToyコード</title>
-      <link>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</link>
+      <link>https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</link>
       <pubDate>Sun, 11 May 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
+      <guid>https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
       <description>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。
 このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）
 #!/usr/bin/python # coding: utf-8 # ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の # デモコードです。 # 誤差伝搬法によってニューラルネットを学習します。 # XORの学習、テストの簡単なデモコードもついています # 2014/05/10 Ryuichi Yamamoto import numpy as np def sigmoid(x): return 1.0 / (1.0 + np.exp(-x)) def dsigmoid(y): return y * (1.0 - y) class NeuralNet: def __init__(self, num_input, num_hidden, num_output): &amp;quot;&amp;quot;&amp;quot; パラメータの初期化 &amp;quot;&amp;quot;&amp;quot; # 入力層から隠れ層への重み行列 self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden)) self.hidden_bias = np.ones(num_hidden, dtype=float) # 隠れ層から出力層への重み行列 self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output)) self.</description>

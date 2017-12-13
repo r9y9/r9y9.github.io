@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python Scipy on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/python-scipy/</link>
+    <link>https://r9y9.github.io/categories/python-scipy/</link>
     <description>Recent content in Python Scipy on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Tue, 05 Aug 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/python-scipy/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/python-scipy/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Tokyo.Scipyに参加してきた</title>
-      <link>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</link>
+      <link>https://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</link>
       <pubDate>Tue, 05 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</guid>
+      <guid>https://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</guid>
       <description>Tokyo.SciPy ハッシュタグ: #tokyoscipy
  Tokyo.Scipy は科学技術計算で Python を利用するための勉強会です．
  とのことです。最近、python/numpy/scipyによくお世話になっているので、参加してみました。雑感をメモしておきます。

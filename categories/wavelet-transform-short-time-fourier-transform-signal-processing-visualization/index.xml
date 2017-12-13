@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Wavelet Transform Short Time Fourier Transform Signal Processing Visualization on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</link>
+    <link>https://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</link>
     <description>Recent content in Wavelet Transform Short Time Fourier Transform Signal Processing Visualization on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 20 Oct 2013 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>短時間フーリエ変換と連続ウェーブレット変換のvisualization</title>
-      <link>http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</link>
+      <link>https://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</link>
       <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</guid>
+      <guid>https://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</guid>
       <description> STFT(短時間フーリエ変換)によるスペクトログラム  STFTによるスペクトログラム（Y軸を対数にしたもの）  連続ガボールウェーブレット変換によるスペクトログラム  メモリも軸も無くて発表資料に貼ったら間違いなく怒られる奴だけど許して。でもだいたいの違いはわかると思う。図はgnuplotで作りました
 STFTのlog-y-axisと比べるとよくわかるけど、ウェーブレットは低域もちゃんと綺麗にとれてますね。
 みんなもっとウェーブレット変換使おう（提案

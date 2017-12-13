@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Signal Processing Go on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/speech-signal-processing-go/</link>
+    <link>https://r9y9.github.io/categories/speech-signal-processing-go/</link>
     <description>Recent content in Speech Signal Processing Go on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 08 Jun 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/speech-signal-processing-go/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/speech-signal-processing-go/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>GOSSP - Go言語で音声信号処理</title>
-      <link>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</link>
+      <link>https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</link>
       <pubDate>Sun, 08 Jun 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
+      <guid>https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
       <description>C++からGoへ みなさん、C++で信号処理のアルゴリズムを書くのはつらいと思ったことはありませんか？C++で書くと速いのはいいけれど、いかんせん書くのが大変、コンパイルエラーは読みづらい、はたまたライブラリをビルドしようとしたら依存関係が上手く解決できず……そんな覚えはないでしょうか？謎のコンパイルエラーに悩みたくない、ガーベジコレクションほしい、Pythonのようにさくっと書きたい、型推論もほしい、でも動作は速い方がいい、そう思ったことはないでしょうか。
 そこでGoです。もちろん、そういった思いに完全に答えてくれるわけではありませんが、厳しいパフォーマンスを要求される場合でなければ、Goの方が良い場合も多いと僕は思っています。 とはいえ、まだ比較的新しい言語のため、ライブラリは少なく信号処理を始めるのも大変です。というわけで、僕がC++をやめてGoに移行したことを思い出し、Goでの信号処理の基礎と、今まで整備してきたGoでの音声信号処理ライブラリを紹介します。
 Goの良いところ/悪いところについては書きません。正直、本当は何の言語でもいいと思っていますが、僕はGoが好きなので、ちょっとでもGoで信号処理したいと思う人が増えるといいなーと思って書いてみます。
@@ -31,10 +31,10 @@ Goはウェブ周りの標準パッケージが充実しているので、以前
     
     <item>
       <title>音声分析変換合成システムWORLDのGoラッパーを書いた</title>
-      <link>http://r9y9.github.io/blog/2014/03/22/go-world/</link>
+      <link>https://r9y9.github.io/blog/2014/03/22/go-world/</link>
       <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/03/22/go-world/</guid>
+      <guid>https://r9y9.github.io/blog/2014/03/22/go-world/</guid>
       <description>音声分析変換合成システムWORLD WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ
 http://ml.cs.yamanashi.ac.jp/world/
 オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ

@@ -2,102 +2,102 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on LESS IS MORE</title>
-    <link>http://r9y9.github.io/tags/</link>
+    <link>https://r9y9.github.io/tags/</link>
     <description>Recent content in Tags on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 12 Nov 2017 03:00:00 +0900</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Corpus</title>
-      <link>http://r9y9.github.io/tags/corpus/</link>
+      <link>https://r9y9.github.io/tags/corpus/</link>
       <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/corpus/</guid>
+      <guid>https://r9y9.github.io/tags/corpus/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Dnn</title>
-      <link>http://r9y9.github.io/tags/dnn/</link>
+      <link>https://r9y9.github.io/tags/dnn/</link>
       <pubDate>Wed, 13 Dec 2017 12:15:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/dnn/</guid>
+      <guid>https://r9y9.github.io/tags/dnn/</guid>
       <description></description>
     </item>
     
     <item>
       <title>End To End</title>
-      <link>http://r9y9.github.io/tags/end-to-end/</link>
+      <link>https://r9y9.github.io/tags/end-to-end/</link>
       <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/end-to-end/</guid>
+      <guid>https://r9y9.github.io/tags/end-to-end/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Julia</title>
-      <link>http://r9y9.github.io/tags/julia/</link>
+      <link>https://r9y9.github.io/tags/julia/</link>
       <pubDate>Fri, 23 Dec 2016 18:06:08 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/julia/</guid>
+      <guid>https://r9y9.github.io/tags/julia/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Merlin</title>
-      <link>http://r9y9.github.io/tags/merlin/</link>
+      <link>https://r9y9.github.io/tags/merlin/</link>
       <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/merlin/</guid>
+      <guid>https://r9y9.github.io/tags/merlin/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Nlp</title>
-      <link>http://r9y9.github.io/tags/nlp/</link>
+      <link>https://r9y9.github.io/tags/nlp/</link>
       <pubDate>Fri, 09 Jun 2017 21:58:50 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/nlp/</guid>
+      <guid>https://r9y9.github.io/tags/nlp/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Pcl</title>
-      <link>http://r9y9.github.io/tags/pcl/</link>
+      <link>https://r9y9.github.io/tags/pcl/</link>
       <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/pcl/</guid>
+      <guid>https://r9y9.github.io/tags/pcl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>http://r9y9.github.io/tags/python/</link>
+      <link>https://r9y9.github.io/tags/python/</link>
       <pubDate>Wed, 16 Aug 2017 23:10:56 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/python/</guid>
+      <guid>https://r9y9.github.io/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Speech</title>
-      <link>http://r9y9.github.io/tags/speech/</link>
+      <link>https://r9y9.github.io/tags/speech/</link>
       <pubDate>Wed, 13 Dec 2017 12:15:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/speech/</guid>
+      <guid>https://r9y9.github.io/tags/speech/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Speech Synthesis</title>
-      <link>http://r9y9.github.io/tags/speech-synthesis/</link>
+      <link>https://r9y9.github.io/tags/speech-synthesis/</link>
       <pubDate>Wed, 16 Aug 2017 23:10:56 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/speech-synthesis/</guid>
+      <guid>https://r9y9.github.io/tags/speech-synthesis/</guid>
       <description></description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Signal Processing Speech Synthesis on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</link>
+    <link>https://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</link>
     <description>Recent content in Speech Signal Processing Speech Synthesis on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 01 Dec 2013 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MLSA digital filter のC&#43;&#43;実装</title>
-      <link>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
+      <link>https://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
       <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
+      <guid>https://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
       <description>MLSAフィルタわからんという記事を書いて早2ヶ月、ようやく出来た。
 Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。SPTKのmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。
 mlsa_filter.h https://gist.github.com/r9y9/7735120
@@ -25,10 +25,10 @@ mlsa_filter.h https://gist.github.com/r9y9/7735120
     
     <item>
       <title>MLSA フィルタの実装</title>
-      <link>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</link>
+      <link>https://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</link>
       <pubDate>Mon, 23 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</guid>
+      <guid>https://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</guid>
       <description>音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ
 と、前置きはさておき、MLSAフィルタの実装を見つけたのでメモ。ここ最近ちょくちょく調べているが、SPTK以外で初めて見つけた。
 Realisation and Simulation of the Mel Log Spectrum Approximation Filter | Simple4All Internship Report

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julia Julia Advent Calendar 2015 on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</link>
+    <link>https://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</link>
     <description>Recent content in Julia Julia Advent Calendar 2015 on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Tue, 22 Dec 2015 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/julia-julia-advent-calendar-2015/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</title>
-      <link>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</link>
+      <link>https://r9y9.github.io/blog/2015/12/22/cxx-jl/</link>
       <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</guid>
+      <guid>https://r9y9.github.io/blog/2015/12/22/cxx-jl/</guid>
       <description>はじめに Julia Advent Calendar 2015 22日目の記事です。
 Julia の C++ FFI (Foreign Function Interface) である Cxx.jl をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。 Cxx.jl の動作原理については、僕の理解が不十分なため簡単にしか紹介できませんが、そもそも使ったことがある人が稀だと思われるので、感想程度でも役に立てば幸いです。
 Cxx.jl とは https://github.com/Keno/Cxx.jl
@@ -31,10 +31,10 @@ Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード
     
     <item>
       <title>Julia: 値と変数に対する Type Annotation の違い</title>
-      <link>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</link>
+      <link>https://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</link>
       <pubDate>Tue, 08 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
+      <guid>https://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
       <description>はじめに Julia Advent Calendar 2015 8日目の記事です。
 この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。
 記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。

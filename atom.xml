@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>LESS IS MORE</title>
-    <link>http://r9y9.github.io/</link>
+    <link>https://r9y9.github.io/</link>
     <description>Recent content on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 13 Dec 2017 12:15:00 +0900</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</title>
-      <link>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</link>
+      <link>https://r9y9.github.io/blog/2017/12/13/deepvoice3/</link>
       <pubDate>Wed, 13 Dec 2017 12:15:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</guid>
+      <guid>https://r9y9.github.io/blog/2017/12/13/deepvoice3/</guid>
       <description>論文リンク: arXiv:1710.07654 コード: https://github.com/r9y9/deepvoice3_pytorch  三行まとめ  arXiv:1710.07654: Deep Voice 3: 2000-Speaker Neural Text-to-Speech を読んで、単一話者の場合のモデルを実装しました（複数話者の場合は、今実験中です (deepvoice3_pytorch/#6) arXiv:1710.08969 と同じく、RNNではなくCNNを使うのが肝です 例によって LJSpeech Dataset を使って、英語TTSモデルを作りました（学習時間半日くらい）。論文に記載のハイパーパラメータでは良い結果が得られなかったのですが、arXiv:1710.08969 のアイデアをいくつか借りることで、良い結果を得ることができました。  概要 前回の記事 で紹介した方法と、モチベーション、基本的な方法論はまったく同じのため省略します。モデルのアーキテクチャが異なりますが、その点についても前回述べたので、そちらを参照ください。 今回の記事では、DeepVoice3のアーキテクチャをベースにした方法での実験結果をまとめます。
 予備実験 はじめに、可能な限り論文に忠実に、論文に記載のモデルアーキテクチャ、ハイパーパラメータで、レイヤー数やConvレイヤーのカーネル数を若干増やしたモデルで試しました。（増やさないと、LJSpeechではイントネーションが怪しい音声が生成されてしまいました）。しかし、どうもビブラートがかかったような音声が生成される傾向にありました。色々試行錯誤して改良したのですが、詳細は後述するとして、改良前/改良後の音声サンプルを以下に示します。
 Generative adversarial network or variational auto-encoder.
@@ -32,10 +32,10 @@ Your browser does not support the audio element.
     
     <item>
       <title>Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</title>
-      <link>http://r9y9.github.io/blog/2017/11/23/dctts/</link>
+      <link>https://r9y9.github.io/blog/2017/11/23/dctts/</link>
       <pubDate>Thu, 23 Nov 2017 19:30:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/11/23/dctts/</guid>
+      <guid>https://r9y9.github.io/blog/2017/11/23/dctts/</guid>
       <description>論文リンク: arXiv:1710.08969 コード: https://github.com/r9y9/deepvoice3_pytorch  三行まとめ  arXiv:1710.08969: Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. を読んで、実装しました RNNではなくCNNを使うのが肝で、オープンソースTacotronと同等以上の品質でありながら、高速に (一日程度で) 学習できる のが売りのようです。 LJSpeech Dataset を使って、英語TTSモデルを作りました（学習時間一日くらい）。完全再現とまではいきませんが、大まかに論文の主張を確認できました。  前置き 本当は DeepVoice3 の実装をしていたのですが、どうも上手くいかなかったので気分を変えてやってみました。 以前 Tacotronに関する長いブログ記事 (リンク) を書いてしまったのですが、読む方も書く方もつらいので、簡潔にまとめることにしました。興味のある人は続きもどうぞ。
 概要 End-to-endテキスト音声合成 (Text-to-speech synthesis; TTS) のための Attention付き畳み込みニューラルネット (CNN) が提案されています。SampleRNN, Char2Wav, Tacotronなどの従来提案されてきたRNNをベースとする方法では、モデルの構造上計算が並列化しにくく、 学習/推論に時間がかかることが問題としてありました。本論文では、主に以下の二つのアイデアによって、従来法より速く学習できるモデルを提案しています。
  RNNではなくCNNを使うこと (参考論文: arXiv:1705.03122) Attentionがmotonicになりやすくする効果を持つLossを考えること (Guided attention)  実験では、オープンソースTacotron (keithito/tacotron) の12日学習されたモデルと比較し、主観評価により同等以上の品質が得られたことが示されています。
@@ -45,10 +45,10 @@ DeepVoice3 との違い ほぼ同時期に発表されたDeepVoice3も同じく�
     
     <item>
       <title>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]</title>
-      <link>http://r9y9.github.io/blog/2017/11/12/jsut_ver1/</link>
+      <link>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</link>
       <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/11/12/jsut_ver1/</guid>
+      <guid>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</guid>
       <description>コーパス配布先リンク: JSUT (Japanese speech corpus of Saruwatari Lab, University of Tokyo) - Shinnosuke Takamichi (高道 慎之介) 論文リンク: arXiv:1711.00354  三行まとめ  日本語End-to-end音声合成に使えるコーパスは神、ありがとうございます クリーンな音声であるとはいえ、冒頭/末尾の無音区間は削除されていない、またボタンポチッみたいな音も稀に入っているので注意 僕が行った無音区間除去の方法（Juliusで音素アライメントを取って云々）を記録しておくので、必要になった方は参考にどうぞ。ラベルファイルだけほしい人は連絡ください  JSUT とは ツイート引用： フリーの日本語音声コーパス（単一話者による10時間データ）を公開しました．音声研究等にお役立てください．https://t.co/94ShJY44mA pic.twitter.com/T0etDwD7cS
 &amp;mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) October 26, 2017  
 つい先月、JSUT という、日本語 End-to-end 音声合成の研究に使えることを前提に作られた、フリーの大規模音声コーパスが公開されました。詳細は上記リンク先を見てもらうとして、簡単に特徴をまとめると、以下のとおりです。
@@ -60,10 +60,10 @@ DeepVoice3 との違い ほぼ同時期に発表されたDeepVoice3も同じく�
     
     <item>
       <title>Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</title>
-      <link>http://r9y9.github.io/blog/2017/10/15/tacotron/</link>
+      <link>https://r9y9.github.io/blog/2017/10/15/tacotron/</link>
       <pubDate>Sun, 15 Oct 2017 14:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/10/15/tacotron/</guid>
+      <guid>https://r9y9.github.io/blog/2017/10/15/tacotron/</guid>
       <description>Googleが2017年4月に発表したEnd-to-Endの音声合成モデル Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL] に興味があったので、自分でも同様のモデルを実装して実験してみました。結果わかったことなどをまとめておこうと思います。
 GoogleによるTacotronの音声サンプルは、 https://google.github.io/tacotron/ から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは Test Tacotron.ipynb | nbviewer1 から聴くことができます。
 とても長い記事になってしまったので、結論のみ知りたい方は、一番最後まで飛ばしてください。最後の方のまとめセクションに、実験した上で僕が得た知見がまとまっています。
@@ -76,10 +76,10 @@ GoogleによるTacotronの音声サンプルは、 https://google.github.io/taco
     
     <item>
       <title>GAN 日本語音声合成 [arXiv:1709.08041]</title>
-      <link>http://r9y9.github.io/blog/2017/10/10/gantts-jp/</link>
+      <link>https://r9y9.github.io/blog/2017/10/10/gantts-jp/</link>
       <pubDate>Tue, 10 Oct 2017 11:45:32 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/10/10/gantts-jp/</guid>
+      <guid>https://r9y9.github.io/blog/2017/10/10/gantts-jp/</guid>
       <description>10&amp;frasl;11 追記: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: http://ieeexplore.ieee.org/document/8063435/
 arXiv論文リンク: arXiv:1709.08041
 前回の記事 の続きです。これでこのシリーズは終わりの予定です。
@@ -94,10 +94,10 @@ Your browser does not support the audio element.</description>
     
     <item>
       <title>【音声合成編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
-      <link>http://r9y9.github.io/blog/2017/10/09/gantts/</link>
+      <link>https://r9y9.github.io/blog/2017/10/09/gantts/</link>
       <pubDate>Mon, 09 Oct 2017 02:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/10/09/gantts/</guid>
+      <guid>https://r9y9.github.io/blog/2017/10/09/gantts/</guid>
       <description>10&amp;frasl;11 追記: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: http://ieeexplore.ieee.org/document/8063435/
 arXiv論文リンク: arXiv:1709.08041
 前回の記事 の続きです。音響モデルの学習にGANを使うというアイデアは、声質変換だけでなく音声合成にも応用できます。CMU ARCTIC を使った英語音声合成の実験を行って、ある程度良い結果がでたので、まとめようと思います。音声サンプルだけ聴きたい方は真ん中の方まで読み飛ばしてください。
@@ -108,10 +108,10 @@ arXiv論文リンク: arXiv:1709.08041
     
     <item>
       <title>【声質変換編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
-      <link>http://r9y9.github.io/blog/2017/10/05/ganvc/</link>
+      <link>https://r9y9.github.io/blog/2017/10/05/ganvc/</link>
       <pubDate>Thu, 05 Oct 2017 23:25:36 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/10/05/ganvc/</guid>
+      <guid>https://r9y9.github.io/blog/2017/10/05/ganvc/</guid>
       <description>10&amp;frasl;11 追記: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: http://ieeexplore.ieee.org/document/8063435/
 arXiv論文リンク: arXiv:1709.08041
 2017年9月末に、表題の 論文 が公開されたのと、nnmnkwii という designed for easy and fast prototyping を目指すライブラリを作ったのもあるので、実装してみました。僕が実験した限りでは、声質変換 (Voice conversion; VC) では安定して良くなりました（音声合成ではまだ実験中です）。この記事では、声質変換について僕が実験した結果をまとめようと思います。音声合成については、また後日まとめます
@@ -122,20 +122,20 @@ arXiv論文リンク: arXiv:1709.08041
     
     <item>
       <title>About me</title>
-      <link>http://r9y9.github.io/about/</link>
+      <link>https://r9y9.github.io/about/</link>
       <pubDate>Tue, 03 Oct 2017 23:17:09 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/about/</guid>
+      <guid>https://r9y9.github.io/about/</guid>
       <description>名前 山本 龍一 / Ryuichi Yamamoto
 問い合わせ先  Twitter Github  経歴  現在: 自由にしています 2013年4月 ~ 2017年4月: チームラボ株式会社 コンピュータビジョンチーム エンジニア 2013年4月: 名古屋工業大学大学院工学研究科情報工学専攻 博士前期課程修了  発表文献 http://www.mmsp.nitech.ac.jp/~ryuichi/ に学生時代の発表文献が書かれています</description>
     </item>
     
     <item>
       <title>DNN音声合成のためのライブラリの紹介とDNN日本語音声合成の実装例</title>
-      <link>http://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</link>
+      <link>https://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</link>
       <pubDate>Wed, 16 Aug 2017 23:10:56 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</guid>
+      <guid>https://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</guid>
       <description>nnmnkwii というDNN音声合成のためのライブラリを公開しましたので、その紹介をします。
 https://t.co/p8MnOxkVoH Library to build speech synthesis systems designed for easy and fast prototyping. Open sourced:)
 &amp;mdash; 山本りゅういち (@r9y9) August 14, 2017 
@@ -152,10 +152,10 @@ https://t.co/p8MnOxkVoH Library to build speech synthesis systems designed for e
     
     <item>
       <title>DNN統計的音声合成ツールキット Merlin の中身を理解をする</title>
-      <link>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
+      <link>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
       <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
+      <guid>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
       <description>この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。 なお、HMM音声合成について簡単に理解していること（HMMとは、状態とは、フルコンテキストラベルとは、くらい）を前提とします。
 はじめに Merlinの概要については以下をご覧ください。
  Wu, Zhizheng, Oliver Watts, and Simon King. &amp;ldquo;Merlin: An open source neural network speech synthesis system.&amp;rdquo; Proc. SSW, Sunnyvale, USA (2016). &amp;ldquo;A Demonstration of the Merlin Open Source Neural Network Speech Synthesis System&amp;rdquo; 公式ドキュメント  Merlinにはデモスクリプトがついています。基本的にユーザが使うインタフェースはrun_merlin.pyというコマンドラインスクリプトで、 デモスクリプトではrun_merlin.pyに用途に応じた設定ファイルを与えることで、継続長モデルの学習/音響モデルの学習/パラメータ生成など、音声合成に必要なステップを実現しています。
@@ -169,10 +169,10 @@ Frontendには、英語ならFestival、BackendにはWORLDやSTRAIGHTを使っ�
     
     <item>
       <title>言語処理100本ノック 2015 をすべてやりました</title>
-      <link>http://r9y9.github.io/blog/2017/06/09/nlp100/</link>
+      <link>https://r9y9.github.io/blog/2017/06/09/nlp100/</link>
       <pubDate>Fri, 09 Jun 2017 21:58:50 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/06/09/nlp100/</guid>
+      <guid>https://r9y9.github.io/blog/2017/06/09/nlp100/</guid>
       <description>   本家サイト: http://www.cl.ecei.tohoku.ac.jp/nlp100/ 僕が書いたコード: https://github.com/r9y9/nlp100  最近、自然言語処理(NLP)を勉強しようという熱が出ました。ある自然言語処理の問題を解きたかったのですが、 無知のためにか直感がまったく働かず、これはまずいと感じたので、 入門的なのに手を出そうと思った次第です。 結果、毎日やりつづけて、12日かかりました（上図は、横軸が日付、縦軸が達成した問題数です。図はseabornで適当に作りました）。 速度重視1で問題を解きましたが、思ったよりうまく進まず大変だった、というのが正直な感想です。以下、雑多な感想です。
  mecab, cabocha, CoreNLPの解析結果をパースするコードを書くのは、ただただ面倒に感じた NER実装しろ、みたいな問題があったらより楽しかったかなと思った 正規表現をまったく使いこなせていなかったことがわかったので、勉強し直せてよかった 全体を通して、第9章のword embeddingを自前で作る部分が一番楽しかった うろ覚えですが2、問題文中に表現が正確でない（と感じる）部分があって、困惑したことがあった 9割python、1割juliaで書きましたが、sklearn, numpy, scipyなどを使わなくてよい、かつ速度が重要な場合は、簡単に速くできるのでjulia良い python、ライブラリが充実しすぎていて本当に楽 素人の言語処理100本ノック:まとめ - Qiita がとても丁寧で、解いたはいいものの自信がないときなどに、ちょくちょく見ていました。参考になりました  今後 深層学習による自然言語処理を買ったので3、それを読んで、自然言語処理の勉強を続けようと思います。
  ナイーブな実装多し、コピペ多し、descriptiveでない変数名多し、等 [return] 掘り返して探す気力がない・・・ [return] Amazonによると、僕は5/29に買っている模様。なお現在の進捗は0 [return]   </description>
@@ -180,10 +180,10 @@ Frontendには、英語ならFestival、BackendにはWORLDやSTRAIGHTを使っ�
     
     <item>
       <title>2017年の目標</title>
-      <link>http://r9y9.github.io/blog/2017/01/04/2017/</link>
+      <link>https://r9y9.github.io/blog/2017/01/04/2017/</link>
       <pubDate>Wed, 04 Jan 2017 22:59:32 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/01/04/2017/</guid>
+      <guid>https://r9y9.github.io/blog/2017/01/04/2017/</guid>
       <description>こんばんは。年末に帰省して、東京に帰ってきて、今はポエムを書いています。xxxxの目標とか、書いてもどうせやらないし自己満足で終わるからいいやと、いつぞやから宣言するのをやめてしまったのですが、宣言すらしないとまったく危機感を持たず何もやらないということを身にしみつつあり、かつそういう事態を避けたいと思ったため、公に書いてみることにしました。今年もよろしくお願い申し上げます。
 目標 1. Keno/Cxx.jl CxxREPLにCode completion機能を実装する 関連issueは Keno/Cxx.jl/#61 です。
 Cxx.jlにはプライベートでも仕事でも非常にお世話になっています。何か僕にできることがあればしたいという思いと、code completionないのつれえという思いとが合わさって、やりたいなと思っています。現状のCxx.jlでも十分生産性が向上しているのですが、code completionがあるとなお生産性が向上することは間違いなしです。
@@ -198,10 +198,10 @@ Cxx.jlにはプライベートでも仕事でも非常にお世話になって�
     
     <item>
       <title>Juliaをソースからビルドする</title>
-      <link>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</link>
+      <link>https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</link>
       <pubDate>Fri, 23 Dec 2016 18:06:08 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</guid>
+      <guid>https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</guid>
       <description>Julia advent calendar 2016 23日目の記事です。
 はじめに Juilaを最も簡単にインストールする方法は、公式のダウンロードページからバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが1、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。
 僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです2。
@@ -217,10 +217,10 @@ BUILD_LLVM_CLANG llvmとあわせて、clangをビルドするかどうか、と
     
     <item>
       <title>Cxx.jlを用いてJulia expression/value をC&#43;&#43;に埋め込む実験</title>
-      <link>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</link>
+      <link>https://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</link>
       <pubDate>Sun, 24 Jan 2016 22:32:08 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</guid>
+      <guid>https://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</guid>
       <description>Keno氏によるJuliaCon 2015 の発表 Keno Fischer: Shaving the Yak でタイトルの内容が一部紹介されていて、便利そうだなと思い、色々試してみました。
   
 発表の内容は大まかに、Keno氏がなぜCxx.jlを作ったのか、なぜJuliaを始めたのか、といったモチベーションの話から、Cxx.jlでできることについてlive programmingを交えての紹介、といった話になっています。50分とけっこう長いですが、面白いので興味のある方はどうぞ。この記事は、上の動画を見たあと、Cxx.jlと戯れた結果をまとめたものです。
@@ -236,10 +236,10 @@ function Base.show{T}(io::IO, v::StdVector{T}) println(io, &amp;quot;$(length(v)
     
     <item>
       <title>対話環境でPoint Cloud Library (PCL) を使いたい</title>
-      <link>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</link>
+      <link>https://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</link>
       <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
+      <guid>https://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</guid>
       <description>新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました1。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。
 Point Cloud Library (PCL) とは http://www.pointclouds.org/
 問題 PCL はboost、Eigenに依存している、かつtemplateを多く使用しているため、PCLを使用したプロジェクトのコンパイル時間は非常に長くなるという問題があります。twitterで [PCL コンパイル] として検索すると、例えば以下の様なツイートが見つかりますが、完全に同意です。
@@ -256,10 +256,10 @@ Point Cloud Library (PCL) とは http://www.pointclouds.org/
     
     <item>
       <title>Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</title>
-      <link>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</link>
+      <link>https://r9y9.github.io/blog/2015/12/22/cxx-jl/</link>
       <pubDate>Tue, 22 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</guid>
+      <guid>https://r9y9.github.io/blog/2015/12/22/cxx-jl/</guid>
       <description>はじめに Julia Advent Calendar 2015 22日目の記事です。
 Julia の C++ FFI (Foreign Function Interface) である Cxx.jl をしばらく使ってみたので、その感想を書きます。加えて、Cxx.jl を使って作った成果物の話も簡単に書こうと思います（冒頭に貼った画像は、OpenCV.jl でテキトーにカメラから画像をキャプチャしてthresholdingしたやつです）。 Cxx.jl の動作原理については、僕の理解が不十分なため簡単にしか紹介できませんが、そもそも使ったことがある人が稀だと思われるので、感想程度でも役に立てば幸いです。
 Cxx.jl とは https://github.com/Keno/Cxx.jl
@@ -274,10 +274,10 @@ Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード
     
     <item>
       <title>Julia: 値と変数に対する Type Annotation の違い</title>
-      <link>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</link>
+      <link>https://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</link>
       <pubDate>Tue, 08 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
+      <guid>https://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</guid>
       <description>はじめに Julia Advent Calendar 2015 8日目の記事です。
 この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。
 記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。
@@ -290,10 +290,10 @@ A: 値に対する type annotation Aの2行目では、値に対して type anno
     
     <item>
       <title>pysptk: SPTKのpythonラッパーを作った (part 2)</title>
-      <link>http://r9y9.github.io/blog/2015/09/06/pysptk/</link>
+      <link>https://r9y9.github.io/blog/2015/09/06/pysptk/</link>
       <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2015/09/06/pysptk/</guid>
+      <guid>https://r9y9.github.io/blog/2015/09/06/pysptk/</guid>
       <description> 2015/09/05:
 https://t.co/WFBmYEIVce SPTKのpythonラッパー（マシなやつ）完成&amp;#10;ドキュメント http://t.co/jYhw1y3Bzg&amp;#10;pip install pysptk でインストールできるようになりました。pypi童貞捨てれた
 &amp;mdash; 山本りゅういち (@r9y9) September 4, 2015   ずいぶん前に、swig遊びをしがてらpythonのラッパーを書いていたんですが、cythonを使って新しく作りなおしました。かなりパワーアップしました。
@@ -306,10 +306,10 @@ pip install pysptk  でインストールできるので、よろしければど
     
     <item>
       <title>最近の音声信号処理遊びの進捗</title>
-      <link>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
+      <link>https://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</link>
       <pubDate>Sun, 23 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
+      <guid>https://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</guid>
       <description>hello 遡ればもう約一年まえになるでしょうか、統計的声質遊びをしたいと思い、理論の勉強を始めたり、（特にJuliaで）コードを色々書いていました（お前ほんといろんな言語で遊んでるな、というツッコミはさておき）。統計的声質変換クッソムズすぎワロタ（チュートリアル編） - LESS IS MORE を書いていた当初は、当然自分のためだけに書いていて、まぁアレな出来でしたが、最近気を取り直して多少マシに仕上げましたので、何となくブログに書いてみようかなーと思った次第です。というわけで、最近公式に登録したいくつかのパッケージを、まとめて簡単に紹介します。
 主な改善点は、windowsもちゃんとサポートするようにしたこと（誰得？）と、テストをきちんと書いたことと、julia的なインタフェースを意識するようにしたことですかね。3つ目はかなり曖昧ですが、まぁ気持ち使いやすくなったと思います。
 パッケージ  MelGeneralizedCepstrums.jl: メル一般化ケプストラム分析 SynthesisFilters.jl: メル一般化ケプストラムからの音声波形合成 SPTK.jl: SPTKのラッパー  車輪の再発明はできるだけしたくなかったので、最初のほうはCライブラリのラッパーを書くことが多く、windowsとかめんどくさいしunix環境でしか動作確認してませんでしたが、WindowsのJuliaから呼べるようなCライブラリの共有ライブラリ（DLL）を作る | qiita 重い腰を上げてwindowsでも動くように頑張ったことがあり（めんどくさいとか言って手を動かさないのホント良くないですね）、登録したパッケージはすべてwindowsでも動くようになりました。めでたし。WORLD.jl もwindowsで動くようにしました。
@@ -328,10 +328,10 @@ MelGeneralizedCepstrums.jl と SynthesiFilters.jl は、ほとんどSPTK.jlで�
     
     <item>
       <title>JuliaTokyo #3 Speech Signal Processing in Julia</title>
-      <link>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</link>
+      <link>https://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</link>
       <pubDate>Sun, 26 Apr 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</guid>
+      <guid>https://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</guid>
       <description>JuliaTokyo #3でLT発表してきました。前回のJuliaTokyo #2でも発表したので、二回目でした。
 スライド   JuliaTokyo #3 Speech Signal Processing in Julia  from Ryuichi YAMAMOTO   コード https://github.com/r9y9/JuliaTokyo3
 三行まとめ 発表の内容を三行でまとめると、
@@ -344,10 +344,10 @@ MelGeneralizedCepstrums.jl と SynthesiFilters.jl は、ほとんどSPTK.jlで�
     
     <item>
       <title>ccallにおけるポインタ周りのハマりどころとその解決法</title>
-      <link>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</link>
+      <link>https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</link>
       <pubDate>Tue, 09 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</guid>
+      <guid>https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</guid>
       <description>Julia Advent Calendar 2014 9日目の記事です。
 はじめに CやFortranの関数をJuliaから呼ぶために使用するccallにおいて、ポインタに関係するハマりどころとその解決法を紹介します。純粋なJuliaを使っている場合にはポインタを意識することはめったにないと思うので、ccall を使う人（計算が重いボトルネック部分をCで書いてJuliaから呼びたい人、Cのライブラリのラッパーを書きたい/書いてる人）を主な読者と想定して記事を書きました（限定的でごめんなさい）。
 困った時は、公式ドキュメントの Calling C and Fortran Code を参考にしましょう。
@@ -360,10 +360,10 @@ Calling C and Fortran Code より引用: &amp;gt; Currently, it is not possible 
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ（チュートリアル編）</title>
-      <link>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</link>
+      <link>https://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</link>
       <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
+      <guid>https://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</guid>
       <description>はじめに こんばんは。統計的声質変換（以降、簡単に声質変換と書きます）って面白いなーと思っているのですが、興味を持つ人が増えたらいいなと思い、今回は簡単なチュートリアルを書いてみます。間違っている箇所があれば、指摘してもらえると助かります。よろしくどうぞ。
 前回の記事（統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE）では変換部分のコードのみを貼りましたが、今回はすべてのコードを公開します。なので、記事内で示す声質変換の結果を、この記事を読んでいる方が再現することも可能です。対象読者は、特に初学者の方で、声質変換を始めたいけれど論文からコードに落とすにはハードルが高いし、コードを動かしながら仕組みを理解していきたい、という方を想定しています。役に立てば幸いです。
 コード https://github.com/r9y9/VoiceConversion.jl
@@ -379,10 +379,10 @@ VoiceConversion.jl でできること 追記 2015/01/07 この記事を書いた
     
     <item>
       <title>NMFで音源分離を試してみる</title>
-      <link>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</link>
+      <link>https://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</link>
       <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</guid>
+      <guid>https://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</guid>
       <description>ずーーっと前に、 NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE で実際に実装してみてやってみると書いていたのに、まったくやっていなかったことに気づいたのでやりました。
 音楽に対してやってみたのですが、簡単な曲だったら、まぁぼちぼち期待通りに動いたかなぁという印象です。コードとノートを挙げたので、興味のある方はどうぞ。
 Github https://github.com/r9y9/julia-nmf-ss-toy
@@ -393,10 +393,10 @@ function nmf_euc(Y::AbstractMatrix, K::Int=4; maxiter::Int=100) H = rand(size(Y,
     
     <item>
       <title>JuliaTokyo #2でBinDeps.jl についてLTしてきた</title>
-      <link>http://r9y9.github.io/blog/2014/09/30/juliatokyo2/</link>
+      <link>https://r9y9.github.io/blog/2014/09/30/juliatokyo2/</link>
       <pubDate>Tue, 30 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/09/30/juliatokyo2/</guid>
+      <guid>https://r9y9.github.io/blog/2014/09/30/juliatokyo2/</guid>
       <description>JuliaTokyo #2 - connpass
  発表概要 C/C++ライブラリのラッパー（C++は現状のJuliaでは難しいけど）を作るときに、どうやってライブラリの依存関係を管理するか？という話です。結論としては、方法はいくつかありますが　BinDeps.jl というパッケージを使うのが楽で良いですよ、ということです。Githubのいろんなリポジトリをあさった僕の経験上、BinDeps.jl はバイナリの依存関係管理におけるデファクトスタンダードな気がしています。BinDeps.jl の使い方は、既存のパッケージのコードを読みまくって学ぶのがおすすめです。
 さて、途中で書くのに疲れてしまったのですが、自作のJuliaパッケージで、Cライブラリとの依存性を記述する - Qiita に以前似たような内容をまとめたので、併せてどうぞ。qiitaにも書きましたが、最適化関係のプロジェクトを集めた JuliaOpt コミュニティでは、バイナリの依存関係管理にBinDeps.jlを使用することを推奨しています。
@@ -406,10 +406,10 @@ function nmf_euc(Y::AbstractMatrix, K::Int=4; maxiter::Int=100) H = rand(size(Y,
     
     <item>
       <title>SPTKのJuliaラッパーも書いた</title>
-      <link>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</link>
+      <link>https://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</link>
       <pubDate>Mon, 15 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</guid>
+      <guid>https://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</guid>
       <description>夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。
 Julia wrapper for Speech Signal Processing Toolkit (SPTK) | Github
 かれこれ、Go, Python, Juliaと、3つの言語でラッパーを書いてしまいました。どれだけSPTK好きなんだと。そしてどれだけ言語触ってるんだ絞れと。うーん、とはいえどれも良いところと悪いところがあってですね（何も言ってない）、難しい…
@@ -418,20 +418,20 @@ Julia wrapper for Speech Signal Processing Toolkit (SPTK) | Github
     
     <item>
       <title>最高の夏</title>
-      <link>http://r9y9.github.io/blog/2014/09/01/summer/</link>
+      <link>https://r9y9.github.io/blog/2014/09/01/summer/</link>
       <pubDate>Mon, 01 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/09/01/summer/</guid>
+      <guid>https://r9y9.github.io/blog/2014/09/01/summer/</guid>
       <description>pic.twitter.com/VMToqJ7PCB
 &amp;mdash; ノッツ@ソラミちゃんの唄②発売中 (@knotscream) August 30, 2014   収穫 この夏いちばんの収穫はノッツさんという漫画家の方を知れたことだった。最高の夏だ</description>
     </item>
     
     <item>
       <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</title>
-      <link>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
+      <link>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
+      <guid>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
       <description>最近 Julia で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）
 https://github.com/r9y9/BNMF.jl
 元論文: Bayesian Nonparametric Matrix Factorization for Recorded Music by Matthew D. Hoffman et al. in ICML 2010.
@@ -445,10 +445,10 @@ Julia: Mean elapsed time: 21.92968243 [sec] Python: Mean elapsed time: 18.355061
     
     <item>
       <title>夏休みと人生</title>
-      <link>http://r9y9.github.io/blog/2014/08/20/life/</link>
+      <link>https://r9y9.github.io/blog/2014/08/20/life/</link>
       <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/08/20/life/</guid>
+      <guid>https://r9y9.github.io/blog/2014/08/20/life/</guid>
       <description>pic.twitter.com/pm6uDKoAg6
 &amp;mdash; ノッツ@ソラミちゃんの唄②発売中 (@knotscream) August 18, 2014   http://snn.getnews.jp/archives/388418
 こんな夏休みを過ごしたい人生だったよ
@@ -458,10 +458,10 @@ p.s.
     
     <item>
       <title>SPTKのPythonラッパーを書いた</title>
-      <link>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</link>
+      <link>https://r9y9.github.io/blog/2014/08/10/sptk-from-python/</link>
       <pubDate>Sun, 10 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</guid>
+      <guid>https://r9y9.github.io/blog/2014/08/10/sptk-from-python/</guid>
       <description>2015/09/06 追記 ましなpythonラッパーを新しく作りました: Pysptk: SPTKのpythonラッパーを作った (Part 2) - LESS IS MORE
 2014/08/10 追記 ipython notebookによる簡単なチュートリアルを貼っておきます
 SPTK を Pythonから呼ぶ | nbviewer
@@ -477,10 +477,10 @@ Speech Signal Processing Toolkit (SPTK) for API use with python | Github
     
     <item>
       <title>Tokyo.Scipyに参加してきた</title>
-      <link>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</link>
+      <link>https://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</link>
       <pubDate>Tue, 05 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</guid>
+      <guid>https://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</guid>
       <description>Tokyo.SciPy ハッシュタグ: #tokyoscipy
  Tokyo.Scipy は科学技術計算で Python を利用するための勉強会です．
  とのことです。最近、python/numpy/scipyによくお世話になっているので、参加してみました。雑感をメモしておきます。
@@ -491,10 +491,10 @@ Tokyo.Scipy 006 第6回のようでした。プログラムだけさっとまと
     
     <item>
       <title>Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね</title>
-      <link>http://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</link>
+      <link>https://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</link>
       <pubDate>Tue, 29 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</guid>
+      <guid>https://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</guid>
       <description>いまいち成果出ないので気分転換にブログをだらだら書いてみるテストです。
 まえがき 半年くらい前に、某深層学習に興味を持ってやってみようかなーと思っていた時期があって、その時にGoでいくつかニューラルネットを書きました（参考：Restricted Boltzmann Machines with MNIST - LESS IS MORE、githubに上げたコード）。なぜGoだったかというと、僕がGoに興味を持ち始めていたからというのが大きいです。Goを知る前は、たくさん計算するようなコードを書くときはC++だったけれど、C++は色々つらいものがあるし、GoはC++には速度面で劣るもののそこそこ速く、かつスクリプト的な書きやすさもあります。C++のデバッグやメンテに費やす膨大な時間に比べれば、計算時間が1.5~2倍に増えるくらい気にしないというスタンスで、僕はC++のかわりGoを使おうとしていました（※今でも間違っているとは思いませんが、とはいえ、厳しいパフォーマンスを求められる場合や既存の資産を有効活用したい場合など、必要な場面ではC++を書いています）。
 Goで機械学習 僕は機械学習がけっこう好きなので、Goでコード書くかーと思っていたのですが、結果としてまったく捗りませんでした。ニューラルネットをてきとーに書いたくらいです。
@@ -512,10 +512,10 @@ Pythonでニューラルネット（pylearn2を使おう） Deep何とかを含�
     
     <item>
       <title>Pylearn2, theanoをEC2 g2.x2large で動かす方法</title>
-      <link>http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</link>
+      <link>https://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</link>
       <pubDate>Sun, 20 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</guid>
+      <guid>https://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</guid>
       <description>モチベーション  手元のへぼマシンでニューラルネットの学習を回わす 半日たっても終わらない 最近だとGPU使って計算を高速化するのが流行りだが、手元にGPUはない  Deep Learning in Python with Pylearn2 and Amazon EC2
 手元にGPUがない…？大丈夫！Amazon EC2を使えば良さそう！！！
 というわけで、めんどくさいと言わずにec2にお手軽計算環境を整えます。ec2でGPUが乗ったものだと、g2.2xlargeがよさそうですね。
@@ -533,10 +533,10 @@ https://gist.github.com/r9y9/50f13ba28b5b158c25ae
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ（実装の話）</title>
-      <link>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</link>
+      <link>https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</link>
       <pubDate>Sun, 13 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</guid>
+      <guid>https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</guid>
       <description>2014/07/28 追記：
 重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました https://gist.github.com/r9y9/88bda659c97f46f42525
 まえがき 前回、統計的声質変換クッソムズすぎワロタ - LESS IS MORE という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。
@@ -558,10 +558,10 @@ numpy.linalg.invを使っていましたよね。しかもnumpy.linalg.solveの�
     
     <item>
       <title>統計的声質変換クッソムズすぎワロタ</title>
-      <link>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</link>
+      <link>https://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</link>
       <pubDate>Sat, 05 Jul 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</guid>
+      <guid>https://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</guid>
       <description>2014/10/12 追記 少なくともGVのコードに致命的なバグがあったことがわかりました。よって、あまりあてにしないでください…（ごめんなさい
 こんにちは。
 最近、統計的声質変換の勉強をしていました。で、メジャーなGMM（混合ガウスモデル）ベースの変換を色々やってみたので、ちょろっと書きます。実は（というほどでもない?）シンプルなGMMベースの方法だと音質クッソ悪くなってしまうんですが、色々試してやっとまともに聞ける音質になったので、試行錯誤の形跡を残しておくとともに、音声サンプルを貼っておきます。ガチ勢の方はゆるりと見守ってください
@@ -578,10 +578,10 @@ GMMベースのポイントは、東大の齋藤先生の以下のツイート�
     
     <item>
       <title>GOSSP - Go言語で音声信号処理</title>
-      <link>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</link>
+      <link>https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</link>
       <pubDate>Sun, 08 Jun 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
+      <guid>https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
       <description>C++からGoへ みなさん、C++で信号処理のアルゴリズムを書くのはつらいと思ったことはありませんか？C++で書くと速いのはいいけれど、いかんせん書くのが大変、コンパイルエラーは読みづらい、はたまたライブラリをビルドしようとしたら依存関係が上手く解決できず……そんな覚えはないでしょうか？謎のコンパイルエラーに悩みたくない、ガーベジコレクションほしい、Pythonのようにさくっと書きたい、型推論もほしい、でも動作は速い方がいい、そう思ったことはないでしょうか。
 そこでGoです。もちろん、そういった思いに完全に答えてくれるわけではありませんが、厳しいパフォーマンスを要求される場合でなければ、Goの方が良い場合も多いと僕は思っています。 とはいえ、まだ比較的新しい言語のため、ライブラリは少なく信号処理を始めるのも大変です。というわけで、僕がC++をやめてGoに移行したことを思い出し、Goでの信号処理の基礎と、今まで整備してきたGoでの音声信号処理ライブラリを紹介します。
 Goの良いところ/悪いところについては書きません。正直、本当は何の言語でもいいと思っていますが、僕はGoが好きなので、ちょっとでもGoで信号処理したいと思う人が増えるといいなーと思って書いてみます。
@@ -596,10 +596,10 @@ Goはウェブ周りの標準パッケージが充実しているので、以前
     
     <item>
       <title>連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG</title>
-      <link>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</link>
+      <link>https://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</link>
       <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</guid>
+      <guid>https://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</guid>
       <description>「ウェーブレット変換って難しいんじゃ…マザーウェーブレット？よくわかんない…」
 大丈夫、そんな人には以下の文献がお勧めです
 Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.
@@ -617,10 +617,10 @@ Morlet  Paul  DOG  Paulは時間解像度は高いけど周波数解像度はい
     
     <item>
       <title>PythonによるニューラルネットのToyコード</title>
-      <link>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</link>
+      <link>https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</link>
       <pubDate>Sun, 11 May 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
+      <guid>https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
       <description>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。
 このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）
 #!/usr/bin/python # coding: utf-8 # ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の # デモコードです。 # 誤差伝搬法によってニューラルネットを学習します。 # XORの学習、テストの簡単なデモコードもついています # 2014/05/10 Ryuichi Yamamoto import numpy as np def sigmoid(x): return 1.0 / (1.0 + np.exp(-x)) def dsigmoid(y): return y * (1.0 - y) class NeuralNet: def __init__(self, num_input, num_hidden, num_output): &amp;quot;&amp;quot;&amp;quot; パラメータの初期化 &amp;quot;&amp;quot;&amp;quot; # 入力層から隠れ層への重み行列 self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden)) self.hidden_bias = np.ones(num_hidden, dtype=float) # 隠れ層から出力層への重み行列 self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output)) self.</description>
@@ -628,10 +628,10 @@ Morlet  Paul  DOG  Paulは時間解像度は高いけど周波数解像度はい
     
     <item>
       <title>cgo の基本的な使い方とポインタ周りのTips (Go v1.2)</title>
-      <link>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</link>
+      <link>https://r9y9.github.io/blog/2014/03/22/cgo-tips/</link>
       <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</guid>
+      <guid>https://r9y9.github.io/blog/2014/03/22/cgo-tips/</guid>
       <description>C/C++ライブラリのGoラッパーを書くためには、cgoというパッケージを使うのだけど、特にCのポインタ周りにハマりどころが多かったので、少しまとめとく
 cgoの基礎については、以下の二つを読むことを推奨
  http://golang.org/cmd/cgo/ https://code.google.com/p/go-wiki/wiki/cgo  この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい
@@ -651,10 +651,10 @@ pkg-configを使うと 、
     
     <item>
       <title>音声分析変換合成システムWORLDのGoラッパーを書いた</title>
-      <link>http://r9y9.github.io/blog/2014/03/22/go-world/</link>
+      <link>https://r9y9.github.io/blog/2014/03/22/go-world/</link>
       <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/03/22/go-world/</guid>
+      <guid>https://r9y9.github.io/blog/2014/03/22/go-world/</guid>
       <description>音声分析変換合成システムWORLD WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ
 http://ml.cs.yamanashi.ac.jp/world/
 オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ
@@ -671,10 +671,10 @@ https://github.com/r9y9/world
     
     <item>
       <title>Restricted Boltzmann Machines with MNIST</title>
-      <link>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</link>
+      <link>https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</link>
       <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</guid>
+      <guid>https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</guid>
       <description>ディープ某を使った研究を再現してみたくて、最近某ニューラルネットに手を出し始めた。で、手始めにRestricted Boltzmann Machinesを実装してみたので、
  MNISTを使って学習した結果の重み（22*22=484個）を貼っとく（↑） 得た知見をまとめとく Goのコード貼っとく  ってな感じで書いておく
 (本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)
@@ -688,10 +688,10 @@ https://github.com/r9y9/world
     
     <item>
       <title>マルコフ確率場 (MRF) と条件付き確率場 (CRF) の違い</title>
-      <link>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</link>
+      <link>https://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</link>
       <pubDate>Sat, 01 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</guid>
+      <guid>https://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</guid>
       <description>一番の違いは、生成モデルか識別モデルか、ということ。それぞれ、
  Markov Random Fields (MRF) は生成モデル Conditional Random Fields (CRF) は識別モデル  です。
  What is exactly the difference between MRF and CRF  ここを見ると割とすっきりする。
@@ -706,10 +706,10 @@ An Introduction to Conditional Random Fields の2.2 Generative versus Discrimina
     
     <item>
       <title>Goで音声信号処理をしたいのでSPTKのGoラッパーを書く</title>
-      <link>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</link>
+      <link>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</link>
       <pubDate>Mon, 10 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</guid>
+      <guid>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</guid>
       <description>2014/07/22 追記：
 パッケージの一部として書きました（GOSSP - Go言語で音声信号処理 - LESS IS MOREを参照）。 SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ
 &amp;ndash;
@@ -723,10 +723,10 @@ package sptk // #cgo pkg-config: SPTK // #include &amp;lt;stdio.h&amp;gt; // #in
     
     <item>
       <title>Goに関する良記事</title>
-      <link>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</link>
+      <link>https://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</link>
       <pubDate>Sun, 02 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</guid>
+      <guid>https://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</guid>
       <description>いくつか見つけたのでメモる
 Why We Think GoLang Is Ready For Early Stage Startups とあるスタートアップがウェブでGoを使うという意思決定をした理由、その決断に至るまでのプロセスが書かれている。また、その過程でGoを使うことによる利点・欠点が簡潔にまとめられてる。参考になった
 Go Getter - Performance comparison to C++ business card ray tracer  GoとC++のパフォーマンスの比較。Ray tracingというCGの手法を用いて比較をしていて、Goでも最適化するとC++並のスピード出ますよ（そしてC++と違ってGCあるしマルチコアにも簡単にできるしGoいいよ）って話。（自分へのメモのため画像を拝借していますが、意味がわからないと思うので元記事を参照してください）
@@ -740,20 +740,20 @@ Go Getter Part 3 - Further optimizations and a multi-threaded C++ version  こ�
     
     <item>
       <title>Goでクロマベクトルを求める</title>
-      <link>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</link>
+      <link>https://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</link>
       <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</guid>
+      <guid>https://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</guid>
       <description>Chromagram。ドレミの歌の冒頭を分析した結果です
 package main import ( &amp;quot;fmt&amp;quot; &amp;quot;github.com/mjibson/go-dsp/wav&amp;quot; &amp;quot;github.com/r9y9/go-msptools/pcp&amp;quot; &amp;quot;log&amp;quot; &amp;quot;os&amp;quot; ) func main() { // reading data file, err := os.Open(&amp;quot;/path/to/file.wav&amp;quot;) if err != nil { log.Fatal(err) } defer file.Close() wav, werr := wav.ReadWav(file) if werr != nil { log.Fatal(werr) } // convert to []float64 from []int data := make([]float64, len(wav.Data[0])) for i := range data { data[i] = float64(wav.Data[0][i]) } // settings for analysis frameShift := int(float64(wav.SampleRate) / 100.</description>
     </item>
     
     <item>
       <title>Goで信号処理</title>
-      <link>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</link>
+      <link>https://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</link>
       <pubDate>Mon, 27 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</guid>
+      <guid>https://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</guid>
       <description> 最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う
 Goの良い所  デフォでたくさん便利なパッケージがある。http, json, os, &amp;hellip; パッケージのインストールはとても簡単。go getするだけ デフォでテストの枠組みがある gofmtでコードのformattingしてくれるので書き方で迷わなくて良い 使わないパッケージをimportするとコンパイルエラーになるし自然と疎結合なコードを書くようになる 並列処理を言語レベルでサポート GCあるのでメモリ管理なんてしなくていい 全般的にC++より書きやすい（ここ重要） そこそこ速い（C++よりは遅いけど）  ホントはPythonでさくっと書きたいけどパフォーマンスもほしいからC++で書くかー（嫌だけど）。と思ってた自分にはちょうどいい
 Goの悪い所（主にC++と比べて）  ちょっと遅い。さっと試したウェーブレット変換は、1.5倍くらい遅かった気がする（うろ覚え） C++やpythonに比べるとライブラリは少ない 言語仕様とかそのへんが優れてるかどうかは判断つきませんごめんなさい  Go-msptools 2014/07/22 追記：
@@ -763,10 +763,10 @@ Go-msptoolsはGOSSPに吸収されました。（GOSSP - Go言語で音声信号
     
     <item>
       <title>MLSA digital filter のC&#43;&#43;実装</title>
-      <link>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
+      <link>https://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
       <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
+      <guid>https://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
       <description>MLSAフィルタわからんという記事を書いて早2ヶ月、ようやく出来た。
 Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。SPTKのmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。
 mlsa_filter.h https://gist.github.com/r9y9/7735120
@@ -775,10 +775,10 @@ mlsa_filter.h https://gist.github.com/r9y9/7735120
     
     <item>
       <title>SPTKをC&#43;&#43;から使えるようにする</title>
-      <link>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</link>
+      <link>https://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</link>
       <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</guid>
+      <guid>https://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</guid>
       <description>音声信号処理ツールキットSPTKをC++から使おうと思ったら意外とハマってしまったので、
  C++から使えるようにC++コンパイラでコンパイルできるようにした 使いやすいようにwafを組み込みんだ  リポジトリ: https://github.com/r9y9/SPTK
 というわけで、使い方について簡単に書いておく
@@ -791,10 +791,10 @@ Build  ./waf configure &amp;amp;&amp;amp; ./waf  Build with clang++  CXX=clang++
     
     <item>
       <title>MFCCの計算方法についてメモ</title>
-      <link>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</link>
+      <link>https://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</link>
       <pubDate>Sun, 24 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</guid>
+      <guid>https://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</guid>
       <description> MFCC とは Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。
 算出手順  音声信号を適当な長さのフレームで切り出し 窓がけ フーリエ変換して対数振幅スペクトルを求める メルフィルタバンクを掛けて、メル周波数スペクトルを求める 離散コサイン変換により、MFCCを求める  以上。SPTKのmfccコマンドのソースもだいたいそうなってた。
 さて ここに音声波形があるじゃろ？？  音声波形を窓がけして…  さらにフーリエ変換して対数取って…  ここでメルフィルタバンクの出番じゃ  最後に離散コサイン変換で完成じゃ  まとめ  MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです 正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。 間違ってるかもしれないけどご愛嬌  参考  L9: Cepstral analysis [PDF] メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版 メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録  </description>
@@ -802,10 +802,10 @@ Build  ./waf configure &amp;amp;&amp;amp; ./waf  Build with clang++  CXX=clang++
     
     <item>
       <title>スペクトログラムとメル周波数スペクトログラムの可視化</title>
-      <link>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</link>
+      <link>https://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</link>
       <pubDate>Sat, 16 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</guid>
+      <guid>https://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</guid>
       <description> やったので貼っとくだけ
   低周波数の部分は解像度高い、高周波数は粗めというのがメル周波数のような対数周波数の特徴。ただし元々のスペクトルが線形なので、フィルタバンクかけても結果はご覧の通り。
 今回は振幅を対数を取って表示した（ちなみに）。上のスペクトログラムは、周波数方向は512次元になっているけど、メル周波数の方は128になっている。直感的には、512次元の線形周波数スペクトルを、人間の聴覚特性に合うようにメル周波数に変換して次元圧縮するイメージ。
@@ -817,10 +817,10 @@ Build  ./waf configure &amp;amp;&amp;amp; ./waf  Build with clang++  CXX=clang++
     
     <item>
       <title>MIT Media Lab 特別フォーラムに参加してきた</title>
-      <link>http://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</link>
+      <link>https://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</link>
       <pubDate>Sun, 03 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</guid>
+      <guid>https://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</guid>
       <description>TOKYO DESIGNES WEEK MIT Media Lab 特別フォーラム
 すごい刺激になった。悔しかった。このままで終わりたくない。世の中にはすごい人がいる中で、自分が大したことも為せないでいること、ビジョンを持てていないこと、自分がとても小さな人間だと感じた。石井先生の話の一つに「ビジョンを持て」っていうのがあったけど、僕にはビジョンが圧倒的に欠けてると思った。
 メディアラボの学生の発表は、内容に興味を感じたのはもちろん、プレゼンテーションの魅せ方が上手かった。一番面白かったのはsuper shoes。プレゼンの魅せ方も一際良かったし話の構成もわかりやすくて、super shoes自体も面白かった。自分の行きたい所、食べたいもの、聴きたい音楽、それらに合わせて道案内してくれる靴。
@@ -839,10 +839,10 @@ Xiao Xiaoのピアノ、良かったよね。プレゼンもとても良かっ�
     
     <item>
       <title>逆連続ウェーブレット変換による信号の再構成</title>
-      <link>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</link>
+      <link>https://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</link>
       <pubDate>Mon, 21 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</guid>
+      <guid>https://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</guid>
       <description>やったのでメモ。おそらく正しくできたと思う。結果貼っとく。ウェーブレットの参考は以下の文献
 Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.
 ウェーブレットの条件 マザーウェーブレットはmorletを使う
@@ -865,10 +865,10 @@ http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html スケ�
     
     <item>
       <title>FFTを使った連続ウェーブレット変換の高速化</title>
-      <link>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</link>
+      <link>https://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</link>
       <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</guid>
+      <guid>https://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</guid>
       <description>そもそもウェーブレット変換って何 Jump to wikipedia
 いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、STFTでいう窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと
 高速化の仕組み さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。
@@ -887,10 +887,10 @@ Matlab mathworksさんのwavelet toolboxのドキュメントもよかった。�
     
     <item>
       <title>短時間フーリエ変換と連続ウェーブレット変換のvisualization</title>
-      <link>http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</link>
+      <link>https://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</link>
       <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</guid>
+      <guid>https://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</guid>
       <description> STFT(短時間フーリエ変換)によるスペクトログラム  STFTによるスペクトログラム（Y軸を対数にしたもの）  連続ガボールウェーブレット変換によるスペクトログラム  メモリも軸も無くて発表資料に貼ったら間違いなく怒られる奴だけど許して。でもだいたいの違いはわかると思う。図はgnuplotで作りました
 STFTのlog-y-axisと比べるとよくわかるけど、ウェーブレットは低域もちゃんと綺麗にとれてますね。
 みんなもっとウェーブレット変換使おう（提案
@@ -900,10 +900,10 @@ STFTのlog-y-axisと比べるとよくわかるけど、ウェーブレットは
     
     <item>
       <title>MLSA フィルタの実装</title>
-      <link>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</link>
+      <link>https://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</link>
       <pubDate>Mon, 23 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</guid>
+      <guid>https://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</guid>
       <description>音声合成に使われるMLSA（Mel-Log Spectrum Approximatation）フィルタを実装したいんだが、なにぶんわからん。SPTKにコードはあるけれど、正直理解できない。デジタル信号処理を小学一年生から勉強しなおしたいレベルだ
 と、前置きはさておき、MLSAフィルタの実装を見つけたのでメモ。ここ最近ちょくちょく調べているが、SPTK以外で初めて見つけた。
 Realisation and Simulation of the Mel Log Spectrum Approximation Filter | Simple4All Internship Report
@@ -918,10 +918,10 @@ T. Masuko, &amp;ldquo;HMM-Based Speech Synthesis and Its Applications&amp;rdquo;
     
     <item>
       <title>調波打楽器音分離（HPSS）を試す</title>
-      <link>http://r9y9.github.io/blog/2013/09/14/hpss/</link>
+      <link>https://r9y9.github.io/blog/2013/09/14/hpss/</link>
       <pubDate>Sat, 14 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/09/14/hpss/</guid>
+      <guid>https://r9y9.github.io/blog/2013/09/14/hpss/</guid>
       <description>HPSSとは（一行説明） HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ
 アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる
 実装 調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ
@@ -936,10 +936,10 @@ H/Pから音源を再合成するときは、位相は元の信号のものを�
     
     <item>
       <title>Naive Bayesの復習（実装編）: MNISTを使って手書き数字認識</title>
-      <link>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</link>
+      <link>https://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</link>
       <pubDate>Tue, 06 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</guid>
+      <guid>https://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</guid>
       <description> 前回は学習アルゴリズムを導出したので、今回はそれを実装する。Gaussian Naive Bayesのみやった。例によって、アルゴリズムを書く時間よりも言語の使い方等を調べてる時間などの方が圧倒的に多いという残念感だったけど、とりあえずメモる。python, numpy, scipy, matplotlibすべて忘れてた。どれも便利だから覚えよう…
 そもそもナイーブベイズやろうとしてたのも、MNISTのdigit recognitionがやりたかったからなので、実際にやってみた。
 コードはgithubに置いた https://github.com/r9y9/naive_bayes
@@ -961,10 +961,10 @@ H/Pから音源を再合成するときは、位相は元の信号のものを�
     
     <item>
       <title>Multinomial distributionとCategorical distributionの違い</title>
-      <link>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</link>
+      <link>https://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</link>
       <pubDate>Wed, 31 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</guid>
+      <guid>https://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</guid>
       <description>些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。
 結論としては、多項分布のn=1の特殊な場合がカテゴリカル分布ですよってこと。以下少しまとめる。
 分布を仮定する離散変数をカテゴリと呼ぶとして、
@@ -981,10 +981,10 @@ nokunoさんによるこの記事→ 多項分布の最尤推定 は、多項分
     
     <item>
       <title>Naive Bayesの復習（導出編）</title>
-      <link>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</link>
+      <link>https://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</link>
       <pubDate>Sun, 28 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</guid>
+      <guid>https://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</guid>
       <description>すぐ忘れるのでメモ。ナイーブベイズの学習アルゴリズムの導出とか、そもそもナイーブベイズが定番過ぎて意外とやったことなかった気もするので、復習がてらやってみた。
 ちょっと修正 2013/07/30
  ナイーブベイズについて整理 学習アルゴリズムの導出  Naive bayes （ナイーブベイズ） スパムフィルタで使われたことで有名な確率モデルで、シンプルだけどそこそこ実用的なのが良い所。Naive bayesという名前は、特徴ベクトル間に条件付き独立性を仮定してることにある（実際は相関あることが多いけど、まぁ簡単のためって感じ）。具体的に例を挙げて言うと、例えば文書分類タスクの場合、各単語は独立に生起するという仮定を置くことに相当する。
@@ -1000,10 +1000,10 @@ nokunoさんによるこの記事→ 多項分布の最尤推定 は、多項分
     
     <item>
       <title>NMFアルゴリズムの導出（ユークリッド距離版）</title>
-      <link>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</link>
+      <link>https://r9y9.github.io/blog/2013/07/27/nmf-euclid/</link>
       <pubDate>Sat, 27 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</guid>
+      <guid>https://r9y9.github.io/blog/2013/07/27/nmf-euclid/</guid>
       <description>はじめに シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。 音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。 実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。
 と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。
 2014/10/19 追記 実装しました

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Speech Synthesis on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/speech-synthesis/</link>
+    <link>https://r9y9.github.io/categories/speech-synthesis/</link>
     <description>Recent content in Speech Synthesis on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 13 Dec 2017 12:15:00 +0900</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</title>
-      <link>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</link>
+      <link>https://r9y9.github.io/blog/2017/12/13/deepvoice3/</link>
       <pubDate>Wed, 13 Dec 2017 12:15:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</guid>
+      <guid>https://r9y9.github.io/blog/2017/12/13/deepvoice3/</guid>
       <description>論文リンク: arXiv:1710.07654 コード: https://github.com/r9y9/deepvoice3_pytorch  三行まとめ  arXiv:1710.07654: Deep Voice 3: 2000-Speaker Neural Text-to-Speech を読んで、単一話者の場合のモデルを実装しました（複数話者の場合は、今実験中です (deepvoice3_pytorch/#6) arXiv:1710.08969 と同じく、RNNではなくCNNを使うのが肝です 例によって LJSpeech Dataset を使って、英語TTSモデルを作りました（学習時間半日くらい）。論文に記載のハイパーパラメータでは良い結果が得られなかったのですが、arXiv:1710.08969 のアイデアをいくつか借りることで、良い結果を得ることができました。  概要 前回の記事 で紹介した方法と、モチベーション、基本的な方法論はまったく同じのため省略します。モデルのアーキテクチャが異なりますが、その点についても前回述べたので、そちらを参照ください。 今回の記事では、DeepVoice3のアーキテクチャをベースにした方法での実験結果をまとめます。
 予備実験 はじめに、可能な限り論文に忠実に、論文に記載のモデルアーキテクチャ、ハイパーパラメータで、レイヤー数やConvレイヤーのカーネル数を若干増やしたモデルで試しました。（増やさないと、LJSpeechではイントネーションが怪しい音声が生成されてしまいました）。しかし、どうもビブラートがかかったような音声が生成される傾向にありました。色々試行錯誤して改良したのですが、詳細は後述するとして、改良前/改良後の音声サンプルを以下に示します。
 Generative adversarial network or variational auto-encoder.
@@ -32,10 +32,10 @@ Your browser does not support the audio element.
     
     <item>
       <title>Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</title>
-      <link>http://r9y9.github.io/blog/2017/11/23/dctts/</link>
+      <link>https://r9y9.github.io/blog/2017/11/23/dctts/</link>
       <pubDate>Thu, 23 Nov 2017 19:30:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/11/23/dctts/</guid>
+      <guid>https://r9y9.github.io/blog/2017/11/23/dctts/</guid>
       <description>論文リンク: arXiv:1710.08969 コード: https://github.com/r9y9/deepvoice3_pytorch  三行まとめ  arXiv:1710.08969: Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. を読んで、実装しました RNNではなくCNNを使うのが肝で、オープンソースTacotronと同等以上の品質でありながら、高速に (一日程度で) 学習できる のが売りのようです。 LJSpeech Dataset を使って、英語TTSモデルを作りました（学習時間一日くらい）。完全再現とまではいきませんが、大まかに論文の主張を確認できました。  前置き 本当は DeepVoice3 の実装をしていたのですが、どうも上手くいかなかったので気分を変えてやってみました。 以前 Tacotronに関する長いブログ記事 (リンク) を書いてしまったのですが、読む方も書く方もつらいので、簡潔にまとめることにしました。興味のある人は続きもどうぞ。
 概要 End-to-endテキスト音声合成 (Text-to-speech synthesis; TTS) のための Attention付き畳み込みニューラルネット (CNN) が提案されています。SampleRNN, Char2Wav, Tacotronなどの従来提案されてきたRNNをベースとする方法では、モデルの構造上計算が並列化しにくく、 学習/推論に時間がかかることが問題としてありました。本論文では、主に以下の二つのアイデアによって、従来法より速く学習できるモデルを提案しています。
  RNNではなくCNNを使うこと (参考論文: arXiv:1705.03122) Attentionがmotonicになりやすくする効果を持つLossを考えること (Guided attention)  実験では、オープンソースTacotron (keithito/tacotron) の12日学習されたモデルと比較し、主観評価により同等以上の品質が得られたことが示されています。
@@ -45,10 +45,10 @@ DeepVoice3 との違い ほぼ同時期に発表されたDeepVoice3も同じく�
     
     <item>
       <title>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]</title>
-      <link>http://r9y9.github.io/blog/2017/11/12/jsut_ver1/</link>
+      <link>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</link>
       <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/11/12/jsut_ver1/</guid>
+      <guid>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</guid>
       <description>コーパス配布先リンク: JSUT (Japanese speech corpus of Saruwatari Lab, University of Tokyo) - Shinnosuke Takamichi (高道 慎之介) 論文リンク: arXiv:1711.00354  三行まとめ  日本語End-to-end音声合成に使えるコーパスは神、ありがとうございます クリーンな音声であるとはいえ、冒頭/末尾の無音区間は削除されていない、またボタンポチッみたいな音も稀に入っているので注意 僕が行った無音区間除去の方法（Juliusで音素アライメントを取って云々）を記録しておくので、必要になった方は参考にどうぞ。ラベルファイルだけほしい人は連絡ください  JSUT とは ツイート引用： フリーの日本語音声コーパス（単一話者による10時間データ）を公開しました．音声研究等にお役立てください．https://t.co/94ShJY44mA pic.twitter.com/T0etDwD7cS
 &amp;mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) October 26, 2017  
 つい先月、JSUT という、日本語 End-to-end 音声合成の研究に使えることを前提に作られた、フリーの大規模音声コーパスが公開されました。詳細は上記リンク先を見てもらうとして、簡単に特徴をまとめると、以下のとおりです。
@@ -60,10 +60,10 @@ DeepVoice3 との違い ほぼ同時期に発表されたDeepVoice3も同じく�
     
     <item>
       <title>Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</title>
-      <link>http://r9y9.github.io/blog/2017/10/15/tacotron/</link>
+      <link>https://r9y9.github.io/blog/2017/10/15/tacotron/</link>
       <pubDate>Sun, 15 Oct 2017 14:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/10/15/tacotron/</guid>
+      <guid>https://r9y9.github.io/blog/2017/10/15/tacotron/</guid>
       <description>Googleが2017年4月に発表したEnd-to-Endの音声合成モデル Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL] に興味があったので、自分でも同様のモデルを実装して実験してみました。結果わかったことなどをまとめておこうと思います。
 GoogleによるTacotronの音声サンプルは、 https://google.github.io/tacotron/ から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは Test Tacotron.ipynb | nbviewer1 から聴くことができます。
 とても長い記事になってしまったので、結論のみ知りたい方は、一番最後まで飛ばしてください。最後の方のまとめセクションに、実験した上で僕が得た知見がまとまっています。
@@ -76,10 +76,10 @@ GoogleによるTacotronの音声サンプルは、 https://google.github.io/taco
     
     <item>
       <title>GAN 日本語音声合成 [arXiv:1709.08041]</title>
-      <link>http://r9y9.github.io/blog/2017/10/10/gantts-jp/</link>
+      <link>https://r9y9.github.io/blog/2017/10/10/gantts-jp/</link>
       <pubDate>Tue, 10 Oct 2017 11:45:32 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/10/10/gantts-jp/</guid>
+      <guid>https://r9y9.github.io/blog/2017/10/10/gantts-jp/</guid>
       <description>10&amp;frasl;11 追記: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: http://ieeexplore.ieee.org/document/8063435/
 arXiv論文リンク: arXiv:1709.08041
 前回の記事 の続きです。これでこのシリーズは終わりの予定です。
@@ -94,10 +94,10 @@ Your browser does not support the audio element.</description>
     
     <item>
       <title>【音声合成編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
-      <link>http://r9y9.github.io/blog/2017/10/09/gantts/</link>
+      <link>https://r9y9.github.io/blog/2017/10/09/gantts/</link>
       <pubDate>Mon, 09 Oct 2017 02:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/10/09/gantts/</guid>
+      <guid>https://r9y9.github.io/blog/2017/10/09/gantts/</guid>
       <description>10&amp;frasl;11 追記: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: http://ieeexplore.ieee.org/document/8063435/
 arXiv論文リンク: arXiv:1709.08041
 前回の記事 の続きです。音響モデルの学習にGANを使うというアイデアは、声質変換だけでなく音声合成にも応用できます。CMU ARCTIC を使った英語音声合成の実験を行って、ある程度良い結果がでたので、まとめようと思います。音声サンプルだけ聴きたい方は真ん中の方まで読み飛ばしてください。
@@ -108,10 +108,10 @@ arXiv論文リンク: arXiv:1709.08041
     
     <item>
       <title>【声質変換編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
-      <link>http://r9y9.github.io/blog/2017/10/05/ganvc/</link>
+      <link>https://r9y9.github.io/blog/2017/10/05/ganvc/</link>
       <pubDate>Thu, 05 Oct 2017 23:25:36 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/10/05/ganvc/</guid>
+      <guid>https://r9y9.github.io/blog/2017/10/05/ganvc/</guid>
       <description>10&amp;frasl;11 追記: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: http://ieeexplore.ieee.org/document/8063435/
 arXiv論文リンク: arXiv:1709.08041
 2017年9月末に、表題の 論文 が公開されたのと、nnmnkwii という designed for easy and fast prototyping を目指すライブラリを作ったのもあるので、実装してみました。僕が実験した限りでは、声質変換 (Voice conversion; VC) では安定して良くなりました（音声合成ではまだ実験中です）。この記事では、声質変換について僕が実験した結果をまとめようと思います。音声合成については、また後日まとめます
@@ -122,10 +122,10 @@ arXiv論文リンク: arXiv:1709.08041
     
     <item>
       <title>DNN音声合成のためのライブラリの紹介とDNN日本語音声合成の実装例</title>
-      <link>http://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</link>
+      <link>https://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</link>
       <pubDate>Wed, 16 Aug 2017 23:10:56 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</guid>
+      <guid>https://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</guid>
       <description>nnmnkwii というDNN音声合成のためのライブラリを公開しましたので、その紹介をします。
 https://t.co/p8MnOxkVoH Library to build speech synthesis systems designed for easy and fast prototyping. Open sourced:)
 &amp;mdash; 山本りゅういち (@r9y9) August 14, 2017 
@@ -142,10 +142,10 @@ https://t.co/p8MnOxkVoH Library to build speech synthesis systems designed for e
     
     <item>
       <title>DNN統計的音声合成ツールキット Merlin の中身を理解をする</title>
-      <link>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
+      <link>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
       <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
+      <guid>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
       <description>この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。 なお、HMM音声合成について簡単に理解していること（HMMとは、状態とは、フルコンテキストラベルとは、くらい）を前提とします。
 はじめに Merlinの概要については以下をご覧ください。
  Wu, Zhizheng, Oliver Watts, and Simon King. &amp;ldquo;Merlin: An open source neural network speech synthesis system.&amp;rdquo; Proc. SSW, Sunnyvale, USA (2016). &amp;ldquo;A Demonstration of the Merlin Open Source Neural Network Speech Synthesis System&amp;rdquo; 公式ドキュメント  Merlinにはデモスクリプトがついています。基本的にユーザが使うインタフェースはrun_merlin.pyというコマンドラインスクリプトで、 デモスクリプトではrun_merlin.pyに用途に応じた設定ファイルを与えることで、継続長モデルの学習/音響モデルの学習/パラメータ生成など、音声合成に必要なステップを実現しています。

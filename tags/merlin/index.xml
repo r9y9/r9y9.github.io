@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Merlin on LESS IS MORE</title>
-    <link>http://r9y9.github.io/tags/merlin/</link>
+    <link>https://r9y9.github.io/tags/merlin/</link>
     <description>Recent content in Merlin on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Wed, 16 Aug 2017 03:00:00 +0900</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/tags/merlin/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/tags/merlin/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>DNN統計的音声合成ツールキット Merlin の中身を理解をする</title>
-      <link>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
+      <link>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
       <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
+      <guid>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
       <description>この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。 なお、HMM音声合成について簡単に理解していること（HMMとは、状態とは、フルコンテキストラベルとは、くらい）を前提とします。
 はじめに Merlinの概要については以下をご覧ください。
  Wu, Zhizheng, Oliver Watts, and Simon King. &amp;ldquo;Merlin: An open source neural network speech synthesis system.&amp;rdquo; Proc. SSW, Sunnyvale, USA (2016). &amp;ldquo;A Demonstration of the Merlin Open Source Neural Network Speech Synthesis System&amp;rdquo; 公式ドキュメント  Merlinにはデモスクリプトがついています。基本的にユーザが使うインタフェースはrun_merlin.pyというコマンドラインスクリプトで、 デモスクリプトではrun_merlin.pyに用途に応じた設定ファイルを与えることで、継続長モデルの学習/音響モデルの学習/パラメータ生成など、音声合成に必要なステップを実現しています。

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Graphical Model on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/graphical-model/</link>
+    <link>https://r9y9.github.io/categories/graphical-model/</link>
     <description>Recent content in Graphical Model on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sat, 01 Mar 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/graphical-model/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/graphical-model/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>マルコフ確率場 (MRF) と条件付き確率場 (CRF) の違い</title>
-      <link>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</link>
+      <link>https://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</link>
       <pubDate>Sat, 01 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</guid>
+      <guid>https://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</guid>
       <description>一番の違いは、生成モデルか識別モデルか、ということ。それぞれ、
  Markov Random Fields (MRF) は生成モデル Conditional Random Fields (CRF) は識別モデル  です。
  What is exactly the difference between MRF and CRF  ここを見ると割とすっきりする。

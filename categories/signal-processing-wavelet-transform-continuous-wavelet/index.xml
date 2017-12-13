@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Signal Processing Wavelet Transform Continuous Wavelet on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</link>
+    <link>https://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</link>
     <description>Recent content in Signal Processing Wavelet Transform Continuous Wavelet on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 01 Jun 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG</title>
-      <link>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</link>
+      <link>https://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</link>
       <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</guid>
+      <guid>https://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</guid>
       <description>「ウェーブレット変換って難しいんじゃ…マザーウェーブレット？よくわかんない…」
 大丈夫、そんな人には以下の文献がお勧めです
 Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.
@@ -34,10 +34,10 @@ Morlet  Paul  DOG  Paulは時間解像度は高いけど周波数解像度はい
     
     <item>
       <title>FFTを使った連続ウェーブレット変換の高速化</title>
-      <link>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</link>
+      <link>https://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</link>
       <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</guid>
+      <guid>https://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</guid>
       <description>そもそもウェーブレット変換って何 Jump to wikipedia
 いわゆる時間周波数解析の手法の一つで、音声、音楽、画像の解析に使われる。直感的には、STFTでいう窓関数の幅を周波数に応じて拡大・伸縮させて、時間変化する信号の特徴を上手く捉えようとする手法のこと
 高速化の仕組み さて、本題。ウェーブレット変換は、(スケールパラメータを固定すれば)入力信号とマザーウェーブレットのたたみ込みで表されるので、たたみ込み定理よりフーリエ変換を使った計算方法が存在する。

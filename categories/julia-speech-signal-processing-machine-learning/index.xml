@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julia Speech Signal Processing Machine Learning on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</link>
+    <link>https://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</link>
     <description>Recent content in Julia Speech Signal Processing Machine Learning on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 26 Apr 2015 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>JuliaTokyo #3 Speech Signal Processing in Julia</title>
-      <link>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</link>
+      <link>https://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</link>
       <pubDate>Sun, 26 Apr 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</guid>
+      <guid>https://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</guid>
       <description>JuliaTokyo #3でLT発表してきました。前回のJuliaTokyo #2でも発表したので、二回目でした。
 スライド   JuliaTokyo #3 Speech Signal Processing in Julia  from Ryuichi YAMAMOTO   コード https://github.com/r9y9/JuliaTokyo3
 三行まとめ 発表の内容を三行でまとめると、

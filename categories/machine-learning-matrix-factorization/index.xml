@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine Learning Matrix Factorization on LESS IS MORE</title>
-    <link>http://r9y9.github.io/categories/machine-learning-matrix-factorization/</link>
+    <link>https://r9y9.github.io/categories/machine-learning-matrix-factorization/</link>
     <description>Recent content in Machine Learning Matrix Factorization on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 19 Oct 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://r9y9.github.io/categories/machine-learning-matrix-factorization/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://r9y9.github.io/categories/machine-learning-matrix-factorization/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>NMFで音源分離を試してみる</title>
-      <link>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</link>
+      <link>https://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</link>
       <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</guid>
+      <guid>https://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</guid>
       <description>ずーーっと前に、 NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE で実際に実装してみてやってみると書いていたのに、まったくやっていなかったことに気づいたのでやりました。
 音楽に対してやってみたのですが、簡単な曲だったら、まぁぼちぼち期待通りに動いたかなぁという印象です。コードとノートを挙げたので、興味のある方はどうぞ。
 Github https://github.com/r9y9/julia-nmf-ss-toy
@@ -27,10 +27,10 @@ function nmf_euc(Y::AbstractMatrix, K::Int=4; maxiter::Int=100) H = rand(size(Y,
     
     <item>
       <title>NMFアルゴリズムの導出（ユークリッド距離版）</title>
-      <link>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</link>
+      <link>https://r9y9.github.io/blog/2013/07/27/nmf-euclid/</link>
       <pubDate>Sat, 27 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</guid>
+      <guid>https://r9y9.github.io/blog/2013/07/27/nmf-euclid/</guid>
       <description>はじめに シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。 音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。 実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。
 と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。
 2014/10/19 追記 実装しました
