@@ -221,7 +221,8 @@ Your browser does not support the audio element.
 <li>上記にも関連して、勾配のノルムが爆発的に大きくなることがしばしばあり、クリッピングを入れました（重要でした）</li>
 <li>Binary divergenceをロスにいれても品質には影響がないように感じました。ただしないと学習初期に勾配が爆発しやすかったです</li>
 <li>提案法は色々なアイデアが盛り込まれているのですが、実際のところどれが重要な要素なのか、といった点に関しては、論文では明らかにされていなかったように思います。今後その辺りを明らかにする論文があってもいいのではないかと思いました。</li>
-<li>学習に使うGPUメモリ量、Tacotronより多い（SSRNのチャンネル数512, バッチサイズ16で8GBくらい）……厳しい……<sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">3</a></sup></li>
+<li>学習に使うGPUメモリ量、Tacotronより多い（SSRNのチャンネル数512, バッチサイズ16で <del>8GBくらい</del> 5~6GB くらいでした）……厳しい……<sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">3</a></sup></li>
+<li>2017/12/19追記: Dropoutなしだと、入力テキストとは無縁の英語らしき何かが生成されるようになってしまいました。Dropoutはやはり重要でした</li>
 </ul>
 
 <p>一番の学びは、ネットワークの重みの初期化方法は重要、ということでした。おしまい</p>
