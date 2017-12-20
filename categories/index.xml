@@ -6,9 +6,19 @@
     <description>Recent content in Categories on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
+    <lastBuildDate>Thu, 21 Dec 2017 00:00:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>C&#43;&#43;</title>
+      <link>http://r9y9.github.io/categories/c&#43;&#43;/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/categories/c&#43;&#43;/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Corpus</title>
@@ -94,7 +104,7 @@
     <item>
       <title>Julia</title>
       <link>http://r9y9.github.io/categories/julia/</link>
-      <pubDate>Fri, 09 Jun 2017 21:58:50 +0900</pubDate>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
       
       <guid>http://r9y9.github.io/categories/julia/</guid>
       <description></description>
@@ -139,7 +149,7 @@
     <item>
       <title>Jupyter</title>
       <link>http://r9y9.github.io/categories/jupyter/</link>
-      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
       
       <guid>http://r9y9.github.io/categories/jupyter/</guid>
       <description></description>

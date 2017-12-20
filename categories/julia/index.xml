@@ -6,10 +6,22 @@
     <description>Recent content in Julia on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 09 Jun 2017 21:58:50 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 21 Dec 2017 00:00:00 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/categories/julia/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]</title>
+      <link>http://r9y9.github.io/blog/2017/12/21/jupyter-cxx/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2017/12/21/jupyter-cxx/</guid>
+      <description>Jupyter Advent Calendar 2017 21日目の記事です。
+C++をJupyterで使う方法はいくつかあります。この記事では、僕が試したことのある以下の4つの方法について、比較しつつ紹介したいと思います。
+ root/cling 付属のカーネル root/root 付属のカーネル xeus-cling Keno/Cxx.jl をIJuliaで使う  まとめとして、簡単に特徴などを表にまとめておきますので、選ぶ際の参考にしてください。詳細な説明は後に続きます。
+    cling ROOT xeus-cling Cxx.jl + IJulia     C++インタプリタ実装 C++ C++ C++ Julia + C++   (Tab) Code completion ○ ○ ○ x   Cインタプリタ △1 △ △ ○   %magics x %%cpp, %%jsroot, その他 x △2   他言語との連携 x Python, R 3 x Julia   バイナリ配布 公式リンク 公式リンク (python2系向け） condaで提供 △4   オンラインデモ x rootdemo binderリンク x    共通事項</description>
+    </item>
     
     <item>
       <title>言語処理100本ノック 2015 をすべてやりました</title>

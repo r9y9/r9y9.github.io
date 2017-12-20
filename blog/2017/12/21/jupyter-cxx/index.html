@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.20.5" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017] - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-12-21">December 21, 2017</time></span>
+			<section itemprop="entry-text">
+				
+
+<p><img src="/images/jupyter-cxx/jupyter-cxx-demo.gif" alt="" /></p>
+
+<p><a href="https://qiita.com/advent-calendar/2017/jupyter">Jupyter Advent Calendar 2017</a> 21日目の記事です。</p>
+
+<p>C++をJupyterで使う方法はいくつかあります。この記事では、僕が試したことのある以下の4つの方法について、比較しつつ紹介したいと思います。</p>
+
+<ol>
+<li><a href="https://github.com/root-project/cling">root/cling</a> 付属のカーネル</li>
+<li><a href="https://github.com/root-project/cling">root/root</a> 付属のカーネル</li>
+<li><a href="https://github.com/QuantStack/xeus-cling">xeus-cling</a></li>
+<li><a href="https://github.com/Keno/Cxx.jl">Keno/Cxx.jl</a> をIJuliaで使う</li>
+</ol>
+
+<p>まとめとして、簡単に特徴などを表にまとめておきますので、選ぶ際の参考にしてください。詳細な説明は後に続きます。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th><a href="https://github.com/root-project/cling">cling</a></th>
+<th><a href="https://github.com/root-project/root">ROOT</a></th>
+<th><a href="https://github.com/QuantStack/xeus-cling">xeus-cling</a></th>
+<th><a href="(https://github.com/Keno/Cxx.jl)">Cxx.jl</a> + <a href="https://github.com/JuliaLang/IJulia.jl">IJulia</a></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>C++インタプリタ実装</td>
+<td>C++</td>
+<td>C++</td>
+<td>C++</td>
+<td>Julia + C++</td>
+</tr>
+
+<tr>
+<td>(Tab) Code completion</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>x</td>
+</tr>
+
+<tr>
+<td>Cインタプリタ</td>
+<td>△<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup></td>
+<td>△</td>
+<td>△</td>
+<td>○</td>
+</tr>
+
+<tr>
+<td>%magics</td>
+<td>x</td>
+<td>%%cpp, %%jsroot, その他</td>
+<td>x</td>
+<td>△<sup class="footnote-ref" id="fnref:6"><a rel="footnote" href="#fn:6">2</a></sup></td>
+</tr>
+
+<tr>
+<td>他言語との連携</td>
+<td>x</td>
+<td>Python, R <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup></td>
+<td>x</td>
+<td>Julia</td>
+</tr>
+
+<tr>
+<td>バイナリ配布</td>
+<td><a href="https://root.cern.ch/download/cling/">公式リンク</a></td>
+<td><a href="https://root.cern.ch/downloading-root">公式リンク</a> (python2系向け）</td>
+<td>condaで提供</td>
+<td>△<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">4</a></sup></td>
+</tr>
+
+<tr>
+<td>オンラインデモ</td>
+<td>x</td>
+<td><a href="https://swanserver.web.cern.ch/swanserver/rootdemo/">rootdemo</a></td>
+<td><a href="https://mybinder.org/v2/gh/QuantStack/xeus-cling/0.0.7-binder?filepath=notebooks%2Fxcpp.ipynb">binderリンク</a></td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>共通事項</strong></p>
+
+<p>すべて、clang/llvmをC++インタプリタのベースにしています。Cxx.jl以外は、C++インタプリタであるclingをベースに、さらにその上にjupyterカーネルを実装しています。</p>
+
+<h2 id="1-cling">1. cling</h2>
+
+<p>clingは、いわずとしれた（？）C++インタプリタ実装です。後述するROOTという data analysis framework の一部として、CERNによって開発されています。(20年くらい前の) 古くからあったCINTというC++インタプリタ実装が、clangを使って書き直された、という歴史があります。clingプロジェクトの一環としてJupyterカーネルが開発されています。</p>
+
+<p><strong>良いところ</strong></p>
+
+<ul>
+<li>clingの起動が速いのでストレスが少ない <sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">5</a></sup></li>
+</ul>
+
+<p><strong>イマイチなところ</strong></p>
+
+<ul>
+<li>IPythonだと使える <code>%time</code> のようなマジックはない</li>
+<li>cling本体で良いのでは？感が否めない。cling本体のREPLを使えば、Ctrl+Rによるヒストリ検索も使えるし…</li>
+</ul>
+
+<p><strong>使ってみた感想まとめ</strong></p>
+
+<p>個人的には、Jupyterは可視化と組み合わせてこそ良さがあると思っているのもありますが、あえてJupyterで使う必要性を僕は感じませんでした。cling自体はとても素晴らしいのと、ノートブックとして実行結果ごとコードを保存したい、といった目的でjupyterを使う場合には、良いと思いました。</p>
+
+<p><strong>注意</strong></p>
+
+<p><code>#include &lt;iostream&gt;</code> のあとにcode completionをしようとするとclingが落ちる、というバグがあります。Jupyterの場合はカーネルがリスタートします。</p>
+
+<ul>
+<li><a href="https://github.com/vgvassilev/cling/issues/152">https://github.com/vgvassilev/cling/issues/152</a></li>
+</ul>
+
+<p><strong>参考リンク</strong></p>
+
+<ul>
+<li>公式web: <a href="https://cdn.rawgit.com/root-project/cling/master/www/index.html">https://cdn.rawgit.com/root-project/cling/master/www/index.html</a></li>
+<li>Github: <a href="https://github.com/root-project/cling">https://github.com/root-project/cling</a></li>
+<li>紹介スライド: <a href="http://llvm.org/devmtg/2010-11/Naumann-Cling.pdf">LLVM Developers&rsquo; Meeting, &ldquo;Creating cling, an interactive interpreter interface for clang&rdquo;, Axel Naumann, Philippe Canal, Paul Russo, Vassil Vassilev, 04.11.2010, San Jose, CA, United States</a></li>
+</ul>
+
+<h2 id="2-root">2. ROOT</h2>
+
+<p>ROOTの説明を公式ページから引用します：</p>
+
+<blockquote>
+<p>A modular scientific software framework. It provides all the functionalities needed to deal with big data processing, statistical analysis, visualisation and storage. It is mainly written in C++ but integrated with other languages such as Python and R.</p>
+</blockquote>
+
+<p>日本語の情報が少ない印象ですが、<a href="https://github.com/akira-okumura/RHEA/wiki/ROOT-%E8%AC%9B%E7%BF%92%E4%BC%9A-2017">ROOT 講習会 2017 | 高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)</a> によると、実験系素粒子物理学では標準的なデータ解析ソフトウェア・ライブラリ群のようです。</p>
+
+<p>ROOTプロジェクト自体にclingを含みますが、clingが提供するjupyterカーネルとは別で、<a href="https://github.com/root-project/root/tree/master/bindings/pyroot/JupyROOT">JupyROOT</a> というカーネルが開発されています。</p>
+
+<p><strong>良いところ</strong></p>
+
+<ul>
+<li>PythonとC++をミックスできる。<code>%%cpp</code> magicでC++関数を定義して、ホスト（python) 側から呼び出せる</li>
+<li><code>%%jsroot</code> magic により、グラフをインタラクティブに動かせる</li>
+<li>IPythonで使えるmagicが使える（<code>%timeit</code>, <code>%time</code>, <code>%load_ext</code>等）</li>
+</ul>
+
+<p><strong>イマイチなところ</strong></p>
+
+<ul>
+<li>Numpyやmatplotlibなど、Pythonを用いた数値計算ではデファクトに近いツールとの連携は微妙に思いました <sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">6</a></sup>。cythonのように、手軽にnumpy arrayをC++に渡す、といった方法はなさそう・・・？（あったら教えてください）</li>
+<li>ROOTの（でかい）APIを覚えないと使えなさそうで、ハードルが高い</li>
+<li>公式のbinderのデモノートブック、ちょいちょいカーネルが落ちる…</li>
+</ul>
+
+<p><strong>使ってみた感想まとめ</strong></p>
+
+<p>Jupyterカーネルはclingのものよりも良いと思いました。PythonとC++をミックスできるのが特に良いと思います。個人的には、ROOTが機能もりもりのデカイソフトウェアなことがあまり好きになれず、使い込んでいないのですが、ROOTのAPIに慣れた人、あるいは好きになれる人には、良いと思います。</p>
+
+<p>clingだと <code>#include &lt;iostream&gt;</code>のあとにcode completionで落ちる、というバグがありまたが、ROOT付属のcling (<code>ROOT 6.10/08</code> をソースからビルドして使いました) ではそのバグはありませんでした。</p>
+
+<p><strong>参考リンク</strong></p>
+
+<ul>
+<li>公式ページ: <a href="https://root.cern.ch/">https://root.cern.ch/</a></li>
+<li>Github: <a href="https://github.com/root-project/root">https://github.com/root-project/root</a></li>
+<li>オンラインデモ: <a href="https://swanserver.web.cern.ch/swanserver/rootdemo/">https://swanserver.web.cern.ch/swanserver/rootdemo/</a></li>
+</ul>
+
+<h2 id="3-xeus-cling">3. xeus-cling</h2>
+
+<p>先月 11月30日に、<a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92">Jupyter blog で紹介</a> されたカーネルです。名前の通りclingをベースにしています。C++インタプリタとしては機能的にcling付属カーネルと同じですが、<a href="https://github.com/QuantStack/xeus">xeus</a> というJupyter kernel protocolのC++実装をベースにしている点が異なります。</p>
+
+<p><strong>良いところ</strong></p>
+
+<ul>
+<li>condaでパッケージとして提供されているので、インストールが楽。clang/clingも併せてインストールしてくれます</li>
+<li>同じ開発元が、<a href="https://github.com/QuantStack/xplot">xplot</a> という可視化ライブラリを提供している（ただしalphaバージョン）</li>
+<li>標準ライブラリのヘルプが <code>?</code> コマンドで確認できます (例. <code>?std::vector</code>)</li>
+</ul>
+
+<p><strong>イマイチなところ</strong></p>
+
+<ul>
+<li>外部ライブラリをロードしようとしたら動きませんでした（なので <a href="https://github.com/QuantStack/xeus-cling/pull/94">プルリク</a> 投げました（が、いい方法ではなかったようでcloseされました</li>
+<li><code>%timeit</code> の実装があったので試してみましたが、エラーが出て動きませんでした</li>
+</ul>
+
+<p><strong>使ってみた感想まとめ</strong></p>
+
+<p>少しalphaバージョンの印象を受けました。xplotなど周辺ツールへの期待がありますが、個人的にはmatplotlib等pythonの可視化ツールでいいのでは…という気持ちになりました。</p>
+
+<p><strong>参考リンク</strong></p>
+
+<ul>
+<li>Github: <a href="https://github.com/QuantStack/xeus-cling">https://github.com/QuantStack/xeus-cling</a></li>
+<li>紹介記事: <a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92">https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92</a></li>
+</ul>
+
+<h2 id="4-cxx-jl-ijulia-jl">4. Cxx.jl + IJulia.jl</h2>
+
+<p>Cxx.jlは、clangをベースにしたJuliaのC++インタフェースです。JuliaにはIJuliaというJupyterカーネルの実装があるので、IJuliaとCxx.jlを使えば、Jupyter上でC++を使うことができます。過去にCxx.jlに関する記事をいくつか書きましたので、そのリンクを貼っておきます。</p>
+
+<ul>
+<li><a href="/blog/2016/01/24/passing-julia-expressions-to-cxx/">Cxx.jlを用いてJulia expression/value をC++に埋め込む実験 | LESS IS MORE</a></li>
+<li><a href="/blog/2015/12/22/cxx-jl/">Cxx.jl を使ってみた感想 + OpenCV.jl, Libfreenect2.jl の紹介 | LESS IS MORE</a></li>
+</ul>
+
+<p><strong>良いところ</strong></p>
+
+<ul>
+<li>JuliaとC++をミックスできます。過去記事に書きましたが、例えばC++関数内でJuliaのプログレスバーを使ったりできます</li>
+<li>C++インタプリタとCインタプリタを切り替えられます</li>
+<li><code>icxx</code> と <code>cxx</code> マクロで、それぞれローカル/グローバルスコープを切り替えられます。</li>
+<li>Juliaの配列をC++に渡すのは非常に簡単にできます。例を以下に示します</li>
+</ul>
+
+<pre><code class="language-jl">C++ &gt; #include &lt;iostream&gt;
+true
+
+julia&gt; cxx&quot;&quot;&quot;
+       template &lt;class T&gt;
+       void f(T x, int n) {
+           for (int i = 0; i &lt; n; ++i) {
+               std::cout &lt;&lt; x[i] &lt;&lt; std::endl;
+           }
+       }&quot;&quot;&quot;;
+
+julia&gt; x = rand(5)
+10-element Array{Float64,1}:
+ 0.593086
+ 0.736548
+ 0.344246
+ 0.390799
+ 0.226175
+
+julia&gt; icxx&quot;f($(pointer(x)), $(length(x)));&quot;
+0.593086
+0.736548
+0.344246
+0.390799
+0.226175
+</code></pre>
+
+<p><strong>イマイチなところ</strong></p>
+
+<ul>
+<li>Cxxパッケージを読み込むのに多少時間がかかります。僕の環境では（プリコンパイルされた状態で）2.5秒程度でした</li>
+<li>(Tab) Code completionは実装されていません <a href="https://github.com/Keno/Cxx.jl/issues/61">#61</a></li>
+<li><code>icxx</code> or <code>cxx</code> で囲まないといけず、syntax highlightはされません</li>
+</ul>
+
+<p><strong>使ってみた感想まとめ</strong></p>
+
+<p>僕は一年以上Cxx.jlを使っているので、バイアスも入っていると思いますが、かなり使いやすいと思います。パッケージのロードに時間がかかるのは、何度もカーネルやjuliaを再起動したりしなければ、まったく気になりません。<a href="https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1">IJuliaの設計上の理由</a> により、magicはありませんが、例えば <code>%time</code> は <code>@time</code> マクロで十分であり、不便に感じません。</p>
+
+<p><strong>参考リンク</strong></p>
+
+<ul>
+<li>IJulia: <a href="https://github.com/JuliaLang/IJulia.jl">https://github.com/JuliaLang/IJulia.jl</a></li>
+<li>Cxx : <a href="https://github.com/Keno/Cxx.jl">https://github.com/Keno/Cxx.jl</a></li>
+</ul>
+
+<h2 id="まとめ">まとめ</h2>
+
+<ul>
+<li>C++と他言語のやりとりのスムースさの観点から、やはり僕は対話環境でC++を使うならCxx.jlが最高だと思いました。Cxx + JuliaのREPLも便利ですが、Cxx + IJuliaも良いと思います。</li>
+<li>ただし、C++単体でしか使わない、ということであれば、cling or xeus-clingが良いと思います。ただし xeus-clingは、前述の通り外部ライブラリを読みこもうとするとエラーになる問題があったので、外部ライブラリを読み込んで使用したい場合はパッチ (<a href="https://github.com/QuantStack/xeus-cling/pull/94">xeus-cling/#94</a>) を当てた方がよいかもしれません</li>
+<li>xeus-clingには、Jupyterブログにのっていたのでどんなものかと思って試してみましたが、周辺ツール含め思ってたよりalpha版のようでした。また、他と比べての機能的な優位性はあまり感じませんでした。ただし、condaパッケージとして提供されているので、敷居が一番低いのは嬉しいですね</li>
+<li>ROOTのjupyter kernelは、C++とpythonをミックスできるのが特に良く、素晴らしいと思いました。また <code>%%cpp</code> magicの他にも、ipythonで使える <code>%timeit</code> などのmagicも使えるのは、ユーザにとっては嬉しいです。Cxx.jlを除けば、ROOTのカーネルが一番良いと思いました。</li>
+</ul>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92">Interactive Workflows for C++ with Jupyter – Jupyter Blog</a></li>
+<li><a href="https://qiita.com/mugwort_rc/items/b8087d1b6f9498b037d5">C++11/14/17インタプリタ環境 Jupyter-Cling - Qiita</a></li>
+<li><a href="https://qiita.com/sasaki77/items/f6253e1d6638fba0e744">JupyterにC++のノートのためのclingカーネルを追加する [Mac] - Qiita</a></li>
+<li><a href="https://github.com/akira-okumura/RHEA">高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)</a></li>
+</ul>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">clangをベースにしているので原理的には可能だと思いますが、少なくともjupyterカーネルとしてはありません
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:6">Juliaのmacroを使えばよい、というスタンスで、提供していません。 <a href="https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1">参考リンク</a>
+ <a class="footnote-return" href="#fnref:6"><sup>[return]</sup></a></li>
+<li id="fn:3"><a href="https://root.cern.ch/">公式ホームページ</a> より引用: It is mainly written in C++ but integrated with other languages such as Python and R.
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:2">linux向け
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:4">Cxx.jlだと、パッケージのコンパイルに10秒かかる、とか過去にありました。最近は改善されていますが
+ <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
+<li id="fn:5"><a href="https://github.com/rootpy/rootpy">https://github.com/rootpy/rootpy</a> ライブラリはありますが、結局このライブラリのAPIを覚えないといけないという…はい…
+ <a class="footnote-return" href="#fnref:5"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</body>
+</html>
+
