@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/</loc>
+    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/</loc>
     <lastmod>2017-12-22T15:30:00+09:00</lastmod>
   </url>
@@ -361,7 +366,7 @@
   
   <url>
     <loc>http://r9y9.github.io/tags/dnn/</loc>
-    <lastmod>2017-12-22T15:30:00+09:00</lastmod>
+    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -463,7 +468,7 @@
   
   <url>
     <loc>http://r9y9.github.io/</loc>
-    <lastmod>2017-12-22T15:30:00+09:00</lastmod>
+    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -535,7 +540,7 @@
   
   <url>
     <loc>http://r9y9.github.io/post/</loc>
-    <lastmod>2017-12-22T15:30:00+09:00</lastmod>
+    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -553,7 +558,7 @@
   
   <url>
     <loc>http://r9y9.github.io/categories/python/</loc>
-    <lastmod>2017-12-22T15:30:00+09:00</lastmod>
+    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -583,7 +588,7 @@
   
   <url>
     <loc>http://r9y9.github.io/tags/speech/</loc>
-    <lastmod>2017-12-22T15:30:00+09:00</lastmod>
+    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -625,7 +630,7 @@
   
   <url>
     <loc>http://r9y9.github.io/categories/speech-synthesis/</loc>
-    <lastmod>2017-12-22T15:30:00+09:00</lastmod>
+    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -656,6 +661,12 @@
   <url>
     <loc>http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</loc>
     <lastmod>2013-10-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/tags/wavenet/</loc>
+    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
     <priority>0</priority>
   </url>
   

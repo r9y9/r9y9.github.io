@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wavenet on LESS IS MORE</title>
+    <link>http://r9y9.github.io/tags/wavenet/</link>
+    <description>Recent content in Wavenet on LESS IS MORE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 28 Jan 2018 00:14:35 +0900</lastBuildDate>
+    
+	<atom:link href="http://r9y9.github.io/tags/wavenet/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]</title>
+      <link>http://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/</link>
+      <pubDate>Sun, 28 Jan 2018 00:14:35 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/</guid>
+      <description>コード: https://github.com/r9y9/wavenet_vocoder 音声サンプル: https://r9y9.github.io/wavenet_vocoder/  三行まとめ  Local / global conditioning を最低要件と考えて、WaveNet を実装しました DeepVoice3 / Tacotron2 の一部として使えることを目標に作りました PixelCNN++ の旨味を少し拝借し、16-bit linear PCMのscalarを入力として、（まぁまぁ）良い22.5kHzの音声を生成させるところまでできました  Tactron2 は、あとはやればほぼできる感じですが、直近では僕の中で優先度が低めのため、しばらく実験をする予定はありません。興味のある方はやってみてください。
+音声サンプル 左右どちらかが合成音声です^^
+Your browser does not support the audio element.  Your browser does not support the audio element. 
+Your browser does not support the audio element.  Your browser does not support the audio element. 
+Your browser does not support the audio element.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -50,7 +50,7 @@
     <item>
       <title>Dnn</title>
       <link>http://r9y9.github.io/tags/dnn/</link>
-      <pubDate>Fri, 22 Dec 2017 15:30:00 +0900</pubDate>
+      <pubDate>Sun, 28 Jan 2018 00:14:35 +0900</pubDate>
       
       <guid>http://r9y9.github.io/tags/dnn/</guid>
       <description></description>
@@ -131,7 +131,7 @@
     <item>
       <title>Speech</title>
       <link>http://r9y9.github.io/tags/speech/</link>
-      <pubDate>Fri, 22 Dec 2017 15:30:00 +0900</pubDate>
+      <pubDate>Sun, 28 Jan 2018 00:14:35 +0900</pubDate>
       
       <guid>http://r9y9.github.io/tags/speech/</guid>
       <description></description>
@@ -143,6 +143,15 @@
       <pubDate>Wed, 16 Aug 2017 23:10:56 +0900</pubDate>
       
       <guid>http://r9y9.github.io/tags/speech-synthesis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wavenet</title>
+      <link>http://r9y9.github.io/tags/wavenet/</link>
+      <pubDate>Sun, 28 Jan 2018 00:14:35 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/wavenet/</guid>
       <description></description>
     </item>
     
