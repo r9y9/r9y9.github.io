@@ -17,7 +17,7 @@
       <pubDate>Sun, 28 Jan 2018 00:14:35 +0900</pubDate>
       
       <guid>http://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/</guid>
-      <description>コード: https://github.com/r9y9/wavenet_vocoder 音声サンプル: https://r9y9.github.io/wavenet_vocoder/  三行まとめ  Local / global conditioning を最低要件と考えて、WaveNet を実装しました DeepVoice3 / Tacotron2 の一部として使えることを目標に作りました PixelCNN++ の旨味を少し拝借し、16-bit linear PCMのscalarを入力として、（まぁまぁ）良い22.5kHzの音声を生成させるところまでできました  Tactron2 は、あとはやればほぼできる感じですが、直近では僕の中で優先度が低めのため、しばらく実験をする予定はありません。興味のある方はやってみてください。
+      <description>コード: https://github.com/r9y9/wavenet_vocoder 音声サンプル: https://r9y9.github.io/wavenet_vocoder/  三行まとめ  Local / global conditioning を最低要件と考えて、WaveNet を実装しました DeepVoice3 / Tacotron2 の一部として使えることを目標に作りました PixelCNN++ の旨味を少し拝借し、16-bit linear PCMのscalarを入力として、（まぁまぁ）良い22.5kHzの音声を生成させるところまでできました  Tacotron2 は、あとはやればほぼできる感じですが、直近では僕の中で優先度が低めのため、しばらく実験をする予定はありません。興味のある方はやってみてください。
 音声サンプル 左右どちらかが合成音声です^^
 Your browser does not support the audio element.  Your browser does not support the audio element. 
 Your browser does not support the audio element.  Your browser does not support the audio element. 
