@@ -6,10 +6,23 @@
     <description>Recent content in Speech Synthesis on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Jan 2018 00:14:35 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 20 May 2018 14:21:30 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/categories/speech-synthesis/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</title>
+      <link>http://r9y9.github.io/blog/2018/05/20/tacotron2/</link>
+      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2018/05/20/tacotron2/</guid>
+      <description>Thank you for comming to see my blog post about WaveNet text-to-speech.
+Your browser does not support the audio element. 
+ 論文リンク: https://arxiv.org/abs/1712.05884 オンラインデモ: Tacotron2: WaveNet-based text-to-speech demo コード r9y9/wavenet_vocoder, Rayhane-mamah/Tacotron-2 音声サンプル: https://r9y9.github.io/wavenet_vocoder/  三行まとめ  自作WaveNet (WN) と既存実装Tacotron 2 (WNを除く) を組み合わせて、英語TTSを作りました LJSpeechを学習データとした場合、自分史上 最高品質 のTTSができたと思います Tacotron 2 の解説はしません。申し訳ありません（なぜなら僕がまだ十分に読み込んでいないため）  背景 過去に、WaveNetを実装しました（参考: WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]）。過去事 から引用します。
+ Tacotron2 は、あとはやればほぼできる感じですが、直近では僕の中で優先度が低めのため、しばらく実験をする予定はありません。興味のある方はやってみてください。
+ やりたいことの一つとしてあったとはいえ、当初の予定通り、スクラッチでTacotron 2を実装する時間は取れなかったのですが、既存実装を使ってみたところ十分に上手く動いているように思えたので、ありがたく使わせていただき、WaveNet TTSを実現することができました。というわけで、結果をここにカジュアルに残しておこうという趣旨の記事になります。</description>
+    </item>
     
     <item>
       <title>WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]</title>
