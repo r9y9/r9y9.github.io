@@ -328,13 +328,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/c&#43;&#43;/</loc>
+    <loc>http://r9y9.github.io/categories/c&#43;&#43;/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/c&#43;&#43;/</loc>
+    <loc>http://r9y9.github.io/tags/c&#43;&#43;/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
@@ -352,13 +352,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/corpus/</loc>
+    <loc>http://r9y9.github.io/categories/corpus/</loc>
     <lastmod>2017-11-12T03:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/corpus/</loc>
+    <loc>http://r9y9.github.io/tags/corpus/</loc>
     <lastmod>2017-11-12T03:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
@@ -424,13 +424,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/julia/</loc>
+    <loc>http://r9y9.github.io/categories/julia/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/julia/</loc>
+    <loc>http://r9y9.github.io/tags/julia/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
@@ -460,13 +460,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/jupyter/</loc>
+    <loc>http://r9y9.github.io/categories/jupyter/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/jupyter/</loc>
+    <loc>http://r9y9.github.io/tags/jupyter/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
     <priority>0</priority>
   </url>
@@ -526,13 +526,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/nlp/</loc>
+    <loc>http://r9y9.github.io/categories/nlp/</loc>
     <lastmod>2017-06-09T21:58:50+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/nlp/</loc>
+    <loc>http://r9y9.github.io/tags/nlp/</loc>
     <lastmod>2017-06-09T21:58:50+09:00</lastmod>
     <priority>0</priority>
   </url>
@@ -556,14 +556,14 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/python/</loc>
-    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
+    <loc>http://r9y9.github.io/categories/python/</loc>
+    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/python/</loc>
-    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
+    <loc>http://r9y9.github.io/tags/python/</loc>
+    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -628,14 +628,14 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/speech-synthesis/</loc>
-    <lastmod>2017-08-16T23:10:56+09:00</lastmod>
+    <loc>http://r9y9.github.io/categories/speech-synthesis/</loc>
+    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/speech-synthesis/</loc>
-    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
+    <loc>http://r9y9.github.io/tags/speech-synthesis/</loc>
+    <lastmod>2017-08-16T23:10:56+09:00</lastmod>
     <priority>0</priority>
   </url>
   
