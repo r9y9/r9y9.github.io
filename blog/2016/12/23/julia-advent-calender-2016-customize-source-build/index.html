@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -36,9 +36,9 @@
 
 <h2 id="はじめに">はじめに</h2>
 
-<p>Juilaを最も簡単にインストールする方法は、<a href="http://julialang.org/downloads/">公式のダウンロードページ</a>からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。</p>
+<p>Juilaを最も簡単にインストールする方法は、<a href="http://julialang.org/downloads/">公式のダウンロードページ</a>からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。</p>
 
-<p>僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。</p>
+<p>僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。</p>
 
 <h2 id="下準備">下準備</h2>
 
@@ -128,7 +128,7 @@ override CXX=g++-6
 
 <h2 id="ビルド時のtips">ビルド時のTips</h2>
 
-<p>Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、</p>
+<p>Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、</p>
 
 <ul>
 <li>llvm</li>
@@ -138,7 +138,7 @@ override CXX=g++-6
 <li>libunwind</li>
 </ul>
 
-<p>あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに <code>make clean &amp;&amp; make</code> をして、案の定駄目で、よくわからずに <code>make distcleannall</code> してしまうこともありました（<code>distcleanall</code>が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup>。過去の失敗から、僕が学んできたTipsを紹介します。</p>
+<p>あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに <code>make clean &amp;&amp; make</code> をして、案の定駄目で、よくわからずに <code>make distcleannall</code> してしまうこともありました（<code>distcleanall</code>が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">4</a></sup>。過去の失敗から、僕が学んできたTipsを紹介します。</p>
 
 <h3 id="プロジェクトトップmakefileのcleanコマンドを適切に使い分ける">プロジェクトトップMakefileのcleanコマンドを適切に使い分ける</h3>
 

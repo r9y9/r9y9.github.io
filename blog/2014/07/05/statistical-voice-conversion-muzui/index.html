@@ -2,9 +2,9 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.19-DEV" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 <link rel="stylesheet" href="/css/normalize.css">
 <link rel="stylesheet" href="/css/skeleton.css">
@@ -26,7 +26,7 @@
 
 
 	<main role="main">
-		<article itemscope itemtype="http://schema.org/BlogPosting">
+		<article itemscope itemtype="https://schema.org/BlogPosting">
 			<h1 class="entry-title" itemprop="headline">統計的声質変換クッソムズすぎワロタ</h1>
 			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-07-05">July 05, 2014</time></span>
 			<section itemprop="entry-text">
@@ -107,7 +107,7 @@ tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を�
 
 <p>まず、音声が時間的に独立なわけないですよね。フレームごとに独立に変換すると、時間的に不連続な点が出てきてしまいます。その結果、ちょっとノイジーな音声になってしまったのではないかと考えられます。</p>
 
-<p>これに対する解決法としては、戸田先生の論文にあるように、動的特徴量も併せてGMMを学習して、系列全体の確率が最大となるように変換を考えるトラジェクトリベースのパラメータ生成方法があります。<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup></p>
+<p>これに対する解決法としては、戸田先生の論文にあるように、動的特徴量も併せてGMMを学習して、系列全体の確率が最大となるように変換を考えるトラジェクトリベースのパラメータ生成方法があります。<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup></p>
 
 <p>さて、やってみます。参照音声、目標音声は↑で使ったサンプルと同じです。</p>
 
@@ -214,7 +214,7 @@ tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を�
 			</div>
 
 		<div class="copyright">Copyright &copy;
-			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
 
 			<a href="https://github.com/r9y9">
 				<span class="github">r9y9@Github</span>
@@ -267,9 +267,9 @@ tp://www.festvox.org/cmu_arctic/">CMU_ARCTIC speech synthesis databases</a>を�
      });
  </script>
 
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+ <script type="text/javascript" async
+   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+ </script>
 
 
 

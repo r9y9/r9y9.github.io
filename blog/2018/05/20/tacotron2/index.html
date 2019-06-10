@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -82,7 +82,7 @@ Your browser does not support the audio element.
 <h3 id="wavenet">WaveNet</h3>
 
 <ul>
-<li>1000k step以上訓練されたモデル (2018/1/27に作ったもの、10日くらい<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>学習した）をベースに、さらに 320k step学習（約3日）しました。再学習したのは、以前のコードには <a href="https://github.com/r9y9/wavenet_vocoder/issues/33">wavenet_vocoder/issues/33</a> こんなバグがあったからです。</li>
+<li>1000k step以上訓練されたモデル (2018/1/27に作ったもの、10日くらい<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>学習した）をベースに、さらに 320k step学習（約3日）しました。再学習したのは、以前のコードには <a href="https://github.com/r9y9/wavenet_vocoder/issues/33">wavenet_vocoder/issues/33</a> こんなバグがあったからです。</li>
 <li>評価には、exponential moving averagingされたパラメータを使いました。decay パラメータはTaco2論文と同じ 0.9999</li>
 <li>学習には、Mel-spectrogram prediction networkにより出力される Ground-truth-aligned (GTA) なメルスペクトログラムではなく、生音声から計算されるメルスペクトログラムを使いました。時間の都合上そうしましたが、GTAを使うとより品質が向上すると考えられます</li>
 </ul>
@@ -90,7 +90,7 @@ Your browser does not support the audio element.
 <h3 id="tacotron-2-mel-spectrogram-prediction">Tacotron 2 (mel-spectrogram prediction)</h3>
 
 <ul>
-<li><a href="https://github.com/Rayhane-mamah/Tacotron-2">https://github.com/Rayhane-mamah/Tacotron-2</a> にはWaveNet実装も含まれていますが、mel-spectrogram prediction の部分だけ使用しました<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup></li>
+<li><a href="https://github.com/Rayhane-mamah/Tacotron-2">https://github.com/Rayhane-mamah/Tacotron-2</a> にはWaveNet実装も含まれていますが、mel-spectrogram prediction の部分だけ使用しました<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup></li>
 <li><a href="https://github.com/Rayhane-mamah/Tacotron-2/issues/30#issue-317360759">https://github.com/Rayhane-mamah/Tacotron-2/issues/30#issue-317360759</a> で公開されている 182k step学習されたモデルを、さらに7k stepほど（数時間くらい）学習させました。再学習させた理由は、自分の実装とRayhane氏の実装で想定するメルスペクトログラムのレンジが異なっていたためです（僕: <code>[0, 1]</code>, Rayhane: <code>[-4, 4]</code>）。そういう経緯から、<code>[-4, 4]</code> のレンジであったところ，<code>[0, 4]</code> にして学習しなおしました。直接 <code>[0, 1]</code> にして学習しなかったのは（それでも動く、と僕は思っているのですが）、mel-spectrogram のレンジを大きく取った方が良い、という報告がいくつかあったからです（例えば <a href="https://github.com/Rayhane-mamah/Tacotron-2/issues/4#issuecomment-377728945">https://github.com/Rayhane-mamah/Tacotron-2/issues/4#issuecomment-377728945</a> )。Attention seq2seq は経験上学習が難しいので、僕の直感よりも先人の知恵を優先することにした次第です。WNに入力するときには、 Taco2が出力するメルスペクトログラムを <code>c = np.interp(c, (0, 4), (0, 1))</code> とレンジを変換して与えました</li>
 </ul>
 

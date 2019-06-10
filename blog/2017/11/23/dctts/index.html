@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -67,7 +67,7 @@
 <p>ほぼ同時期に発表されたDeepVoice3も同じく、CNNをベースとするものです。論文を読みましたが、モチベーションとアプローチの基本は DeepVoice3 と同じに思いました。しかし、ネットワーク構造は DeepVoice3とは大きく異なります。いくつか提案法の特徴を挙げると、以下のとおりです。</p>
 
 <ul>
-<li>ネットワークが深い（DeepVoice3だとEncoder, Decoder, Converter それぞれ10未満ですが、この論文ではDecoderだけで20以上）。すべてにおいて深いです。カーネルサイズは3と小さいです<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">1</a></sup></li>
+<li>ネットワークが深い（DeepVoice3だとEncoder, Decoder, Converter それぞれ10未満ですが、この論文ではDecoderだけで20以上）。すべてにおいて深いです。カーネルサイズは3と小さいです<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">1</a></sup></li>
 <li>Fully-connected layer ではなく1x1 convolutionを使っています</li>
 <li>チャンネル数が大きい（256とか512とか、さらにネットワーク内で二倍になっていたりする）。DeepVoice3だとEncoderは64です</li>
 <li>レイヤーの深さに対して指数上に大きくなるDilationを使っています（DeepVoiceではすべてdilation=1）</li>
@@ -82,7 +82,7 @@
 
 <p><a href="https://keithito.com/LJ-Speech-Dataset/">LJSpeech Dataset</a> を使って、17時間くらい（26.5万ステップ）学習しました。計算資源の都合上、SSRNのチャンネル数は512ではなくその半分の256にしました。</p>
 
-<p>なお、実装するにあたっては、厳密に再現しようとはせず、色々雰囲気でごまかしました。もともとDeepVoice3の実装をしていたのもあり、アイデアをいくつか借りています。例えば、デコーダの出力をいつ止めるか、というdone flag predictionをネットワークに入れています。Dropoutについて言及がありませんが、ないと汎化しにくい印象があったので<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">2</a></sup>、足しました。</p>
+<p>なお、実装するにあたっては、厳密に再現しようとはせず、色々雰囲気でごまかしました。もともとDeepVoice3の実装をしていたのもあり、アイデアをいくつか借りています。例えば、デコーダの出力をいつ止めるか、というdone flag predictionをネットワークに入れています。Dropoutについて言及がありませんが、ないと汎化しにくい印象があったので<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">2</a></sup>、足しました。</p>
 
 <p>計算速度は、バッチサイズ16で、4.3 step/sec くらいの計算速度でした。僕のマシンのGPUはGTX 1080Ti です。使用したハイパーパラメータは<a href="https://github.com/r9y9/deepvoice3_pytorch/blob/70dc880fae185d96effaee97f0ce55b5c0d13b61/hparams.py">こちら</a>です。学習に使用したコマンドは以下です（メモ）。</p>
 
@@ -221,7 +221,7 @@ Your browser does not support the audio element.
 <li>上記にも関連して、勾配のノルムが爆発的に大きくなることがしばしばあり、クリッピングを入れました（重要でした）</li>
 <li>Binary divergenceをロスにいれても品質には影響がないように感じました。ただしないと学習初期に勾配が爆発しやすかったです</li>
 <li>提案法は色々なアイデアが盛り込まれているのですが、実際のところどれが重要な要素なのか、といった点に関しては、論文では明らかにされていなかったように思います。今後その辺りを明らかにする論文があってもいいのではないかと思いました。</li>
-<li>学習に使うGPUメモリ量、Tacotronより多い（SSRNのチャンネル数512, バッチサイズ16で <del>8GBくらい</del> 5~6GB くらいでした）……厳しい……<sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">3</a></sup></li>
+<li>学習に使うGPUメモリ量、Tacotronより多い（SSRNのチャンネル数512, バッチサイズ16で <del>8GBくらい</del> 5~6GB くらいでした）……厳しい……<sup class="footnote-ref" id="fnref:5"><a href="#fn:5">3</a></sup></li>
 <li>2017/12/19追記: Dropoutなしだと、入力テキストとは無縁の英語らしき何かが生成されるようになってしまいました。Dropoutはやはり重要でした</li>
 </ul>
 

@@ -6,10 +6,24 @@
     <description>Recent content in Posts on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 20 May 2018 14:21:30 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 11 Jun 2019 00:00:30 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>LJSpeech は価値のあるデータセットですが、ニューラルボコーダの品質比較には向かないと思います</title>
+      <link>http://r9y9.github.io/blog/2019/06/11/ljspeech/</link>
+      <pubDate>Tue, 11 Jun 2019 00:00:30 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2019/06/11/ljspeech/</guid>
+      <description>LJSpeech Dataset: https://keithito.com/LJ-Speech-Dataset/  まとめ 最近いろんな研究で LJSpeech が使われていますが、合成音の品質を比べるならクリーンなデータセットを使ったほうがいいですね。でないと、合成音声に含まれるノイズがモデルの限界からくるノイズなのかコーパスの音声が含むノイズ（LJSpeechの場合リバーブっぽい音）なのか区別できなくて、公平に比較するのが難しいと思います。
+例えば、LJSpeechを使うと、ぶっちゃけ WaveGlow がWaveNetと比べて品質がいいかどうかわかんないですよね…1. 例えば最近のNICT岡本さんの研究 (基本周波数とメルケプストラムを用いたリアルタイムニューラルボコーダに関する検討) を引用すると、実際にクリーンなデータで実験すれば（Noise shaping なしで）MOS は WaveNet (4.19) &amp;gt; WaveGlow (3.27) と、結構な差が出たりします。LJSpeechを使った場合の WaveGlow (3.961) &amp;gt; WaveNet (3.885) と比べると大きな差ですね。
+とはいえ、End-to-end音声合成を試すにはとてもいいデータセットであると思うので、積極的に活用しましょう。最近 LibriTTS が公開されたので、そちらも合わせてチェックするといいですね。
+Why LJSpeech LJSpeech は、keithito さんによって2017年に公開された、単一女性話者によって録音された24時間程度の英語音声コーパスです。なぜ近年よく使われて始めているのかと言うと（2019年6月時点でGoogle scholarで27件の引用）、End-to-end 音声合成の研究に用いるデータセットとして、LJSpeechは最もといっていいほど手軽に手に入るからだと考えています。LJSpeech は public domainで配布されており、利用に制限もありませんし、企業、教育機関、個人など様々な立場から自由に使用することができます。End-to-end 音声合成（厳密にはseq2seq モデルの学習）は一般に大量のデータが必要なことが知られていますが、その要件も満たしていることから、特にEnd-to-end音声合成の研究で用いられている印象を受けます。最近だと、FastSpeech: Fast, Robust and Controllable Text to Speech にも使われていましたね。
+個人的な経験 個人的には、過去に以下のブログ記事の内容で使用してきました。
+ Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL] 【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.</description>
+    </item>
     
     <item>
       <title> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</title>

@@ -2,9 +2,9 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.19-DEV" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 <link rel="stylesheet" href="/css/normalize.css">
 <link rel="stylesheet" href="/css/skeleton.css">
@@ -26,7 +26,7 @@
 
 
 	<main role="main">
-		<article itemscope itemtype="http://schema.org/BlogPosting">
+		<article itemscope itemtype="https://schema.org/BlogPosting">
 			<h1 class="entry-title" itemprop="headline">Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</h1>
 			<span class="entry-meta"><time itemprop="datePublished" datetime="2015-12-22">December 22, 2015</time></span>
 			<section itemprop="entry-text">
@@ -45,9 +45,9 @@ Cxx.jl の動作原理については、僕の理解が不十分なため簡単�
 
 <p><a href="https://github.com/Keno/Cxx.jl">https://github.com/Keno/Cxx.jl</a></p>
 
-<p>簡単に説明すると、Cxx.jl とは、Julia から C++ を使用する（e.g. 関数呼び出し、メソッド呼び出し、メンバ変数へのアクセス、etc) ための機能を提供するパッケージです。C++のライブラリを活用したい、あるいはパフォーマンスがシビアな箇所で一部 C++ 使いたい（Cインタフェースを作りたくない<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>）、といった場合に便利です。</p>
+<p>簡単に説明すると、Cxx.jl とは、Julia から C++ を使用する（e.g. 関数呼び出し、メソッド呼び出し、メンバ変数へのアクセス、etc) ための機能を提供するパッケージです。C++のライブラリを活用したい、あるいはパフォーマンスがシビアな箇所で一部 C++ 使いたい（Cインタフェースを作りたくない<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>）、といった場合に便利です。</p>
 
-<p>Cxx.jl の原理についてざっくりといえば、clang を用いて C++ から LLVM IR を生成し、llvmcall を用いて（Just in time に）コードを実行する、という方式のようです<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup></p>
+<p>Cxx.jl の原理についてざっくりといえば、clang を用いて C++ から LLVM IR を生成し、llvmcall を用いて（Just in time に）コードを実行する、という方式のようです<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup></p>
 
 <p>Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード（+コメント）を、Cxx.jl を使うと何ができるのか知りたい場合は、Cxx.jl の README を御覧ください。</p>
 
@@ -84,7 +84,7 @@ Cxx.jl の動作原理については、僕の理解が不十分なため簡単�
 
 <h3 id="cxx-jl-のビルドはどうするのが一番簡単なのか">Cxx.jl のビルドはどうするのが一番簡単なのか</h3>
 
-<p>さて、さらっと書きましたが、今では llvm, clang, lldb　のkf/gallium　ブランチを使えば、比較的簡単に、多少の試行錯誤<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup> で Cxx.jl をビルドして使えます。</p>
+<p>さて、さらっと書きましたが、今では llvm, clang, lldb　のkf/gallium　ブランチを使えば、比較的簡単に、多少の試行錯誤<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup> で Cxx.jl をビルドして使えます。</p>
 
 <h3 id="開発版-llvm-と一緒に-julia-をビルドする">開発版 llvm と一緒に Julia をビルドする</h3>
 
@@ -106,7 +106,7 @@ override LLVM_GIT_VER_LLDB=kf/gallium
 override LLVM_GIT_VER_CLANG=kf/gallium
 </code></pre>
 
-<p>一部、LLVM_ASSERSONS を有効にするなど、必ずしも必須でないものも含まれていますが、こちらが現状の推奨のようです。この設定で、僕はubuntu 14.04, osx 10.10 でビルドが通ることを確認しました<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup></p>
+<p>一部、LLVM_ASSERSONS を有効にするなど、必ずしも必須でないものも含まれていますが、こちらが現状の推奨のようです。この設定で、僕はubuntu 14.04, osx 10.10 でビルドが通ることを確認しました<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">4</a></sup></p>
 
 <p>注意：すでに llvm や clang がローカルにクローン済の場合、<code>deps/srccache</code> 以下からクローン済みのソースを消してからビルドすることをおすすめします。すでにクローンされていて、upstream  の変更を取り入れたい場合は、</p>
 
@@ -121,7 +121,7 @@ override LLVM_GIT_VER_CLANG=kf/gallium
 Pkg.build(&quot;Cxx&quot;)   
 </code></pre>
 
-<p>エラーがでなければ、インストール完了<sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">5</a></sup>です。</p>
+<p>エラーがでなければ、インストール完了<sup class="footnote-ref" id="fnref:5"><a href="#fn:5">5</a></sup>です。</p>
 
 <h2 id="実際に使ってみたあと">実際に使ってみたあと</h2>
 
@@ -284,7 +284,7 @@ int add&lt;int&gt;(int x, int y) { return x + y; }
 			</div>
 
 		<div class="copyright">Copyright &copy;
-			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
 
 			<a href="https://github.com/r9y9">
 				<span class="github">r9y9@Github</span>
@@ -337,9 +337,9 @@ int add&lt;int&gt;(int x, int y) { return x + y; }
      });
  </script>
 
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+ <script type="text/javascript" async
+   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+ </script>
 
 
 

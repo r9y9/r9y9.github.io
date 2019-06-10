@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -34,7 +34,7 @@
 
 <p>Googleが2017年4月に発表したEnd-to-Endの音声合成モデル <a href="https://arxiv.org/abs/1703.10135">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</a> に興味があったので、自分でも同様のモデルを実装して実験してみました。結果わかったことなどをまとめておこうと思います。</p>
 
-<p>GoogleによるTacotronの音声サンプルは、 <a href="https://google.github.io/tacotron/">https://google.github.io/tacotron/</a> から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは  <a href="http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/f98eda7336726cdfe4ab97ae867cc7f71353de50/notebooks/Test%20Tacotron.ipynb">Test Tacotron.ipynb | nbviewer</a><sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> から聴くことができます。</p>
+<p>GoogleによるTacotronの音声サンプルは、 <a href="https://google.github.io/tacotron/">https://google.github.io/tacotron/</a> から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは  <a href="http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/f98eda7336726cdfe4ab97ae867cc7f71353de50/notebooks/Test%20Tacotron.ipynb">Test Tacotron.ipynb | nbviewer</a><sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> から聴くことができます。</p>
 
 <p>とても長い記事になってしまったので、結論のみ知りたい方は、一番最後まで飛ばしてください。最後の方のまとめセクションに、実験した上で僕が得た知見がまとまっています。</p>
 
@@ -80,7 +80,7 @@
 
 <ul>
 <li>音の品質は、<a href="https://github.com/keithito/tacotron">keithito/tacotron</a> の方が良く感じました（同じモデルの実装を心がけたのに…つらい…）。ただ、データセットの音声には残響が乗っていて、生成された音声が元音声に近いのかというのは、僕には判断がつきにくいです。記事の後半に比較できるようにサンプルを貼っておきますので、気になる方はチェックしてみてください</li>
-<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a> では長い入力だと合成に失敗する一方で<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>、僕の実装では比較的長くてもある程度合成できるようです。なぜのかを突き詰めるには、TensorFlowのseq2seq APIの <strong>コード</strong> (APIは抽象化されすぎていてdocstringからではよくわからないので…) を読みとく必要があるかなと思っています（やっていませんすいません</li>
+<li><a href="https://github.com/keithito/tacotron">keithito/tacotron</a> では長い入力だと合成に失敗する一方で<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>、僕の実装では比較的長くてもある程度合成できるようです。なぜのかを突き詰めるには、TensorFlowのseq2seq APIの <strong>コード</strong> (APIは抽象化されすぎていてdocstringからではよくわからないので…) を読みとく必要があるかなと思っています（やっていませんすいません</li>
 </ul>
 
 <h2 id="実験">実験</h2>
@@ -753,7 +753,7 @@ Your browser does not support the audio element.
 
 <h3 id="おまけ-生成する度に変わる音声">おまけ：生成する度に変わる音声</h3>
 
-<p>実験する過程で副次的に得られた結果ではあるのですが、テスト時に一部dropoutを有効にしていると<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>、生成する度に音声が異なる（韻律が微妙に変わる）、といった現象を経験しています。以下、前に検証した際の実験ノートのリンクを貼っておきます。</p>
+<p>実験する過程で副次的に得られた結果ではあるのですが、テスト時に一部dropoutを有効にしていると<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>、生成する度に音声が異なる（韻律が微妙に変わる）、といった現象を経験しています。以下、前に検証した際の実験ノートのリンクを貼っておきます。</p>
 
 <p><a href="http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times">http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times</a></p>
 
@@ -762,7 +762,7 @@ Your browser does not support the audio element.
 <ul>
 <li>Tacotronを実装しました <a href="https://github.com/r9y9/tacotron_pytorch">https://github.com/r9y9/tacotron_pytorch</a></li>
 <li>24時間のデータセットに対して、20万ステップ程度（数日くらい）学習させたらそれなりにまともな音声が生成できるようになりました。70万ステップ（一週間と少しくらい）学習させましたが、ずっとロスは下がり続ける一方で、50万くらいからはあまり大きな品質改善は見られなかったように思います。</li>
-<li>Googleの論文と（ほぼ<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup>）同じように実装したつもりですが、品質はそこまで高くならなかったように思います。End-to-end では、 <strong>データの量と品質</strong> がかなり重要なので、それが主な原因だと思っています。（僕の実装に、多少バグがあるかもしれませんが、、、</li>
+<li>Googleの論文と（ほぼ<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">4</a></sup>）同じように実装したつもりですが、品質はそこまで高くならなかったように思います。End-to-end では、 <strong>データの量と品質</strong> がかなり重要なので、それが主な原因だと思っています。（僕の実装に、多少バグがあるかもしれませんが、、、</li>
 <li>EOS (End-of-sentence) では、理想的には要素がすべて0のスペクトログラムが出力されるはずなのですが、実際にはやはりそうもいかないので、判定には以下のようなしきい値処理を用いました。ここで貼った音声は全部この仕組みで動いており、単純ですがそれなりに上手く機能しているようです。</li>
 </ul>
 

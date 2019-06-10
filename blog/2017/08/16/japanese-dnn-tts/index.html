@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -45,13 +45,13 @@
 <li><a href="https://r9y9.github.io/nnmnkwii/v0.0.1/nnmnkwii_gallery/notebooks/tts/01-DNN-based%20statistical%20speech%20synthesis%20(en).html">DNN英語音声合成のチュートリアル</a></li>
 </ul>
 
-<p>よろしければご覧ください<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。</p>
+<p>よろしければご覧ください<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>。</p>
 
 <p>ドキュメントは、だいたい英語でお硬い雰囲気で書いたので、この記事では、日本語でカジュアルに背景などを説明しようと思うのと、（ドキュメントには英語音声合成の例しかないので）HTSのデモに同梱のATR503文のデータセットを使って、<strong>DNN日本語音声合成</strong> を実装する例を示したいと思います。結果だけ知りたい方は、音声サンプルが下の方にあるので、適当に読み飛ばしてください。</p>
 
 <h2 id="なぜ作ったのか">なぜ作ったのか</h2>
 
-<p>一番大きな理由は、僕が <strong>対話環境（Jupyter, IPython等）</strong> で使えるツールがほしかったからです<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。
+<p>一番大きな理由は、僕が <strong>対話環境（Jupyter, IPython等）</strong> で使えるツールがほしかったからです<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。
 僕は結構前からREPL (Read-Eval-Print-Loop) 信者で、プログラミングのそれなりの時間をREPLで過ごします。
 IDEも好きですし、emacsも好きなのですが、同じくらいJupyterや<a href="https://github.com/JuliaLang/julia">Julia</a>のREPLが好きです。
 用途に応じて使い分けますが、特に何かデータを分析する必要があるような時に、即座にデータを可視化できるJupyter notebookは、僕にとってプログラミングに欠かせないものになっています。</p>
@@ -72,7 +72,7 @@ IDEも好きですし、emacsも好きなのですが、同じくらいJupyter�
 <li>DNN音声合成のデモをノートブック形式で提供しています。</li>
 <li>大規模データでも扱えるように、データセットとデータセットのイテレーション（フレーム毎、発話毎の両方）のユーティリティが提供されています</li>
 <li><strong>Merlinとは異なり、音響モデルは提供しません</strong>。自分で実装する必要があります（が、今の時代簡単ですよね、lstmでも数行で書けるので</li>
-<li>任意の深層学習フレームワークと併せて使えるように、設計されています<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">3</a></sup>（<a href="https://r9y9.github.io/nnmnkwii/latest/references/autograd.html">autogradパッケージ</a>のみ、今のところPyTorch依存です</li>
+<li>任意の深層学習フレームワークと併せて使えるように、設計されています<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">3</a></sup>（<a href="https://r9y9.github.io/nnmnkwii/latest/references/autograd.html">autogradパッケージ</a>のみ、今のところPyTorch依存です</li>
 <li>言語特徴量の抽出の部分は、Merlinのコードをリファクタして用いています。そのせいもあって、Merlinのデモと同等のパフォーマンスを簡単に実現できます。</li>
 </ul>
 
@@ -87,7 +87,7 @@ IDEも好きですし、emacsも好きなのですが、同じくらいJupyter�
 <li>Jupyter notebookが好きな人</li>
 <li>REPLが好きな人</li>
 <li>Pythonで処理を完結させたい人</li>
-<li>オープンソースの文化に寛容な人<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">4</a></sup></li>
+<li>オープンソースの文化に寛容な人<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">4</a></sup></li>
 <li>音声合成の研究を始めてみたい人</li>
 </ul>
 
@@ -97,7 +97,7 @@ IDEも好きですし、emacsも好きなのですが、同じくらいJupyter�
 <li>コマンドラインツールこそ至高な人</li>
 <li>パイプライン処理こそ至高な人</li>
 <li>SPTKのコマンドラインツール至高な人</li>
-<li>信頼のある機関が作ったツールしか使わない人<sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">5</a></sup></li>
+<li>信頼のある機関が作ったツールしか使わない人<sup class="footnote-ref" id="fnref:5"><a href="#fn:5">5</a></sup></li>
 <li>音声研究者ガチ勢で、自前のツールで満足している人</li>
 </ul>
 
@@ -259,7 +259,7 @@ Your browser does not support the audio element.
 Your browser does not support the audio element.
 </audio></p>
 
-<p>一応HTSで生成された音声も貼りましたが、そもそも実験条件が違いすぎる<sup class="footnote-ref" id="fnref:6"><a rel="footnote" href="#fn:6">6</a></sup>ので、単純に比較することはできません。
+<p>一応HTSで生成された音声も貼りましたが、そもそも実験条件が違いすぎる<sup class="footnote-ref" id="fnref:6"><a href="#fn:6">6</a></sup>ので、単純に比較することはできません。
 せめて HTS ＋ STRAIGHTと比較したかったところですが、僕はSTRAIGHTを持っていないので、残念ながらできません、悲しみ。</p>
 
 <p>しかし、それなりにまともな音声が出ているような気がします。</p>

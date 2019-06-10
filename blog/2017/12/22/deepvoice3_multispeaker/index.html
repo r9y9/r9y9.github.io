@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -66,11 +66,11 @@
 <li><a href="https://github.com/CSTR-Edinburgh/merlin">Merlin</a> 付属のアライメントツール (<a href="http://festvox.org/cmu_arctic/">festvox</a>ベース) (<a href="https://gist.github.com/kastnerkyle/cc0ac48d34860c5bb3f9112f4d9a0300">便利スクリプト</a>)</li>
 </ul>
 
-<p>論文中には、（無音除去のため、という文脈ではないのですが<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>）Gentleを使った旨が書かれています。しかし、試したところアライメントが失敗するケースがそれなりにあり、<a href="https://github.com/facebookresearch/loop">loop</a> は後者の方法を用いており良い結果も出ていることから、結論としては僕は後者を採用しました。なお、両方のコードは残してあるので、気になる方は両方ためしてみてください。</p>
+<p>論文中には、（無音除去のため、という文脈ではないのですが<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>）Gentleを使った旨が書かれています。しかし、試したところアライメントが失敗するケースがそれなりにあり、<a href="https://github.com/facebookresearch/loop">loop</a> は後者の方法を用いており良い結果も出ていることから、結論としては僕は後者を採用しました。なお、両方のコードは残してあるので、気になる方は両方ためしてみてください。</p>
 
 <h2 id="実験">実験</h2>
 
-<p><a href="http://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html">VCTK</a> の108話者分のすべて<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>を使用して、20時間くらい（30万ステップ x 2）学習しました。30万ステップ学習した後できたモデルをベースに、さらに30万ステップ学習しました<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>。モデルは、単一話者の場合とほとんど同じですが、変更を加えた点を以下にまとめます。</p>
+<p><a href="http://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html">VCTK</a> の108話者分のすべて<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>を使用して、20時間くらい（30万ステップ x 2）学習しました。30万ステップ学習した後できたモデルをベースに、さらに30万ステップ学習しました<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>。モデルは、単一話者の場合とほとんど同じですが、変更を加えた点を以下にまとめます。</p>
 
 <ul>
 <li><strong>共通</strong>: Speaker embedding を追加しました。</li>

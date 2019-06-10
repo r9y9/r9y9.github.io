@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -54,7 +54,7 @@ Merlin Open Source Neural Network Speech Synthesis System&rdquo;</a></li>
 また、設定ファイルをちょこっといじるだけでこと済むのであれば、知る必要はないかもしれません。
 しかし、モデル構造を変えたい、学習アルゴリズムを変えたい、ポストフィルタを入れたい、といったように、少し進んだ使い方をしようとすれば、内部構造を理解しないとできないことも多いと思います。</p>
 
-<p>run_merlin.py はあらゆる処理 (具体的にはあとで述べます) のエントリーポイントになっているがゆえに、コードはなかなかに複雑になっています<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。この記事では、run_merlin.pyがいったい何をしているのかを読み解いた結果をまとめます。</p>
+<p>run_merlin.py はあらゆる処理 (具体的にはあとで述べます) のエントリーポイントになっているがゆえに、コードはなかなかに複雑になっています<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>。この記事では、run_merlin.pyがいったい何をしているのかを読み解いた結果をまとめます。</p>
 
 <h2 id="merlinでは提供しないこと">Merlinでは提供しないこと</h2>
 
@@ -198,7 +198,7 @@ misc以下に、Festivalを使ってフルコンテキストラベルを作る�
 <li>得られた音響特徴量 (mgc, f0, bap) から、WORLDを使って波形合成をする</li>
 </ul>
 
-<p>以上です。Merlinの良い所の一つに、ログをたくさんはいてくれるというのがあります。しかし、このうちポストフィルタ（デフォルトでONです）に関しては一切（デフォルトでは）ログがはかれず、気づくのに時間がかかりました。<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup></p>
+<p>以上です。Merlinの良い所の一つに、ログをたくさんはいてくれるというのがあります。しかし、このうちポストフィルタ（デフォルトでONです）に関しては一切（デフォルトでは）ログがはかれず、気づくのに時間がかかりました。<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup></p>
 
 <p>また、個人的な感覚ですが、このポストフィルタの影響は絶大に思いました。コードを見て、何をしているのか僕には理解できませんでしたが、ヒューリスティックな方法も含んでいるように思いました。興味のある方は、 波形合成用のconfファイルを開いて、</p>
 

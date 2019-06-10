@@ -6,17 +6,35 @@
     <description>Recent content in Tags on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 14 Dec 2017 00:00:30 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 20 May 2018 14:21:30 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Bokeh</title>
-      <link>http://r9y9.github.io/tags/bokeh/</link>
-      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
+      <title>DNN</title>
+      <link>http://r9y9.github.io/tags/dnn/</link>
+      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/bokeh/</guid>
+      <guid>http://r9y9.github.io/tags/dnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Speech</title>
+      <link>http://r9y9.github.io/tags/speech/</link>
+      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/speech/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WaveNet</title>
+      <link>http://r9y9.github.io/tags/wavenet/</link>
+      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/wavenet/</guid>
       <description></description>
     </item>
     
@@ -26,42 +44,6 @@
       <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
       
       <guid>http://r9y9.github.io/tags/c&#43;&#43;/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cling</title>
-      <link>http://r9y9.github.io/tags/cling/</link>
-      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
-      
-      <guid>http://r9y9.github.io/tags/cling/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Corpus</title>
-      <link>http://r9y9.github.io/tags/corpus/</link>
-      <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
-      
-      <guid>http://r9y9.github.io/tags/corpus/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Dnn</title>
-      <link>http://r9y9.github.io/tags/dnn/</link>
-      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
-      
-      <guid>http://r9y9.github.io/tags/dnn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>End To End</title>
-      <link>http://r9y9.github.io/tags/end-to-end/</link>
-      <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
-      
-      <guid>http://r9y9.github.io/tags/end-to-end/</guid>
       <description></description>
     </item>
     
@@ -84,29 +66,29 @@
     </item>
     
     <item>
-      <title>Merlin</title>
-      <link>http://r9y9.github.io/tags/merlin/</link>
-      <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
+      <title>cling</title>
+      <link>http://r9y9.github.io/tags/cling/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/merlin/</guid>
+      <guid>http://r9y9.github.io/tags/cling/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Nlp</title>
-      <link>http://r9y9.github.io/tags/nlp/</link>
-      <pubDate>Fri, 09 Jun 2017 21:58:50 +0900</pubDate>
+      <title>Bokeh</title>
+      <link>http://r9y9.github.io/tags/bokeh/</link>
+      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/nlp/</guid>
+      <guid>http://r9y9.github.io/tags/bokeh/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Pcl</title>
-      <link>http://r9y9.github.io/tags/pcl/</link>
-      <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
+      <title>PyTorch</title>
+      <link>http://r9y9.github.io/tags/pytorch/</link>
+      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/pcl/</guid>
+      <guid>http://r9y9.github.io/tags/pytorch/</guid>
       <description></description>
     </item>
     
@@ -120,25 +102,25 @@
     </item>
     
     <item>
-      <title>Pytorch</title>
-      <link>http://r9y9.github.io/tags/pytorch/</link>
-      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
+      <title>corpus</title>
+      <link>http://r9y9.github.io/tags/corpus/</link>
+      <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/pytorch/</guid>
+      <guid>http://r9y9.github.io/tags/corpus/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Speech</title>
-      <link>http://r9y9.github.io/tags/speech/</link>
-      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
+      <title>end-to-end</title>
+      <link>http://r9y9.github.io/tags/end-to-end/</link>
+      <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/speech/</guid>
+      <guid>http://r9y9.github.io/tags/end-to-end/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Speech Synthesis</title>
+      <title>Speech synthesis</title>
       <link>http://r9y9.github.io/tags/speech-synthesis/</link>
       <pubDate>Wed, 16 Aug 2017 23:10:56 +0900</pubDate>
       
@@ -147,11 +129,29 @@
     </item>
     
     <item>
-      <title>Wavenet</title>
-      <link>http://r9y9.github.io/tags/wavenet/</link>
-      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
+      <title>Merlin</title>
+      <link>http://r9y9.github.io/tags/merlin/</link>
+      <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
       
-      <guid>http://r9y9.github.io/tags/wavenet/</guid>
+      <guid>http://r9y9.github.io/tags/merlin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NLP</title>
+      <link>http://r9y9.github.io/tags/nlp/</link>
+      <pubDate>Fri, 09 Jun 2017 21:58:50 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/nlp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PCL</title>
+      <link>http://r9y9.github.io/tags/pcl/</link>
+      <pubDate>Mon, 18 Jan 2016 00:44:46 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/pcl/</guid>
       <description></description>
     </item>
     

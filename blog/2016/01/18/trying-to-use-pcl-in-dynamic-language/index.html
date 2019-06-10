@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -32,7 +32,7 @@
 			<section itemprop="entry-text">
 				
 
-<p>新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。</p>
+<p>新年はじめての記事ということで、少し遅いですが、あけましておめでとうございます。PCLを対話環境で使いたかったので、お正月の間にPCLのラッパーを作りました<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>。なぜ作ったのか、どうやって作ったのか、少し整理して書いてみようと思います。</p>
 
 <h2 id="point-cloud-library-pcl-とは">Point Cloud Library (PCL) とは</h2>
 
@@ -56,7 +56,7 @@
 
 <p>試行錯誤のサイクルを速く回せるようにすることは僕にとって非常に重要だったのと、 C++で書かなければいけないという制約もなかった（※組み込み用途ではない）ので、対話的にPCLを使うために、僕は動的型付け言語でラッパーを作ることにしました。</p>
 
-<p>参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。</p>
+<p>参考までに、対話環境を使うことによるメリットは、下記スライドが参考になります。PCLの紹介もされています<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。</p>
 
 <div align="center">
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/vMvYpKqA5aLtI8" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/payashim/ssii-2015-hayashi" title="コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi" target="_blank">コンピュータビジョンの最新ソフトウェア開発環境 SSII2015 チュートリアル hayashi</a> </strong> from <strong><a href="//www.slideshare.net/payashim" target="_blank">Masaki Hayashi</a></strong> </div>
@@ -83,8 +83,8 @@
 <ul>
 <li>現在あまりメンテされていない</li>
 <li>サポートされている機能も多くはない</li>
-<li>templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup></li>
-<li>Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. <code>pcl::PointCloud&lt;T&gt;</code> は <code>PointCloud{T}</code> と書ける<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup>）</li>
+<li>templateを多用したライブラリのラップをcythonで十分にできるかどうか自信がなかった <sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup></li>
+<li>Juliaは関数や型がパラメータを持てるため、templateを多用したライブラリのラップが簡単にできそうだと思った（i.e. <code>pcl::PointCloud&lt;T&gt;</code> は <code>PointCloud{T}</code> と書ける<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">4</a></sup>）</li>
 <li>Cxx.jl を使えば JITライクに C++ を使える（試行錯誤できる）し、Juliaのほうがいいかな</li>
 </ul>
 
@@ -94,7 +94,7 @@
 
 <p><a href="https://github.com/r9y9/PCL.jl">https://github.com/r9y9/PCL.jl</a></p>
 
-<p><a href="http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5">StatisticalOutlierRemovalのデモ | nbviewer</a> こんな感じで、jupyter上で試行錯誤できるようになりましたとさ<sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">5</a></sup>。<a href="https://github.com/strawlab/python-pcl">strawlab/python-pcl</a> よりも多くのことができると思います。<sup class="footnote-ref" id="fnref:6"><a rel="footnote" href="#fn:6">6</a></sup></p>
+<p><a href="http://nbviewer.jupyter.org/gist/r9y9/6ed9a1d0b46993d374f5">StatisticalOutlierRemovalのデモ | nbviewer</a> こんな感じで、jupyter上で試行錯誤できるようになりましたとさ<sup class="footnote-ref" id="fnref:5"><a href="#fn:5">5</a></sup>。<a href="https://github.com/strawlab/python-pcl">strawlab/python-pcl</a> よりも多くのことができると思います。<sup class="footnote-ref" id="fnref:6"><a href="#fn:6">6</a></sup></p>
 
 <p>PCLは非常に大きなライブラリのため、全ての機能をラップするつもりはありませんが、今後必要に応じて機能を追加するかもしれません。</p>
 

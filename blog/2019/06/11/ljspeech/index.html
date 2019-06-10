@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.55.6" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>LJSpeech は価値のあるデータセットですが、ニューラルボコーダの品質比較には向かないと思います - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="https://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">LJSpeech は価値のあるデータセットですが、ニューラルボコーダの品質比較には向かないと思います</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2019-06-11">June 11, 2019</time></span>
+			<section itemprop="entry-text">
+				
+
+<ul>
+<li>LJSpeech Dataset: <a href="https://keithito.com/LJ-Speech-Dataset/">https://keithito.com/LJ-Speech-Dataset/</a></li>
+</ul>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>最近いろんな研究で <a href="- LJSpeech Dataset: https://keithito.com/LJ-Speech-Dataset/">LJSpeech</a> が使われていますが、合成音の品質を比べるならクリーンなデータセットを使ったほうがいいですね。でないと、合成音声に含まれるノイズがモデルの限界からくるノイズなのかコーパスの音声が含むノイズ（LJSpeechの場合リバーブっぽい音）なのか区別できなくて、公平に比較するのが難しいと思います。</p>
+
+<p>例えば、LJSpeechを使うと、ぶっちゃけ <a href="https://nv-adlr.github.io/WaveGlow">WaveGlow</a> がWaveNetと比べて品質がいいかどうかわかんないですよね…<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>.
+例えば最近のNICT岡本さんの研究 (<a href="https://www.slideshare.net/Takuma_OKAMOTO/ss-135604814">基本周波数とメルケプストラムを用いたリアルタイムニューラルボコーダに関する検討</a>) を引用すると、実際にクリーンなデータで実験すれば（Noise shaping なしで）MOS は WaveNet (<strong>4.19</strong>) &gt; WaveGlow (3.27) と、結構な差が出たりします。LJSpeechを使った場合の WaveGlow (<strong>3.961</strong>) &gt; WaveNet (3.885) と比べると大きな差ですね。</p>
+
+<p>とはいえ、End-to-end音声合成を試すにはとてもいいデータセットであると思うので、積極的に活用しましょう。最近 <a href="https://arxiv.org/abs/1904.02882">LibriTTS</a> が公開されたので、そちらも合わせてチェックするといいですね。</p>
+
+<h2 id="why-ljspeech">Why LJSpeech</h2>
+
+<p><a href="https://keithito.com/LJ-Speech-Dataset/">LJSpeech</a> は、<a href="https://keithito.com/">keithito</a> さんによって2017年に公開された、単一女性話者によって録音された24時間程度の英語音声コーパスです。なぜ近年よく使われて始めているのかと言うと（2019年6月時点で<a href="https://scholar.google.co.jp/scholar?cites=8632543993730273058">Google scholarで27件の引用</a>）、End-to-end 音声合成の研究に用いるデータセットとして、LJSpeechは最もといっていいほど手軽に手に入るからだと考えています。LJSpeech は public domainで配布されており、利用に制限もありませんし、企業、教育機関、個人など様々な立場から自由に使用することができます。End-to-end 音声合成（厳密にはseq2seq モデルの学習）は一般に大量のデータが必要なことが知られていますが、その要件も満たしていることから、特にEnd-to-end音声合成の研究で用いられている印象を受けます。最近だと、<a href="https://speechresearch.github.io/fastspeech/">FastSpeech: Fast, Robust and Controllable Text to Speech</a> にも使われていましたね。</p>
+
+<h2 id="個人的な経験">個人的な経験</h2>
+
+<p>個人的には、過去に以下のブログ記事の内容で使用してきました。</p>
+
+<ul>
+<li><a href="https://r9y9.github.io/blog/2017/10/15/tacotron/">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</a></li>
+<li><a href="https://r9y9.github.io/blog/2017/12/13/deepvoice3/">【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+<li><a href="https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/">【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+<li><a href="https://r9y9.github.io/blog/2017/11/23/dctts/">Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</a></li>
+<li><a href="https://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/">WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]</a></li>
+<li><a href="https://r9y9.github.io/blog/2018/05/20/tacotron2/">WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</a></li>
+</ul>
+
+<p>この記事を書くにあたって整理してみて、ずいぶんとたくさんお世話になっていることが改めてわかりました。keithitoさん本当にありがとうございます。</p>
+
+<p>2017年、僕がTacotronで遊び始めた当時、End-to-end音声合成が流行ってきていたのですが、フリーで手に入って、End-to-end 音声合成にも使えるような程々に大きな（&gt; 20時間）コーパスって、あんまりなかったんですよね。今でこそ <a href="https://www.caito.de/2019/01/the-m-ailabs-speech-dataset/">M-AILABS</a> 、<a href="https://arxiv.org/abs/1904.02882">LibriTTS</a>、日本語なら <a href="https://sites.google.com/site/shinnosuketakamichi/publication/jsut">JSUT</a> もありますが、当時は選択肢は少なかったと記憶しています。今はいい時代になってきていますね。</p>
+
+<h2 id="最後に">最後に</h2>
+
+<p>久しぶりに短いですがブログを書きました。LJSpeechは良いデータセットですので、積極的に活用しましょう。ただ、データセットの特徴として、録音データが若干リバーブがかかったような音になっていることから、ニューラルボコーダの品質比較には（例えば WaveGlow vs WaveNet）あんまり向かないかなと思っています。</p>
+
+<p>2017年に、End-to-end音声合成を気軽に試そうと思った時にはLJSpeechは最有力候補でしたが、現在は他にもいろいろ選択肢がある気がします。以下、僕がぱっと思いつくものをまとめておきますので、参考までにどうぞ。</p>
+
+<h2 id="end-to-end音声合成に使える手軽に手に入るデータセット">End-to-end音声合成に使える手軽に手に入るデータセット</h2>
+
+<ul>
+<li>LJSpeech Dataset: <a href="https://keithito.com/LJ-Speech-Dataset/">https://keithito.com/LJ-Speech-Dataset/</a></li>
+<li>LibriTTS: <a href="https://arxiv.org/abs/1904.02882">https://arxiv.org/abs/1904.02882</a></li>
+<li>JSUT: <a href="https://sites.google.com/site/shinnosuketakamichi/publication/jsut">https://sites.google.com/site/shinnosuketakamichi/publication/jsut</a></li>
+<li>M-AILABS: <a href="https://www.caito.de/2019/01/the-m-ailabs-speech-dataset/">https://www.caito.de/2019/01/the-m-ailabs-speech-dataset/</a></li>
+<li>VCTK: <a href="https://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html">https://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html</a></li>
+</ul>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li>WaveNet: <a href="https://deepmind.com/blog/wavenet-generative-model-raw-audio/">https://deepmind.com/blog/wavenet-generative-model-raw-audio/</a></li>
+<li>WaveGlow: <a href="https://nv-adlr.github.io/WaveGlow">https://nv-adlr.github.io/WaveGlow</a></li>
+<li>FastSpeech: <a href="https://speechresearch.github.io/fastspeech/">https://speechresearch.github.io/fastspeech/</a></li>
+<li>岡本拓磨，戸田智基，志賀芳則，河井恒，&rdquo;基本周波数とメルケプストラムを用いたリアルタイムニューラルボコーダに関する検討&rdquo;，日本音響学会講演論文集，2019年春季, pp. 1057–1060, Mar. 2019. <a href="https://www.slideshare.net/Takuma_OKAMOTO/ss-135604814">slides</a></li>
+</ul>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">僕の実装 をbest publicly availableWaveNet implementation として比較に使っていただいて恐縮ですが…。
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="LJSpeech は価値のあるデータセットですが、ニューラルボコーダの品質比較には向かないと思います" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+ <script type="text/javascript" async
+   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+ </script>
+
+
+
+
+</body>
+</html>
+

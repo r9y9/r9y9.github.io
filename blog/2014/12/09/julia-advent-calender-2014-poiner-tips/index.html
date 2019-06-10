@@ -2,9 +2,9 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.19-DEV" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 <link rel="stylesheet" href="/css/normalize.css">
 <link rel="stylesheet" href="/css/skeleton.css">
@@ -26,7 +26,7 @@
 
 
 	<main role="main">
-		<article itemscope itemtype="http://schema.org/BlogPosting">
+		<article itemscope itemtype="https://schema.org/BlogPosting">
 			<h1 class="entry-title" itemprop="headline">ccallにおけるポインタ周りのハマりどころとその解決法</h1>
 			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-12-09">December 09, 2014</time></span>
 			<section itemprop="entry-text">
@@ -70,7 +70,7 @@
 
 <p>と書かれています。つまり、一般には構造体は渡せないけどポインタ渡しはできるよ、ということです。</p>
 
-<p>じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）</p>
+<p>じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）</p>
 
 <p>例を示します。</p>
 
@@ -170,7 +170,7 @@ end
 <pre><code class="language-julia">dst[i] = pointer(src[:,i], 1)
 </code></pre>
 
-<p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
+<p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
 
 <p>Array <code>A</code>に対する syntax <code>X = A[I_1, I_2, ..., I_n]</code> は <code>X = getindex(A, I_1, I_2, ..., I_n)</code> と等価です。詳細は、<a href="http://docs.julialang.org/en/latest/manual/arrays/">Multi-dimensional Arrays</a>や<a href="http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex">標準ライブラリのドキュメント</a> を参考にしてください</p>
 
@@ -186,7 +186,7 @@ function ptrarray2d{T&lt;:Real}(src::Array{T,2})
 end
 </code></pre>
 
-<p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>。</p>
+<p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>。</p>
 
 <blockquote>
 <p>SubArray is a specialization of AbstractArray that performs indexing by reference rather than by copying. A SubArray is created with the sub() function, which is called the same way as getindex() (with an array and a series of index arguments). The result of sub() looks the same as the result of getindex(), except the data is left in place. sub() stores the input index vectors in a SubArray object, which can later be used to index the original array indirectly.</p>
@@ -284,7 +284,7 @@ end
 			</div>
 
 		<div class="copyright">Copyright &copy;
-			<a href="https://twitter.com/r9y9">Ryuichi YAMAMOTO</a> All rights reserved.
+			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
 
 			<a href="https://github.com/r9y9">
 				<span class="github">r9y9@Github</span>
@@ -337,9 +337,9 @@ end
      });
  </script>
 
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+ <script type="text/javascript" async
+   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+ </script>
 
 
 

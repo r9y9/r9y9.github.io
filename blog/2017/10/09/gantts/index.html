@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.20.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -50,7 +50,7 @@
 <h3 id="実験条件">実験条件</h3>
 
 <p><a href="http://festvox.org/cmu_arctic/">CMU ARCTIC</a> から、話者 <code>slt</code> のwavデータそれぞれ1131発話すべてを用います。
-<a href="https://github.com/CSTR-Edinburgh/merlin">Merlin</a>  の slt デモの条件と同様に、1000を学習用、126を評価用、残り5をテスト用にします。継続長モデル（state-level）には <strong>Bidirectional-LSTM RNN</strong> を、音響モデルには <strong>Feed-forward型</strong> のニューラルネットを使用しました<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>。継続長モデル、音響モデルの両方にGANを取り入れました。論文の肝である <strong>ADV loss</strong> についてですが、mgcのみ（0次は除く）を使って計算するパターンと、mgc + lf0で計算するパターンとで比較しました<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>。</p>
+<a href="https://github.com/CSTR-Edinburgh/merlin">Merlin</a>  の slt デモの条件と同様に、1000を学習用、126を評価用、残り5をテスト用にします。継続長モデル（state-level）には <strong>Bidirectional-LSTM RNN</strong> を、音響モデルには <strong>Feed-forward型</strong> のニューラルネットを使用しました<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>。継続長モデル、音響モデルの両方にGANを取り入れました。論文の肝である <strong>ADV loss</strong> についてですが、mgcのみ（0次は除く）を使って計算するパターンと、mgc + lf0で計算するパターンとで比較しました<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。</p>
 
 <p>実験の結果 (ADV loss: mgcのみ) は、 <a href="https://github.com/r9y9/gantts/tree/a5ec247ba7ee1a160875661f8899f56f8010be5b">a5ec247</a> をチェックアウトして、下記のシェルを実行すると再現できます。</p>
 
