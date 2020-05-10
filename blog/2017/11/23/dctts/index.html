@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -85,12 +85,9 @@
 <p>なお、実装するにあたっては、厳密に再現しようとはせず、色々雰囲気でごまかしました。もともとDeepVoice3の実装をしていたのもあり、アイデアをいくつか借りています。例えば、デコーダの出力をいつ止めるか、というdone flag predictionをネットワークに入れています。Dropoutについて言及がありませんが、ないと汎化しにくい印象があったので<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">2</a></sup>、足しました。</p>
 
 <p>計算速度は、バッチサイズ16で、4.3 step/sec くらいの計算速度でした。僕のマシンのGPUはGTX 1080Ti です。使用したハイパーパラメータは<a href="https://github.com/r9y9/deepvoice3_pytorch/blob/70dc880fae185d96effaee97f0ce55b5c0d13b61/hparams.py">こちら</a>です。学習に使用したコマンドは以下です（メモ）。</p>
-
 <pre><code>python train.py --data-root=./data/ljspeech --checkpoint-dir=checkpoints_nyanko \
-    --hparams=&quot;use_preset=True,builder=nyanko&quot; \
-    --log-event-path=log/nyanko_preset
-</code></pre>
-
+    --hparams=&#34;use_preset=True,builder=nyanko&#34; \
+    --log-event-path=log/nyanko_preset</code></pre>
 <h3 id="アライメントの学習過程">アライメントの学習過程</h3>
 
 <p>数万ステップで、綺麗にmonotonicになりました。GIFは、同じ音声に対するアライメントではなく、毎度違う（ランダムな）音声サンプルに対するアライメントを計算して、くっつけたものです（わかりずらくすいません</p>

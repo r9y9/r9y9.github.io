@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -110,273 +110,270 @@
 
 <p>メモ的な意味で主要なコードを貼っておきます。
 <a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/python</span>
+<span style="color:#75715e"># coding: utf-8</span>
 
-<pre><code class="language-python">#!/usr/bin/python
-# coding: utf-8
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> numpy <span style="color:#f92672">import</span> linalg
+<span style="color:#f92672">from</span> sklearn.mixture <span style="color:#f92672">import</span> GMM
+<span style="color:#f92672">import</span> scipy.linalg
+<span style="color:#f92672">import</span> scipy.sparse
+<span style="color:#f92672">import</span> scipy.sparse.linalg
 
-import numpy as np
-from numpy import linalg
-from sklearn.mixture import GMM
-import scipy.linalg
-import scipy.sparse
-import scipy.sparse.linalg
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">GMMMap</span>:
+    <span style="color:#e6db74">&#34;&#34;&#34;GMM-based frame-by-frame speech parameter mapping. 
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    GMMMap represents a class to transform spectral features of a source
+</span><span style="color:#e6db74">    speaker to that of a target speaker based on Gaussian Mixture Models
+</span><span style="color:#e6db74">    of source and target joint spectral features.
+</span><span style="color:#e6db74">    
+</span><span style="color:#e6db74">    Notation
+</span><span style="color:#e6db74">    --------
+</span><span style="color:#e6db74">    Source speaker&#39;s feature: X = {x_t}, 0 &lt;= t &lt; T
+</span><span style="color:#e6db74">    Target speaker&#39;s feature: Y = {y_t}, 0 &lt;= t &lt; T
+</span><span style="color:#e6db74">    where T is the number of time frames.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    Parameters
+</span><span style="color:#e6db74">    ----------
+</span><span style="color:#e6db74">    gmm : scipy.mixture.GMM
+</span><span style="color:#e6db74">        Gaussian Mixture Models of source and target joint features
+</span><span style="color:#e6db74">    
+</span><span style="color:#e6db74">    swap : bool
+</span><span style="color:#e6db74">        True: source -&gt; target
+</span><span style="color:#e6db74">        False target -&gt; source
+</span><span style="color:#e6db74">    
+</span><span style="color:#e6db74">    Attributes
+</span><span style="color:#e6db74">    ----------
+</span><span style="color:#e6db74">    num_mixtures : int
+</span><span style="color:#e6db74">        the number of Gaussian mixtures
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    weights : array, shape (`num_mixtures`)
+</span><span style="color:#e6db74">        weights for each gaussian
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    src_means : array, shape (`num_mixtures`, `order of spectral feature`)
+</span><span style="color:#e6db74">        means of GMM for a source speaker
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    tgt_means : array, shape (`num_mixtures`, `order of spectral feature`)
+</span><span style="color:#e6db74">        means of GMM for a target speaker
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    covarXX : array, shape (`num_mixtures`, `order of spectral feature`, 
+</span><span style="color:#e6db74">        `order of spectral feature`)
+</span><span style="color:#e6db74">        variance matrix of source speaker&#39;s spectral feature
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    covarXY : array, shape (`num_mixtures`, `order of spectral feature`, 
+</span><span style="color:#e6db74">        `order of spectral feature`)
+</span><span style="color:#e6db74">        covariance matrix of source and target speaker&#39;s spectral feature
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    covarYX : array, shape (`num_mixtures`, `order of spectral feature`, 
+</span><span style="color:#e6db74">        `order of spectral feature`)
+</span><span style="color:#e6db74">        covariance matrix of target and source speaker&#39;s spectral feature
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    covarYY : array, shape (`num_mixtures`, `order of spectral feature`, 
+</span><span style="color:#e6db74">        `order of spectral feature`)
+</span><span style="color:#e6db74">        variance matrix of target speaker&#39;s spectral feature
+</span><span style="color:#e6db74">    
+</span><span style="color:#e6db74">    D : array, shape (`num_mixtures`, `order of spectral feature`, 
+</span><span style="color:#e6db74">        `order of spectral feature`)
+</span><span style="color:#e6db74">        covariance matrices of target static spectral features
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    px : scipy.mixture.GMM
+</span><span style="color:#e6db74">        Gaussian Mixture Models of source speaker&#39;s features
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    Reference
+</span><span style="color:#e6db74">    ---------
+</span><span style="color:#e6db74">      - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
+</span><span style="color:#e6db74">        of Spectral Parameter Trajectory.
+</span><span style="color:#e6db74">        http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">def</span> __init__(self, gmm, swap<span style="color:#f92672">=</span>False):
+        <span style="color:#75715e"># D is the order of spectral feature for a speaker</span>
+        self<span style="color:#f92672">.</span>num_mixtures, D <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>means_<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>], gmm<span style="color:#f92672">.</span>means_<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
+        self<span style="color:#f92672">.</span>weights <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>weights_
 
-class GMMMap:
-    &quot;&quot;&quot;GMM-based frame-by-frame speech parameter mapping. 
+        <span style="color:#75715e"># Split source and target parameters from joint GMM</span>
+        self<span style="color:#f92672">.</span>src_means <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>means_[:, <span style="color:#ae81ff">0</span>:D]
+        self<span style="color:#f92672">.</span>tgt_means <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>means_[:, D:]
+        self<span style="color:#f92672">.</span>covarXX <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>covars_[:, :D, :D]
+        self<span style="color:#f92672">.</span>covarXY <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>covars_[:, :D, D:]
+        self<span style="color:#f92672">.</span>covarYX <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>covars_[:, D:, :D]
+        self<span style="color:#f92672">.</span>covarYY <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>covars_[:, D:, D:]
 
-    GMMMap represents a class to transform spectral features of a source
-    speaker to that of a target speaker based on Gaussian Mixture Models
-    of source and target joint spectral features.
-    
-    Notation
-    --------
-    Source speaker's feature: X = {x_t}, 0 &lt;= t &lt; T
-    Target speaker's feature: Y = {y_t}, 0 &lt;= t &lt; T
-    where T is the number of time frames.
+        <span style="color:#75715e"># swap src and target parameters</span>
+        <span style="color:#66d9ef">if</span> swap:
+            self<span style="color:#f92672">.</span>tgt_means, self<span style="color:#f92672">.</span>src_means <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>src_means, self<span style="color:#f92672">.</span>tgt_means
+            self<span style="color:#f92672">.</span>covarYY, self<span style="color:#f92672">.</span>covarXX <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>covarXX, self<span style="color:#f92672">.</span>covarYY
+            self<span style="color:#f92672">.</span>covarYX, self<span style="color:#f92672">.</span>covarXY <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>XY, self<span style="color:#f92672">.</span>covarYX
 
-    Parameters
-    ----------
-    gmm : scipy.mixture.GMM
-        Gaussian Mixture Models of source and target joint features
-    
-    swap : bool
-        True: source -&gt; target
-        False target -&gt; source
-    
-    Attributes
-    ----------
-    num_mixtures : int
-        the number of Gaussian mixtures
+        <span style="color:#75715e"># Compute D eq.(12) in [Toda 2007]</span>
+        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(self<span style="color:#f92672">.</span>num_mixtures<span style="color:#f92672">*</span>D<span style="color:#f92672">*</span>D)<span style="color:#f92672">.</span>reshape(self<span style="color:#f92672">.</span>num_mixtures, D, D)
+        <span style="color:#66d9ef">for</span> m <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>num_mixtures):
+            xx_inv_xy <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>solve(self<span style="color:#f92672">.</span>covarXX[m], self<span style="color:#f92672">.</span>covarXY[m])
+            self<span style="color:#f92672">.</span>D[m] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>covarYY[m] <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>covarYX[m], xx_inv_xy)
 
-    weights : array, shape (`num_mixtures`)
-        weights for each gaussian
+        <span style="color:#75715e"># p(x), which is used to compute posterior prob. for a given source</span>
+        <span style="color:#75715e"># spectral feature in mapping stage.</span>
+        self<span style="color:#f92672">.</span>px <span style="color:#f92672">=</span> GMM(n_components<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>num_mixtures, covariance_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;full&#34;</span>)
+        self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>means_ <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>src_means
+        self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>covars_ <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>covarXX
+        self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>weights_ <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>weights
 
-    src_means : array, shape (`num_mixtures`, `order of spectral feature`)
-        means of GMM for a source speaker
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convert</span>(self, src):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        Mapping source spectral feature x to target spectral feature y 
+</span><span style="color:#e6db74">        so that minimize the mean least squared error.
+</span><span style="color:#e6db74">        More specifically, it returns the value E(p(y|x)].
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">        Parameters
+</span><span style="color:#e6db74">        ----------
+</span><span style="color:#e6db74">        src : array, shape (`order of spectral feature`)
+</span><span style="color:#e6db74">            source speaker&#39;s spectral feature that will be transformed
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">        Return
+</span><span style="color:#e6db74">        ------
+</span><span style="color:#e6db74">        converted spectral feature
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        D <span style="color:#f92672">=</span> len(src)
 
-    tgt_means : array, shape (`num_mixtures`, `order of spectral feature`)
-        means of GMM for a target speaker
-
-    covarXX : array, shape (`num_mixtures`, `order of spectral feature`, 
-        `order of spectral feature`)
-        variance matrix of source speaker's spectral feature
-
-    covarXY : array, shape (`num_mixtures`, `order of spectral feature`, 
-        `order of spectral feature`)
-        covariance matrix of source and target speaker's spectral feature
-
-    covarYX : array, shape (`num_mixtures`, `order of spectral feature`, 
-        `order of spectral feature`)
-        covariance matrix of target and source speaker's spectral feature
-
-    covarYY : array, shape (`num_mixtures`, `order of spectral feature`, 
-        `order of spectral feature`)
-        variance matrix of target speaker's spectral feature
-    
-    D : array, shape (`num_mixtures`, `order of spectral feature`, 
-        `order of spectral feature`)
-        covariance matrices of target static spectral features
-
-    px : scipy.mixture.GMM
-        Gaussian Mixture Models of source speaker's features
-
-    Reference
-    ---------
-      - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
-        of Spectral Parameter Trajectory.
-        http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
-
-    &quot;&quot;&quot;
-    def __init__(self, gmm, swap=False):
-        # D is the order of spectral feature for a speaker
-        self.num_mixtures, D = gmm.means_.shape[0], gmm.means_.shape[1]/2
-        self.weights = gmm.weights_
-
-        # Split source and target parameters from joint GMM
-        self.src_means = gmm.means_[:, 0:D]
-        self.tgt_means = gmm.means_[:, D:]
-        self.covarXX = gmm.covars_[:, :D, :D]
-        self.covarXY = gmm.covars_[:, :D, D:]
-        self.covarYX = gmm.covars_[:, D:, :D]
-        self.covarYY = gmm.covars_[:, D:, D:]
-
-        # swap src and target parameters
-        if swap:
-            self.tgt_means, self.src_means = self.src_means, self.tgt_means
-            self.covarYY, self.covarXX = self.covarXX, self.covarYY
-            self.covarYX, self.covarXY = self.XY, self.covarYX
-
-        # Compute D eq.(12) in [Toda 2007]
-        self.D = np.zeros(self.num_mixtures*D*D).reshape(self.num_mixtures, D, D)
-        for m in range(self.num_mixtures):
-            xx_inv_xy = np.linalg.solve(self.covarXX[m], self.covarXY[m])
-            self.D[m] = self.covarYY[m] - np.dot(self.covarYX[m], xx_inv_xy)
-
-        # p(x), which is used to compute posterior prob. for a given source
-        # spectral feature in mapping stage.
-        self.px = GMM(n_components=self.num_mixtures, covariance_type=&quot;full&quot;)
-        self.px.means_ = self.src_means
-        self.px.covars_ = self.covarXX
-        self.px.weights_ = self.weights
-
-    def convert(self, src):
-        &quot;&quot;&quot;
-        Mapping source spectral feature x to target spectral feature y 
-        so that minimize the mean least squared error.
-        More specifically, it returns the value E(p(y|x)].
-
-        Parameters
-        ----------
-        src : array, shape (`order of spectral feature`)
-            source speaker's spectral feature that will be transformed
-
-        Return
-        ------
-        converted spectral feature
-        &quot;&quot;&quot;
-        D = len(src)
-
-        # Eq.(11)
-        E = np.zeros((self.num_mixtures, D))
-        for m in range(self.num_mixtures):
-            xx = np.linalg.solve(self.covarXX[m], src - self.src_means[m])
-            E[m] = self.tgt_means[m] + self.covarYX[m].dot(xx)
+        <span style="color:#75715e"># Eq.(11)</span>
+        E <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((self<span style="color:#f92672">.</span>num_mixtures, D))
+        <span style="color:#66d9ef">for</span> m <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>num_mixtures):
+            xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>solve(self<span style="color:#f92672">.</span>covarXX[m], src <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>src_means[m])
+            E[m] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>tgt_means[m] <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>covarYX[m]<span style="color:#f92672">.</span>dot(xx)
                 
-        # Eq.(9) p(m|x)
-        posterior = self.px.predict_proba(np.atleast_2d(src))
+        <span style="color:#75715e"># Eq.(9) p(m|x)</span>
+        posterior <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>predict_proba(np<span style="color:#f92672">.</span>atleast_2d(src))
 
-        # Eq.(13) conditinal mean E[p(y|x)]
-        return posterior.dot(E)
+        <span style="color:#75715e"># Eq.(13) conditinal mean E[p(y|x)]</span>
+        <span style="color:#66d9ef">return</span> posterior<span style="color:#f92672">.</span>dot(E)
             
-class TrajectoryGMMMap(GMMMap):
-    &quot;&quot;&quot;
-    Trajectory-based speech parameter mapping for voice conversion
-    based on the maximum likelihood criterion.
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TrajectoryGMMMap</span>(GMMMap):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Trajectory-based speech parameter mapping for voice conversion
+</span><span style="color:#e6db74">    based on the maximum likelihood criterion.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    Parameters
+</span><span style="color:#e6db74">    ----------
+</span><span style="color:#e6db74">    gmm : scipy.mixture.GMM
+</span><span style="color:#e6db74">        Gaussian Mixture Models of source and target speaker joint features
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    gv : scipy.mixture.GMM (default=None)
+</span><span style="color:#e6db74">        Gaussian Mixture Models of target speaker&#39;s global variance of spectral
+</span><span style="color:#e6db74">        feature
+</span><span style="color:#e6db74">    
+</span><span style="color:#e6db74">    swap : bool (default=False)
+</span><span style="color:#e6db74">        True: source -&gt; target
+</span><span style="color:#e6db74">        False target -&gt; source
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    Attributes
+</span><span style="color:#e6db74">    ----------
+</span><span style="color:#e6db74">    TODO 
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">    Reference
+</span><span style="color:#e6db74">    ---------
+</span><span style="color:#e6db74">      - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
+</span><span style="color:#e6db74">        of Spectral Parameter Trajectory.
+</span><span style="color:#e6db74">        http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">def</span> __init__(self, gmm, T, gv<span style="color:#f92672">=</span>None, swap<span style="color:#f92672">=</span>False):
+        GMMMap<span style="color:#f92672">.</span>__init__(self, gmm, swap)
 
-    Parameters
-    ----------
-    gmm : scipy.mixture.GMM
-        Gaussian Mixture Models of source and target speaker joint features
+        self<span style="color:#f92672">.</span>T <span style="color:#f92672">=</span> T
+        <span style="color:#75715e"># shape[1] = d(src) + d(src_delta) + d(tgt) + d(tgt_delta)</span>
+        D <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>means_<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">4</span>
 
-    gv : scipy.mixture.GMM (default=None)
-        Gaussian Mixture Models of target speaker's global variance of spectral
-        feature
-    
-    swap : bool (default=False)
-        True: source -&gt; target
-        False target -&gt; source
+        <span style="color:#75715e">## Setup for Trajectory-based mapping</span>
+        self<span style="color:#f92672">.</span>__construct_weight_matrix(T, D)
 
-    Attributes
-    ----------
-    TODO 
+        <span style="color:#75715e">## Setup for GV post-filtering</span>
+        <span style="color:#75715e"># It is assumed that GV is modeled as a single mixture GMM</span>
+        <span style="color:#66d9ef">if</span> gv <span style="color:#f92672">!=</span> None:
+            self<span style="color:#f92672">.</span>gv_mean <span style="color:#f92672">=</span> gv<span style="color:#f92672">.</span>means_[<span style="color:#ae81ff">0</span>]
+            self<span style="color:#f92672">.</span>gv_covar <span style="color:#f92672">=</span> gv<span style="color:#f92672">.</span>covars_[<span style="color:#ae81ff">0</span>]
+            self<span style="color:#f92672">.</span>Pv <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>inv(self<span style="color:#f92672">.</span>gv_covar)
 
-    Reference
-    ---------
-      - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
-        of Spectral Parameter Trajectory.
-        http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
-    &quot;&quot;&quot;
-    def __init__(self, gmm, T, gv=None, swap=False):
-        GMMMap.__init__(self, gmm, swap)
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__construct_weight_matrix</span>(self, T, D):
+        <span style="color:#75715e"># Construct Weight matrix W</span>
+        <span style="color:#75715e"># Eq.(25) ~ (28)</span>
+        <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> range(T):
+            w0 <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>lil_matrix((D, D<span style="color:#f92672">*</span>T))
+            w1 <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>lil_matrix((D, D<span style="color:#f92672">*</span>T))
+            w0[<span style="color:#ae81ff">0</span>:,t<span style="color:#f92672">*</span>D:(t<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>D] <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>diags(np<span style="color:#f92672">.</span>ones(D), <span style="color:#ae81ff">0</span>)
 
-        self.T = T
-        # shape[1] = d(src) + d(src_delta) + d(tgt) + d(tgt_delta)
-        D = gmm.means_.shape[1] / 4
+            <span style="color:#66d9ef">if</span> t<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>:
+                tmp <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(D)
+                tmp<span style="color:#f92672">.</span>fill(<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span>)
+                w1[<span style="color:#ae81ff">0</span>:,(t<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>D:t<span style="color:#f92672">*</span>D] <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>diags(tmp, <span style="color:#ae81ff">0</span>)
+            <span style="color:#66d9ef">if</span> t<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> T:
+                tmp <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(D)
+                tmp<span style="color:#f92672">.</span>fill(<span style="color:#ae81ff">0.5</span>)
+                w1[<span style="color:#ae81ff">0</span>:,(t<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>D:(t<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>)<span style="color:#f92672">*</span>D] <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>diags(tmp, <span style="color:#ae81ff">0</span>)
 
-        ## Setup for Trajectory-based mapping
-        self.__construct_weight_matrix(T, D)
+            W_t <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>vstack([w0, w1])
 
-        ## Setup for GV post-filtering
-        # It is assumed that GV is modeled as a single mixture GMM
-        if gv != None:
-            self.gv_mean = gv.means_[0]
-            self.gv_covar = gv.covars_[0]
-            self.Pv = np.linalg.inv(self.gv_covar)
+            <span style="color:#75715e"># Slower</span>
+            <span style="color:#75715e"># self.W[2*D*t:2*D*(t+1),:] = W_t</span>
 
-    def __construct_weight_matrix(self, T, D):
-        # Construct Weight matrix W
-        # Eq.(25) ~ (28)
-        for t in range(T):
-            w0 = scipy.sparse.lil_matrix((D, D*T))
-            w1 = scipy.sparse.lil_matrix((D, D*T))
-            w0[0:,t*D:(t+1)*D] = scipy.sparse.diags(np.ones(D), 0)
+            <span style="color:#66d9ef">if</span> t <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                self<span style="color:#f92672">.</span>W <span style="color:#f92672">=</span> W_t
+            <span style="color:#66d9ef">else</span>:
+                self<span style="color:#f92672">.</span>W <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>vstack([self<span style="color:#f92672">.</span>W, W_t])
 
-            if t-1 &gt;= 0:
-                tmp = np.zeros(D)
-                tmp.fill(-0.5)
-                w1[0:,(t-1)*D:t*D] = scipy.sparse.diags(tmp, 0)
-            if t+1 &lt; T:
-                tmp = np.zeros(D)
-                tmp.fill(0.5)
-                w1[0:,(t+1)*D:(t+2)*D] = scipy.sparse.diags(tmp, 0)
+        self<span style="color:#f92672">.</span>W <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>csr_matrix(self<span style="color:#f92672">.</span>W)
 
-            W_t = scipy.sparse.vstack([w0, w1])
-
-            # Slower
-            # self.W[2*D*t:2*D*(t+1),:] = W_t
-
-            if t == 0:
-                self.W = W_t
-            else:
-                self.W = scipy.sparse.vstack([self.W, W_t])
-
-        self.W = scipy.sparse.csr_matrix(self.W)
-
-        assert self.W.shape == (2*D*T, D*T)
+        <span style="color:#66d9ef">assert</span> self<span style="color:#f92672">.</span>W<span style="color:#f92672">.</span>shape <span style="color:#f92672">==</span> (<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>D<span style="color:#f92672">*</span>T, D<span style="color:#f92672">*</span>T)
         
-    def convert(self, src):
-        &quot;&quot;&quot;
-        Mapping source spectral feature x to target spectral feature y 
-        so that maximize the likelihood of y given x.
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convert</span>(self, src):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        Mapping source spectral feature x to target spectral feature y 
+</span><span style="color:#e6db74">        so that maximize the likelihood of y given x.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">        Parameters
+</span><span style="color:#e6db74">        ----------
+</span><span style="color:#e6db74">        src : array, shape (`the number of frames`, `the order of spectral feature`)
+</span><span style="color:#e6db74">            a sequence of source speaker&#39;s spectral feature that will be
+</span><span style="color:#e6db74">            transformed
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">        Return
+</span><span style="color:#e6db74">        ------
+</span><span style="color:#e6db74">        a sequence of transformed spectral features
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        T, D <span style="color:#f92672">=</span> src<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>], src<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
 
-        Parameters
-        ----------
-        src : array, shape (`the number of frames`, `the order of spectral feature`)
-            a sequence of source speaker's spectral feature that will be
-            transformed
+        <span style="color:#66d9ef">if</span> T <span style="color:#f92672">!=</span> self<span style="color:#f92672">.</span>T:
+            self<span style="color:#f92672">.</span>__construct_weight_matrix(T, D)
 
-        Return
-        ------
-        a sequence of transformed spectral features
-        &quot;&quot;&quot;
-        T, D = src.shape[0], src.shape[1]/2
+        <span style="color:#75715e"># A suboptimum mixture sequence  (eq.37)</span>
+        optimum_mix <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>predict(src)
 
-        if T != self.T:
-            self.__construct_weight_matrix(T, D)
+        <span style="color:#75715e"># Compute E eq.(40)</span>
+        self<span style="color:#f92672">.</span>E <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((T, <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>D))
+        <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> range(T):
+            m <span style="color:#f92672">=</span> optimum_mix[t] <span style="color:#75715e"># estimated mixture index at time t</span>
+            xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>solve(self<span style="color:#f92672">.</span>covarXX[m], src[t] <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>src_means[m])
+            <span style="color:#75715e"># Eq. (22)</span>
+            self<span style="color:#f92672">.</span>E[t] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>tgt_means[m] <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>covarYX[m], xx)
+        self<span style="color:#f92672">.</span>E <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>E<span style="color:#f92672">.</span>flatten()
 
-        # A suboptimum mixture sequence  (eq.37)
-        optimum_mix = self.px.predict(src)
+        <span style="color:#75715e"># Compute D eq.(41). Note that self.D represents D^-1.</span>
+        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((T, <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>D, <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>D))
+        <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> range(T):
+            m <span style="color:#f92672">=</span> optimum_mix[t]
+            xx_inv_xy <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>solve(self<span style="color:#f92672">.</span>covarXX[m], self<span style="color:#f92672">.</span>covarXY[m])
+            <span style="color:#75715e"># Eq. (23)</span>
+            self<span style="color:#f92672">.</span>D[t] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>covarYY[m] <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>covarYX[m], xx_inv_xy)
+            self<span style="color:#f92672">.</span>D[t] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>inv(self<span style="color:#f92672">.</span>D[t])
+        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>block_diag(<span style="color:#f92672">*</span>self<span style="color:#f92672">.</span>D)
 
-        # Compute E eq.(40)
-        self.E = np.zeros((T, 2*D))
-        for t in range(T):
-            m = optimum_mix[t] # estimated mixture index at time t
-            xx = np.linalg.solve(self.covarXX[m], src[t] - self.src_means[m])
-            # Eq. (22)
-            self.E[t] = self.tgt_means[m] + np.dot(self.covarYX[m], xx)
-        self.E = self.E.flatten()
+        <span style="color:#75715e"># represent D as a sparse matrix</span>
+        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>csr_matrix(self<span style="color:#f92672">.</span>D)
 
-        # Compute D eq.(41). Note that self.D represents D^-1.
-        self.D = np.zeros((T, 2*D, 2*D))
-        for t in range(T):
-            m = optimum_mix[t]
-            xx_inv_xy = np.linalg.solve(self.covarXX[m], self.covarXY[m])
-            # Eq. (23)
-            self.D[t] = self.covarYY[m] - np.dot(self.covarYX[m], xx_inv_xy)
-            self.D[t] = np.linalg.inv(self.D[t])
-        self.D = scipy.linalg.block_diag(*self.D)
-
-        # represent D as a sparse matrix
-        self.D = scipy.sparse.csr_matrix(self.D)
-
-        # Compute target static features
-        # eq.(39)
-        covar = self.W.T.dot(self.D.dot(self.W))
-        y = scipy.sparse.linalg.spsolve(covar, self.W.T.dot(self.D.dot(self.E)),\
-                                        use_umfpack=False)
-        return y.reshape((T, D))
-</code></pre>
-
+        <span style="color:#75715e"># Compute target static features</span>
+        <span style="color:#75715e"># eq.(39)</span>
+        covar <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>W<span style="color:#f92672">.</span>T<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>D<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W))
+        y <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>spsolve(covar, self<span style="color:#f92672">.</span>W<span style="color:#f92672">.</span>T<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>D<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>E)),\
+                                        use_umfpack<span style="color:#f92672">=</span>False)
+        <span style="color:#66d9ef">return</span> y<span style="color:#f92672">.</span>reshape((T, D))</code></pre></div>
 <h2 id="結論">結論</h2>
 
 <ul>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>machine-learning matrix-factorization on LESS IS MORE</title>
@@ -22,7 +22,7 @@
 Github https://github.com/r9y9/julia-nmf-ss-toy
 ノート NMF-based Music Source Separation Demo.ipynb | nbviewer
 NMFのコード (Julia) NMFの実装の部分だけ抜き出しておきます。
-function nmf_euc(Y::AbstractMatrix, K::Int=4; maxiter::Int=100) H = rand(size(Y, 1), K) U = rand(K, size(Y, 2)) const ϵ = 1.0e-21 for i=1:maxiter H = H .* (Y*U&#39;) ./ (H*U*U&#39; + ϵ) U = U .* (H&#39;*Y) ./ (H&#39;*H*U + ϵ) U = U ./ maximum(U) end return H, U end  いやー簡単ですねー。NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。</description>
+function nmf_euc(Y::AbstractMatrix, K::Int=4; maxiter::Int=100) H = rand(size(Y, 1), K) U = rand(K, size(Y, 2)) const ϵ = 1.0e-21 for i=1:maxiter H = H .* (Y*U&amp;#39;) ./ (H*U*U&amp;#39; + ϵ) U = U .* (H&amp;#39;*Y) ./ (H&amp;#39;*H*U + ϵ) U = U ./ maximum(U) end return H, U end いやー簡単ですねー。NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。</description>
     </item>
     
     <item>

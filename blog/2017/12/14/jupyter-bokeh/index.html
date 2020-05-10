@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -68,176 +68,149 @@
 <p>なお、ここで紹介する例は、僕が過去に出た機械学習のコンペ (<a href="https://deepanalytics.jp/compe/36?tab=compedetail">https://deepanalytics.jp/compe/36?tab=compedetail</a>) で実際に使用したコードからほぼ取ってきました（8/218位でした）。グラフを動的に更新する方法は <a href="https://bokeh.pydata.org/en/latest/docs/user_guide/notebook.html#notebook-handles">公式ドキュメント</a> に記述されていますが、そのサンプルの内容は「円を描画して色を変える」といった実用性皆無のものであること、またググっても例が多く見つからないことから、このような紹介記事を書くことにしました。参考になれば幸いです。</p>
 
 <p>余談ではありますが、こと機械学習に関しては、tensorboardを使ったほうが簡単で良いと思います。僕は最近そうしています。 <a href="https://qiita.com/r9y9/items/d54162d37ec4f110f4b4">https://qiita.com/r9y9/items/d54162d37ec4f110f4b4</a>. 色なり位置なり大きさなりを柔軟にカスタマイズしたい、あるいはノートブックで処理を完結させたい、と言った場合には、ここで紹介する方法も良いかもしれません。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>pylab inline</code></pre></div><pre><code>Populating the interactive namespace from numpy and matplotlib</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> IPython.display <span style="color:#f92672">import</span> HTML, Image
+<span style="color:#f92672">import</span> IPython
+<span style="color:#f92672">from</span> os.path <span style="color:#f92672">import</span> exists
 
-<pre><code class="language-python">%pylab inline
-</code></pre>
-
-<pre><code>Populating the interactive namespace from numpy and matplotlib
-</code></pre>
-
-<pre><code class="language-python">from IPython.display import HTML, Image
-import IPython
-from os.path import exists
-
-def summary():
-    baseurl = &quot;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&quot;
-    for (name, figname, url) in [
-        (&quot;Line&quot;, &quot;line&quot;, &quot;line.html&quot;),
-        (&quot;VBar&quot;, &quot;vbar&quot;, &quot;vbar.html&quot;),
-        (&quot;HBar&quot;, &quot;hbar&quot;, &quot;hbar.html&quot;),
-        (&quot;ImageRGBA&quot;, &quot;gray_image&quot;, &quot;image_rgba.html&quot;),
-        (&quot;ImageRGBA&quot;, &quot;inferno_image&quot;, &quot;image_rgba.html&quot;),
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">summary</span>():
+    baseurl <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&#34;</span>
+    <span style="color:#66d9ef">for</span> (name, figname, url) <span style="color:#f92672">in</span> [
+        (<span style="color:#e6db74">&#34;Line&#34;</span>, <span style="color:#e6db74">&#34;line&#34;</span>, <span style="color:#e6db74">&#34;line.html&#34;</span>),
+        (<span style="color:#e6db74">&#34;VBar&#34;</span>, <span style="color:#e6db74">&#34;vbar&#34;</span>, <span style="color:#e6db74">&#34;vbar.html&#34;</span>),
+        (<span style="color:#e6db74">&#34;HBar&#34;</span>, <span style="color:#e6db74">&#34;hbar&#34;</span>, <span style="color:#e6db74">&#34;hbar.html&#34;</span>),
+        (<span style="color:#e6db74">&#34;ImageRGBA&#34;</span>, <span style="color:#e6db74">&#34;gray_image&#34;</span>, <span style="color:#e6db74">&#34;image_rgba.html&#34;</span>),
+        (<span style="color:#e6db74">&#34;ImageRGBA&#34;</span>, <span style="color:#e6db74">&#34;inferno_image&#34;</span>, <span style="color:#e6db74">&#34;image_rgba.html&#34;</span>),
         ]:
-        gif = &quot;./fig/{}.gif&quot;.format(figname)
-        print(&quot;\n&quot;,name, baseurl + url)
-        if exists(gif):
-            with open(gif, 'rb') as f:
-                IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
+        gif <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./fig/{}.gif&#34;</span><span style="color:#f92672">.</span>format(figname)
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,name, baseurl <span style="color:#f92672">+</span> url)
+        <span style="color:#66d9ef">if</span> exists(gif):
+            <span style="color:#66d9ef">with</span> open(gif, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+                IPython<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>display(Image(data<span style="color:#f92672">=</span>f<span style="color:#f92672">.</span>read()), format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gif&#34;</span>)
 
-summary()
-</code></pre>
-
+summary()</code></pre></div>
 <p>(※ブログ先頭に貼ったので省略します)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># True にしてノートブックを実行すると、上記gifの元となる画像を保存し、最後にgifを生成する</span>
+save_img <span style="color:#f92672">=</span> False
+<span style="color:#66d9ef">if</span> save_img:
+    <span style="color:#f92672">import</span> os
+    <span style="color:#f92672">from</span> os.path <span style="color:#f92672">import</span> exists
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> exists(<span style="color:#e6db74">&#34;./fig&#34;</span>):
+        os<span style="color:#f92672">.</span>makedirs(<span style="color:#e6db74">&#34;./fig&#34;</span>)
+    toolbar_location <span style="color:#f92672">=</span> None
+<span style="color:#66d9ef">else</span>:
+    toolbar_location <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;above&#34;</span>
 
-<pre><code class="language-python"># True にしてノートブックを実行すると、上記gifの元となる画像を保存し、最後にgifを生成する
-save_img = False
-if save_img:
-    import os
-    from os.path import exists
-    if not exists(&quot;./fig&quot;):
-        os.makedirs(&quot;./fig&quot;)
-    toolbar_location = None
-else:
-    toolbar_location = &quot;above&quot;
-
-# bokehで描画したグラフはnotebookに残らないので、Trueの場合は代わりに事前に保存してあるgifを描画する
-# もしローカルで実行するときは、Falseにしてください
-show_static = True
-</code></pre>
-
+<span style="color:#75715e"># bokehで描画したグラフはnotebookに残らないので、Trueの場合は代わりに事前に保存してあるgifを描画する</span>
+<span style="color:#75715e"># もしローカルで実行するときは、Falseにしてください</span>
+show_static <span style="color:#f92672">=</span> True</code></pre></div>
 <h2 id="準備">準備</h2>
 
 <p>先述の通り、ニューラルネットの学習過程の可視化を題材として、Jupyter上でのBokehの使い方を紹介していきたいと思います。今回は、PyTorch (v0.3.0) を使ってニューラルネットの学習のコードを書きました。</p>
 
 <p><a href="https://github.com/pytorch/examples/tree/master/mnist">https://github.com/pytorch/examples/tree/master/mnist</a> をベースに、可視化しやすいように少しいじりました。</p>
-
-<pre><code class="language-python">import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torchvision import datasets, transforms
-from torch.autograd import Variable
-import numpy as np
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> torch
+<span style="color:#f92672">import</span> torch.nn <span style="color:#f92672">as</span> nn
+<span style="color:#f92672">import</span> torch.nn.functional <span style="color:#f92672">as</span> F
+<span style="color:#f92672">import</span> torch.optim <span style="color:#f92672">as</span> optim
+<span style="color:#f92672">from</span> torchvision <span style="color:#f92672">import</span> datasets, transforms
+<span style="color:#f92672">from</span> torch.autograd <span style="color:#f92672">import</span> Variable
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np</code></pre></div>
 <h3 id="data">Data</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">use_cuda <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>cuda<span style="color:#f92672">.</span>is_available()
 
-<pre><code class="language-python">use_cuda = torch.cuda.is_available()
+batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">128</span>
 
-batch_size = 128
-
-kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
-train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('./data', train=True, download=True,
-                   transform=transforms.Compose([
-                       transforms.ToTensor()
+kwargs <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;num_workers&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;pin_memory&#39;</span>: True} <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> {}
+train_loader <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>utils<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>DataLoader(
+    datasets<span style="color:#f92672">.</span>MNIST(<span style="color:#e6db74">&#39;./data&#39;</span>, train<span style="color:#f92672">=</span>True, download<span style="color:#f92672">=</span>True,
+                   transform<span style="color:#f92672">=</span>transforms<span style="color:#f92672">.</span>Compose([
+                       transforms<span style="color:#f92672">.</span>ToTensor()
                    ])),
-    batch_size=batch_size, shuffle=True, **kwargs)
-test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('./data', train=False, transform=transforms.Compose([
-                       transforms.ToTensor(),
+    batch_size<span style="color:#f92672">=</span>batch_size, shuffle<span style="color:#f92672">=</span>True, <span style="color:#f92672">**</span>kwargs)
+test_loader <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>utils<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>DataLoader(
+    datasets<span style="color:#f92672">.</span>MNIST(<span style="color:#e6db74">&#39;./data&#39;</span>, train<span style="color:#f92672">=</span>False, transform<span style="color:#f92672">=</span>transforms<span style="color:#f92672">.</span>Compose([
+                       transforms<span style="color:#f92672">.</span>ToTensor(),
                    ])),
-    batch_size=batch_size, shuffle=False, **kwargs)
+    batch_size<span style="color:#f92672">=</span>batch_size, shuffle<span style="color:#f92672">=</span>False, <span style="color:#f92672">**</span>kwargs)
 
-data_loaders = {&quot;train&quot;: train_loader, &quot;test&quot;:test_loader}
-</code></pre>
-
+data_loaders <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;train&#34;</span>: train_loader, <span style="color:#e6db74">&#34;test&#34;</span>:test_loader}</code></pre></div>
 <h3 id="model">Model</h3>
 
 <p>簡単な畳み込みニューラルネットです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Net</span>(nn<span style="color:#f92672">.</span>Module):
+    <span style="color:#66d9ef">def</span> __init__(self):
+        super(Net, self)<span style="color:#f92672">.</span>__init__()
+        self<span style="color:#f92672">.</span>conv1 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Conv2d(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>, kernel_size<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
+        self<span style="color:#f92672">.</span>conv2 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Conv2d(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>, kernel_size<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
+        self<span style="color:#f92672">.</span>conv2_drop <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Dropout2d()
+        self<span style="color:#f92672">.</span>fc1 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">320</span>, <span style="color:#ae81ff">50</span>)
+        self<span style="color:#f92672">.</span>fc2 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">10</span>)
 
-<pre><code class="language-python">class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
-        self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
-        self.conv2_drop = nn.Dropout2d()
-        self.fc1 = nn.Linear(320, 50)
-        self.fc2 = nn.Linear(50, 10)
-
-    def forward(self, x):
-        x = F.relu(F.max_pool2d(self.conv1(x), 2))
-        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
-        x = x.view(-1, 320)
-        x = F.relu(self.fc1(x))
-        x = F.dropout(x, training=self.training)
-        x = self.fc2(x)
-        return F.log_softmax(x, dim=-1)
-</code></pre>
-
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forward</span>(self, x):
+        x <span style="color:#f92672">=</span> F<span style="color:#f92672">.</span>relu(F<span style="color:#f92672">.</span>max_pool2d(self<span style="color:#f92672">.</span>conv1(x), <span style="color:#ae81ff">2</span>))
+        x <span style="color:#f92672">=</span> F<span style="color:#f92672">.</span>relu(F<span style="color:#f92672">.</span>max_pool2d(self<span style="color:#f92672">.</span>conv2_drop(self<span style="color:#f92672">.</span>conv2(x)), <span style="color:#ae81ff">2</span>))
+        x <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>view(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">320</span>)
+        x <span style="color:#f92672">=</span> F<span style="color:#f92672">.</span>relu(self<span style="color:#f92672">.</span>fc1(x))
+        x <span style="color:#f92672">=</span> F<span style="color:#f92672">.</span>dropout(x, training<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>training)
+        x <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>fc2(x)
+        <span style="color:#66d9ef">return</span> F<span style="color:#f92672">.</span>log_softmax(x, dim<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)</code></pre></div>
 <h3 id="train-loop">Train loop</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> tnrange</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
 
-<pre><code class="language-python">from tqdm import tnrange
-</code></pre>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__train_loop</span>(model, data_loaders, optimizer, epoch, phase):
+    model <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>train() <span style="color:#66d9ef">if</span> phase <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;train&#34;</span> <span style="color:#66d9ef">else</span> model<span style="color:#f92672">.</span>eval()
+    running_loss <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    running_corrects <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    corrects <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>
+    counts <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>
+    <span style="color:#66d9ef">for</span> batch_idx, (x, y) <span style="color:#f92672">in</span> enumerate(data_loaders[phase]):
+        x <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> x
+        y <span style="color:#f92672">=</span> y<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> y
+        x, y <span style="color:#f92672">=</span> Variable(x), Variable(y)
+        optimizer<span style="color:#f92672">.</span>zero_grad()
+        y_hat <span style="color:#f92672">=</span> model(x)
 
-<pre><code class="language-python">epochs = 20
+        <span style="color:#75715e"># loss</span>
+        loss <span style="color:#f92672">=</span> F<span style="color:#f92672">.</span>nll_loss(y_hat, y)
 
-def __train_loop(model, data_loaders, optimizer, epoch, phase):
-    model = model.train() if phase == &quot;train&quot; else model.eval()
-    running_loss = 0
-    running_corrects = 0
-    corrects = [0]*10
-    counts = [0]*10
-    for batch_idx, (x, y) in enumerate(data_loaders[phase]):
-        x = x.cuda() if use_cuda else x
-        y = y.cuda() if use_cuda else y
-        x, y = Variable(x), Variable(y)
-        optimizer.zero_grad()
-        y_hat = model(x)
+        <span style="color:#75715e"># update</span>
+        <span style="color:#66d9ef">if</span> phase <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;train&#34;</span>:
+            loss<span style="color:#f92672">.</span>backward()
+            optimizer<span style="color:#f92672">.</span>step()
+        running_loss <span style="color:#f92672">+=</span> loss<span style="color:#f92672">.</span>data[<span style="color:#ae81ff">0</span>]
 
-        # loss
-        loss = F.nll_loss(y_hat, y)
+        <span style="color:#75715e"># predict</span>
+        preds <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>max(y_hat<span style="color:#f92672">.</span>data, <span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">1</span>]
+        match <span style="color:#f92672">=</span> (preds <span style="color:#f92672">==</span> y<span style="color:#f92672">.</span>data)<span style="color:#f92672">.</span>cpu()
+        running_corrects <span style="color:#f92672">+=</span> match<span style="color:#f92672">.</span>sum()
 
-        # update
-        if phase == &quot;train&quot;:
-            loss.backward()
-            optimizer.step()
-        running_loss += loss.data[0]
+        <span style="color:#75715e"># カテゴリごとの正解率を出すのにほしい</span>
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(match)):
+            <span style="color:#66d9ef">if</span> match<span style="color:#f92672">.</span>view(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[i] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+                corrects[y<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>view(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[i]] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(match)):
+            counts[y<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>view(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[i]] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
 
-        # predict
-        preds = torch.max(y_hat.data, 1)[1]
-        match = (preds == y.data).cpu()
-        running_corrects += match.sum()
+    <span style="color:#75715e"># epoch-wise metrics</span>
+    l <span style="color:#f92672">=</span> running_loss <span style="color:#f92672">/</span> len(data_loaders[phase])
+    acc <span style="color:#f92672">=</span> running_corrects <span style="color:#f92672">/</span> len(data_loaders[phase]<span style="color:#f92672">.</span>dataset)
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;loss&#34;</span>: l, <span style="color:#e6db74">&#34;acc&#34;</span>: acc, <span style="color:#e6db74">&#34;corrects&#34;</span>: corrects, <span style="color:#e6db74">&#34;counts&#34;</span>: counts}
 
-        # カテゴリごとの正解率を出すのにほしい
-        for i in range(len(match)):
-            if match.view(-1)[i] &gt; 0:
-                corrects[y.data.view(-1)[i]] += 1
-        for i in range(len(match)):
-            counts[y.data.view(-1)[i]] += 1
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_loop</span>(model, data_loaders, optimizer, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>, callback<span style="color:#f92672">=</span>None):
+    history <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;train&#34;</span>: {}, <span style="color:#e6db74">&#34;test&#34;</span>: {}}
+    <span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> tnrange(epochs):
+        <span style="color:#66d9ef">for</span> phase <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;train&#34;</span>, <span style="color:#e6db74">&#34;test&#34;</span>]:
+            d <span style="color:#f92672">=</span> __train_loop(model, data_loaders, optimizer, epoch, phase)
+            <span style="color:#66d9ef">for</span> k,v <span style="color:#f92672">in</span> d<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">try</span>:
+                    history[phase][k]<span style="color:#f92672">.</span>append(v)
+                <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyError</span>:
+                    history[phase][k] <span style="color:#f92672">=</span> [v]
 
-    # epoch-wise metrics
-    l = running_loss / len(data_loaders[phase])
-    acc = running_corrects / len(data_loaders[phase].dataset)
-    return {&quot;loss&quot;: l, &quot;acc&quot;: acc, &quot;corrects&quot;: corrects, &quot;counts&quot;: counts}
-
-def train_loop(model, data_loaders, optimizer, epochs=12, callback=None):
-    history = {&quot;train&quot;: {}, &quot;test&quot;: {}}
-    for epoch in tnrange(epochs):
-        for phase in [&quot;train&quot;, &quot;test&quot;]:
-            d = __train_loop(model, data_loaders, optimizer, epoch, phase)
-            for k,v in d.items():
-                try:
-                    history[phase][k].append(v)
-                except KeyError:
-                    history[phase][k] = [v]
-
-            # ここでグラフの更新を呼ぶ想定です
-            if callback is not None:
-                callback.on_epoch_end(epoch, phase, history)
-    return history
-</code></pre>
-
+            <span style="color:#75715e"># ここでグラフの更新を呼ぶ想定です</span>
+            <span style="color:#66d9ef">if</span> callback <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> None:
+                callback<span style="color:#f92672">.</span>on_epoch_end(epoch, phase, history)
+    <span style="color:#66d9ef">return</span> history</code></pre></div>
 <h2 id="本編">本編</h2>
 
 <h3 id="0-matplotlib">0. Matplotlib</h3>
@@ -245,33 +218,21 @@ def train_loop(model, data_loaders, optimizer, epochs=12, callback=None):
 <p>まずはじめに、動的ではない（静的な）グラフの例を示します。手書き数字認識のような識別タスクにおいて、最も一般的であると思われる評価尺度として、ロスと正解率を可視化します。<code>train_loop</code>関数は、返り値にロスと正解率のhistoryを返すようにしたので、それを使ってグラフを作ります。</p>
 
 <p>図の作成にはいろんなツールがあると思うのですが、matplotlibが定番で（僕は）大きな不満もないので、よく使っています。</p>
-
-<pre><code class="language-python">model = Net().cuda() if use_cuda else Net()
-optimizer = optim.Adadelta(model.parameters())
-history = train_loop(model, data_loaders, optimizer, epochs)
-print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
-print(&quot;Test acc: {:.3f}&quot;.format(history[&quot;test&quot;][&quot;acc&quot;][-1]))
-</code></pre>
-
-<pre><code>Test loss: 0.111
-Test acc: 0.989
-</code></pre>
-
-<pre><code class="language-python">matplotlib.pyplot.figure(figsize=(16,6))
-subplot(1,2,1)
-plot(history[&quot;train&quot;][&quot;loss&quot;], linewidth=3, color=&quot;red&quot;, label=&quot;train loss&quot;)
-plot(history[&quot;test&quot;][&quot;loss&quot;], linewidth=3, color=&quot;blue&quot;, label=&quot;test lsos&quot;)
-xlabel(&quot;epoch&quot;, fontsize=16)
-legend(prop={&quot;size&quot;: 16})
-subplot(1,2,2)
-plot(history[&quot;train&quot;][&quot;acc&quot;], linewidth=3, color=&quot;red&quot;, label=&quot;train acc&quot;)
-plot(history[&quot;test&quot;][&quot;acc&quot;], linewidth=3, color=&quot;blue&quot;, label=&quot;test acc&quot;)
-xlabel(&quot;epoch&quot;, fontsize=16)
-</code></pre>
-
-<pre><code>&lt;matplotlib.text.Text at 0x7f16fa9ca438&gt;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">model <span style="color:#f92672">=</span> Net()<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> Net()
+optimizer <span style="color:#f92672">=</span> optim<span style="color:#f92672">.</span>Adadelta(model<span style="color:#f92672">.</span>parameters())
+history <span style="color:#f92672">=</span> train_loop(model, data_loaders, optimizer, epochs)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test loss: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;train&#34;</span>][<span style="color:#e6db74">&#34;loss&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test acc: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;test&#34;</span>][<span style="color:#e6db74">&#34;acc&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))</code></pre></div><pre><code>Test loss: 0.111
+Test acc: 0.989</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">matplotlib<span style="color:#f92672">.</span>pyplot<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">6</span>))
+subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">1</span>)
+plot(history[<span style="color:#e6db74">&#34;train&#34;</span>][<span style="color:#e6db74">&#34;loss&#34;</span>], linewidth<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train loss&#34;</span>)
+plot(history[<span style="color:#e6db74">&#34;test&#34;</span>][<span style="color:#e6db74">&#34;loss&#34;</span>], linewidth<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;blue&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test lsos&#34;</span>)
+xlabel(<span style="color:#e6db74">&#34;epoch&#34;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>)
+legend(prop<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;size&#34;</span>: <span style="color:#ae81ff">16</span>})
+subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">2</span>)
+plot(history[<span style="color:#e6db74">&#34;train&#34;</span>][<span style="color:#e6db74">&#34;acc&#34;</span>], linewidth<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train acc&#34;</span>)
+plot(history[<span style="color:#e6db74">&#34;test&#34;</span>][<span style="color:#e6db74">&#34;acc&#34;</span>], linewidth<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;blue&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test acc&#34;</span>)
+xlabel(<span style="color:#e6db74">&#34;epoch&#34;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>)</code></pre></div><pre><code>&lt;matplotlib.text.Text at 0x7f16fa9ca438&gt;</code></pre>
 <p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_16_1.png" alt="png" /></p>
 
 <h3 id="1-line">1. Line</h3>
@@ -279,20 +240,17 @@ xlabel(&quot;epoch&quot;, fontsize=16)
 <p>次に、上記の線グラフを、Bokehを使って作ってみます。これには、 <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html</a> が使えます。</p>
 
 <p>bokehで作ったグラフをnotebookにinline plotするためには、<a href="https://bokeh.pydata.org/en/latest/docs/reference/io.html#bokeh.io.output_notebook">bokeh.io.output_notebook</a> を呼び出しておく必要があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> bokeh
+<span style="color:#f92672">import</span> bokeh.io
+<span style="color:#f92672">from</span> bokeh.io <span style="color:#f92672">import</span> push_notebook, show, output_notebook
+<span style="color:#f92672">from</span> bokeh.plotting <span style="color:#f92672">import</span> figure
+<span style="color:#66d9ef">try</span>:
+    <span style="color:#75715e"># 少し古いbokehだとこっち</span>
+    <span style="color:#f92672">from</span> bokeh.io <span style="color:#f92672">import</span> gridplot
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ImportError</span>:
+    <span style="color:#f92672">from</span> bokeh.layouts <span style="color:#f92672">import</span> gridplot
 
-<pre><code class="language-python">import bokeh
-import bokeh.io
-from bokeh.io import push_notebook, show, output_notebook
-from bokeh.plotting import figure
-try:
-    # 少し古いbokehだとこっち
-    from bokeh.io import gridplot
-except ImportError:
-    from bokeh.layouts import gridplot
-
-output_notebook()
-</code></pre>
-
+output_notebook()</code></pre></div>
 <p>次に定義する <code>LinePlotsCallback</code> は、グラフの情報をプロパティに保持し、<code>on_epoch_end</code> で学習結果のhisotoryを受け取って、ロスと正解率のグラフを更新します。 historyには、今回の場合は、</p>
 
 <ul>
@@ -315,56 +273,44 @@ output_notebook()
 <p>となっています。格子状に配置しない場合は最後のステップは不要ですが、便利なので使います。</p>
 
 <p>グラフの更新は、レンダラに値をセットしたあとに、<a href="https://bokeh.pydata.org/en/latest/docs/reference/io.html#bokeh.io.push_notebook">bokeh.io.push_notebook</a> を呼び出すことで行います。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LinePlotsCallback</span>(object):
+    <span style="color:#66d9ef">def</span> __init__(self, epochs<span style="color:#f92672">=</span>epochs, batch_size<span style="color:#f92672">=</span>batch_size):
+        <span style="color:#75715e"># Epoch毎</span>
+        p1 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Loss&#34;</span>, plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>,
+                        y_range<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.5</span>), x_range<span style="color:#f92672">=</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, epochs<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>))
+        p2 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Acc&#34;</span>, plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>,
+                        y_range<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0.8</span>, <span style="color:#ae81ff">1.0</span>), x_range<span style="color:#f92672">=</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, epochs<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>))
 
-<pre><code class="language-python">class LinePlotsCallback(object):
-    def __init__(self, epochs=epochs, batch_size=batch_size):
-        # Epoch毎
-        p1 = figure(title=&quot;Loss&quot;, plot_height=300, plot_width=350,
-                        y_range=(0, 0.5), x_range=(-1, epochs+1))
-        p2 = figure(title=&quot;Acc&quot;, plot_height=300, plot_width=350,
-                        y_range=(0.8, 1.0), x_range=(-1, epochs+1))
+        self<span style="color:#f92672">.</span>renderers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;train&#34;</span>:{}, <span style="color:#e6db74">&#34;test&#34;</span>:{}}
 
-        self.renderers = {&quot;train&quot;:{}, &quot;test&quot;:{}}
+        <span style="color:#75715e"># 赤: train, 青: テスト</span>
+        <span style="color:#66d9ef">for</span> phase, c <span style="color:#f92672">in</span> [(<span style="color:#e6db74">&#34;train&#34;</span>, <span style="color:#e6db74">&#34;red&#34;</span>), (<span style="color:#e6db74">&#34;test&#34;</span>, <span style="color:#e6db74">&#34;blue&#34;</span>)]:
+            <span style="color:#66d9ef">for</span> (p, key) <span style="color:#f92672">in</span> [(p1, <span style="color:#e6db74">&#34;loss&#34;</span>), (p2, <span style="color:#e6db74">&#34;acc&#34;</span>)]:
+                self<span style="color:#f92672">.</span>renderers[phase][key] <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>line([], [], color<span style="color:#f92672">=</span>c, line_width<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
 
-        # 赤: train, 青: テスト
-        for phase, c in [(&quot;train&quot;, &quot;red&quot;), (&quot;test&quot;, &quot;blue&quot;)]:
-            for (p, key) in [(p1, &quot;loss&quot;), (p2, &quot;acc&quot;)]:
-                self.renderers[phase][key] = p.line([], [], color=c, line_width=3)
-
-        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
+        self<span style="color:#f92672">.</span>graph <span style="color:#f92672">=</span> gridplot([p1, p2], ncols<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, toolbar_location<span style="color:#f92672">=</span>toolbar_location)
 
 
-    def on_epoch_end(self, epoch, phase, history):
-        for key in [&quot;loss&quot;, &quot;acc&quot;]:
-            self.renderers[phase][key].data_source.data[&quot;x&quot;].append(epoch)
-            self.renderers[phase][key].data_source.data[&quot;y&quot;].append(history[phase][key][-1])
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">on_epoch_end</span>(self, epoch, phase, history):
+        <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;loss&#34;</span>, <span style="color:#e6db74">&#34;acc&#34;</span>]:
+            self<span style="color:#f92672">.</span>renderers[phase][key]<span style="color:#f92672">.</span>data_source<span style="color:#f92672">.</span>data[<span style="color:#e6db74">&#34;x&#34;</span>]<span style="color:#f92672">.</span>append(epoch)
+            self<span style="color:#f92672">.</span>renderers[phase][key]<span style="color:#f92672">.</span>data_source<span style="color:#f92672">.</span>data[<span style="color:#e6db74">&#34;y&#34;</span>]<span style="color:#f92672">.</span>append(history[phase][key][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
         push_notebook()
-        if save_img:
-            bokeh.io.export_png(self.graph, &quot;fig/{:02d}_line.png&quot;.format(epoch))
-</code></pre>
-
-<pre><code class="language-python">callback = LinePlotsCallback()
-if show_static:
-    if exists(&quot;fig/line.gif&quot;):
-        with open(&quot;fig/line.gif&quot;, 'rb') as f:
-            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
-else:
-    bokeh.io.show(callback.graph, notebook_handle=True)
-</code></pre>
-
+        <span style="color:#66d9ef">if</span> save_img:
+            bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>export_png(self<span style="color:#f92672">.</span>graph, <span style="color:#e6db74">&#34;fig/{:02d}_line.png&#34;</span><span style="color:#f92672">.</span>format(epoch))</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">callback <span style="color:#f92672">=</span> LinePlotsCallback()
+<span style="color:#66d9ef">if</span> show_static:
+    <span style="color:#66d9ef">if</span> exists(<span style="color:#e6db74">&#34;fig/line.gif&#34;</span>):
+        <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;fig/line.gif&#34;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+            IPython<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>display(Image(data<span style="color:#f92672">=</span>f<span style="color:#f92672">.</span>read()), format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gif&#34;</span>)
+<span style="color:#66d9ef">else</span>:
+    bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>show(callback<span style="color:#f92672">.</span>graph, notebook_handle<span style="color:#f92672">=</span>True)</code></pre></div>
 <p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_21_0.png" alt="png" /></p>
-
-<pre><code class="language-python">model = Net().cuda() if use_cuda else Net()
-optimizer = optim.Adadelta(model.parameters())
-history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
-print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
-print(&quot;Test acc: {:.3f}&quot;.format(history[&quot;test&quot;][&quot;acc&quot;][-1]))
-</code></pre>
-
-<pre><code>Test loss: 0.113
-Test acc: 0.990
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">model <span style="color:#f92672">=</span> Net()<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> Net()
+optimizer <span style="color:#f92672">=</span> optim<span style="color:#f92672">.</span>Adadelta(model<span style="color:#f92672">.</span>parameters())
+history <span style="color:#f92672">=</span> train_loop(model, data_loaders, optimizer, epochs, callback<span style="color:#f92672">=</span>callback)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test loss: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;train&#34;</span>][<span style="color:#e6db74">&#34;loss&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test acc: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;test&#34;</span>][<span style="color:#e6db74">&#34;acc&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))</code></pre></div><pre><code>Test loss: 0.113
+Test acc: 0.990</code></pre>
 <h3 id="2-vbar">2. VBar</h3>
 
 <p>データセット全体の正解率だけでなく、カテゴリ毎の正解率などの尺度を知りたい時がよくあります。次は、数字の各カテゴリごとにどのくらい正解しているのか、といった尺度を可視化するために、縦棒グラフを作ってみます。これには、 <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html</a> が使えます。on_epoch_endで渡されるhistoryのうち、</p>
@@ -377,109 +323,85 @@ Test acc: 0.990
 <p>の二つを使って動的にグラフを更新します。</p>
 
 <p><code>Line</code> オブジェクトの更新は、<code>data_source.data[&quot;x&quot;]</code>, <code>data_source.data[&quot;y&quot;]</code> に値を追加していくことで行いましたが、<code>VBar</code>オブジェクトの場合は、<code>data_source.data[&quot;top&quot;]</code> に値をセットします。下向きの棒グラフが作りたい場合は、<code>data_source.data[&quot;bottom&quot;]</code> に値をセットすればOKです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">VBarPlotsCallback</span>(object):
+    <span style="color:#66d9ef">def</span> __init__(self, epochs<span style="color:#f92672">=</span>epochs, batch_size<span style="color:#f92672">=</span>batch_size):
+        <span style="color:#75715e"># Epoch毎</span>
+        p1 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Category-wise correctness (train)&#34;</span>,
+                    plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, y_range<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">7000</span>))
+        p2 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Category-wise correctness (test)&#34;</span>,
+                    plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, y_range<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1500</span>))
 
-<pre><code class="language-python">class VBarPlotsCallback(object):
-    def __init__(self, epochs=epochs, batch_size=batch_size):
-        # Epoch毎
-        p1 = figure(title=&quot;Category-wise correctness (train)&quot;,
-                    plot_height=300, plot_width=350, y_range=(0, 7000))
-        p2 = figure(title=&quot;Category-wise correctness (test)&quot;,
-                    plot_height=300, plot_width=350, y_range=(0, 1500))
+        self<span style="color:#f92672">.</span>renderers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;train&#34;</span>:{}, <span style="color:#e6db74">&#34;test&#34;</span>:{}}
 
-        self.renderers = {&quot;train&quot;:{}, &quot;test&quot;:{}}
+        bar_opts <span style="color:#f92672">=</span> dict(width<span style="color:#f92672">=</span><span style="color:#ae81ff">0.8</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
+        <span style="color:#66d9ef">for</span> phase, p <span style="color:#f92672">in</span> [(<span style="color:#e6db74">&#34;train&#34;</span>, p1), (<span style="color:#e6db74">&#34;test&#34;</span>, p2)]:
+            <span style="color:#66d9ef">for</span> (key, c) <span style="color:#f92672">in</span> [(<span style="color:#e6db74">&#34;corrects&#34;</span>, <span style="color:#e6db74">&#34;blue&#34;</span>), (<span style="color:#e6db74">&#34;counts&#34;</span>, <span style="color:#e6db74">&#34;red&#34;</span>)]:
+                self<span style="color:#f92672">.</span>renderers[phase][key] <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>vbar(
+                    x<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">10</span>), top<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>, name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>, color<span style="color:#f92672">=</span>c, <span style="color:#f92672">**</span>bar_opts)
 
-        bar_opts = dict(width=0.8, alpha=0.5)
-        for phase, p in [(&quot;train&quot;, p1), (&quot;test&quot;, p2)]:
-            for (key, c) in [(&quot;corrects&quot;, &quot;blue&quot;), (&quot;counts&quot;, &quot;red&quot;)]:
-                self.renderers[phase][key] = p.vbar(
-                    x=np.arange(0,10), top=[0]*10, name=&quot;test&quot;, color=c, **bar_opts)
+        self<span style="color:#f92672">.</span>graph <span style="color:#f92672">=</span> gridplot([p1, p2], ncols<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, toolbar_location<span style="color:#f92672">=</span>toolbar_location)
 
-        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
-
-    def on_epoch_end(self, epoch, phase, history):
-        for key in [&quot;counts&quot;, &quot;corrects&quot;]:
-            self.renderers[phase][key].data_source.data[&quot;top&quot;] = history[phase][key][-1]
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">on_epoch_end</span>(self, epoch, phase, history):
+        <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;counts&#34;</span>, <span style="color:#e6db74">&#34;corrects&#34;</span>]:
+            self<span style="color:#f92672">.</span>renderers[phase][key]<span style="color:#f92672">.</span>data_source<span style="color:#f92672">.</span>data[<span style="color:#e6db74">&#34;top&#34;</span>] <span style="color:#f92672">=</span> history[phase][key][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
             push_notebook()
-        if save_img:
-            bokeh.io.export_png(self.graph, &quot;fig/{:02d}_vbar.png&quot;.format(epoch))
-</code></pre>
-
-<pre><code class="language-python">callback = VBarPlotsCallback()
-if show_static:
-    if exists(&quot;fig/vbar.gif&quot;):
-        with open(&quot;fig/vbar.gif&quot;, 'rb') as f:
-            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
-else:
-    bokeh.io.show(callback.graph, notebook_handle=True)
-</code></pre>
-
+        <span style="color:#66d9ef">if</span> save_img:
+            bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>export_png(self<span style="color:#f92672">.</span>graph, <span style="color:#e6db74">&#34;fig/{:02d}_vbar.png&#34;</span><span style="color:#f92672">.</span>format(epoch))</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">callback <span style="color:#f92672">=</span> VBarPlotsCallback()
+<span style="color:#66d9ef">if</span> show_static:
+    <span style="color:#66d9ef">if</span> exists(<span style="color:#e6db74">&#34;fig/vbar.gif&#34;</span>):
+        <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;fig/vbar.gif&#34;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+            IPython<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>display(Image(data<span style="color:#f92672">=</span>f<span style="color:#f92672">.</span>read()), format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gif&#34;</span>)
+<span style="color:#66d9ef">else</span>:
+    bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>show(callback<span style="color:#f92672">.</span>graph, notebook_handle<span style="color:#f92672">=</span>True)</code></pre></div>
 <p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_25_0.png" alt="png" /></p>
-
-<pre><code class="language-python">model = Net().cuda() if use_cuda else Net()
-optimizer = optim.Adadelta(model.parameters())
-history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
-print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
-print(&quot;Test acc: {:.3f}&quot;.format(history[&quot;test&quot;][&quot;acc&quot;][-1]))
-</code></pre>
-
-<pre><code>Test loss: 0.115
-Test acc: 0.989
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">model <span style="color:#f92672">=</span> Net()<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> Net()
+optimizer <span style="color:#f92672">=</span> optim<span style="color:#f92672">.</span>Adadelta(model<span style="color:#f92672">.</span>parameters())
+history <span style="color:#f92672">=</span> train_loop(model, data_loaders, optimizer, epochs, callback<span style="color:#f92672">=</span>callback)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test loss: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;train&#34;</span>][<span style="color:#e6db74">&#34;loss&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test acc: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;test&#34;</span>][<span style="color:#e6db74">&#34;acc&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))</code></pre></div><pre><code>Test loss: 0.115
+Test acc: 0.989</code></pre>
 <h3 id="3-hbar">3. HBar</h3>
 
 <p>HBarと非常に似たグラフとして、横向きの棒グラフである <a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html</a> があります。VBarの場合と同様に、カテゴリ毎の正解サンプル数を可視化してみます。本質的に可視化する情報は変わりませんが、あくまでデモということで。</p>
 
 <p><code>HBar</code>オブジェクトの更新は、<code>data_source.data[&quot;right&quot;]</code> or <code>data_source.data[&quot;left&quot;]</code> に値をセットすればOKです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HBarPlotsCallback</span>(object):
+    <span style="color:#66d9ef">def</span> __init__(self, epochs<span style="color:#f92672">=</span>epochs, batch_size<span style="color:#f92672">=</span>batch_size):
+        <span style="color:#75715e"># Epoch毎</span>
+        p1 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Category-wise correctness (train)&#34;</span>,
+                    plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, x_range<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">7000</span>))
+        p2 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Category-wise correctness (test)&#34;</span>,
+                    plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, x_range<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1500</span>))
 
-<pre><code class="language-python">class HBarPlotsCallback(object):
-    def __init__(self, epochs=epochs, batch_size=batch_size):
-        # Epoch毎
-        p1 = figure(title=&quot;Category-wise correctness (train)&quot;,
-                    plot_height=300, plot_width=350, x_range=(0, 7000))
-        p2 = figure(title=&quot;Category-wise correctness (test)&quot;,
-                    plot_height=300, plot_width=350, x_range=(0, 1500))
+        self<span style="color:#f92672">.</span>renderers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;train&#34;</span>:{}, <span style="color:#e6db74">&#34;test&#34;</span>:{}}
 
-        self.renderers = {&quot;train&quot;:{}, &quot;test&quot;:{}}
+        bar_opts <span style="color:#f92672">=</span> dict(height<span style="color:#f92672">=</span><span style="color:#ae81ff">0.8</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
+        <span style="color:#66d9ef">for</span> phase, p <span style="color:#f92672">in</span> [(<span style="color:#e6db74">&#34;train&#34;</span>, p1), (<span style="color:#e6db74">&#34;test&#34;</span>, p2)]:
+            <span style="color:#66d9ef">for</span> (key, c) <span style="color:#f92672">in</span> [(<span style="color:#e6db74">&#34;corrects&#34;</span>, <span style="color:#e6db74">&#34;blue&#34;</span>), (<span style="color:#e6db74">&#34;counts&#34;</span>, <span style="color:#e6db74">&#34;green&#34;</span>)]:
+                self<span style="color:#f92672">.</span>renderers[phase][key] <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>hbar(
+                    y<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">10</span>), right<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>, name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>, color<span style="color:#f92672">=</span>c, <span style="color:#f92672">**</span>bar_opts)
 
-        bar_opts = dict(height=0.8, alpha=0.5)
-        for phase, p in [(&quot;train&quot;, p1), (&quot;test&quot;, p2)]:
-            for (key, c) in [(&quot;corrects&quot;, &quot;blue&quot;), (&quot;counts&quot;, &quot;green&quot;)]:
-                self.renderers[phase][key] = p.hbar(
-                    y=np.arange(0,10), right=[0]*10, name=&quot;test&quot;, color=c, **bar_opts)
+        self<span style="color:#f92672">.</span>graph <span style="color:#f92672">=</span> gridplot([p1, p2], ncols<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, toolbar_location<span style="color:#f92672">=</span>toolbar_location)
 
-        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
-
-    def on_epoch_end(self, epoch, phase, history):
-        for key in [&quot;counts&quot;, &quot;corrects&quot;]:
-            self.renderers[phase][key].data_source.data[&quot;right&quot;] = history[phase][key][-1]
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">on_epoch_end</span>(self, epoch, phase, history):
+        <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;counts&#34;</span>, <span style="color:#e6db74">&#34;corrects&#34;</span>]:
+            self<span style="color:#f92672">.</span>renderers[phase][key]<span style="color:#f92672">.</span>data_source<span style="color:#f92672">.</span>data[<span style="color:#e6db74">&#34;right&#34;</span>] <span style="color:#f92672">=</span> history[phase][key][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
             push_notebook()
-        if save_img:
-            bokeh.io.export_png(self.graph, &quot;fig/{:02d}_hbar.png&quot;.format(epoch))
-</code></pre>
-
-<pre><code class="language-python">callback = HBarPlotsCallback()
-if show_static:
-    if exists(&quot;fig/hbar.gif&quot;):
-        with open(&quot;fig/hbar.gif&quot;, 'rb') as f:
-            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
-else:
-    bokeh.io.show(callback.graph, notebook_handle=True)
-</code></pre>
-
+        <span style="color:#66d9ef">if</span> save_img:
+            bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>export_png(self<span style="color:#f92672">.</span>graph, <span style="color:#e6db74">&#34;fig/{:02d}_hbar.png&#34;</span><span style="color:#f92672">.</span>format(epoch))</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">callback <span style="color:#f92672">=</span> HBarPlotsCallback()
+<span style="color:#66d9ef">if</span> show_static:
+    <span style="color:#66d9ef">if</span> exists(<span style="color:#e6db74">&#34;fig/hbar.gif&#34;</span>):
+        <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;fig/hbar.gif&#34;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+            IPython<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>display(Image(data<span style="color:#f92672">=</span>f<span style="color:#f92672">.</span>read()), format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gif&#34;</span>)
+<span style="color:#66d9ef">else</span>:
+    bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>show(callback<span style="color:#f92672">.</span>graph, notebook_handle<span style="color:#f92672">=</span>True)</code></pre></div>
 <p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_29_0.png" alt="png" /></p>
-
-<pre><code class="language-python">model = Net().cuda() if use_cuda else Net()
-optimizer = optim.Adadelta(model.parameters())
-history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
-print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
-print(&quot;Test acc: {:.3f}&quot;.format(history[&quot;test&quot;][&quot;acc&quot;][-1]))
-</code></pre>
-
-<pre><code>Test loss: 0.116
-Test acc: 0.989
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">model <span style="color:#f92672">=</span> Net()<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> Net()
+optimizer <span style="color:#f92672">=</span> optim<span style="color:#f92672">.</span>Adadelta(model<span style="color:#f92672">.</span>parameters())
+history <span style="color:#f92672">=</span> train_loop(model, data_loaders, optimizer, epochs, callback<span style="color:#f92672">=</span>callback)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test loss: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;train&#34;</span>][<span style="color:#e6db74">&#34;loss&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test acc: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;test&#34;</span>][<span style="color:#e6db74">&#34;acc&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))</code></pre></div><pre><code>Test loss: 0.116
+Test acc: 0.989</code></pre>
 <h3 id="5-image">5. Image</h3>
 
 <p>最後に、<a href="https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html">https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html</a> を使って、画像を可視化する例を紹介します。例えば生成モデルを学習するときなど、学習の過程で、その生成サンプルを可視化したい場合がよくあるので、そういった場合に使えます。</p>
@@ -489,228 +411,195 @@ Test acc: 0.989
 <h4 id="vae">VAE</h4>
 
 <p><a href="https://github.com/pytorch/examples/tree/master/vae">https://github.com/pytorch/examples/tree/master/vae</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">VAE</span>(nn<span style="color:#f92672">.</span>Module):
+    <span style="color:#66d9ef">def</span> __init__(self):
+        super(VAE, self)<span style="color:#f92672">.</span>__init__()
 
-<pre><code class="language-python">class VAE(nn.Module):
-    def __init__(self):
-        super(VAE, self).__init__()
+        self<span style="color:#f92672">.</span>fc1 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">784</span>, <span style="color:#ae81ff">400</span>)
+        self<span style="color:#f92672">.</span>fc21 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">400</span>, <span style="color:#ae81ff">20</span>)
+        self<span style="color:#f92672">.</span>fc22 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">400</span>, <span style="color:#ae81ff">20</span>)
+        self<span style="color:#f92672">.</span>fc3 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">400</span>)
+        self<span style="color:#f92672">.</span>fc4 <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">400</span>, <span style="color:#ae81ff">784</span>)
 
-        self.fc1 = nn.Linear(784, 400)
-        self.fc21 = nn.Linear(400, 20)
-        self.fc22 = nn.Linear(400, 20)
-        self.fc3 = nn.Linear(20, 400)
-        self.fc4 = nn.Linear(400, 784)
+        self<span style="color:#f92672">.</span>relu <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>ReLU()
+        self<span style="color:#f92672">.</span>sigmoid <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sigmoid()
 
-        self.relu = nn.ReLU()
-        self.sigmoid = nn.Sigmoid()
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encode</span>(self, x):
+        h1 <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>relu(self<span style="color:#f92672">.</span>fc1(x))
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>fc21(h1), self<span style="color:#f92672">.</span>fc22(h1)
 
-    def encode(self, x):
-        h1 = self.relu(self.fc1(x))
-        return self.fc21(h1), self.fc22(h1)
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">reparameterize</span>(self, mu, logvar):
+        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>training:
+            std <span style="color:#f92672">=</span> logvar<span style="color:#f92672">.</span>mul(<span style="color:#ae81ff">0.5</span>)<span style="color:#f92672">.</span>exp_()
+            eps <span style="color:#f92672">=</span> Variable(std<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>new(std<span style="color:#f92672">.</span>size())<span style="color:#f92672">.</span>normal_())
+            <span style="color:#66d9ef">return</span> eps<span style="color:#f92672">.</span>mul(std)<span style="color:#f92672">.</span>add_(mu)
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#66d9ef">return</span> mu
 
-    def reparameterize(self, mu, logvar):
-        if self.training:
-            std = logvar.mul(0.5).exp_()
-            eps = Variable(std.data.new(std.size()).normal_())
-            return eps.mul(std).add_(mu)
-        else:
-            return mu
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decode</span>(self, z):
+        h3 <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>relu(self<span style="color:#f92672">.</span>fc3(z))
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>sigmoid(self<span style="color:#f92672">.</span>fc4(h3))
 
-    def decode(self, z):
-        h3 = self.relu(self.fc3(z))
-        return self.sigmoid(self.fc4(h3))
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forward</span>(self, x):
+        mu, logvar <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>encode(x<span style="color:#f92672">.</span>view(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">784</span>))
+        z <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>reparameterize(mu, logvar)
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>decode(z), mu, logvar
 
-    def forward(self, x):
-        mu, logvar = self.encode(x.view(-1, 784))
-        z = self.reparameterize(mu, logvar)
-        return self.decode(z), mu, logvar
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">loss_function</span>(recon_x, x, mu, logvar):
+    BCE <span style="color:#f92672">=</span> F<span style="color:#f92672">.</span>binary_cross_entropy(recon_x, x<span style="color:#f92672">.</span>view(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">784</span>))
 
-def loss_function(recon_x, x, mu, logvar):
-    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784))
+    <span style="color:#75715e"># see Appendix B from VAE paper:</span>
+    <span style="color:#75715e"># Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014</span>
+    <span style="color:#75715e"># https://arxiv.org/abs/1312.6114</span>
+    <span style="color:#75715e"># 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)</span>
+    KLD <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span> <span style="color:#f92672">*</span> torch<span style="color:#f92672">.</span>sum(<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> logvar <span style="color:#f92672">-</span> mu<span style="color:#f92672">.</span>pow(<span style="color:#ae81ff">2</span>) <span style="color:#f92672">-</span> logvar<span style="color:#f92672">.</span>exp())
+    <span style="color:#75715e"># Normalise by same number of elements as in reconstruction</span>
+    KLD <span style="color:#f92672">/=</span> batch_size <span style="color:#f92672">*</span> <span style="color:#ae81ff">784</span>
 
-    # see Appendix B from VAE paper:
-    # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
-    # https://arxiv.org/abs/1312.6114
-    # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
-    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    # Normalise by same number of elements as in reconstruction
-    KLD /= batch_size * 784
-
-    return BCE + KLD
-</code></pre>
-
+    <span style="color:#66d9ef">return</span> BCE <span style="color:#f92672">+</span> KLD</code></pre></div>
 <h4 id="training-loop">Training loop</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__train_loop_vae</span>(model, data_loaders, optimizer, epoch, phase):
+    model <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>train() <span style="color:#66d9ef">if</span> phase <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;train&#34;</span> <span style="color:#66d9ef">else</span> model<span style="color:#f92672">.</span>eval()
+    running_loss <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    recon_batch_first, target <span style="color:#f92672">=</span> None, None
+    <span style="color:#66d9ef">for</span> batch_idx, (x, _) <span style="color:#f92672">in</span> enumerate(data_loaders[phase]):
+        x <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> x
+        x <span style="color:#f92672">=</span> Variable(x)
+        optimizer<span style="color:#f92672">.</span>zero_grad()
+        y_hat <span style="color:#f92672">=</span> model(x)
 
-<pre><code class="language-python">def __train_loop_vae(model, data_loaders, optimizer, epoch, phase):
-    model = model.train() if phase == &quot;train&quot; else model.eval()
-    running_loss = 0
-    recon_batch_first, target = None, None
-    for batch_idx, (x, _) in enumerate(data_loaders[phase]):
-        x = x.cuda() if use_cuda else x
-        x = Variable(x)
-        optimizer.zero_grad()
-        y_hat = model(x)
+        <span style="color:#75715e"># loss</span>
+        recon_batch, mu, logvar <span style="color:#f92672">=</span> model(x)
+        loss <span style="color:#f92672">=</span> loss_function(recon_batch, x, mu, logvar)
 
-        # loss
-        recon_batch, mu, logvar = model(x)
-        loss = loss_function(recon_batch, x, mu, logvar)
+        <span style="color:#75715e"># update</span>
+        <span style="color:#66d9ef">if</span> phase <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;train&#34;</span>:
+            loss<span style="color:#f92672">.</span>backward()
+            optimizer<span style="color:#f92672">.</span>step()
+        running_loss <span style="color:#f92672">+=</span> loss<span style="color:#f92672">.</span>data[<span style="color:#ae81ff">0</span>]
 
-        # update
-        if phase == &quot;train&quot;:
-            loss.backward()
-            optimizer.step()
-        running_loss += loss.data[0]
+        <span style="color:#66d9ef">if</span> target <span style="color:#f92672">is</span> None:
+            target <span style="color:#f92672">=</span> x
+            recon_batch_first <span style="color:#f92672">=</span> recon_batch
 
-        if target is None:
-            target = x
-            recon_batch_first = recon_batch
+    <span style="color:#75715e"># epoch-wise metrics</span>
+    l <span style="color:#f92672">=</span> running_loss <span style="color:#f92672">/</span> len(data_loaders[phase])
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;loss&#34;</span>: l, <span style="color:#e6db74">&#34;recon&#34;</span>: recon_batch_first<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>cpu(), <span style="color:#e6db74">&#34;target&#34;</span>: target<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>cpu()}
 
-    # epoch-wise metrics
-    l = running_loss / len(data_loaders[phase])
-    return {&quot;loss&quot;: l, &quot;recon&quot;: recon_batch_first.data.cpu(), &quot;target&quot;: target.data.cpu()}
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_loop_vae</span>(model, data_loaders, optimizer, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>, callback<span style="color:#f92672">=</span>None):
+    history <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;train&#34;</span>: {}, <span style="color:#e6db74">&#34;test&#34;</span>: {}}
+    <span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> tnrange(epochs):
+        <span style="color:#66d9ef">for</span> phase <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;train&#34;</span>, <span style="color:#e6db74">&#34;test&#34;</span>]:
+            d <span style="color:#f92672">=</span> __train_loop_vae(model, data_loaders, optimizer, epoch, phase)
+            <span style="color:#66d9ef">for</span> k,v <span style="color:#f92672">in</span> d<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">try</span>:
+                    history[phase][k]<span style="color:#f92672">.</span>append(v)
+                <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyError</span>:
+                    history[phase][k] <span style="color:#f92672">=</span> [v]
 
-def train_loop_vae(model, data_loaders, optimizer, epochs=12, callback=None):
-    history = {&quot;train&quot;: {}, &quot;test&quot;: {}}
-    for epoch in tnrange(epochs):
-        for phase in [&quot;train&quot;, &quot;test&quot;]:
-            d = __train_loop_vae(model, data_loaders, optimizer, epoch, phase)
-            for k,v in d.items():
-                try:
-                    history[phase][k].append(v)
-                except KeyError:
-                    history[phase][k] = [v]
-
-            if callback is not None:
-                callback.on_epoch_end(epoch, phase, history)
-    return history
-</code></pre>
-
+            <span style="color:#66d9ef">if</span> callback <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> None:
+                callback<span style="color:#f92672">.</span>on_epoch_end(epoch, phase, history)
+    <span style="color:#66d9ef">return</span> history</code></pre></div>
 <p>さて、準備は終わりです。</p>
 
 <p>次に示す <code>ImagePlotsCallback</code> は、<code>on_epoch_end</code> で学習結果のhisotoryを受け取って、VAEを通して復元した画像と、復元したい対象の画像を動的に更新します。ImageRGBA の場合は、<code>data_source.data[&quot;image&quot;]</code> に配列をセットすることで、更新することができます。</p>
 
 <p>注意事項として、モノクロ画像を描画する際には、適当なカラーマップをかけて、(w, h) -&gt; (w, h, 4) の配列にしておく必要があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> torchvision.utils <span style="color:#f92672">import</span> make_grid
+<span style="color:#f92672">from</span> matplotlib.pyplot <span style="color:#f92672">import</span> cm
 
-<pre><code class="language-python">from torchvision.utils import make_grid
-from matplotlib.pyplot import cm
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_to_img</span>(batch, cmap<span style="color:#f92672">=</span>cm<span style="color:#f92672">.</span>gray):
+    <span style="color:#75715e"># 128は多かったので半分にします</span>
+    _batch_size <span style="color:#f92672">=</span> batch_size <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>
+    batch <span style="color:#f92672">=</span> batch[:_batch_size]
 
-def _to_img(batch, cmap=cm.gray):
-    # 128は多かったので半分にします
-    _batch_size = batch_size // 2
-    batch = batch[:_batch_size]
+    batch <span style="color:#f92672">=</span> batch<span style="color:#f92672">.</span>view(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">28</span>,<span style="color:#ae81ff">28</span>)
+    grid <span style="color:#f92672">=</span> make_grid(batch, nrow<span style="color:#f92672">=</span>int(np<span style="color:#f92672">.</span>sqrt(_batch_size)))[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>numpy()
+    <span style="color:#75715e"># Force squared</span>
+    l <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>min(grid<span style="color:#f92672">.</span>shape)
+    grid <span style="color:#f92672">=</span> grid[:l, :l]
+    img <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>uint8(cmap(grid) <span style="color:#f92672">*</span> <span style="color:#ae81ff">255</span>)
+    <span style="color:#66d9ef">return</span> img
 
-    batch = batch.view(-1,1,28,28)
-    grid = make_grid(batch, nrow=int(np.sqrt(_batch_size)))[0].numpy()
-    # Force squared
-    l = np.min(grid.shape)
-    grid = grid[:l, :l]
-    img = np.uint8(cmap(grid) * 255)
-    return img
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ImagePlotsCallback</span>(object):
+    <span style="color:#66d9ef">def</span> __init__(self, epochs<span style="color:#f92672">=</span>epochs, batch_size<span style="color:#f92672">=</span>batch_size, cmap<span style="color:#f92672">=</span>cm<span style="color:#f92672">.</span>gray):
+        x_range, y_range <span style="color:#f92672">=</span> (<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">10.5</span>), (<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">10.5</span>)
+        p1 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Reconstructed (train)&#34;</span>,
+                    plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, x_range<span style="color:#f92672">=</span>x_range, y_range<span style="color:#f92672">=</span>y_range)
+        p2 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Target (train)&#34;</span>,
+                    plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, x_range<span style="color:#f92672">=</span>x_range, y_range<span style="color:#f92672">=</span>y_range)
+        p3 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Reconstructed (test)&#34;</span>,
+                    plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, x_range<span style="color:#f92672">=</span>x_range, y_range<span style="color:#f92672">=</span>y_range)
+        p4 <span style="color:#f92672">=</span> figure(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Target (test)&#34;</span>,
+                    plot_height<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, plot_width<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>, x_range<span style="color:#f92672">=</span>x_range, y_range<span style="color:#f92672">=</span>y_range)
+        self<span style="color:#f92672">.</span>cmap <span style="color:#f92672">=</span> cmap
 
-class ImagePlotsCallback(object):
-    def __init__(self, epochs=epochs, batch_size=batch_size, cmap=cm.gray):
-        x_range, y_range = (-0.5, 10.5), (-0.5, 10.5)
-        p1 = figure(title=&quot;Reconstructed (train)&quot;,
-                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
-        p2 = figure(title=&quot;Target (train)&quot;,
-                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
-        p3 = figure(title=&quot;Reconstructed (test)&quot;,
-                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
-        p4 = figure(title=&quot;Target (test)&quot;,
-                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
-        self.cmap = cmap
+        self<span style="color:#f92672">.</span>renderers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;train&#34;</span>:{}, <span style="color:#e6db74">&#34;test&#34;</span>:{}}
+        empty <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(batch_size,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">28</span>,<span style="color:#ae81ff">28</span>)
+        empty <span style="color:#f92672">=</span> _to_img(empty, self<span style="color:#f92672">.</span>cmap)
+        <span style="color:#75715e"># to adjast aspect ratio</span>
+        r <span style="color:#f92672">=</span> empty<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">/</span>empty<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
 
-        self.renderers = {&quot;train&quot;:{}, &quot;test&quot;:{}}
-        empty = torch.zeros(batch_size,1,28,28)
-        empty = _to_img(empty, self.cmap)
-        # to adjast aspect ratio
-        r = empty.shape[0]/empty.shape[1]
+        <span style="color:#75715e"># https://github.com/bokeh/bokeh/issues/1666</span>
+        <span style="color:#66d9ef">for</span> k, p <span style="color:#f92672">in</span> [(<span style="color:#e6db74">&#34;recon&#34;</span>, p1), (<span style="color:#e6db74">&#34;target&#34;</span>, p2)]:
+            self<span style="color:#f92672">.</span>renderers[<span style="color:#e6db74">&#34;train&#34;</span>][k] <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>image_rgba(image<span style="color:#f92672">=</span>[empty[::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]], x<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>], y<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>], dw<span style="color:#f92672">=</span>[<span style="color:#ae81ff">10</span>], dh<span style="color:#f92672">=</span>[r<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>])
+        <span style="color:#66d9ef">for</span> k, p <span style="color:#f92672">in</span> [(<span style="color:#e6db74">&#34;recon&#34;</span>, p3), (<span style="color:#e6db74">&#34;target&#34;</span>, p4)]:
+            self<span style="color:#f92672">.</span>renderers[<span style="color:#e6db74">&#34;test&#34;</span>][k] <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>image_rgba(image<span style="color:#f92672">=</span>[empty[::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]], x<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>], y<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>], dw<span style="color:#f92672">=</span>[<span style="color:#ae81ff">10</span>], dh<span style="color:#f92672">=</span>[r<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>])
 
-        # https://github.com/bokeh/bokeh/issues/1666
-        for k, p in [(&quot;recon&quot;, p1), (&quot;target&quot;, p2)]:
-            self.renderers[&quot;train&quot;][k] = p.image_rgba(image=[empty[::-1]], x=[0], y=[0], dw=[10], dh=[r*10])
-        for k, p in [(&quot;recon&quot;, p3), (&quot;target&quot;, p4)]:
-            self.renderers[&quot;test&quot;][k] = p.image_rgba(image=[empty[::-1]], x=[0], y=[0], dw=[10], dh=[r*10])
+        self<span style="color:#f92672">.</span>graph <span style="color:#f92672">=</span> gridplot([p1, p2, p3, p4], ncols<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, toolbar_location<span style="color:#f92672">=</span>toolbar_location)
 
-        self.graph = gridplot([p1, p2, p3, p4], ncols=2, toolbar_location=toolbar_location)
-
-    def on_epoch_end(self, epoch, phase, history):
-        for k in [&quot;recon&quot;, &quot;target&quot;]:
-            self.renderers[phase][k].data_source.data[&quot;image&quot;] = [_to_img(history[phase][k][-1], self.cmap)[::-1]]
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">on_epoch_end</span>(self, epoch, phase, history):
+        <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;recon&#34;</span>, <span style="color:#e6db74">&#34;target&#34;</span>]:
+            self<span style="color:#f92672">.</span>renderers[phase][k]<span style="color:#f92672">.</span>data_source<span style="color:#f92672">.</span>data[<span style="color:#e6db74">&#34;image&#34;</span>] <span style="color:#f92672">=</span> [_to_img(history[phase][k][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], self<span style="color:#f92672">.</span>cmap)[::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]]
         push_notebook()
 
-        if save_img:
-            bokeh.io.export_png(self.graph, &quot;fig/{:02d}_{}_image.png&quot;.format(epoch, self.cmap.name))
-</code></pre>
-
-<pre><code class="language-python"># グレースケール
-callback = ImagePlotsCallback(cmap=cm.gray)
-if show_static:
-    if exists(&quot;fig/gray_image.gif&quot;):
-        with open(&quot;fig/gray_image.gif&quot;, 'rb') as f:
-            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
-else:
-    bokeh.io.show(callback.graph, notebook_handle=True)
-</code></pre>
-
+        <span style="color:#66d9ef">if</span> save_img:
+            bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>export_png(self<span style="color:#f92672">.</span>graph, <span style="color:#e6db74">&#34;fig/{:02d}_{}_image.png&#34;</span><span style="color:#f92672">.</span>format(epoch, self<span style="color:#f92672">.</span>cmap<span style="color:#f92672">.</span>name))</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># グレースケール</span>
+callback <span style="color:#f92672">=</span> ImagePlotsCallback(cmap<span style="color:#f92672">=</span>cm<span style="color:#f92672">.</span>gray)
+<span style="color:#66d9ef">if</span> show_static:
+    <span style="color:#66d9ef">if</span> exists(<span style="color:#e6db74">&#34;fig/gray_image.gif&#34;</span>):
+        <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;fig/gray_image.gif&#34;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+            IPython<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>display(Image(data<span style="color:#f92672">=</span>f<span style="color:#f92672">.</span>read()), format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gif&#34;</span>)
+<span style="color:#66d9ef">else</span>:
+    bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>show(callback<span style="color:#f92672">.</span>graph, notebook_handle<span style="color:#f92672">=</span>True)</code></pre></div>
 <p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_38_0.png" alt="png" /></p>
-
-<pre><code class="language-python"># gifを作ったときに見やすいように、shuffle=Falseにする
-kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
-train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('./data', train=True, download=True,
-                   transform=transforms.Compose([
-                       transforms.ToTensor()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># gifを作ったときに見やすいように、shuffle=Falseにする</span>
+kwargs <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;num_workers&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;pin_memory&#39;</span>: True} <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> {}
+train_loader <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>utils<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>DataLoader(
+    datasets<span style="color:#f92672">.</span>MNIST(<span style="color:#e6db74">&#39;./data&#39;</span>, train<span style="color:#f92672">=</span>True, download<span style="color:#f92672">=</span>True,
+                   transform<span style="color:#f92672">=</span>transforms<span style="color:#f92672">.</span>Compose([
+                       transforms<span style="color:#f92672">.</span>ToTensor()
                    ])),
-    batch_size=batch_size, shuffle=False, **kwargs)
-test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('./data', train=False, transform=transforms.Compose([
-                       transforms.ToTensor(),
+    batch_size<span style="color:#f92672">=</span>batch_size, shuffle<span style="color:#f92672">=</span>False, <span style="color:#f92672">**</span>kwargs)
+test_loader <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>utils<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>DataLoader(
+    datasets<span style="color:#f92672">.</span>MNIST(<span style="color:#e6db74">&#39;./data&#39;</span>, train<span style="color:#f92672">=</span>False, transform<span style="color:#f92672">=</span>transforms<span style="color:#f92672">.</span>Compose([
+                       transforms<span style="color:#f92672">.</span>ToTensor(),
                    ])),
-    batch_size=batch_size, shuffle=False, **kwargs)
+    batch_size<span style="color:#f92672">=</span>batch_size, shuffle<span style="color:#f92672">=</span>False, <span style="color:#f92672">**</span>kwargs)
 
-data_loaders = {&quot;train&quot;: train_loader, &quot;test&quot;:test_loader}
-</code></pre>
-
-<pre><code class="language-python">model = VAE().cuda() if use_cuda else VAE()
-optimizer = optim.Adam(model.parameters(), lr=1e-3)
-history = train_loop_vae(model, data_loaders, optimizer, epochs, callback=callback)
-print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
-</code></pre>
-
-<pre><code>Test loss: 0.133
-</code></pre>
-
+data_loaders <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;train&#34;</span>: train_loader, <span style="color:#e6db74">&#34;test&#34;</span>:test_loader}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">model <span style="color:#f92672">=</span> VAE()<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> VAE()
+optimizer <span style="color:#f92672">=</span> optim<span style="color:#f92672">.</span>Adam(model<span style="color:#f92672">.</span>parameters(), lr<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-3</span>)
+history <span style="color:#f92672">=</span> train_loop_vae(model, data_loaders, optimizer, epochs, callback<span style="color:#f92672">=</span>callback)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test loss: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;train&#34;</span>][<span style="color:#e6db74">&#34;loss&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))</code></pre></div><pre><code>Test loss: 0.133</code></pre>
 <p>本質的な違いはありませんが、異なるカラーマップを試してみます。</p>
-
-<pre><code class="language-python">gradient = np.linspace(0,1,256)
-gradient = np.vstack((gradient, gradient))
-pyplot.figure(figsize=(16,0.5))
-imshow(gradient, aspect=&quot;auto&quot;, cmap=cm.inferno)
-axis(&quot;off&quot;);
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">gradient <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">256</span>)
+gradient <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>vstack((gradient, gradient))
+pyplot<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>,<span style="color:#ae81ff">0.5</span>))
+imshow(gradient, aspect<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>, cmap<span style="color:#f92672">=</span>cm<span style="color:#f92672">.</span>inferno)
+axis(<span style="color:#e6db74">&#34;off&#34;</span>);</code></pre></div>
 <p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_42_0.png" alt="png" /></p>
-
-<pre><code class="language-python">callback = ImagePlotsCallback(cmap=cm.inferno)
-if show_static:
-    if exists(&quot;fig/inferno_image.gif&quot;):
-        with open(&quot;fig/inferno_image.gif&quot;, 'rb') as f:
-            IPython.display.display(Image(data=f.read()), format=&quot;gif&quot;)
-else:
-    bokeh.io.show(callback.graph, notebook_handle=True)
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">callback <span style="color:#f92672">=</span> ImagePlotsCallback(cmap<span style="color:#f92672">=</span>cm<span style="color:#f92672">.</span>inferno)
+<span style="color:#66d9ef">if</span> show_static:
+    <span style="color:#66d9ef">if</span> exists(<span style="color:#e6db74">&#34;fig/inferno_image.gif&#34;</span>):
+        <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;fig/inferno_image.gif&#34;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+            IPython<span style="color:#f92672">.</span>display<span style="color:#f92672">.</span>display(Image(data<span style="color:#f92672">=</span>f<span style="color:#f92672">.</span>read()), format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gif&#34;</span>)
+<span style="color:#66d9ef">else</span>:
+    bokeh<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>show(callback<span style="color:#f92672">.</span>graph, notebook_handle<span style="color:#f92672">=</span>True)</code></pre></div>
 <p><img src="/images/jupyter_with_bokeh_files/jupyter_with_bokeh_43_0.png" alt="png" /></p>
-
-<pre><code class="language-python">model = VAE().cuda() if use_cuda else VAE()
-optimizer = optim.Adam(model.parameters(), lr=1e-3)
-history = train_loop_vae(model, data_loaders, optimizer, epochs, callback=callback)
-print(&quot;Test loss: {:.3f}&quot;.format(history[&quot;train&quot;][&quot;loss&quot;][-1]))
-</code></pre>
-
-<pre><code>Test loss: 0.133
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">model <span style="color:#f92672">=</span> VAE()<span style="color:#f92672">.</span>cuda() <span style="color:#66d9ef">if</span> use_cuda <span style="color:#66d9ef">else</span> VAE()
+optimizer <span style="color:#f92672">=</span> optim<span style="color:#f92672">.</span>Adam(model<span style="color:#f92672">.</span>parameters(), lr<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-3</span>)
+history <span style="color:#f92672">=</span> train_loop_vae(model, data_loaders, optimizer, epochs, callback<span style="color:#f92672">=</span>callback)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Test loss: {:.3f}&#34;</span><span style="color:#f92672">.</span>format(history[<span style="color:#e6db74">&#34;train&#34;</span>][<span style="color:#e6db74">&#34;loss&#34;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))</code></pre></div><pre><code>Test loss: 0.133</code></pre>
 <h2 id="おわりに">おわりに</h2>
 
 <p>Bokehによるグラフ作成は、少しとっつきにくいかもしれませんが（matplotlibとかではレンダラとか意識しないですよね）、慣れれば柔軟性が高く、便利なのではないかと思います。</p>

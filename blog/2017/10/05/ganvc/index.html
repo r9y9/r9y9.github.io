@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -89,10 +89,7 @@
 </ul>
 
 <p>そして、以下のスクリプトを実行すればOKです。</p>
-
-<pre><code>./vc_demo.sh ~/data/cmu_arctic
-</code></pre>
-
+<pre><code>./vc_demo.sh ~/data/cmu_arctic</code></pre>
 <p>なお実行には、GPUメモリが4GBくらいは必要です（バッチサイズ32の場合）。GTX 1080Ti + i7-7700K の計算環境で、約1時間半くらいで終わります。スクリプト実行が完了すれば、<code>generated</code> ディレクトリに、ベースライン/GAN それぞれで変換した音声が出力されます。以下に順に示す図については、<a href="http://nbviewer.jupyter.org/github/r9y9/gantts/blob/master/notebooks/Test%20VC.ipynb">デモノートブック</a> を実行すると作ることができます。</p>
 
 <h3 id="変換音声の比較">変換音声の比較</h3>

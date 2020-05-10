@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -53,36 +53,31 @@
 <a href="https://github.com/CSTR-Edinburgh/merlin">Merlin</a>  の slt デモの条件と同様に、1000を学習用、126を評価用、残り5をテスト用にします。継続長モデル（state-level）には <strong>Bidirectional-LSTM RNN</strong> を、音響モデルには <strong>Feed-forward型</strong> のニューラルネットを使用しました<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>。継続長モデル、音響モデルの両方にGANを取り入れました。論文の肝である <strong>ADV loss</strong> についてですが、mgcのみ（0次は除く）を使って計算するパターンと、mgc + lf0で計算するパターンとで比較しました<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。</p>
 
 <p>実験の結果 (ADV loss: mgcのみ) は、 <a href="https://github.com/r9y9/gantts/tree/a5ec247ba7ee1a160875661f8899f56f8010be5b">a5ec247</a> をチェックアウトして、下記のシェルを実行すると再現できます。</p>
-
-<pre><code>./tts_demo.sh tts_test
-</code></pre>
-
+<pre><code>./tts_demo.sh tts_test</code></pre>
 <p>データのダウンロード、特徴抽出、モデル学習、音声サンプル合成まで一通り行われます。<code>tts_test</code> の部分は何でもよいです。tensorboard用に吐くログイベント名、モデル出力先、音声サンプル出力先の決定に使われます。詳細はコードを参照ください。 (ADV loss: mgc + lf0) の結果は、<a href="https://github.com/r9y9/gantts/blob/a5ec247ba7ee1a160875661f8899f56f8010be5b/hparams.py">ハイパーパラメータ</a>を下記のように変更してシェルを実行すると再現できます。</p>
-
-<pre><code class="language-diff">diff --git a/hparams.py b/hparams.py
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/hparams.py b/hparams.py
 index d82296c..e73dc57 100644
---- a/hparams.py
-+++ b/hparams.py
-@@ -175,7 +175,7 @@ tts_acoustic = tf.contrib.training.HParams(
-     # Streams used for computing adversarial loss
-     # NOTE: you should probably change discriminator's `in_dim`
+<span style="color:#f92672">--- a/hparams.py
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/hparams.py
+</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -175,7 +175,7 @@ tts_acoustic = tf.contrib.training.HParams(
+</span><span style="color:#75715e"></span>     # Streams used for computing adversarial loss
+     # NOTE: you should probably change discriminator&#39;s `in_dim`
      # if you change the adv_streams
--    adversarial_streams=[True, False, False, False],
-+    adversarial_streams=[True, True, False, False],
-     # Don't switch this on unless you are sure what you are doing
+<span style="color:#f92672">-    adversarial_streams=[True, False, False, False],
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+    adversarial_streams=[True, True, False, False],
+</span><span style="color:#a6e22e"></span>     # Don&#39;t switch this on unless you are sure what you are doing
      # If True, you will need to adjast `in_dim` for discriminator.
      # Rationale for this is that power coefficients are less meaningful
-@@ -202,7 +202,7 @@ tts_acoustic = tf.contrib.training.HParams(
-     # Discriminator
-     discriminator=&quot;MLP&quot;,
+<span style="color:#75715e">@@ -202,7 +202,7 @@ tts_acoustic = tf.contrib.training.HParams(
+</span><span style="color:#75715e"></span>     # Discriminator
+     discriminator=&#34;MLP&#34;,
      discriminator_params={
--        &quot;in_dim&quot;: 24,
-+        &quot;in_dim&quot;: 25,
-         &quot;out_dim&quot;: 1,
-         &quot;num_hidden&quot;: 2,
-         &quot;hidden_dim&quot;: 256,
-</code></pre>
-
+<span style="color:#f92672">-        &#34;in_dim&#34;: 24,
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+        &#34;in_dim&#34;: 25,
+</span><span style="color:#a6e22e"></span>         &#34;out_dim&#34;: 1,
+         &#34;num_hidden&#34;: 2,
+         &#34;hidden_dim&#34;: 256,
+</code></pre></div>
 <h3 id="変換音声の比較">変換音声の比較</h3>
 
 <h4 id="音響モデルのみ適用-adv-loss-mgcのみ">音響モデルのみ適用 (ADV loss: mgcのみ)</h4>

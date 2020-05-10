@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jupyter on LESS IS MORE</title>
@@ -38,7 +38,7 @@ ImageRGBA https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_
  ノートブック (gist) nbviewer  概要 適当なニューラルネットの学習過程の可視化（ロス、正解率の遷移等）を題材にして、Bokehを使って動的にグラフを更新していくことによる可視化の実用例を紹介します。このノートブックの冒頭に、最後まで実行すると得られるグラフ一覧をまとめました。どうやってグラフを作るのか知りたい方は続きを読んでもらえればと思います。Bokehの詳細な使い方は、公式ドキュメントを参考にしてください。
 なお、ここで紹介する例は、僕が過去に出た機械学習のコンペ (https://deepanalytics.jp/compe/36?tab=compedetail) で実際に使用したコードからほぼ取ってきました（8/218位でした）。グラフを動的に更新する方法は 公式ドキュメント に記述されていますが、そのサンプルの内容は「円を描画して色を変える」といった実用性皆無のものであること、またググっても例が多く見つからないことから、このような紹介記事を書くことにしました。参考になれば幸いです。
 余談ではありますが、こと機械学習に関しては、tensorboardを使ったほうが簡単で良いと思います。僕は最近そうしています。 https://qiita.com/r9y9/items/d54162d37ec4f110f4b4. 色なり位置なり大きさなりを柔軟にカスタマイズしたい、あるいはノートブックで処理を完結させたい、と言った場合には、ここで紹介する方法も良いかもしれません。
-%pylab inline  Populating the interactive namespace from numpy and matplotlib  from IPython.display import HTML, Image import IPython from os.path import exists def summary(): baseurl = &amp;quot;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&amp;quot; for (name, figname, url) in [ (&amp;quot;Line&amp;quot;, &amp;quot;line&amp;quot;, &amp;quot;line.html&amp;quot;), (&amp;quot;VBar&amp;quot;, &amp;quot;vbar&amp;quot;, &amp;quot;vbar.</description>
+%pylab inlinePopulating the interactive namespace from numpy and matplotlibfrom IPython.display import HTML, Image import IPython from os.path import exists def summary(): baseurl = &amp;#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&amp;#34; for (name, figname, url) in [ (&amp;#34;Line&amp;#34;, &amp;#34;line&amp;#34;, &amp;#34;line.html&amp;#34;), (&amp;#34;VBar&amp;#34;, &amp;#34;vbar&amp;#34;, &amp;#34;vbar.html&amp;#34;), (&amp;#34;HBar&amp;#34;, &amp;#34;hbar&amp;#34;, &amp;#34;hbar.</description>
     </item>
     
   </channel>

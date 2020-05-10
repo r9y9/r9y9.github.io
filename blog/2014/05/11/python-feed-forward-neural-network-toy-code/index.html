@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -33,215 +33,206 @@
 				<p>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。</p>
 
 <p>このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/python</span>
+<span style="color:#75715e"># coding: utf-8</span>
 
-<pre><code class="language-python">#!/usr/bin/python
-# coding: utf-8
+<span style="color:#75715e"># ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の</span>
+<span style="color:#75715e"># デモコードです。</span>
+<span style="color:#75715e"># 誤差伝搬法によってニューラルネットを学習します。</span>
+<span style="color:#75715e"># XORの学習、テストの簡単なデモコードもついています</span>
+<span style="color:#75715e"># 2014/05/10 Ryuichi Yamamoto</span>
 
-# ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の
-# デモコードです。
-# 誤差伝搬法によってニューラルネットを学習します。
-# XORの学習、テストの簡単なデモコードもついています
-# 2014/05/10 Ryuichi Yamamoto
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 
-import numpy as np
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sigmoid</span>(x):
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>exp(<span style="color:#f92672">-</span>x))
 
-def sigmoid(x):
-    return 1.0 / (1.0 + np.exp(-x))
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">dsigmoid</span>(y):
+    <span style="color:#66d9ef">return</span> y <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> y)
 
-def dsigmoid(y):
-    return y * (1.0 - y)
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NeuralNet</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, num_input, num_hidden, num_output):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        パラメータの初期化
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        <span style="color:#75715e"># 入力層から隠れ層への重み行列</span>
+        self<span style="color:#f92672">.</span>W1 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">1.0</span>, (num_input, num_hidden))
+        self<span style="color:#f92672">.</span>hidden_bias <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>ones(num_hidden, dtype<span style="color:#f92672">=</span>float)
+        <span style="color:#75715e"># 隠れ層から出力層への重み行列</span>
+        self<span style="color:#f92672">.</span>W2 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">1.0</span>, (num_hidden, num_output))
+        self<span style="color:#f92672">.</span>output_bias <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>ones(num_output, dtype<span style="color:#f92672">=</span>float)
 
-class NeuralNet:
-    def __init__(self, num_input, num_hidden, num_output):
-        &quot;&quot;&quot;
-        パラメータの初期化
-        &quot;&quot;&quot;
-        # 入力層から隠れ層への重み行列
-        self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden))
-        self.hidden_bias = np.ones(num_hidden, dtype=float)
-        # 隠れ層から出力層への重み行列
-        self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output))
-        self.output_bias = np.ones(num_output, dtype=float)
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forward</span>(self, x):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        前向き伝搬の計算
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        h <span style="color:#f92672">=</span> sigmoid(np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W1<span style="color:#f92672">.</span>T, x) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>hidden_bias)
+        <span style="color:#66d9ef">return</span> sigmoid(np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W2<span style="color:#f92672">.</span>T, h) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>output_bias)
 
-    def forward(self, x):
-        &quot;&quot;&quot;
-        前向き伝搬の計算
-        &quot;&quot;&quot;
-        h = sigmoid(np.dot(self.W1.T, x) + self.hidden_bias)
-        return sigmoid(np.dot(self.W2.T, h) + self.output_bias)
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cost</span>(self, data, target):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        最小化したい誤差関数
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        N <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
+        E <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(N):
+            y, t <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>forward(data[i]), target[i]
+            E <span style="color:#f92672">+=</span> np<span style="color:#f92672">.</span>sum((y <span style="color:#f92672">-</span> t) <span style="color:#f92672">*</span> (y <span style="color:#f92672">-</span> t))
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.5</span> <span style="color:#f92672">*</span> E <span style="color:#f92672">/</span> float(N)
 
-    def cost(self, data, target):
-        &quot;&quot;&quot;
-        最小化したい誤差関数
-        &quot;&quot;&quot;
-        N = data.shape[0]
-        E = 0.0
-        for i in range(N):
-            y, t = self.forward(data[i]), target[i]
-            E += np.sum((y - t) * (y - t))
-        return 0.5 * E / float(N)
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train</span>(self, data, target, epoches<span style="color:#f92672">=</span><span style="color:#ae81ff">30000</span>, learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,\
+              monitor_period<span style="color:#f92672">=</span>None):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        Stochastic Gradient Decent (SGD) による学習
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        <span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(epoches):
+            <span style="color:#75715e"># 学習データから1サンプルをランダムに選ぶ</span>
+            index <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">0</span>, data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])
+            x, t <span style="color:#f92672">=</span> data[index], target[index]
 
-    def train(self, data, target, epoches=30000, learning_rate=0.1,\
-              monitor_period=None):
-        &quot;&quot;&quot;
-        Stochastic Gradient Decent (SGD) による学習
-        &quot;&quot;&quot;
-        for epoch in range(epoches):
-            # 学習データから1サンプルをランダムに選ぶ
-            index = np.random.randint(0, data.shape[0])
-            x, t = data[index], target[index]
+            <span style="color:#75715e"># 入力から出力まで前向きに信号を伝搬</span>
+            h <span style="color:#f92672">=</span> sigmoid(np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W1<span style="color:#f92672">.</span>T, x) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>hidden_bias)
+            y <span style="color:#f92672">=</span> sigmoid(np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W2<span style="color:#f92672">.</span>T, h) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>output_bias)
 
-            # 入力から出力まで前向きに信号を伝搬
-            h = sigmoid(np.dot(self.W1.T, x) + self.hidden_bias)
-            y = sigmoid(np.dot(self.W2.T, h) + self.output_bias)
+            <span style="color:#75715e"># 隠れ層-&gt;出力層の重みの修正量を計算</span>
+            output_delta <span style="color:#f92672">=</span> (y <span style="color:#f92672">-</span> t) <span style="color:#f92672">*</span> dsigmoid(y)
+            grad_W2 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>dot(np<span style="color:#f92672">.</span>atleast_2d(h)<span style="color:#f92672">.</span>T, np<span style="color:#f92672">.</span>atleast_2d(output_delta))
 
-            # 隠れ層-&gt;出力層の重みの修正量を計算
-            output_delta = (y - t) * dsigmoid(y)
-            grad_W2 = np.dot(np.atleast_2d(h).T, np.atleast_2d(output_delta))
+            <span style="color:#75715e"># 隠れ層-&gt;出力層の重みを更新</span>
+            self<span style="color:#f92672">.</span>W2 <span style="color:#f92672">-=</span> learning_rate <span style="color:#f92672">*</span> grad_W2
+            self<span style="color:#f92672">.</span>output_bias <span style="color:#f92672">-=</span> learning_rate <span style="color:#f92672">*</span> output_delta
 
-            # 隠れ層-&gt;出力層の重みを更新
-            self.W2 -= learning_rate * grad_W2
-            self.output_bias -= learning_rate * output_delta
+            <span style="color:#75715e"># 入力層-&gt;隠れ層の重みの修正量を計算</span>
+            hidden_delta <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W2, output_delta) <span style="color:#f92672">*</span> dsigmoid(h)
+            grad_W1 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>dot(np<span style="color:#f92672">.</span>atleast_2d(x)<span style="color:#f92672">.</span>T, np<span style="color:#f92672">.</span>atleast_2d(hidden_delta))
 
-            # 入力層-&gt;隠れ層の重みの修正量を計算
-            hidden_delta = np.dot(self.W2, output_delta) * dsigmoid(h)
-            grad_W1 = np.dot(np.atleast_2d(x).T, np.atleast_2d(hidden_delta))
+            <span style="color:#75715e"># 入力層-&gt;隠れ層の重みを更新</span>
+            self<span style="color:#f92672">.</span>W1 <span style="color:#f92672">-=</span> learning_rate <span style="color:#f92672">*</span> grad_W1
+            self<span style="color:#f92672">.</span>hidden_bias <span style="color:#f92672">-=</span> learning_rate <span style="color:#f92672">*</span> hidden_delta
 
-            # 入力層-&gt;隠れ層の重みを更新
-            self.W1 -= learning_rate * grad_W1
-            self.hidden_bias -= learning_rate * hidden_delta
+            <span style="color:#75715e"># 現在の目的関数の値を出力</span>
+            <span style="color:#66d9ef">if</span> monitor_period <span style="color:#f92672">!=</span> None <span style="color:#f92672">and</span> epoch <span style="color:#f92672">%</span> monitor_period <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Epoch </span><span style="color:#e6db74">%d</span><span style="color:#e6db74">, Cost </span><span style="color:#e6db74">%f</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (epoch, self<span style="color:#f92672">.</span>cost(data, target))
 
-            # 現在の目的関数の値を出力
-            if monitor_period != None and epoch % monitor_period == 0:
-                print &quot;Epoch %d, Cost %f&quot; % (epoch, self.cost(data, target))
+        <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Training finished.&#34;</span>
 
-        print &quot;Training finished.&quot;
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict</span>(self, x):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        出力層の最も反応するニューロンの番号を返します
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>argmax(self<span style="color:#f92672">.</span>forward(x))
 
-    def predict(self, x):
-        &quot;&quot;&quot;
-        出力層の最も反応するニューロンの番号を返します
-        &quot;&quot;&quot;
-        return np.argmax(self.forward(x))
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    <span style="color:#f92672">import</span> argparse
 
-if __name__ == &quot;__main__&quot;:
-    import argparse
+    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser(description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Specify options&#34;</span>)
+    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--epoches&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;epoches&#34;</span>, type<span style="color:#f92672">=</span>int, required<span style="color:#f92672">=</span>True)
+    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--learning_rate&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;learning_rate&#34;</span>,\
+                        type<span style="color:#f92672">=</span>float, default<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>)
+    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--hidden&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span>, type<span style="color:#f92672">=</span>int, default<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>)
+    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
 
-    parser = argparse.ArgumentParser(description=&quot;Specify options&quot;)
-    parser.add_argument(&quot;--epoches&quot;, dest=&quot;epoches&quot;, type=int, required=True)
-    parser.add_argument(&quot;--learning_rate&quot;, dest=&quot;learning_rate&quot;,\
-                        type=float, default=0.1)
-    parser.add_argument(&quot;--hidden&quot;, dest=&quot;hidden&quot;, type=int, default=20)
-    args = parser.parse_args()
+    nn <span style="color:#f92672">=</span> NeuralNet(<span style="color:#ae81ff">2</span>, args<span style="color:#f92672">.</span>hidden, <span style="color:#ae81ff">1</span>)
 
-    nn = NeuralNet(2, args.hidden, 1)
+    data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span> ,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>]])
+    target <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>])
 
-    data = np.array([[0, 0], [0 ,1], [1, 0], [1, 1]])
-    target = np.array([0, 1, 1, 0])
+    nn<span style="color:#f92672">.</span>train(data, target, args<span style="color:#f92672">.</span>epoches, args<span style="color:#f92672">.</span>learning_rate,\
+             monitor_period<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>)
 
-    nn.train(data, target, args.epoches, args.learning_rate,\
-             monitor_period=1000)
+    <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> data:
+        <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> : predicted </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (x, nn<span style="color:#f92672">.</span>forward(x))</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/python</span>
+<span style="color:#75715e"># coding: utf-8</span>
 
-    for x in data:
-        print &quot;%s : predicted %s&quot; % (x, nn.forward(x))
-</code></pre>
+<span style="color:#75715e"># MNISTを用いたニューラルネットによる手書き数字認識のデモコードです</span>
+<span style="color:#75715e"># 学習方法やパラメータによりますが、だいたい 90 ~ 97% くらいの精度出ます。</span>
+<span style="color:#75715e"># 使い方は、コードを読むか、</span>
+<span style="color:#75715e"># python mnist_net.py -h</span>
+<span style="color:#75715e"># としてください</span>
+<span style="color:#75715e"># 参考までに、</span>
+<span style="color:#75715e"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100</span>
+<span style="color:#75715e"># とすると、テストセットに対して、93.2%の正解率です</span>
+<span style="color:#75715e"># 僕の環境では、学習、認識合わせて（だいたい）5分くらいかかりました。</span>
+<span style="color:#75715e"># 2014/05/10 Ryuichi Yamamoto</span>
 
-<pre><code class="language-python">#!/usr/bin/python
-# coding: utf-8
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> sklearn.externals <span style="color:#f92672">import</span> joblib
+<span style="color:#f92672">import</span> cPickle
+<span style="color:#f92672">import</span> gzip
+<span style="color:#f92672">import</span> os
 
-# MNISTを用いたニューラルネットによる手書き数字認識のデモコードです
-# 学習方法やパラメータによりますが、だいたい 90 ~ 97% くらいの精度出ます。
-# 使い方は、コードを読むか、
-# python mnist_net.py -h
-# としてください
-# 参考までに、
-# python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100
-# とすると、テストセットに対して、93.2%の正解率です
-# 僕の環境では、学習、認識合わせて（だいたい）5分くらいかかりました。
-# 2014/05/10 Ryuichi Yamamoto
+<span style="color:#75715e"># 作成したニューラルネットのパッケージ</span>
+<span style="color:#f92672">import</span> net
 
-import numpy as np
-from sklearn.externals import joblib
-import cPickle
-import gzip
-import os
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_mnist_dataset</span>(dataset):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    MNISTのデータセットをダウンロードします
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#75715e"># Download the MNIST dataset if it is not present</span>
+    data_dir, data_file <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>split(dataset)
+    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>isfile(dataset)) <span style="color:#f92672">and</span> data_file <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;mnist.pkl.gz&#39;</span>:
+        <span style="color:#f92672">import</span> urllib
+        origin <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz&#39;</span>
+        <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;Downloading data from </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> origin
+        urllib<span style="color:#f92672">.</span>urlretrieve(origin, dataset)
 
-# 作成したニューラルネットのパッケージ
-import net
+    f <span style="color:#f92672">=</span> gzip<span style="color:#f92672">.</span>open(dataset, <span style="color:#e6db74">&#39;rb&#39;</span>)
+    train_set, valid_set, test_set <span style="color:#f92672">=</span> cPickle<span style="color:#f92672">.</span>load(f)
+    f<span style="color:#f92672">.</span>close()
 
-def load_mnist_dataset(dataset):
-    &quot;&quot;&quot;
-    MNISTのデータセットをダウンロードします
-    &quot;&quot;&quot;
-    # Download the MNIST dataset if it is not present
-    data_dir, data_file = os.path.split(dataset)
-    if (not os.path.isfile(dataset)) and data_file == 'mnist.pkl.gz':
-        import urllib
-        origin = 'http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz'
-        print 'Downloading data from %s' % origin
-        urllib.urlretrieve(origin, dataset)
+    <span style="color:#66d9ef">return</span> train_set, valid_set, test_set
 
-    f = gzip.open(dataset, 'rb')
-    train_set, valid_set, test_set = cPickle.load(f)
-    f.close()
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">augument_labels</span>(labels, order):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    1次元のラベルデータを、ラベルの種類数(order)次元に拡張します
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    new_labels <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(labels<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]):
+        v <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(order)
+        v[labels[i]] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+        new_labels<span style="color:#f92672">.</span>append(v)
 
-    return train_set, valid_set, test_set
+    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>array(new_labels)<span style="color:#f92672">.</span>reshape((labels<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>], order))        
 
-def augument_labels(labels, order):
-    &quot;&quot;&quot;
-    1次元のラベルデータを、ラベルの種類数(order)次元に拡張します
-    &quot;&quot;&quot;
-    new_labels = []
-    for i in range(labels.shape[0]):
-        v = np.zeros(order)
-        v[labels[i]] = 1
-        new_labels.append(v)
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    <span style="color:#f92672">import</span> argparse
 
-    return np.array(new_labels).reshape((labels.shape[0], order))        
+    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser(description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;MNIST手書き数字認識のデモ&#34;</span>)
+    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--epoches&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;epoches&#34;</span>, type<span style="color:#f92672">=</span>int, required<span style="color:#f92672">=</span>True)
+    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--learning_rate&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;learning_rate&#34;</span>,\
+                        type<span style="color:#f92672">=</span>float, default<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>)
+    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--hidden&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span>, type<span style="color:#f92672">=</span>int, default<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
 
-if __name__ == &quot;__main__&quot;:
-    import argparse
+    train_set, valid_set, test_set <span style="color:#f92672">=</span> load_mnist_dataset(<span style="color:#e6db74">&#34;mnist.pkl.gz&#34;</span>)
+    n_labels <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span> <span style="color:#75715e"># 0,1,2,3,4,5,6,7,9</span>
+    n_features <span style="color:#f92672">=</span> <span style="color:#ae81ff">28</span><span style="color:#f92672">*</span><span style="color:#ae81ff">28</span>
 
-    parser = argparse.ArgumentParser(description=&quot;MNIST手書き数字認識のデモ&quot;)
-    parser.add_argument(&quot;--epoches&quot;, dest=&quot;epoches&quot;, type=int, required=True)
-    parser.add_argument(&quot;--learning_rate&quot;, dest=&quot;learning_rate&quot;,\
-                        type=float, default=0.1)
-    parser.add_argument(&quot;--hidden&quot;, dest=&quot;hidden&quot;, type=int, default=100)
-    args = parser.parse_args()
+    <span style="color:#75715e"># モデルを新しく作る</span>
+    nn <span style="color:#f92672">=</span> net<span style="color:#f92672">.</span>NeuralNet(n_features, args<span style="color:#f92672">.</span>hidden, n_labels)
 
-    train_set, valid_set, test_set = load_mnist_dataset(&quot;mnist.pkl.gz&quot;)
-    n_labels = 10 # 0,1,2,3,4,5,6,7,9
-    n_features = 28*28
+    <span style="color:#75715e"># モデルを読み込む</span>
+    <span style="color:#75715e"># nn = joblib.load(&#34;./nn_mnist.pkl&#34;)</span>
 
-    # モデルを新しく作る
-    nn = net.NeuralNet(n_features, args.hidden, n_labels)
+    nn<span style="color:#f92672">.</span>train(train_set[<span style="color:#ae81ff">0</span>], augument_labels(train_set[<span style="color:#ae81ff">1</span>], n_labels),\
+             args<span style="color:#f92672">.</span>epoches, args<span style="color:#f92672">.</span>learning_rate, monitor_period<span style="color:#f92672">=</span><span style="color:#ae81ff">2000</span>)
 
-    # モデルを読み込む
-    # nn = joblib.load(&quot;./nn_mnist.pkl&quot;)
+    <span style="color:#75715e">## テスト</span>
+    test_data, labels <span style="color:#f92672">=</span> test_set
+    results <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(len(test_data), dtype<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>int)
+    <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> range(len(test_data)):
+        results[n] <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>predict(test_data[n])
+        <span style="color:#75715e"># print &#34;%d : predicted %s, expected %s&#34; % (n, results[n], labels[n])</span>
+    <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;recognition rate: &#34;</span>, (results <span style="color:#f92672">==</span> labels)<span style="color:#f92672">.</span>mean()
 
-    nn.train(train_set[0], augument_labels(train_set[1], n_labels),\
-             args.epoches, args.learning_rate, monitor_period=2000)
-
-    ## テスト
-    test_data, labels = test_set
-    results = np.arange(len(test_data), dtype=np.int)
-    for n in range(len(test_data)):
-        results[n] = nn.predict(test_data[n])
-        # print &quot;%d : predicted %s, expected %s&quot; % (n, results[n], labels[n])
-    print &quot;recognition rate: &quot;, (results == labels).mean()
-
-    # モデルを保存
-    model_filename = &quot;nn_mnist.pkl&quot;
-    joblib.dump(nn, model_filename, compress=9)
-    print &quot;The model parameters are dumped to &quot; + model_filename
-</code></pre>
-
+    <span style="color:#75715e"># モデルを保存</span>
+    model_filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;nn_mnist.pkl&#34;</span>
+    joblib<span style="color:#f92672">.</span>dump(nn, model_filename, compress<span style="color:#f92672">=</span><span style="color:#ae81ff">9</span>)
+    <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;The model parameters are dumped to &#34;</span> <span style="color:#f92672">+</span> model_filename</code></pre></div>
 <p><a href="https://github.com/r9y9/python-neural-net-toy-codes">https://github.com/r9y9/python-neural-net-toy-codes</a></p>
 
 <p>以下のようなコマンドを叩いて、正解率が97%くらいになるまで学習してから入力層から隠れ層への重みを可視化してみた</p>
-
-<pre><code class="language-bash"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100 # epochesは適当に
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100 # epochesは適当に</span></code></pre></div>
 <div align="center"><img src="/images/nn_mnist_W1_100.png" alt="Input to Hidden weight filters after trained on MNIST." class="image"></div>
 
 <p>興味深いことに、RBMと違って重み行列の解釈はしにくい。生成モデルの尤度を最大化することと、誤差を最小化することはこんなにも違うんだなぁというこなみな感想</p>

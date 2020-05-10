@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -69,49 +69,48 @@
 <p>というわけで、インストールするシェルをメモって置きます。試行錯誤したあとに適当にまとめたshellなので、なんか抜けてたらごめんなさい。</p>
 
 <p><a href="https://gist.github.com/r9y9/50f13ba28b5b158c25ae">https://gist.github.com/r9y9/50f13ba28b5b158c25ae</a></p>
-
-<pre><code class="language-bash">#!/bin/bash
-
-# Pylearn2 setup script for Amazon Linux AMI with NVIDIA GRID GPU Driver.
-# http://goo.gl/3KeXXW
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e"># Pylearn2 setup script for Amazon Linux AMI with NVIDIA GRID GPU Driver.</span>
+<span style="color:#75715e"># http://goo.gl/3KeXXW</span>
 
 sudo yum update -y
 sudo yum install -y emacs tmux python-pip
 sudo yum install -y python-devel git blas-devel lapack-devel
 
-# numpy, scipy, matplotlib, etc.
+<span style="color:#75715e"># numpy, scipy, matplotlib, etc.</span>
 sudo pip install numpy
 sudo pip install scipy
 sudo pip install cython
 sudo pip install ipython nose
 
-# matplotlib
+<span style="color:#75715e"># matplotlib</span>
 sudo yum install -y libpng-devel freetype-devel
 sudo pip install matplotlib
 
-# Scikit-learn
+<span style="color:#75715e"># Scikit-learn</span>
 sudo pip install scikit-learn
 
-# Theano
+<span style="color:#75715e"># Theano</span>
 sudo pip install --upgrade git+git://github.com/Theano/Theano.git
 
-# Enable GPU for theano
-echo '[global]
-floatX = float32
-device = gpu0
+<span style="color:#75715e"># Enable GPU for theano</span>
+echo <span style="color:#e6db74">&#39;[global]
+</span><span style="color:#e6db74">floatX = float32
+</span><span style="color:#e6db74">device = gpu0
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">[nvcc]
+</span><span style="color:#e6db74">fastmath = True&#39;</span> &gt; .theanorc
 
-[nvcc]
-fastmath = True' &gt; .theanorc
-
-# pylearn2
+<span style="color:#75715e"># pylearn2</span>
 git clone git://github.com/lisa-lab/pylearn2.git
 cd pylearn2
 sudo python setup.py develop
 cd ..
 
-echo &quot;export PYLEARN2_DATA_PATH=/home/ec2-user/data&quot; &gt;&gt; .bashrc
+echo <span style="color:#e6db74">&#34;export PYLEARN2_DATA_PATH=/home/ec2-user/data&#34;</span> &gt;&gt; .bashrc
 
-# MNIST dataset
+<span style="color:#75715e"># MNIST dataset</span>
 mkdir -p data/mnist/
 cd data/mnist/
 wget http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
@@ -122,9 +121,7 @@ wget http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
 gunzip t10k-images-idx3-ubyte.gz
 wget http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
 gunzip t10k-labels-idx1-ubyte.gz
-cd ../..
-</code></pre>
-
+cd ../..</code></pre></div>
 <p>簡単ですね</p>
 
 <p>また、上記のような手順を踏まなくても、Community AMIs でpylearn2で検索するとすでにpylearn2が入ったAMIが出てくるので、それを使うのもありかもです（僕は試してません）。</p>

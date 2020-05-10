@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -55,148 +55,121 @@
 <p>まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました</p>
 
 <p><a href="https://github.com/r9y9/world">https://github.com/r9y9/world</a></p>
-
-<pre><code class="language-bash"> ./waf configure &amp;&amp; ./waf
- sudo ./waf install
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> ./waf configure <span style="color:#f92672">&amp;&amp;</span> ./waf
+ sudo ./waf install</code></pre></div>
 <p>でインストールできます。</p>
 
 <p>なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…</p>
 
 <h3 id="2-go-worldのインストール">2. GO-WORLDのインストール</h3>
-
-<pre><code class="language-bash">go get github.com/r9y9/go-world
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get github.com/r9y9/go-world</code></pre></div>
 <p>簡単ですね！</p>
 
 <h2 id="使い方">使い方</h2>
 
 <h3 id="1-インポートする">1. インポートする</h3>
-
-<pre><code class="language-go">import &quot;github.com/r9y9/go-world&quot;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/r9y9/go-world&#34;</span></code></pre></div>
 <h3 id="2-worldのインスタンスを作る">2. worldのインスタンスを作る</h3>
-
-<pre><code class="language-go">w := world.New(sampleRate, framePeriod) // e.g. (44100, 5)
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">world</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">sampleRate</span>, <span style="color:#a6e22e">framePeriod</span>) <span style="color:#f92672">//</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">g</span>. (<span style="color:#ae81ff">44100</span>, <span style="color:#ae81ff">5</span>)</code></pre></div>
 <h3 id="3-好きなworldのメソッドを呼ぶ">3. 好きなworldのメソッドを呼ぶ</h3>
 
 <h4 id="基本周波数の推定-dio">基本周波数の推定: Dio</h4>
-
-<pre><code class="language-go">timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Dio</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">NewDioOption</span>()) <span style="color:#f92672">//</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">option</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">used</span></code></pre></div>
 <h4 id="スペクトル包絡の推定-star">スペクトル包絡の推定: Star</h4>
-
-<pre><code class="language-go">spectrogram := w.Star(input, timeAxis, f0)
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">spectrogram</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Star</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span>)</code></pre></div>
 <h4 id="励起信号の推定-platinum">励起信号の推定: Platinum</h4>
-
-<pre><code class="language-go">residual := w.Platinum(input, timeAxis, f0, spectrogram)
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">residual</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Platinum</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span>, <span style="color:#a6e22e">spectrogram</span>)</code></pre></div>
 <h4 id="パラメータから音声の再合成-synthesis">パラメータから音声の再合成: Synthesis</h4>
-
-<pre><code class="language-go">synthesized := w.Synthesis(f0, spectrogram, residual, len(input))
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">synthesized</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Synthesis</span>(<span style="color:#a6e22e">f0</span>, <span style="color:#a6e22e">spectrogram</span>, <span style="color:#a6e22e">residual</span>, len(<span style="color:#a6e22e">input</span>))</code></pre></div>
 <h2 id="使い方例">使い方例.</h2>
 
 <p>音声（wavファイル）を分析して、パラメータから音声を再合成する例を紹介します。80行弱と少し長いですがはっつけておきます</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
-
-import (
-	&quot;flag&quot;
-	&quot;fmt&quot;
-	&quot;github.com/mjibson/go-dsp/wav&quot;
-	&quot;github.com/r9y9/go-world&quot;
-	&quot;log&quot;
-	&quot;os&quot;
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;flag&#34;</span>
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/mjibson/go-dsp/wav&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/r9y9/go-world&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
 )
 
-var defaultDioOption = world.DioOption{
-	F0Floor:          80.0,
-	F0Ceil:           640.0,
-	FramePeriod:      5,
-	ChannelsInOctave: 4.0,
-	Speed:            6,
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">defaultDioOption</span> = <span style="color:#a6e22e">world</span>.<span style="color:#a6e22e">DioOption</span>{
+	<span style="color:#a6e22e">F0Floor</span>:          <span style="color:#ae81ff">80.0</span>,
+	<span style="color:#a6e22e">F0Ceil</span>:           <span style="color:#ae81ff">640.0</span>,
+	<span style="color:#a6e22e">FramePeriod</span>:      <span style="color:#ae81ff">5</span>,
+	<span style="color:#a6e22e">ChannelsInOctave</span>: <span style="color:#ae81ff">4.0</span>,
+	<span style="color:#a6e22e">Speed</span>:            <span style="color:#ae81ff">6</span>,
 }
 
-// 音声を基本周波数、スペクトル包絡、励起信号の三つに分解したあと、再合成します
-func worldExample(input []float64, sampleRate int) []float64 {
-	w := world.New(sampleRate, defaultDioOption.FramePeriod)
+<span style="color:#75715e">// 音声を基本周波数、スペクトル包絡、励起信号の三つに分解したあと、再合成します
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">worldExample</span>(<span style="color:#a6e22e">input</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">sampleRate</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">world</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">sampleRate</span>, <span style="color:#a6e22e">defaultDioOption</span>.<span style="color:#a6e22e">FramePeriod</span>)
 
-	// 1. Fundamental frequency
-	timeAxis, f0 := w.Dio(input, defaultDioOption)
+	<span style="color:#75715e">// 1. Fundamental frequency
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Dio</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">defaultDioOption</span>)
 
-	// 2. Spectral envelope
-	spectrogram := w.Star(input, timeAxis, f0)
+	<span style="color:#75715e">// 2. Spectral envelope
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">spectrogram</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Star</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span>)
 
-	// 3. Excitation spectrum
-	residual := w.Platinum(input, timeAxis, f0, spectrogram)
+	<span style="color:#75715e">// 3. Excitation spectrum
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">residual</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Platinum</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span>, <span style="color:#a6e22e">spectrogram</span>)
 
-	// 4. Synthesis
-	return w.Synthesis(f0, spectrogram, residual, len(input))
+	<span style="color:#75715e">// 4. Synthesis
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Synthesis</span>(<span style="color:#a6e22e">f0</span>, <span style="color:#a6e22e">spectrogram</span>, <span style="color:#a6e22e">residual</span>, len(<span style="color:#a6e22e">input</span>))
 }
 
-// 音声を基本周波数、スペクトル包絡、非周期成分の三つに分解したあと、再合成します
-func worldExampleAp(input []float64, sampleRate int) []float64 {
-	w := world.New(sampleRate, defaultDioOption.FramePeriod)
+<span style="color:#75715e">// 音声を基本周波数、スペクトル包絡、非周期成分の三つに分解したあと、再合成します
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">worldExampleAp</span>(<span style="color:#a6e22e">input</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">sampleRate</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">world</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">sampleRate</span>, <span style="color:#a6e22e">defaultDioOption</span>.<span style="color:#a6e22e">FramePeriod</span>)
 
-	// 1. Fundamental frequency
-	timeAxis, f0 := w.Dio(input, defaultDioOption)
+	<span style="color:#75715e">// 1. Fundamental frequency
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Dio</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">defaultDioOption</span>)
 
-	// 2. Spectral envelope
-	spectrogram := w.Star(input, timeAxis, f0)
+	<span style="color:#75715e">// 2. Spectral envelope
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">spectrogram</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Star</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span>)
 
-	// 3. Apiriodiciy
-	apiriodicity, targetF0 := w.AperiodicityRatio(input, f0)
+	<span style="color:#75715e">// 3. Apiriodiciy
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">apiriodicity</span>, <span style="color:#a6e22e">targetF0</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">AperiodicityRatio</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">f0</span>)
 
-	// 4. Synthesis
-	return w.SynthesisFromAperiodicity(f0, spectrogram, apiriodicity, targetF0, len(input))
+	<span style="color:#75715e">// 4. Synthesis
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">SynthesisFromAperiodicity</span>(<span style="color:#a6e22e">f0</span>, <span style="color:#a6e22e">spectrogram</span>, <span style="color:#a6e22e">apiriodicity</span>, <span style="color:#a6e22e">targetF0</span>, len(<span style="color:#a6e22e">input</span>))
 }
 
-func GetMonoDataFromWavData(data [][]int) []float64 {
-	y := make([]float64, len(data))
-	for i, val := range data {
-		y[i] = float64(val[0])
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetMonoDataFromWavData</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">data</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">val</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">data</span> {
+		<span style="color:#a6e22e">y</span>[<span style="color:#a6e22e">i</span>] = float64(<span style="color:#a6e22e">val</span>[<span style="color:#ae81ff">0</span>])
 	}
-	return y
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">y</span>
 }
 
-func main() {
-	ifilename := flag.String(&quot;i&quot;, &quot;default.wav&quot;, &quot;Input filename&quot;)
-	flag.Parse()
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">ifilename</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">String</span>(<span style="color:#e6db74">&#34;i&#34;</span>, <span style="color:#e6db74">&#34;default.wav&#34;</span>, <span style="color:#e6db74">&#34;Input filename&#34;</span>)
+	<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Parse</span>()
 
-	// Read wav data
-	file, err := os.Open(*ifilename)
-	if err != nil {
-		log.Fatal(err)
+	<span style="color:#75715e">// Read wav data
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">ifilename</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
 	}
-	defer file.Close()
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">Close</span>()
 
-	w, werr := wav.ReadWav(file)
-	if werr != nil {
-		log.Fatal(werr)
+	<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">werr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">wav</span>.<span style="color:#a6e22e">ReadWav</span>(<span style="color:#a6e22e">file</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">werr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">werr</span>)
 	}
-	input := GetMonoDataFromWavData(w.Data)
-	sampleRate := int(w.SampleRate)
+	<span style="color:#a6e22e">input</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">GetMonoDataFromWavData</span>(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Data</span>)
+	<span style="color:#a6e22e">sampleRate</span> <span style="color:#f92672">:=</span> int(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">SampleRate</span>)
 
-	synthesized := worldExample(input, sampleRate)
-	// synthesized := worldExampleAp(input, sampleRate)
-
-	for i, val := range synthesized {
-		fmt.Println(i, val)
+	<span style="color:#a6e22e">synthesized</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">worldExample</span>(<span style="color:#a6e22e">input</span>, <span style="color:#a6e22e">sampleRate</span>)
+	<span style="color:#75715e">// synthesized := worldExampleAp(input, sampleRate)
+</span><span style="color:#75715e"></span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">val</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">synthesized</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">val</span>)
 	}
-}
-</code></pre>
-
+}</code></pre></div>
 <p>Goだとメモリ管理きにしなくていいしそこそこ速いし読みやすいし書きやすいし楽でいいですね（信者</p>
 
 <h2 id="おわりに">おわりに</h2>

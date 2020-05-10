@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on LESS IS MORE</title>
@@ -6,10 +6,33 @@
     <description>Recent content in Posts on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 11 Jun 2019 00:00:30 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 10 May 2020 14:42:25 +0900</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>    NNSVS: Pytorchベースの研究用歌声合成ライブラリ</title>
+      <link>http://r9y9.github.io/blog/2020/05/10/nnsvs/</link>
+      <pubDate>Sun, 10 May 2020 14:42:25 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/blog/2020/05/10/nnsvs/</guid>
+      <description>コード: https://github.com/r9y9/nnsvs Discussion: https://github.com/r9y9/nnsvs/issues/1 Demo on Google colab   春が来た　春が来た　どこに来た。　山に来た　里に来た、野にも来た。花がさく　花がさく　どこにさく。山にさく　里にさく、野にもさく。
+ Your browser does not support the audio element.
+NNSVS はなに？ Neural network-based singing voice synthesis library for research
+研究用途を目的とした、歌声合成エンジンを作るためのオープンソースのライブラリを作ることを目指したプロジェクトです。このプロジェクトについて、考えていることをまとめておこうと思います。
+なぜやるか？  NEUTRINO レベルの品質の歌声合成エンジンが作れるのかやってみたかった オープンソースのツールがほぼない分野なので、ツールを作ると誰かの役にも立っていいかなと思った。研究分野が盛り上がると良いですね  というのが理由です。前者の割合が大きいです。
+研究用途 機械学習や信号処理にある程度明るい人を想定しています。歌声合成技術を使って創作したい人ではなく、どのようにすればより良い歌声合成を作ることができるのか？といった興味を持つ人が主な対象です。
+創作活動のために歌声合成の技術を使う場合には、すでに優れたツールがあると思いますので、そちらを使っていただくのがよいと思います1。NEUTRINO、Synthesizer V、CeVIO など
+オープンソース オープンソースであることを重視します。歌声合成ソフトウェアは多くありますが、オープンソースのものは多くありません2。このプロジェクトは僕が趣味として始めたもので、ビジネスにする気はまったくないので3、誰でも自由に使えるようにしたいと思っています。オープンなソフトウェアが、研究分野の一助になることを期待しています。
+Pytorchベース 過去に nnmnkwiiという音声合成のためのライブラリを作りました。その際には、任意の数値微分ライブラリと使えるようにと考えて設計しましたが、nnsvsはあえてpytorchに依存した形で作ります。
+PYtorchと切り離して設計すると汎用的にしやすい一方で、Kaldi やESPnet のようなプロジェクトで成功しているレシピというものが作りずらいです。ESPnetに多少関わって、再現性の担保の重要性を身にしみて感じつつあるので、Pytorchベースの学習、推論など、歌声合成のモデルを構築するために必要なすべてをひっくるめたソフトウェアを目指したいと思います。
+レシピの提供 再現性を重視します。そのために、KaldiやESPnetの成功に習って、レシピという実験を再現するのに必要なすべてのステップが含まれたスクリプトを提供します。レシピは、データの前処理、特徴量抽出、モデル学習、推論、波形の合成などを含みます。
+例えば、このブログのトップに貼った音声サンプルを合成するのに使われたモデルは、公開されているレシピで再現することが可能です。歌声合成エンジンを作るためのありとあらゆるものを透明な形で提供します。
+プロジェクトの進め方について 完全に完成してから公開する、というアプローチとは正反対で、構想のみで実態はまったくできていない状態から始めて、進捗を含めてすべてオープンで確認できるような状態で進めます。進捗は https://github.com/r9y9/nnsvs/issues/1 から確認できます。
+過去にwavenet vocoderをつくったときにも同じような方法ではじめました。突然知らない人がコメントをくれたりするのがオープンソースの面白いところの一つだと思っているので、この方式で進めます。
+現時点の状況 きりたんデータベースを使って、parametric SVS（Sinsyの中身に近いもの）が一通り作れるところまでできました。MusicXMLを入力として、音声波形を出力します。作った歌声合成システムは、time-lagモデル、音素継続長モデル、音響モデルの3つのtrainableなモデルで成り立っています。音楽/言語的特徴量はsinsyで抽出して、音声分析合成にはWORLDを使います。仕組みは、以下の論文の内容に近いです。</description>
+    </item>
     
     <item>
       <title>LJSpeech は価値のあるデータセットですが、ニューラルボコーダの品質比較には向かないと思います</title>
@@ -91,7 +114,7 @@ ImageRGBA https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_
  ノートブック (gist) nbviewer  概要 適当なニューラルネットの学習過程の可視化（ロス、正解率の遷移等）を題材にして、Bokehを使って動的にグラフを更新していくことによる可視化の実用例を紹介します。このノートブックの冒頭に、最後まで実行すると得られるグラフ一覧をまとめました。どうやってグラフを作るのか知りたい方は続きを読んでもらえればと思います。Bokehの詳細な使い方は、公式ドキュメントを参考にしてください。
 なお、ここで紹介する例は、僕が過去に出た機械学習のコンペ (https://deepanalytics.jp/compe/36?tab=compedetail) で実際に使用したコードからほぼ取ってきました（8/218位でした）。グラフを動的に更新する方法は 公式ドキュメント に記述されていますが、そのサンプルの内容は「円を描画して色を変える」といった実用性皆無のものであること、またググっても例が多く見つからないことから、このような紹介記事を書くことにしました。参考になれば幸いです。
 余談ではありますが、こと機械学習に関しては、tensorboardを使ったほうが簡単で良いと思います。僕は最近そうしています。 https://qiita.com/r9y9/items/d54162d37ec4f110f4b4. 色なり位置なり大きさなりを柔軟にカスタマイズしたい、あるいはノートブックで処理を完結させたい、と言った場合には、ここで紹介する方法も良いかもしれません。
-%pylab inline  Populating the interactive namespace from numpy and matplotlib  from IPython.display import HTML, Image import IPython from os.path import exists def summary(): baseurl = &amp;quot;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&amp;quot; for (name, figname, url) in [ (&amp;quot;Line&amp;quot;, &amp;quot;line&amp;quot;, &amp;quot;line.html&amp;quot;), (&amp;quot;VBar&amp;quot;, &amp;quot;vbar&amp;quot;, &amp;quot;vbar.</description>
+%pylab inlinePopulating the interactive namespace from numpy and matplotlibfrom IPython.display import HTML, Image import IPython from os.path import exists def summary(): baseurl = &amp;#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&amp;#34; for (name, figname, url) in [ (&amp;#34;Line&amp;#34;, &amp;#34;line&amp;#34;, &amp;#34;line.html&amp;#34;), (&amp;#34;VBar&amp;#34;, &amp;#34;vbar&amp;#34;, &amp;#34;vbar.html&amp;#34;), (&amp;#34;HBar&amp;#34;, &amp;#34;hbar&amp;#34;, &amp;#34;hbar.</description>
     </item>
     
     <item>
@@ -166,8 +189,8 @@ arXiv論文リンク: arXiv:1709.08041
 前回は英語音声合成でしたが、以前書いた DNN日本語音声合成の記事 で使ったデータと同じものを使い、日本語音声合成をやってみましたので、結果を残しておきます。
 実験 実験条件 HTSのNIT-ATR503のデモデータ (ライセンス) から、wavデータ503発話を用います。442を学習用、56を評価用、残り5をテスト用にします（※英語音声とtrain/evalの比率は同じです）。継続長モデルは、state-levelではなくphone-levelです。サンプリング周波数が48kHzなので、mgcの次元を25から60に増やしました。モデル構造は、すべて英語音声合成の場合と同じです。ADV loss は0次を除くmgcを用いて計算しました。F0は入れていません。
 gantts の jpブランチ をチェックアウトして、以下のシェルを実行すると、ここに貼った結果が得られます。
- ./jp_tts_demo.sh jp_tts_order59  ただし、シェル中に、HTS_ROOT という変数があり、シェル実行前に、環境に合わせてディレクトリを指定する必要があります。
-diff --git a/jp_tts_demo.sh b/jp_tts_demo.sh index 7a8f12c..b18e604 100755 --- a/jp_tts_demo.sh +++ b/jp_tts_demo.sh @@ -8,7 +8,7 @@ experiment_id=$1 fs=48000 # Needs adjastment -HTS_DEMO_ROOT=~/local/HTS-demo_NIT-ATR503-M001 +HTS_DEMO_ROOT=HTS日本語デモの場所を指定してください # Flags run_duration_training=1  変換音声の比較 音響モデルのみ適用  自然音声 ベースライン GAN  の順に音声を貼ります。聴きやすいように、soxで音量を正規化しています。
+ ./jp_tts_demo.sh jp_tts_order59 ただし、シェル中に、HTS_ROOT という変数があり、シェル実行前に、環境に合わせてディレクトリを指定する必要があります。
+diff --git a/jp_tts_demo.sh b/jp_tts_demo.sh index 7a8f12c..b18e604 100755 --- a/jp_tts_demo.sh +++ b/jp_tts_demo.sh @@ -8,7 +8,7 @@ experiment_id=$1  fs=48000 # Needs adjastment -HTS_DEMO_ROOT=~/local/HTS-demo_NIT-ATR503-M001 +HTS_DEMO_ROOT=HTS日本語デモの場所を指定してください  # Flags run_duration_training=1  変換音声の比較 音響モデルのみ適用  自然音声 ベースライン GAN  の順に音声を貼ります。聴きやすいように、soxで音量を正規化しています。
 nitech_jp_atr503_m001_j49
 Your browser does not support the audio element.</description>
     </item>
@@ -275,14 +298,15 @@ Cxx.jlにはプライベートでも仕事でも非常にお世話になって�
       <description>Julia advent calendar 2016 23日目の記事です。
 はじめに Juilaを最も簡単にインストールする方法は、公式のダウンロードページからバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが1、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。
 僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです2。
-下準備 git clone https://github.com/JuliaLang/julia &amp;amp;&amp;amp; cd julia  ビルドのカスタマイズ方法 Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに override LLVM_VER=3.7.1 のような書き方で記述することで、カスタマイズ可能です（詳細は公式の説明をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。
-override LLVM_VER=3.7.1 override LLVM_ASSERTIONS=1 override BUILD_LLVM_CLANG=1 override USE_LLVM_SHLIB=1  あとは、通常通りmakeコマンドを走らせることで、ビルドを行います。
-make -j4  コア数は適当に指定します。llvm, openblasあたりのビルドが結構重いので、並列ビルドがオススメです。
+下準備 git clone https://github.com/JuliaLang/julia &amp;amp;&amp;amp; cd julia ビルドのカスタマイズ方法 Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに override LLVM_VER=3.7.1 のような書き方で記述することで、カスタマイズ可能です（詳細は公式の説明をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。
+override LLVM_VER=3.7.1 override LLVM_ASSERTIONS=1 override BUILD_LLVM_CLANG=1 override USE_LLVM_SHLIB=1 あとは、通常通りmakeコマンドを走らせることで、ビルドを行います。
+make -j4 コア数は適当に指定します。llvm, openblasあたりのビルドが結構重いので、並列ビルドがオススメです。
 僕がよく使うオプション ここから、僕がよく使うオプションをいくつか解説します。
 LLVM_VER llvmのバージョンを表します。Julia上でC++を使いたいというcrazyな人に激推しの Keno/Cxx.jl というパッケージがあるのですが、このパッケージはclangとllvmの3.7.1以上を必要とします（Cxx.jlについては、過去に何度か記事を書いたので、例えば Cxx.jlを用いてJulia expression/value をC++に埋め込む実験 をご覧ください）。llvm 3.3がデフォルトだったJulia v0.4時代では、明示的に3.7.1と指定する必要がありました。いまは、
  Julia v0.5の公式配布バイナリでも、Pkg.add(&amp;quot;Cxx&amp;quot;)でインストールできるとされている（Keno/Cxx.jl/#287） かつ現状のデフォルトバージョンが3.7.1 (もうすぐ3.9.1になりそうですが JuliaLang/julia/#19768)  なので、僕の場合は明示的にLLVM_VERを指定する必要はなくなってきましたが、例えば、LLVMのNVPTX backendを使ってJuliaでCUDAカーネルを書けるようにする JuliaGPU/CUDAnative.jl （要 llvm 3.9）のような、experimentalなパッケージを試したい場合など、LLVM_VERを指定したくなる場合もあるかと思います。
 LLVM_ASSERTIONS LLVMをassert付きでビルドするかどうかを表します。ONにするとビルドかかる時間が長くなり、LLVMのパフォーマンスが若干落ちますが、デバッグには便利です。Juliaのコード生成周りでエラーを起こしやすいようなコードを書くときには、ONにしておくと便利です。
-BUILD_LLVM_CLANG llvmとあわせて、clangをビルドするかどうか、というオプションです。Cxx.jlに必要なので、僕はそのためにONにしています。その他必要なケースとしては、clangのaddress/memory sanitizerを使いたい場合が考えられます。詳細はdevdocs/sanitizers をご覧ください。</description>
+BUILD_LLVM_CLANG llvmとあわせて、clangをビルドするかどうか、というオプションです。Cxx.jlに必要なので、僕はそのためにONにしています。その他必要なケースとしては、clangのaddress/memory sanitizerを使いたい場合が考えられます。詳細はdevdocs/sanitizers をご覧ください。
+CC, CXX コンパイラの指定です。僕の場合 ubuntu 14.</description>
     </item>
     
     <item>
@@ -298,10 +322,10 @@ BUILD_LLVM_CLANG llvmとあわせて、clangをビルドするかどうか、と
  前置き：C++をJulia上で使う 本編：JuliaのexpressionやvalueをC++に埋め込む  前置きが若干長いので、タイトルの内容が知りたい方は、飛ばして下さい。
 前置き：C++をJulia上で使う Cxx.jlを使えば、C++をJulia上で非常にスムーズに扱うことができます。例えば、C++のstd::vector&amp;lt;T&amp;gt;を使いたい、さらにはJuliaのfilter関数をstd::vector&amp;lt;T&amp;gt;に対して使えるようにしたい、といった場合は、以下に示すように、ほんのすこしのコードを書くだけでできます。
 準備：
-using Cxx import CxxStd: StdVector  filter関数：
-function Base.filter{T}(f, v::StdVector{T}) r = icxx&amp;quot;std::vector&amp;lt;$T&amp;gt;();&amp;quot; for i in 0:length(v)-1 if f(T(v[i])) push!(r, v[i]) end end r end  なお、filter関数に出てくる、length, getindex, push! は、Cxx..jlにそれぞれ以下のように定義されています。
-Base.getindex(it::StdVector,i) = icxx&amp;quot;($(it))[$i];&amp;quot; Base.length(it::StdVector) = icxx&amp;quot;$(it).size();&amp;quot; Base.push!(v::StdVector,i) = icxx&amp;quot;$v.push_back($i);&amp;quot;  計算結果を見やすくするために、show 関数も定義しておきます。
-function Base.show{T}(io::IO, v::StdVector{T}) println(io, &amp;quot;$(length(v))-element StdVector{$T}:&amp;quot;) for i = 0:length(v)-1 println(io, T(v[i])) end end  実行結果：</description>
+using Cxx import CxxStd: StdVector filter関数：
+function Base.filter{T}(f, v::StdVector{T}) r = icxx&amp;#34;std::vector&amp;lt;$T&amp;gt;();&amp;#34; for i in 0:length(v)-1 if f(T(v[i])) push!(r, v[i]) end end r end なお、filter関数に出てくる、length, getindex, push! は、Cxx..jlにそれぞれ以下のように定義されています。
+Base.getindex(it::StdVector,i) = icxx&amp;#34;($(it))[$i];&amp;#34; Base.length(it::StdVector) = icxx&amp;#34;$(it).size();&amp;#34; Base.push!(v::StdVector,i) = icxx&amp;#34;$v.push_back($i);&amp;#34; 計算結果を見やすくするために、show 関数も定義しておきます。
+function Base.show{T}(io::IO, v::StdVector{T}) println(io, &amp;#34;$(length(v))-element StdVector{$T}:&amp;#34;) for i = 0:length(v)-1 println(io, T(v[i])) end end 実行結果：</description>
     </item>
     
     <item>
@@ -352,10 +376,10 @@ Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード
 この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。
 記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。
 問題 新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。
-A function f() x = (1.0 + 2.0)::Int return x end f()  B function g() x::Int = (1.0 + 2.0) return x end g()  なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。
+A function f() x = (1.0 + 2.0)::Int return x end f() B function g() x::Int = (1.0 + 2.0) return x end g() なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。
 この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。
 A: 値に対する type annotation Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「(1.0 + 2.0) という式を評価した値は、Int 型であることを保証する」となります。
-(1.0 + 2.0) を評価した値は 3.</description>
+(1.0 + 2.0) を評価した値は 3.0 であり、 Float64の型を持ちます。したがって Float64 !</description>
     </item>
     
     <item>
@@ -367,7 +391,7 @@ A: 値に対する type annotation Aの2行目では、値に対して type anno
       <description> 2015/09/05:
 https://t.co/WFBmYEIVce SPTKのpythonラッパー（マシなやつ）完成&amp;#10;ドキュメント http://t.co/jYhw1y3Bzg&amp;#10;pip install pysptk でインストールできるようになりました。pypi童貞捨てれた
 &amp;mdash; 山本りゅういち (@r9y9) September 4, 2015   ずいぶん前に、swig遊びをしがてらpythonのラッパーを書いていたんですが、cythonを使って新しく作りなおしました。かなりパワーアップしました。
-pip install pysptk  でインストールできるので、よろしければどうぞ
+pip install pysptk でインストールできるので、よろしければどうぞ
 なぜ作ったのか  cythonとsphinxで遊んでたらできた  使い方 以下のデモを参考にどうぞ
  Introduction to pysptk: メル一般化ケプストラム分析とか Speech analysis and re-synthesis: 音声の分析・再合成のデモ。合成音声はnotebook上で再生できます  ドキュメント http://pysptk.readthedocs.org
 ぼやき SPTKの関数、変な値入れるとexitしたりセグフォったりするので、ちゃんとテスト書いてほしいなあ
@@ -458,7 +482,7 @@ VoiceConversion.jl でできること 追記 2015/01/07 この記事を書いた
 Github https://github.com/r9y9/julia-nmf-ss-toy
 ノート NMF-based Music Source Separation Demo.ipynb | nbviewer
 NMFのコード (Julia) NMFの実装の部分だけ抜き出しておきます。
-function nmf_euc(Y::AbstractMatrix, K::Int=4; maxiter::Int=100) H = rand(size(Y, 1), K) U = rand(K, size(Y, 2)) const ϵ = 1.0e-21 for i=1:maxiter H = H .* (Y*U&#39;) ./ (H*U*U&#39; + ϵ) U = U .* (H&#39;*Y) ./ (H&#39;*H*U + ϵ) U = U ./ maximum(U) end return H, U end  いやー簡単ですねー。NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。</description>
+function nmf_euc(Y::AbstractMatrix, K::Int=4; maxiter::Int=100) H = rand(size(Y, 1), K) U = rand(K, size(Y, 2)) const ϵ = 1.0e-21 for i=1:maxiter H = H .* (Y*U&amp;#39;) ./ (H*U*U&amp;#39; + ϵ) U = U .* (H&amp;#39;*Y) ./ (H&amp;#39;*H*U + ϵ) U = U ./ maximum(U) end return H, U end いやー簡単ですねー。NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。</description>
     </item>
     
     <item>
@@ -510,7 +534,7 @@ https://github.com/r9y9/BNMF.jl
 ハマったところ  GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら besselkx で、scipyで言うなら scipy.special.kve です。  雑感  MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒 というかJuliaがMatlabに似すぎ？ Gamma分布に従う乱数は、Distributions,jl を使えばめっちゃ簡単に生成できた。素晴らしすぎる 行列演算がシンプルにかけてホント楽。pythonでもmatlabでもそうだけど（Goだとこれができないんですよ…） 第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。  Python版と速度比較 bp_nmf/code/gap_nmf と比較します。matlabはもってないので比較対象からはずします、ごめんなさい
 Gistにベンチマークに使ったスクリプトと実行結果のメモを置いときました https://gist.github.com/r9y9/3d0c6a90dd155801c4c1
 結果だけ書いておくと、あらゆる現実を（ry の音声にGaP-NMFをepochs=100でfittingするのにかかった時間は、
-Julia: Mean elapsed time: 21.92968243 [sec] Python: Mean elapsed time: 18.3550617 [sec]  という結果になりました。つまりJuliaのほうが1.</description>
+Julia: Mean elapsed time: 21.92968243 [sec] Python: Mean elapsed time: 18.3550617 [sec] という結果になりました。つまりJuliaのほうが1.</description>
     </item>
     
     <item>
@@ -598,7 +622,7 @@ EC2(g2.2xlarge)でOpenGLを使う方法 で挙げられているように普通�
 セットアップ ↑で上げたインスタンスにはGPUドライバやCUDAは入っていますが、theanoもpylearn2もnumpyもscipyも入っていません。よって、それらは手動でインストールする必要があります。
 というわけで、インストールするシェルをメモって置きます。試行錯誤したあとに適当にまとめたshellなので、なんか抜けてたらごめんなさい。
 https://gist.github.com/r9y9/50f13ba28b5b158c25ae
-#!/bin/bash # Pylearn2 setup script for Amazon Linux AMI with NVIDIA GRID GPU Driver. # http://goo.gl/3KeXXW sudo yum update -y sudo yum install -y emacs tmux python-pip sudo yum install -y python-devel git blas-devel lapack-devel # numpy, scipy, matplotlib, etc.</description>
+#!/bin/bash  # Pylearn2 setup script for Amazon Linux AMI with NVIDIA GRID GPU Driver. # http://goo.</description>
     </item>
     
     <item>
@@ -660,8 +684,7 @@ https://github.com/r9y9/gossp
 基礎 Wavファイルの読み込み/書き込み [wav]  まずは音声ファイルの読み込みですね。wavファイルの読み込みさえできれば十分でしょう。
 これは、すでに有用なライブラリが存在します。GO-DSP とういデジタル信号処理のライブラリに含まれるwavパッケージを使いましょう。
 次のように書くことができます。
-package main import ( &amp;quot;fmt&amp;quot; &amp;quot;github.com/mjibson/go-dsp/wav&amp;quot; &amp;quot;log&amp;quot; &amp;quot;os&amp;quot; ) func main() { // ファイルのオープン file, err := os.Open(&amp;quot;./test.wav&amp;quot;) if err != nil { log.Fatal(err) } // Wavファイルの読み込み w, werr := wav.ReadWav(file) if werr != nil { log.Fatal(werr) } // データを表示 for i, val := range w.Data { fmt.Println(i, val) } }  簡単ですね。
-Goはウェブ周りの標準パッケージが充実しているので、以前qiitaに書いた記事のように、wavファイルを受け取って何らかの処理をする、みたいなサーバも簡単に書くことができます</description>
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.com/mjibson/go-dsp/wav&amp;#34; &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { // ファイルのオープン 	file, err := os.Open(&amp;#34;./test.wav&amp;#34;) if err != nil { log.Fatal(err) } // Wavファイルの読み込み 	w, werr := wav.ReadWav(file) if werr != nil { log.Fatal(werr) } // データを表示 	for i, val := range w.Data { fmt.Println(i, val) } } 簡単ですね。</description>
     </item>
     
     <item>
@@ -693,7 +716,7 @@ Morlet  Paul  DOG  Paulは時間解像度は高いけど周波数解像度はい
       <guid>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</guid>
       <description>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。
 このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）
-#!/usr/bin/python # coding: utf-8 # ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の # デモコードです。 # 誤差伝搬法によってニューラルネットを学習します。 # XORの学習、テストの簡単なデモコードもついています # 2014/05/10 Ryuichi Yamamoto import numpy as np def sigmoid(x): return 1.0 / (1.0 + np.exp(-x)) def dsigmoid(y): return y * (1.0 - y) class NeuralNet: def __init__(self, num_input, num_hidden, num_output): &amp;quot;&amp;quot;&amp;quot; パラメータの初期化 &amp;quot;&amp;quot;&amp;quot; # 入力層から隠れ層への重み行列 self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden)) self.hidden_bias = np.ones(num_hidden, dtype=float) # 隠れ層から出力層への重み行列 self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output)) self.</description>
+#!/usr/bin/python # coding: utf-8 # ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の # デモコードです。 # 誤差伝搬法によってニューラルネットを学習します。 # XORの学習、テストの簡単なデモコードもついています # 2014/05/10 Ryuichi Yamamoto import numpy as np def sigmoid(x): return 1.0 / (1.0 + np.exp(-x)) def dsigmoid(y): return y * (1.0 - y) class NeuralNet: def __init__(self, num_input, num_hidden, num_output): &amp;#34;&amp;#34;&amp;#34; パラメータの初期化 &amp;#34;&amp;#34;&amp;#34; # 入力層から隠れ層への重み行列 self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden)) self.hidden_bias = np.ones(num_hidden, dtype=float) # 隠れ層から出力層への重み行列 self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output)) self.</description>
     </item>
     
     <item>
@@ -711,12 +734,13 @@ cgoとは、GoからCの関数/型にアクセスするために用いるパッ�
 なお、go v1.2 から、C++もサポートされている様子 http://golang.org/doc/go1.2#cgo_and_cpp
 ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &amp;ldquo;C&amp;rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べる
 基本的な使い方 まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う
-import &amp;quot;C&amp;quot;  import文のすぐ上のコメントにinclude &amp;lt;ヘッダ.h&amp;gt; と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書く
-// #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;stdlib.h&amp;gt; import &amp;quot;C&amp;quot;  これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる
+import &amp;#34;C&amp;#34; import文のすぐ上のコメントにinclude &amp;lt;ヘッダ.h&amp;gt; と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書く
+// #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;stdlib.h&amp;gt; import &amp;#34;C&amp;#34; これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる
 外部ライブラリを呼ぶ 通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いので、そのような場合には、ライブラリの依存関係をgoのコードに記述する
 cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができる
 pkg-configを使うと 、
-// #cgo pkg-config: png cairo // #include &amp;lt;png.h&amp;gt; import &amp;quot;C&amp;quot;  こんな感じ（Goの公式ページから参照）</description>
+// #cgo pkg-config: png cairo // #include &amp;lt;png.h&amp;gt; import &amp;#34;C&amp;#34; こんな感じ（Goの公式ページから参照）
+Tips さて、ここからTips。主に、WORLDのGoラッパーを書いていたときに得た知見です。ラッパーは、Githubにあげた</description>
     </item>
     
     <item>
@@ -733,10 +757,10 @@ GO-WORLD https://github.com/r9y9/go-world
 ※ubuntu12.04でのみ動作確認してます。
 準備 1. WORLDのインストール まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました
 https://github.com/r9y9/world
-./waf configure &amp;amp;&amp;amp; ./waf sudo ./waf install  でインストールできます。
+./waf configure &amp;amp;&amp;amp; ./waf sudo ./waf install でインストールできます。
 なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…
-2. GO-WORLDのインストール go get github.com/r9y9/go-world  簡単ですね！
-使い方 1. インポートする import &amp;quot;github.com/r9y9/go-world&amp;quot;  2. worldのインスタンスを作る w := world.New(sampleRate, framePeriod) // e.g. (44100, 5)  3. 好きなworldのメソッドを呼ぶ 基本周波数の推定: Dio timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used  スペクトル包絡の推定: Star spectrogram := w.Star(input, timeAxis, f0)  励起信号の推定: Platinum residual := w.</description>
+2. GO-WORLDのインストール go get github.com/r9y9/go-world 簡単ですね！
+使い方 1. インポートする import &amp;#34;github.com/r9y9/go-world&amp;#34; 2. worldのインスタンスを作る w := world.New(sampleRate, framePeriod) // e.g. (44100, 5) 3. 好きなworldのメソッドを呼ぶ 基本周波数の推定: Dio timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used スペクトル包絡の推定: Star spectrogram := w.Star(input, timeAxis, f0) 励起信号の推定: Platinum residual := w.Platinum(input, timeAxis, f0, spectrogram) パラメータから音声の再合成: Synthesis synthesized := w.</description>
     </item>
     
     <item>
@@ -750,10 +774,11 @@ https://github.com/r9y9/world
 (本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)
 実験条件 データベースはmnist。手書き数字認識で有名なアレ。学習の条件は、
  隠れ層のユニット数: 500 mini-batch size: 20 iterationの回数: 15  対数尤度の変化  以下グラフに表示している生データ
-0 -196.59046099622128 1 -70.31708616742365 2 -65.29499371647965 3 -62.37983267378022 4 -61.5359019358253 5 -60.917772257650164 6 -59.64207778426757 7 -59.42201674307857 8 -59.18497336138633 9 -58.277168243126305 10 -58.36279288392401 11 -58.57805165724595 12 -57.71043215987184 13 -58.17783142034138 14 -57.53629129936344  尤度上がると安心する。厳密に対数尤度を計算することは難しいので、Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial にある擬似尤度を参考にした
+0 -196.59046099622128 1 -70.31708616742365 2 -65.29499371647965 3 -62.37983267378022 4 -61.5359019358253 5 -60.917772257650164 6 -59.64207778426757 7 -59.42201674307857 8 -59.18497336138633 9 -58.277168243126305 10 -58.36279288392401 11 -58.57805165724595 12 -57.71043215987184 13 -58.17783142034138 14 -57.53629129936344 尤度上がると安心する。厳密に対数尤度を計算することは難しいので、Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial にある擬似尤度を参考にした
 学習時間 うちのcore2duoのPCで4時間弱だった気がする（うろ覚え
 隠れ層のユニット数100だと、40分ほどだった
-知見 今の所、試行錯誤して自分が得た知見は、</description>
+知見 今の所、試行錯誤して自分が得た知見は、
+ sample by sampleのSGDよりmini-batch SGDの方が安定して尤度上がる mini-batch sizeを大きくしすぎると学習が進まない。20くらいがちょうど良かった k-CD のkを大きくしてもさほど学習結果変わらない（計算コストはけっこう増すけど） persistent CDを使ってもあまりよくならない（計算コストはけっこう増すけど） やっぱ1-CDで十分だった データの正規化方法によって結構結果も変わる。ノイズを足すかどうか、とか 学習率超重要すぎわろた。今回の場合は0.</description>
     </item>
     
     <item>
@@ -788,7 +813,7 @@ Goで音声信号処理をしたいけど、全部一から書くのは大変だ
 cgo GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う http://golang.org/cmd/cgo/
 Cの関数や変数などには、 C. でアクセスできる
 ラッパー 例えば以下のように書く。MFCCの計算を例に上げる。必要に応じでSPTK.hに定義されている関数をラップする
-package sptk // #cgo pkg-config: SPTK // #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;SPTK/SPTK.h&amp;gt; import &amp;quot;C&amp;quot; func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 { // Convert go bool to C.Boolean (so annoying.. var dftmodeInGo, usehammingInGo C.Boolean if dftmode { dftmodeInGo = 1 } else { dftmodeInGo = 0 } if usehamming { usehammingInGo = 1 } else { usehammingInGo = 0 } resultBuffer := make([]float64, m) C.</description>
+package sptk // #cgo pkg-config: SPTK // #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;SPTK/SPTK.h&amp;gt; import &amp;#34;C&amp;#34; func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 { // Convert go bool to C.Boolean (so annoying.. 	var dftmodeInGo, usehammingInGo C.Boolean if dftmode { dftmodeInGo = 1 } else { dftmodeInGo = 0 } if usehamming { usehammingInGo = 1 } else { usehammingInGo = 0 } resultBuffer := make([]float64, m) C.</description>
     </item>
     
     <item>
@@ -815,7 +840,7 @@ Go Getter Part 3 - Further optimizations and a multi-threaded C++ version  こ�
       
       <guid>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</guid>
       <description>Chromagram。ドレミの歌の冒頭を分析した結果です
-package main import ( &amp;quot;fmt&amp;quot; &amp;quot;github.com/mjibson/go-dsp/wav&amp;quot; &amp;quot;github.com/r9y9/go-msptools/pcp&amp;quot; &amp;quot;log&amp;quot; &amp;quot;os&amp;quot; ) func main() { // reading data file, err := os.Open(&amp;quot;/path/to/file.wav&amp;quot;) if err != nil { log.Fatal(err) } defer file.Close() wav, werr := wav.ReadWav(file) if werr != nil { log.Fatal(werr) } // convert to []float64 from []int data := make([]float64, len(wav.Data[0])) for i := range data { data[i] = float64(wav.Data[0][i]) } // settings for analysis frameShift := int(float64(wav.SampleRate) / 100.</description>
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.com/mjibson/go-dsp/wav&amp;#34; &amp;#34;github.com/r9y9/go-msptools/pcp&amp;#34; &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { // reading data 	file, err := os.Open(&amp;#34;/path/to/file.wav&amp;#34;) if err != nil { log.Fatal(err) } defer file.Close() wav, werr := wav.ReadWav(file) if werr != nil { log.Fatal(werr) } // convert to []float64 from []int 	data := make([]float64, len(wav.Data[0])) for i := range data { data[i] = float64(wav.Data[0][i]) } // settings for analysis 	frameShift := int(float64(wav.</description>
     </item>
     
     <item>
@@ -840,7 +865,7 @@ Go-msptoolsはGOSSPに吸収されました。（GOSSP - Go言語で音声信号
       <description>MLSAフィルタわからんという記事を書いて早2ヶ月、ようやく出来た。
 Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。SPTKのmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。
 mlsa_filter.h https://gist.github.com/r9y9/7735120
-#pragma once #include &amp;lt;cmath&amp;gt; #include &amp;lt;memory&amp;gt; #include &amp;lt;vector&amp;gt; #include &amp;lt;cassert&amp;gt; namespace sp { /** * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter) */ class mlsa_base_filter { public: mlsa_base_filter(const int order, const double alpha); template &amp;lt;class Vector&amp;gt; double filter(const double x, const Vector&amp;amp; b); private: mlsa_base_filter(); double alpha_; std::vector&amp;lt;double&amp;gt; delay_; }; mlsa_base_filter::mlsa_base_filter(const int order, const double alpha) : alpha_(alpha), delay_(order+1) { } template &amp;lt;class Vector&amp;gt; double mlsa_base_filter::filter(const double x, const Vector&amp;amp; b) { double result = 0.</description>
+#pragma once  #include &amp;lt;cmath&amp;gt;#include &amp;lt;memory&amp;gt;#include &amp;lt;vector&amp;gt;#include &amp;lt;cassert&amp;gt; namespace sp { /** * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter) */ class mlsa_base_filter { public: mlsa_base_filter(const int order, const double alpha); template &amp;lt;class Vector&amp;gt; double filter(const double x, const Vector&amp;amp; b); private: mlsa_base_filter(); double alpha_; std::vector&amp;lt;double&amp;gt; delay_; }; mlsa_base_filter::mlsa_base_filter(const int order, const double alpha) : alpha_(alpha), delay_(order+1) { } template &amp;lt;class Vector&amp;gt; double mlsa_base_filter::filter(const double x, const Vector&amp;amp; b) { double result = 0.</description>
     </item>
     
     <item>
@@ -856,7 +881,7 @@ SPTK について  SPTKを使うと何ができるか: SPTKの使い方 (1) イ�
  SPTKを共有ライブラリとしてインストールできます。 C、C++の好きな方でコンパイルできます。 wafが使えます（速い、出力がキレイ） 自分のC、C++コードからSPTKのメソッドを呼べます。 コマンドラインツールはインストールされません。  コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。
 環境  Unix系  Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み
 SPTKのインストール リポジトリをクローンしたあと、
-Build  ./waf configure &amp;amp;&amp;amp; ./waf  Build with clang++  CXX=clang++ ./waf configure &amp;amp;&amp;amp; ./waf  Build with gcc  git checkout c .</description>
+Build  ./waf configure &amp;amp;&amp;amp; ./waf Build with clang++  CXX=clang++ ./waf configure &amp;amp;&amp;amp; ./waf Build with gcc  git checkout c .</description>
     </item>
     
     <item>
@@ -1016,7 +1041,7 @@ H/Pから音源を再合成するときは、位相は元の信号のものを�
 結果だけ知りたい人へ：正解率 76 %くらいでした。まぁこんなもんですね
 手書き数字認識 手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。
 今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→THE MNIST DATABASE of handwritten digits ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（ここ）、pythonのcPickleから読める形式に変換されているデータを使った。感謝
-とりあえずやってみる $ git clone https://github.com/r9y9/naive_bayes $ cd naive_bayes $ python mnist_digit_recognition.py  プログラムの中身は以下のようになってる。
+とりあえずやってみる $ git clone https://github.com/r9y9/naive_bayes $ cd naive_bayes $ python mnist_digit_recognition.py プログラムの中身は以下のようになってる。
  MNISTデータセットのダウンロード モデルの学習 テスト  実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。
 学習されたGaussianの平均  学習されたGaussianの平均をプロットしたもの。上のコードを実行すると表示される。
 それっぽい。学習データは50000サンプル

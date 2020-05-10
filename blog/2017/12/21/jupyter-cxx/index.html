@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -245,35 +245,34 @@
 <li>JuliaとC++をミックスできます。過去記事に書きましたが、例えばC++関数内でJuliaのプログレスバーを使ったりできます</li>
 <li>C++インタプリタとCインタプリタを切り替えられます</li>
 <li><code>icxx</code> と <code>cxx</code> マクロで、それぞれローカル/グローバルスコープを切り替えられます。</li>
-<li>Juliaの配列をC++に渡すのは非常に簡単にできます。例を以下に示します</li>
+
+<li><p>Juliaの配列をC++に渡すのは非常に簡単にできます。例を以下に示します</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl">C<span style="color:#f92672">++</span> <span style="color:#f92672">&gt;</span> <span style="color:#75715e">#include &lt;iostream&gt;</span>
+<span style="color:#66d9ef">true</span>
+
+julia<span style="color:#f92672">&gt;</span> cxx<span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">   template &lt;class T&gt;
+</span><span style="color:#e6db74">   void f(T x, int n) {
+</span><span style="color:#e6db74">       for (int i = 0; i &lt; n; ++i) {
+</span><span style="color:#e6db74">           std::cout &lt;&lt; x[i] &lt;&lt; std::endl;
+</span><span style="color:#e6db74">       }
+</span><span style="color:#e6db74">   }&#34;&#34;&#34;</span>;
+
+julia<span style="color:#f92672">&gt;</span> x <span style="color:#f92672">=</span> rand(<span style="color:#ae81ff">5</span>)
+<span style="color:#ae81ff">10</span><span style="color:#f92672">-</span>element <span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Float64</span>,<span style="color:#ae81ff">1</span>}<span style="color:#f92672">:</span>
+<span style="color:#ae81ff">0.593086</span>
+<span style="color:#ae81ff">0.736548</span>
+<span style="color:#ae81ff">0.344246</span>
+<span style="color:#ae81ff">0.390799</span>
+<span style="color:#ae81ff">0.226175</span>
+
+julia<span style="color:#f92672">&gt;</span> icxx<span style="color:#e6db74">&#34;f(</span><span style="color:#e6db74">$</span>(pointer(x))<span style="color:#e6db74">, </span><span style="color:#e6db74">$</span>(length(x))<span style="color:#e6db74">);&#34;</span>
+<span style="color:#ae81ff">0.593086</span>
+<span style="color:#ae81ff">0.736548</span>
+<span style="color:#ae81ff">0.344246</span>
+<span style="color:#ae81ff">0.390799</span>
+<span style="color:#ae81ff">0.226175</span></code></pre></div></li>
 </ul>
-
-<pre><code class="language-jl">C++ &gt; #include &lt;iostream&gt;
-true
-
-julia&gt; cxx&quot;&quot;&quot;
-       template &lt;class T&gt;
-       void f(T x, int n) {
-           for (int i = 0; i &lt; n; ++i) {
-               std::cout &lt;&lt; x[i] &lt;&lt; std::endl;
-           }
-       }&quot;&quot;&quot;;
-
-julia&gt; x = rand(5)
-10-element Array{Float64,1}:
- 0.593086
- 0.736548
- 0.344246
- 0.390799
- 0.226175
-
-julia&gt; icxx&quot;f($(pointer(x)), $(length(x)));&quot;
-0.593086
-0.736548
-0.344246
-0.390799
-0.226175
-</code></pre>
 
 <p><strong>イマイチなところ</strong></p>
 

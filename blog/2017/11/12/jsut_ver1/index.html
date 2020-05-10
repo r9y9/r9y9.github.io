@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -99,24 +99,15 @@
 <h3 id="コーパスの場所を設定">コーパスの場所を設定</h3>
 
 <p><code>params.py</code> というファイルに、コーパスの場所を指定する変数 (<code>in_dir</code>) があるので、設定します。僕の場合、以下のようになっています。</p>
-
 <pre><code># coding: utf-8
-in_dir = &quot;/home/ryuichi/data/jsut_ver1&quot;
-dst_dir = &quot;jsut&quot;
-</code></pre>
-
+in_dir = &#34;/home/ryuichi/data/jsut_ver1&#34;
+dst_dir = &#34;jsut&#34;</code></pre>
 <h3 id="音素アライメントの実行">音素アライメントの実行</h3>
-
-<pre><code>bash run.sh
-</code></pre>
-
+<pre><code>bash run.sh</code></pre>
 <p>でまるっと実行できるようにしました。MeCabで読みを推定するなどの処理は、この記事を書いている時点では <code>a.py</code>, <code>b.py</code>, <code>c.py</code>, <code>d.py</code>というファイルに書かれています。 適当なファイル名で申し訳ありませんという気持ちですが、自分のための書いたコードはこうなってしまいがちです、申し訳ありません。</p>
 
 <p>7000ファイル以上処理するので、三十分くらいかかります。<code>./jsut</code> というディレクトリに、labファイルができていれば正常に実行完了です。最後に、</p>
-
-<pre><code>Failed number of utterances: 87
-</code></pre>
-
+<pre><code>Failed number of utterances: 87</code></pre>
 <p>のように、アライメントに失敗したファイル数が表示されるようになっています。失敗の理由には、MeCabでの読みの推定に失敗した（特に数字）などがあります。手で直すことも可能なのですが（実際に一度はやろうとした）非常に大変なので、多少失敗してもよいので大雑把にアライメントを取ることを目的として、スクリプトを作りました。</p>
 
 <p>なお、juliusはwavesurferのフォーマットでラベルファイルを吐きますが、HTKのラベルフォーマットの方が僕には都合がよかったので、変換するようにしました。</p>
@@ -124,7 +115,6 @@ dst_dir = &quot;jsut&quot;
 <h3 id="コーパスにパッチ">コーパスにパッチ</h3>
 
 <p>便宜上、下記のようにwavディレクトリと同じ階層にラベルファイルがあると都合がよいので、僕はそのようにします。</p>
-
 <pre><code>tree ~/data/jsut_ver1/ -d -L 2
 /home/ryuichi/data/jsut_ver1/
 ├── basic5000
@@ -153,14 +143,9 @@ dst_dir = &quot;jsut&quot;
 │   └── wav
 └── voiceactress100
     ├── lab
-    └── wav
-</code></pre>
-
+    └── wav</code></pre>
 <p>以下のコマンドにより、生成されたラベルファイルをコーパス配下にコピーします。この処理は、<code>run.sh</code> では実行しないようになっているので、必要であれば自己責任でおこなってください。</p>
-
-<pre><code>python d.py
-</code></pre>
-
+<pre><code>python d.py</code></pre>
 <h2 id="ラベル活用例">ラベル活用例</h2>
 
 <p><a href="https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046">https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046</a> のようなコードを書いて、ボタンポチ音が末尾に入っている <code>basic5000/wav/BASIC5000_0008.wav</code> に対して無音区間削除を行ってみると、結果は以下のようになります。</p>

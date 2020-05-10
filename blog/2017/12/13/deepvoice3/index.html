@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -97,12 +97,9 @@ Your browser does not support the audio element.
 <p>計算速度は、バッチサイズ16で、5.3 step/sec くらいの計算速度でした。<a href="https://arxiv.org/abs/1710.08969">arXiv:1710.08969</a> よりは若干速いくらいです。GPUメモリの使用量は5 ~ 6GB程度でした。PyTorch v0.3.0を使いました。</p>
 
 <p>学習に使用したコマンドは以下です。</p>
-
 <pre><code>python train.py --checkpoint-dir=checkpoints_deepvoice3 \
-    --hparams=&quot;use_preset=True,builder=deepvoice3&quot; \
-    --log-event-path=log/deepvoice3_preset
-</code></pre>
-
+    --hparams=&#34;use_preset=True,builder=deepvoice3&#34; \
+    --log-event-path=log/deepvoice3_preset</code></pre>
 <p>コードのコミットハッシュは <a href="https://github.com/r9y9/deepvoice3_pytorch/tree/7bcf1d070448b4127b41bdf3a1e34c9fea382054">7bcf1d0704</a> です。正確なハイパーパラメータが知りたい場合は、ここから辿れると思います。</p>
 
 <h3 id="アライメントの学習過程">アライメントの学習過程</h3>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>machine-learning digit-recognition on LESS IS MORE</title>
@@ -23,7 +23,7 @@
 結果だけ知りたい人へ：正解率 76 %くらいでした。まぁこんなもんですね
 手書き数字認識 手書き数字の画像データから、何が書かれているのか当てる。こういうタスクを手書き数字認識と言う。郵便番号の自動認識が有名ですね。
 今回は、MNISTという手書き数字のデータセットを使って、0〜9の数字認識をやる。MNISTについて詳しくは本家へ→THE MNIST DATABASE of handwritten digits ただし、MNISTのデータセットは直接使わず、Deep Learningのチュートリアルで紹介されていた（ここ）、pythonのcPickleから読める形式に変換されているデータを使った。感謝
-とりあえずやってみる $ git clone https://github.com/r9y9/naive_bayes $ cd naive_bayes $ python mnist_digit_recognition.py  プログラムの中身は以下のようになってる。
+とりあえずやってみる $ git clone https://github.com/r9y9/naive_bayes $ cd naive_bayes $ python mnist_digit_recognition.py プログラムの中身は以下のようになってる。
  MNISTデータセットのダウンロード モデルの学習 テスト  実行すると、学習されたGaussianの平均が表示されて、最後に認識結果が表示される。今回は、単純に画像のピクセル毎に独立なGaussianを作ってるので、尤度の計算にめちゃくちゃ時間かかる。実装のせいもあるけど。なので、デフォでは50サンプルのみテストするようにした。
 学習されたGaussianの平均  学習されたGaussianの平均をプロットしたもの。上のコードを実行すると表示される。
 それっぽい。学習データは50000サンプル

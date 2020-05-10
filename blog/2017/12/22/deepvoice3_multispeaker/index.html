@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -81,19 +81,16 @@
 <p>計算速度は、バッチサイズ16で、8.6 step/sec くらいでした。GPUメモリの使用量は9GB程度でした。Convolution BlockごとにLinearレイヤーが追加されるので、それなりにメモリ使用量が増えます。PyTorch v0.3.0を使いました。</p>
 
 <p>学習に使用したコマンドは以下です。</p>
-
-<pre><code class="language-sh">python train.py --data-root=./data/vctk --checkpoint-dir=checkpoints_vctk \
-   --hparams=&quot;preset=deepvoice3_vctk,builder=deepvoice3_multispeaker&quot; \
-   --log-event-path=log/deepvoice3_multispeaker_vctk_preset \
-   --load-embedding=20171221_deepvoice3_checkpoint_step000300000.pth
- # &lt;&lt; 30万ステップで一旦打ち切り &gt;&gt;
- # もう一度0から30万ステップまで学習しなおし
- python train.py --data-root=./data/vctk --checkpoint-dir=checkpoints_vctk_fineturn \
-   --hparams=&quot;preset=deepvoice3_vctk,builder=deepvoice3_multispeaker&quot; \
-   --log-event-path=log/deepvoice3_multispeaker_vctk_preset_fine \
-   --restore-parts=./checkpoints_vctk/checkpont_step000300000.pth
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">python train.py --data-root<span style="color:#f92672">=</span>./data/vctk --checkpoint-dir<span style="color:#f92672">=</span>checkpoints_vctk <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   --hparams<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;preset=deepvoice3_vctk,builder=deepvoice3_multispeaker&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   --log-event-path<span style="color:#f92672">=</span>log/deepvoice3_multispeaker_vctk_preset <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   --load-embedding<span style="color:#f92672">=</span>20171221_deepvoice3_checkpoint_step000300000.pth
+ <span style="color:#75715e"># &lt;&lt; 30万ステップで一旦打ち切り &gt;&gt;</span>
+ <span style="color:#75715e"># もう一度0から30万ステップまで学習しなおし</span>
+ python train.py --data-root<span style="color:#f92672">=</span>./data/vctk --checkpoint-dir<span style="color:#f92672">=</span>checkpoints_vctk_fineturn <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   --hparams<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;preset=deepvoice3_vctk,builder=deepvoice3_multispeaker&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   --log-event-path<span style="color:#f92672">=</span>log/deepvoice3_multispeaker_vctk_preset_fine <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   --restore-parts<span style="color:#f92672">=</span>./checkpoints_vctk/checkpont_step000300000.pth</code></pre></div>
 <p>学習を高速化するため、LJSpeechで30万ステップ学習したモデルのembeddingの部分を再利用しました。また、cyclic annealingのような効果が得られることを期待して、一度学習を打ち切って、さらに0stepからファインチューニングしてみました。</p>
 
 <p>コードのコミットハッシュは <a href="https://github.com/r9y9/deepvoice3_pytorch/tree/0421749af908905d181f089f06956fddd0982d47">0421749</a> です。正確なハイパーパラメータが知りたい場合は、ここから辿れると思います。</p>

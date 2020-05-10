@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go Speech-Signal-Processing on LESS IS MORE</title>
@@ -25,7 +25,7 @@ Goで音声信号処理をしたいけど、全部一から書くのは大変だ
 cgo GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う http://golang.org/cmd/cgo/
 Cの関数や変数などには、 C. でアクセスできる
 ラッパー 例えば以下のように書く。MFCCの計算を例に上げる。必要に応じでSPTK.hに定義されている関数をラップする
-package sptk // #cgo pkg-config: SPTK // #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;SPTK/SPTK.h&amp;gt; import &amp;quot;C&amp;quot; func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 { // Convert go bool to C.Boolean (so annoying.. var dftmodeInGo, usehammingInGo C.Boolean if dftmode { dftmodeInGo = 1 } else { dftmodeInGo = 0 } if usehamming { usehammingInGo = 1 } else { usehammingInGo = 0 } resultBuffer := make([]float64, m) C.</description>
+package sptk // #cgo pkg-config: SPTK // #include &amp;lt;stdio.h&amp;gt; // #include &amp;lt;SPTK/SPTK.h&amp;gt; import &amp;#34;C&amp;#34; func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 { // Convert go bool to C.Boolean (so annoying.. 	var dftmodeInGo, usehammingInGo C.Boolean if dftmode { dftmodeInGo = 1 } else { dftmodeInGo = 0 } if usehamming { usehammingInGo = 1 } else { usehammingInGo = 0 } resultBuffer := make([]float64, m) C.</description>
     </item>
     
   </channel>

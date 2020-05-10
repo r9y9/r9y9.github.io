@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -38,7 +38,7 @@
 
 <h2 id="まとめ">まとめ</h2>
 
-<p>最近いろんな研究で <a href="- LJSpeech Dataset: https://keithito.com/LJ-Speech-Dataset/">LJSpeech</a> が使われていますが、合成音の品質を比べるならクリーンなデータセットを使ったほうがいいですね。でないと、合成音声に含まれるノイズがモデルの限界からくるノイズなのかコーパスの音声が含むノイズ（LJSpeechの場合リバーブっぽい音）なのか区別できなくて、公平に比較するのが難しいと思います。</p>
+<p>最近いろんな研究で <a href="https://keithito.com/LJ-Speech-Dataset/">LJSpeech</a> が使われていますが、合成音の品質を比べるならクリーンなデータセットを使ったほうがいいですね。でないと、合成音声に含まれるノイズがモデルの限界からくるノイズなのかコーパスの音声が含むノイズ（LJSpeechの場合リバーブっぽい音）なのか区別できなくて、公平に比較するのが難しいと思います。</p>
 
 <p>例えば、LJSpeechを使うと、ぶっちゃけ <a href="https://nv-adlr.github.io/WaveGlow">WaveGlow</a> がWaveNetと比べて品質がいいかどうかわかんないですよね…<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>.
 例えば最近のNICT岡本さんの研究 (<a href="https://www.slideshare.net/Takuma_OKAMOTO/ss-135604814">基本周波数とメルケプストラムを用いたリアルタイムニューラルボコーダに関する検討</a>) を引用すると、実際にクリーンなデータで実験すれば（Noise shaping なしで）MOS は WaveNet (<strong>4.19</strong>) &gt; WaveGlow (3.27) と、結構な差が出たりします。LJSpeechを使った場合の WaveGlow (<strong>3.961</strong>) &gt; WaveNet (3.885) と比べると大きな差ですね。</p>

@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -45,25 +45,19 @@
 <p>新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。</p>
 
 <h3 id="a">A</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#66d9ef">function</span> f()
+    x <span style="color:#f92672">=</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2.0</span>)<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>
+    <span style="color:#66d9ef">return</span> x
+<span style="color:#66d9ef">end</span>
 
-<pre><code class="language-jl">function f()
-    x = (1.0 + 2.0)::Int
-    return x
-end
-
-f()
-</code></pre>
-
+f()</code></pre></div>
 <h3 id="b">B</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#66d9ef">function</span> g()
+    x<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span> <span style="color:#f92672">=</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2.0</span>)
+    <span style="color:#66d9ef">return</span> x
+<span style="color:#66d9ef">end</span>
 
-<pre><code class="language-jl">function g()
-    x::Int = (1.0 + 2.0)
-    return x
-end
-
-g()
-</code></pre>
-
+g()</code></pre></div>
 <p>なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。</p>
 
 <p>この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。</p>
@@ -73,17 +67,11 @@ g()
 <p>Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「<code>(1.0 + 2.0)</code> という式を評価した値は、Int 型であることを保証する」となります。</p>
 
 <p><code>(1.0 + 2.0)</code> を評価した値は <code>3.0</code> であり、 Float64の型を持ちます。したがって <code>Float64 != Int</code> であるため、</p>
-
-<pre><code>ERROR: TypeError: typeassert: expected Int64, got Float64
-</code></pre>
-
+<pre><code>ERROR: TypeError: typeassert: expected Int64, got Float64</code></pre>
 <p>のような typeassert のエラーが吐かれます。</p>
 
 <p><code>(1.0 + 2.0)</code>を評価した値の型は一見して明らかため、実用的な例ではありませんが、例えば関数の返り値の型は一見してわからないことがあるので、例えば以下のような書き方は有用な場合もあると思います。</p>
-
-<pre><code class="language-jl">x = f(y)::Int
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl">x <span style="color:#f92672">=</span> f(y)<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span></code></pre></div>
 <h2 id="b-変数に対する-type-annotation">B: 変数に対する type annotation</h2>
 
 <p>Bの2行目では、変数に対して type annotation をしています。同じく日本語で説明すると、「<code>x</code>という変数に入る値は、Int 型であることを保証する」となります。また、値に対する annotation とは異なり<strong>スコープ</strong>を持ちます。</p>
@@ -139,32 +127,20 @@ g()
 <h2 id="おまけ問題">おまけ問題</h2>
 
 <h3 id="1">1</h3>
-
-<pre><code class="language-jl">function h()
-    x::UInt8 = UInt8(0)
-    x = Float64(0.0)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#66d9ef">function</span> h()
+    x<span style="color:#f92672">::</span><span style="color:#66d9ef">UInt8</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">UInt8</span>(<span style="color:#ae81ff">0</span>)
+    x <span style="color:#f92672">=</span> <span style="color:#66d9ef">Float64</span>(<span style="color:#ae81ff">0.0</span>)
     x
-end
-</code></pre>
-
-<pre><code class="language-jl"># なんと表示されるでしょうか？
-println(typeof(h()))
-</code></pre>
-
+<span style="color:#66d9ef">end</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#75715e"># なんと表示されるでしょうか？</span>
+println(typeof(h()))</code></pre></div>
 <h3 id="2">2</h3>
-
-<pre><code class="language-jl">function s()
-    x::Int = Float64(0)
-    x = UInt8(0)
-    x = Float32(0.5)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#66d9ef">function</span> s()
+    x<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Float64</span>(<span style="color:#ae81ff">0</span>)
+    x <span style="color:#f92672">=</span> <span style="color:#66d9ef">UInt8</span>(<span style="color:#ae81ff">0</span>)
+    x <span style="color:#f92672">=</span> <span style="color:#66d9ef">Float32</span>(<span style="color:#ae81ff">0.5</span>)
     x
-end
-</code></pre>
-
-<pre><code class="language-jl"># なんと表示されるでしょうか？
-s()
-</code></pre>
-
+<span style="color:#66d9ef">end</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#75715e"># なんと表示されるでしょうか？</span>
+s()</code></pre></div>
 <p>解答は、各自REPLで実行して確認してみてください。長々と読んでくださりありがとうございました。</p>
 
 <h2 id="参考">参考</h2>

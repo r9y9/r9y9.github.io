@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -61,7 +61,6 @@
 <div align="center"><img src="/images/RBM_mnist_Hidden_500_log_likelihood.png "Pseudo log-likelihood on mnist databae."" class="image"></div>
 
 <p>以下グラフに表示している生データ</p>
-
 <pre><code>0 -196.59046099622128
 1 -70.31708616742365
 2 -65.29499371647965
@@ -76,9 +75,7 @@
 11 -58.57805165724595
 12 -57.71043215987184
 13 -58.17783142034138
-14 -57.53629129936344
-</code></pre>
-
+14 -57.53629129936344</code></pre>
 <p>尤度上がると安心する。厳密に対数尤度を計算することは難しいので、<a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a> にある擬似尤度を参考にした</p>
 
 <h2 id="学習時間">学習時間</h2>
@@ -107,371 +104,368 @@
 <h2 id="コード">コード</h2>
 
 <p>コアの部分だけ、一応</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">rbm</span>
 
-<pre><code class="language-go">package rbm
-
-import (
-	&quot;encoding/json&quot;
-	&quot;errors&quot;
-	&quot;fmt&quot;
-	&quot;github.com/r9y9/nn&quot; // sigmoid, matrix
-	&quot;math&quot;
-	&quot;math/rand&quot;
-	&quot;os&quot;
-	&quot;time&quot;
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;encoding/json&#34;</span>
+	<span style="color:#e6db74">&#34;errors&#34;</span>
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/r9y9/nn&#34;</span> <span style="color:#75715e">// sigmoid, matrix
+</span><span style="color:#75715e"></span>	<span style="color:#e6db74">&#34;math&#34;</span>
+	<span style="color:#e6db74">&#34;math/rand&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+	<span style="color:#e6db74">&#34;time&#34;</span>
 )
 
-// References:
-// [1] G. Hinton, &quot;A Practical Guide to Training Restricted Boltzmann Machines&quot;,
-// UTML TR 2010-003.
-// url: http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf
-//
-// [2] A. Fischer and C. Igel. &quot;An introduction to restricted Boltzmann machines&quot;,
-// Proc. of the 17th Iberoamerican Congress on Pattern Recognition (CIARP),
-// Volume 7441 of LNCS, pages 14–36. Springer, 2012
-// url: http://image.diku.dk/igel/paper/AItRBM-proof.pdf
-//
-// [3] Restricted Boltzmann Machines (RBM),  DeepLearning tutorial
-// url: http://deeplearning.net/tutorial/rbm.html
-
-// Notes about implementation:
-// Notation used in this code basically follows [2].
-// e.g. W for weight, B for bias of visible layer, C for bias of hidden layer.
-
-// Graphical representation of Restricted Boltzmann Machines (RBM).
-//
-//     ○ ○ .... ○  h(hidden layer), c(bias)
-//     /\ /\ /    /\
-//    ○ ○ ○ ... ○ v(visible layer), b(bias)
-type RBM struct {
-	W               [][]float64 // Weight
-	B               []float64   // Bias of visible layer
-	C               []float64   // Bias of hidden layer
-	NumHiddenUnits  int
-	NumVisibleUnits int
-	Option          TrainingOption
+<span style="color:#75715e">// References:
+</span><span style="color:#75715e">// [1] G. Hinton, &#34;A Practical Guide to Training Restricted Boltzmann Machines&#34;,
+</span><span style="color:#75715e">// UTML TR 2010-003.
+</span><span style="color:#75715e">// url: http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf
+</span><span style="color:#75715e">//
+</span><span style="color:#75715e">// [2] A. Fischer and C. Igel. &#34;An introduction to restricted Boltzmann machines&#34;,
+</span><span style="color:#75715e">// Proc. of the 17th Iberoamerican Congress on Pattern Recognition (CIARP),
+</span><span style="color:#75715e">// Volume 7441 of LNCS, pages 14–36. Springer, 2012
+</span><span style="color:#75715e">// url: http://image.diku.dk/igel/paper/AItRBM-proof.pdf
+</span><span style="color:#75715e">//
+</span><span style="color:#75715e">// [3] Restricted Boltzmann Machines (RBM),  DeepLearning tutorial
+</span><span style="color:#75715e">// url: http://deeplearning.net/tutorial/rbm.html
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// Notes about implementation:
+</span><span style="color:#75715e">// Notation used in this code basically follows [2].
+</span><span style="color:#75715e">// e.g. W for weight, B for bias of visible layer, C for bias of hidden layer.
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// Graphical representation of Restricted Boltzmann Machines (RBM).
+</span><span style="color:#75715e">//
+</span><span style="color:#75715e">//     ○ ○ .... ○  h(hidden layer), c(bias)
+</span><span style="color:#75715e">//     /\ /\ /    /\
+</span><span style="color:#75715e">//    ○ ○ ○ ... ○ v(visible layer), b(bias)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">RBM</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">W</span>               [][]<span style="color:#66d9ef">float64</span> <span style="color:#75715e">// Weight
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">B</span>               []<span style="color:#66d9ef">float64</span>   <span style="color:#75715e">// Bias of visible layer
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">C</span>               []<span style="color:#66d9ef">float64</span>   <span style="color:#75715e">// Bias of hidden layer
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NumHiddenUnits</span>  <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">NumVisibleUnits</span> <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">Option</span>          <span style="color:#a6e22e">TrainingOption</span>
 }
 
-type TrainingOption struct {
-	LearningRate        float64
-	OrderOfGibbsSamping int // It is known that 1 is enough for many cases.
-	Epoches             int
-	MiniBatchSize       int
-	L2Regularization    bool
-	RegularizationRate  float64
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TrainingOption</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">LearningRate</span>        <span style="color:#66d9ef">float64</span>
+	<span style="color:#a6e22e">OrderOfGibbsSamping</span> <span style="color:#66d9ef">int</span> <span style="color:#75715e">// It is known that 1 is enough for many cases.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Epoches</span>             <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">MiniBatchSize</span>       <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">L2Regularization</span>    <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">RegularizationRate</span>  <span style="color:#66d9ef">float64</span>
 }
 
-// NewRBM creates new RBM instance. It requires input data and number of
-// hidden units to initialize RBM.
-func NewRBM(numVisibleUnits, numHiddenUnits int) *RBM {
-	rbm := new(RBM)
-	rand.Seed(time.Now().UnixNano())
+<span style="color:#75715e">// NewRBM creates new RBM instance. It requires input data and number of
+</span><span style="color:#75715e">// hidden units to initialize RBM.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewRBM</span>(<span style="color:#a6e22e">numVisibleUnits</span>, <span style="color:#a6e22e">numHiddenUnits</span> <span style="color:#66d9ef">int</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span> {
+	<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">RBM</span>)
+	<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Seed</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UnixNano</span>())
 
-	rbm.W = nn.MakeMatrix(numHiddenUnits, numVisibleUnits)
-	rbm.B = make([]float64, numVisibleUnits)
-	rbm.C = make([]float64, numHiddenUnits)
-	rbm.NumVisibleUnits = numVisibleUnits
-	rbm.NumHiddenUnits = numHiddenUnits
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span> = <span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">MakeMatrix</span>(<span style="color:#a6e22e">numHiddenUnits</span>, <span style="color:#a6e22e">numVisibleUnits</span>)
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span> = make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">numVisibleUnits</span>)
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span> = make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">numHiddenUnits</span>)
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span> = <span style="color:#a6e22e">numVisibleUnits</span>
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span> = <span style="color:#a6e22e">numHiddenUnits</span>
 
-	rbm.InitRBM()
-	return rbm
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">InitRBM</span>()
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rbm</span>
 }
 
-// NewRBMWithParameters returns RBM instance given RBM parameters.
-// This func will be used in Deep Belief Networks.
-func NewRBMWithParameters(W [][]float64, B, C []float64) (*RBM, error) {
-	rbm := new(RBM)
+<span style="color:#75715e">// NewRBMWithParameters returns RBM instance given RBM parameters.
+</span><span style="color:#75715e">// This func will be used in Deep Belief Networks.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewRBMWithParameters</span>(<span style="color:#a6e22e">W</span> [][]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">B</span>, <span style="color:#a6e22e">C</span> []<span style="color:#66d9ef">float64</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">RBM</span>)
 
-	rbm.NumVisibleUnits = len(B)
-	rbm.NumHiddenUnits = len(C)
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span> = len(<span style="color:#a6e22e">B</span>)
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span> = len(<span style="color:#a6e22e">C</span>)
 
-	if len(W) != rbm.NumHiddenUnits || len(W[0]) != rbm.NumVisibleUnits {
-		return nil, errors.New(&quot;Shape of weight matrix is wrong.&quot;)
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">W</span>) <span style="color:#f92672">!=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span> <span style="color:#f92672">||</span> len(<span style="color:#a6e22e">W</span>[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">!=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Shape of weight matrix is wrong.&#34;</span>)
 	}
 
-	rand.Seed(time.Now().UnixNano())
-	rbm.W = W
-	rbm.B = B
-	rbm.C = C
+	<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Seed</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UnixNano</span>())
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span> = <span style="color:#a6e22e">W</span>
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span> = <span style="color:#a6e22e">B</span>
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span> = <span style="color:#a6e22e">C</span>
 
-	return rbm, nil
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rbm</span>, <span style="color:#66d9ef">nil</span>
 }
 
-// LoadRBM loads RBM from a dump file and return its instatnce.
-func LoadRBM(filename string) (*RBM, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, err
+<span style="color:#75715e">// LoadRBM loads RBM from a dump file and return its instatnce.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">LoadRBM</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">filename</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
 	}
-	defer file.Close()
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">Close</span>()
 
-	decoder := json.NewDecoder(file)
-	rbm := &amp;RBM{}
-	err = decoder.Decode(rbm)
+	<span style="color:#a6e22e">decoder</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">NewDecoder</span>(<span style="color:#a6e22e">file</span>)
+	<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">RBM</span>{}
+	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">decoder</span>.<span style="color:#a6e22e">Decode</span>(<span style="color:#a6e22e">rbm</span>)
 
-	if err != nil {
-		return nil, err
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
 	}
 
-	return rbm, nil
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rbm</span>, <span style="color:#66d9ef">nil</span>
 }
 
-// Dump writes RBM parameters to file in json format.
-func (rbm *RBM) Dump(filename string) error {
-	file, err := os.Create(filename)
-	if err != nil {
-		return err
+<span style="color:#75715e">// Dump writes RBM parameters to file in json format.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">Dump</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#a6e22e">filename</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
 	}
-	defer file.Close()
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">Close</span>()
 
-	encoder := json.NewEncoder(file)
-	err = encoder.Encode(rbm)
-	if err != nil {
-		return err
+	<span style="color:#a6e22e">encoder</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">NewEncoder</span>(<span style="color:#a6e22e">file</span>)
+	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">encoder</span>.<span style="color:#a6e22e">Encode</span>(<span style="color:#a6e22e">rbm</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
 	}
 
-	return nil
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
 }
 
-// Heuristic initialization of visible bias.
-func (rbm *RBM) InitVisibleBiasUsingTrainingData(data [][]float64) {
-	// Init B (bias of visible layer)
-	activeRateInVisibleLayer := rbm.getActiveRateInVisibleLayer(data)
-	for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-		rbm.B[j] = math.Log(activeRateInVisibleLayer[j] / (1.0 - activeRateInVisibleLayer[j]))
+<span style="color:#75715e">// Heuristic initialization of visible bias.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">InitVisibleBiasUsingTrainingData</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>) {
+	<span style="color:#75715e">// Init B (bias of visible layer)
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">activeRateInVisibleLayer</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">getActiveRateInVisibleLayer</span>(<span style="color:#a6e22e">data</span>)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#a6e22e">activeRateInVisibleLayer</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">activeRateInVisibleLayer</span>[<span style="color:#a6e22e">j</span>]))
 	}
 }
 
-func (rbm *RBM) getActiveRateInVisibleLayer(data [][]float64) []float64 {
-	rate := make([]float64, rbm.NumVisibleUnits)
-	for _, sample := range data {
-		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-			rate[j] += sample[j]
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">getActiveRateInVisibleLayer</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>) []<span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">rate</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">sample</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">data</span> {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">rate</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">sample</span>[<span style="color:#a6e22e">j</span>]
 		}
 	}
-	for j := range rate {
-		rate[j] /= float64(len(data))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">rate</span> {
+		<span style="color:#a6e22e">rate</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">/=</span> float64(len(<span style="color:#a6e22e">data</span>))
 	}
-	return rate
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rate</span>
 }
 
-// InitRBM performes a heuristic parameter initialization.
-func (rbm *RBM) InitRBM() {
-	// Init W
-	for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-			rbm.W[i][j] = 0.01 * rand.NormFloat64()
+<span style="color:#75715e">// InitRBM performes a heuristic parameter initialization.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">InitRBM</span>() {
+	<span style="color:#75715e">// Init W
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] = <span style="color:#ae81ff">0.01</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">NormFloat64</span>()
 		}
 	}
 
-	for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-		rbm.B[j] = 0.0
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#ae81ff">0.0</span>
 	}
 
-	// Init C (bias of hidden layer)
-	for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-		rbm.C[i] = 0.0
+	<span style="color:#75715e">// Init C (bias of hidden layer)
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#ae81ff">0.0</span>
 	}
 }
 
-// P_H_Given_V returns the conditinal probability of a hidden unit given a set of visible units.
-func (rbm *RBM) P_H_Given_V(hiddenIndex int, v []float64) float64 {
-	sum := 0.0
-	for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-		sum += rbm.W[hiddenIndex][j] * v[j]
+<span style="color:#75715e">// P_H_Given_V returns the conditinal probability of a hidden unit given a set of visible units.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">P_H_Given_V</span>(<span style="color:#a6e22e">hiddenIndex</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">hiddenIndex</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>]
 	}
-	return nn.Sigmoid(sum + rbm.C[hiddenIndex])
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">Sigmoid</span>(<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span>[<span style="color:#a6e22e">hiddenIndex</span>])
 }
 
-// P_V_Given_H returns the conditinal probability of a visible unit given a set of hidden units.
-func (rbm *RBM) P_V_Given_H(visibleIndex int, h []float64) float64 {
-	sum := 0.0
-	for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-		sum += rbm.W[i][visibleIndex] * h[i]
+<span style="color:#75715e">// P_V_Given_H returns the conditinal probability of a visible unit given a set of hidden units.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">P_V_Given_H</span>(<span style="color:#a6e22e">visibleIndex</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">h</span> []<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">visibleIndex</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">h</span>[<span style="color:#a6e22e">i</span>]
 	}
-	return nn.Sigmoid(sum + rbm.B[visibleIndex])
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">Sigmoid</span>(<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">visibleIndex</span>])
 }
 
-// GibbsSampling performs k-Gibbs sampling algorithm,
-// where k is the number of iterations in gibbs sampling.
-func (rbm *RBM) GibbsSampling(v []float64, k int) []float64 {
-	// Initial value is set to input
-	vUsedInSamping := make([]float64, len(v))
-	copy(vUsedInSamping, v)
+<span style="color:#75715e">// GibbsSampling performs k-Gibbs sampling algorithm,
+</span><span style="color:#75715e">// where k is the number of iterations in gibbs sampling.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">GibbsSampling</span>(<span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">k</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+	<span style="color:#75715e">// Initial value is set to input
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">vUsedInSamping</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">v</span>))
+	copy(<span style="color:#a6e22e">vUsedInSamping</span>, <span style="color:#a6e22e">v</span>)
 
-	for t := 0; t &lt; k; t++ {
-		sampledH := make([]float64, rbm.NumHiddenUnits)
-		for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-			p := rbm.P_H_Given_V(i, vUsedInSamping)
-			if p &gt; rand.Float64() {
-				sampledH[i] = 1.0
-			} else {
-				sampledH[i] = 0.0
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">t</span> &lt; <span style="color:#a6e22e">k</span>; <span style="color:#a6e22e">t</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">sampledH</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>)
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">P_H_Given_V</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">vUsedInSamping</span>)
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span> &gt; <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Float64</span>() {
+				<span style="color:#a6e22e">sampledH</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#ae81ff">1.0</span>
+			} <span style="color:#66d9ef">else</span> {
+				<span style="color:#a6e22e">sampledH</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#ae81ff">0.0</span>
 			}
 		}
-		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-			p := rbm.P_V_Given_H(j, sampledH)
-			if p &gt; rand.Float64() {
-				vUsedInSamping[j] = 1.0
-			} else {
-				vUsedInSamping[j] = 0.0
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">P_V_Given_H</span>(<span style="color:#a6e22e">j</span>, <span style="color:#a6e22e">sampledH</span>)
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span> &gt; <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Float64</span>() {
+				<span style="color:#a6e22e">vUsedInSamping</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#ae81ff">1.0</span>
+			} <span style="color:#66d9ef">else</span> {
+				<span style="color:#a6e22e">vUsedInSamping</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#ae81ff">0.0</span>
 			}
 		}
 	}
 
-	return vUsedInSamping
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">vUsedInSamping</span>
 }
 
-func flip(x []float64, bit int) []float64 {
-	y := make([]float64, len(x))
-	copy(y, x)
-	y[bit] = 1.0 - x[bit]
-	return y
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">flip</span>(<span style="color:#a6e22e">x</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">bit</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">x</span>))
+	copy(<span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">x</span>)
+	<span style="color:#a6e22e">y</span>[<span style="color:#a6e22e">bit</span>] = <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">x</span>[<span style="color:#a6e22e">bit</span>]
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">y</span>
 }
 
-// FreeEnergy returns F(v), the free energy of RBM given a visible vector v.
-// refs: eq. (25) in [1].
-func (rbm *RBM) FreeEnergy(v []float64) float64 {
-	energy := 0.0
+<span style="color:#75715e">// FreeEnergy returns F(v), the free energy of RBM given a visible vector v.
+</span><span style="color:#75715e">// refs: eq. (25) in [1].
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">FreeEnergy</span>(<span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">energy</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
 
-	for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-		energy -= rbm.B[j] * v[j]
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">energy</span> <span style="color:#f92672">-=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>]
 	}
 
-	for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-		sum := rbm.C[i]
-		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-			sum += rbm.W[i][j] * v[j]
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span>[<span style="color:#a6e22e">i</span>]
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>]
 		}
-		energy -= math.Log(1 + math.Exp(sum))
+		<span style="color:#a6e22e">energy</span> <span style="color:#f92672">-=</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Exp</span>(<span style="color:#a6e22e">sum</span>))
 	}
 
-	return energy
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">energy</span>
 }
 
-// PseudoLogLikelihood returns pseudo log-likelihood for a given input data.
-func (rbm *RBM) PseudoLogLikelihood(v []float64) float64 {
-	bitIndex := rand.Int() % len(v)
-	fe := rbm.FreeEnergy(v)
-	feFlip := rbm.FreeEnergy(flip(v, bitIndex))
-	cost := float64(rbm.NumVisibleUnits) * math.Log(nn.Sigmoid(feFlip-fe))
-	return cost
+<span style="color:#75715e">// PseudoLogLikelihood returns pseudo log-likelihood for a given input data.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">PseudoLogLikelihood</span>(<span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">bitIndex</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Int</span>() <span style="color:#f92672">%</span> len(<span style="color:#a6e22e">v</span>)
+	<span style="color:#a6e22e">fe</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">FreeEnergy</span>(<span style="color:#a6e22e">v</span>)
+	<span style="color:#a6e22e">feFlip</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">FreeEnergy</span>(<span style="color:#a6e22e">flip</span>(<span style="color:#a6e22e">v</span>, <span style="color:#a6e22e">bitIndex</span>))
+	<span style="color:#a6e22e">cost</span> <span style="color:#f92672">:=</span> float64(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">Sigmoid</span>(<span style="color:#a6e22e">feFlip</span><span style="color:#f92672">-</span><span style="color:#a6e22e">fe</span>))
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cost</span>
 }
 
-// PseudoLogLikelihood returns pseudo log-likelihood for a given dataset (or mini-batch).
-func (rbm *RBM) PseudoLogLikelihoodForAllData(data [][]float64) float64 {
-	sum := 0.0
-	for i := range data {
-		sum += rbm.PseudoLogLikelihood(data[i])
+<span style="color:#75715e">// PseudoLogLikelihood returns pseudo log-likelihood for a given dataset (or mini-batch).
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">PseudoLogLikelihoodForAllData</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">data</span> {
+		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">PseudoLogLikelihood</span>(<span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>])
 	}
-	cost := sum / float64(len(data))
-	return cost
+	<span style="color:#a6e22e">cost</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sum</span> <span style="color:#f92672">/</span> float64(len(<span style="color:#a6e22e">data</span>))
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cost</span>
 }
 
-// ComputeGradient returns gradients of RBM parameters for a given (mini-batch) dataset.
-func (rbm *RBM) ComputeGradient(data [][]float64) ([][]float64, []float64, []float64) {
-	gradW := nn.MakeMatrix(rbm.NumHiddenUnits, rbm.NumVisibleUnits)
-	gradB := make([]float64, rbm.NumVisibleUnits)
-	gradC := make([]float64, rbm.NumHiddenUnits)
+<span style="color:#75715e">// ComputeGradient returns gradients of RBM parameters for a given (mini-batch) dataset.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">ComputeGradient</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>) ([][]<span style="color:#66d9ef">float64</span>, []<span style="color:#66d9ef">float64</span>, []<span style="color:#66d9ef">float64</span>) {
+	<span style="color:#a6e22e">gradW</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">MakeMatrix</span>(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>)
+	<span style="color:#a6e22e">gradB</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>)
+	<span style="color:#a6e22e">gradC</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>)
 
-	for _, v := range data {
-		// Gibbs Sampling
-		gibbsStart := v
-		vAfterSamping := rbm.GibbsSampling(gibbsStart, rbm.Option.OrderOfGibbsSamping)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">data</span> {
+		<span style="color:#75715e">// Gibbs Sampling
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">gibbsStart</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">v</span>
+		<span style="color:#a6e22e">vAfterSamping</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">GibbsSampling</span>(<span style="color:#a6e22e">gibbsStart</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">OrderOfGibbsSamping</span>)
 
-		// pre-computation that is used in gradient computation
-		p_h_given_v1 := make([]float64, rbm.NumHiddenUnits)
-		p_h_given_v2 := make([]float64, rbm.NumHiddenUnits)
-		for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-			p_h_given_v1[i] = rbm.P_H_Given_V(i, v)
-			p_h_given_v2[i] = rbm.P_H_Given_V(i, vAfterSamping)
+		<span style="color:#75715e">// pre-computation that is used in gradient computation
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">p_h_given_v1</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>)
+		<span style="color:#a6e22e">p_h_given_v2</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>)
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">p_h_given_v1</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">P_H_Given_V</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span>)
+			<span style="color:#a6e22e">p_h_given_v2</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">P_H_Given_V</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">vAfterSamping</span>)
 		}
 
-		// Gompute gradient of W
-		for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-			for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-				gradW[i][j] += p_h_given_v1[i]*v[j] - p_h_given_v2[i]*vAfterSamping[j]
+		<span style="color:#75715e">// Gompute gradient of W
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+				<span style="color:#a6e22e">gradW</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">p_h_given_v1</span>[<span style="color:#a6e22e">i</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">p_h_given_v2</span>[<span style="color:#a6e22e">i</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">vAfterSamping</span>[<span style="color:#a6e22e">j</span>]
 			}
 		}
 
-		// Gompute gradient of B
-		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-			gradB[j] += v[j] - vAfterSamping[j]
+		<span style="color:#75715e">// Gompute gradient of B
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">gradB</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">vAfterSamping</span>[<span style="color:#a6e22e">j</span>]
 		}
 
-		// Gompute gradient of C
-		for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-			gradC[i] += p_h_given_v1[i] - p_h_given_v2[i]
+		<span style="color:#75715e">// Gompute gradient of C
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">gradC</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">p_h_given_v1</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">p_h_given_v2</span>[<span style="color:#a6e22e">i</span>]
 		}
 	}
 
-	return gradW, gradB, gradC
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">gradW</span>, <span style="color:#a6e22e">gradB</span>, <span style="color:#a6e22e">gradC</span>
 }
 
-func (rbm *RBM) ParseTrainingOption(option TrainingOption) error {
-	rbm.Option = option
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">ParseTrainingOption</span>(<span style="color:#a6e22e">option</span> <span style="color:#a6e22e">TrainingOption</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span> = <span style="color:#a6e22e">option</span>
 
-	if rbm.Option.MiniBatchSize &lt;= 0 {
-		return errors.New(&quot;Number of mini-batchs must be larger than zero.&quot;)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Number of mini-batchs must be larger than zero.&#34;</span>)
 	}
-	if rbm.Option.Epoches &lt;= 0 {
-		return errors.New(&quot;Epoches must be larger than zero.&quot;)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">Epoches</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Epoches must be larger than zero.&#34;</span>)
 	}
-	if rbm.Option.OrderOfGibbsSamping &lt;= 0 {
-		return errors.New(&quot;Order of Gibbs sampling must be larger than zero.&quot;)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">OrderOfGibbsSamping</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Order of Gibbs sampling must be larger than zero.&#34;</span>)
 	}
-	if rbm.Option.LearningRate == 0 {
-		return errors.New(&quot;Learning rate must be specified to train RBMs.&quot;)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">LearningRate</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Learning rate must be specified to train RBMs.&#34;</span>)
 	}
 
-	return nil
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
 }
 
-// Train performs Contrastive divergense learning algorithm to train RBM.
-// The alrogithm is basedd on (mini-batch) Stochastic Gradient Ascent.
-func (rbm *RBM) Train(data [][]float64, option TrainingOption) error {
-	err := rbm.ParseTrainingOption(option)
-	if err != nil {
-		return err
+<span style="color:#75715e">// Train performs Contrastive divergense learning algorithm to train RBM.
+</span><span style="color:#75715e">// The alrogithm is basedd on (mini-batch) Stochastic Gradient Ascent.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">Train</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">option</span> <span style="color:#a6e22e">TrainingOption</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">ParseTrainingOption</span>(<span style="color:#a6e22e">option</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
 	}
 
-	numMiniBatches := len(data) / rbm.Option.MiniBatchSize
+	<span style="color:#a6e22e">numMiniBatches</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">data</span>) <span style="color:#f92672">/</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>
 
-	for epoch := 0; epoch &lt; option.Epoches; epoch++ {
-		// Monitoring
-		fmt.Println(epoch, rbm.PseudoLogLikelihoodForAllData(data))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">epoch</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">epoch</span> &lt; <span style="color:#a6e22e">option</span>.<span style="color:#a6e22e">Epoches</span>; <span style="color:#a6e22e">epoch</span><span style="color:#f92672">++</span> {
+		<span style="color:#75715e">// Monitoring
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">epoch</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">PseudoLogLikelihoodForAllData</span>(<span style="color:#a6e22e">data</span>))
 
-		for m := 0; m &lt; numMiniBatches; m++ {
-			// Compute Gradient
-			batch := data[m*rbm.Option.MiniBatchSize : (m+1)*rbm.Option.MiniBatchSize]
-			gradW, gradB, gradC := rbm.ComputeGradient(batch)
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">m</span> &lt; <span style="color:#a6e22e">numMiniBatches</span>; <span style="color:#a6e22e">m</span><span style="color:#f92672">++</span> {
+			<span style="color:#75715e">// Compute Gradient
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">batch</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">m</span><span style="color:#f92672">*</span><span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span> : (<span style="color:#a6e22e">m</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span><span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>]
+			<span style="color:#a6e22e">gradW</span>, <span style="color:#a6e22e">gradB</span>, <span style="color:#a6e22e">gradC</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">ComputeGradient</span>(<span style="color:#a6e22e">batch</span>)
 
-			// Update W
-			for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-				for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-					rbm.W[i][j] += rbm.Option.LearningRate * gradW[i][j] / float64(rbm.Option.MiniBatchSize)
-					if rbm.Option.L2Regularization {
-						rbm.W[i][j] *= (1.0 - rbm.Option.RegularizationRate)
+			<span style="color:#75715e">// Update W
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+				<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+					<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">LearningRate</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">gradW</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>)
+					<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">L2Regularization</span> {
+						<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">*=</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">RegularizationRate</span>)
 					}
 				}
 			}
 
-			// Update B
-			for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
-				rbm.B[j] += rbm.Option.LearningRate * gradB[j] / float64(rbm.Option.MiniBatchSize)
+			<span style="color:#75715e">// Update B
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+				<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">LearningRate</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">gradB</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>)
 			}
 
-			// Update C
-			for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
-				rbm.C[i] += rbm.Option.LearningRate * gradC[i] / float64(rbm.Option.MiniBatchSize)
+			<span style="color:#75715e">// Update C
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+				<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">LearningRate</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">gradC</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>)
 			}
 		}
 	}
 
-	return nil
-}
-</code></pre>
-
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}</code></pre></div>
 <p>使い方とかは察して（どうせ誰も使わないはず</p>
 
 <p>今は、通常のRBMのvisible layerを連続値に拡張した Gaussian Bernoulli RBMを学習しようとしてるんだけど、これがムズイ。実装ミスもあるかもだけど、局所解に落ちまくってる気がする。</p>

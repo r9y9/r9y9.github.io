@@ -1,17 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://r9y9.github.io/categories/</loc>
-    <lastmod>2019-06-11T00:00:30+09:00</lastmod>
-    <priority>0</priority>
+    <loc>http://r9y9.github.io/blog/2020/05/10/nnsvs/</loc>
+    <lastmod>2020-05-10T14:42:25+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/</loc>
+    <lastmod>2020-05-10T14:42:25+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/post/</loc>
+    <lastmod>2020-05-10T14:42:25+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/categories/</loc>
     <lastmod>2019-06-11T00:00:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -20,15 +28,8 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/post/</loc>
-    <lastmod>2019-06-11T00:00:30+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/categories/speech-synthesis/</loc>
     <lastmod>2019-06-11T00:00:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -39,31 +40,26 @@
   <url>
     <loc>http://r9y9.github.io/tags/dnn/</loc>
     <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/categories/python/</loc>
     <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/speech/</loc>
     <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/</loc>
     <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/wavenet/</loc>
     <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -77,15 +73,18 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/c&#43;&#43;/</loc>
+    <loc>http://r9y9.github.io/tags/c&#43;&#43;/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/c&#43;&#43;/</loc>
+    <loc>http://r9y9.github.io/categories/c&#43;&#43;/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/tags/cling/</loc>
+    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
   </url>
   
   <url>
@@ -94,57 +93,43 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/julia/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/tags/julia/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/jupyter/</loc>
+    <loc>http://r9y9.github.io/categories/julia/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/jupyter/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/tags/cling/</loc>
+    <loc>http://r9y9.github.io/categories/jupyter/</loc>
     <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/bokeh/</loc>
     <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/tags/pytorch/</loc>
-    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/python/</loc>
     <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/tags/pytorch/</loc>
+    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/categories/visualization/</loc>
     <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -165,19 +150,16 @@
   <url>
     <loc>http://r9y9.github.io/categories/corpus/</loc>
     <lastmod>2017-11-12T03:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/corpus/</loc>
     <lastmod>2017-11-12T03:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/end-to-end/</loc>
     <lastmod>2017-11-12T03:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -206,11 +188,6 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/about/</loc>
-    <lastmod>2017-10-03T23:17:09+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</loc>
     <lastmod>2017-08-16T23:10:56+09:00</lastmod>
   </url>
@@ -218,7 +195,6 @@
   <url>
     <loc>http://r9y9.github.io/tags/speech-synthesis/</loc>
     <lastmod>2017-08-16T23:10:56+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -229,19 +205,16 @@
   <url>
     <loc>http://r9y9.github.io/tags/merlin/</loc>
     <lastmod>2017-08-16T03:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/nlp/</loc>
-    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/tags/nlp/</loc>
     <lastmod>2017-06-09T21:58:50+09:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/categories/nlp/</loc>
+    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
   </url>
   
   <url>
@@ -267,7 +240,6 @@
   <url>
     <loc>http://r9y9.github.io/tags/pcl/</loc>
     <lastmod>2016-01-18T00:44:46+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -283,7 +255,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</loc>
     <lastmod>2015-12-22T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -297,15 +268,18 @@
   </url>
   
   <url>
+    <loc>http://r9y9.github.io/categories/speech-signal-processing/</loc>
+    <lastmod>2015-09-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://r9y9.github.io/categories/speech-signal-processing-python/</loc>
     <lastmod>2015-09-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/categories/speech-signal-processing-julia/</loc>
     <lastmod>2015-08-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -316,7 +290,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</loc>
     <lastmod>2015-04-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -332,7 +305,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</loc>
     <lastmod>2014-11-12T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -341,20 +313,23 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</loc>
+    <loc>http://r9y9.github.io/categories/machine-learning/</loc>
     <lastmod>2014-10-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/categories/machine-learning-matrix-factorization/</loc>
     <lastmod>2014-10-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</loc>
+    <lastmod>2014-10-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/categories/julia-juliatokyo-bindeps/</loc>
     <lastmod>2014-09-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -370,7 +345,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/summer/</loc>
     <lastmod>2014-09-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -386,13 +360,11 @@
   <url>
     <loc>http://r9y9.github.io/categories/julia-machine-learning/</loc>
     <lastmod>2014-08-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/categories/life/</loc>
     <lastmod>2014-08-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -406,14 +378,23 @@
   </url>
   
   <url>
+    <loc>http://r9y9.github.io/categories/python-scipy/</loc>
+    <lastmod>2014-08-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</loc>
     <lastmod>2014-08-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/python-scipy/</loc>
-    <lastmod>2014-08-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <loc>http://r9y9.github.io/categories/go/</loc>
+    <lastmod>2014-07-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/categories/go-python-machine-learning/</loc>
+    <lastmod>2014-07-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -422,20 +403,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/go-python-machine-learning/</loc>
-    <lastmod>2014-07-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <loc>http://r9y9.github.io/categories/machine-learning-ec2-gpu/</loc>
+    <lastmod>2014-07-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</loc>
     <lastmod>2014-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/machine-learning-ec2-gpu/</loc>
-    <lastmod>2014-07-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -456,13 +430,11 @@
   <url>
     <loc>http://r9y9.github.io/categories/speech-signal-processing-go/</loc>
     <lastmod>2014-06-08T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</loc>
     <lastmod>2014-06-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -473,7 +445,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/python-neural-networks-machine-larning/</loc>
     <lastmod>2014-05-11T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -482,13 +453,12 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/go-cgo/</loc>
+    <loc>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</loc>
     <lastmod>2014-03-22T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</loc>
+    <loc>http://r9y9.github.io/categories/go-cgo/</loc>
     <lastmod>2014-03-22T00:00:00+00:00</lastmod>
   </url>
   
@@ -500,7 +470,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/neural-network-rbm-machine-learning/</loc>
     <lastmod>2014-03-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -511,7 +480,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/graphical-model/</loc>
     <lastmod>2014-03-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -522,7 +490,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/go-speech-signal-processing/</loc>
     <lastmod>2014-02-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -536,15 +503,8 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/go/</loc>
-    <lastmod>2014-02-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/categories/go-music-signal-processing/</loc>
     <lastmod>2014-01-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -563,20 +523,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</loc>
-    <lastmod>2013-12-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/speech-signal-processing/</loc>
-    <lastmod>2013-12-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</loc>
     <lastmod>2013-12-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</loc>
+    <lastmod>2013-12-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -592,7 +545,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/daily/</loc>
     <lastmod>2013-11-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -603,7 +555,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/inverse-continous-wavelet-transform-wavelet-transform-signal-reconstruction-signal-processing/</loc>
     <lastmod>2013-10-21T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -619,7 +570,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</loc>
     <lastmod>2013-10-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -635,7 +585,6 @@
   <url>
     <loc>http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/</loc>
     <lastmod>2013-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -644,14 +593,13 @@
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</loc>
+    <loc>http://r9y9.github.io/categories/machine-learning-digit-recognition/</loc>
     <lastmod>2013-08-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://r9y9.github.io/categories/machine-learning-digit-recognition/</loc>
+    <loc>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</loc>
     <lastmod>2013-08-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -662,18 +610,11 @@
   <url>
     <loc>http://r9y9.github.io/categories/probability/</loc>
     <lastmod>2013-07-31T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</loc>
     <lastmod>2013-07-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://r9y9.github.io/categories/machine-learning/</loc>
-    <lastmod>2013-07-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

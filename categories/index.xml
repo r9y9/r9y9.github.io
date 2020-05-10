@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on LESS IS MORE</title>
@@ -39,7 +39,7 @@
     </item>
     
     <item>
-      <title>Julia</title>
+      <title>julia</title>
       <link>http://r9y9.github.io/categories/julia/</link>
       <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
       
@@ -93,6 +93,15 @@
     </item>
     
     <item>
+      <title>speech-signal-processing</title>
+      <link>http://r9y9.github.io/categories/speech-signal-processing/</link>
+      <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/categories/speech-signal-processing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>speech-signal-processing python</title>
       <link>http://r9y9.github.io/categories/speech-signal-processing-python/</link>
       <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
@@ -125,6 +134,15 @@
       <pubDate>Wed, 12 Nov 2014 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>machine-learning</title>
+      <link>http://r9y9.github.io/categories/machine-learning/</link>
+      <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/categories/machine-learning/</guid>
       <description></description>
     </item>
     
@@ -183,6 +201,15 @@
     </item>
     
     <item>
+      <title>Go</title>
+      <link>http://r9y9.github.io/categories/go/</link>
+      <pubDate>Tue, 29 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://r9y9.github.io/categories/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>go python machine-learning</title>
       <link>http://r9y9.github.io/categories/go-python-machine-learning/</link>
       <pubDate>Tue, 29 Jul 2014 00:00:00 +0000</pubDate>
@@ -201,7 +228,7 @@
     </item>
     
     <item>
-      <title>speech-signal-processing go</title>
+      <title>Speech-signal-processing Go</title>
       <link>http://r9y9.github.io/categories/speech-signal-processing-go/</link>
       <pubDate>Sun, 08 Jun 2014 00:00:00 +0000</pubDate>
       
@@ -264,29 +291,11 @@
     </item>
     
     <item>
-      <title>go</title>
-      <link>http://r9y9.github.io/categories/go/</link>
-      <pubDate>Sun, 02 Feb 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://r9y9.github.io/categories/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Go, Music-signal-processing</title>
       <link>http://r9y9.github.io/categories/go-music-signal-processing/</link>
       <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/categories/go-music-signal-processing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>speech-signal-processing</title>
-      <link>http://r9y9.github.io/categories/speech-signal-processing/</link>
-      <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://r9y9.github.io/categories/speech-signal-processing/</guid>
       <description></description>
     </item>
     
@@ -350,15 +359,6 @@
       <pubDate>Wed, 31 Jul 2013 00:00:00 +0000</pubDate>
       
       <guid>http://r9y9.github.io/categories/probability/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>machine-learning</title>
-      <link>http://r9y9.github.io/categories/machine-learning/</link>
-      <pubDate>Sun, 28 Jul 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://r9y9.github.io/categories/machine-learning/</guid>
       <description></description>
     </item>
     

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>speech-signal-processing on LESS IS MORE</title>
@@ -6,7 +6,7 @@
     <description>Recent content in speech-signal-processing on LESS IS MORE</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 01 Dec 2013 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Sep 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://r9y9.github.io/categories/speech-signal-processing/index.xml" rel="self" type="application/rss+xml" />
     
@@ -24,7 +24,7 @@ SPTK について  SPTKを使うと何ができるか: SPTKの使い方 (1) イ�
  SPTKを共有ライブラリとしてインストールできます。 C、C++の好きな方でコンパイルできます。 wafが使えます（速い、出力がキレイ） 自分のC、C++コードからSPTKのメソッドを呼べます。 コマンドラインツールはインストールされません。  コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。
 環境  Unix系  Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み
 SPTKのインストール リポジトリをクローンしたあと、
-Build  ./waf configure &amp;amp;&amp;amp; ./waf  Build with clang++  CXX=clang++ ./waf configure &amp;amp;&amp;amp; ./waf  Build with gcc  git checkout c .</description>
+Build  ./waf configure &amp;amp;&amp;amp; ./waf Build with clang++  CXX=clang++ ./waf configure &amp;amp;&amp;amp; ./waf Build with gcc  git checkout c .</description>
     </item>
     
     <item>

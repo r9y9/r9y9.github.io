@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -39,200 +39,197 @@
 <h1 id="mlsa-filter-h">mlsa_filter.h</h1>
 
 <p><a href="https://gist.github.com/r9y9/7735120">https://gist.github.com/r9y9/7735120</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#pragma once
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cmath&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;memory&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cassert&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">namespace</span> sp {
 
-<pre><code class="language-cpp">#pragma once
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter)
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">mlsa_base_filter</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+  mlsa_base_filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> order, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> alpha);
 
-#include &lt;cmath&gt;
-#include &lt;memory&gt;
-#include &lt;vector&gt;
-#include &lt;cassert&gt;
+  <span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vector</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#66d9ef">double</span> filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> x, <span style="color:#66d9ef">const</span> Vector<span style="color:#f92672">&amp;</span> b);
 
-namespace sp {
-
-/**
- * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter)
- */
-class mlsa_base_filter {
-public:
-  mlsa_base_filter(const int order, const double alpha);
-
-  template &lt;class Vector&gt;
-  double filter(const double x, const Vector&amp; b);
-
- private:
+ <span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
   mlsa_base_filter();
 
-  double alpha_;
-  std::vector&lt;double&gt; delay_;
+  <span style="color:#66d9ef">double</span> alpha_;
+  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span> delay_;
 };
 
-mlsa_base_filter::mlsa_base_filter(const int order, const double alpha)
-: alpha_(alpha),
-  delay_(order+1)
+mlsa_base_filter<span style="color:#f92672">::</span>mlsa_base_filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> order, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> alpha)
+<span style="color:#f92672">:</span> alpha_(alpha),
+  delay_(order<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
 {
 }
 
-template &lt;class Vector&gt;
-double mlsa_base_filter::filter(const double x, const Vector&amp; b)
+<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vector</span><span style="color:#f92672">&gt;</span>
+<span style="color:#66d9ef">double</span> mlsa_base_filter<span style="color:#f92672">::</span>filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> x, <span style="color:#66d9ef">const</span> Vector<span style="color:#f92672">&amp;</span> b)
 {
-  double result = 0.0;
+  <span style="color:#66d9ef">double</span> result <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>;
   
-  delay_[0] = x;
-  delay_[1] = (1.0-alpha_*alpha_)*delay_[0] + alpha_*delay_[1];
+  delay_[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> x;
+  delay_[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> (<span style="color:#ae81ff">1.0</span><span style="color:#f92672">-</span>alpha_<span style="color:#f92672">*</span>alpha_)<span style="color:#f92672">*</span>delay_[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">+</span> alpha_<span style="color:#f92672">*</span>delay_[<span style="color:#ae81ff">1</span>];
 
-  for (size_t i = 2; i &lt; b.size(); ++i) {
-    delay_[i] = delay_[i] + alpha_*(delay_[i+1]-delay_[i-1]);
-    result += delay_[i] * b[i];
+  <span style="color:#66d9ef">for</span> (size_t i <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>; i <span style="color:#f92672">&lt;</span> b.size(); <span style="color:#f92672">++</span>i) {
+    delay_[i] <span style="color:#f92672">=</span> delay_[i] <span style="color:#f92672">+</span> alpha_<span style="color:#f92672">*</span>(delay_[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">-</span>delay_[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]);
+    result <span style="color:#f92672">+=</span> delay_[i] <span style="color:#f92672">*</span> b[i];
   }
 
-  // special case
-  // TODO: other solution?
-  if (b.size() == 2) {
-    result += delay_[1] * b[1];
+  <span style="color:#75715e">// special case
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// TODO: other solution?
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> (b.size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>) {
+    result <span style="color:#f92672">+=</span> delay_[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span> b[<span style="color:#ae81ff">1</span>];
   } 
   
-  // t &lt;- t+1 in time
-  for (size_t i = delay_.size()-1; i &gt; 1; --i) {
-    delay_[i] = delay_[i-1];
+  <span style="color:#75715e">// t &lt;- t+1 in time
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span> (size_t i <span style="color:#f92672">=</span> delay_.size()<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>; <span style="color:#f92672">--</span>i) {
+    delay_[i] <span style="color:#f92672">=</span> delay_[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>];
   }
   
-  return result;
+  <span style="color:#66d9ef">return</span> result;
 }
 
-/**
- * MLSA digital filter cascaded
- */
-class mlsa_base_cascaded_filter {
- public:
-  mlsa_base_cascaded_filter(const int order,
-			    const double alpha,
-			    const int n_pade);
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * MLSA digital filter cascaded
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">mlsa_base_cascaded_filter</span> {
+ <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+  mlsa_base_cascaded_filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> order,
+			    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> alpha,
+			    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> n_pade);
 
-  template &lt;class Vector&gt;
-  double filter(const double x, const Vector&amp; b);
+  <span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vector</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#66d9ef">double</span> filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> x, <span style="color:#66d9ef">const</span> Vector<span style="color:#f92672">&amp;</span> b);
   
- private:
+ <span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
   mlsa_base_cascaded_filter();
 
-  std::vector&lt;std::unique_ptr&lt;mlsa_base_filter&gt;&gt; base_f_; // cascadad filters
-  std::vector&lt;double&gt; delay_;
-  std::vector&lt;double&gt; pade_coef_;
+  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>unique_ptr<span style="color:#f92672">&lt;</span>mlsa_base_filter<span style="color:#f92672">&gt;&gt;</span> base_f_; <span style="color:#75715e">// cascadad filters
+</span><span style="color:#75715e"></span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span> delay_;
+  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span> pade_coef_;
 };
 
-mlsa_base_cascaded_filter::mlsa_base_cascaded_filter(const int order, 
-						     const double alpha,
-						     const int n_pade)
-  : delay_(n_pade + 1),
-  pade_coef_(n_pade + 1)
+mlsa_base_cascaded_filter<span style="color:#f92672">::</span>mlsa_base_cascaded_filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> order, 
+						     <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> alpha,
+						     <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> n_pade)
+  <span style="color:#f92672">:</span> delay_(n_pade <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>),
+  pade_coef_(n_pade <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)
 { 
-  using std::unique_ptr;
+  <span style="color:#66d9ef">using</span> std<span style="color:#f92672">::</span>unique_ptr;
 
-  if (n_pade != 4 &amp;&amp; n_pade != 5) {
-    std::cerr &lt;&lt; &quot;The number of pade approximations must be 4 or 5.&quot;
-	      &lt;&lt; std::endl;
+  <span style="color:#66d9ef">if</span> (n_pade <span style="color:#f92672">!=</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">&amp;&amp;</span> n_pade <span style="color:#f92672">!=</span> <span style="color:#ae81ff">5</span>) {
+    std<span style="color:#f92672">::</span>cerr <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;The number of pade approximations must be 4 or 5.&#34;</span>
+	      <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
   }
-  assert(n_pade == 4 || n_pade == 5);
+  assert(n_pade <span style="color:#f92672">==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">||</span> n_pade <span style="color:#f92672">==</span> <span style="color:#ae81ff">5</span>);
 
-  for (int i = 0; i &lt;= n_pade; ++i) {
-    mlsa_base_filter* p = new mlsa_base_filter(order, alpha);
-    base_f_.push_back(unique_ptr&lt;mlsa_base_filter&gt;(p));
+  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;=</span> n_pade; <span style="color:#f92672">++</span>i) {
+    mlsa_base_filter<span style="color:#f92672">*</span> p <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> mlsa_base_filter(order, alpha);
+    base_f_.push_back(unique_ptr<span style="color:#f92672">&lt;</span>mlsa_base_filter<span style="color:#f92672">&gt;</span>(p));
   }
   
-  if (n_pade == 4) {
-    pade_coef_[0] = 1.0;
-    pade_coef_[1] = 4.999273e-1;
-    pade_coef_[2] = 1.067005e-1;
-    pade_coef_[3] = 1.170221e-2;
-    pade_coef_[4] = 5.656279e-4;
+  <span style="color:#66d9ef">if</span> (n_pade <span style="color:#f92672">==</span> <span style="color:#ae81ff">4</span>) {
+    pade_coef_[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>;
+    pade_coef_[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.999273e-1</span>;
+    pade_coef_[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.067005e-1</span>;
+    pade_coef_[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.170221e-2</span>;
+    pade_coef_[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">5.656279e-4</span>;
   }
   
-  if (n_pade == 5) {
-    pade_coef_[0] = 1.0;
-    pade_coef_[1] = 4.999391e-1;
-    pade_coef_[2] = 1.107098e-1;
-    pade_coef_[3] = 1.369984e-2;
-    pade_coef_[4] = 9.564853e-4;
-    pade_coef_[5] = 3.041721e-5;
+  <span style="color:#66d9ef">if</span> (n_pade <span style="color:#f92672">==</span> <span style="color:#ae81ff">5</span>) {
+    pade_coef_[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>;
+    pade_coef_[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.999391e-1</span>;
+    pade_coef_[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.107098e-1</span>;
+    pade_coef_[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.369984e-2</span>;
+    pade_coef_[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">9.564853e-4</span>;
+    pade_coef_[<span style="color:#ae81ff">5</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">3.041721e-5</span>;
   }   
 }
 
-template &lt;class Vector&gt;
-double mlsa_base_cascaded_filter::filter(const double x, const Vector&amp; b)
+<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vector</span><span style="color:#f92672">&gt;</span>
+<span style="color:#66d9ef">double</span> mlsa_base_cascaded_filter<span style="color:#f92672">::</span>filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> x, <span style="color:#66d9ef">const</span> Vector<span style="color:#f92672">&amp;</span> b)
 {
-  double result = 0.0;  
-  double feed_back = 0.0;
+  <span style="color:#66d9ef">double</span> result <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>;  
+  <span style="color:#66d9ef">double</span> feed_back <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>;
 
-  for (size_t i = pade_coef_.size()-1; i &gt;= 1; --i) {
-    delay_[i] = base_f_[i]-&gt;filter(delay_[i-1], b);
-    double v = delay_[i] * pade_coef_[i];
-    if (i % 2 == 1) {
-      feed_back += v;
-    } else {
-      feed_back -= v;
+  <span style="color:#66d9ef">for</span> (size_t i <span style="color:#f92672">=</span> pade_coef_.size()<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>; <span style="color:#f92672">--</span>i) {
+    delay_[i] <span style="color:#f92672">=</span> base_f_[i]<span style="color:#f92672">-&gt;</span>filter(delay_[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], b);
+    <span style="color:#66d9ef">double</span> v <span style="color:#f92672">=</span> delay_[i] <span style="color:#f92672">*</span> pade_coef_[i];
+    <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) {
+      feed_back <span style="color:#f92672">+=</span> v;
+    } <span style="color:#66d9ef">else</span> {
+      feed_back <span style="color:#f92672">-=</span> v;
     }
-    result += v;
+    result <span style="color:#f92672">+=</span> v;
   }
 
-  delay_[0] = feed_back + x;
-  result += delay_[0];
+  delay_[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> feed_back <span style="color:#f92672">+</span> x;
+  result <span style="color:#f92672">+=</span> delay_[<span style="color:#ae81ff">0</span>];
 
-  return result;
+  <span style="color:#66d9ef">return</span> result;
 }
 
-/**
- * MLSA digital filter (Mel-log Spectrum Approximate digital filter)
- * The filter consists of two stage cascade filters
- */
-class mlsa_filter {
- public:
-  mlsa_filter(const int order, const double alpha, const int n_pade);
- ~mlsa_filter();
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * MLSA digital filter (Mel-log Spectrum Approximate digital filter)
+</span><span style="color:#75715e"> * The filter consists of two stage cascade filters
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">mlsa_filter</span> {
+ <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+  mlsa_filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> order, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> alpha, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> n_pade);
+ <span style="color:#f92672">~</span>mlsa_filter();
 
- template &lt;class Vector&gt;
- double filter(const double x, const Vector&amp; b);
+ <span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vector</span><span style="color:#f92672">&gt;</span>
+ <span style="color:#66d9ef">double</span> filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> x, <span style="color:#66d9ef">const</span> Vector<span style="color:#f92672">&amp;</span> b);
 
- private:
+ <span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
  mlsa_filter();
 
-  double alpha_;
-  std::unique_ptr&lt;mlsa_base_cascaded_filter&gt; f1_; // first stage
-  std::unique_ptr&lt;mlsa_base_cascaded_filter&gt; f2_; // second stage
-};
+  <span style="color:#66d9ef">double</span> alpha_;
+  std<span style="color:#f92672">::</span>unique_ptr<span style="color:#f92672">&lt;</span>mlsa_base_cascaded_filter<span style="color:#f92672">&gt;</span> f1_; <span style="color:#75715e">// first stage
+</span><span style="color:#75715e"></span>  std<span style="color:#f92672">::</span>unique_ptr<span style="color:#f92672">&lt;</span>mlsa_base_cascaded_filter<span style="color:#f92672">&gt;</span> f2_; <span style="color:#75715e">// second stage
+</span><span style="color:#75715e"></span>};
 
-mlsa_filter::mlsa_filter(const int order,
-			 const double alpha,
-			 const int n_pade)
-  : alpha_(alpha),
-  f1_(new mlsa_base_cascaded_filter(2, alpha, n_pade)),
-  f2_(new mlsa_base_cascaded_filter(order, alpha, n_pade))
+mlsa_filter<span style="color:#f92672">::</span>mlsa_filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> order,
+			 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> alpha,
+			 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> n_pade)
+  <span style="color:#f92672">:</span> alpha_(alpha),
+  f1_(<span style="color:#66d9ef">new</span> mlsa_base_cascaded_filter(<span style="color:#ae81ff">2</span>, alpha, n_pade)),
+  f2_(<span style="color:#66d9ef">new</span> mlsa_base_cascaded_filter(order, alpha, n_pade))
 {
 }
 
-mlsa_filter::~mlsa_filter()
+mlsa_filter<span style="color:#f92672">::~</span>mlsa_filter()
 {
 }
 
-template &lt;class Vector&gt;
-double mlsa_filter::filter(const double x, const Vector&amp; b)
+<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vector</span><span style="color:#f92672">&gt;</span>
+<span style="color:#66d9ef">double</span> mlsa_filter<span style="color:#f92672">::</span>filter(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> x, <span style="color:#66d9ef">const</span> Vector<span style="color:#f92672">&amp;</span> b)
 {
-  // 1. First stage filtering
-  Vector b1 = {0, b[1]};
-  double y = f1_-&gt;filter(x, b1);
+  <span style="color:#75715e">// 1. First stage filtering
+</span><span style="color:#75715e"></span>  Vector b1 <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>, b[<span style="color:#ae81ff">1</span>]};
+  <span style="color:#66d9ef">double</span> y <span style="color:#f92672">=</span> f1_<span style="color:#f92672">-&gt;</span>filter(x, b1);
   
-  // 2. Second stage filtering
-  double result = f2_-&gt;filter(y, b);
+  <span style="color:#75715e">// 2. Second stage filtering
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">double</span> result <span style="color:#f92672">=</span> f2_<span style="color:#f92672">-&gt;</span>filter(y, b);
 
-  return result;
+  <span style="color:#66d9ef">return</span> result;
 }
 
-} // end namespace sp
-</code></pre>
-
+} <span style="color:#75715e">// end namespace sp
+</span></code></pre></div>
 <h1 id="使い方">使い方</h1>
 
 <p>mlsa_filter.hをインクルードすればおｋ</p>
-
-<pre><code>#include &quot;mlsa_filter.h&quot;
+<pre><code>#include &#34;mlsa_filter.h&#34;
 
 // セットアップ
 const double alpha = 0.42;
@@ -242,9 +239,7 @@ sp::mlsa_filter mlsa_f(order, alpha, n_pade);
 
 ...
 // MLSA フィルタリング 
-出力一サンプル = mlsa_f.filter(入力一サンプル, フィルタ係数);
-</code></pre>
-
+出力一サンプル = mlsa_f.filter(入力一サンプル, フィルタ係数);</code></pre>
 <h1 id="何で再実装したのか">何で再実装したのか</h1>
 
 <ul>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.70.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
+<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+<title>    NNSVS: Pytorchベースの研究用歌声合成ライブラリ - LESS IS MORE</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="https://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">    NNSVS: Pytorchベースの研究用歌声合成ライブラリ</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2020-05-10">May 10, 2020</time></span>
+			<section itemprop="entry-text">
+				
+
+<ul>
+<li>コード: <a href="https://github.com/r9y9/nnsvs">https://github.com/r9y9/nnsvs</a></li>
+<li>Discussion: <a href="https://github.com/r9y9/nnsvs/issues/1">https://github.com/r9y9/nnsvs/issues/1</a></li>
+<li><a href="https://colab.research.google.com/github/r9y9/Colaboratory/blob/master/Neural_network_based_singing_voice_synthesis_demo_using_kiritan_singing_database_(Japanese).ipynb">Demo on Google colab</a></li>
+</ul>
+
+<blockquote>
+<p>春が来た　春が来た　どこに来た。　山に来た　里に来た、野にも来た。花がさく　花がさく　どこにさく。山にさく　里にさく、野にもさく。</p>
+</blockquote>
+
+<p><audio controls="controls" ><source src="/audio/nnsvs/20200510_haru.wav" autoplay/>Your browser does not support the audio element.</audio></p>
+
+<h2 id="nnsvs-はなに">NNSVS はなに？</h2>
+
+<p><em>Neural network-based singing voice synthesis library for research</em></p>
+
+<p>研究用途を目的とした、歌声合成エンジンを作るためのオープンソースのライブラリを作ることを目指したプロジェクトです。このプロジェクトについて、考えていることをまとめておこうと思います。</p>
+
+<h3 id="なぜやるか">なぜやるか？</h3>
+
+<ul>
+<li><a href="https://n3utrino.work/">NEUTRINO</a> レベルの品質の歌声合成エンジンが作れるのかやってみたかった</li>
+<li>オープンソースのツールがほぼない分野なので、ツールを作ると誰かの役にも立っていいかなと思った。研究分野が盛り上がると良いですね</li>
+</ul>
+
+<p>というのが理由です。前者の割合が大きいです。</p>
+
+<h3 id="研究用途">研究用途</h3>
+
+<p>機械学習や信号処理にある程度明るい人を想定しています。歌声合成技術を使って創作したい人ではなく、どのようにすればより良い歌声合成を作ることができるのか？といった興味を持つ人が主な対象です。</p>
+
+<p>創作活動のために歌声合成の技術を使う場合には、すでに優れたツールがあると思いますので、そちらを使っていただくのがよいと思います<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>。<a href="https://n3utrino.work/">NEUTRINO</a>、<a href="https://synthesizerv.com/jp/">Synthesizer V</a>、<a href="http://cevio.jp/">CeVIO</a> など</p>
+
+<h3 id="オープンソース">オープンソース</h3>
+
+<p>オープンソースであることを重視します。歌声合成ソフトウェアは多くありますが、オープンソースのものは多くありません<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。このプロジェクトは僕が趣味として始めたもので、ビジネスにする気はまったくないので<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>、誰でも自由に使えるようにしたいと思っています。オープンなソフトウェアが、研究分野の一助になることを期待しています。</p>
+
+<h3 id="pytorchベース">Pytorchベース</h3>
+
+<p>過去に <a href="https://github.com/r9y9/nnmnkwii">nnmnkwii</a>という音声合成のためのライブラリを作りました。その際には、任意の数値微分ライブラリと使えるようにと考えて設計しましたが、nnsvsはあえてpytorchに依存した形で作ります。</p>
+
+<p>PYtorchと切り離して設計すると汎用的にしやすい一方で、<a href="https://github.com/kaldi-asr/kaldi">Kaldi</a> や<a href="https://github.com/espnet/espnet">ESPnet</a> のようなプロジェクトで成功している<strong>レシピ</strong>というものが作りずらいです。ESPnetに多少関わって、再現性の担保の重要性を身にしみて感じつつあるので、Pytorchベースの学習、推論など、歌声合成のモデルを構築するために必要なすべてをひっくるめたソフトウェアを目指したいと思います。</p>
+
+<h3 id="レシピの提供">レシピの提供</h3>
+
+<p>再現性を重視します。そのために、KaldiやESPnetの成功に習って、レシピという実験を再現するのに必要なすべてのステップが含まれたスクリプトを提供します。レシピは、データの前処理、特徴量抽出、モデル学習、推論、波形の合成などを含みます。</p>
+
+<p>例えば、このブログのトップに貼った音声サンプルを合成するのに使われたモデルは、公開されているレシピで再現することが可能です。歌声合成エンジンを作るためのありとあらゆるものを透明な形で提供します。</p>
+
+<h2 id="プロジェクトの進め方について">プロジェクトの進め方について</h2>
+
+<p>完全に完成してから公開する、というアプローチとは正反対で、構想のみで実態はまったくできていない状態から始めて、進捗を含めてすべてオープンで確認できるような状態で進めます。進捗は <a href="https://github.com/r9y9/nnsvs/issues/1">https://github.com/r9y9/nnsvs/issues/1</a> から確認できます。</p>
+
+<p>過去に<a href="https://github.com/r9y9/wavenet_vocoder">wavenet vocoder</a>をつくったときにも同じような方法ではじめました。突然知らない人がコメントをくれたりするのがオープンソースの面白いところの一つだと思っているので、この方式で進めます。</p>
+
+<h2 id="現時点の状況">現時点の状況</h2>
+
+<p><a href="https://zunko.jp/kiridev/login.php">きりたんデータベース</a>を使って、parametric SVS（Sinsyの中身に近いもの）が一通り作れるところまでできました。MusicXMLを入力として、音声波形を出力します。作った歌声合成システムは、time-lagモデル、音素継続長モデル、音響モデルの3つのtrainableなモデルで成り立っています。音楽/言語的特徴量は<a href="https://github.com/r9y9/sinsy">sinsy</a>で抽出して、音声分析合成には<a href="https://github.com/mmorise/World">WORLD</a>を使います。仕組みは、以下の論文の内容に近いです。</p>
+
+<ul>
+<li>Y. Hono et al, &ldquo;Recent Development of the DNN-based Singing Voice Synthesis System — Sinsy,&rdquo; Proc. of APSIPA, 2017. (<a href="http://www.apsipa.org/proceedings/2018/pdfs/0001003.pdf">PDF</a>)</li>
+</ul>
+
+<p>Mixture density networkは使っていない、ビブラートパラメータを推定していない等、違いはたくさんあります。現時点では劣化sinsyといったところですね T.T</p>
+
+<h2 id="開発履歴">開発履歴</h2>
+
+<h3 id="2020-04-08-初期版">2020/04/08 (初期版)</h3>
+
+<p>一番最初につくったものです。見事な音痴歌声合成になりました。TTSの仕組みを使うだけでは当然だめでした、というオチです。音響モデルでは対数lf0を予測するようにしました。このころはtime-lagモデルを作っていなくて、phonetic timeingはアノテーションされたデータのものを使っています。</p>
+
+<div align="center">
+<iframe width="90%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792271372&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+</div>
+
+<h3 id="2020-04-26-本ブログ執筆時点での最新版">2020/04/26 (本ブログ執筆時点での最新版)</h3>
+
+<p>Time-lag, duration, acoustic modelのすべてを一旦実装し終わったバージョンです。lf0の絶対値を予測するのではなく、relativeなlf0を予測するように変えました。phonetic timing はすべて予測されたものを使っています。ひととおりできたにはいいですが、完成度はいまいちというのが正直なところですね</p>
+
+<div align="center">
+<iframe width="90%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/806654083&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+</div>
+
+<h2 id="今後の予定">今後の予定</h2>
+
+<p><a href="https://github.com/r9y9/nnsvs/issues/1">https://github.com/r9y9/nnsvs/issues/1</a> を随時更新しますが、重要なものをいくつかピップアップします。</p>
+
+<ul>
+<li><strong>音響モデルの強化</strong>：特にF0のモデル化が難しい印象で、改善を考えています。いまは本当に適当なCNNをつかっていますが、autoreggresive modelに変えたいと思っています。いくつか選択肢がありますが、WaveNetのようなモデルにする予定です。<a href="https://mtg.github.io/singing-synthesis-demos/">https://mtg.github.io/singing-synthesis-demos/</a> 彼らの論文を大いに参考にする予定です。NIIのWangさんのshallow ARモデルを使うもよし。最重要課題で、目下やることリストに入っています</li>
+<li><strong>離散F0モデリング</strong>: NIIのWangさんの論文が大変参考になりました。音声合成では広く連続F0が使われている印象ですが、離散F0モデリングを試したいと思っています。</li>
+<li><strong>Transformerなどの強力なモデル</strong>: 今年の <a href="https://2020.ieeeicassp.org/">ICASSP 2020</a> で <a href="https://mtg.github.io/singing-synthesis-demos/transformer/">Feed-forward Transformerを使った歌声合成の研究発表</a>がありましたが、近年のnon-autoregressiveモデルの発展はすごいので、同様のアプローチを試してみたいと思っています。製品化は考えないし、どんなにデカくて遅いモデルを使ってもよし</li>
+<li><strong>ニューラルボコーダ</strong>: 音響モデルの改善がある程度できれば、ニューラルボコーダを入れて高品質にできるといいですね。</li>
+<li><strong>音楽/言語特徴量の簡略化</strong>: 今は450次元くらいの特徴量を使っていますが、<a href="https://mtg.github.io/singing-synthesis-demos/">https://mtg.github.io/singing-synthesis-demos/</a> 彼らのグループの研究を見ると、もっとシンプルにできそうに思えてきています。音楽/言語特徴量の抽出は今はsinsyに頼りっきりですが、どこかのタイミングでシンプルにしたいと思っています。</li>
+<li><strong>Time-lag/duration modelの改善</strong>: 現時点ではめっちゃ雑なつくりなので、<a href="https://mtg.github.io/singing-synthesis-demos/">https://mtg.github.io/singing-synthesis-demos/</a> 彼らの研究を見習って細部まで詰めたい</li>
+<li><strong>音素アライメントツール</strong>: きりたんDBの音素アライメントが微妙に不正確なのがあったりします。今のところある程度手修正していますが、自動でやったほうがいいのではと思えてきました。</li>
+<li><strong>その他データセット</strong>: JVSなど。きりたんDBである程度できてからですかね</li>
+</ul>
+
+<h2 id="これまで歌声合成をやってみての所感">これまで歌声合成をやってみての所感</h2>
+
+<p>歌声合成クッソムズすぎワロタ</p>
+
+<p>新しいことにチャレンジするのはとても楽しいですが、やっぱり難しいですね。離散化F0、autoregressive modelの導入でそれなりの品質に持っていけるという淡い期待をしていますが、さてどうなることやら。地道に頑張って改善していきます。</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li>きりたんデータベース: <a href="https://zunko.jp/kiridev/login.php">https://zunko.jp/kiridev/login.php</a></li>
+<li>NEUTRINO: <a href="https://n3utrino.work/">https://n3utrino.work/</a></li>
+<li>NNSVS: <a href="https://github.com/r9y9/nnsvs">https://github.com/r9y9/nnsvs</a></li>
+<li>NNSVS 進捗: <a href="https://github.com/r9y9/nnsvs/issues/1">https://github.com/r9y9/nnsvs/issues/1</a></li>
+<li>sinsy: <a href="http://sinsy.sourceforge.net/">http://sinsy.sourceforge.net/</a></li>
+<li>My fork of sinsy: <a href="https://github.com/r9y9/sinsy">https://github.com/r9y9/sinsy</a></li>
+<li>nnmnkwii: <a href="https://github.com/r9y9/nnmnkwii">https://github.com/r9y9/nnmnkwii</a></li>
+<li>WORLD: <a href="https://github.com/mmorise/World">https://github.com/mmorise/World</a></li>
+<li>Y. Hono et al, &ldquo;Recent Development of the DNN-based Singing Voice Synthesis System — Sinsy,&rdquo; Proc. of APSIPA, 2017. (<a href="http://www.apsipa.org/proceedings/2018/pdfs/0001003.pdf">PDF</a>)</li>
+</ul>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">NEUTRINO並の品質の歌声合成エンジンが作れたらいいなとは思っていますが、まだまだ道のりは長そうです。
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2"><a href="http://sinsy.sourceforge.net/">http://sinsy.sourceforge.net/</a> 有名なものにsinsyがありますが、DNNモデルの学習など、すべてがオープンソースなわけではありません
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">万が一の場合は、察してください…
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+				
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="    NNSVS: Pytorchベースの研究用歌声合成ライブラリ" data-related="r9y9">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+</div>
+
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<address>
+			<div class="avatar-bottom">
+				<a href="/">
+					
+					<img src="/images/r9y9.jpg">
+					
+				</a>
+			</div>
+
+		<div class="copyright">Copyright &copy;
+			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
+
+			<a href="https://github.com/r9y9">
+				<span class="github">r9y9@Github</span>
+			</a>
+		</div>
+		</address>
+	</footer>
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-44433856-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+ <script type="text/javascript" async
+   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+ </script>
+
+
+
+
+</body>
+</html>
+

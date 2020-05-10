@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>speech-signal-processing speech-synthesis on LESS IS MORE</title>
@@ -20,7 +20,7 @@
       <description>MLSAフィルタわからんという記事を書いて早2ヶ月、ようやく出来た。
 Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。SPTKのmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。
 mlsa_filter.h https://gist.github.com/r9y9/7735120
-#pragma once #include &amp;lt;cmath&amp;gt; #include &amp;lt;memory&amp;gt; #include &amp;lt;vector&amp;gt; #include &amp;lt;cassert&amp;gt; namespace sp { /** * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter) */ class mlsa_base_filter { public: mlsa_base_filter(const int order, const double alpha); template &amp;lt;class Vector&amp;gt; double filter(const double x, const Vector&amp;amp; b); private: mlsa_base_filter(); double alpha_; std::vector&amp;lt;double&amp;gt; delay_; }; mlsa_base_filter::mlsa_base_filter(const int order, const double alpha) : alpha_(alpha), delay_(order+1) { } template &amp;lt;class Vector&amp;gt; double mlsa_base_filter::filter(const double x, const Vector&amp;amp; b) { double result = 0.</description>
+#pragma once  #include &amp;lt;cmath&amp;gt;#include &amp;lt;memory&amp;gt;#include &amp;lt;vector&amp;gt;#include &amp;lt;cassert&amp;gt; namespace sp { /** * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter) */ class mlsa_base_filter { public: mlsa_base_filter(const int order, const double alpha); template &amp;lt;class Vector&amp;gt; double filter(const double x, const Vector&amp;amp; b); private: mlsa_base_filter(); double alpha_; std::vector&amp;lt;double&amp;gt; delay_; }; mlsa_base_filter::mlsa_base_filter(const int order, const double alpha) : alpha_(alpha), delay_(order+1) { } template &amp;lt;class Vector&amp;gt; double mlsa_base_filter::filter(const double x, const Vector&amp;amp; b) { double result = 0.</description>
     </item>
     
     <item>

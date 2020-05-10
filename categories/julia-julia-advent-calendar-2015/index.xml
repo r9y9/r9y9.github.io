@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Julia Julia-Advent-Calendar-2015 on LESS IS MORE</title>
@@ -39,10 +39,10 @@ Cxx.jl の原理について知りたい場合は、Cxx.jl のソースコード
 この記事では、値 (value) と変数 (variable) に対する type annotation の違いを、問題とそれに対する解答を用意する形式で説明しようと思います。そんなの知ってるぜ！という方は、問題だけ解いてみて自分の理解度を試してもらえればと思います。
 記事に出てくるJuliaコードは、Julia 0.5-dev, 0.4.0 で動作確認しました。
 問題 新規REPLセッションを開いて、A、B それぞれを実行したときの挙動はどうなるでしょうか？エラーの発生の有無と、エラーが発生しない場合は返り値の値、型を答えてください。
-A function f() x = (1.0 + 2.0)::Int return x end f()  B function g() x::Int = (1.0 + 2.0) return x end g()  なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。
+A function f() x = (1.0 + 2.0)::Int return x end f() B function g() x::Int = (1.0 + 2.0) return x end g() なお、一方ではエラーが起き、もう一方はエラー無く実行されます。一見似たような書き方ですが、二つは異なる意味を持ちます。この記事ではそれぞれを解説しようと思います。
 この問題の答えがわからなかった方は、この記事を読むと正解がわかるはずなので、続きをご覧ください。下の方に、簡潔な問題の解答とおまけ問題を書いておきました。
 A: 値に対する type annotation Aの2行目では、値に対して type annotation をしています。これは typeassert とも呼びます。Aで使った type annotation を日本語で説明してみると、「(1.0 + 2.0) という式を評価した値は、Int 型であることを保証する」となります。
-(1.0 + 2.0) を評価した値は 3.</description>
+(1.0 + 2.0) を評価した値は 3.0 であり、 Float64の型を持ちます。したがって Float64 !</description>
     </item>
     
   </channel>

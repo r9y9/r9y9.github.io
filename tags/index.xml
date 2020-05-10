@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on LESS IS MORE</title>
@@ -48,6 +48,15 @@
     </item>
     
     <item>
+      <title>cling</title>
+      <link>http://r9y9.github.io/tags/cling/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/cling/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Julia</title>
       <link>http://r9y9.github.io/tags/julia/</link>
       <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
@@ -66,15 +75,6 @@
     </item>
     
     <item>
-      <title>cling</title>
-      <link>http://r9y9.github.io/tags/cling/</link>
-      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
-      
-      <guid>http://r9y9.github.io/tags/cling/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Bokeh</title>
       <link>http://r9y9.github.io/tags/bokeh/</link>
       <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
@@ -84,20 +84,20 @@
     </item>
     
     <item>
-      <title>PyTorch</title>
-      <link>http://r9y9.github.io/tags/pytorch/</link>
-      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
-      
-      <guid>http://r9y9.github.io/tags/pytorch/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Python</title>
       <link>http://r9y9.github.io/tags/python/</link>
       <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
       
       <guid>http://r9y9.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PyTorch</title>
+      <link>http://r9y9.github.io/tags/pytorch/</link>
+      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
+      
+      <guid>http://r9y9.github.io/tags/pytorch/</guid>
       <description></description>
     </item>
     

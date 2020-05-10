@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -75,45 +75,39 @@
 <p>例を示します。</p>
 
 <h3 id="cコード">Cコード</h3>
-
-<pre><code class="language-c">typedef struct {
-   double a;
-   int b;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+   <span style="color:#66d9ef">double</span> a;
+   <span style="color:#66d9ef">int</span> b;
 } Foo;
 
-# 構造体のポインタを引数にとる関数1
-void print(Foo* foo) {
-    printf(&quot;a=%lf\n&quot;, foo-&gt;a);
-    printf(&quot;b=%d\n&quot;, foo-&gt;b);
+<span style="color:#75715e"># 構造体のポインタを引数にとる関数1
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>(Foo<span style="color:#f92672">*</span> foo) {
+    printf(<span style="color:#e6db74">&#34;a=%lf</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, foo<span style="color:#f92672">-&gt;</span>a);
+    printf(<span style="color:#e6db74">&#34;b=%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, foo<span style="color:#f92672">-&gt;</span>b);
 }
 
-# 構造体のポインタを引数にとる関数2
-void reset(Foo* foo) {
-    foo-&gt;a = 0.0;
-    foo-&gt;b = 0;
-}
-</code></pre>
-
+<span style="color:#75715e"># 構造体のポインタを引数にとる関数2
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reset</span>(Foo<span style="color:#f92672">*</span> foo) {
+    foo<span style="color:#f92672">-&gt;</span>a <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>;
+    foo<span style="color:#f92672">-&gt;</span>b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+}</code></pre></div>
 <h3 id="juliaコード">Juliaコード</h3>
-
-<pre><code class="language-julia"># Cの構造体 Foo に相当する型を宣言します
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#75715e"># Cの構造体 Foo に相当する型を宣言します</span>
 immutable Foo
-    a::Float64
-    b::Int32 # cのintはjuliaのInt32に対応します
-end
+    a<span style="color:#f92672">::</span><span style="color:#66d9ef">Float64</span>
+    b<span style="color:#f92672">::</span><span style="color:#66d9ef">Int32</span> <span style="color:#75715e"># cのintはjuliaのInt32に対応します</span>
+<span style="color:#66d9ef">end</span>
 
-foo = Foo(10.0, 2)
+foo <span style="color:#f92672">=</span> Foo(<span style="color:#ae81ff">10.0</span>, <span style="color:#ae81ff">2</span>)
 
-# Cの関数に、ポインタとしてJuliaの型を渡すことができます
-ccall(:print, &quot;libfoo&quot;, Void, (Ptr{Foo},), &amp;foo)
+<span style="color:#75715e"># Cの関数に、ポインタとしてJuliaの型を渡すことができます</span>
+<span style="color:#66d9ef">ccall</span>(<span style="color:#f92672">:</span>print, <span style="color:#e6db74">&#34;libfoo&#34;</span>, <span style="color:#66d9ef">Void</span>, (<span style="color:#66d9ef">Ptr</span>{Foo},), <span style="color:#f92672">&amp;</span>foo)
 
-# ポインタで渡す場合、Cで変更した結果はJuliaにも反映されます
-ccall(:reset, &quot;libfoo&quot;, Void, (Ptr{Foo},), &amp;foo)
+<span style="color:#75715e"># ポインタで渡す場合、Cで変更した結果はJuliaにも反映されます</span>
+<span style="color:#66d9ef">ccall</span>(<span style="color:#f92672">:</span>reset, <span style="color:#e6db74">&#34;libfoo&#34;</span>, <span style="color:#66d9ef">Void</span>, (<span style="color:#66d9ef">Ptr</span>{Foo},), <span style="color:#f92672">&amp;</span>foo)
 
-# foo(0.0, 0) と表示される
-println(foo)
-</code></pre>
-
+<span style="color:#75715e"># foo(0.0, 0) と表示される</span>
+println(foo)</code></pre></div>
 <p>ちなみにJuliaからCへ値渡しをしてもエラーにならないので、お気をつけください（ハマりました）。</p>
 
 <p>公式ドキュメントは不親切と言いましたが、 プルリクエスト <a href="https://github.com/JuliaLang/julia/pull/8948">update documentation for passing struct pointers to C #8948</a>（まだマージはされていない）で改善されているので、もしかするとこの記事が読まれる頃には改善されているかもしれません。</p>
@@ -131,10 +125,7 @@ println(foo)
 <h2 id="ポインタのポインタを引数に持つ-例-double-関数のラッピングは">ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
 
 <p>さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。</p>
-
-<pre><code class="language-c">void fooo(double** input, int w, int h, double** output);
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fooo</span>(<span style="color:#66d9ef">double</span><span style="color:#f92672">**</span> input, <span style="color:#66d9ef">int</span> w, <span style="color:#66d9ef">int</span> h, <span style="color:#66d9ef">double</span><span style="color:#f92672">**</span> output);</code></pre></div>
 <p><code>input</code>は入力の行列、<code>output</code>は計算結果が格納される行列、行列のサイズは共に 列数<code>w</code>、行数<code>h</code> だと思ってください。Juliaからは <code>input::Array{Float64,2}</code> を入力として、<code>output::Array{Float64,2}</code> を得たいとします。</p>
 
 <p><code>double*</code>を引数にとる場合は<code>Array{Float64,1}</code>を渡せばよかったのに対して、<code>double**</code>を引数に取る関数に <code>Array{Float64,2}</code>や<code>Array{Array{Float64,1},1}</code>を単純に渡すだけでは、残念ながらコンパイルエラーになります。はい、すでに若干面倒ですね。。さて、どうすればいいかですが、</p>
@@ -154,38 +145,29 @@ println(foo)
 <h3 id="2-どのように型を変換するか">2. どのように型を変換するか</h3>
 
 <p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64},1}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
-
-<pre><code class="language-julia"># Array{T,2} -&gt; Array{Ptr{T}}
-function ptrarray2d{T&lt;:Real}(src::Array{T,2})
-    dst = Array{Ptr{T}, size(src, 2))
-    for i=1:size(src, 2)
-        dst[i] = pointer(src[:,i], 1) # 先頭要素のポインタを取り出す
-    end
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#75715e"># Array{T,2} -&gt; Array{Ptr{T}}</span>
+<span style="color:#66d9ef">function</span> ptrarray2d{T<span style="color:#f92672">&lt;:</span><span style="color:#66d9ef">Real</span>}(src<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{T,<span style="color:#ae81ff">2</span>})
+    dst <span style="color:#f92672">=</span> <span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{T}, size(src, <span style="color:#ae81ff">2</span>))
+    <span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>size(src, <span style="color:#ae81ff">2</span>)
+        dst[i] <span style="color:#f92672">=</span> pointer(src[<span style="color:#f92672">:</span>,i], <span style="color:#ae81ff">1</span>) <span style="color:#75715e"># 先頭要素のポインタを取り出す</span>
+    <span style="color:#66d9ef">end</span>
     dst
-end
-</code></pre>
-
+<span style="color:#66d9ef">end</span></code></pre></div>
 <p>実はこの実装はバグを含んでいます。バグがあるとしたら一行しか該当する部分はないですが、</p>
-
-<pre><code class="language-julia">dst[i] = pointer(src[:,i], 1)
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia">dst[i] <span style="color:#f92672">=</span> pointer(src[<span style="color:#f92672">:</span>,i], <span style="color:#ae81ff">1</span>)</code></pre></div>
 <p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
 
 <p>Array <code>A</code>に対する syntax <code>X = A[I_1, I_2, ..., I_n]</code> は <code>X = getindex(A, I_1, I_2, ..., I_n)</code> と等価です。詳細は、<a href="http://docs.julialang.org/en/latest/manual/arrays/">Multi-dimensional Arrays</a>や<a href="http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex">標準ライブラリのドキュメント</a> を参考にしてください</p>
 
 <p>さて、正解を示します。</p>
-
-<pre><code class="language-julia"># Array{T,2} -&gt; Array{Ptr{T}}
-function ptrarray2d{T&lt;:Real}(src::Array{T,2})
-    dst = Array{Ptr{T}, size(src, 2))
-    for i=1:size(src, 2)
-         dst[i] = pointer(sub(src, 1:size(src,1), i), 1)
-    end
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#75715e"># Array{T,2} -&gt; Array{Ptr{T}}</span>
+<span style="color:#66d9ef">function</span> ptrarray2d{T<span style="color:#f92672">&lt;:</span><span style="color:#66d9ef">Real</span>}(src<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{T,<span style="color:#ae81ff">2</span>})
+    dst <span style="color:#f92672">=</span> <span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{T}, size(src, <span style="color:#ae81ff">2</span>))
+    <span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>size(src, <span style="color:#ae81ff">2</span>)
+         dst[i] <span style="color:#f92672">=</span> pointer(sub(src, <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>size(src,<span style="color:#ae81ff">1</span>), i), <span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">end</span>
     dst
-end
-</code></pre>
-
+<span style="color:#66d9ef">end</span></code></pre></div>
 <p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>。</p>
 
 <blockquote>
@@ -197,43 +179,37 @@ end
 <h3 id="3-変換した型をどのように元に戻すか">3. 変換した型をどのように元に戻すか</h3>
 
 <p>Juliaで計算結果（上の例でいう <code>double** output</code>）を受け取りたい場合、ポインタに変換した値をJuliaのArrayに戻す必要があります（必ずしもそうではないですが、まぁほぼそうでしょう）。つまり、<code>Array(Ptr{Float64},1)</code>を<code>Array{Float64,2}</code>したいわけです。幸いにも、これは<code>pointer_to_array</code>を使うと簡単にできます。コードを以下に示します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#75715e"># ccallを実行した後の計算結果が coutput に格納されているとします</span>
+coutput<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>},<span style="color:#ae81ff">1</span>}
 
-<pre><code class="language-julia"># ccallを実行した後の計算結果が coutput に格納されているとします
-coutput::Array{Ptr{Float64},1}
-
-# Cに渡した型 Array{Ptr{Float64},1} から Array{Float64,2}に変換
-for i=1:length(coutput)
-    output[:,i] = pointer_to_array(coutput[i], size(output, 1))
-end
-</code></pre>
-
+<span style="color:#75715e"># Cに渡した型 Array{Ptr{Float64},1} から Array{Float64,2}に変換</span>
+<span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>length(coutput)
+    output[<span style="color:#f92672">:</span>,i] <span style="color:#f92672">=</span> pointer_to_array(coutput[i], size(output, <span style="color:#ae81ff">1</span>))
+<span style="color:#66d9ef">end</span></code></pre></div>
 <p><code>pointer_to_array</code> は、その名前の通りの関数ですね。pointerをArrayに変換してくれます。</p>
 
 <h3 id="1-2-3-をまとめる">1, 2, 3 をまとめる</h3>
 
 <p>最後に、1, 2, 3の内容をまとめて、ポインタのポインタを引数にもつ関数のラッパー例を書いておきます。</p>
-
-<pre><code class="language-julia">function fooo(input::Array{Float64,2})
-    h, w = size(intput)
-    output = Array(Float64, h, w)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#66d9ef">function</span> fooo(input<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Float64</span>,<span style="color:#ae81ff">2</span>})
+    h, w <span style="color:#f92672">=</span> size(intput)
+    output <span style="color:#f92672">=</span> <span style="color:#66d9ef">Array</span>(<span style="color:#66d9ef">Float64</span>, h, w)
     
-    # C関数に渡す用の変数
-    cinput::Array{Ptr{Float64}} = ptrarray2d(input)
-    coutput::Array{Ptr{Float64}} = ptrarray2d(output)
+    <span style="color:#75715e"># C関数に渡す用の変数</span>
+    cinput<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>}} <span style="color:#f92672">=</span> ptrarray2d(input)
+    coutput<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>}} <span style="color:#f92672">=</span> ptrarray2d(output)
     
-    ccall(:fooo, &quot;libfooo&quot;, Void,
-    		 (Ptr{Ptr{Float64}}, Int, Int, Ptr{Ptr{Float64}}), 
+    <span style="color:#66d9ef">ccall</span>(<span style="color:#f92672">:</span>fooo, <span style="color:#e6db74">&#34;libfooo&#34;</span>, <span style="color:#66d9ef">Void</span>,
+    		 (<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>}}, <span style="color:#66d9ef">Int</span>, <span style="color:#66d9ef">Int</span>, <span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>}}), 
     		 cinput, w, h, coutput)
 
-    # coutputをJuliaのArrayに変換
-    for i=1:length(coutput)
-        output[i,:] = pointer_to_array(coutput[i], h)
-    end
+    <span style="color:#75715e"># coutputをJuliaのArrayに変換</span>
+    <span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>length(coutput)
+        output[i,<span style="color:#f92672">:</span>] <span style="color:#f92672">=</span> pointer_to_array(coutput[i], h)
+    <span style="color:#66d9ef">end</span>
 
     output
-end
-</code></pre>
-
+<span style="color:#66d9ef">end</span></code></pre></div>
 <h3 id="ポインタのポインタまとめ">ポインタのポインタまとめ</h3>
 
 <ul>

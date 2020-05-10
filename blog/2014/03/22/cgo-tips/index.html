@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -61,17 +61,11 @@
 <h2 id="基本的な使い方">基本的な使い方</h2>
 
 <p>まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う</p>
-
-<pre><code class="language-go">import &quot;C&quot;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span></code></pre></div>
 <p>import文のすぐ上のコメントにinclude &lt;ヘッダ.h&gt; と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書く</p>
-
-<pre><code class="language-go">// #include &lt;stdio.h&gt;
-// #include &lt;stdlib.h&gt;
-import &quot;C&quot;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// #include &lt;stdio.h&gt;
+</span><span style="color:#75715e">// #include &lt;stdlib.h&gt;
+</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span></code></pre></div>
 <p>これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる</p>
 
 <h2 id="外部ライブラリを呼ぶ">外部ライブラリを呼ぶ</h2>
@@ -81,12 +75,9 @@ import &quot;C&quot;
 <p>cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができる</p>
 
 <p>pkg-configを使うと 、</p>
-
-<pre><code class="language-go">// #cgo pkg-config: png cairo
-// #include &lt;png.h&gt;
-import &quot;C&quot;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// #cgo pkg-config: png cairo
+</span><span style="color:#75715e">// #include &lt;png.h&gt;
+</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span></code></pre></div>
 <p>こんな感じ（<a href="http://golang.org/cmd/cgo/">Goの公式ページ</a>から参照）</p>
 
 <h2 id="tips">Tips</h2>
@@ -99,10 +90,7 @@ import &quot;C&quot;
 
 <p>これは比較的簡単にできる。以前qiitaにも書いた
 <a href="http://qiita.com/r9y9/items/e6d879c9b7d4f2697593">http://qiita.com/r9y9/items/e6d879c9b7d4f2697593</a></p>
-
-<pre><code class="language-go">(*C.double)(&amp;slice[0])
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">(<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">slice</span>[<span style="color:#ae81ff">0</span>])</code></pre></div>
 <p>のようにキャストしてやればOK</p>
 
 <h2 id="2-goのスライスのスライスをcのポインタのポインタとして関数の引数に渡す">2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す</h2>
@@ -110,30 +98,19 @@ import &quot;C&quot;
 <p>[][]float64 -&gt; double** のようなイメージ</p>
 
 <p>例として、worldから引っ張ってきた以下のようなCの関数を考える</p>
-
-<pre><code class="language-c++">void Star(double *x, int x_length, int fs, double *time_axis, double *f0,
-  int f0_length, double **spectrogram);
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Star</span>(<span style="color:#66d9ef">double</span> <span style="color:#f92672">*</span>x, <span style="color:#66d9ef">int</span> x_length, <span style="color:#66d9ef">int</span> fs, <span style="color:#66d9ef">double</span> <span style="color:#f92672">*</span>time_axis, <span style="color:#66d9ef">double</span> <span style="color:#f92672">*</span>f0,
+  <span style="color:#66d9ef">int</span> f0_length, <span style="color:#66d9ef">double</span> <span style="color:#f92672">**</span>spectrogram);
+</code></pre></div>
 <p>**spectrogramには処理結果が格納される。もちろん処理結果はGoの型で扱いたいんだが、では<strong>**spectrogramにどうやってGoの型を渡すか？</strong>ということが問題になる</p>
 
 <p>doubleの二次元配列なので、</p>
-
-<pre><code class="language-go">s := [][]float64
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> [][]<span style="color:#66d9ef">float64</span></code></pre></div>
 <p>というスライスのスライスを考えて、キャストして渡したいところだけど、結論から言うとこれはできない</p>
 
 <p>ではどうするかというと、苦肉の策として、</p>
-
-<pre><code class="language-go">wspace := make([]*C.double, len(f0))
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">wspace</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>, len(<span style="color:#a6e22e">f0</span>))</code></pre></div>
 <p>というスライスを考えて、</p>
-
-<pre><code>(**C.double)(&amp;wspace[0])
-</code></pre>
-
+<pre><code>(**C.double)(&amp;wspace[0])</code></pre>
 <p>とすれば、double**として関数の引数に渡すことができる。他にも方法がある気がするが、これでも期待通りの動作をする（あまりハックっぽいことしたくない…</p>
 
 <p>まとめると、</p>
@@ -164,50 +141,44 @@ import &quot;C&quot;
 <p>以上。とても面倒ですね…</p>
 
 <p>さて、結局上のStarのラッパーは以下のようになった</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Star</span>(<span style="color:#a6e22e">x</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">fs</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span> []<span style="color:#66d9ef">float64</span>) [][]<span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">FFTSize</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">size_t</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GetFFTSizeForStar</span>(<span style="color:#a6e22e">C</span>.int(<span style="color:#a6e22e">fs</span>)))
+	<span style="color:#a6e22e">numFreqBins</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">FFTSize</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
 
-<pre><code class="language-go">func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {
-	FFTSize := C.size_t(C.GetFFTSizeForStar(C.int(fs)))
-	numFreqBins := FFTSize/2 + 1
-
-	// Create workspace
-	wspace := make([]*C.double, len(f0))
-	for i := range wspace {
-		wspace[i] = (*C.double)(C.malloc(byteSizeOfFloat64 * numFreqBins))
-		defer C.free(unsafe.Pointer(wspace[i]))
+	<span style="color:#75715e">// Create workspace
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">wspace</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>, len(<span style="color:#a6e22e">f0</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">wspace</span> {
+		<span style="color:#a6e22e">wspace</span>[<span style="color:#a6e22e">i</span>] = (<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">malloc</span>(<span style="color:#a6e22e">byteSizeOfFloat64</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">numFreqBins</span>))
+		<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">free</span>(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">wspace</span>[<span style="color:#a6e22e">i</span>]))
 	}
 
-	// Perform star
-	C.Star((*C.double)(&amp;x[0]),
-		C.int(len(x)),
-		C.int(fs),
-		(*C.double)(&amp;timeAxis[0]),
-		(*C.double)(&amp;f0[0]),
-		C.int(len(f0)),
-		(**C.double)(&amp;wspace[0]))
+	<span style="color:#75715e">// Perform star
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">Star</span>((<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span>[<span style="color:#ae81ff">0</span>]),
+		<span style="color:#a6e22e">C</span>.int(len(<span style="color:#a6e22e">x</span>)),
+		<span style="color:#a6e22e">C</span>.int(<span style="color:#a6e22e">fs</span>),
+		(<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">timeAxis</span>[<span style="color:#ae81ff">0</span>]),
+		(<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">f0</span>[<span style="color:#ae81ff">0</span>]),
+		<span style="color:#a6e22e">C</span>.int(len(<span style="color:#a6e22e">f0</span>)),
+		(<span style="color:#f92672">**</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">wspace</span>[<span style="color:#ae81ff">0</span>]))
 
-	// Copy to go slice
-	spectrogram := make([][]float64, len(f0))
-	for i := range spectrogram {
-		spectrogram[i] = CArrayToGoSlice(wspace[i], C.int(numFreqBins))
+	<span style="color:#75715e">// Copy to go slice
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">spectrogram</span> <span style="color:#f92672">:=</span> make([][]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">f0</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">spectrogram</span> {
+		<span style="color:#a6e22e">spectrogram</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">CArrayToGoSlice</span>(<span style="color:#a6e22e">wspace</span>[<span style="color:#a6e22e">i</span>], <span style="color:#a6e22e">C</span>.int(<span style="color:#a6e22e">numFreqBins</span>))
 	}
 
-	return spectrogram
-}
-</code></pre>
-
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">spectrogram</span>
+}</code></pre></div>
 <p>上で使っているutility function</p>
-
-<pre><code class="language-go">func CArrayToGoSlice(array *C.double, length C.int) []float64 {
-	slice := make([]float64, int(length))
-	b := C.GoBytes(unsafe.Pointer(array), C.int(byteSizeOfFloat64*length))
-	err := binary.Read(bytes.NewReader(b), binary.LittleEndian, slice)
-	if err != nil {
-		panic(err)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">CArrayToGoSlice</span>(<span style="color:#a6e22e">array</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>, <span style="color:#a6e22e">length</span> <span style="color:#a6e22e">C</span>.<span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">slice</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, int(<span style="color:#a6e22e">length</span>))
+	<span style="color:#a6e22e">b</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoBytes</span>(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">array</span>), <span style="color:#a6e22e">C</span>.int(<span style="color:#a6e22e">byteSizeOfFloat64</span><span style="color:#f92672">*</span><span style="color:#a6e22e">length</span>))
+	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">NewReader</span>(<span style="color:#a6e22e">b</span>), <span style="color:#a6e22e">binary</span>.<span style="color:#a6e22e">LittleEndian</span>, <span style="color:#a6e22e">slice</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
 	}
-	return slice
-}
-</code></pre>
-
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">slice</span>
+}</code></pre></div>
 <ul>
 <li>[]*C.double のスライスを作り、作業領域のメモリを確保する（Tips2の内容+メモリ確保）</li>
 <li>[]*C.double のスライスをdouble** にキャストして、Cの関数を実行（Tips2の内容）</li>
@@ -218,42 +189,35 @@ import &quot;C&quot;
 
 <p><strong>※2013/03/27 追記</strong>
 :もっとシンプルかつ効率的（copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]*double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]*doubleから[][]float64に変換する必要はなかった。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Star</span>(<span style="color:#a6e22e">x</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">fs</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">timeAxis</span>, <span style="color:#a6e22e">f0</span> []<span style="color:#66d9ef">float64</span>) [][]<span style="color:#66d9ef">float64</span> {
+	<span style="color:#a6e22e">FFTSize</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">size_t</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GetFFTSizeForStar</span>(<span style="color:#a6e22e">C</span>.int(<span style="color:#a6e22e">fs</span>)))
+	<span style="color:#a6e22e">numFreqBins</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">size_t</span>(<span style="color:#a6e22e">FFTSize</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)
 
-<pre><code class="language-go">func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {
-	FFTSize := C.size_t(C.GetFFTSizeForStar(C.int(fs)))
-	numFreqBins := C.size_t(FFTSize/2 + 1)
-
-	spectrogram := make([][]float64, len(f0))
-	for i := range spectrogram {
-		spectrogram[i] = make([]float64, numFreqBins)
+	<span style="color:#a6e22e">spectrogram</span> <span style="color:#f92672">:=</span> make([][]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">f0</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">spectrogram</span> {
+		<span style="color:#a6e22e">spectrogram</span>[<span style="color:#a6e22e">i</span>] = make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">numFreqBins</span>)
 	}
 
-	spectrogramUsedInC := Make2DCArrayAlternative(spectrogram)
+	<span style="color:#a6e22e">spectrogramUsedInC</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Make2DCArrayAlternative</span>(<span style="color:#a6e22e">spectrogram</span>)
 
-	// Perform star
-	C.Star((*C.double)(&amp;x[0]),
-		C.int(len(x)),
-		C.int(fs),
-		(*C.double)(&amp;timeAxis[0]),
-		(*C.double)(&amp;f0[0]),
-		C.int(len(f0)),
-		(**C.double)(&amp;spectrogramUsedInC[0]))
+	<span style="color:#75715e">// Perform star
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">Star</span>((<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span>[<span style="color:#ae81ff">0</span>]),
+		<span style="color:#a6e22e">C</span>.int(len(<span style="color:#a6e22e">x</span>)),
+		<span style="color:#a6e22e">C</span>.int(<span style="color:#a6e22e">fs</span>),
+		(<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">timeAxis</span>[<span style="color:#ae81ff">0</span>]),
+		(<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">f0</span>[<span style="color:#ae81ff">0</span>]),
+		<span style="color:#a6e22e">C</span>.int(len(<span style="color:#a6e22e">f0</span>)),
+		(<span style="color:#f92672">**</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">spectrogramUsedInC</span>[<span style="color:#ae81ff">0</span>]))
 
-	return spectrogram
-}
-</code></pre>
-
-<pre><code class="language-go">
-func Make2DCArrayAlternative(matrix [][]float64) []*C.double {
-	alternative := make([]*C.double, len(matrix))
-	for i := range alternative {
-		// DO NOT free because the source slice is managed by Go
-		alternative[i] = (*C.double)(&amp;matrix[i][0])
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">spectrogram</span>
+}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Make2DCArrayAlternative</span>(<span style="color:#a6e22e">matrix</span> [][]<span style="color:#66d9ef">float64</span>) []<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span> {
+	<span style="color:#a6e22e">alternative</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>, len(<span style="color:#a6e22e">matrix</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">alternative</span> {
+		<span style="color:#75715e">// DO NOT free because the source slice is managed by Go
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">alternative</span>[<span style="color:#a6e22e">i</span>] = (<span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">double</span>)(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">i</span>][<span style="color:#ae81ff">0</span>])
 	}
-	return alternative
-}
-</code></pre>
-
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">alternative</span>
+}</code></pre></div>
 <h2 id="おわりに">おわりに</h2>
 
 <ul>

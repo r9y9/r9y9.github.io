@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -47,21 +47,18 @@
 <h2 id="nmfのコード-julia">NMFのコード (Julia)</h2>
 
 <p>NMFの実装の部分だけ抜き出しておきます。</p>
-
-<pre><code class="language-julia">function nmf_euc(Y::AbstractMatrix, K::Int=4;
-                        maxiter::Int=100)
-    H = rand(size(Y, 1), K)
-    U = rand(K, size(Y, 2))
-    const ϵ = 1.0e-21
-    for i=1:maxiter
-        H = H .* (Y*U') ./ (H*U*U' + ϵ)
-        U = U .* (H'*Y) ./ (H'*H*U + ϵ)
-        U = U ./ maximum(U)
-    end
-    return H, U
-end
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#66d9ef">function</span> nmf_euc(Y<span style="color:#f92672">::</span><span style="color:#66d9ef">AbstractMatrix</span>, K<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span><span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>;
+                        maxiter<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span><span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+    H <span style="color:#f92672">=</span> rand(size(Y, <span style="color:#ae81ff">1</span>), K)
+    U <span style="color:#f92672">=</span> rand(K, size(Y, <span style="color:#ae81ff">2</span>))
+    <span style="color:#66d9ef">const</span> ϵ <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0e-21</span>
+    <span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>maxiter
+        H <span style="color:#f92672">=</span> H <span style="color:#f92672">.*</span> (Y<span style="color:#f92672">*</span>U<span style="color:#f92672">&#39;</span>) <span style="color:#f92672">./</span> (H<span style="color:#f92672">*</span>U<span style="color:#f92672">*</span>U<span style="color:#f92672">&#39;</span> <span style="color:#f92672">+</span> ϵ)
+        U <span style="color:#f92672">=</span> U <span style="color:#f92672">.*</span> (H<span style="color:#f92672">&#39;*</span>Y) <span style="color:#f92672">./</span> (H<span style="color:#f92672">&#39;*</span>H<span style="color:#f92672">*</span>U <span style="color:#f92672">+</span> ϵ)
+        U <span style="color:#f92672">=</span> U <span style="color:#f92672">./</span> maximum(U)
+    <span style="color:#66d9ef">end</span>
+    <span style="color:#66d9ef">return</span> H, U
+<span style="color:#66d9ef">end</span></code></pre></div>
 <p>いやー簡単ですねー。<a href="http://r9y9.github.io/blog/2013/07/27/nmf-euclid/">NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE</a> で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。</p>
 
 <p>B3, B4くらいの人にとっては参考になるかもしれないと思ってあげてみた。</p>

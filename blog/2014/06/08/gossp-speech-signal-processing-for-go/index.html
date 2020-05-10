@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -56,36 +56,33 @@
 <p>これは、すでに有用なライブラリが存在します。<a href="https://github.com/mjibson/go-dsp">GO-DSP</a> とういデジタル信号処理のライブラリに含まれるwavパッケージを使いましょう。</p>
 
 <p>次のように書くことができます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
-
-import (
-	&quot;fmt&quot;
-	&quot;github.com/mjibson/go-dsp/wav&quot;
-	&quot;log&quot;
-	&quot;os&quot;
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/mjibson/go-dsp/wav&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
 )
 
-func main() {
-	// ファイルのオープン
-	file, err := os.Open(&quot;./test.wav&quot;)
-	if err != nil {
-		log.Fatal(err)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#75715e">// ファイルのオープン
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;./test.wav&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
 	}
 
-	// Wavファイルの読み込み 
-	w, werr := wav.ReadWav(file)
-	if werr != nil {
-		log.Fatal(werr)
+	<span style="color:#75715e">// Wavファイルの読み込み 
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">werr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">wav</span>.<span style="color:#a6e22e">ReadWav</span>(<span style="color:#a6e22e">file</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">werr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">werr</span>)
 	}
 
-	// データを表示
-	for i, val := range w.Data {
-		fmt.Println(i, val)
+	<span style="color:#75715e">// データを表示
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">val</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Data</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">val</span>)
 	}
-}
-</code></pre>
-
+}</code></pre></div>
 <p>簡単ですね。</p>
 
 <p>Goはウェブ周りの標準パッケージが充実しているので、以前<a href="http://qiita.com/r9y9/items/35a1cf139332a3072fc8">qiitaに書いた記事</a>のように、wavファイルを受け取って何らかの処理をする、みたいなサーバも簡単に書くことができます</p>
@@ -107,38 +104,32 @@ func main() {
 </ul>
 
 <p>使い方は、とても簡単です。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
-
-import (
-	&quot;fmt&quot;
-	&quot;github.com/mjibson/go-dsp/fft&quot;
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/mjibson/go-dsp/fft&#34;</span>
 )
 
-func main() {
-	fmt.Println(fft.FFTReal([]float64{1, 2, 3, 4, 5, 6, 7, 8}))
-}
-</code></pre>
-
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">fft</span>.<span style="color:#a6e22e">FFTReal</span>([]<span style="color:#66d9ef">float64</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>}))
+}</code></pre></div>
 <h2 id="離散コサイン変換-discrete-cosine-transform-dct-dct-http-godoc-org-github-com-r9y9-gossp-dct">離散コサイン変換 (Discrete Cosine Transform; DCT) <a href="http://godoc.org/github.com/r9y9/gossp/dct">[dct]</a></h2>
 
 <p>DCTは、Mel-Frequency Cepstrum Coefficients (通称MFCC) 求めるのに必要な変換です。こちらは、残念ながら良さそうなライブラリがなかったので、自分で書きました。</p>
 
 <p>使い方はFFTとほとんど一緒です。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
-
-import (
-	&quot;fmt&quot;
-	&quot;github.com/r9y9/gossp/dct&quot;
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/r9y9/gossp/dct&#34;</span>
 )
 
-func main() {
-	y := dct.DCTOrthogonal([]float64{1, 2, 3, 4, 5, 6, 7, 8})
-	fmt.Println(dct.IDCTOrthogonal(y)) // 直交変換では、逆変換すると元に戻る
-}
-</code></pre>
-
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dct</span>.<span style="color:#a6e22e">DCTOrthogonal</span>([]<span style="color:#66d9ef">float64</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>})
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">dct</span>.<span style="color:#a6e22e">IDCTOrthogonal</span>(<span style="color:#a6e22e">y</span>)) <span style="color:#75715e">// 直交変換では、逆変換すると元に戻る
+</span><span style="color:#75715e"></span>}</code></pre></div>
 <p>さて、基本的なところは一旦ここまでです。次からは、少し音声寄りの信号処理手法の紹介です。</p>
 
 <h1 id="時間周波数解析">時間周波数解析</h1>
@@ -150,65 +141,56 @@ func main() {
 <p>STFTは、音声の時間周波数解析手法として定番の方法ですね。音声を可視化したり、何らかの認識アルゴリズムの特徴抽出に使ったり、まぁ色々です。</p>
 
 <p>次のようなコードを書くと、スペクトログラムが作れます</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
-
-import (
-	&quot;flag&quot;
-	&quot;fmt&quot;
-	&quot;github.com/r9y9/gossp&quot;
-	&quot;github.com/r9y9/gossp/io&quot;
-	&quot;github.com/r9y9/gossp/stft&quot;
-	&quot;github.com/r9y9/gossp/window&quot;
-	&quot;log&quot;
-	&quot;math&quot;
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;flag&#34;</span>
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/r9y9/gossp&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/r9y9/gossp/io&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/r9y9/gossp/stft&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/r9y9/gossp/window&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;math&#34;</span>
 )
 
-func main() {
-	filename := flag.String(&quot;i&quot;, &quot;input.wav&quot;, &quot;Input filename&quot;)
-	flag.Parse()
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">filename</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">String</span>(<span style="color:#e6db74">&#34;i&#34;</span>, <span style="color:#e6db74">&#34;input.wav&#34;</span>, <span style="color:#e6db74">&#34;Input filename&#34;</span>)
+	<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Parse</span>()
 
-	w, werr := io.ReadWav(*filename)
-	if werr != nil {
-		log.Fatal(werr)
+	<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">werr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">ReadWav</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">filename</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">werr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">werr</span>)
 	}
-	data := w.GetMonoData()
+	<span style="color:#a6e22e">data</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">GetMonoData</span>()
 
-	s := &amp;stft.STFT{
-		FrameShift: int(float64(w.SampleRate) / 100.0), // 0.01 sec,
-		FrameLen:   2048,
-		Window:     window.CreateHanning(2048),
+	<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">stft</span>.<span style="color:#a6e22e">STFT</span>{
+		<span style="color:#a6e22e">FrameShift</span>: int(float64(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">SampleRate</span>) <span style="color:#f92672">/</span> <span style="color:#ae81ff">100.0</span>), <span style="color:#75715e">// 0.01 sec,
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">FrameLen</span>:   <span style="color:#ae81ff">2048</span>,
+		<span style="color:#a6e22e">Window</span>:     <span style="color:#a6e22e">window</span>.<span style="color:#a6e22e">CreateHanning</span>(<span style="color:#ae81ff">2048</span>),
 	}
 
-	spectrogram := s.STFT(data)
-	amplitudeSpectrogram, _ := gossp.SplitSpectrogram(spectrogram)
-	PrintMatrixAsGnuplotFormat(amplitudeSpectrogram)
+	<span style="color:#a6e22e">spectrogram</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">STFT</span>(<span style="color:#a6e22e">data</span>)
+	<span style="color:#a6e22e">amplitudeSpectrogram</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gossp</span>.<span style="color:#a6e22e">SplitSpectrogram</span>(<span style="color:#a6e22e">spectrogram</span>)
+	<span style="color:#a6e22e">PrintMatrixAsGnuplotFormat</span>(<span style="color:#a6e22e">amplitudeSpectrogram</span>)
 }
 
-func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
-	fmt.Println(&quot;#&quot;, len(matrix[0]), len(matrix))
-	for i, vec := range matrix {
-		for j, val := range vec {
-			fmt.Println(i, j, math.Log(val))
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">PrintMatrixAsGnuplotFormat</span>(<span style="color:#a6e22e">matrix</span> [][]<span style="color:#66d9ef">float64</span>) {
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;#&#34;</span>, len(<span style="color:#a6e22e">matrix</span>[<span style="color:#ae81ff">0</span>]), len(<span style="color:#a6e22e">matrix</span>))
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">vec</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">matrix</span> {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span>, <span style="color:#a6e22e">val</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">vec</span> {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span>, <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#a6e22e">val</span>))
 		}
-		fmt.Println(&quot;&quot;)
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;&#34;</span>)
 	}
-}
-</code></pre>
-
+}</code></pre></div>
 <p>上の画像は、gnuplotで表示したものです</p>
-
 <pre><code>set pm3d map
-sp &quot;spectrogram.txt&quot;
-</code></pre>
-
+sp &#34;spectrogram.txt&#34;</code></pre>
 <h2 id="逆短時間フーリエ変換-inverse-short-time-fourier-transform-istft-stft-http-godoc-org-github-com-r9y9-gossp-stft">逆短時間フーリエ変換 (Inverse Short Time Fourier Transform; ISTFT) <a href="http://godoc.org/github.com/r9y9/gossp/stft">[stft]</a></h2>
 
 <p>ISTFTは、STFTの逆変換でスペクトログラムから時間領域の信号に戻すために使います。スペクトログラムを加工するような音源分離、ノイズ除去手法を使う場合には、必須の処理です。これはstftと同じパッケージ下にあります。</p>
-
-<pre><code>	reconstructed := s.ISTFT(spectrogram)
-</code></pre>
-
+<pre><code>	reconstructed := s.ISTFT(spectrogram)</code></pre>
 <p>これで、スペクトログラムから音声を再構築することができます。</p>
 
 <p>逆変換の仕組みは、意外と難しかったりします。</p>

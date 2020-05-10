@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -47,27 +47,22 @@
 <p>HTSのNIT-ATR503のデモデータ (<a href="https://github.com/r9y9/nnmnkwii_gallery/blob/4899437e22528399ca50c34097a2db2bed782f8b/data/NIT-ATR503_COPYING">ライセンス</a>) から、wavデータ503発話を用います。442を学習用、56を評価用、残り5をテスト用にします（※英語音声とtrain/evalの比率は同じです）。継続長モデルは、state-levelではなくphone-levelです。サンプリング周波数が48kHzなので、mgcの次元を25から60に増やしました。モデル構造は、すべて英語音声合成の場合と同じです。ADV loss は0次を除くmgcを用いて計算しました。F0は入れていません。</p>
 
 <p><a href="https://github.com/r9y9/gantts">gantts</a> の <a href="https://github.com/r9y9/gantts/tree/jp">jpブランチ</a> をチェックアウトして、以下のシェルを実行すると、ここに貼った結果が得られます。</p>
-
-<pre><code> ./jp_tts_demo.sh jp_tts_order59
-</code></pre>
-
+<pre><code> ./jp_tts_demo.sh jp_tts_order59</code></pre>
 <p>ただし、シェル中に、<code>HTS_ROOT</code> という変数があり、シェル実行前に、環境に合わせてディレクトリを指定する必要があります。</p>
-
-<pre><code class="language-diff">diff --git a/jp_tts_demo.sh b/jp_tts_demo.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/jp_tts_demo.sh b/jp_tts_demo.sh
 index 7a8f12c..b18e604 100755
---- a/jp_tts_demo.sh
-+++ b/jp_tts_demo.sh
-@@ -8,7 +8,7 @@ experiment_id=$1
- fs=48000
+<span style="color:#f92672">--- a/jp_tts_demo.sh
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/jp_tts_demo.sh
+</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -8,7 +8,7 @@ experiment_id=$1
+</span><span style="color:#75715e"></span> fs=48000
 
  # Needs adjastment
--HTS_DEMO_ROOT=~/local/HTS-demo_NIT-ATR503-M001
-+HTS_DEMO_ROOT=HTS日本語デモの場所を指定してください
-
+<span style="color:#f92672">-HTS_DEMO_ROOT=~/local/HTS-demo_NIT-ATR503-M001
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+HTS_DEMO_ROOT=HTS日本語デモの場所を指定してください
+</span><span style="color:#a6e22e"></span>
  # Flags
  run_duration_training=1
-</code></pre>
-
+</code></pre></div>
 <h3 id="変換音声の比較">変換音声の比較</h3>
 
 <h4 id="音響モデルのみ適用">音響モデルのみ適用</h4>

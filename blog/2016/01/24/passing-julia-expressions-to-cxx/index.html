@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -55,44 +55,31 @@
 <p>Cxx.jlを使えば、C++をJulia上で非常にスムーズに扱うことができます。例えば、C++の<code>std::vector&lt;T&gt;</code>を使いたい、さらにはJuliaの<code>filter</code>関数を<code>std::vector&lt;T&gt;</code>に対して使えるようにしたい、といった場合は、以下に示すように、ほんのすこしのコードを書くだけでできます。</p>
 
 <p>準備：</p>
-
 <pre><code>using Cxx
-import CxxStd: StdVector
-</code></pre>
-
+import CxxStd: StdVector</code></pre>
 <p><code>filter</code>関数：</p>
-
-<pre><code class="language-jl">function Base.filter{T}(f, v::StdVector{T})
-    r = icxx&quot;std::vector&lt;$T&gt;();&quot;
-    for i in 0:length(v)-1
-        if f(T(v[i]))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#66d9ef">function</span> Base<span style="color:#f92672">.</span>filter{T}(f, v<span style="color:#f92672">::</span>StdVector{T})
+    r <span style="color:#f92672">=</span> icxx<span style="color:#e6db74">&#34;std::vector&lt;</span><span style="color:#e6db74">$T</span><span style="color:#e6db74">&gt;();&#34;</span>
+    <span style="color:#66d9ef">for</span> i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>length(v)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">if</span> f(T(v[i]))
             push!(r, v[i])
-        end
-    end
+        <span style="color:#66d9ef">end</span>
+    <span style="color:#66d9ef">end</span>
     r
-end
-</code></pre>
-
+<span style="color:#66d9ef">end</span></code></pre></div>
 <p>なお、<code>filter</code>関数に出てくる、<code>length</code>, <code>getindex</code>, <code>push!</code> は、Cxx..jlにそれぞれ以下のように定義されています。</p>
-
-<pre><code class="language-jl">Base.getindex(it::StdVector,i) = icxx&quot;($(it))[$i];&quot;
-Base.length(it::StdVector) = icxx&quot;$(it).size();&quot;
-Base.push!(v::StdVector,i) = icxx&quot;$v.push_back($i);&quot;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl">Base<span style="color:#f92672">.</span>getindex(it<span style="color:#f92672">::</span>StdVector,i) <span style="color:#f92672">=</span> icxx<span style="color:#e6db74">&#34;(</span><span style="color:#e6db74">$</span>(it)<span style="color:#e6db74">)[</span><span style="color:#e6db74">$i</span><span style="color:#e6db74">];&#34;</span>
+Base<span style="color:#f92672">.</span>length(it<span style="color:#f92672">::</span>StdVector) <span style="color:#f92672">=</span> icxx<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$</span>(it)<span style="color:#e6db74">.size();&#34;</span>
+Base<span style="color:#f92672">.</span>push!(v<span style="color:#f92672">::</span>StdVector,i) <span style="color:#f92672">=</span> icxx<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$v</span><span style="color:#e6db74">.push_back(</span><span style="color:#e6db74">$i</span><span style="color:#e6db74">);&#34;</span></code></pre></div>
 <p>計算結果を見やすくするために、<code>show</code> 関数も定義しておきます。</p>
-
 <pre><code>function Base.show{T}(io::IO, v::StdVector{T})
-    println(io, &quot;$(length(v))-element StdVector{$T}:&quot;)
+    println(io, &#34;$(length(v))-element StdVector{$T}:&#34;)
     for i = 0:length(v)-1
         println(io, T(v[i]))
     end
-end
-</code></pre>
-
+end</code></pre>
 <p>実行結果：</p>
-
-<pre><code class="language-jlcon">julia&gt; v = icxx&quot;std::vector&lt;double&gt;{1,2,3,4,5,6,7,8,9,10};&quot;
+<pre><code class="language-jlcon" data-lang="jlcon">julia&gt; v = icxx&#34;std::vector&lt;double&gt;{1,2,3,4,5,6,7,8,9,10};&#34;
 10-element StdVector{Float64}:
 1.0
 2.0
@@ -111,9 +98,7 @@ julia&gt; filter(x -&gt; x &gt; 5, v)
 7.0
 8.0
 9.0
-10.0
-</code></pre>
-
+10.0</code></pre>
 <p>簡単にできました。とても強力です。</p>
 
 <p>さて、以降本編に入りたいと思いますが、Julia上でC++を使うのは簡単かつ、Cxx.jlの主な用途だとは思うのですが（少なくとも自分がそうでした）、逆はどうなのでしょうか？実は、limitationはあるものの、かなり面白いことができます。</p>
@@ -125,42 +110,35 @@ julia&gt; filter(x -&gt; x &gt; 5, v)
 <h3 id="valueを埋める">valueを埋める</h3>
 
 <p><code>$(some_value)</code> という書き方をします</p>
-
-<pre><code class="language-jlcon">
-julia&gt; cxx&quot;&quot;&quot;
+<pre><code class="language-jlcon" data-lang="jlcon">julia&gt; cxx&#34;&#34;&#34;
        int getRandom() {
            return $(rand(1:10));
        }
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 true
 julia&gt; @cxx getRandom()
 2
 julia&gt; @cxx getRandom()
 2
 julia&gt; @cxx getRandom()
-2
-</code></pre>
-
+2</code></pre>
 <p>rand関数を評価したvalueを埋め込んでいるので、何度<code>getRandom</code>を呼び出しても結果は同じになります。</p>
 
 <h3 id="expressionを埋める">expressionを埋める</h3>
 
 <p><code>$:(some_expression)</code> という書き方をします。</p>
-
-<pre><code class="language-jlcon">julia&gt; cxx&quot;&quot;&quot;
+<pre><code class="language-jlcon" data-lang="jlcon">julia&gt; cxx&#34;&#34;&#34;
        int getReallyRandom() {
            return $:(rand(1:10));
        }
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 true
 julia&gt; @cxx getReallyRandom()
 1
 julia&gt; @cxx getReallyRandom()
 9
 julia&gt; @cxx getReallyRandom()
-2
-</code></pre>
-
+2</code></pre>
 <p>期待した通りの動作になっていますね。</p>
 
 <h2 id="発展例">発展例</h2>
@@ -170,14 +148,13 @@ julia&gt; @cxx getReallyRandom()
 <h3 id="c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-1">C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (1)</h3>
 
 <p>言葉にするとややこしいですが、例を見ればすぐにわかると思います。</p>
-
-<pre><code class="language-jlcon">julia&gt; cxx&quot;&quot;&quot;
+<pre><code class="language-jlcon" data-lang="jlcon">julia&gt; cxx&#34;&#34;&#34;
        void test4(int N) {
            for (int i = 0; i &lt; N; ++i) {
-               $:(println(icxx&quot;return i;&quot;); nothing);
+               $:(println(icxx&#34;return i;&#34;); nothing);
            }
        }
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 true
 
 julia&gt; @cxx test4(10)
@@ -190,39 +167,31 @@ julia&gt; @cxx test4(10)
 6
 7
 8
-9
-</code></pre>
-
+9</code></pre>
 <p>簡単に説明すると、C++のfor分の中で、Juliaのprintln関数を読んでいて、さらにprintlnの引数に、C++ expressionが渡されています。<code>icxx&quot;return i;&quot;</code>という部分が重要で、これは C++ lambda<code>[&amp;](){return i;)}</code> に相当しています。中々キモい表記ですが、こんなこともできるようです。</p>
 
 <h3 id="c-expressionの中にjuila-expressionを埋めて-さらにその中にc-expressionを埋める-2">C++ expressionの中にJuila expressionを埋めて、さらにその中にC++ expressionを埋める (2)</h3>
 
 <p>もう少し実用的な例です。C++関数の中で、Juliaのプログレスバーを使ってみます。</p>
-
-<pre><code class="language-jlcon">julia&gt; using ProgressMeter
-</code></pre>
-
-<pre><code class="language-jlcon">julia&gt; cxx&quot;&quot;&quot;
+<pre><code class="language-jlcon" data-lang="jlcon">julia&gt; using ProgressMeter</code></pre><pre><code class="language-jlcon" data-lang="jlcon">julia&gt; cxx&#34;&#34;&#34;
        #include &lt;iostream&gt;
        #include &lt;cmath&gt;
 
        double FooBar(size_t N) {
            double result = 0.0;
-           $:(global progress_meter = Progress(icxx&quot;return N;&quot;, 1); nothing);
+           $:(global progress_meter = Progress(icxx&#34;return N;&#34;, 1); nothing);
            for (size_t i = 0; i &lt; N; ++i) {
                result = log(1+i) + log(2+i);
                $:(next!(progress_meter); nothing);
            }
            return result;
        }
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 true
 
 julia&gt; @cxx FooBar(100000000)
 Progress: 100% Time: 0:00:18
-36.84136149790473
-</code></pre>
-
+36.84136149790473</code></pre>
 <p>プログレスバーについては、<a href="http://qiita.com/bicycle1885/items/6c7cd3d853e00ddfc250">Juliaでプログレスバーの表示をする | qiitq</a> を参考にどうぞ。このコードもなかなかきもいですが、期待した通りに、プログレスバーが表示されます。</p>
 
 <p>さて、この例からは、Cxx.jlの（現在の）limitationが垣間見えるのですが、</p>
@@ -235,59 +204,51 @@ Progress: 100% Time: 0:00:18
 <p>後者について、簡単に例をあげておきます。</p>
 
 <h4 id="ネストしていないからok">ネストしていないからOK</h4>
-
-<pre><code class="language-jlcon">julia&gt; cxx&quot;&quot;&quot;
+<pre><code class="language-jlcon" data-lang="jlcon">julia&gt; cxx&#34;&#34;&#34;
        int getRandom2() {
            int r = $:(rand(1:10));
            return r;
        }
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 true
 
 julia&gt; @cxx getRandom2()
-2
-</code></pre>
-
+2</code></pre>
 <h3 id="ネストしているからダメ">ネストしているからダメ</h3>
-
-<pre><code class="language-jlcon">
-julia&gt; cxx&quot;&quot;&quot;
+<pre><code class="language-jlcon" data-lang="jlcon">julia&gt; cxx&#34;&#34;&#34;
        int getRandom3(int hi) {
-           int r = $:(rand(1:icxx&quot;return hi;&quot;));
+           int r = $:(rand(1:icxx&#34;return hi;&#34;));
            return r;
        }
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 In file included from :1:
-__cxxjl_10.cpp:2:9: error: cannot initialize a variable of type 'int' with an rvalue of type 'void'
+__cxxjl_10.cpp:2:9: error: cannot initialize a variable of type &#39;int&#39; with an rvalue of type &#39;void&#39;
     int r = __julia::call2([&amp;](){ return hi; });
         ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ERROR: Currently only `Void` is supported for nested expressions
  in InstantiateSpecializations at /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:268
  [inlined code] from /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:723
  in anonymous at /Users/ryuyamamoto/.julia/v0.5/Cxx/src/cxxstr.jl:759
- in eval at ./boot.jl:265
-</code></pre>
-
+ in eval at ./boot.jl:265</code></pre>
 <p>nested expressionsで、返り値が<code>Void</code>以外も取れるようになると、嬉しいなーと思います。</p>
 
 <h3 id="c-lambda-に-julia-expressionを埋める">C++ lambda に Julia expressionを埋める</h3>
 
 <p>これは現在、間接的にしかできませんでした。以下に例をあげます。</p>
+<pre><code class="language-jlcon" data-lang="jlcon">ulia&gt; for f in [&#34;iostream&#34;, &#34;thread&#34;] cxxinclude(f) end
 
-<pre><code class="language-jlcon">ulia&gt; for f in [&quot;iostream&quot;, &quot;thread&quot;] cxxinclude(f) end
-
-julia&gt; cxx&quot;&quot;&quot;
+julia&gt; cxx&#34;&#34;&#34;
        int getRandom() { return $:(rand(1:10)); }
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 true
 
-julia&gt; th = icxx&quot;&quot;&quot;
+julia&gt; th = icxx&#34;&#34;&#34;
            std::thread([]{
                for (size_t i = 0; i &lt; 10; ++i) {
                    std::cout &lt;&lt; getRandom() &lt;&lt; std::endl;
                }
             });
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 6
 10
 5
@@ -301,34 +262,29 @@ julia&gt; th = icxx&quot;&quot;&quot;
 (class std::__1::thread) {
 }
 
-julia&gt; @cxx th-&gt;join()
-</code></pre>
-
+julia&gt; @cxx th-&gt;join()</code></pre>
 <p>threadである必要はない例ですが、lambdaの例ということで。間接的にというのは、一度Julia関数をC++関数に埋め込んで、そのC++関数をlambdaの中で呼び出す、という意味です。</p>
 
 <p>以下のようにJulia expressionを直接埋めようとすると、assertion failureで落ちるてしまうので、注意</p>
-
-<pre><code class="language-jlcon">julia&gt; th = icxx&quot;&quot;&quot;
+<pre><code class="language-jlcon" data-lang="jlcon">julia&gt; th = icxx&#34;&#34;&#34;
            std::thread([]{
                for (size_t i = 0; i &lt; 10; ++i) {
                    std::cout &lt;&lt; $:(rand(1:10)) &lt;&lt; std::endl;
                }
             });
-       &quot;&quot;&quot;
+       &#34;&#34;&#34;
 
 In file included from :1:
-:4:36: error: variable '__juliavar1' cannot be implicitly captured in a lambda with no capture-default specified
+:4:36: error: variable &#39;__juliavar1&#39; cannot be implicitly captured in a lambda with no capture-default specified
             std::cout &lt;&lt; jl_apply0(__juliavar1) &lt;&lt; std::endl;
                                    ^
-:1:1: note: '__juliavar1' declared here
+:1:1: note: &#39;__juliavar1&#39; declared here
 ^
 :2:17: note: lambda expression begins here
     std::thread([]{
                 ^
-Assertion failed: (V &amp;&amp; &quot;DeclRefExpr not entered in LocalDeclMap?&quot;), function EmitDeclRefLValue, file /Users/ryuyamamoto/julia/deps/srccache/llvm-3.7.1/tools/clang/lib/CodeGen/CGExpr.cpp, line 2000.
-zsh: abort      julia-master
-</code></pre>
-
+Assertion failed: (V &amp;&amp; &#34;DeclRefExpr not entered in LocalDeclMap?&#34;), function EmitDeclRefLValue, file /Users/ryuyamamoto/julia/deps/srccache/llvm-3.7.1/tools/clang/lib/CodeGen/CGExpr.cpp, line 2000.
+zsh: abort      julia-master</code></pre>
 <p>例はこれで以上です。</p>
 
 <h2 id="まとめ">まとめ</h2>

@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -133,58 +133,52 @@
 <h4 id="depthとcolorを点群に変換する関数">Depthとcolorを点群に変換する関数</h4>
 
 <p>まず、コードを以下に示します。</p>
-
-<pre><code class="language-jl">function getPointCloudXYZRGB(registration, undistorted, registered)
-    w = width(undistorted)
-    h = height(undistorted)
-    cloud = pcl.PointCloud{pcl.PointXYZRGB}(w, h)
-    icxx&quot;$(cloud.handle)-&gt;is_dense = false;&quot;
-    pointsptr = icxx&quot;&amp;$(cloud.handle)-&gt;points[0];&quot;
-    icxx&quot;&quot;&quot;
-    for (size_t ri = 0; ri &lt; $h; ++ri) {
-        for (size_t ci = 0; ci &lt; $w; ++ci) {
-            auto p = $(pointsptr) + $w * ri + ci;
-            $(registration)-&gt;getPointXYZRGB($(undistorted.handle),
-                $(registered.handle), ri, ci, p-&gt;x, p-&gt;y, p-&gt;z, p-&gt;rgb);
-        }
-    }
-    &quot;&quot;&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#66d9ef">function</span> getPointCloudXYZRGB(registration, undistorted, registered)
+    w <span style="color:#f92672">=</span> width(undistorted)
+    h <span style="color:#f92672">=</span> height(undistorted)
+    cloud <span style="color:#f92672">=</span> pcl<span style="color:#f92672">.</span>PointCloud{pcl<span style="color:#f92672">.</span>PointXYZRGB}(w, h)
+    icxx<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$</span>(cloud<span style="color:#f92672">.</span>handle)<span style="color:#e6db74">-&gt;is_dense = false;&#34;</span>
+    pointsptr <span style="color:#f92672">=</span> icxx<span style="color:#e6db74">&#34;&amp;</span><span style="color:#e6db74">$</span>(cloud<span style="color:#f92672">.</span>handle)<span style="color:#e6db74">-&gt;points[0];&#34;</span>
+    icxx<span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    for (size_t ri = 0; ri &lt; </span><span style="color:#e6db74">$h</span><span style="color:#e6db74">; ++ri) {
+</span><span style="color:#e6db74">        for (size_t ci = 0; ci &lt; </span><span style="color:#e6db74">$w</span><span style="color:#e6db74">; ++ci) {
+</span><span style="color:#e6db74">            auto p = </span><span style="color:#e6db74">$</span>(pointsptr)<span style="color:#e6db74"> + </span><span style="color:#e6db74">$w</span><span style="color:#e6db74"> * ri + ci;
+</span><span style="color:#e6db74">            </span><span style="color:#e6db74">$</span>(registration)<span style="color:#e6db74">-&gt;getPointXYZRGB(</span><span style="color:#e6db74">$</span>(undistorted<span style="color:#f92672">.</span>handle)<span style="color:#e6db74">,
+</span><span style="color:#e6db74">                </span><span style="color:#e6db74">$</span>(registered<span style="color:#f92672">.</span>handle)<span style="color:#e6db74">, ri, ci, p-&gt;x, p-&gt;y, p-&gt;z, p-&gt;rgb);
+</span><span style="color:#e6db74">        }
+</span><span style="color:#e6db74">    }
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
     cloud
-end
-</code></pre>
-
+<span style="color:#66d9ef">end</span></code></pre></div>
 <p><a href="https://github.com/r9y9/PCL.jl/blob/bd6aefc72537761fa81244da512e2002bb1c4817/examples/libfreenect2_grabbar.jl#L12-L29">r9y9/PCL.jl/examples/libfreenect2_grabbar.jl#L12-L29</a></p>
 
 <p>syntax highlightとは何だったのか、と言いたくなるようなコードですが、performance heavy な部分は <code>icxx&quot;&quot;&quot;...&quot;&quot;&quot;</code> という形で、C++ で記述しています。Juliaのコード中で、こんなに自由にC++を使えるなんて、何というかキモいけど書いていて楽しいです。</p>
 
 <p>なお、最初に書いたコードは、以下の様な感じでした。</p>
-
-<pre><code class="language-jl">function getPointCloudXYZRGB(registration, undistorted, registered)
-    w = width(undistorted)
-    h = height(undistorted)
-    cloud = pcl.PointCloud{pcl.PointXYZRGB}(w, h)
-    icxx&quot;$(cloud.handle)-&gt;is_dense = true;&quot;
-    pointsptr = icxx&quot;&amp;$(cloud.handle)-&gt;points[0];&quot;
-    for ri in 0:h-1
-        for ci in 0:w-1
-            p = icxx&quot;$(pointsptr) + $w * $ri + $ci;&quot;
-            x,y,z,r,g,b = getPointXYZRGB(registration, undistorted,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl"><span style="color:#66d9ef">function</span> getPointCloudXYZRGB(registration, undistorted, registered)
+    w <span style="color:#f92672">=</span> width(undistorted)
+    h <span style="color:#f92672">=</span> height(undistorted)
+    cloud <span style="color:#f92672">=</span> pcl<span style="color:#f92672">.</span>PointCloud{pcl<span style="color:#f92672">.</span>PointXYZRGB}(w, h)
+    icxx<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$</span>(cloud<span style="color:#f92672">.</span>handle)<span style="color:#e6db74">-&gt;is_dense = true;&#34;</span>
+    pointsptr <span style="color:#f92672">=</span> icxx<span style="color:#e6db74">&#34;&amp;</span><span style="color:#e6db74">$</span>(cloud<span style="color:#f92672">.</span>handle)<span style="color:#e6db74">-&gt;points[0];&#34;</span>
+    <span style="color:#66d9ef">for</span> ri <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>h<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">for</span> ci <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>w<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+            p <span style="color:#f92672">=</span> icxx<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$</span>(pointsptr)<span style="color:#e6db74"> + </span><span style="color:#e6db74">$w</span><span style="color:#e6db74"> * </span><span style="color:#e6db74">$ri</span><span style="color:#e6db74"> + </span><span style="color:#e6db74">$ci</span><span style="color:#e6db74">;&#34;</span>
+            x,y,z,r,g,b <span style="color:#f92672">=</span> getPointXYZRGB(registration, undistorted,
                 registered, ri, ci)
-            isnan(z) &amp;&amp; icxx&quot;$(cloud.handle)-&gt;is_dense = false;&quot;
-            icxx&quot;&quot;&quot;
-            $p-&gt;x = $x;
-            $p-&gt;y = $y;
-            $p-&gt;z = $z;
-            $p-&gt;r = $r;
-            $p-&gt;g = $g;
-            $p-&gt;b = $b;
-            &quot;&quot;&quot;
-        end
-    end
+            isnan(z) <span style="color:#f92672">&amp;&amp;</span> icxx<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$</span>(cloud<span style="color:#f92672">.</span>handle)<span style="color:#e6db74">-&gt;is_dense = false;&#34;</span>
+            icxx<span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">            </span><span style="color:#e6db74">$p</span><span style="color:#e6db74">-&gt;x = </span><span style="color:#e6db74">$x</span><span style="color:#e6db74">;
+</span><span style="color:#e6db74">            </span><span style="color:#e6db74">$p</span><span style="color:#e6db74">-&gt;y = </span><span style="color:#e6db74">$y</span><span style="color:#e6db74">;
+</span><span style="color:#e6db74">            </span><span style="color:#e6db74">$p</span><span style="color:#e6db74">-&gt;z = </span><span style="color:#e6db74">$z</span><span style="color:#e6db74">;
+</span><span style="color:#e6db74">            </span><span style="color:#e6db74">$p</span><span style="color:#e6db74">-&gt;r = </span><span style="color:#e6db74">$r</span><span style="color:#e6db74">;
+</span><span style="color:#e6db74">            </span><span style="color:#e6db74">$p</span><span style="color:#e6db74">-&gt;g = </span><span style="color:#e6db74">$g</span><span style="color:#e6db74">;
+</span><span style="color:#e6db74">            </span><span style="color:#e6db74">$p</span><span style="color:#e6db74">-&gt;b = </span><span style="color:#e6db74">$b</span><span style="color:#e6db74">;
+</span><span style="color:#e6db74">            &#34;&#34;&#34;</span>
+        <span style="color:#66d9ef">end</span>
+    <span style="color:#66d9ef">end</span>
     cloud
-end
-</code></pre>
-
+<span style="color:#66d9ef">end</span></code></pre></div>
 <p><a href="https://github.com/r9y9/PCL.jl/blob/bd6aefc72537761fa81244da512e2002bb1c4817/examples/libfreenect2_grabbar.jl#L12-L29">r9y9/PCL.jl/examples/libfreenect2_grabbar.jl#L12-L29</a></p>
 
 <p>このコードだと、forループの中でJulia関数の呼びだしが発生するため、実は重たい処理になっています。このコードだと、確かfps 3 とかそのくらいでした。関数呼び出しがボトルネックだと気づいて、<code>icxx&quot;&quot;&quot;...&quot;&quot;&quot;</code> でくるんで（一つの関数にすることで）高速化を図った次第です。</p>
@@ -192,40 +186,37 @@ end
 <h2 id="雑記">雑記</h2>
 
 <p>以下、僕のmacbook proで <code>tic(); using PCL; toc()</code> をした結果：</p>
-
-<pre><code class="language-jl">julia&gt; tic(); using PCL; toc()
-INFO: vtk include directory found: /usr/local/include/vtk-6.3
-INFO: Loading Cxx.jl...
-INFO: dlopen...
-INFO: vtk version: 6.3.0
-INFO: Including headers from system path: /usr/local/include
-INFO: pcl_version: 1.8
-INFO: Include pcl top-level headers
-  1.053026 seconds (91 allocations: 4.266 KB)
-INFO: Include pcl::common headers
-  5.433219 seconds (91 allocations: 4.078 KB)
-INFO: adding vtk and visualization module headers
-INFO: Include pcl::io headers
-  0.389614 seconds (195 allocations: 11.034 KB)
-INFO: Include pcl::registration headers
-  1.428106 seconds (195 allocations: 11.065 KB)
-INFO: Include pcl::recognition headers
-  1.154518 seconds (136 allocations: 6.141 KB)
-INFO: Include pcl::features headers
-  0.033937 seconds (181 allocations: 8.094 KB)
-INFO: Include pcl::filters headers
-  0.070545 seconds (316 allocations: 14.125 KB)
-INFO: Include pcl::kdtree headers
-  0.022809 seconds (91 allocations: 4.078 KB)
-INFO: Include pcl::sample_consensus headers
-  0.014600 seconds (91 allocations: 4.141 KB)
-INFO: Include pcl::segmentation headers
-  0.010710 seconds (46 allocations: 2.094 KB)
-INFO: FLANN version: 1.8.4
-elapsed time: 39.194405845 seconds
-39.194405845
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl">julia<span style="color:#f92672">&gt;</span> tic(); <span style="color:#66d9ef">using</span> PCL; toc()
+INFO<span style="color:#f92672">:</span> vtk include directory found<span style="color:#f92672">:</span> <span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span><span style="color:#66d9ef">local</span><span style="color:#f92672">/</span>include<span style="color:#f92672">/</span>vtk<span style="color:#f92672">-</span><span style="color:#ae81ff">6.3</span>
+INFO<span style="color:#f92672">:</span> Loading Cxx<span style="color:#f92672">.</span>jl<span style="color:#f92672">...</span>
+INFO<span style="color:#f92672">:</span> dlopen<span style="color:#f92672">...</span>
+INFO<span style="color:#f92672">:</span> vtk version<span style="color:#f92672">:</span> <span style="color:#ae81ff">6.3</span><span style="color:#f92672">.</span><span style="color:#ae81ff">0</span>
+INFO<span style="color:#f92672">:</span> Including headers from system path<span style="color:#f92672">:</span> <span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span><span style="color:#66d9ef">local</span><span style="color:#f92672">/</span>include
+INFO<span style="color:#f92672">:</span> pcl_version<span style="color:#f92672">:</span> <span style="color:#ae81ff">1.8</span>
+INFO<span style="color:#f92672">:</span> Include pcl top<span style="color:#f92672">-</span>level headers
+  <span style="color:#ae81ff">1.053026</span> seconds (<span style="color:#ae81ff">91</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">4.266</span> KB)
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>common headers
+  <span style="color:#ae81ff">5.433219</span> seconds (<span style="color:#ae81ff">91</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">4.078</span> KB)
+INFO<span style="color:#f92672">:</span> adding vtk and visualization <span style="color:#66d9ef">module</span> headers
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>io headers
+  <span style="color:#ae81ff">0.389614</span> seconds (<span style="color:#ae81ff">195</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">11.034</span> KB)
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>registration headers
+  <span style="color:#ae81ff">1.428106</span> seconds (<span style="color:#ae81ff">195</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">11.065</span> KB)
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>recognition headers
+  <span style="color:#ae81ff">1.154518</span> seconds (<span style="color:#ae81ff">136</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">6.141</span> KB)
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>features headers
+  <span style="color:#ae81ff">0.033937</span> seconds (<span style="color:#ae81ff">181</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">8.094</span> KB)
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>filters headers
+  <span style="color:#ae81ff">0.070545</span> seconds (<span style="color:#ae81ff">316</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">14.125</span> KB)
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>kdtree headers
+  <span style="color:#ae81ff">0.022809</span> seconds (<span style="color:#ae81ff">91</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">4.078</span> KB)
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>sample_consensus headers
+  <span style="color:#ae81ff">0.014600</span> seconds (<span style="color:#ae81ff">91</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">4.141</span> KB)
+INFO<span style="color:#f92672">:</span> Include pcl<span style="color:#f92672">::</span>segmentation headers
+  <span style="color:#ae81ff">0.010710</span> seconds (<span style="color:#ae81ff">46</span> allocations<span style="color:#f92672">:</span> <span style="color:#ae81ff">2.094</span> KB)
+INFO<span style="color:#f92672">:</span> FLANN version<span style="color:#f92672">:</span> <span style="color:#ae81ff">1.8</span><span style="color:#f92672">.</span><span style="color:#ae81ff">4</span>
+elapsed time<span style="color:#f92672">:</span> <span style="color:#ae81ff">39.194405845</span> seconds
+<span style="color:#ae81ff">39.194405845</span></code></pre></div>
 <p><a href="https://github.com/r9y9/PCL.jl/blob/9760565dd3b744e16733c54992551e4e0babc7ee/src/PCL.jl#L90-L101">r9y9/PCL.jl/src/PCL.jl#L90-L101</a> pcl/pcl_base.h. pcl/common/common_headers.h 当たりのパースに大分時間かかってますね、、。まぁ一度ロードしてしまえば、Juliaのプロセスをkillしないかぎり問題ないのですが。開発中は、頻繁にreloadする必要があって、辛かったです。</p>
 
 <p>ロード時間が長い問題は、Cxx.jlにプリコンパイル（<a href="https://github.com/Keno/Cxx.jl/issues/181">Keno/Cxx.jl/issues/181</a>）がサポートされれば、改善するかもしれません。</p>

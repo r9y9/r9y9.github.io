@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -41,25 +41,16 @@
 <p>僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。</p>
 
 <h2 id="下準備">下準備</h2>
-
-<pre><code class="language-bash">git clone https://github.com/JuliaLang/julia &amp;&amp; cd julia
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/JuliaLang/julia <span style="color:#f92672">&amp;&amp;</span> cd julia</code></pre></div>
 <h2 id="ビルドのカスタマイズ方法">ビルドのカスタマイズ方法</h2>
 
 <p>Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに <code>override LLVM_VER=3.7.1</code> のような書き方で記述することで、カスタマイズ可能です（詳細は<a href="https://github.com/JuliaLang/julia#source-download-and-compilation">公式の説明</a>をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。</p>
-
 <pre><code>override LLVM_VER=3.7.1
 override LLVM_ASSERTIONS=1
 override BUILD_LLVM_CLANG=1
-override USE_LLVM_SHLIB=1
-</code></pre>
-
+override USE_LLVM_SHLIB=1</code></pre>
 <p>あとは、通常通りmakeコマンドを走らせることで、ビルドを行います。</p>
-
-<pre><code class="language-bash">make -j4
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make -j4</code></pre></div>
 <p>コア数は適当に指定します。llvm, openblasあたりのビルドが結構重いので、並列ビルドがオススメです。</p>
 
 <h2 id="僕がよく使うオプション">僕がよく使うオプション</h2>
@@ -88,18 +79,12 @@ override USE_LLVM_SHLIB=1
 <h2 id="cc-cxx">CC, CXX</h2>
 
 <p>コンパイラの指定です。僕の場合 ubuntu 14.04では、（Cxx.jlのために）以下のように設定しています。</p>
-
 <pre><code>override CC=gcc-6
-override CXX=g++-6
-</code></pre>
-
+override CXX=g++-6</code></pre>
 <p>参考: <a href="https://github.com/r9y9/julia-cxx">https://github.com/r9y9/julia-cxx</a></p>
 
 <p>macOS では特に設定していませんが、Julia以外のプロジェクトをビルドするときに、たまに</p>
-
-<pre><code>CXX=usr/local/bin/clang++ cmake ${path_to_project}
-</code></pre>
-
+<pre><code>CXX=usr/local/bin/clang++ cmake ${path_to_project}</code></pre>
 <p>のように、xcode付属のclangではなく、自前でビルドしたclangを使いたい場合などに、CC, CXXを指定したりします。</p>
 
 <h3 id="use-clang">USE_CLANG</h3>
@@ -214,15 +199,9 @@ override CXX=g++-6
 </table>
 
 <p>例えばlibgit2のバージョンが変わってエラーが出たからといって、すべてをビルドし直す必要は基本的にはありません。まずは、</p>
-
-<pre><code>make -C deps clean-libgit2 &amp;&amp; make
-</code></pre>
-
+<pre><code>make -C deps clean-libgit2 &amp;&amp; make</code></pre>
 <p>としてビルドし直し、それでも駄目な場合は、</p>
-
-<pre><code>make -C deps distclean-libgit2 &amp;&amp; make
-</code></pre>
-
+<pre><code>make -C deps distclean-libgit2 &amp;&amp; make</code></pre>
 <p>といった具合に、軽いcleanコマンドから順に試しましょう。</p>
 
 <h2 id="まとめ">まとめ</h2>

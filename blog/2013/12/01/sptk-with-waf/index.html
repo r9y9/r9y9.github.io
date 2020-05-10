@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.70.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
@@ -77,32 +77,17 @@
 <p>リポジトリをクローンしたあと、</p>
 
 <h2 id="build">Build</h2>
-
-<pre><code> ./waf configure &amp;&amp; ./waf
-</code></pre>
-
+<pre><code> ./waf configure &amp;&amp; ./waf</code></pre>
 <h2 id="build-with-clang">Build with clang++</h2>
-
-<pre><code> CXX=clang++ ./waf configure &amp;&amp; ./waf
-</code></pre>
-
+<pre><code> CXX=clang++ ./waf configure &amp;&amp; ./waf</code></pre>
 <h2 id="build-with-gcc">Build with gcc</h2>
-
 <pre><code> git checkout c
- ./waf configure &amp;&amp; ./waf
-</code></pre>
-
+ ./waf configure &amp;&amp; ./waf</code></pre>
 <h2 id="build-with-clang-1">Build with clang</h2>
-
 <pre><code> git checkout c
- CC=clang ./waf configure &amp;&amp; ./waf
-</code></pre>
-
+ CC=clang ./waf configure &amp;&amp; ./waf</code></pre>
 <h2 id="install">Install</h2>
-
-<pre><code> sudo ./waf install
-</code></pre>
-
+<pre><code> sudo ./waf install</code></pre>
 <ul>
 <li>Include files: <code>/usr/local/include/SPTK</code></li>
 <li>Library: <code>/usr/local/lib/SPTK</code></li>
@@ -116,10 +101,7 @@
 <p><code>&lt;SPTK/SPTK.h&gt;</code> をインクルードして、好きな関数を呼ぶ</p>
 
 <p>コンパイルは、例えば以下のようにする</p>
-
-<pre><code> g++ test.cpp `pkg-config SPTK --cflags --libs`
-</code></pre>
-
+<pre><code> g++ test.cpp `pkg-config SPTK --cflags --libs`</code></pre>
 <p>面倒なので、example/ 内のコードを修正して使う（wafを使おう）のがおすすめです。</p>
 
 <p><br/></p>
