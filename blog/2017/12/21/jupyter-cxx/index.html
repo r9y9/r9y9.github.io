@@ -1,63 +1,844 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017] - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="[Jupyter Advent Calendar 2017](https://qiita.com/advent-calendar/2017/jupyter)" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/" />
+  <meta property="og:title" content="Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017] | LESS IS MORE" />
+  <meta property="og:description" content="[Jupyter Advent Calendar 2017](https://qiita.com/advent-calendar/2017/jupyter)" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2017-12-21T00:00:00&#43;09:00"
+      />
+    
+    <meta property="article:modified_time" content="2017-12-21T00:00:00&#43;09:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/"
+  },
+  "headline": "Interactive C++: Jupyter上で対話的にC++を使う方法の紹介 [Jupyter Advent Calendar 2017]",
+  
+  "datePublished": "2017-12-21T00:00:00+09:00",
+  "dateModified": "2017-12-21T00:00:00+09:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "[Jupyter Advent Calendar 2017](https://qiita.com/advent-calendar/2017/jupyter)"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017] | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-12-21">December 21, 2017</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="de1b5d16f8b2aa2282c5bcbb56b6b1b0" >
 
-<p><img src="/images/jupyter-cxx/jupyter-cxx-demo.gif" alt="" /></p>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
 
-<p><a href="https://qiita.com/advent-calendar/2017/jupyter">Jupyter Advent Calendar 2017</a> 21日目の記事です。</p>
+  
 
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Dec 21, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="/images/jupyter-cxx/jupyter-cxx-demo.gif" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p><a href="https://qiita.com/advent-calendar/2017/jupyter" target="_blank" rel="noopener">Jupyter Advent Calendar 2017</a> 21日目の記事です。</p>
 <p>C++をJupyterで使う方法はいくつかあります。この記事では、僕が試したことのある以下の4つの方法について、比較しつつ紹介したいと思います。</p>
-
 <ol>
-<li><a href="https://github.com/root-project/cling">root/cling</a> 付属のカーネル</li>
-<li><a href="https://github.com/root-project/cling">root/root</a> 付属のカーネル</li>
-<li><a href="https://github.com/QuantStack/xeus-cling">xeus-cling</a></li>
-<li><a href="https://github.com/Keno/Cxx.jl">Keno/Cxx.jl</a> をIJuliaで使う</li>
+<li><a href="https://github.com/root-project/cling" target="_blank" rel="noopener">root/cling</a> 付属のカーネル</li>
+<li><a href="https://github.com/root-project/cling" target="_blank" rel="noopener">root/root</a> 付属のカーネル</li>
+<li><a href="https://github.com/QuantStack/xeus-cling" target="_blank" rel="noopener">xeus-cling</a></li>
+<li><a href="https://github.com/Keno/Cxx.jl" target="_blank" rel="noopener">Keno/Cxx.jl</a> をIJuliaで使う</li>
 </ol>
-
 <p>まとめとして、簡単に特徴などを表にまとめておきますので、選ぶ際の参考にしてください。詳細な説明は後に続きます。</p>
-
 <table>
 <thead>
 <tr>
 <th></th>
-<th><a href="https://github.com/root-project/cling">cling</a></th>
-<th><a href="https://github.com/root-project/root">ROOT</a></th>
-<th><a href="https://github.com/QuantStack/xeus-cling">xeus-cling</a></th>
-<th><a href="(https://github.com/Keno/Cxx.jl)">Cxx.jl</a> + <a href="https://github.com/JuliaLang/IJulia.jl">IJulia</a></th>
+<th><a href="https://github.com/root-project/cling" target="_blank" rel="noopener">cling</a></th>
+<th><a href="https://github.com/root-project/root" target="_blank" rel="noopener">ROOT</a></th>
+<th><a href="https://github.com/QuantStack/xeus-cling" target="_blank" rel="noopener">xeus-cling</a></th>
+<th><a href="%28https://github.com/Keno/Cxx.jl%29">Cxx.jl</a> + <a href="https://github.com/JuliaLang/IJulia.jl" target="_blank" rel="noopener">IJulia</a></th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>C++インタプリタ実装</td>
@@ -66,7 +847,6 @@
 <td>C++</td>
 <td>Julia + C++</td>
 </tr>
-
 <tr>
 <td>(Tab) Code completion</td>
 <td>○</td>
@@ -74,348 +854,632 @@
 <td>○</td>
 <td>x</td>
 </tr>
-
 <tr>
 <td>Cインタプリタ</td>
-<td>△<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup></td>
+<td>△<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></td>
 <td>△</td>
 <td>△</td>
 <td>○</td>
 </tr>
-
 <tr>
 <td>%magics</td>
 <td>x</td>
 <td>%%cpp, %%jsroot, その他</td>
 <td>x</td>
-<td>△<sup class="footnote-ref" id="fnref:6"><a href="#fn:6">2</a></sup></td>
+<td>△<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></td>
 </tr>
-
 <tr>
 <td>他言語との連携</td>
 <td>x</td>
-<td>Python, R <sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup></td>
+<td>Python, R <sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></td>
 <td>x</td>
 <td>Julia</td>
 </tr>
-
 <tr>
 <td>バイナリ配布</td>
-<td><a href="https://root.cern.ch/download/cling/">公式リンク</a></td>
-<td><a href="https://root.cern.ch/downloading-root">公式リンク</a> (python2系向け）</td>
+<td><a href="https://root.cern.ch/download/cling/" target="_blank" rel="noopener">公式リンク</a></td>
+<td><a href="https://root.cern.ch/downloading-root" target="_blank" rel="noopener">公式リンク</a> (python2系向け）</td>
 <td>condaで提供</td>
-<td>△<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">4</a></sup></td>
+<td>△<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup></td>
 </tr>
-
 <tr>
 <td>オンラインデモ</td>
 <td>x</td>
-<td><a href="https://swanserver.web.cern.ch/swanserver/rootdemo/">rootdemo</a></td>
-<td><a href="https://mybinder.org/v2/gh/QuantStack/xeus-cling/0.0.7-binder?filepath=notebooks%2Fxcpp.ipynb">binderリンク</a></td>
+<td><a href="https://swanserver.web.cern.ch/swanserver/rootdemo/" target="_blank" rel="noopener">rootdemo</a></td>
+<td><a href="https://mybinder.org/v2/gh/QuantStack/xeus-cling/0.0.7-binder?filepath=notebooks%2Fxcpp.ipynb" target="_blank" rel="noopener">binderリンク</a></td>
 <td>x</td>
 </tr>
 </tbody>
 </table>
-
 <p><strong>共通事項</strong></p>
-
 <p>すべて、clang/llvmをC++インタプリタのベースにしています。Cxx.jl以外は、C++インタプリタであるclingをベースに、さらにその上にjupyterカーネルを実装しています。</p>
-
 <h2 id="1-cling">1. cling</h2>
-
 <p>clingは、いわずとしれた（？）C++インタプリタ実装です。後述するROOTという data analysis framework の一部として、CERNによって開発されています。(20年くらい前の) 古くからあったCINTというC++インタプリタ実装が、clangを使って書き直された、という歴史があります。clingプロジェクトの一環としてJupyterカーネルが開発されています。</p>
-
 <p><strong>良いところ</strong></p>
-
 <ul>
-<li>clingの起動が速いのでストレスが少ない <sup class="footnote-ref" id="fnref:4"><a href="#fn:4">5</a></sup></li>
+<li>clingの起動が速いのでストレスが少ない <sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup></li>
 </ul>
-
 <p><strong>イマイチなところ</strong></p>
-
 <ul>
 <li>IPythonだと使える <code>%time</code> のようなマジックはない</li>
 <li>cling本体で良いのでは？感が否めない。cling本体のREPLを使えば、Ctrl+Rによるヒストリ検索も使えるし…</li>
 </ul>
-
 <p><strong>使ってみた感想まとめ</strong></p>
-
 <p>個人的には、Jupyterは可視化と組み合わせてこそ良さがあると思っているのもありますが、あえてJupyterで使う必要性を僕は感じませんでした。cling自体はとても素晴らしいのと、ノートブックとして実行結果ごとコードを保存したい、といった目的でjupyterを使う場合には、良いと思いました。</p>
-
 <p><strong>注意</strong></p>
-
 <p><code>#include &lt;iostream&gt;</code> のあとにcode completionをしようとするとclingが落ちる、というバグがあります。Jupyterの場合はカーネルがリスタートします。</p>
-
 <ul>
-<li><a href="https://github.com/vgvassilev/cling/issues/152">https://github.com/vgvassilev/cling/issues/152</a></li>
+<li><a href="https://github.com/vgvassilev/cling/issues/152" target="_blank" rel="noopener">https://github.com/vgvassilev/cling/issues/152</a></li>
 </ul>
-
 <p><strong>参考リンク</strong></p>
-
 <ul>
-<li>公式web: <a href="https://cdn.rawgit.com/root-project/cling/master/www/index.html">https://cdn.rawgit.com/root-project/cling/master/www/index.html</a></li>
-<li>Github: <a href="https://github.com/root-project/cling">https://github.com/root-project/cling</a></li>
-<li>紹介スライド: <a href="http://llvm.org/devmtg/2010-11/Naumann-Cling.pdf">LLVM Developers&rsquo; Meeting, &ldquo;Creating cling, an interactive interpreter interface for clang&rdquo;, Axel Naumann, Philippe Canal, Paul Russo, Vassil Vassilev, 04.11.2010, San Jose, CA, United States</a></li>
+<li>公式web: <a href="https://cdn.rawgit.com/root-project/cling/master/www/index.html" target="_blank" rel="noopener">https://cdn.rawgit.com/root-project/cling/master/www/index.html</a></li>
+<li>Github: <a href="https://github.com/root-project/cling" target="_blank" rel="noopener">https://github.com/root-project/cling</a></li>
+<li>紹介スライド: <a href="http://llvm.org/devmtg/2010-11/Naumann-Cling.pdf" target="_blank" rel="noopener">LLVM Developers' Meeting, &ldquo;Creating cling, an interactive interpreter interface for clang&rdquo;, Axel Naumann, Philippe Canal, Paul Russo, Vassil Vassilev, 04.11.2010, San Jose, CA, United States</a></li>
 </ul>
-
 <h2 id="2-root">2. ROOT</h2>
-
 <p>ROOTの説明を公式ページから引用します：</p>
-
 <blockquote>
 <p>A modular scientific software framework. It provides all the functionalities needed to deal with big data processing, statistical analysis, visualisation and storage. It is mainly written in C++ but integrated with other languages such as Python and R.</p>
 </blockquote>
-
-<p>日本語の情報が少ない印象ですが、<a href="https://github.com/akira-okumura/RHEA/wiki/ROOT-%E8%AC%9B%E7%BF%92%E4%BC%9A-2017">ROOT 講習会 2017 | 高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)</a> によると、実験系素粒子物理学では標準的なデータ解析ソフトウェア・ライブラリ群のようです。</p>
-
-<p>ROOTプロジェクト自体にclingを含みますが、clingが提供するjupyterカーネルとは別で、<a href="https://github.com/root-project/root/tree/master/bindings/pyroot/JupyROOT">JupyROOT</a> というカーネルが開発されています。</p>
-
+<p>日本語の情報が少ない印象ですが、<a href="https://github.com/akira-okumura/RHEA/wiki/ROOT-%E8%AC%9B%E7%BF%92%E4%BC%9A-2017" target="_blank" rel="noopener">ROOT 講習会 2017 | 高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)</a> によると、実験系素粒子物理学では標準的なデータ解析ソフトウェア・ライブラリ群のようです。</p>
+<p>ROOTプロジェクト自体にclingを含みますが、clingが提供するjupyterカーネルとは別で、<a href="https://github.com/root-project/root/tree/master/bindings/pyroot/JupyROOT" target="_blank" rel="noopener">JupyROOT</a> というカーネルが開発されています。</p>
 <p><strong>良いところ</strong></p>
-
 <ul>
 <li>PythonとC++をミックスできる。<code>%%cpp</code> magicでC++関数を定義して、ホスト（python) 側から呼び出せる</li>
 <li><code>%%jsroot</code> magic により、グラフをインタラクティブに動かせる</li>
 <li>IPythonで使えるmagicが使える（<code>%timeit</code>, <code>%time</code>, <code>%load_ext</code>等）</li>
 </ul>
-
 <p><strong>イマイチなところ</strong></p>
-
 <ul>
-<li>Numpyやmatplotlibなど、Pythonを用いた数値計算ではデファクトに近いツールとの連携は微妙に思いました <sup class="footnote-ref" id="fnref:5"><a href="#fn:5">6</a></sup>。cythonのように、手軽にnumpy arrayをC++に渡す、といった方法はなさそう・・・？（あったら教えてください）</li>
+<li>Numpyやmatplotlibなど、Pythonを用いた数値計算ではデファクトに近いツールとの連携は微妙に思いました <sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup>。cythonのように、手軽にnumpy arrayをC++に渡す、といった方法はなさそう・・・？（あったら教えてください）</li>
 <li>ROOTの（でかい）APIを覚えないと使えなさそうで、ハードルが高い</li>
 <li>公式のbinderのデモノートブック、ちょいちょいカーネルが落ちる…</li>
 </ul>
-
 <p><strong>使ってみた感想まとめ</strong></p>
-
 <p>Jupyterカーネルはclingのものよりも良いと思いました。PythonとC++をミックスできるのが特に良いと思います。個人的には、ROOTが機能もりもりのデカイソフトウェアなことがあまり好きになれず、使い込んでいないのですが、ROOTのAPIに慣れた人、あるいは好きになれる人には、良いと思います。</p>
-
 <p>clingだと <code>#include &lt;iostream&gt;</code>のあとにcode completionで落ちる、というバグがありまたが、ROOT付属のcling (<code>ROOT 6.10/08</code> をソースからビルドして使いました) ではそのバグはありませんでした。</p>
-
 <p><strong>参考リンク</strong></p>
-
 <ul>
-<li>公式ページ: <a href="https://root.cern.ch/">https://root.cern.ch/</a></li>
-<li>Github: <a href="https://github.com/root-project/root">https://github.com/root-project/root</a></li>
-<li>オンラインデモ: <a href="https://swanserver.web.cern.ch/swanserver/rootdemo/">https://swanserver.web.cern.ch/swanserver/rootdemo/</a></li>
+<li>公式ページ: <a href="https://root.cern.ch/" target="_blank" rel="noopener">https://root.cern.ch/</a></li>
+<li>Github: <a href="https://github.com/root-project/root" target="_blank" rel="noopener">https://github.com/root-project/root</a></li>
+<li>オンラインデモ: <a href="https://swanserver.web.cern.ch/swanserver/rootdemo/" target="_blank" rel="noopener">https://swanserver.web.cern.ch/swanserver/rootdemo/</a></li>
 </ul>
-
 <h2 id="3-xeus-cling">3. xeus-cling</h2>
-
-<p>先月 11月30日に、<a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92">Jupyter blog で紹介</a> されたカーネルです。名前の通りclingをベースにしています。C++インタプリタとしては機能的にcling付属カーネルと同じですが、<a href="https://github.com/QuantStack/xeus">xeus</a> というJupyter kernel protocolのC++実装をベースにしている点が異なります。</p>
-
+<p>先月 11月30日に、<a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92" target="_blank" rel="noopener">Jupyter blog で紹介</a> されたカーネルです。名前の通りclingをベースにしています。C++インタプリタとしては機能的にcling付属カーネルと同じですが、<a href="https://github.com/QuantStack/xeus" target="_blank" rel="noopener">xeus</a> というJupyter kernel protocolのC++実装をベースにしている点が異なります。</p>
 <p><strong>良いところ</strong></p>
-
 <ul>
 <li>condaでパッケージとして提供されているので、インストールが楽。clang/clingも併せてインストールしてくれます</li>
-<li>同じ開発元が、<a href="https://github.com/QuantStack/xplot">xplot</a> という可視化ライブラリを提供している（ただしalphaバージョン）</li>
+<li>同じ開発元が、<a href="https://github.com/QuantStack/xplot" target="_blank" rel="noopener">xplot</a> という可視化ライブラリを提供している（ただしalphaバージョン）</li>
 <li>標準ライブラリのヘルプが <code>?</code> コマンドで確認できます (例. <code>?std::vector</code>)</li>
 </ul>
-
 <p><strong>イマイチなところ</strong></p>
-
 <ul>
-<li>外部ライブラリをロードしようとしたら動きませんでした（なので <a href="https://github.com/QuantStack/xeus-cling/pull/94">プルリク</a> 投げました（が、いい方法ではなかったようでcloseされました</li>
+<li>外部ライブラリをロードしようとしたら動きませんでした（なので <a href="https://github.com/QuantStack/xeus-cling/pull/94" target="_blank" rel="noopener">プルリク</a> 投げました（が、いい方法ではなかったようでcloseされました</li>
 <li><code>%timeit</code> の実装があったので試してみましたが、エラーが出て動きませんでした</li>
 </ul>
-
 <p><strong>使ってみた感想まとめ</strong></p>
-
 <p>少しalphaバージョンの印象を受けました。xplotなど周辺ツールへの期待がありますが、個人的にはmatplotlib等pythonの可視化ツールでいいのでは…という気持ちになりました。</p>
-
 <p><strong>参考リンク</strong></p>
-
 <ul>
-<li>Github: <a href="https://github.com/QuantStack/xeus-cling">https://github.com/QuantStack/xeus-cling</a></li>
-<li>紹介記事: <a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92">https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92</a></li>
+<li>Github: <a href="https://github.com/QuantStack/xeus-cling" target="_blank" rel="noopener">https://github.com/QuantStack/xeus-cling</a></li>
+<li>紹介記事: <a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92" target="_blank" rel="noopener">https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92</a></li>
 </ul>
-
-<h2 id="4-cxx-jl-ijulia-jl">4. Cxx.jl + IJulia.jl</h2>
-
+<h2 id="4-cxxjl--ijuliajl">4. Cxx.jl + IJulia.jl</h2>
 <p>Cxx.jlは、clangをベースにしたJuliaのC++インタフェースです。JuliaにはIJuliaというJupyterカーネルの実装があるので、IJuliaとCxx.jlを使えば、Jupyter上でC++を使うことができます。過去にCxx.jlに関する記事をいくつか書きましたので、そのリンクを貼っておきます。</p>
-
 <ul>
 <li><a href="/blog/2016/01/24/passing-julia-expressions-to-cxx/">Cxx.jlを用いてJulia expression/value をC++に埋め込む実験 | LESS IS MORE</a></li>
 <li><a href="/blog/2015/12/22/cxx-jl/">Cxx.jl を使ってみた感想 + OpenCV.jl, Libfreenect2.jl の紹介 | LESS IS MORE</a></li>
 </ul>
-
 <p><strong>良いところ</strong></p>
-
 <ul>
 <li>JuliaとC++をミックスできます。過去記事に書きましたが、例えばC++関数内でJuliaのプログレスバーを使ったりできます</li>
 <li>C++インタプリタとCインタプリタを切り替えられます</li>
 <li><code>icxx</code> と <code>cxx</code> マクロで、それぞれローカル/グローバルスコープを切り替えられます。</li>
-
-<li><p>Juliaの配列をC++に渡すのは非常に簡単にできます。例を以下に示します</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jl" data-lang="jl">C<span style="color:#f92672">++</span> <span style="color:#f92672">&gt;</span> <span style="color:#75715e">#include &lt;iostream&gt;</span>
-<span style="color:#66d9ef">true</span>
-
-julia<span style="color:#f92672">&gt;</span> cxx<span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">   template &lt;class T&gt;
-</span><span style="color:#e6db74">   void f(T x, int n) {
-</span><span style="color:#e6db74">       for (int i = 0; i &lt; n; ++i) {
-</span><span style="color:#e6db74">           std::cout &lt;&lt; x[i] &lt;&lt; std::endl;
-</span><span style="color:#e6db74">       }
-</span><span style="color:#e6db74">   }&#34;&#34;&#34;</span>;
-
-julia<span style="color:#f92672">&gt;</span> x <span style="color:#f92672">=</span> rand(<span style="color:#ae81ff">5</span>)
-<span style="color:#ae81ff">10</span><span style="color:#f92672">-</span>element <span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Float64</span>,<span style="color:#ae81ff">1</span>}<span style="color:#f92672">:</span>
-<span style="color:#ae81ff">0.593086</span>
-<span style="color:#ae81ff">0.736548</span>
-<span style="color:#ae81ff">0.344246</span>
-<span style="color:#ae81ff">0.390799</span>
-<span style="color:#ae81ff">0.226175</span>
-
-julia<span style="color:#f92672">&gt;</span> icxx<span style="color:#e6db74">&#34;f(</span><span style="color:#e6db74">$</span>(pointer(x))<span style="color:#e6db74">, </span><span style="color:#e6db74">$</span>(length(x))<span style="color:#e6db74">);&#34;</span>
-<span style="color:#ae81ff">0.593086</span>
-<span style="color:#ae81ff">0.736548</span>
-<span style="color:#ae81ff">0.344246</span>
-<span style="color:#ae81ff">0.390799</span>
-<span style="color:#ae81ff">0.226175</span></code></pre></div></li>
+<li>Juliaの配列をC++に渡すのは非常に簡単にできます。例を以下に示します</li>
 </ul>
+<pre><code class="language-jl">C++ &gt; #include &lt;iostream&gt;
+true
 
+julia&gt; cxx&quot;&quot;&quot;
+       template &lt;class T&gt;
+       void f(T x, int n) {
+           for (int i = 0; i &lt; n; ++i) {
+               std::cout &lt;&lt; x[i] &lt;&lt; std::endl;
+           }
+       }&quot;&quot;&quot;;
+
+julia&gt; x = rand(5)
+10-element Array{Float64,1}:
+ 0.593086
+ 0.736548
+ 0.344246
+ 0.390799
+ 0.226175
+
+julia&gt; icxx&quot;f($(pointer(x)), $(length(x)));&quot;
+0.593086
+0.736548
+0.344246
+0.390799
+0.226175
+</code></pre>
 <p><strong>イマイチなところ</strong></p>
-
 <ul>
 <li>Cxxパッケージを読み込むのに多少時間がかかります。僕の環境では（プリコンパイルされた状態で）2.5秒程度でした</li>
-<li>(Tab) Code completionは実装されていません <a href="https://github.com/Keno/Cxx.jl/issues/61">#61</a></li>
+<li>(Tab) Code completionは実装されていません <a href="https://github.com/Keno/Cxx.jl/issues/61" target="_blank" rel="noopener">#61</a></li>
 <li><code>icxx</code> or <code>cxx</code> で囲まないといけず、syntax highlightはされません</li>
 </ul>
-
 <p><strong>使ってみた感想まとめ</strong></p>
-
-<p>僕は一年以上Cxx.jlを使っているので、バイアスも入っていると思いますが、かなり使いやすいと思います。パッケージのロードに時間がかかるのは、何度もカーネルやjuliaを再起動したりしなければ、まったく気になりません。<a href="https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1">IJuliaの設計上の理由</a> により、magicはありませんが、例えば <code>%time</code> は <code>@time</code> マクロで十分であり、不便に感じません。</p>
-
+<p>僕は一年以上Cxx.jlを使っているので、バイアスも入っていると思いますが、かなり使いやすいと思います。パッケージのロードに時間がかかるのは、何度もカーネルやjuliaを再起動したりしなければ、まったく気になりません。<a href="https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1" target="_blank" rel="noopener">IJuliaの設計上の理由</a> により、magicはありませんが、例えば <code>%time</code> は <code>@time</code> マクロで十分であり、不便に感じません。</p>
 <p><strong>参考リンク</strong></p>
-
 <ul>
-<li>IJulia: <a href="https://github.com/JuliaLang/IJulia.jl">https://github.com/JuliaLang/IJulia.jl</a></li>
-<li>Cxx : <a href="https://github.com/Keno/Cxx.jl">https://github.com/Keno/Cxx.jl</a></li>
+<li>IJulia: <a href="https://github.com/JuliaLang/IJulia.jl" target="_blank" rel="noopener">https://github.com/JuliaLang/IJulia.jl</a></li>
+<li>Cxx : <a href="https://github.com/Keno/Cxx.jl" target="_blank" rel="noopener">https://github.com/Keno/Cxx.jl</a></li>
 </ul>
-
 <h2 id="まとめ">まとめ</h2>
-
 <ul>
 <li>C++と他言語のやりとりのスムースさの観点から、やはり僕は対話環境でC++を使うならCxx.jlが最高だと思いました。Cxx + JuliaのREPLも便利ですが、Cxx + IJuliaも良いと思います。</li>
-<li>ただし、C++単体でしか使わない、ということであれば、cling or xeus-clingが良いと思います。ただし xeus-clingは、前述の通り外部ライブラリを読みこもうとするとエラーになる問題があったので、外部ライブラリを読み込んで使用したい場合はパッチ (<a href="https://github.com/QuantStack/xeus-cling/pull/94">xeus-cling/#94</a>) を当てた方がよいかもしれません</li>
+<li>ただし、C++単体でしか使わない、ということであれば、cling or xeus-clingが良いと思います。ただし xeus-clingは、前述の通り外部ライブラリを読みこもうとするとエラーになる問題があったので、外部ライブラリを読み込んで使用したい場合はパッチ (<a href="https://github.com/QuantStack/xeus-cling/pull/94" target="_blank" rel="noopener">xeus-cling/#94</a>) を当てた方がよいかもしれません</li>
 <li>xeus-clingには、Jupyterブログにのっていたのでどんなものかと思って試してみましたが、周辺ツール含め思ってたよりalpha版のようでした。また、他と比べての機能的な優位性はあまり感じませんでした。ただし、condaパッケージとして提供されているので、敷居が一番低いのは嬉しいですね</li>
 <li>ROOTのjupyter kernelは、C++とpythonをミックスできるのが特に良く、素晴らしいと思いました。また <code>%%cpp</code> magicの他にも、ipythonで使える <code>%timeit</code> などのmagicも使えるのは、ユーザにとっては嬉しいです。Cxx.jlを除けば、ROOTのカーネルが一番良いと思いました。</li>
 </ul>
-
 <h2 id="参考">参考</h2>
-
 <ul>
-<li><a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92">Interactive Workflows for C++ with Jupyter – Jupyter Blog</a></li>
-<li><a href="https://qiita.com/mugwort_rc/items/b8087d1b6f9498b037d5">C++11/14/17インタプリタ環境 Jupyter-Cling - Qiita</a></li>
-<li><a href="https://qiita.com/sasaki77/items/f6253e1d6638fba0e744">JupyterにC++のノートのためのclingカーネルを追加する [Mac] - Qiita</a></li>
-<li><a href="https://github.com/akira-okumura/RHEA">高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)</a></li>
+<li><a href="https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92" target="_blank" rel="noopener">Interactive Workflows for C++ with Jupyter – Jupyter Blog</a></li>
+<li><a href="https://qiita.com/mugwort_rc/items/b8087d1b6f9498b037d5" target="_blank" rel="noopener">C++11/14/17インタプリタ環境 Jupyter-Cling - Qiita</a></li>
+<li><a href="https://qiita.com/sasaki77/items/f6253e1d6638fba0e744" target="_blank" rel="noopener">JupyterにC++のノートのためのclingカーネルを追加する [Mac] - Qiita</a></li>
+<li><a href="https://github.com/akira-okumura/RHEA" target="_blank" rel="noopener">高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)</a></li>
 </ul>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1">clangをベースにしているので原理的には可能だと思いますが、少なくともjupyterカーネルとしてはありません
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:6">Juliaのmacroを使えばよい、というスタンスで、提供していません。 <a href="https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1">参考リンク</a>
- <a class="footnote-return" href="#fnref:6"><sup>[return]</sup></a></li>
-<li id="fn:3"><a href="https://root.cern.ch/">公式ホームページ</a> より引用: It is mainly written in C++ but integrated with other languages such as Python and R.
- <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
-<li id="fn:2">linux向け
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-<li id="fn:4">Cxx.jlだと、パッケージのコンパイルに10秒かかる、とか過去にありました。最近は改善されていますが
- <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
-<li id="fn:5"><a href="https://github.com/rootpy/rootpy">https://github.com/rootpy/rootpy</a> ライブラリはありますが、結局このライブラリのAPIを覚えないといけないという…はい…
- <a class="footnote-return" href="#fnref:5"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>clangをベースにしているので原理的には可能だと思いますが、少なくともjupyterカーネルとしてはありません&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>Juliaのmacroを使えばよい、というスタンスで、提供していません。 <a href="https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1" target="_blank" rel="noopener">参考リンク</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><a href="https://root.cern.ch/" target="_blank" rel="noopener">公式ホームページ</a> より引用: It is mainly written in C++ but integrated with other languages such as Python and R.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>linux向け&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5" role="doc-endnote">
+<p>Cxx.jlだと、パッケージのコンパイルに10秒かかる、とか過去にありました。最近は改善されていますが&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6" role="doc-endnote">
+<p><a href="https://github.com/rootpy/rootpy" target="_blank" rel="noopener">https://github.com/rootpy/rootpy</a> ライブラリはありますが、結局このライブラリのAPIを覚えないといけないという…はい…&#160;<a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/jupyter/">Jupyter</a>
+  
+  <a class="badge badge-light" href="/tag/c-/">C&#43;&#43;</a>
+  
+  <a class="badge badge-light" href="/tag/julia/">Julia</a>
+  
+  <a class="badge badge-light" href="/tag/cling/">cling</a>
+  
+  <a class="badge badge-light" href="/tag/advent-calendar/">Advent Calendar</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/&amp;text=Interactive%20C&#43;&#43;:%20Jupyter%e4%b8%8a%e3%81%a7%e5%af%be%e8%a9%b1%e7%9a%84%e3%81%abC&#43;&#43;%e3%82%92%e4%bd%bf%e3%81%86%e6%96%b9%e6%b3%95%e3%81%ae%e7%b4%b9%e4%bb%8b%20[Jupyter%20Advent%20Calendar%202017]" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/&amp;t=Interactive%20C&#43;&#43;:%20Jupyter%e4%b8%8a%e3%81%a7%e5%af%be%e8%a9%b1%e7%9a%84%e3%81%abC&#43;&#43;%e3%82%92%e4%bd%bf%e3%81%86%e6%96%b9%e6%b3%95%e3%81%ae%e7%b4%b9%e4%bb%8b%20[Jupyter%20Advent%20Calendar%202017]" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Interactive%20C&#43;&#43;:%20Jupyter%e4%b8%8a%e3%81%a7%e5%af%be%e8%a9%b1%e7%9a%84%e3%81%abC&#43;&#43;%e3%82%92%e4%bd%bf%e3%81%86%e6%96%b9%e6%b3%95%e3%81%ae%e7%b4%b9%e4%bb%8b%20[Jupyter%20Advent%20Calendar%202017]&amp;body=https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/&amp;title=Interactive%20C&#43;&#43;:%20Jupyter%e4%b8%8a%e3%81%a7%e5%af%be%e8%a9%b1%e7%9a%84%e3%81%abC&#43;&#43;%e3%82%92%e4%bd%bf%e3%81%86%e6%96%b9%e6%b3%95%e3%81%ae%e7%b4%b9%e4%bb%8b%20[Jupyter%20Advent%20Calendar%202017]" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Interactive%20C&#43;&#43;:%20Jupyter%e4%b8%8a%e3%81%a7%e5%af%be%e8%a9%b1%e7%9a%84%e3%81%abC&#43;&#43;%e3%82%92%e4%bd%bf%e3%81%86%e6%96%b9%e6%b3%95%e3%81%ae%e7%b4%b9%e4%bb%8b%20[Jupyter%20Advent%20Calendar%202017]%20https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/&amp;title=Interactive%20C&#43;&#43;:%20Jupyter%e4%b8%8a%e3%81%a7%e5%af%be%e8%a9%b1%e7%9a%84%e3%81%abC&#43;&#43;%e3%82%92%e4%bd%bf%e3%81%86%e6%96%b9%e6%b3%95%e3%81%ae%e7%b4%b9%e4%bb%8b%20[Jupyter%20Advent%20Calendar%202017]" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2017/12/14/jupyter-bokeh/">ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017]</a></li>
+      
+      <li><a href="/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/">Juliaをソースからビルドする / Building Julia from source</a></li>
+      
+      <li><a href="/blog/2016/01/24/passing-julia-expressions-to-cxx/">Cxx.jlを用いてJulia expression/value をC&#43;&#43;に埋め込む実験</a></li>
+      
+      <li><a href="/blog/2015/12/22/cxx-jl/">Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</a></li>
+      
+      <li><a href="/blog/2015/12/08/julia-type-annotations/">Julia: 値と変数に対する Type Annotation の違い</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

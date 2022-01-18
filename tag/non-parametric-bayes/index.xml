@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Non-parametric Bayes | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/non-parametric-bayes/</link>
+      <atom:link href="https://r9y9.github.io/tag/non-parametric-bayes/index.xml" rel="self" type="application/rss+xml" />
+    <description>Non-parametric Bayes</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Wed, 20 Aug 2014 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Non-parametric Bayes</title>
+      <link>https://r9y9.github.io/tag/non-parametric-bayes/</link>
+    </image>
+    
+    <item>
+      <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</title>
+      <link>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
+      <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
+      <description>&lt;p&gt;最近 &lt;a href=&#34;julialang.org&#34;&gt;Julia&lt;/a&gt; で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/BNMF.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/BNMF.jl&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;元論文:
+&lt;a href=&#34;http://soundlab.cs.princeton.edu/publications/2010_icml_gapnmf.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Bayesian Nonparametric Matrix Factorization for Recorded Music&lt;/a&gt;
+by Matthew D. Hoffman et al. in ICML 2010.&lt;/p&gt;
+&lt;h2 id=&#34;デモ&#34;&gt;デモ&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;適当な音声（音楽じゃなくてごめんなさい）に対して、GaP-NMFをfittingしてみた結果のメモです。$K=100$ で始めて、100回ほどイテレーションを回すと適度な数（12くらい）にtruncateしているのがわかると思います。予めモデルの複雑度を指定しなくても、データから適当な数を自動決定してくれる、ノンパラベイズの良いところですね。&lt;/p&gt;
+&lt;h2 id=&#34;ハマったところ&#34;&gt;ハマったところ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら &lt;a href=&#34;https://julia.readthedocs.org/en/latest/stdlib/base/?highlight=besselkx#Base.besselkx&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;besselkx&lt;/a&gt; で、scipyで言うなら &lt;a href=&#34;http://students.mimuw.edu.pl/~pbechler/scipy_doc/generated/scipy.special.kve.html#scipy.special.kve&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;scipy.special.kve&lt;/a&gt; です。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;雑感&#34;&gt;雑感&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒&lt;/li&gt;
+&lt;li&gt;というかJuliaがMatlabに似すぎ？&lt;/li&gt;
+&lt;li&gt;Gamma分布に従う乱数は、&lt;a href=&#34;https://github.com/JuliaStats/Distributions.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Distributions,jl&lt;/a&gt; を使えばめっちゃ簡単に生成できた。素晴らしすぎる&lt;/li&gt;
+&lt;li&gt;行列演算がシンプルにかけてホント楽。pythonでもmatlabでもそうだけど（Goだとこれができないんですよ…）&lt;/li&gt;
+&lt;li&gt;第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;python版と速度比較&#34;&gt;Python版と速度比較&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/dawenl/bp_nmf/tree/master/code/gap_nmf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;bp_nmf/code/gap_nmf&lt;/a&gt; と比較します。matlabはもってないので比較対象からはずします、ごめんなさい&lt;/p&gt;
+&lt;p&gt;Gistにベンチマークに使ったスクリプトと実行結果のメモを置いときました
+&lt;a href=&#34;https://gist.github.com/r9y9/3d0c6a90dd155801c4c1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gist.github.com/r9y9/3d0c6a90dd155801c4c1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;結果だけ書いておくと、あらゆる現実を（ry の音声にGaP-NMFをepochs=100でfittingするのにかかった時間は、&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Julia: Mean elapsed time: 21.92968243 [sec]
+Python: Mean elapsed time: 18.3550617 [sec]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;という結果になりました。つまりJuliaのほうが1.2倍くらい遅かった（僕の実装が悪い可能性は十分ありますが）。どこがボトルネックになっているのか調べていないので、気が向いたら調べます。Juliaの方が速くなったらいいなー&lt;/p&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;GaP-NMFの実装チャレンジは二回目でした。（たぶん）一昨年、年末に実家に帰るときに、何を思ったのか急に実装したくなって、電車の中で論文を読んで家に着くなり実装するというエクストリームわけわからんことをしていましたが、その時はNaN and Inf地獄に負けてしまいました。Pythonで書いていましたが、今見るとそのコードマジクソでした。&lt;/p&gt;
+&lt;p&gt;そして二回目である今回、最初はmatlabコードを見ずに自力で書いていたんですが、またもやInf地獄に合いもうだめだと思って、matlabコードを写経しました。あんま成長していないようです（つらい）&lt;/p&gt;
+&lt;p&gt;Julia歴二週間くらいですが、良い感じなので使い続けて見ようと思います。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

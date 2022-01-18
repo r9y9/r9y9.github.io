@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Speech Processing | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/speech-processing/</link>
+      <atom:link href="https://r9y9.github.io/tag/speech-processing/index.xml" rel="self" type="application/rss+xml" />
+    <description>Speech Processing</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Wed, 25 Nov 2020 16:40:00 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Speech Processing</title>
+      <link>https://r9y9.github.io/tag/speech-processing/</link>
+    </image>
+    
+    <item>
+      <title>ここまで来た音声技術・今後の展望 / Current progress on speech technologies and its future prospects @ LINE DEV DAY 2020</title>
+      <link>https://r9y9.github.io/talk/linedevday2020panel/</link>
+      <pubDate>Wed, 25 Nov 2020 16:40:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/talk/linedevday2020panel/</guid>
+      <description>&lt;h3 id=&#34;abstract-ja&#34;&gt;Abstract (ja)&lt;/h3&gt;
+&lt;p&gt;人の音声をテキストに変換する音声認識技術、テキストから人の音声を生成する音声合成技術をはじめとした音声処理技術が目覚ましい速度で進歩を続けている。さらに、音声に限らないドアの開け閉めの音など一般の音を識別する音響シーン・イベント検出技術などの新しい技術分野が拓けつつある。本セッションでは、LINEから2名のエンジニア（木田祐介・山本龍一）がパネリストとして登壇し、音声認識・音声合成の現状を語る。さらに、同志社大学の井本桂右准教授に登壇いただき、今年国際会議(DCASE)を日本に誘致するなど、日本の研究者の活躍が目覚ましい音響シーン・イベント検出技術の分野の現状を語っていただく。これらの技術分野の進歩には深層学習の進歩が強い影響を与えているが、音声処理特有の要素がどのようにして深層学習と絡み合い技術進化につながっているか掘り下げていきたい。また、様々な音声処理分野で、分野間で共通要素として進展が進む技術要素と特有の要素の分析を通し、各技術分野の特性を明らかにしていきたい。そして、今後どのような方向性で技術が進化していくか、将来の展望について議論していきたい。&lt;/p&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/iSPBCot6n7g&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>

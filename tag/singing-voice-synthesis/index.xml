@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Singing Voice synthesis | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/singing-voice-synthesis/</link>
+      <atom:link href="https://r9y9.github.io/tag/singing-voice-synthesis/index.xml" rel="self" type="application/rss+xml" />
+    <description>Singing Voice synthesis</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 10 May 2020 14:42:25 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Singing Voice synthesis</title>
+      <link>https://r9y9.github.io/tag/singing-voice-synthesis/</link>
+    </image>
+    
+    <item>
+      <title>NNSVS: Pytorchベースの研究用歌声合成ライブラリ</title>
+      <link>https://r9y9.github.io/blog/2020/05/10/nnsvs/</link>
+      <pubDate>Sun, 10 May 2020 14:42:25 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2020/05/10/nnsvs/</guid>
+      <description>&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;コード: &lt;a href=&#34;https://github.com/r9y9/nnsvs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/nnsvs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Discussion: &lt;a href=&#34;https://github.com/r9y9/nnsvs/issues/1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/nnsvs/issues/1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://colab.research.google.com/github/r9y9/Colaboratory/blob/master/Neural_network_based_singing_voice_synthesis_demo_using_kiritan_singing_database_%28Japanese%29.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Demo on Google colab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;春が来た　春が来た　どこに来た。　山に来た　里に来た、野にも来た。花がさく　花がさく　どこにさく。山にさく　里にさく、野にもさく。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;audio controls=&#34;controls&#34; &gt;&lt;source src=&#34;https://r9y9.github.io/audio/nnsvs/20200510_haru.wav&#34; autoplay/&gt;Your browser does not support the audio element.&lt;/audio&gt;&lt;/p&gt;
+&lt;h2 id=&#34;nnsvs-はなに&#34;&gt;NNSVS はなに？&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Neural network-based singing voice synthesis library for research&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;研究用途を目的とした、歌声合成エンジンを作るためのオープンソースのライブラリを作ることを目指したプロジェクトです。このプロジェクトについて、考えていることをまとめておこうと思います。&lt;/p&gt;
+&lt;h3 id=&#34;なぜやるか&#34;&gt;なぜやるか？&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://n3utrino.work/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NEUTRINO&lt;/a&gt; レベルの品質の歌声合成エンジンが作れるのかやってみたかった&lt;/li&gt;
+&lt;li&gt;オープンソースのツールがほぼない分野なので、ツールを作ると誰かの役にも立っていいかなと思った。研究分野が盛り上がると良いですね&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;というのが理由です。前者の割合が大きく、後者は建前の要素が強いです。要は、できるかどうかがどうしても気になって、気がづいたら熱中していた、という感じです。&lt;/p&gt;
+&lt;h3 id=&#34;研究用途&#34;&gt;研究用途&lt;/h3&gt;
+&lt;p&gt;機械学習や信号処理にある程度明るい人を想定しています。歌声合成技術を使って創作したい人ではなく、どのようにすればより良い歌声合成を作ることができるのか？といった興味を持つ人が主な対象です。&lt;/p&gt;
+&lt;p&gt;創作活動のために歌声合成の技術を使う場合には、すでに優れたツールがあると思いますので、そちらを使っていただくのがよいと思います&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;a href=&#34;https://n3utrino.work/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NEUTRINO&lt;/a&gt;、&lt;a href=&#34;https://synthesizerv.com/jp/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Synthesizer V&lt;/a&gt;、&lt;a href=&#34;http://cevio.jp/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CeVIO&lt;/a&gt; など&lt;/p&gt;
+&lt;h3 id=&#34;オープンソース&#34;&gt;オープンソース&lt;/h3&gt;
+&lt;p&gt;オープンソースであることを重視します。歌声合成ソフトウェアは多くありますが、オープンソースのものは多くありません&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。このプロジェクトは僕が趣味として始めたもので、ビジネスにする気はまったくないので&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;、誰でも自由に使えるようにしたいと思っています。オープンなソフトウェアが、研究分野の一助になることを期待しています。&lt;/p&gt;
+&lt;h3 id=&#34;pytorchベース&#34;&gt;Pytorchベース&lt;/h3&gt;
+&lt;p&gt;過去に &lt;a href=&#34;https://github.com/r9y9/nnmnkwii&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nnmnkwii&lt;/a&gt;という音声合成のためのライブラリを作りました。その際には、任意の数値微分ライブラリと使えるようにと考えて設計しましたが、nnsvsはあえてpytorchに依存した形で作ります。&lt;/p&gt;
+&lt;p&gt;Pytorchと切り離して設計すると汎用的にしやすい一方で、&lt;a href=&#34;https://github.com/kaldi-asr/kaldi&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Kaldi&lt;/a&gt; や&lt;a href=&#34;https://github.com/espnet/espnet&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ESPnet&lt;/a&gt; のようなプロジェクトで成功している&lt;strong&gt;レシピ&lt;/strong&gt;というものが作りずらいです。ESPnetに多少関わって、再現性の担保の重要性を身にしみて感じつつあるので、Pytorchベースの学習、推論など、歌声合成のモデルを構築するために必要なすべてをひっくるめたソフトウェアを目指したいと思います。&lt;/p&gt;
+&lt;h3 id=&#34;レシピの提供&#34;&gt;レシピの提供&lt;/h3&gt;
+&lt;p&gt;再現性を重視します。そのために、KaldiやESPnetの成功に習って、レシピという実験を再現するのに必要なすべてのステップが含まれたスクリプトを提供します。レシピは、データの前処理、特徴量抽出、モデル学習、推論、波形の合成などを含みます。&lt;/p&gt;
+&lt;p&gt;例えば、このブログのトップに貼った音声サンプルを合成するのに使われたモデルは、公開されているレシピで再現することが可能です。歌声合成エンジンを作るためのありとあらゆるものを透明な形で提供します。&lt;/p&gt;
+&lt;h2 id=&#34;プロジェクトの進め方について&#34;&gt;プロジェクトの進め方について&lt;/h2&gt;
+&lt;p&gt;完全に完成してから公開する、というアプローチとは正反対で、構想のみで実態はまったくできていない状態から始めて、進捗を含めてすべてオープンで確認できるような状態で進めます。進捗は &lt;a href=&#34;https://github.com/r9y9/nnsvs/issues/1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/nnsvs/issues/1&lt;/a&gt; から確認できます。&lt;/p&gt;
+&lt;p&gt;過去に&lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;wavenet vocoder&lt;/a&gt;をつくったときにも同じような方法ではじめました。突然知らない人がコメントをくれたりするのがオープンソースの面白いところの一つだと思っているので、この方式で進めます。&lt;/p&gt;
+&lt;h2 id=&#34;現時点の状況&#34;&gt;現時点の状況&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://zunko.jp/kiridev/login.php&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;きりたんデータベース&lt;/a&gt;を使って、parametric SVS（Sinsyの中身に近いもの）が一通り作れるところまでできました。MusicXMLを入力として、音声波形を出力します。作った歌声合成システムは、time-lagモデル、音素継続長モデル、音響モデルの3つのtrainableなモデルで成り立っています。音楽/言語的特徴量は&lt;a href=&#34;https://github.com/r9y9/sinsy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;sinsy&lt;/a&gt;で抽出して、音声分析合成には&lt;a href=&#34;https://github.com/mmorise/World&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;WORLD&lt;/a&gt;を使います。仕組みは、以下の論文の内容に近いです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Y. Hono et al, &amp;ldquo;Recent Development of the DNN-based Singing Voice Synthesis System — Sinsy,&amp;rdquo; Proc. of APSIPA, 2017. (&lt;a href=&#34;http://www.apsipa.org/proceedings/2018/pdfs/0001003.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PDF&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Mixture density networkは使っていない、ビブラートパラメータを推定していない等、違いはたくさんあります。現時点では劣化sinsyといったところですね T.T&lt;/p&gt;
+&lt;h2 id=&#34;開発履歴&#34;&gt;開発履歴&lt;/h2&gt;
+&lt;h3 id=&#34;20200408-初期版&#34;&gt;2020/04/08 (初期版)&lt;/h3&gt;
+&lt;p&gt;一番最初につくったものです。見事な音痴歌声合成になりました。TTSの仕組みを使うだけでは当然だめでした、というオチです。音響モデルでは対数lf0を予測するようにしました。このころはtime-lagモデルを作っていなくて、phonetic timeingはアノテーションされたデータのものを使っています。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;iframe width=&#34;90%&#34; height=&#34;200&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; allow=&#34;autoplay&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792271372&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;20200426-本ブログ執筆時点での最新版&#34;&gt;2020/04/26 (本ブログ執筆時点での最新版)&lt;/h3&gt;
+&lt;p&gt;Time-lag, duration, acoustic modelのすべてを一旦実装し終わったバージョンです。lf0の絶対値を予測するのではなく、relativeなlf0を予測するように変えました。phonetic timing はすべて予測されたものを使っています。ひととおりできたにはいいですが、完成度はいまいちというのが正直なところですね&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;iframe width=&#34;90%&#34; height=&#34;200&#34; scrolling=&#34;no&#34; frameborder=&#34;no&#34; allow=&#34;autoplay&#34; src=&#34;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/806654083&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;今後の予定&#34;&gt;今後の予定&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/nnsvs/issues/1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/nnsvs/issues/1&lt;/a&gt; を随時更新しますが、重要なものをいくつかピップアップします。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;音響モデルの強化&lt;/strong&gt;：特にF0のモデル化が難しい印象で、改善を考えています。いまは本当に適当なCNNをつかっていますが、autoreggresive modelに変えたいと思っています。いくつか選択肢がありますが、WaveNetのようなモデルにする予定です。https://mtg.github.io/singing-synthesis-demos/ 彼らの論文を大いに参考にする予定です。NIIのWangさんのshallow ARモデルを使うもよし。最重要課題で、目下やることリストに入っています&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;離散F0モデリング&lt;/strong&gt;: NIIのWangさんの論文が大変参考になりました。音声合成では広く連続F0が使われている印象ですが、離散F0モデリングを試したいと思っています。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Transformerなどの強力なモデル&lt;/strong&gt;: 今年の &lt;a href=&#34;https://2020.ieeeicassp.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ICASSP 2020&lt;/a&gt; で &lt;a href=&#34;https://mtg.github.io/singing-synthesis-demos/transformer/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Feed-forward Transformerを使った歌声合成の研究発表&lt;/a&gt;がありましたが、近年のnon-autoregressiveモデルの発展はすごいので、同様のアプローチを試してみたいと思っています。製品化は考えないし、どんなにデカくて遅いモデルを使ってもよし&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ニューラルボコーダ&lt;/strong&gt;: 音響モデルの改善がある程度できれば、ニューラルボコーダを入れて高品質にできるといいですね。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;音楽/言語特徴量の簡略化&lt;/strong&gt;: 今は450次元くらいの特徴量を使っていますが、https://mtg.github.io/singing-synthesis-demos/ 彼らのグループの研究を見ると、もっとシンプルにできそうに思えてきています。音楽/言語特徴量の抽出は今はsinsyに頼りっきりですが、どこかのタイミングでシンプルにしたいと思っています。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Time-lag/duration modelの改善&lt;/strong&gt;: 現時点ではめっちゃ雑なつくりなので、https://mtg.github.io/singing-synthesis-demos/ 彼らの研究を見習って細部まで詰めたい&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;音素アライメントツール&lt;/strong&gt;: きりたんDBの音素アライメントが微妙に不正確なのがあったりします。今のところある程度手修正していますが、自動でやったほうがいいのではと思えてきました。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;その他データセット&lt;/strong&gt;: JVSなど。きりたんDBである程度できてからですかね&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;これまで歌声合成をやってみての所感&#34;&gt;これまで歌声合成をやってみての所感&lt;/h2&gt;
+&lt;p&gt;歌声合成クッソムズすぎワロタ&lt;/p&gt;
+&lt;p&gt;新しいことにチャレンジするのはとても楽しいですが、やっぱり難しいですね。離散化F0、autoregressive modelの導入でそれなりの品質に持っていけるという淡い期待をしていますが、さてどうなることやら。地道に頑張って改善していきます。&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;きりたんデータベース: &lt;a href=&#34;https://zunko.jp/kiridev/login.php&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://zunko.jp/kiridev/login.php&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;NEUTRINO: &lt;a href=&#34;https://n3utrino.work/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://n3utrino.work/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;NNSVS: &lt;a href=&#34;https://github.com/r9y9/nnsvs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/nnsvs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;NNSVS 進捗: &lt;a href=&#34;https://github.com/r9y9/nnsvs/issues/1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/nnsvs/issues/1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;sinsy: &lt;a href=&#34;http://sinsy.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://sinsy.sourceforge.net/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;My fork of sinsy: &lt;a href=&#34;https://github.com/r9y9/sinsy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/sinsy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;nnmnkwii: &lt;a href=&#34;https://github.com/r9y9/nnmnkwii&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/nnmnkwii&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;WORLD: &lt;a href=&#34;https://github.com/mmorise/World&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/mmorise/World&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Y. Hono et al, &amp;ldquo;Recent Development of the DNN-based Singing Voice Synthesis System — Sinsy,&amp;rdquo; Proc. of APSIPA, 2017. (&lt;a href=&#34;http://www.apsipa.org/proceedings/2018/pdfs/0001003.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PDF&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;NEUTRINO並の品質の歌声合成エンジンが作れたらいいなとは思っていますが、まだまだ道のりは長そうです。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;http://sinsy.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://sinsy.sourceforge.net/&lt;/a&gt; 有名なものにsinsyがありますが、DNNモデルの学習など、すべてがオープンソースなわけではありません&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;万が一の場合は、察してください…&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Probability | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/probability/</link>
+      <atom:link href="https://r9y9.github.io/tag/probability/index.xml" rel="self" type="application/rss+xml" />
+    <description>Probability</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Wed, 31 Jul 2013 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Probability</title>
+      <link>https://r9y9.github.io/tag/probability/</link>
+    </image>
+    
+    <item>
+      <title>Multinomial distributionとCategorical distributionの違い</title>
+      <link>https://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</link>
+      <pubDate>Wed, 31 Jul 2013 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</guid>
+      <description>&lt;p&gt;些細な違いなんだけど調べたのでメモ。Multinomial distributionは多項分布のこと。Categorical distributionは、一般的な日本語表現が見つからなかった（なのでタイトルは英語）。打つのが大変なので、以下カテゴリカル分布と書く。&lt;/p&gt;
+&lt;p&gt;結論としては、多項分布のn=1の特殊な場合がカテゴリカル分布ですよってこと。以下少しまとめる。&lt;/p&gt;
+&lt;p&gt;分布を仮定する離散変数をカテゴリと呼ぶとして、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;多項分布は、n回試行したときに各カテゴリが何回出るかを表す確率分布&lt;/li&gt;
+&lt;li&gt;多項分布は、二項分布を多カテゴリに一般化したもの&lt;/li&gt;
+&lt;li&gt;カテゴリカル分布は、多項分布のn=1の場合に相当する&lt;/li&gt;
+&lt;li&gt;カテゴリカル分布は、ベルヌーイ分布を多カテゴリに一般化したもの&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以上&lt;/p&gt;
+&lt;p&gt;nokunoさんによるこの記事→ &lt;a href=&#34;http://d.hatena.ne.jp/nokuno/20111006/1317853653&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;多項分布の最尤推定&lt;/a&gt; は、多項分布というよりカテゴリカル分布の話。本文には書いてあるけどね。あと最尤推定の結果はどちらにしろ同じなんだけどね&lt;/p&gt;
+&lt;h2 id=&#34;導出メモ&#34;&gt;導出メモ&lt;/h2&gt;
+&lt;p&gt;一応最尤推定をやってみる。前回のナイーブベイズのメモの時は省略したので。入力の変数を $ Y = {y_n}_{n=1}^{N} $ とする。&lt;/p&gt;
+&lt;h3 id=&#34;カテゴリカル分布&#34;&gt;カテゴリカル分布&lt;/h3&gt;
+&lt;div&gt;
+\begin{align}
+p(l) = \pi_{l}, \hspace{2mm} \sum_{l=1}^{L}\pi_{l} = 1
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;ここで、$\pi_{l}$がパラメータ、lはカテゴリの番号&lt;/p&gt;
+&lt;h3 id=&#34;最尤推定&#34;&gt;最尤推定&lt;/h3&gt;
+&lt;p&gt;尤度関数を立てて、最大化することでパラメータを求める。各データは独立に生起すると仮定すると、尤度関数は以下のようになる。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+L(Y; \theta) = \prod_{n=1}^{N} \pi_{y_{n}}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;$\theta$はパラメータの集合ということで。&lt;/p&gt;
+&lt;p&gt;ラベルlの出現回数を$N_{l} = \sum_{n=1}^{N} \delta (y_{n} = l)$とすると、次のように書き直せる。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+L(Y; \theta) = \prod_{l=1}^{L}\pi_{l}^{N_{l}}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;よって、対数尤度は以下のようになる。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\log L(Y; \theta) = \sum_{l=1}^{L} N_{l}\log \pi_{l}
+\end{align}
+&lt;/div&gt;
+&lt;h3 id=&#34;ラグランジュの未定乗数法で解く&#34;&gt;ラグランジュの未定乗数法で解く&lt;/h3&gt;
+&lt;p&gt;nokunoさんの記事の通りだけど、一応手でも解いたのでメモ&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+G = \sum_{l=1}^{L} N_{l}\log \pi_{l} + \lambda \Bigl[ \sum_{l=1}^{L} \pi_{l} -1) \Bigr]
+\end{align}
+&lt;/div&gt;
+として、
+&lt;div&gt;
+\begin{align}
+\frac{\partial G}{\partial \pi_{l}} = \frac{N_{l}}{\pi_{l}} + \lambda  =0
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;よって、&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\pi_{l} = -\frac{N_{l}}{\lambda}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;ここで、以下の制約条件に代入すると、&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\sum_{l=1}^{L} \pi_{l} = 1
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;$\lambda = -N$となることがわかるので、求めたかったパラメータは以下のようになる&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\pi_{l} = \frac{N_{l}}{N}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;カテゴリの頻度を計算するだけ、カンタン！！&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Categorical_distribution&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Categorical distribution - Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Multinomial_distribution&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Multinomial distribution - Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/nokuno/20111006/1317853653&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;多項分布の最尤推定 - nokunoの日記&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/sleepy_yoshi/20111107/p1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;多項分布の最尤推定とMAP推定 - 睡眠時間？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://lef-t.blogspot.jp/2013/02/categorical-distribution-wikipedia-free.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Categorical distribution - Researcher&amp;rsquo;s Eye&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

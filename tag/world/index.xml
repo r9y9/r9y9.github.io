@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>WORLD | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/world/</link>
+      <atom:link href="https://r9y9.github.io/tag/world/index.xml" rel="self" type="application/rss+xml" />
+    <description>WORLD</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sat, 22 Mar 2014 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>WORLD</title>
+      <link>https://r9y9.github.io/tag/world/</link>
+    </image>
+    
+    <item>
+      <title>音声分析変換合成システムWORLDのGoラッパーを書いた</title>
+      <link>https://r9y9.github.io/blog/2014/03/22/go-world/</link>
+      <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/03/22/go-world/</guid>
+      <description>&lt;h2 id=&#34;音声分析変換合成システムworld&#34;&gt;音声分析変換合成システムWORLD&lt;/h2&gt;
+&lt;p&gt;WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://ml.cs.yamanashi.ac.jp/world/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://ml.cs.yamanashi.ac.jp/world/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ&lt;/p&gt;
+&lt;h2 id=&#34;go-world&#34;&gt;GO-WORLD&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/go-world&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/go-world&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;使い方について、ほんの少し解説を書きます&lt;/p&gt;
+&lt;p&gt;※ubuntu12.04でのみ動作確認してます。&lt;/p&gt;
+&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
+&lt;h3 id=&#34;1-worldのインストール&#34;&gt;1. WORLDのインストール&lt;/h3&gt;
+&lt;p&gt;まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/world&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/world&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt; ./waf configure &amp;amp;&amp;amp; ./waf
+ sudo ./waf install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;でインストールできます。&lt;/p&gt;
+&lt;p&gt;なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…&lt;/p&gt;
+&lt;h3 id=&#34;2-go-worldのインストール&#34;&gt;2. GO-WORLDのインストール&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;go get github.com/r9y9/go-world
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;簡単ですね！&lt;/p&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+&lt;h3 id=&#34;1-インポートする&#34;&gt;1. インポートする&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;import &amp;quot;github.com/r9y9/go-world&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;2-worldのインスタンスを作る&#34;&gt;2. worldのインスタンスを作る&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;w := world.New(sampleRate, framePeriod) // e.g. (44100, 5)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;3-好きなworldのメソッドを呼ぶ&#34;&gt;3. 好きなworldのメソッドを呼ぶ&lt;/h3&gt;
+&lt;h4 id=&#34;基本周波数の推定-dio&#34;&gt;基本周波数の推定: Dio&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;スペクトル包絡の推定-star&#34;&gt;スペクトル包絡の推定: Star&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;spectrogram := w.Star(input, timeAxis, f0)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;励起信号の推定-platinum&#34;&gt;励起信号の推定: Platinum&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;residual := w.Platinum(input, timeAxis, f0, spectrogram)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;パラメータから音声の再合成-synthesis&#34;&gt;パラメータから音声の再合成: Synthesis&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;synthesized := w.Synthesis(f0, spectrogram, residual, len(input))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;使い方例&#34;&gt;使い方例.&lt;/h2&gt;
+&lt;p&gt;音声（wavファイル）を分析して、パラメータから音声を再合成する例を紹介します。80行弱と少し長いですがはっつけておきます&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+	&amp;quot;flag&amp;quot;
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;github.com/mjibson/go-dsp/wav&amp;quot;
+	&amp;quot;github.com/r9y9/go-world&amp;quot;
+	&amp;quot;log&amp;quot;
+	&amp;quot;os&amp;quot;
+)
+
+var defaultDioOption = world.DioOption{
+	F0Floor:          80.0,
+	F0Ceil:           640.0,
+	FramePeriod:      5,
+	ChannelsInOctave: 4.0,
+	Speed:            6,
+}
+
+// 音声を基本周波数、スペクトル包絡、励起信号の三つに分解したあと、再合成します
+func worldExample(input []float64, sampleRate int) []float64 {
+	w := world.New(sampleRate, defaultDioOption.FramePeriod)
+
+	// 1. Fundamental frequency
+	timeAxis, f0 := w.Dio(input, defaultDioOption)
+
+	// 2. Spectral envelope
+	spectrogram := w.Star(input, timeAxis, f0)
+
+	// 3. Excitation spectrum
+	residual := w.Platinum(input, timeAxis, f0, spectrogram)
+
+	// 4. Synthesis
+	return w.Synthesis(f0, spectrogram, residual, len(input))
+}
+
+// 音声を基本周波数、スペクトル包絡、非周期成分の三つに分解したあと、再合成します
+func worldExampleAp(input []float64, sampleRate int) []float64 {
+	w := world.New(sampleRate, defaultDioOption.FramePeriod)
+
+	// 1. Fundamental frequency
+	timeAxis, f0 := w.Dio(input, defaultDioOption)
+
+	// 2. Spectral envelope
+	spectrogram := w.Star(input, timeAxis, f0)
+
+	// 3. Apiriodiciy
+	apiriodicity, targetF0 := w.AperiodicityRatio(input, f0)
+
+	// 4. Synthesis
+	return w.SynthesisFromAperiodicity(f0, spectrogram, apiriodicity, targetF0, len(input))
+}
+
+func GetMonoDataFromWavData(data [][]int) []float64 {
+	y := make([]float64, len(data))
+	for i, val := range data {
+		y[i] = float64(val[0])
+	}
+	return y
+}
+
+func main() {
+	ifilename := flag.String(&amp;quot;i&amp;quot;, &amp;quot;default.wav&amp;quot;, &amp;quot;Input filename&amp;quot;)
+	flag.Parse()
+
+	// Read wav data
+	file, err := os.Open(*ifilename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	w, werr := wav.ReadWav(file)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+	input := GetMonoDataFromWavData(w.Data)
+	sampleRate := int(w.SampleRate)
+
+	synthesized := worldExample(input, sampleRate)
+	// synthesized := worldExampleAp(input, sampleRate)
+
+	for i, val := range synthesized {
+		fmt.Println(i, val)
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Goだとメモリ管理きにしなくていいしそこそこ速いし読みやすいし書きやすいし楽でいいですね（信者&lt;/p&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;GoはC++ほど速くはないですが、C++の何倍も書きやすいし読みやすい（メンテしやすい）ので、個人的にオススメです（パフォーマンスが厳しく要求される場合には、C++の方がいいかもしれません）&lt;/li&gt;
+&lt;li&gt;WORLD良いソフトウェアなので使いましょう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ちなみに&#34;&gt;ちなみに&lt;/h2&gt;
+&lt;p&gt;元はと言えば、オレオレ基本周波数推定（YINもどき）が微妙に精度悪くて代替を探していたとき、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SPTKのRAPTかSWIPE使おうかな…&lt;/li&gt;
+&lt;li&gt;RAPTもSWIPEもSPTK.hにインタフェースがない…&lt;/li&gt;
+&lt;li&gt;うわRAPTのコード意味わからん&lt;/li&gt;
+&lt;li&gt;SWIPEのコードまじ謎&lt;/li&gt;
+&lt;li&gt;後藤さんのPreFest実装しよう&lt;/li&gt;
+&lt;li&gt;あれ上手くいかない…orz&lt;/li&gt;
+&lt;li&gt;どうしようかな…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;となっていたときに、森勢先生が書いたと思われる以下の文献を見つけて、&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://crestmuse.jp/handbookMI/pdf/2_2_PitchExtraction_Morise.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;2-2 基本周波数推定（歌声研究に関する視点から）&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本方法は，低域に雑音が存在する音声に対する推定は困難であるが，低域の雑音が存在しない音声の場合，SWIPE′ や NDF と実質的に同等の性能を達成しつつ，計算時間を SWIPE′の 1/42, NDF の 1/80 にまで低減可能である．&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;あぁworld使おう（白目&lt;/p&gt;
+&lt;p&gt;となり、ラッパーを書くにいたりましたとさ、おしまい&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

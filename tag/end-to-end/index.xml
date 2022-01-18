@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>End-to-End | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/end-to-end/</link>
+      <atom:link href="https://r9y9.github.io/tag/end-to-end/index.xml" rel="self" type="application/rss+xml" />
+    <description>End-to-End</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 20 May 2018 14:21:30 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>End-to-End</title>
+      <link>https://r9y9.github.io/tag/end-to-end/</link>
+    </image>
+    
+    <item>
+      <title> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</title>
+      <link>https://r9y9.github.io/blog/2018/05/20/tacotron2/</link>
+      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2018/05/20/tacotron2/</guid>
+      <description>&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;Thank you for coming to see my blog post about WaveNet text-to-speech.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/intro.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;ul&gt;
+&lt;li&gt;論文リンク: &lt;a href=&#34;https://arxiv.org/abs/1712.05884&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://arxiv.org/abs/1712.05884&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;オンラインデモ: &lt;a href=&#34;https://colab.research.google.com/github/r9y9/Colaboratory/blob/master/Tacotron2_and_WaveNet_text_to_speech_demo.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tacotron2: WaveNet-based text-to-speech demo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;コード &lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9/wavenet_vocoder&lt;/a&gt;, &lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Rayhane-mamah/Tacotron-2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;音声サンプル: &lt;a href=&#34;https://r9y9.github.io/wavenet_vocoder/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://r9y9.github.io/wavenet_vocoder/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三行まとめ&#34;&gt;三行まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;自作WaveNet (&lt;strong&gt;WN&lt;/strong&gt;) と既存実装Tacotron 2 (WNを除く) を組み合わせて、英語TTSを作りました&lt;/li&gt;
+&lt;li&gt;LJSpeechを学習データとした場合、自分史上 &lt;strong&gt;最高品質&lt;/strong&gt; のTTSができたと思います&lt;/li&gt;
+&lt;li&gt;Tacotron 2と Deep Voice 3 のabstractを読ませた音声サンプルを貼っておきますので、興味のある方はどうぞ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、Tacotron 2 の解説はしません。申し訳ありません（なぜなら僕がまだ十分に読み込んでいないため）&lt;/p&gt;
+&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;過去に、WaveNetを実装しました（参考: &lt;a href=&#34;https://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/&#34;&gt;WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]&lt;/a&gt;）。過去記事から引用します。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Tacotron2 は、あとはやればほぼできる感じですが、直近では僕の中で優先度が低めのため、しばらく実験をする予定はありません。興味のある方はやってみてください。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;やりたいことの一つとしてあったとはいえ、当初の予定通り、スクラッチでTacotron 2を実装する時間は取れなかったのですが、既存実装を使ってみたところ十分に上手く動いているように思えたので、ありがたく使わせていただき、WaveNet TTSを実現することができました。というわけで、結果をここにカジュアルに残しておこうという趣旨の記事になります。&lt;/p&gt;
+&lt;p&gt;オープンなデータセット、コードを使って、実際どの程度の品質が得られるのか？学習/推論にどのくらい時間がかかるのか？いうのが気になる方には、参考になるかもしれませんので、よろしければ続きをどうぞ。&lt;/p&gt;
+&lt;h2 id=&#34;実験条件&#34;&gt;実験条件&lt;/h2&gt;
+&lt;p&gt;細かい内容はコードに譲るとして、重要な点だけリストアップします&lt;/p&gt;
+&lt;h3 id=&#34;pre-trained-modelshyper-parameters-へのリンク&#34;&gt;Pre-trained models、hyper parameters へのリンク&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Tacotron2 (mel-spectrogram prediction part): trained 189k steps on LJSpeech dataset (&lt;a href=&#34;https://www.dropbox.com/s/vx7y4qqs732sqgg/pretrained.tar.gz?dl=0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pre-trained model&lt;/a&gt;, &lt;a href=&#34;https://github.com/r9y9/Tacotron-2/blob/9ce1a0e65b9217cdc19599c192c5cd68b4cece5b/hparams.py&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hyper params&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;WaveNet: trained over 1000k steps on LJSpeech dataset (&lt;a href=&#34;https://www.dropbox.com/s/zdbfprugbagfp2w/20180510_mixture_lj_checkpoint_step000320000_ema.pth?dl=0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pre-trained model&lt;/a&gt;, &lt;a href=&#34;https://www.dropbox.com/s/0vsd7973w20eskz/20180510_mixture_lj_checkpoint_step000320000_ema.json?dl=0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hyper params&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;wavenet&#34;&gt;WaveNet&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;1000k step以上訓練されたモデル (2018/1/27に作ったもの、10日くらい&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;学習した）をベースに、さらに 320k step学習（約3日）しました。再学習したのは、以前のコードには &lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder/issues/33&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;wavenet_vocoder/issues/33&lt;/a&gt; こんなバグがあったからです。&lt;/li&gt;
+&lt;li&gt;評価には、exponential moving averagingされたパラメータを使いました。decay パラメータはTaco2論文と同じ 0.9999&lt;/li&gt;
+&lt;li&gt;学習には、Mel-spectrogram prediction networkにより出力される Ground-truth-aligned (GTA) なメルスペクトログラムではなく、生音声から計算されるメルスペクトログラムを使いました。時間の都合上そうしましたが、GTAを使うとより品質が向上すると考えられます&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tacotron-2-mel-spectrogram-prediction&#34;&gt;Tacotron 2 (mel-spectrogram prediction)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Rayhane-mamah/Tacotron-2&lt;/a&gt; にはWaveNet実装も含まれていますが、mel-spectrogram prediction の部分だけ使用しました&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2/issues/30#issue-317360759&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Rayhane-mamah/Tacotron-2/issues/30#issue-317360759&lt;/a&gt; で公開されている 182k step学習されたモデルを、さらに7k stepほど（数時間くらい）学習させました。再学習させた理由は、自分の実装とRayhane氏の実装で想定するメルスペクトログラムのレンジが異なっていたためです（僕: &lt;code&gt;[0, 1]&lt;/code&gt;, Rayhane: &lt;code&gt;[-4, 4]&lt;/code&gt;）。そういう経緯から、&lt;code&gt;[-4, 4]&lt;/code&gt; のレンジであったところ，&lt;code&gt;[0, 4]&lt;/code&gt; にして学習しなおしました。直接 &lt;code&gt;[0, 1]&lt;/code&gt; にして学習しなかったのは（それでも動く、と僕は思っているのですが）、mel-spectrogram のレンジを大きく取った方が良い、という報告がいくつかあったからです（例えば &lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2/issues/4#issuecomment-377728945&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Rayhane-mamah/Tacotron-2/issues/4#issuecomment-377728945&lt;/a&gt; )。Attention seq2seq は経験上学習が難しいので、僕の直感よりも先人の知恵を優先することにした次第です。WNに入力するときには、 Taco2が出力するメルスペクトログラムを &lt;code&gt;c = np.interp(c, (0, 4), (0, 1))&lt;/code&gt; とレンジを変換して与えました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;デモ音声&#34;&gt;デモ音声&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://r9y9.github.io/wavenet_vocoder/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://r9y9.github.io/wavenet_vocoder/&lt;/a&gt; にサンプルはたくさんあります。が、ここでは違うサンプルをと思い、Tacotron 2 と Deep Voice 3の abstract を読ませてみました。
+学習データに若干残響が乗っているので（ノイズっぽい）それが反映されてしまっているのですが、個人的にはまぁまぁよい結果が得られたと思っています。興味がある方は、DeepVoice3など僕の過去記事で触れているTTS結果と比べてみてください。&lt;/p&gt;
+&lt;p&gt;なお、推論の計算速度は,、僕のローカル環境（GTX 1080Ti, i7-7700K）でざっと 170 timesteps / second といった感じでした。これは、Parallel WaveNet の論文で触れられている数字とおおまかに一致します。&lt;/p&gt;
+&lt;p&gt;This paper describes Tacotron 2, a neural network architecture for speech synthesis directly from text.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00001.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;The system is composed of a recurrent sequence-to-sequence feature prediction network that maps character embeddings to mel-scale spectrograms, followed by a modified WaveNet model acting as a vocoder to synthesize timedomain waveforms from those spectrograms.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00002.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;Our model achieves a mean opinion score of 4.53 comparable to a MOS of 4.58 for professionally recorded speech.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00003.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;To validate our design choices, we present ablation studies of key components of our system and evaluate the impact of using mel spectrograms as the input to WaveNet instead of linguistic, duration, and F0 features.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00004.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;We further demonstrate that using a compact acoustic intermediate representation enables significant simplification of the WaveNet architecture.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00005.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;We present Deep Voice 3, a fully-convolutional attention-based neural text-to-speech system.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00006.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;Deep Voice 3 matches state-of-the-art neural speech synthesis systems in naturalness while training ten times faster.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00007.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;We scale Deep Voice 3 to data set sizes unprecedented for TTS, training on more than eight hundred hours of audio from over two thousand speakers.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00008.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;In addition, we identify common error modes of attention-based speech synthesis networks, demonstrate how to mitigate them, and compare several different waveform synthesis methods.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00009.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;We also describe how to scale inference to ten million queries per day on one single-GPU server.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00010.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;h2 id=&#34;オンラインデモ&#34;&gt;オンラインデモ&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://colab.research.google.com/github/r9y9/Colaboratory/blob/master/Tacotron2_and_WaveNet_text_to_speech_demo.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tacotron2: WaveNet-based text-to-speech demo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Google Colabで動かせるようにデモノートブックを作りました。環境構築が不要なので、手軽にお試しできるかと思います。&lt;/p&gt;
+&lt;h2 id=&#34;雑記&#34;&gt;雑記&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;WaveNetを学習するときに、Mel-spectrogram precition networkのGTAな出力でなく、生メルスペクトログラムをそのまま使っても品質の良い音声合成ができるのは個人的に驚きでした。これはつまり、Taco2が　(non teacher-forcingな条件で) 十分良いメルスペクトログラムを予測できている、ということなのだと思います。&lt;/li&gt;
+&lt;li&gt;収束性を向上させるために、出力を127.5 倍するとよい、という件ですが、僕はやっていません。なぜなら、僕がまだこの方法の妥当性を理解できていないからです。&lt;a href=&#34;https://twitter.com/__dhgrs__/status/995962302896599040&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@__dhgrs__さんの報告&lt;/a&gt; によると、やはり有効に働くようですね…&lt;/li&gt;
+&lt;li&gt;これまた &lt;a href=&#34;http://www.monthly-hack.com/entry/2018/02/23/203208&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@__dhgrs__さんのブログ記事&lt;/a&gt; にも書かれていますが、Mixture of Logistic distributions (MoLとします) を使った場合は、categoricalを考えてsoftmaxを使う場合に比べると十分な品質を得るのに大幅に計算時間が必要になりますね、、体験的には10倍程度です。計算にあまりに時間がかかるので、スクラッチで何度も学習するのは厳しく、学習済みモデルを何度も繰り返しfine turningしていくという、秘伝のタレ方式で学習を行いました（再現性なしです、懺悔）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Rayhane-mamah/Tacotron-2&lt;/a&gt; 今回使わせてもらったTaco2実装は、僕の実装も一部使われているようでした。これとは別の NVIDIA から出た &lt;a href=&#34;https://github.com/NVIDIA/tacotron2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/NVIDIA/tacotron2&lt;/a&gt; の謝辞には僕の名前を入れていただいていたり、他にもそういうケースがそれなりにあって、端的にいって光栄であり、うれしいお思いです。&lt;/li&gt;
+&lt;li&gt;非公開のデータセットを使って学習/生成したWaveNet TTS のサンプルもあります。公開できないのでここにはあげていませんが、とても高品質な音声合成（主観ですが）ができることを確認しています&lt;/li&gt;
+&lt;li&gt;このプロジェクトをはじめたことで、なんと光栄にも&lt;a href=&#34;http://www.nict.go.jp/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NICT&lt;/a&gt;でのトークの機会をもらうことができました。オープソースについて是非はあると思いますが、個人的には良いことがとても多いなと思います。プレゼン資料は、https://github.com/r9y9/wavenet_vocoder/issues/57 に置いてあります（が、スライドだけで読み物として成立するものではないと思います、すみません）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;WaveNet TTSをようやく作ることができました。Sample-levelでautoregressive modelを考えるというアプローチが本当に動かくのか疑問だったのですが、実際に作ってみて、上手く行くということを体感することができました。めでたし。&lt;/p&gt;
+&lt;p&gt;Googleの研究者さま、素晴らしい研究をありがとうございます。WaveNetは本当にすごかった&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1609.03499&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Aaron van den Oord, Sander Dieleman, Heiga Zen, et al, &amp;ldquo;WaveNet: A Generative Model for Raw Audio&amp;rdquo;, 	arXiv:1609.03499, Sep 2016.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1711.10433&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Aaron van den Oord, Yazhe Li, Igor Babuschkin, et al, &amp;ldquo;Parallel WaveNet: Fast High-Fidelity Speech Synthesis&amp;rdquo;, 	arXiv:1711.10433, Nov 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.isca-speech.org/archive/Interspeech_2017/pdfs/0314.PDF&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tamamori, Akira, et al. &amp;ldquo;Speaker-dependent WaveNet vocoder.&amp;rdquo; Proceedings of Interspeech. 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1712.05884&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jonathan Shen, Ruoming Pang, Ron J. Weiss, et al, &amp;ldquo;Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions&amp;rdquo;, arXiv:1712.05884, Dec 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1710.07654&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wei Ping, Kainan Peng, Andrew Gibiansky, et al, &amp;ldquo;Deep Voice 3: 2000-Speaker Neural Text-to-Speech&amp;rdquo;, arXiv:1710.07654, Oct. 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1611.09482&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tom Le Paine, Pooya Khorrami, Shiyu Chang, et al, &amp;ldquo;Fast Wavenet Generation Algorithm&amp;rdquo;, arXiv:1611.09482, Nov. 2016&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.monthly-hack.com/entry/2018/02/23/203208&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;VQ-VAEの追試で得たWaveNetのノウハウをまとめてみた。 - Monthly Hacker&amp;rsquo;s Blog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;曖昧な表現で申し訳ございません&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;僕が使った当時は、WNの部分は十分にテストされていなかったのと、WNのコードは僕のコードをtfにtranslateした感じな（著者がそういってます）ので、WNは自分の実装を使った次第です&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;</description>
+    </item>
+    
+    <item>
+      <title>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]</title>
+      <link>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</link>
+      <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</guid>
+      <description>&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;コーパス配布先リンク: &lt;a href=&#34;https://sites.google.com/site/shinnosuketakamichi/publication/jsut&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JSUT (Japanese speech corpus of Saruwatari Lab, University of Tokyo) - Shinnosuke Takamichi (高道 慎之介)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;論文リンク: &lt;a href=&#34;https://arxiv.org/abs/1711.00354&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv:1711.00354&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三行まとめ&#34;&gt;三行まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;日本語End-to-end音声合成に使えるコーパスは神、ありがとうございます&lt;/li&gt;
+&lt;li&gt;クリーンな音声であるとはいえ、冒頭/末尾の無音区間は削除されていない、またボタンポチッみたいな音も稀に入っているので注意&lt;/li&gt;
+&lt;li&gt;僕が行った無音区間除去の方法（Juliusで音素アライメントを取って云々）を記録しておくので、必要になった方は参考にどうぞ。ラベルファイルだけほしい人は連絡ください&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;jsut-とは&#34;&gt;JSUT とは&lt;/h2&gt;
+&lt;p&gt;ツイート引用：&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;フリーの日本語音声コーパス（単一話者による10時間データ）を公開しました．音声研究等にお役立てください．&lt;a href=&#34;https://t.co/94ShJY44mA&#34;&gt;https://t.co/94ShJY44mA&lt;/a&gt; &lt;a href=&#34;https://t.co/T0etDwD7cS&#34;&gt;pic.twitter.com/T0etDwD7cS&lt;/a&gt;&lt;/p&gt;&amp;mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) &lt;a href=&#34;https://twitter.com/forthshinji/status/923547202865131520?ref_src=twsrc%5Etfw&#34;&gt;October 26, 2017&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;p&gt;つい先月、JSUT という、日本語 End-to-end 音声合成の研究に使えることを前提に作られた、フリーの大規模音声コーパスが公開されました。詳細は上記リンク先を見てもらうとして、簡単に特徴をまとめると、以下のとおりです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;単一日本語女性話者の音声10時間&lt;/li&gt;
+&lt;li&gt;無響室で収録されている、クリーンな音声コーパス &lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;非営利目的で無料で使える&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;僕の知る限り、日本語 End-to-end 音声合成に関する研究はまだあまり発展していないように感じていたのですが、その理由の一つに誰でも自由に使えるコーパスがなかったことがあったように思います。このデータセットはとても貴重なので、ぜひ使っていきたいところです。
+高道氏およびコーパスを整備してくださった方、本当にありがとうございます。&lt;/p&gt;
+&lt;p&gt;この記事では、僕が実際に日本語End-to-end音声合成の実験をしようと思った時に、必要になった前処理（最初と最後の&lt;strong&gt;無音区間の除去&lt;/strong&gt;）について書きたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
+&lt;p&gt;まずはじめに、最初と最後の無音区間を除去したい理由には、以下の二つがありました。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Tacotronのようなattention付きseq2seqモデルにおいて、アライメントを学習するのに不都合なこと。句読点に起因する無音区間ならともかく、最初/最後の無音区間は、テキスト情報からはわからないので、直感的には不要であると思われます。参考までに、&lt;a href=&#34;https://arxiv.org/abs/1705.08947&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DeepVoice2の論文のsection 4.2&lt;/a&gt; では、無音区間をトリミングするのがよかったと書かれています。&lt;/li&gt;
+&lt;li&gt;発話の前、発話の後に、微妙にノイズがある（息を大きく吸う音、ボタンをポチッ、みたいな機械音等）データがあり、そのノイズが不都合なこと。例えばTacotronのようなモデルでは、テキスト情報とスペクトログラムの関係性を学習したいので、テキストに関係のないノイズは可能な限り除去しておきたいところです。参考までに、ボタンポチノイズは 例えば &lt;code&gt;basic5000/wav/BASIC5000_0008.wav&lt;/code&gt; に入っています&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;最初何も考えずに（ダメですが）データを入れたら、アライメントが上手く学習されないなーと思い、データを見ていたところ、後者に気づいた次第です。&lt;/p&gt;
+&lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
+&lt;p&gt;さて、無音区間を除去する一番簡単な方法は、適当にパワーで閾値処理をすることです。しかし、前述の通りボタンをポチッと押したようなノイズは、この方法では難しそうでした。というわけで、少し手間はかかりますが、Juliusで音素アライメントを取って、無音区間を推定することにしました。
+以下、Juliusを使ってアライメントファイル（.lab) を作る方法です。コードは、 &lt;a href=&#34;https://github.com/r9y9/segmentation-kit/tree/jsut&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/segmentation-kit/tree/jsut&lt;/a&gt; にあります。&lt;/p&gt;
+&lt;p&gt;自分で準備するのが面倒だから結果のラベルファイルだけほしいという方がいれば、連絡をいただければお渡しします。Linux環境での実行を想定しています。僕はUbuntu 16.04で作業しています。&lt;/p&gt;
+&lt;h3 id=&#34;準備&#34;&gt;準備&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/julius-speech/julius&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Julius&lt;/a&gt; をインストールする。&lt;code&gt;/usr/local/bin/julius&lt;/code&gt; にバイナリがあるとします&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://taku910.github.io/mecab/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MeCab&lt;/a&gt;をインストールする&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/neologd/mecab-ipadic-neologd&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;mecab-ipadic-neologd&lt;/a&gt; をインストールする&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/nnmnkwii&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nnmnkwii&lt;/a&gt; のmasterブランチを入れる&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pip install mecab-python3 jaconv&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo apt-get install sox&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/segmentation-kit/tree/jsut&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Juliusの音素セグメンテーションツールキットのフォーク (jsutブランチ)&lt;/a&gt; をクローンする。クローン先を作業ディレクトリとします&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;コーパスの場所を設定&#34;&gt;コーパスの場所を設定&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;params.py&lt;/code&gt; というファイルに、コーパスの場所を指定する変数 (&lt;code&gt;in_dir&lt;/code&gt;) があるので、設定します。僕の場合、以下のようになっています。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# coding: utf-8
+in_dir = &amp;quot;/home/ryuichi/data/jsut_ver1&amp;quot;
+dst_dir = &amp;quot;jsut&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;音素アライメントの実行&#34;&gt;音素アライメントの実行&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;bash run.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;でまるっと実行できるようにしました。MeCabで読みを推定するなどの処理は、この記事を書いている時点では &lt;code&gt;a.py&lt;/code&gt;, &lt;code&gt;b.py&lt;/code&gt;, &lt;code&gt;c.py&lt;/code&gt;, &lt;code&gt;d.py&lt;/code&gt;というファイルに書かれています。 適当なファイル名で申し訳ありませんという気持ちですが、自分のための書いたコードはこうなってしまいがちです、申し訳ありません。&lt;/p&gt;
+&lt;p&gt;7000ファイル以上処理するので、三十分くらいかかります。&lt;code&gt;./jsut&lt;/code&gt; というディレクトリに、labファイルができていれば正常に実行完了です。最後に、&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Failed number of utterances: 87
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;のように、アライメントに失敗したファイル数が表示されるようになっています。失敗の理由には、MeCabでの読みの推定に失敗した（特に数字）などがあります。手で直すことも可能なのですが（実際に一度はやろうとした）非常に大変なので、多少失敗してもよいので大雑把にアライメントを取ることを目的として、スクリプトを作りました。&lt;/p&gt;
+&lt;p&gt;なお、juliusはwavesurferのフォーマットでラベルファイルを吐きますが、HTKのラベルフォーマットの方が僕には都合がよかったので、変換するようにしました。&lt;/p&gt;
+&lt;h3 id=&#34;コーパスにパッチ&#34;&gt;コーパスにパッチ&lt;/h3&gt;
+&lt;p&gt;便宜上、下記のようにwavディレクトリと同じ階層にラベルファイルがあると都合がよいので、僕はそのようにします。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tree ~/data/jsut_ver1/ -d -L 2
+/home/ryuichi/data/jsut_ver1/
+├── basic5000
+│   ├── lab
+│   └── wav
+├── countersuffix26
+│   ├── lab
+│   └── wav
+├── loanword128
+│   ├── lab
+│   └── wav
+├── onomatopee300
+│   ├── lab
+│   └── wav
+├── precedent130
+│   ├── lab
+│   └── wav
+├── repeat500
+│   ├── lab
+│   └── wav
+├── travel1000
+│   ├── lab
+│   └── wav
+├── utparaphrase512
+│   ├── lab
+│   └── wav
+└── voiceactress100
+    ├── lab
+    └── wav
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以下のコマンドにより、生成されたラベルファイルをコーパス配下にコピーします。この処理は、&lt;code&gt;run.sh&lt;/code&gt; では実行しないようになっているので、必要であれば自己責任でおこなってください。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;python d.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;ラベル活用例&#34;&gt;ラベル活用例&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046&lt;/a&gt; のようなコードを書いて、ボタンポチ音が末尾に入っている &lt;code&gt;basic5000/wav/BASIC5000_0008.wav&lt;/code&gt; に対して無音区間削除を行ってみると、結果は以下のようになります。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/jsut_basic5000_08.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;パワーベースの閾値処理では上手くいかない一方で&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;、音素アライメントを使った方法では上手く無音区間除去ができています。その他、数十サンプルを目視で確認しましたが、僕の期待どおり上手くいっているようでした。めでたし。&lt;/p&gt;
+&lt;h2 id=&#34;おわり&#34;&gt;おわり&lt;/h2&gt;
+&lt;p&gt;以上です。End-to-end系のモデルにとってはデータは命であり、このコーパスは神であります。このコーパスを使って、同じように前処理をしたい人の参考になれば幸いです。&lt;/p&gt;
+&lt;p&gt;いま僕はこのコーパスを使って、日本語end-to-end音声合成の実験も少しやっているので、まとまったら報告しようと思っています。&lt;/p&gt;
+&lt;div =align=&#34;center&#34;&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;これさ、ASJとかで発表しない？絶対に価値あると思う。諸々のサポートはしますよ。&lt;/p&gt;&amp;mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) &lt;a href=&#34;https://twitter.com/forthshinji/status/928303639478747136?ref_src=twsrc%5Etfw&#34;&gt;November 8, 2017&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;p&gt;コーパスを作った本人氏にASJで発表しないかと勧誘を受けていますが、現在の予定は未定です^q^&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1711.00354&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Ryosuke Sonobe, Shinnosuke Takamichi and Hiroshi Saruwatari,
+&amp;ldquo;JSUT corpus: free large-scale Japanese speech corpus for end-to-end speech synthesis,&amp;rdquo;
+arXiv preprint, 1711.00354, 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1705.08947&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Sercan Arik, Gregory Diamos, Andrew Gibiansky, et al, &amp;ldquo;Deep Voice 2: Multi-Speaker Neural Text-to-Speech&amp;rdquo;, 	arXiv:1705.08947, 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;以前ブログでEnd-to-end英語音声合成に使えると書いた &lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LJSpeech&lt;/a&gt;はクリーンではないんですねー&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;このサンプルで上手くいくように閾値を調整すると、他のサンプルでトリミングしすぎてしまうようになってしまいます&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</title>
+      <link>https://r9y9.github.io/blog/2017/10/15/tacotron/</link>
+      <pubDate>Sun, 15 Oct 2017 14:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/10/15/tacotron/</guid>
+      <description>&lt;p&gt;Googleが2017年4月に発表したEnd-to-Endの音声合成モデル &lt;a href=&#34;https://arxiv.org/abs/1703.10135&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]&lt;/a&gt; に興味があったので、自分でも同様のモデルを実装して実験してみました。結果わかったことなどをまとめておこうと思います。&lt;/p&gt;
+&lt;p&gt;GoogleによるTacotronの音声サンプルは、 &lt;a href=&#34;https://google.github.io/tacotron/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://google.github.io/tacotron/&lt;/a&gt; から聴けます。僕の実装による音声サンプルはこの記事の真ん中くらいから、あるいは  &lt;a href=&#34;http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/f98eda7336726cdfe4ab97ae867cc7f71353de50/notebooks/Test%20Tacotron.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Test Tacotron.ipynb | nbviewer&lt;/a&gt;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; から聴くことができます。&lt;/p&gt;
+&lt;p&gt;とても長い記事になってしまったので、結論のみ知りたい方は、一番最後まで飛ばしてください。最後の方のまとめセクションに、実験した上で僕が得た知見がまとまっています。&lt;/p&gt;
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;論文のタイトルにもある通り、End-to-Endを目指しています。典型的な（複雑にあなりがちな）音声合成システムの構成要素である、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;言語依存のテキスト処理フロントエンド&lt;/li&gt;
+&lt;li&gt;言語特徴量と音響特徴量のマッピング (HMMなりDNNなり)&lt;/li&gt;
+&lt;li&gt;波形合成のバックエンド&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;を一つのモデルで達成しようとする、&lt;strong&gt;attention付きseq2seqモデル&lt;/strong&gt; を提案しています。ただし、&lt;strong&gt;Toward&lt;/strong&gt; とあるように、完全にEnd-to-Endではなく、ネットワークは波形ではなく &lt;strong&gt;振幅スペクトログラム&lt;/strong&gt; を出力し、Griffin limの方法によって位相を復元し、逆短時間フーリエ変換をすることによって、最終的な波形を得ます。根本にあるアイデア自体はシンプルですが、そのようなEnd-to-Endに近いモデルで高品質な音声合成を実現するのは困難であるため、論文では学習を上手くいくようするためのいくつかのテクニックを提案する、といった主張です。以下にいくつかピックアップします。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;エンコーダに &lt;strong&gt;CBFG&lt;/strong&gt; (1-D convolution bank + highway network + bidirectional GRU) というモジュールを使う&lt;/li&gt;
+&lt;li&gt;デコーダの出力をスペクトログラムではなく（より低次元の）&lt;strong&gt;メル周波数スペクトログラム&lt;/strong&gt; にする。スペクトログラムはアライメントを学習するには冗長なため。&lt;/li&gt;
+&lt;li&gt;スペクトログラムは、メル周波数スペクトログラムに対して &lt;strong&gt;CBFG&lt;/strong&gt; を通して得る&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;その他、BatchNormalizationを入れたり、Dropoutを入れたり、GRUをスタックしたり、と色々ありますが、正直なところ、どれがどのくらい効果があるのかはわかっていません（調べるには、途方もない時間がかかります）が、論文の主張によると、これらが有効なようです。&lt;/p&gt;
+&lt;h2 id=&#34;既存実装&#34;&gt;既存実装&lt;/h2&gt;
+&lt;p&gt;Googleは実装を公開していませんが、オープンソース実装がいくつかあります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Kyubyong/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Kyubyong/tacotron&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/barronalex/Tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/barronalex/Tacotron&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/keithito/tacotron&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自分で実装する前に、上記をすべてを簡単に試したり、生成される音声サンプルを比較した上で、僕は &lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt; が一番良いように思いました。最も良いと思った点は、keithito さんは、&lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LJ Speech Dataset&lt;/a&gt; という単一話者の英語読み上げ音声 &lt;strong&gt;約24時間のデータセットを構築&lt;/strong&gt; し、それを &lt;strong&gt;public domainで公開&lt;/strong&gt; していることです。このデータセットは貴重です。&lt;a href=&#34;https://keithito.github.io/audio-samples/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;デモ音声サンプル&lt;/a&gt;は、そのデータセットを使った結果でもあり、他と比べてとても高品質に感じました。自分でも試してみて、1時間程度で英語らしき音声が生成できるようになったのと、さらに数時間でアライメントも学習されることを確認しました。&lt;/p&gt;
+&lt;p&gt;なお、上記3つすべてで学習スクリプトを回して音声サンプルを得る、程度のことは試しましたが、僕がコードレベルで読んだのは &lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt; のみです。読んだコードは、TensorFlowに詳しくない僕でも読めるもので、とても構造化されていて読みやすかったです。&lt;/p&gt;
+&lt;h2 id=&#34;自前実装&#34;&gt;自前実装&lt;/h2&gt;
+&lt;p&gt;勉強も兼ねて、PyTorchでスクラッチから書きました。その結果が &lt;a href=&#34;https://github.com/r9y9/tacotron_pytorch&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/tacotron_pytorch&lt;/a&gt; です。&lt;/p&gt;
+&lt;p&gt;先にいくつか結論を書いておくと、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;音の品質は、&lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt; の方が良く感じました（同じモデルの実装を心がけたのに…つらい…）。ただ、データセットの音声には残響が乗っていて、生成された音声が元音声に近いのかというのは、僕には判断がつきにくいです。記事の後半に比較できるようにサンプルを貼っておきますので、気になる方はチェックしてみてください&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt; では長い入力だと合成に失敗する一方で&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;、僕の実装では比較的長くてもある程度合成できるようです。なぜのかを突き詰めるには、TensorFlowのseq2seq APIの &lt;strong&gt;コード&lt;/strong&gt; (APIは抽象化されすぎていてdocstringからではよくわからないので…) を読みとく必要があるかなと思っています（やっていませんすいません&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;実験&#34;&gt;実験&lt;/h2&gt;
+&lt;p&gt;基本的には &lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt; の学習スクリプトと同じで、&lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LJ Speech Dataset&lt;/a&gt; を使って学習させました。テキスト処理、音声処理 (Griffin lim等) には既存のコードをそのまま使用し、モデル部分のみ自分で置き換えました。実験では、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;attention付きseq2seqの肝である、アライメントがどのように学習されていくのか&lt;/li&gt;
+&lt;li&gt;学習が進むにつれて、生成される音声はどのように変わっていくのか&lt;/li&gt;
+&lt;li&gt;学習されたモデルは、汎化性能はどの程度なのか（未知文章、長い文章、スペルミスに対してパフォーマンスはどう変わるのか、等）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;を探っていきました。&lt;/p&gt;
+&lt;h3 id=&#34;アライメントの学習過程の可視化&#34;&gt;アライメントの学習過程の可視化&lt;/h3&gt;
+&lt;p&gt;通常のseq2seqは、エンコーダRNNによって得た最後のタイムステップにおける隠れ層の状態を、デコーダのRNNの初期状態として渡します。一方attentiont付きのseq2seqモデルでは、デコーダRNNは各タイムステップで、エンコーダRNNの各タイムステップにおける隠れ層の状態を重みづけて使用し、その重みも学習します。attention付きのseq2seqでは、アライメントがきちんと（曖昧な表現ですが）学習されているかを可視化してチェックするのが、学習がきちんと進んでいるのか確認するのに便利です。&lt;/p&gt;
+&lt;p&gt;以下に、47000 step (epochではありません。僕の計算環境 GTX 1080Ti で半日かからないくらい) iterationしたときのアライメント結果と、47000 stepの時点での予測された音声サンプルを示します。なお、gifにおける各画像は、データセットをランダムにサンプルした際のアライメントであり、ある同じ音声に対するアライメントではありません。Tacotron論文には、Bahdanau Attentionを使用したとありますが、&lt;a href=&#34;https://github.com/keithito/tacotron/issues/24&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron #24 Try Monotonic Attention&lt;/a&gt; によると、Tacotron論文の第一著者は新しいバージョンのTacotronでは Monotonic attentionを使用しているらしいということから、Monotonic Attentionでも試してみました。あとでわかったのですが、長文（200文字、数文とか）を合成しようとすると途中でアライメントがスキップすることが多々見受けられたので、そういった場合に、monotonicという制約が上手く働くのだと思います。&lt;/p&gt;
+&lt;p&gt;以下の順でgifを貼ります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt;, Bahdanau attention&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt;, Bahdanau-style monotonic attention&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/tacotron_pytorch&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9/tacotron_pytorch&lt;/a&gt;, Bahdanau attention&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;keithito: Bahdanau Attention&lt;/strong&gt;&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/tacotron-tf-alignment_47000steps.gif&#34; /&gt;&lt;/div&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/step-47000-audio-tf.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;keithito: (Bahdanau-style) Monotonic Attention&lt;/strong&gt;&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/tacotron-tf-monotonic-alignment_47000steps.gif&#34; /&gt;&lt;/div&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/step-47000-audio-tf-monotonic.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;自前実装: Bahdanau Attention&lt;/strong&gt;&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/tacotron-alignment_47000steps.gif&#34; /&gt;&lt;/div&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/step-47000-audio-pt.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;Monotonicかどうかで比較すると、Monotonic attentionの方がアライメントがかなり安定しているように見えます。しかし、Githubのスレッドにあった音声サンプルを聴くと、音質的な意味では大きな違いがないように思ったのと、収束速度（簡単に試したところ、アライメントがまともになりだすstepは20000くらいで、ほぼ同じでした）も同じに思えました。一方で自前実装は、アライメントがまともになるstepが10000くらいとやや早く、またシャープに見えます。&lt;/p&gt;
+&lt;p&gt;音声サンプルの方ですが、既存実装は両者ともそれなりにまともです。一方自前実装では、まだかなりノイジーです。できるだけtf実装と同じようにつくり、実験条件も同じにしたつもりですが、何か間違っているかもしれません。が、イテレーションを十分に回すと、一応音声はそれなりに出るようになります。&lt;/p&gt;
+&lt;p&gt;音声サンプルに関する注意点としては、これはデコードの際に教師データを使っているので、この時点でのモデル使って、同等の音質の音声を生成できるとは限りません。学習時には、デコーダの各タイムステップで教師データのスペクトログラム（正確には、デコーダの出力はメル周波数スペクトログラム）を入力とする一方で、評価時には、デコーダ自身が出力したスペクトログラムを次のタイムステップの入力に用います。評価時には、一度変なスペクトログラムを出力してしまったら、エラーが蓄積していってどんどん変な出力をするようになってしまうことは想像に難しくないと思います。seq2seqモデルのデコードにはビームサーチが代表的なものとしてありますが、Tacotronでは単純にgreedy decodingをします。&lt;/p&gt;
+&lt;h3 id=&#34;学習が進むにつれて生成される音声はどのように変わっていくのか&#34;&gt;学習が進むにつれて、生成される音声はどのように変わっていくのか&lt;/h3&gt;
+&lt;p&gt;さて、ここからは自前実装のみでの実験結果です。約10日、70万step程度学習させましたので、5000, 10000, 50000, そのあとは10万から10万ステップごとに70万ステップまでそれぞれで音声を生成して、どのようになっているのかを見ていきます。&lt;/p&gt;
+&lt;h4 id=&#34;例文1&#34;&gt;例文1&lt;/h4&gt;
+&lt;p&gt;Hi, my name is Tacotron. I&amp;rsquo;m still learning a lot from data.&lt;/p&gt;
+&lt;p&gt;(56 chars, 14 words)&lt;/p&gt;
+&lt;p&gt;step 5000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step5000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 10000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step10000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 50000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step50000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 100000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step100000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 200000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step200000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 300000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step300000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 400000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step400000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 500000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step500000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 600000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step600000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 700000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/0_step700000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;だいたい20万ステップ（学習二日くらい）から、まともな音声になっているように感じます。細かいところでは、&lt;code&gt;Hi,&lt;/code&gt; &lt;code&gt;Tacotron&lt;/code&gt; という部分が少し発音しにくそうです。データセットにはこのような話し言葉のようなものが少ないのと、&lt;code&gt;Tacotron&lt;/code&gt; という単語が英語らしさ的な意味で怪しいから（造語ですよね、たぶん）と考えられます。&lt;/p&gt;
+&lt;h4 id=&#34;例文2&#34;&gt;例文2&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Python_%28programming_language%29&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://en.wikipedia.org/wiki/Python_(programming_language)&lt;/a&gt; より引用：&lt;/p&gt;
+&lt;p&gt;Python is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.&lt;/p&gt;
+&lt;p&gt;(144 chars, 23 words)&lt;/p&gt;
+&lt;p&gt;step 5000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step5000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 10000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step10000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 50000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step50000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 100000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step100000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 200000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step200000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 300000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step300000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 400000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step400000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 500000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step500000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 600000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step600000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;step 700000&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/progress/1_step700000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;だいたい20万ステップから、まともな音声になっているように思います。&lt;/p&gt;
+&lt;h3 id=&#34;モデルの汎化性能について調査&#34;&gt;モデルの汎化性能について調査&lt;/h3&gt;
+&lt;p&gt;以下、72万ステップ（一週間くらい）学習させたモデルを使って、いろんな入力でテストした結果です。音声と合わせてアライメントも貼っておきます。&lt;/p&gt;
+&lt;h4 id=&#34;適当な未知入力&#34;&gt;適当な未知入力&lt;/h4&gt;
+&lt;p&gt;データセットには存在しない文章を使ってテストしてみました。ところどころ（非ネイティブの僕にでも）不自然だと感じるところが見られますが、とはいえまぁまぁいい感じではないでしょうか。(google translateで同じ文章を合成してみて比べても、そんなに悪くない気がしました)&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/PyPy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://en.wikipedia.org/wiki/PyPy&lt;/a&gt; より：&lt;/p&gt;
+&lt;p&gt;PyPy is an alternate implementation of the Python programming language written in Python.&lt;/p&gt;
+&lt;p&gt;(89 chars, 14 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/0_unknown/0_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/0_unknown/0_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/NumPy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://en.wikipedia.org/wiki/NumPy&lt;/a&gt; より：&lt;/p&gt;
+&lt;p&gt;NumPy is a library for the Python programming language, adding support for large, multi-dimensional arrays and matrices, along with a large collection of high-level mathematical functions to operate on these arrays.&lt;/p&gt;
+&lt;p&gt;(215 chars, 35 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/0_unknown/1_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/0_unknown/1_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&#34;https://numba.pydata.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://numba.pydata.org/&lt;/a&gt; より：&lt;/p&gt;
+&lt;p&gt;Numba gives you the power to speed up your applications with high performance functions written directly in Python.&lt;/p&gt;
+&lt;p&gt;(115 chars, 19 words)&lt;/p&gt;
+&lt;p&gt;&lt;audio controls=&#34;controls&#34; &gt;は&lt;/p&gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/0_unknown/2_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/0_unknown/2_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;h4 id=&#34;スペルミス&#34;&gt;スペルミス&lt;/h4&gt;
+&lt;p&gt;スペルミスがある場合に、合成結果はどうなるのか、といったテストです。&lt;a href=&#34;https://google.github.io/tacotron/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Googleのデモ&lt;/a&gt;にあるように、ある程度ロバスト（少なくとも全体が破綻するといったことはない）のように思いました。&lt;/p&gt;
+&lt;p&gt;Thisss isrealy awhsome.&lt;/p&gt;
+&lt;p&gt;(23 chars, 4 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/1_spell/0_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/1_spell/0_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;This is really awesome.&lt;/p&gt;
+&lt;p&gt;(23 chars, 5 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/1_spell/1_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/1_spell/1_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;I cannnnnot believe it.&lt;/p&gt;
+&lt;p&gt;(23 chars, 5 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/1_spell/2_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/1_spell/2_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;I cannot believe it.&lt;/p&gt;
+&lt;p&gt;(20 chars, 6 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/1_spell/3_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/1_spell/3_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;h4 id=&#34;中少し長めの文章&#34;&gt;中〜少し長めの文章&lt;/h4&gt;
+&lt;p&gt;だいたい250文字を越えたくらいで、単語がスキップされるなどの現象が多く確認されました。データセットは基本的に短い文章の集まりなのが理由に思います。前述の通り、monotonic attentionを使えば、原理的にはスキップされにくくなると思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1703.10135&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://arxiv.org/abs/1703.10135&lt;/a&gt; より引用：&lt;/p&gt;
+&lt;p&gt;A text-to-speech synthesis system typically consists of multiple stages, such as a text analysis frontend, an acoustic model and an audio synthesis module.&lt;/p&gt;
+&lt;p&gt;(155 chars, 26 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/2_long/1_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/2_long/1_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&#34;https://americanliterature.com/childrens-stories/little-red-riding-hood&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://americanliterature.com/childrens-stories/little-red-riding-hood&lt;/a&gt; より引用：&lt;/p&gt;
+&lt;p&gt;Once upon a time there was a dear little girl who was loved by every one who looked at her, but most of all by her grandmother, and there was nothing that she would not have given to the child.&lt;/p&gt;
+&lt;p&gt;(193 chars, 43 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/2_long/0_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/2_long/0_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1703.10135&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://arxiv.org/abs/1703.10135&lt;/a&gt; より引用：&lt;/p&gt;
+&lt;p&gt;A text-to-speech synthesis system typically consists of multiple stages, such as a text analysis frontend, an acoustic model and an audio synthesis module. Building these components often requires extensive domain expertise and may contain brittle design choices.&lt;/p&gt;
+&lt;p&gt;(263 chars, 41 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/2_long/2_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/2_long/2_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&#34;https://americanliterature.com/childrens-stories/little-red-riding-hood&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://americanliterature.com/childrens-stories/little-red-riding-hood&lt;/a&gt; より引用：&lt;/p&gt;
+&lt;p&gt;Once upon a time there was a dear little girl who was loved by every one who looked at her, but most of all by her grandmother, and there was nothing that she would not have given to the child. Once she gave her a little cap of red velvet, which suited her so well
+that she would never wear anything else. So she was always called Little Red Riding Hood.&lt;/p&gt;
+&lt;p&gt;(354 chars, 77 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/2_long/3_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/2_long/3_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;h3 id=&#34;googleのデモと比較&#34;&gt;Googleのデモと比較&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://google.github.io/tacotron/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://google.github.io/tacotron/&lt;/a&gt; の音声サンプルと同じ文章で試します。大文字小文字の区別は今回学習したモデルでは区別しないので、一部例文は除いています。いくつか気づいたことを挙げておくと、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;He has read the whole thing. / He reads book. のように、readの読みが動詞の活用形によって変わるような場合なのですが、上手く行くときといかないときがありました。イテレーションを進めていく上で、ロスは下がり続ける一方で、きちんと区別して発音できるようになったりできなくなってしまったり、というのを繰り返していました。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;?&lt;/code&gt; が文末につくことで、イントネーションが変わってくれることを期待しましたが、データセット中に &lt;code&gt;?&lt;/code&gt; が少なすぎたのか、あまりうまくいかなかったように思います。&lt;/li&gt;
+&lt;li&gt;out-of-domainの文章にもロバストのように思いましたが、二個目の例文のような、（複雑な？）専門用語の発音は、厳しい感じがしました。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Generative adversarial network or variational auto-encoder.&lt;/p&gt;
+&lt;p&gt;(59 chars, 7 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/0_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/0_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;Basilar membrane and otolaryngology are not auto-correlations.&lt;/p&gt;
+&lt;p&gt;(62 chars, 8 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/1_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/1_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;He has read the whole thing.&lt;/p&gt;
+&lt;p&gt;(28 chars, 7 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/2_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/2_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;He reads books.&lt;/p&gt;
+&lt;p&gt;(15 chars, 4 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/3_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/3_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;Thisss isrealy awhsome.&lt;/p&gt;
+&lt;p&gt;(23 chars, 4 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/4_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/4_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;This is your personal assistant, Google Home.&lt;/p&gt;
+&lt;p&gt;(45 chars, 9 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/5_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/5_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;This is your personal assistant Google Home.&lt;/p&gt;
+&lt;p&gt;(44 chars, 8 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/6_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/6_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;The quick brown fox jumps over the lazy dog.&lt;/p&gt;
+&lt;p&gt;(44 chars, 10 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/7_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/7_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;Does the quick brown fox jump over the lazy dog?&lt;/p&gt;
+&lt;p&gt;(51 chars, 11 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/8_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/4_google_demo/8_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;h3 id=&#34;keithitotacotron-との比較&#34;&gt;keithito/tacotron との比較&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://keithito.github.io/audio-samples/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://keithito.github.io/audio-samples/&lt;/a&gt; の audio samples で使われている文章に対するテストです。比較しやすいように、比較対象の音声も合わせて貼っておきます。自前実装で生成したもの、&lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt; で生成したもの、の順です。&lt;/p&gt;
+&lt;p&gt;Scientists at the CERN laboratory say they have discovered a new particle.&lt;/p&gt;
+&lt;p&gt;(74 chars, 13 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/0_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/keithito/eval-877000-0.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/0_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;There&amp;rsquo;s a way to measure the acute emotional intelligence that has never gone out of style.&lt;/p&gt;
+&lt;p&gt;(91 chars, 18 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/1_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/keithito/eval-877000-1.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/1_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;President Trump met with other leaders at the Group of 20 conference.&lt;/p&gt;
+&lt;p&gt;(69 chars, 13 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/2_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/keithito/eval-877000-2.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/2_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;The Senate&amp;rsquo;s bill to repeal and replace the Affordable Care Act is now imperiled.&lt;/p&gt;
+&lt;p&gt;(81 chars, 16 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/3_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/keithito/eval-877000-3.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/3_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;Generative adversarial network or variational auto-encoder.&lt;/p&gt;
+&lt;p&gt;(59 chars, 7 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/4_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/keithito/eval-877000-4.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/4_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;The buses aren&amp;rsquo;t the problem, they actually provide a solution.&lt;/p&gt;
+&lt;p&gt;(63 chars, 13 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/5_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/keithito/eval-877000-5.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/3_keithito/5_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;h3 id=&#34;ground-truth-との比較&#34;&gt;Ground truth との比較&lt;/h3&gt;
+&lt;p&gt;最後に、元のデータセットとの比較です。学習データからサンプルを取ってきて比較します。自前実装で生成したもの、ground truthの順に貼ります。&lt;/p&gt;
+&lt;p&gt;Printing, in the only sense with which we are at present concerned, differs from most if not from all the arts and crafts represented in the Exhibition.&lt;/p&gt;
+&lt;p&gt;(152 chars, 30 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/0_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/lj/LJ001-0001.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/0_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;in being comparatively modern.&lt;/p&gt;
+&lt;p&gt;(30 chars, 5 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/1_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/lj/LJ001-0002.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/1_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;For although the Chinese took impressions from wood blocks engraved in relief for centuries before the woodcutters of the Netherlands, by a similar process.&lt;/p&gt;
+&lt;p&gt;(156 chars, 26 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/2_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/lj/LJ001-0003.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/2_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;produced the block books, which were the immediate predecessors of the true printed book,&lt;/p&gt;
+&lt;p&gt;(89 chars, 16 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/3_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/lj/LJ001-0004.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/3_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;the invention of movable metal letters in the middle of the fifteenth century may justly be considered as the invention of the art of printing.&lt;/p&gt;
+&lt;p&gt;(143 chars, 26 words)&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/4_step720000.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron/lj/LJ001-0005.mp3&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/audio/tacotron/5_ljspeech_sample/4_step720000_alignment.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;元音声があまり良いクリーンな音声ではないとはいえ、まー元音声とは大きな違いがありますねー、、厳しいです。スペクトログラムを見ている限りでは（貼ってないですが、すいません）、明らかに高周波数成分の予測が上手く言っていないことはわかっています。ナイーブなアイデアではありますが、GANを導入すると良くなるのではないかと思っています。&lt;/p&gt;
+&lt;h3 id=&#34;おまけ生成する度に変わる音声&#34;&gt;おまけ：生成する度に変わる音声&lt;/h3&gt;
+&lt;p&gt;実験する過程で副次的に得られた結果ではあるのですが、テスト時に一部dropoutを有効にしていると&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;、生成する度に音声が異なる（韻律が微妙に変わる）、といった現象を経験しています。以下、前に検証した際の実験ノートのリンクを貼っておきます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://nbviewer.jupyter.org/gist/r9y9/fe1945b73cd5b98e97c61410fe26a851#Try-same-input-multiple-times&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;まとめ--感想など&#34;&gt;まとめ &amp;amp; 感想など&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Tacotronを実装しました &lt;a href=&#34;https://github.com/r9y9/tacotron_pytorch&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/tacotron_pytorch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;24時間のデータセットに対して、20万ステップ程度（数日くらい）学習させたらそれなりにまともな音声が生成できるようになりました。70万ステップ（一週間と少しくらい）学習させましたが、ずっとロスは下がり続ける一方で、50万くらいからはあまり大きな品質改善は見られなかったように思います。&lt;/li&gt;
+&lt;li&gt;Googleの論文と（ほぼ&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;）同じように実装したつもりですが、品質はそこまで高くならなかったように思います。End-to-end では、 &lt;strong&gt;データの量と品質&lt;/strong&gt; がかなり重要なので、それが主な原因だと思っています。（僕の実装に、多少バグがあるかもしれませんが、、、&lt;/li&gt;
+&lt;li&gt;EOS (End-of-sentence) では、理想的には要素がすべて0のスペクトログラムが出力されるはずなのですが、実際にはやはりそうもいかないので、判定には以下のようなしきい値処理を用いました。ここで貼った音声は全部この仕組みで動いており、単純ですがそれなりに上手く機能しているようです。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-py&#34;&gt;def is_end_of_frames(output, eps=0.2):
+    return (output.data &amp;lt;= eps).all()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;論文からは非自明な点の一つとして、エンコーダの出力のうち、入力のゼロ詰めした部分をマスキングするかどうか、といった点があります。これは、既存実装によってもまちまちで、例えば &lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt; ではマスキングしていませんが、&lt;a href=&#34;https://github.com/barronalex/Tacotron/blob/2de9e507456cbe2b680cbc6b2beb6a761bd2eebd/models/tacotron.py#L51&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;barronalex/Tacotron&lt;/a&gt; ではマスクしています。僕はマスクする場合としない場合と両方試したのですが（ここに貼った結果は、マスクしていない場合のものです）、マスクしないほうが若干良くなったような気もします。理想的にはマスクするべきだと思ったのですが、実際に試したところどちらかが圧倒的に悪いという結果ではありませんでした。発見した大きな違いの一つは、マスクなしの場合はアテンションは大まかにmonotonicになる一方で、マスクありの場合は、無音区間ではエンコーダ出力の冒頭にアテンションの重みが大きくなる（ので、monotonicではない）、と言ったことがありました。マスクありの音声サンプル、アライメントの可視化は、（少し古いですが）&lt;a href=&#34;http://nbviewer.jupyter.org/github/r9y9/tacotron_pytorch/blob/bdad19fdff22016c7457a979707655bb7a605cd8/notebooks/Test%20Tacotron.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ここ&lt;/a&gt; にあります。参考までに、Tensorflowでエンコーダの出力マスクする場合は、&lt;code&gt;memory_sequence_length&lt;/code&gt; を指定します &lt;a href=&#34;https://www.tensorflow.org/api_docs/python/tf/contrib/seq2seq/BahdanauAttention&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.tensorflow.org/api_docs/python/tf/contrib/seq2seq/BahdanauAttention&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;日本語でやったり、multi-speaker でやったりしたかったのですが、とにかく実験に時間がかかるので、今のところ僕の中では優先度が低めになってしまいました。時間と計算資源に余裕があれば、やりたいのですが…&lt;/li&gt;
+&lt;li&gt;日本語でやるには、英語と同じようにはいきません。というのも、char-levelで考えた際に、語彙が大きすぎるので。やるならば、十分大きな日本語テキストコーパスからembeddingを別途学習して（Tacotronでは、モデル自体にembeddingが入っています）、その他の部分を音声つきコーパスで学習する、といった方法が良いかなと思います。CSJコーパスは結構向いているんじゃないかと思っています。&lt;/li&gt;
+&lt;li&gt;multi-speakerモデルを考える場合、どこにembeddingを差し込むのか、といったことが重要になってきますが、&lt;a href=&#34;https://github.com/keithito/tacotron/issues/18&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron/issues/18&lt;/a&gt; や &lt;a href=&#34;https://github.com/keithito/tacotron/issues/24&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron/issues/24&lt;/a&gt; に少し議論があるので、興味のある人は見てみるとよいかもしれません。DeepVoiceの論文も参考になるかと思います&lt;/li&gt;
+&lt;li&gt;最新のTensorFlowでは、griffin lim や stft（GPUで走る、勾配が求められる）が実装されているので、tacotronモデルを少し拡張して、サンプルレベルでロスを考える、といったことが簡単に試せると思います（ある意味WaveNetです）。ただし、ものすごく計算リソースを必要とするのが容易に想像がつくので、僕はやっていません。GPU落ちてこないかな、、、&lt;/li&gt;
+&lt;li&gt;Tacotronの拡張として、speaker embedding以外にも、いろんな潜在変数を埋め込んでみると、楽しそうに思いました。例えば話速、感情とか。&lt;/li&gt;
+&lt;li&gt;TensorFlowのseq2seqあたりのドキュメント/コードをよく読んでいたのですが、APIが抽象化されすぎていてつらいなと思いました。例えばAttentionWrapper、コードを読まずに挙動を理解するのは無理なのではと思いました &lt;a href=&#34;https://github.com/r9y9/tacotron_pytorch/issues/2#issuecomment-334255759&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/tacotron_pytorch/issues/2#issuecomment-334255759&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/keithito/tacotron&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito/tacotron&lt;/a&gt; は本当によく書かれているなと思ったので、TensorFlowに長けている方には、おすすめです&lt;/li&gt;
+&lt;li&gt;僕の実装では、バッチサイズ32でGPUメモリ5GB程度しか食わないので、Tacotronは比較的軽いモデルなのだなーと思いました。物体検出で有名な single shot multibox detector (通称SSD) なんかは、バッチサイズ16とかでも平気で12GBとか使ってくるので（一年近く前の経験ですが）、無限にGPUリソースがほしくなってきます&lt;/li&gt;
+&lt;li&gt;これが僕にとって、はじめてまともにseq2seqを実装した経験でした。色々勉強したのですが、Attention mechanism に関しては、 &lt;a href=&#34;http://colinraffel.com/blog/online-and-linear-time-attention-by-enforcing-monotonic-alignments.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://colinraffel.com/blog/online-and-linear-time-attention-by-enforcing-monotonic-alignments.html&lt;/a&gt; がとても参考になりました。あとで知ったのですが、monotonic attentionの著者は僕が昔から使っている音楽信号処理のライブラリ &lt;a href=&#34;https://github.com/librosa/librosa&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;librosa&lt;/a&gt; のコミッタでした（僕も弱小コミッタの一人）。とても便利で、よくテストされているので、おすすめです。オープンソースのTacotron実装でも、音声処理にも使われています&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;End-to-End 音声合成は、言語処理のフロントエンドを（最低限の前処理を除き）必要としないという素晴らしさがあります。SampleRNN、Char2wavと他にも色々ありますが、今後もっと発展していくのではないかと思っています。おしまい。&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1703.10135&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;URLには現時点のgitのコミットハッシュが入っています。最新版は、 &lt;a href=&#34;https://github.com/r9y9/tacotron_pytorch&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/tacotron_pytorch&lt;/a&gt; から直接辿ってください。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/keithito/tacotron/pull/43#issuecomment-332068107&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/keithito/tacotron/pull/43#issuecomment-332068107&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;dropoutを切ってしまうと、アライメントが死んでしまうというバグ？に苦しんでおり…未だ原因を突き止められていません&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;たとえばロスはちょっと違って、高周波数帯域に比べて低周波数帯域の重みを少し大きくしていたりしています。これは既存のtf実装に従いました。&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

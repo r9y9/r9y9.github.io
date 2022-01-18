@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Corpus | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/corpus/</link>
+      <atom:link href="https://r9y9.github.io/tag/corpus/index.xml" rel="self" type="application/rss+xml" />
+    <description>Corpus</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 11 Jun 2019 00:00:30 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Corpus</title>
+      <link>https://r9y9.github.io/tag/corpus/</link>
+    </image>
+    
+    <item>
+      <title>LJSpeech は価値のあるデータセットですが、ニューラルボコーダの品質比較には向かないと思います</title>
+      <link>https://r9y9.github.io/blog/2019/06/11/ljspeech/</link>
+      <pubDate>Tue, 11 Jun 2019 00:00:30 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2019/06/11/ljspeech/</guid>
+      <description>&lt;p&gt;LJSpeech Dataset: &lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://keithito.com/LJ-Speech-Dataset/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;最近いろんな研究で &lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LJSpeech&lt;/a&gt; が使われていますが、合成音の品質を比べるならクリーンなデータセットを使ったほうがいいですね。でないと、合成音声に含まれるノイズがモデルの限界からくるノイズなのかコーパスの音声が含むノイズ（LJSpeechの場合リバーブっぽい音）なのか区別できなくて、公平に比較するのが難しいと思います。&lt;/p&gt;
+&lt;p&gt;例えば、LJSpeechを使うと、ぶっちゃけ &lt;a href=&#34;https://nv-adlr.github.io/WaveGlow&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;WaveGlow&lt;/a&gt; がWaveNetと比べて品質がいいかどうかわかんないですよね…&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.
+例えば最近のNICT岡本さんの研究 (&lt;a href=&#34;https://www.slideshare.net/Takuma_OKAMOTO/ss-135604814&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;基本周波数とメルケプストラムを用いたリアルタイムニューラルボコーダに関する検討&lt;/a&gt;) を引用すると、実際にクリーンなデータで実験すれば（Noise shaping なしで）MOS は WaveNet (&lt;strong&gt;4.19&lt;/strong&gt;) &amp;gt; WaveGlow (3.27) と、結構な差が出たりします。LJSpeechを使った場合の WaveGlow (&lt;strong&gt;3.961&lt;/strong&gt;) &amp;gt; WaveNet (3.885) と比べると大きな差ですね。&lt;/p&gt;
+&lt;p&gt;とはいえ、End-to-end音声合成を試すにはとてもいいデータセットであると思うので、積極的に活用しましょう。最近 &lt;a href=&#34;https://arxiv.org/abs/1904.02882&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LibriTTS&lt;/a&gt; が公開されたので、そちらも合わせてチェックするといいですね。&lt;/p&gt;
+&lt;h2 id=&#34;why-ljspeech&#34;&gt;Why LJSpeech&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LJSpeech&lt;/a&gt; は、&lt;a href=&#34;https://keithito.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;keithito&lt;/a&gt; さんによって2017年に公開された、単一女性話者によって録音された24時間程度の英語音声コーパスです。なぜ近年よく使われて始めているのかと言うと（2019年6月時点で&lt;a href=&#34;https://scholar.google.co.jp/scholar?cites=8632543993730273058&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Google scholarで27件の引用&lt;/a&gt;）、End-to-end 音声合成の研究に用いるデータセットとして、LJSpeechは最もといっていいほど手軽に手に入るからだと考えています。LJSpeech は public domainで配布されており、利用に制限もありませんし、企業、教育機関、個人など様々な立場から自由に使用することができます。End-to-end 音声合成（厳密にはseq2seq モデルの学習）は一般に大量のデータが必要なことが知られていますが、その要件も満たしていることから、特にEnd-to-end音声合成の研究で用いられている印象を受けます。最近だと、&lt;a href=&#34;https://speechresearch.github.io/fastspeech/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;FastSpeech: Fast, Robust and Controllable Text to Speech&lt;/a&gt; にも使われていましたね。&lt;/p&gt;
+&lt;h2 id=&#34;個人的な経験&#34;&gt;個人的な経験&lt;/h2&gt;
+&lt;p&gt;個人的には、過去に以下のブログ記事の内容で使用してきました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/15/tacotron/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/12/13/deepvoice3/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/11/23/dctts/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2018/05/20/tacotron2/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;この記事を書くにあたって整理してみて、ずいぶんとたくさんお世話になっていることが改めてわかりました。keithitoさん本当にありがとうございます。&lt;/p&gt;
+&lt;p&gt;2017年、僕がTacotronで遊び始めた当時、End-to-end音声合成が流行ってきていたのですが、フリーで手に入って、End-to-end 音声合成にも使えるような程々に大きな（&amp;gt; 20時間）コーパスって、あんまりなかったんですよね。今でこそ &lt;a href=&#34;https://www.caito.de/2019/01/the-m-ailabs-speech-dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;M-AILABS&lt;/a&gt; 、&lt;a href=&#34;https://arxiv.org/abs/1904.02882&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LibriTTS&lt;/a&gt;、日本語なら &lt;a href=&#34;https://sites.google.com/site/shinnosuketakamichi/publication/jsut&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JSUT&lt;/a&gt; もありますが、当時は選択肢は少なかったと記憶しています。今はいい時代になってきていますね。&lt;/p&gt;
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+&lt;p&gt;久しぶりに短いですがブログを書きました。LJSpeechは良いデータセットですので、積極的に活用しましょう。ただ、データセットの特徴として、録音データが若干リバーブがかかったような音になっていることから、ニューラルボコーダの品質比較には（例えば WaveGlow vs WaveNet）あんまり向かないかなと思っています。&lt;/p&gt;
+&lt;p&gt;2017年に、End-to-end音声合成を気軽に試そうと思った時にはLJSpeechは最有力候補でしたが、現在は他にもいろいろ選択肢がある気がします。以下、僕がぱっと思いつくものをまとめておきますので、参考までにどうぞ。&lt;/p&gt;
+&lt;h2 id=&#34;end-to-end音声合成に使える手軽に手に入るデータセット&#34;&gt;End-to-end音声合成に使える手軽に手に入るデータセット&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;LJSpeech Dataset: &lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://keithito.com/LJ-Speech-Dataset/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;LibriTTS: &lt;a href=&#34;https://arxiv.org/abs/1904.02882&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://arxiv.org/abs/1904.02882&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;JSUT: &lt;a href=&#34;https://sites.google.com/site/shinnosuketakamichi/publication/jsut&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://sites.google.com/site/shinnosuketakamichi/publication/jsut&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;M-AILABS: &lt;a href=&#34;https://www.caito.de/2019/01/the-m-ailabs-speech-dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.caito.de/2019/01/the-m-ailabs-speech-dataset/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;VCTK: &lt;a href=&#34;https://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;WaveNet: &lt;a href=&#34;https://deepmind.com/blog/wavenet-generative-model-raw-audio/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://deepmind.com/blog/wavenet-generative-model-raw-audio/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;WaveGlow: &lt;a href=&#34;https://nv-adlr.github.io/WaveGlow&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://nv-adlr.github.io/WaveGlow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;FastSpeech: &lt;a href=&#34;https://speechresearch.github.io/fastspeech/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://speechresearch.github.io/fastspeech/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;岡本拓磨，戸田智基，志賀芳則，河井恒，&amp;ldquo;基本周波数とメルケプストラムを用いたリアルタイムニューラルボコーダに関する検討&amp;rdquo;，日本音響学会講演論文集，2019年春季, pp. 1057–1060, Mar. 2019. &lt;a href=&#34;https://www.slideshare.net/Takuma_OKAMOTO/ss-135604814&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;僕の実装 をbest publicly availableWaveNet implementation として比較に使っていただいて恐縮ですが…。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;</description>
+    </item>
+    
+    <item>
+      <title>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]</title>
+      <link>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</link>
+      <pubDate>Sun, 12 Nov 2017 03:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</guid>
+      <description>&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;コーパス配布先リンク: &lt;a href=&#34;https://sites.google.com/site/shinnosuketakamichi/publication/jsut&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JSUT (Japanese speech corpus of Saruwatari Lab, University of Tokyo) - Shinnosuke Takamichi (高道 慎之介)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;論文リンク: &lt;a href=&#34;https://arxiv.org/abs/1711.00354&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv:1711.00354&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三行まとめ&#34;&gt;三行まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;日本語End-to-end音声合成に使えるコーパスは神、ありがとうございます&lt;/li&gt;
+&lt;li&gt;クリーンな音声であるとはいえ、冒頭/末尾の無音区間は削除されていない、またボタンポチッみたいな音も稀に入っているので注意&lt;/li&gt;
+&lt;li&gt;僕が行った無音区間除去の方法（Juliusで音素アライメントを取って云々）を記録しておくので、必要になった方は参考にどうぞ。ラベルファイルだけほしい人は連絡ください&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;jsut-とは&#34;&gt;JSUT とは&lt;/h2&gt;
+&lt;p&gt;ツイート引用：&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;フリーの日本語音声コーパス（単一話者による10時間データ）を公開しました．音声研究等にお役立てください．&lt;a href=&#34;https://t.co/94ShJY44mA&#34;&gt;https://t.co/94ShJY44mA&lt;/a&gt; &lt;a href=&#34;https://t.co/T0etDwD7cS&#34;&gt;pic.twitter.com/T0etDwD7cS&lt;/a&gt;&lt;/p&gt;&amp;mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) &lt;a href=&#34;https://twitter.com/forthshinji/status/923547202865131520?ref_src=twsrc%5Etfw&#34;&gt;October 26, 2017&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;p&gt;つい先月、JSUT という、日本語 End-to-end 音声合成の研究に使えることを前提に作られた、フリーの大規模音声コーパスが公開されました。詳細は上記リンク先を見てもらうとして、簡単に特徴をまとめると、以下のとおりです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;単一日本語女性話者の音声10時間&lt;/li&gt;
+&lt;li&gt;無響室で収録されている、クリーンな音声コーパス &lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;非営利目的で無料で使える&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;僕の知る限り、日本語 End-to-end 音声合成に関する研究はまだあまり発展していないように感じていたのですが、その理由の一つに誰でも自由に使えるコーパスがなかったことがあったように思います。このデータセットはとても貴重なので、ぜひ使っていきたいところです。
+高道氏およびコーパスを整備してくださった方、本当にありがとうございます。&lt;/p&gt;
+&lt;p&gt;この記事では、僕が実際に日本語End-to-end音声合成の実験をしようと思った時に、必要になった前処理（最初と最後の&lt;strong&gt;無音区間の除去&lt;/strong&gt;）について書きたいと思います。&lt;/p&gt;
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
+&lt;p&gt;まずはじめに、最初と最後の無音区間を除去したい理由には、以下の二つがありました。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Tacotronのようなattention付きseq2seqモデルにおいて、アライメントを学習するのに不都合なこと。句読点に起因する無音区間ならともかく、最初/最後の無音区間は、テキスト情報からはわからないので、直感的には不要であると思われます。参考までに、&lt;a href=&#34;https://arxiv.org/abs/1705.08947&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DeepVoice2の論文のsection 4.2&lt;/a&gt; では、無音区間をトリミングするのがよかったと書かれています。&lt;/li&gt;
+&lt;li&gt;発話の前、発話の後に、微妙にノイズがある（息を大きく吸う音、ボタンをポチッ、みたいな機械音等）データがあり、そのノイズが不都合なこと。例えばTacotronのようなモデルでは、テキスト情報とスペクトログラムの関係性を学習したいので、テキストに関係のないノイズは可能な限り除去しておきたいところです。参考までに、ボタンポチノイズは 例えば &lt;code&gt;basic5000/wav/BASIC5000_0008.wav&lt;/code&gt; に入っています&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;最初何も考えずに（ダメですが）データを入れたら、アライメントが上手く学習されないなーと思い、データを見ていたところ、後者に気づいた次第です。&lt;/p&gt;
+&lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
+&lt;p&gt;さて、無音区間を除去する一番簡単な方法は、適当にパワーで閾値処理をすることです。しかし、前述の通りボタンをポチッと押したようなノイズは、この方法では難しそうでした。というわけで、少し手間はかかりますが、Juliusで音素アライメントを取って、無音区間を推定することにしました。
+以下、Juliusを使ってアライメントファイル（.lab) を作る方法です。コードは、 &lt;a href=&#34;https://github.com/r9y9/segmentation-kit/tree/jsut&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/segmentation-kit/tree/jsut&lt;/a&gt; にあります。&lt;/p&gt;
+&lt;p&gt;自分で準備するのが面倒だから結果のラベルファイルだけほしいという方がいれば、連絡をいただければお渡しします。Linux環境での実行を想定しています。僕はUbuntu 16.04で作業しています。&lt;/p&gt;
+&lt;h3 id=&#34;準備&#34;&gt;準備&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/julius-speech/julius&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Julius&lt;/a&gt; をインストールする。&lt;code&gt;/usr/local/bin/julius&lt;/code&gt; にバイナリがあるとします&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://taku910.github.io/mecab/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MeCab&lt;/a&gt;をインストールする&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/neologd/mecab-ipadic-neologd&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;mecab-ipadic-neologd&lt;/a&gt; をインストールする&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/nnmnkwii&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nnmnkwii&lt;/a&gt; のmasterブランチを入れる&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pip install mecab-python3 jaconv&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo apt-get install sox&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/segmentation-kit/tree/jsut&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Juliusの音素セグメンテーションツールキットのフォーク (jsutブランチ)&lt;/a&gt; をクローンする。クローン先を作業ディレクトリとします&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;コーパスの場所を設定&#34;&gt;コーパスの場所を設定&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;params.py&lt;/code&gt; というファイルに、コーパスの場所を指定する変数 (&lt;code&gt;in_dir&lt;/code&gt;) があるので、設定します。僕の場合、以下のようになっています。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# coding: utf-8
+in_dir = &amp;quot;/home/ryuichi/data/jsut_ver1&amp;quot;
+dst_dir = &amp;quot;jsut&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;音素アライメントの実行&#34;&gt;音素アライメントの実行&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;bash run.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;でまるっと実行できるようにしました。MeCabで読みを推定するなどの処理は、この記事を書いている時点では &lt;code&gt;a.py&lt;/code&gt;, &lt;code&gt;b.py&lt;/code&gt;, &lt;code&gt;c.py&lt;/code&gt;, &lt;code&gt;d.py&lt;/code&gt;というファイルに書かれています。 適当なファイル名で申し訳ありませんという気持ちですが、自分のための書いたコードはこうなってしまいがちです、申し訳ありません。&lt;/p&gt;
+&lt;p&gt;7000ファイル以上処理するので、三十分くらいかかります。&lt;code&gt;./jsut&lt;/code&gt; というディレクトリに、labファイルができていれば正常に実行完了です。最後に、&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Failed number of utterances: 87
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;のように、アライメントに失敗したファイル数が表示されるようになっています。失敗の理由には、MeCabでの読みの推定に失敗した（特に数字）などがあります。手で直すことも可能なのですが（実際に一度はやろうとした）非常に大変なので、多少失敗してもよいので大雑把にアライメントを取ることを目的として、スクリプトを作りました。&lt;/p&gt;
+&lt;p&gt;なお、juliusはwavesurferのフォーマットでラベルファイルを吐きますが、HTKのラベルフォーマットの方が僕には都合がよかったので、変換するようにしました。&lt;/p&gt;
+&lt;h3 id=&#34;コーパスにパッチ&#34;&gt;コーパスにパッチ&lt;/h3&gt;
+&lt;p&gt;便宜上、下記のようにwavディレクトリと同じ階層にラベルファイルがあると都合がよいので、僕はそのようにします。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tree ~/data/jsut_ver1/ -d -L 2
+/home/ryuichi/data/jsut_ver1/
+├── basic5000
+│   ├── lab
+│   └── wav
+├── countersuffix26
+│   ├── lab
+│   └── wav
+├── loanword128
+│   ├── lab
+│   └── wav
+├── onomatopee300
+│   ├── lab
+│   └── wav
+├── precedent130
+│   ├── lab
+│   └── wav
+├── repeat500
+│   ├── lab
+│   └── wav
+├── travel1000
+│   ├── lab
+│   └── wav
+├── utparaphrase512
+│   ├── lab
+│   └── wav
+└── voiceactress100
+    ├── lab
+    └── wav
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以下のコマンドにより、生成されたラベルファイルをコーパス配下にコピーします。この処理は、&lt;code&gt;run.sh&lt;/code&gt; では実行しないようになっているので、必要であれば自己責任でおこなってください。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;python d.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;ラベル活用例&#34;&gt;ラベル活用例&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046&lt;/a&gt; のようなコードを書いて、ボタンポチ音が末尾に入っている &lt;code&gt;basic5000/wav/BASIC5000_0008.wav&lt;/code&gt; に対して無音区間削除を行ってみると、結果は以下のようになります。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/jsut_basic5000_08.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;パワーベースの閾値処理では上手くいかない一方で&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;、音素アライメントを使った方法では上手く無音区間除去ができています。その他、数十サンプルを目視で確認しましたが、僕の期待どおり上手くいっているようでした。めでたし。&lt;/p&gt;
+&lt;h2 id=&#34;おわり&#34;&gt;おわり&lt;/h2&gt;
+&lt;p&gt;以上です。End-to-end系のモデルにとってはデータは命であり、このコーパスは神であります。このコーパスを使って、同じように前処理をしたい人の参考になれば幸いです。&lt;/p&gt;
+&lt;p&gt;いま僕はこのコーパスを使って、日本語end-to-end音声合成の実験も少しやっているので、まとまったら報告しようと思っています。&lt;/p&gt;
+&lt;div =align=&#34;center&#34;&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;これさ、ASJとかで発表しない？絶対に価値あると思う。諸々のサポートはしますよ。&lt;/p&gt;&amp;mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) &lt;a href=&#34;https://twitter.com/forthshinji/status/928303639478747136?ref_src=twsrc%5Etfw&#34;&gt;November 8, 2017&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;p&gt;コーパスを作った本人氏にASJで発表しないかと勧誘を受けていますが、現在の予定は未定です^q^&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1711.00354&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Ryosuke Sonobe, Shinnosuke Takamichi and Hiroshi Saruwatari,
+&amp;ldquo;JSUT corpus: free large-scale Japanese speech corpus for end-to-end speech synthesis,&amp;rdquo;
+arXiv preprint, 1711.00354, 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1705.08947&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Sercan Arik, Gregory Diamos, Andrew Gibiansky, et al, &amp;ldquo;Deep Voice 2: Multi-Speaker Neural Text-to-Speech&amp;rdquo;, 	arXiv:1705.08947, 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;以前ブログでEnd-to-end英語音声合成に使えると書いた &lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LJSpeech&lt;/a&gt;はクリーンではないんですねー&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;このサンプルで上手くいくように閾値を調整すると、他のサンプルでトリミングしすぎてしまうようになってしまいます&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

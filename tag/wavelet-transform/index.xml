@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wavelet Transform | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/wavelet-transform/</link>
+      <atom:link href="https://r9y9.github.io/tag/wavelet-transform/index.xml" rel="self" type="application/rss+xml" />
+    <description>Wavelet Transform</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 01 Jun 2014 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Wavelet Transform</title>
+      <link>https://r9y9.github.io/tag/wavelet-transform/</link>
+    </image>
+    
+    <item>
+      <title>連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG</title>
+      <link>https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/</link>
+      <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/</guid>
+      <description>&lt;p&gt;「ウェーブレット変換って難しいんじゃ…マザーウェーブレット？よくわかんない…」&lt;/p&gt;
+&lt;p&gt;大丈夫、そんな人には以下の文献がお勧めです&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;前置きはさておき、上の文献を参考にMorlet, Paul, DOG (Derivative of Gaussian) の代表的な3つのマザーウェーブレットで音声に対してウェーブレット変換をしてみたので、メモがてら結果を貼っておく&lt;/p&gt;
+&lt;p&gt;図の横軸はサンプルで、縦軸は周波数Hz（対数目盛り）にした&lt;/p&gt;
+&lt;p&gt;マザーウェーブレットのパラメータは、Morletは $\omega_{0} = 6.0$、Paulは $M = 4$、DOGは $M = 6$&lt;/p&gt;
+&lt;p&gt;スケールは、min=55hzで、25cent毎に8オクターブ分取った※厳密には違うのでごめんなさい&lt;/p&gt;
+&lt;p&gt;分析に使った音声は、&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE&lt;/a&gt; で使ったのと同じ&lt;/p&gt;
+&lt;h2 id=&#34;morlet&#34;&gt;Morlet&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/morlet_6.png &#34;Morlet Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h2 id=&#34;paul&#34;&gt;Paul&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/paul_4.png &#34;Paul Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h2 id=&#34;dog&#34;&gt;DOG&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/dog_6.png &#34;DOG Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;対数を取ると、以下のような感じ&lt;/p&gt;
+&lt;h2 id=&#34;morlet-1&#34;&gt;Morlet&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/morlet_6_log.png &#34;Morlet Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h2 id=&#34;paul-1&#34;&gt;Paul&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/paul_4_log.png &#34;Paul Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h2 id=&#34;dog-1&#34;&gt;DOG&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/dog_6_log.png &#34;DOG Wavelet log spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;Paulは時間解像度は高いけど周波数解像度はいまいちなので、音声とかには向かないのかなー。DOGはMorletとPaulの中間くらいの位置づけの様子。DOGはorderを上げればMorletっぽくなるけど、Morletの方がやっぱ使いやすいなーという印象。&lt;/p&gt;
+&lt;h2 id=&#34;スケールから周波数への変換&#34;&gt;スケールから周波数への変換&lt;/h2&gt;
+&lt;p&gt;実は今日まで知らなかったんだけど、マザーウェーブレットによっては時間領域でのスケールの逆数は必ずしも周波数領域での周波数に対応するとは限らないそう。というかずれる（詳細はPractical Guideの3.hを参照）。上で書いた厳密には違うというのは、これが理由。&lt;/p&gt;
+&lt;p&gt;ただし、スケールから周波数への変換はマザーウェーブレットから一意に決まるようなので、正しい周波数を求めることは可能。上に貼った図は、Practical Guideにしたがってスケールから周波数に変換している。&lt;/p&gt;
+&lt;p&gt;例えば、$f = \frac{1}{s}$となるようにスケールを与えていたとき、$\omega_0 = 6.0$のMorletを使ったウェーブレット変換の真の周波数は、&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+f&#39; &amp;= \frac{\omega_0 + \sqrt{2+\omega_{0}^2}}{4\pi s} \\
+&amp;= \frac{0.96801330919}{s} \\
+&amp;= 0.96801330919f
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;となる。
+$\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので今まで気づかなかった…&lt;/p&gt;
+&lt;p&gt;めんどくさい。これを知ってからちょっとウェーブレット嫌いになった。でもめげない&lt;/p&gt;
+&lt;p&gt;おわり&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.mark-bishop.net/signals/CWTReconstructionFactors.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Continuous Wavelet Transform Reconstruction Factors for Selected Wavelets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.hulinks.co.jp/support/flexpro/v7/dataanalysis_cwt.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;HULINKS | テクニカルサポート | FlexPro | 連続ウェーブレット変換 (CWT)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;前書いた記事&#34;&gt;前書いた記事&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;FFTを使った連続ウェーブレット変換の高速化 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>逆連続ウェーブレット変換による信号の再構成</title>
+      <link>https://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</link>
+      <pubDate>Mon, 21 Oct 2013 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</guid>
+      <description>&lt;p&gt;やったのでメモ。おそらく正しくできたと思う。結果貼っとく。ウェーブレットの参考は以下の文献&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Torrence, C. and G.P. Compo &amp;ldquo;A Practical Guide to Wavelet Analysis&amp;rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;ウェーブレットの条件&#34;&gt;ウェーブレットの条件&lt;/h2&gt;
+&lt;p&gt;マザーウェーブレットはmorletを使う&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\psi_{0}(\eta) = \pi^{-1/4}e^{i\omega_{0}\eta}e^{-\eta^{2}/2}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;文献に従って$\omega_{0} = 6.0$とした。&lt;/p&gt;
+&lt;p&gt;以下にいっぱい図を張る。軸は適当&lt;/p&gt;
+&lt;h2 id=&#34;元の信号&#34;&gt;元の信号&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/original_signal.png &#34;The original signal&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h2 id=&#34;ウェーブレットスペクトログラム&#34;&gt;ウェーブレットスペクトログラム&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/morlet_wavelet_spectrogram.png &#34;Morlet wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;Gaborではなく、Morletで求めたもの。スケールは、min=55hzで、25cent毎に8オクターブ分取った。一サンプル毎にウェーブレット変換を求めてるので、前回の記事でガボールウェーブレットで求めた奴よりよっぽど解像度高いっすね（前のは10ms毎だった、書いてなかったけど）。見てて綺麗（こなみ&lt;/p&gt;
+&lt;p&gt;計算はFFT使ってるので速い&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://hp.vector.co.jp/authors/VA046927/gabor_wavelet/gabor_wavelet.html&lt;/a&gt;
+スケールのとり方はここを参考にするといい&lt;/p&gt;
+&lt;h2 id=&#34;再構成した信号&#34;&gt;再構成した信号&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/recostructed_signal.png &#34;The recostructed signal&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;連続ウェーブレットの逆変換は、フーリエ変換と違ってそんなシンプルじゃないんだけど、結果から言えばウェーブレット変換の実数部を足しあわせて適当にスケールすれば元の信号が再構成できるみたい。ほんまかと思って実際にやってみたけど、できた&lt;/p&gt;
+&lt;p&gt;が、実は少し誤差がある&lt;/p&gt;
+&lt;h2 id=&#34;重ねてプロット&#34;&gt;重ねてプロット&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/double_0.png &#34;The original signal and recostructed signal&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h2 id=&#34;あっぷ&#34;&gt;あっぷ&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/double_1.png &#34;The original signal and recostructed signal with zoom 1&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/double_2.png &#34;The original signal and recostructed signal with zoom 2&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/double_3.png &#34;The original signal and recostructed signal with zoom 3&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/double_4.png &#34;The original signal and recostructed signal with zoom 4&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/wavelet/double_5.png &#34;The original signal and recostructed signal with zoom 5&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;んー、まぁだいたいあってんじゃないですかね&lt;/p&gt;
+&lt;h2 id=&#34;誤差&#34;&gt;誤差&lt;/h2&gt;
+&lt;p&gt;平均誤差を計算すると、図の縦軸の量で考えて55.3994だった。16bitのwavが-32768〜32767なので、どうだろう、大きいのか小さいのかわからん&lt;/p&gt;
+&lt;p&gt;ただ、再合成した音声を聞いた所それほど違和感はなかった。これはつまり、スペクトルいじる系の分析にSTFTがではなくウェーブレット使ってもいいんではないか？という考えが生まれますね。果たして、ウェーブレットが音声/音楽の分析にフーリエ変換ほど使われないのはなぜなのか、突き詰めたい&lt;/p&gt;
+&lt;h2 id=&#34;メモ&#34;&gt;メモ&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://paos.colorado.edu/research/wavelets/wavelet3.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://paos.colorado.edu/research/wavelets/wavelet3.html&lt;/a&gt;
+ここの最後に書かれている以下の文章、&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;One problem with performing the wavelet transform in Fourier space is that this assumes the time series is periodic. The result is that signals in the wavelet transform at one end of the time series will get wrapped around to the other end.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;FFT使うウェーブレット変換の問題は、信号を周期関数として仮定してしまうことにある、と。まあ、ですよねー。信号がめちゃくちゃ長くてこの仮定が破綻してしまう場合、どうするのがいいんだろう。&lt;/p&gt;
+&lt;p&gt;あと、FFT使うウェーブレットの問題として、メモリ食うってのがあるんよな。ウェーブレット変換を計算する前に、マザーウェーブレットのフーリエ変換を持っとかないといけないし、サンプル毎に計算しないといけないし。44.1kの数分の音声とかなると、もう無理っすね。&lt;/p&gt;
+&lt;p&gt;それぞれ、解決方法は思いつかないでもないけど、まだまとまってないので、解決したらまとめる、かもしれない。&lt;/p&gt;
+&lt;h2 id=&#34;さらにめも&#34;&gt;さらにめも&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;practicalなんちゃらの、マザーウェーブレットを正規化する部分のmatlabコード、文献中の数式と若干違ってトリッキー。展開すれば一緒なんだけど、文献中の数式をそのまま書いたようになってないので、注意。ちょっと戸惑った&lt;/li&gt;
+&lt;li&gt;逆ウェーブレットを行う際のスケールにかかる係数（文献中でいう$C_{\delta}$）は、マザーウェーブレットが決まれば値が定まる（らしい）。例えばMorletの$\omega_0 = 6$なら0.776とわかってるので、積分して計算する必要はない&lt;/li&gt;
+&lt;li&gt;ウェーブレット変換と戯れてたら週末終わった&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

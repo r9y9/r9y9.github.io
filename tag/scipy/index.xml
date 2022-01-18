@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SciPy | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/scipy/</link>
+      <atom:link href="https://r9y9.github.io/tag/scipy/index.xml" rel="self" type="application/rss+xml" />
+    <description>SciPy</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 05 Aug 2014 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>SciPy</title>
+      <link>https://r9y9.github.io/tag/scipy/</link>
+    </image>
+    
+    <item>
+      <title>Tokyo.Scipyに参加してきた</title>
+      <link>https://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</link>
+      <pubDate>Tue, 05 Aug 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</guid>
+      <description>&lt;h2 id=&#34;tokyoscipyhttpsgithubcomtokyo-scipyarchive&#34;&gt;&lt;a href=&#34;https://github.com/tokyo-scipy/archive&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tokyo.SciPy&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;ハッシュタグ: &lt;a href=&#34;https://twitter.com/search?q=%23tokyoscipy&amp;amp;src=tyah&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;#tokyoscipy&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Tokyo.Scipy は科学技術計算で Python を利用するための勉強会です．&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;とのことです。最近、python/numpy/scipyによくお世話になっているので、参加してみました。雑感をメモしておきます。&lt;/p&gt;
+&lt;h2 id=&#34;tokyoscipy-006httpsgithubcomtokyo-scipyarchivetreemaster006&#34;&gt;&lt;a href=&#34;https://github.com/tokyo-scipy/archive/tree/master/006&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tokyo.Scipy 006&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;第6回のようでした。プログラムだけさっとまとめると、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;そこそこ大規模Python並列/パイプライン処理入門 w/o MapReduceレジーム (柏野雄太 @yutakashino) 45分&lt;/li&gt;
+&lt;li&gt;初心者が陥るN個の罠。いざ進めNumpy/Scipyの道 (@nezuq) 15分&lt;/li&gt;
+&lt;li&gt;Making computations reproducible (@fuzzysphere) 30分&lt;/li&gt;
+&lt;li&gt;IPython Notebookで始めるデータ分析と可視化 (杜世橋 @lucidfrontier45) 30分&lt;/li&gt;
+&lt;li&gt;PyMCがあれば，ベイズ推定でもう泣いたりなんかしない (神嶌敏弘 @shima__shima) 45分&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;という感じ。僕的には、@shima__shima 先生の発表が目当てだった&lt;/p&gt;
+&lt;h2 id=&#34;雑感&#34;&gt;雑感&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;今回（？）はscipyの話はほとんどなかった。pythonを使った科学技術計算に関する幅広いトピックを扱ってる印象。&lt;/li&gt;
+&lt;li&gt;ipython はやっぱ便利ですね。僕も良く使います&lt;/li&gt;
+&lt;li&gt;@shima__shima 先生の発表がとてもわかりやすかったので、本当に参考にしたい&lt;/li&gt;
+&lt;li&gt;正直もっとコアな話もあっていいのでは、と思った&lt;/li&gt;
+&lt;li&gt;懇親会で気づいたが、意外と音声信号処理やってる（た）人がいてびっくりした&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/scikit-learn/scikit-learn&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;scikit-learn&lt;/a&gt; を初期の頃に作られてた方 &lt;a href=&#34;https://twitter.com/cournape&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@cournape&lt;/a&gt; がいてびっくり。開発当初はGMMとSVMくらいしかなくて全然ユーザーがつかなかったなどなど、裏話を色々聞けた&lt;/li&gt;
+&lt;li&gt;フランス人の「たぶん大丈夫」は絶対無理の意（わろた&lt;/li&gt;
+&lt;li&gt;Rust, juliaがいいと教えてもらった。うちjuliaは今やってみてるがなかなかいい&lt;/li&gt;
+&lt;li&gt;発表でも話題に上がったけど、Pandasがいいという話を聞いたので、試してみたい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;運営の方々、発表された方々、ありがとうございました。僕も機会が合えば何か発表したい&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

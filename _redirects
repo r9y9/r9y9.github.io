@@ -1,0 +1,12 @@
+# Netlify redirects
+# Automatically generated
+# Documentation: http://bit.ly/netlify-deployment
+/demos/projects/va-pwg/ /projects/va-pwg/
+/projects/va-pwg/ /projects/va-pwg/
+/demos/projects/icassp2021/ /projects/vuvd-pwg/
+/projects/icassp2021/ /projects/vuvd-pwg/
+/demos/projects/icassp2020/ /projects/pwg/
+/projects/icassp2020/ /projects/pwg/
+/demos/projects/interspeech2019/ /projects/gan-pwn/
+/projects/interspeech2019/ /projects/gan-pwn/
+/blog/2014/06/01/continuouos-wavelet-transform-types/ /blog/2014/06/01/continuous-wavelet-transform-types/

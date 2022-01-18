@@ -1,0 +1,1268 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="[A Practical Guide to Wavelet Analysis](https://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf)" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/" />
+  <meta property="og:title" content="連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG | LESS IS MORE" />
+  <meta property="og:description" content="[A Practical Guide to Wavelet Analysis](https://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf)" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2014-06-01T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2014-06-01T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/"
+  },
+  "headline": "連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG",
+  
+  "datePublished": "2014-06-01T00:00:00Z",
+  "dateModified": "2014-06-01T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "[A Practical Guide to Wavelet Analysis](https://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf)"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG | LESS IS MORE</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="58c71dcfafc5b67829f087d7612bf424" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jun 1, 2014
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    1 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>「ウェーブレット変換って難しいんじゃ…マザーウェーブレット？よくわかんない…」</p>
+<p>大丈夫、そんな人には以下の文献がお勧めです</p>
+<p><a href="https://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf" target="_blank" rel="noopener">Torrence, C. and G.P. Compo &ldquo;A Practical Guide to Wavelet Analysis&rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.</a></p>
+<p>前置きはさておき、上の文献を参考にMorlet, Paul, DOG (Derivative of Gaussian) の代表的な3つのマザーウェーブレットで音声に対してウェーブレット変換をしてみたので、メモがてら結果を貼っておく</p>
+<p>図の横軸はサンプルで、縦軸は周波数Hz（対数目盛り）にした</p>
+<p>マザーウェーブレットのパラメータは、Morletは $\omega_{0} = 6.0$、Paulは $M = 4$、DOGは $M = 6$</p>
+<p>スケールは、min=55hzで、25cent毎に8オクターブ分取った※厳密には違うのでごめんなさい</p>
+<p>分析に使った音声は、<a href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/" target="_blank" rel="noopener">逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE</a> で使ったのと同じ</p>
+<h2 id="morlet">Morlet</h2>
+<div align="center"><img src="/images/morlet_6.png "Morlet Wavelet spectrogram"" class="image"></div>
+<h2 id="paul">Paul</h2>
+<div align="center"><img src="/images/paul_4.png "Paul Wavelet spectrogram"" class="image"></div>
+<h2 id="dog">DOG</h2>
+<div align="center"><img src="/images/dog_6.png "DOG Wavelet spectrogram"" class="image"></div>
+<p>対数を取ると、以下のような感じ</p>
+<h2 id="morlet-1">Morlet</h2>
+<div align="center"><img src="/images/morlet_6_log.png "Morlet Wavelet log spectrogram"" class="image"></div>
+<h2 id="paul-1">Paul</h2>
+<div align="center"><img src="/images/paul_4_log.png "Paul Wavelet log spectrogram"" class="image"></div>
+<h2 id="dog-1">DOG</h2>
+<div align="center"><img src="/images/dog_6_log.png "DOG Wavelet log spectrogram"" class="image"></div>
+<p>Paulは時間解像度は高いけど周波数解像度はいまいちなので、音声とかには向かないのかなー。DOGはMorletとPaulの中間くらいの位置づけの様子。DOGはorderを上げればMorletっぽくなるけど、Morletの方がやっぱ使いやすいなーという印象。</p>
+<h2 id="スケールから周波数への変換">スケールから周波数への変換</h2>
+<p>実は今日まで知らなかったんだけど、マザーウェーブレットによっては時間領域でのスケールの逆数は必ずしも周波数領域での周波数に対応するとは限らないそう。というかずれる（詳細はPractical Guideの3.hを参照）。上で書いた厳密には違うというのは、これが理由。</p>
+<p>ただし、スケールから周波数への変換はマザーウェーブレットから一意に決まるようなので、正しい周波数を求めることは可能。上に貼った図は、Practical Guideにしたがってスケールから周波数に変換している。</p>
+<p>例えば、$f = \frac{1}{s}$となるようにスケールを与えていたとき、$\omega_0 = 6.0$のMorletを使ったウェーブレット変換の真の周波数は、</p>
+<div>
+\begin{align}
+f' &= \frac{\omega_0 + \sqrt{2+\omega_{0}^2}}{4\pi s} \\
+&= \frac{0.96801330919}{s} \\
+&= 0.96801330919f
+\end{align}
+</div>
+<p>となる。
+$\omega_0 = 6.0$のMorletだとスケールの逆数にほぼ一致するので今まで気づかなかった…</p>
+<p>めんどくさい。これを知ってからちょっとウェーブレット嫌いになった。でもめげない</p>
+<p>おわり</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf" target="_blank" rel="noopener">Torrence, C. and G.P. Compo &ldquo;A Practical Guide to Wavelet Analysis&rdquo;, Bull. Am. Meteorol. Soc., 79, 61–78, 1998.</a></li>
+<li><a href="http://www.mark-bishop.net/signals/CWTReconstructionFactors.pdf" target="_blank" rel="noopener">Continuous Wavelet Transform Reconstruction Factors for Selected Wavelets</a></li>
+<li><a href="http://www.hulinks.co.jp/support/flexpro/v7/dataanalysis_cwt.html" target="_blank" rel="noopener">HULINKS | テクニカルサポート | FlexPro | 連続ウェーブレット変換 (CWT)</a></li>
+</ul>
+<h3 id="前書いた記事">前書いた記事</h3>
+<ul>
+<li><a href="http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/" target="_blank" rel="noopener">FFTを使った連続ウェーブレット変換の高速化 - LESS IS MORE</a></li>
+<li><a href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/" target="_blank" rel="noopener">逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE</a></li>
+</ul>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/signal-processing/">Signal Processing</a>
+  
+  <a class="badge badge-light" href="/tag/wavelet-transform/">Wavelet Transform</a>
+  
+  <a class="badge badge-light" href="/tag/continuous-wavelet-transform/">Continuous Wavelet Transform</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/&amp;text=%e9%80%a3%e7%b6%9a%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e5%a4%89%e6%8f%9b%e3%81%ab%e4%bd%bf%e3%81%86%e3%83%9e%e3%82%b6%e3%83%bc%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e8%89%b2%e3%80%85:%20Morlet,%20Paul,%20DOG" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/&amp;t=%e9%80%a3%e7%b6%9a%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e5%a4%89%e6%8f%9b%e3%81%ab%e4%bd%bf%e3%81%86%e3%83%9e%e3%82%b6%e3%83%bc%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e8%89%b2%e3%80%85:%20Morlet,%20Paul,%20DOG" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e9%80%a3%e7%b6%9a%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e5%a4%89%e6%8f%9b%e3%81%ab%e4%bd%bf%e3%81%86%e3%83%9e%e3%82%b6%e3%83%bc%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e8%89%b2%e3%80%85:%20Morlet,%20Paul,%20DOG&amp;body=https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/&amp;title=%e9%80%a3%e7%b6%9a%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e5%a4%89%e6%8f%9b%e3%81%ab%e4%bd%bf%e3%81%86%e3%83%9e%e3%82%b6%e3%83%bc%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e8%89%b2%e3%80%85:%20Morlet,%20Paul,%20DOG" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=%e9%80%a3%e7%b6%9a%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e5%a4%89%e6%8f%9b%e3%81%ab%e4%bd%bf%e3%81%86%e3%83%9e%e3%82%b6%e3%83%bc%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e8%89%b2%e3%80%85:%20Morlet,%20Paul,%20DOG%20https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/&amp;title=%e9%80%a3%e7%b6%9a%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e5%a4%89%e6%8f%9b%e3%81%ab%e4%bd%bf%e3%81%86%e3%83%9e%e3%82%b6%e3%83%bc%e3%82%a6%e3%82%a7%e3%83%bc%e3%83%96%e3%83%ac%e3%83%83%e3%83%88%e8%89%b2%e3%80%85:%20Morlet,%20Paul,%20DOG" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">逆連続ウェーブレット変換による信号の再構成</a></li>
+      
+      <li><a href="/blog/2013/10/20/continuous-wavelet-tranform/">FFTを使った連続ウェーブレット変換の高速化</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

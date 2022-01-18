@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BinDeps | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/bindeps/</link>
+      <atom:link href="https://r9y9.github.io/tag/bindeps/index.xml" rel="self" type="application/rss+xml" />
+    <description>BinDeps</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 30 Sep 2014 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>BinDeps</title>
+      <link>https://r9y9.github.io/tag/bindeps/</link>
+    </image>
+    
+    <item>
+      <title>JuliaTokyo #2でBinDeps.jl についてLTしてきた</title>
+      <link>https://r9y9.github.io/blog/2014/09/30/juliatokyo2/</link>
+      <pubDate>Tue, 30 Sep 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/09/30/juliatokyo2/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;juliatokyo.connpass.com/event/8010/&#34;&gt;JuliaTokyo #2 - connpass&lt;/a&gt;&lt;/p&gt;
+&lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;21106ae0285e01327810268beacd0cf3&#34; data-ratio=&#34;1.77777777777778&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;h2 id=&#34;発表概要&#34;&gt;発表概要&lt;/h2&gt;
+&lt;p&gt;C/C++ライブラリのラッパー（C++は現状のJuliaでは難しいけど）を作るときに、どうやってライブラリの依存関係を管理するか？という話です。結論としては、方法はいくつかありますが　BinDeps.jl というパッケージを使うのが楽で良いですよ、ということです。Githubのいろんなリポジトリをあさった僕の経験上、BinDeps.jl はバイナリの依存関係管理におけるデファクトスタンダードな気がしています。BinDeps.jl の使い方は、既存のパッケージのコードを読みまくって学ぶのがおすすめです。&lt;/p&gt;
+&lt;p&gt;さて、途中で書くのに疲れてしまったのですが、&lt;a href=&#34;http://qiita.com/r9y9/items/73806e3ce7f3a372d0b3&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;自作のJuliaパッケージで、Cライブラリとの依存性を記述する - Qiita&lt;/a&gt; に以前似たような内容をまとめたので、併せてどうぞ。qiitaにも書きましたが、最適化関係のプロジェクトを集めた &lt;a href=&#34;http://www.juliaopt.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JuliaOpt&lt;/a&gt; コミュニティでは、バイナリの依存関係管理にBinDeps.jlを使用することを推奨しています。&lt;/p&gt;
+&lt;h2 id=&#34;雑感&#34;&gt;雑感&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;勉強会にはデータ分析界隈の人が多い印象。音声系の人はとても少なかった。&lt;/li&gt;
+&lt;li&gt;R人気だった&lt;/li&gt;
+&lt;li&gt;Go使ってる！って人と合わなかった（つらい）&lt;/li&gt;
+&lt;li&gt;@show マクロ最高&lt;/li&gt;
+&lt;li&gt;unicode最高&lt;/li&gt;
+&lt;li&gt;懇親会では、なぜか途中から深層学習やベイズの話をしていた…&lt;/li&gt;
+&lt;li&gt;いい忘れたけど僕もnightly build勢でした。毎日あたたかみのある手動pull &amp;amp; make をしています。&lt;/li&gt;
+&lt;li&gt;Julia の話ができて楽しかったので、また参加したいなー&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;LTで &lt;a href=&#34;https://github.com/chezou/MeCab.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MeCab.jl&lt;/a&gt; について話をしてくれたchezouさんが、ちょうどBinDeps.jl に興味を持たれているようだったので、勉強会のあとに BinDeps.jl を使ってバイナリの管理を実装して、&lt;a href=&#34;https://github.com/chezou/MeCab.jl/pull/2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;プルリク&lt;/a&gt;をしてみました。参考になればうれしいなーと思います。&lt;/p&gt;
+&lt;p&gt;おしまい。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

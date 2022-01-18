@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Graphical Model | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/graphical-model/</link>
+      <atom:link href="https://r9y9.github.io/tag/graphical-model/index.xml" rel="self" type="application/rss+xml" />
+    <description>Graphical Model</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sat, 01 Mar 2014 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Graphical Model</title>
+      <link>https://r9y9.github.io/tag/graphical-model/</link>
+    </image>
+    
+    <item>
+      <title>マルコフ確率場 (MRF) と条件付き確率場 (CRF) の違い</title>
+      <link>https://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</link>
+      <pubDate>Sat, 01 Mar 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</guid>
+      <description>&lt;p&gt;一番の違いは、生成モデルか識別モデルか、ということ。それぞれ、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Markov Random Fields (MRF) は生成モデル&lt;/li&gt;
+&lt;li&gt;Conditional Random Fields (CRF) は識別モデル&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;です。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://metaoptimize.com/qa/questions/4021/what-is-exactly-the-difference-between-mrf-and-crf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;What is exactly the difference between MRF and CRF&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ここを見ると割とすっきりする。&lt;/p&gt;
+&lt;p&gt;ただ、少しスムーズに納得できないことがありまして…それは、MRFもCRFもグラフィカルモデルで書くと無向グラフとなること。識別モデルは無向グラフで生成モデルは有向グラフなんじゃ…？と思ってしまう人もいるんじゃないかと思う（いなかったらごめんなさい）。&lt;/p&gt;
+&lt;h2 id=&#34;グラフィカルモデルとしての表現&#34;&gt;グラフィカルモデルとしての表現&lt;/h2&gt;
+&lt;p&gt;一般に、生成モデルは有向グラフの形で記述され、識別モデルは無向グラフとして記述される。例えば、隠れマルコフモデル (HMM) は有向グラフで、条件付き確率場 (CRF) は無向グラフで表される。図を貼っておく&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/HMM_and_CRF.png&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;その道の人には、馴染みのある図だと思う（ｼｭｳﾛﾝから引っ張ってきた）。グレーの○が観測変数、白い○が隠れ変数です&lt;/p&gt;
+&lt;p&gt;ここで重要なのは、例外もあるということ。具体的には、タイトルにあるMRFは生成モデルだけど無向グラフで書かれる。MRFというと、例えばRestricted Boltzmann Machine とかね！&lt;/p&gt;
+&lt;p&gt;単純なことだけど、これを知らないとMRFについて学習するときにつっかかってしまうので注意&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://homepages.inf.ed.ac.uk/csutton/publications/crftut-fnt.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;An Introduction to Conditional Random Fields&lt;/a&gt; の2.2 Generative versus Discriminative Models から引用すると、&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Because a generative model takes the form p(y,x) = p(y)p(x|y), it is often natural to represent a generative model by a directed graph in which in outputs y topologically precede the inputs. Similarly, we will see that it is often natural to represent a discriminative model by a undirected graph. However, this need not always be the case, and both undirected generative models, such as the Markov random ﬁeld (2.32), and directed discriminative models, such as the MEMM (6.2), are sometimes used. It can also be useful to depict discriminative models by directed graphs in which the x precede the y.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;らしいです&lt;/p&gt;
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;生成モデル＝有向グラフ、識別モデル＝無向グラフで&lt;strong&gt;表されるとは限らない&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;ことMRFに関して言えば生成モデルだけど無向グラフで表されるよ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ということです&lt;/p&gt;
+&lt;p&gt;さらに言えば、MRFとCRFはグラフィカルモデルでは同じように書けてしまうけれど、両者には明確な違いがあることに気をつけましょう、ということです（ちょっと自信ない）&lt;/p&gt;
+&lt;p&gt;間違っていたら教えて下さい&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://metaoptimize.com/qa/questions/4021/what-is-exactly-the-difference-between-mrf-and-crf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;What is exactly the difference between MRF and CRF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://homepages.inf.ed.ac.uk/csutton/publications/crftut-fnt.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;An Introduction to Conditional Random Fields (PDF)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cs.helsinki.fi/group/cosco/Teaching/Probability/2010/lecture5_MRF2.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;More about Undirected Graphical Models&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

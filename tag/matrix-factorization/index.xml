@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Matrix Factorization | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/matrix-factorization/</link>
+      <atom:link href="https://r9y9.github.io/tag/matrix-factorization/index.xml" rel="self" type="application/rss+xml" />
+    <description>Matrix Factorization</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 19 Oct 2014 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Matrix Factorization</title>
+      <link>https://r9y9.github.io/tag/matrix-factorization/</link>
+    </image>
+    
+    <item>
+      <title>NMFで音源分離を試してみる</title>
+      <link>https://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</link>
+      <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</guid>
+      <description>&lt;p&gt;ずーーっと前に、 &lt;a href=&#34;http://r9y9.github.io/blog/2013/07/27/nmf-euclid/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE&lt;/a&gt; で実際に実装してみてやってみると書いていたのに、まったくやっていなかったことに気づいたのでやりました。&lt;/p&gt;
+&lt;p&gt;音楽に対してやってみたのですが、簡単な曲だったら、まぁぼちぼち期待通りに動いたかなぁという印象です。コードとノートを挙げたので、興味のある方はどうぞ。&lt;/p&gt;
+&lt;h2 id=&#34;github&#34;&gt;Github&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/julia-nmf-ss-toy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/julia-nmf-ss-toy&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;ノート&#34;&gt;ノート&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/julia-nmf-ss-toy/blob/master/NMF-based%20Music%20Source%20Separation%20Demo.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NMF-based Music Source Separation Demo.ipynb | nbviewer&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;nmfのコード-julia&#34;&gt;NMFのコード (Julia)&lt;/h2&gt;
+&lt;p&gt;NMFの実装の部分だけ抜き出しておきます。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;function nmf_euc(Y::AbstractMatrix, K::Int=4;
+                        maxiter::Int=100)
+    H = rand(size(Y, 1), K)
+    U = rand(K, size(Y, 2))
+    const ϵ = 1.0e-21
+    for i=1:maxiter
+        H = H .* (Y*U&#39;) ./ (H*U*U&#39; + ϵ)
+        U = U .* (H&#39;*Y) ./ (H&#39;*H*U + ϵ)
+        U = U ./ maximum(U)
+    end
+    return H, U
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;いやー簡単ですねー。&lt;a href=&#34;http://r9y9.github.io/blog/2013/07/27/nmf-euclid/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE&lt;/a&gt; で導出した更新式ほぼそのままになってます（異なる点としては、ゼロ除算回避をしているのと、Uをイテレーション毎に正規化していることくらい）。&lt;/p&gt;
+&lt;p&gt;B3, B4くらいの人にとっては参考になるかもしれないと思ってあげてみた。&lt;/p&gt;
+&lt;p&gt;おわり&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</title>
+      <link>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</link>
+      <pubDate>Wed, 20 Aug 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</guid>
+      <description>&lt;p&gt;最近 &lt;a href=&#34;julialang.org&#34;&gt;Julia&lt;/a&gt; で遊んでいて、その過程で非負値行列因子分解（NMF）のノンパラ版の一つであるGamma Process Non-negative Matrix Factorization (GaP-NMF) を書いてみました。（まぁmatlabコードの写経なんですが）&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/BNMF.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/BNMF.jl&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;元論文:
+&lt;a href=&#34;http://soundlab.cs.princeton.edu/publications/2010_icml_gapnmf.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Bayesian Nonparametric Matrix Factorization for Recorded Music&lt;/a&gt;
+by Matthew D. Hoffman et al. in ICML 2010.&lt;/p&gt;
+&lt;h2 id=&#34;デモ&#34;&gt;デモ&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://nbviewer.ipython.org/github/r9y9/BNMF.jl/blob/master/notebook/GaP-NMF.ipynb&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;適当な音声（音楽じゃなくてごめんなさい）に対して、GaP-NMFをfittingしてみた結果のメモです。$K=100$ で始めて、100回ほどイテレーションを回すと適度な数（12くらい）にtruncateしているのがわかると思います。予めモデルの複雑度を指定しなくても、データから適当な数を自動決定してくれる、ノンパラベイズの良いところですね。&lt;/p&gt;
+&lt;h2 id=&#34;ハマったところ&#34;&gt;ハマったところ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;GIGの期待値を求めるのに必要な第二種変形ベッセル関数は、exponentially scaled versionを使いましょう。じゃないとInf地獄を見ることになると思います（つらい）。Juliaで言うなら &lt;a href=&#34;https://julia.readthedocs.org/en/latest/stdlib/base/?highlight=besselkx#Base.besselkx&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;besselkx&lt;/a&gt; で、scipyで言うなら &lt;a href=&#34;http://students.mimuw.edu.pl/~pbechler/scipy_doc/generated/scipy.special.kve.html#scipy.special.kve&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;scipy.special.kve&lt;/a&gt; です。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;雑感&#34;&gt;雑感&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;MatlabのコードをJuliaに書き直すのは簡単。ところどころ作法が違うけど（例えば配列の要素へのアクセスはmatlabはA(i,j)でJuliaはA[i,j]）、だいたい一緒&lt;/li&gt;
+&lt;li&gt;というかJuliaがMatlabに似すぎ？&lt;/li&gt;
+&lt;li&gt;Gamma分布に従う乱数は、&lt;a href=&#34;https://github.com/JuliaStats/Distributions.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Distributions,jl&lt;/a&gt; を使えばめっちゃ簡単に生成できた。素晴らしすぎる&lt;/li&gt;
+&lt;li&gt;行列演算がシンプルにかけてホント楽。pythonでもmatlabでもそうだけど（Goだとこれができないんですよ…）&lt;/li&gt;
+&lt;li&gt;第二種変形ベッセル関数とか、scipy.special にあるような特殊関数が標準である。素晴らしい。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;python版と速度比較&#34;&gt;Python版と速度比較&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/dawenl/bp_nmf/tree/master/code/gap_nmf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;bp_nmf/code/gap_nmf&lt;/a&gt; と比較します。matlabはもってないので比較対象からはずします、ごめんなさい&lt;/p&gt;
+&lt;p&gt;Gistにベンチマークに使ったスクリプトと実行結果のメモを置いときました
+&lt;a href=&#34;https://gist.github.com/r9y9/3d0c6a90dd155801c4c1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gist.github.com/r9y9/3d0c6a90dd155801c4c1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;結果だけ書いておくと、あらゆる現実を（ry の音声にGaP-NMFをepochs=100でfittingするのにかかった時間は、&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Julia: Mean elapsed time: 21.92968243 [sec]
+Python: Mean elapsed time: 18.3550617 [sec]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;という結果になりました。つまりJuliaのほうが1.2倍くらい遅かった（僕の実装が悪い可能性は十分ありますが）。どこがボトルネックになっているのか調べていないので、気が向いたら調べます。Juliaの方が速くなったらいいなー&lt;/p&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;GaP-NMFの実装チャレンジは二回目でした。（たぶん）一昨年、年末に実家に帰るときに、何を思ったのか急に実装したくなって、電車の中で論文を読んで家に着くなり実装するというエクストリームわけわからんことをしていましたが、その時はNaN and Inf地獄に負けてしまいました。Pythonで書いていましたが、今見るとそのコードマジクソでした。&lt;/p&gt;
+&lt;p&gt;そして二回目である今回、最初はmatlabコードを見ずに自力で書いていたんですが、またもやInf地獄に合いもうだめだと思って、matlabコードを写経しました。あんま成長していないようです（つらい）&lt;/p&gt;
+&lt;p&gt;Julia歴二週間くらいですが、良い感じなので使い続けて見ようと思います。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>調波打楽器音分離（HPSS）を試す</title>
+      <link>https://r9y9.github.io/blog/2013/09/14/hpss/</link>
+      <pubDate>Sat, 14 Sep 2013 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2013/09/14/hpss/</guid>
+      <description>&lt;h2 id=&#34;hpssとは一行説明&#34;&gt;HPSSとは（一行説明）&lt;/h2&gt;
+&lt;p&gt;HPSS（Harmonic/Percussive Sound Separation）というのは、音源中の調波音/打楽器音が、それぞれ時間方向に滑らか/周波数方向に滑らかという異った性質を持つことを利用して、両者を分離する方法のこと。わからんければ論文へ&lt;/p&gt;
+&lt;p&gt;アイデアはシンプル、実装は簡単、効果は素晴らしい。specmurtに似たものを感じる。ということで少し感動したので結果を載せる&lt;/p&gt;
+&lt;h2 id=&#34;実装&#34;&gt;実装&lt;/h2&gt;
+&lt;p&gt;調波音のスペクトログラムを$H$、打楽器音のスペクトログラムを$P$、時間indexをt、周波数indexをkとして、以下の数式をそのまま実装して、適当に反復計算すればおｋ&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+|H_{t, k}| = \frac{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
+\end{align}
+&lt;/div&gt;
+&lt;div&gt;
+\begin{align}
+|P_{t, k}| = \frac{w_{P}^2 (|P_{t,k+1}| + |P_{t,k-1}|)^2 |W_{t,k}|}{w_{H}^2 (|H_{t+1,k}| + |H_{t-1,k}|)^2 + w_{P}^2(|P_{t,k+1}| + |P_{t,k-1}|)^2}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;ただし&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+|W_{t,k}| = |H_{t,k}| + |P_{t,k}|
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;絶対値はパワースペクトル。論文中の表記とはけっこう違うので注意。厳密ではないです。$w_{H}, w_{P}$は重み係数で、両方共1.0くらいにしとく。&lt;/p&gt;
+&lt;p&gt;HPSSの論文はたくさんあるけど、日本語でかつ丁寧な &lt;a href=&#34;http://ci.nii.ac.jp/naid/110007997346&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&amp;ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&amp;rdquo;&lt;/a&gt; を参考にした。&lt;/p&gt;
+&lt;p&gt;H/Pから音源を再合成するときは、位相は元の信号のものを使えばおｋ&lt;/p&gt;
+&lt;p&gt;一点だけ、HとPの初期値どうすればいいんかなぁと思って悩んだ。まぁ普通に元音源のスペクトログラムを両方の初期値としてやったけど、うまく動いてるっぽい。&lt;/p&gt;
+&lt;h2 id=&#34;結果&#34;&gt;結果&lt;/h2&gt;
+&lt;p&gt;フリー音源でテストしてみたので、結果を貼っとく。$w_{H}=1.0, w_{P}=1.0$、サンプリング周波数44.1kHz、モノラル、フレーム長512、窓関数はhanning。反復推定の回数は30。音源は、&lt;a href=&#34;http://maoudamashii.jokersounds.com/archives/song_kyoko_feels_happiness.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;歌もの音楽素材：歌入り素材系のフリー音楽素材一覧&lt;/a&gt; から使わせてもらいました。ありがとうございまっす。元音源だけステレオです。
+18秒目くらいからを比較すると効果がわかりやすいです&lt;/p&gt;
+&lt;h3 id=&#34;元音源&#34;&gt;元音源&lt;/h3&gt;
+&lt;iframe frameborder=&#34;no&#34; height=&#34;166&#34; scrolling=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367442&#34; width=&#34;100%&#34;&gt;&lt;/iframe&gt;
+&lt;h3 id=&#34;hのみ取り出して再合成した音源&#34;&gt;Hのみ取り出して再合成した音源&lt;/h3&gt;
+&lt;iframe frameborder=&#34;no&#34; height=&#34;166&#34; scrolling=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367534&#34; width=&#34;100%&#34;&gt;&lt;/iframe&gt;
+&lt;h3 id=&#34;pのみ取り出して再合成した音源&#34;&gt;Pのみ取り出して再合成した音源&lt;/h3&gt;
+&lt;iframe frameborder=&#34;no&#34; height=&#34;166&#34; scrolling=&#34;no&#34; src=&#34;https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F110367599&#34; width=&#34;100%&#34;&gt;&lt;/iframe&gt;
+&lt;p&gt;それにしても特に泥臭い努力をせずに、このクオリティーが出せるのはすごい。音源に対する事前知識も何もないし。あと、ちょっとノイズが載ってるのはたぶんプログラムミス。つらたーん&lt;/p&gt;
+&lt;p&gt;コレ以外にも多重HPSSとかもやったけど、いやーおもしろい手法だなーと思いました（こなみ&lt;/p&gt;
+&lt;p&gt;詳しくは論文へ（僕のじゃないけど&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://ci.nii.ac.jp/naid/110007997346&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;橘 秀幸, 小野 順貴, 嵯峨山 茂樹, &amp;ldquo;スペクトルの時間変化に基づく音楽音響信号からの歌声成分の強調と抑圧&amp;rdquo;, 情報処理学会研究報告, vol. 2009-MUS-81(12), pp. 1-6, 2009.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>NMFアルゴリズムの導出（ユークリッド距離版）</title>
+      <link>https://r9y9.github.io/blog/2013/07/27/nmf-euclid/</link>
+      <pubDate>Sat, 27 Jul 2013 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2013/07/27/nmf-euclid/</guid>
+      <description>&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。
+音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。
+実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。&lt;/p&gt;
+&lt;p&gt;と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。&lt;/p&gt;
+&lt;h2 id=&#34;20141019-追記&#34;&gt;2014/10/19 追記&lt;/h2&gt;
+&lt;p&gt;実装しました&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/julia-nmf-ss-toy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/julia-nmf-ss-toy&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;nmfの問題設定&#34;&gt;NMFの問題設定&lt;/h2&gt;
+&lt;p&gt;NMFとは、与えられた行列を非負という制約の元で因子分解する方法のこと。
+音楽の場合、対象はスペクトログラムで、式で書くとわかりやすい。
+スペクトログラムを $\mathbf{Y}: [\Omega \times T] $
+とすると、&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\mathbf{Y} \simeq \mathbf{H} \mathbf{U}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;となる、$\mathbf{H}: [\Omega \times K]、\mathbf{U}: [K \times T]$ を求めるのがNMFの問題。
+ここで、Hが基底、Uがアクティビティ行列に相当する。
+NMFは、元の行列Yと分解後の行列の距離の最小化問題として定式化できる。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\mathbf{H}, \mathbf{U} = \mathop{\rm arg~min}\limits_{\mathbf{H}, \mathbf{U}} D (\mathbf{Y}|\mathbf{H}\mathbf{U}), \hspace{3mm} {\rm subect\ to} \hspace{3mm} H_{\omega,k}, U_{k, t} &gt; 0
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;すごくシンプル。Dは距離関数で色んなものがある。ユークリッド距離、KLダイバージェンス、板倉斎藤距離、βダイバージェンスとか。&lt;/p&gt;
+&lt;h2 id=&#34;ユークリッド距離の最小化&#34;&gt;ユークリッド距離の最小化&lt;/h2&gt;
+&lt;p&gt;ここではユークリッド距離（Frobeniusノルムともいう）として、二乗誤差最小化問題を解くことにする。
+一番簡単なので。最小化すべき目的関数は次のようになる。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+D (\mathbf{Y}|\mathbf{H}\mathbf{U}) =&amp; || \mathbf{Y}-\mathbf{HU}||_{F} \\
+=&amp; \sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;行列同士の二乗誤差の最小化は、要素毎の二乗誤差の和の最小化ということですね。展開すると、次のようになる。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2}
+= \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{k, t} + |\sum_{k}H_{\omega, k}U_{k, t}|^2)
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;微分してゼロ！としたいところだけど、3つ目の項を見ると、絶対値の中に和が入っているので、そうはいかない。
+なので、補助関数法を使う。
+基本的なアイデアは、目的関数の直接の最適化が難しい場合には、上界関数を立てることで間接的に最小化するということ。&lt;/p&gt;
+&lt;p&gt;3項目に対してイェンセンの不等式を適応すると、&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+|\sum_{k}H_{\omega,k}U_{k,t}|^{2} \le \sum_{k} \frac{H_{\omega,k}^{2}U_{k, t}^{2}}{\lambda_{k, \omega, t}}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;これで、右辺は $ H_{\omega,k}, U_{k, t} $ について二次関数になったので、微分できてはっぴー。
+上の不等式を使えば、実際に最小化する目的関数は、次のようになる。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+G := \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{k, t} + \sum_{k} \frac{H_{\omega,k}^{2}U_{k, t}^{2}}{\lambda_{k, \omega, t}})
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;Gを最小化すれば、間接的に元の目的関数も小さくなる。&lt;/p&gt;
+&lt;h2 id=&#34;更新式の導出&#34;&gt;更新式の導出&lt;/h2&gt;
+&lt;p&gt;あとは更新式を導出するだけ。
+まず、目的関数を上から押さえるイメージで、イェンセンの不等式の等号条件から補助変数の更新式を求める。
+この場合、kに関して和が1になることに注意して、&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\lambda_{k,\omega,t} = \frac{H_{\omega, k}U_{k, t}}{\sum_{k&#39;}H_{\omega, k&#39;}U_{k&#39;, t}}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;次に、目的関数Gを $H_{\omega,k}, U_{k,t} $で偏微分する。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+\frac{\partial G}{\partial H_{\omega,k}} &amp;= \sum_{t} (-2 Y_{\omega,t}U_{k,t} + 2 \frac{H_{\omega, k}U_{k, t}^2}{\lambda_{k,\omega,t}}) &amp;= 0\\
+\frac{\partial G}{\partial U_{k, t}} &amp;= \sum_{\omega} (-2 Y_{\omega,t}H_{\omega,k} + 2 \frac{H_{\omega, k}^2U_{k, t}}{\lambda_{k,\omega,t}}) &amp;= 0
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;少し変形すれば、以下の式を得る。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+H_{\omega,k} = \frac{\sum_{t}Y_{\omega,t}U_{k,t}}{\sum_{t}\frac{U_{k, t}^2}{\lambda_{k,\omega,t}}}, \hspace{3mm}
+U_{k,t} = \frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}\frac{H_{\omega, k}^2}{\lambda_{k,\omega,t}}}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;補助変数を代入すれば、出来上がり。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+H_{\omega,k} = H_{\omega,k} \frac{\sum_{t}Y_{\omega,t}U_{k,t}}{\sum_{t}U_{k, t}\sum_{k&#39;}H_{\omega, k&#39;}U_{k&#39;, t}}, \hspace{3mm}
+U_{k,t} = U_{k,t}\frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}H_{\omega, k}\sum_{k&#39;}H_{\omega, k&#39;}U_{k&#39;, t}}
+\end{align}
+&lt;/div&gt;
+&lt;h2 id=&#34;行列表記で&#34;&gt;行列表記で&lt;/h2&gt;
+&lt;p&gt;これで終わり…ではなく、もう少しスマートに書きたい。
+ここで、少し実装を意識して行列表記を使って書きなおす。
+行列の積は、AB（A: [m x n] 行列、B: [n x l] 行列）のようにAの列数とBの行数が等しくなることに注意して、
+ほんの少し変形すれば最終的には次のように書ける。&lt;/p&gt;
+&lt;div&gt;
+\begin{align}
+H_{\omega,k} &amp;= H_{\omega,k} \frac{[\mathbf{Y}\mathbf{U}^{\mathrm{T}}]_{\omega,k}}{[\mathbf{H}\mathbf{U}\mathbf{U}^{\mathrm{T}}]_{\omega,k}}, \\
+U_{k,t} &amp;= U_{k,t}\frac{[\mathbf{H}^{\mathrm{T}}\mathbf{Y}]_{k, t}}{[\mathbf{H}^{\mathrm{T}}\mathbf{H}\mathbf{U}]_{k,t}}
+\end{align}
+&lt;/div&gt;
+&lt;p&gt;乗法更新式というやつですね。
+元々の行列の要素が非負なら、掛けても非負のままですよってこと。
+NMFのアルゴリズムは、この更新式を目的関数が収束するまで計算するだけ、簡単。Pythonなら数行で書ける。&lt;/p&gt;
+&lt;h2 id=&#34;メモ&#34;&gt;メモ&lt;/h2&gt;
+&lt;p&gt;自分で導出していて思ったことをメモっておこうと思う。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更新式は、行列の要素毎に独立して求められるんだなぁということ。
+&lt;ul&gt;
+&lt;li&gt;まぁ要素毎に偏微分して等式立ててるからそうなんだけど。更新の順番によって、収束する値、速度が変わるといったことはないんだろうか。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;行列演算とスカラー演算が同じ式に同時に含まれていることがあるので注意。例えば、最終的な更新式の割り算は、要素毎のスカラー演算で、行列演算ではない。&lt;/li&gt;
+&lt;li&gt;何かいっぱいシグマがあるけど、めげない。計算ミスしやすい、つらい。&lt;/li&gt;
+&lt;li&gt;NMFという名前から行列操作を意識してしまうけど、更新式の導出の過程に行列の微分とか出てこない。更新式の導出は、行列の要素個々に対して行うイメージ。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;NMFなんて簡単、と言われますが（要出典）、実際にやってみると結構めんどくさいなー、と思いました（小並感&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

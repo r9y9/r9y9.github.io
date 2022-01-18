@@ -1,280 +1,1341 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>NMFアルゴリズムの導出（ユークリッド距離版） - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="https://github.com/r9y9/julia-nmf-ss-toy" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2013/07/27/nmf-euclid/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2013/07/27/nmf-euclid/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2013/07/27/nmf-euclid/" />
+  <meta property="og:title" content="NMFアルゴリズムの導出（ユークリッド距離版） | LESS IS MORE" />
+  <meta property="og:description" content="https://github.com/r9y9/julia-nmf-ss-toy" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2013-07-27T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2013-07-27T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2013/07/27/nmf-euclid/"
+  },
+  "headline": "NMFアルゴリズムの導出（ユークリッド距離版）",
+  
+  "datePublished": "2013-07-27T00:00:00Z",
+  "dateModified": "2013-07-27T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "https://github.com/r9y9/julia-nmf-ss-toy"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>NMFアルゴリズムの導出（ユークリッド距離版） | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">NMFアルゴリズムの導出（ユークリッド距離版）</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2013-07-27">July 27, 2013</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="e1642059091d4ac2c8b88168dea6b63e" >
 
-<h2 id="はじめに">はじめに</h2>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
 
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>NMFアルゴリズムの導出（ユークリッド距離版）</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jul 27, 2013
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h2 id="はじめに">はじめに</h2>
 <p>シングルトラックにミックスダウンされた音楽から、その構成する要素（例えば、楽器とか）を分離したいと思うことがある。
 音源分離と言えば、最近はNon-negative Matrix Factorization (非負値行列因子分解; NMF) が有名。
 実装は非常に簡単だけど、実際にやってみるとどの程度の音源分離性能が出るのか気になったので、やってみる。</p>
-
 <p>と思ったけど、まずNMFについて整理してたら長くなったので、実装は今度にして、まずアルゴリズムを導出してみる。</p>
-
-<h2 id="2014-10-19-追記">2014/10/19 追記</h2>
-
+<h2 id="20141019-追記">2014/10/19 追記</h2>
 <p>実装しました</p>
-
-<p><a href="https://github.com/r9y9/julia-nmf-ss-toy">https://github.com/r9y9/julia-nmf-ss-toy</a></p>
-
+<p><a href="https://github.com/r9y9/julia-nmf-ss-toy" target="_blank" rel="noopener">https://github.com/r9y9/julia-nmf-ss-toy</a></p>
 <h2 id="nmfの問題設定">NMFの問題設定</h2>
-
 <p>NMFとは、与えられた行列を非負という制約の元で因子分解する方法のこと。
 音楽の場合、対象はスペクトログラムで、式で書くとわかりやすい。
 スペクトログラムを $\mathbf{Y}: [\Omega \times T] $
-    とすると、</p>
-
+とすると、</p>
 <div>
 \begin{align}
 \mathbf{Y} \simeq \mathbf{H} \mathbf{U}
 \end{align}
 </div>
-
 <p>となる、$\mathbf{H}: [\Omega \times K]、\mathbf{U}: [K \times T]$ を求めるのがNMFの問題。
 ここで、Hが基底、Uがアクティビティ行列に相当する。
 NMFは、元の行列Yと分解後の行列の距離の最小化問題として定式化できる。</p>
-
 <div>
 \begin{align}
 \mathbf{H}, \mathbf{U} = \mathop{\rm arg~min}\limits_{\mathbf{H}, \mathbf{U}} D (\mathbf{Y}|\mathbf{H}\mathbf{U}), \hspace{3mm} {\rm subect\ to} \hspace{3mm} H_{\omega,k}, U_{k, t} > 0
 \end{align}
 </div>
-
 <p>すごくシンプル。Dは距離関数で色んなものがある。ユークリッド距離、KLダイバージェンス、板倉斎藤距離、βダイバージェンスとか。</p>
-
 <h2 id="ユークリッド距離の最小化">ユークリッド距離の最小化</h2>
-
 <p>ここではユークリッド距離（Frobeniusノルムともいう）として、二乗誤差最小化問題を解くことにする。
 一番簡単なので。最小化すべき目的関数は次のようになる。</p>
-
 <div>
 \begin{align}
 D (\mathbf{Y}|\mathbf{H}\mathbf{U}) =& || \mathbf{Y}-\mathbf{HU}||_{F} \\
 =& \sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2}
 \end{align}
 </div>
-
 <p>行列同士の二乗誤差の最小化は、要素毎の二乗誤差の和の最小化ということですね。展開すると、次のようになる。</p>
-
 <div>
 \begin{align}
 \sum_{\omega, k}|Y_{\omega,t} - \sum_{k}H_{\omega, k}U_{k, t}|^{2}
 = \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{k, t} + |\sum_{k}H_{\omega, k}U_{k, t}|^2)
 \end{align}
 </div>
-
 <p>微分してゼロ！としたいところだけど、3つ目の項を見ると、絶対値の中に和が入っているので、そうはいかない。
 なので、補助関数法を使う。
 基本的なアイデアは、目的関数の直接の最適化が難しい場合には、上界関数を立てることで間接的に最小化するということ。</p>
-
 <p>3項目に対してイェンセンの不等式を適応すると、</p>
-
 <div>
 \begin{align}
 |\sum_{k}H_{\omega,k}U_{k,t}|^{2} \le \sum_{k} \frac{H_{\omega,k}^{2}U_{k, t}^{2}}{\lambda_{k, \omega, t}}
 \end{align}
 </div>
-
 <p>これで、右辺は $ H_{\omega,k}, U_{k, t} $ について二次関数になったので、微分できてはっぴー。
 上の不等式を使えば、実際に最小化する目的関数は、次のようになる。</p>
-
 <div>
 \begin{align}
 G := \sum_{\omega, t}(|Y_{\omega, t}|^2 -2Y_{\omega, t} \sum_{k}H_{\omega, k}U_{k, t} + \sum_{k} \frac{H_{\omega,k}^{2}U_{k, t}^{2}}{\lambda_{k, \omega, t}})
 \end{align}
 </div>
-
 <p>Gを最小化すれば、間接的に元の目的関数も小さくなる。</p>
-
 <h2 id="更新式の導出">更新式の導出</h2>
-
 <p>あとは更新式を導出するだけ。
 まず、目的関数を上から押さえるイメージで、イェンセンの不等式の等号条件から補助変数の更新式を求める。
 この場合、kに関して和が1になることに注意して、</p>
-
 <div>
 \begin{align}
 \lambda_{k,\omega,t} = \frac{H_{\omega, k}U_{k, t}}{\sum_{k'}H_{\omega, k'}U_{k', t}}
 \end{align}
 </div>
-
 <p>次に、目的関数Gを $H_{\omega,k}, U_{k,t} $で偏微分する。</p>
-
 <div>
 \begin{align}
 \frac{\partial G}{\partial H_{\omega,k}} &= \sum_{t} (-2 Y_{\omega,t}U_{k,t} + 2 \frac{H_{\omega, k}U_{k, t}^2}{\lambda_{k,\omega,t}}) &= 0\\
 \frac{\partial G}{\partial U_{k, t}} &= \sum_{\omega} (-2 Y_{\omega,t}H_{\omega,k} + 2 \frac{H_{\omega, k}^2U_{k, t}}{\lambda_{k,\omega,t}}) &= 0
 \end{align}
 </div>
-
 <p>少し変形すれば、以下の式を得る。</p>
-
 <div>
 \begin{align}
 H_{\omega,k} = \frac{\sum_{t}Y_{\omega,t}U_{k,t}}{\sum_{t}\frac{U_{k, t}^2}{\lambda_{k,\omega,t}}}, \hspace{3mm}
 U_{k,t} = \frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}\frac{H_{\omega, k}^2}{\lambda_{k,\omega,t}}}
 \end{align}
 </div>
-
 <p>補助変数を代入すれば、出来上がり。</p>
-
 <div>
 \begin{align}
 H_{\omega,k} = H_{\omega,k} \frac{\sum_{t}Y_{\omega,t}U_{k,t}}{\sum_{t}U_{k, t}\sum_{k'}H_{\omega, k'}U_{k', t}}, \hspace{3mm}
 U_{k,t} = U_{k,t}\frac{\sum_{\omega}Y_{\omega,t}H_{\omega,k}}{\sum_{\omega}H_{\omega, k}\sum_{k'}H_{\omega, k'}U_{k', t}}
 \end{align}
 </div>
-
 <h2 id="行列表記で">行列表記で</h2>
-
 <p>これで終わり…ではなく、もう少しスマートに書きたい。
 ここで、少し実装を意識して行列表記を使って書きなおす。
 行列の積は、AB（A: [m x n] 行列、B: [n x l] 行列）のようにAの列数とBの行数が等しくなることに注意して、
 ほんの少し変形すれば最終的には次のように書ける。</p>
-
 <div>
 \begin{align}
 H_{\omega,k} &= H_{\omega,k} \frac{[\mathbf{Y}\mathbf{U}^{\mathrm{T}}]_{\omega,k}}{[\mathbf{H}\mathbf{U}\mathbf{U}^{\mathrm{T}}]_{\omega,k}}, \\
 U_{k,t} &= U_{k,t}\frac{[\mathbf{H}^{\mathrm{T}}\mathbf{Y}]_{k, t}}{[\mathbf{H}^{\mathrm{T}}\mathbf{H}\mathbf{U}]_{k,t}}
 \end{align}
 </div>
-
 <p>乗法更新式というやつですね。
 元々の行列の要素が非負なら、掛けても非負のままですよってこと。
 NMFのアルゴリズムは、この更新式を目的関数が収束するまで計算するだけ、簡単。Pythonなら数行で書ける。</p>
-
 <h2 id="メモ">メモ</h2>
-
 <p>自分で導出していて思ったことをメモっておこうと思う。</p>
-
 <ul>
 <li>更新式は、行列の要素毎に独立して求められるんだなぁということ。
-
 <ul>
 <li>まぁ要素毎に偏微分して等式立ててるからそうなんだけど。更新の順番によって、収束する値、速度が変わるといったことはないんだろうか。</li>
-</ul></li>
+</ul>
+</li>
 <li>行列演算とスカラー演算が同じ式に同時に含まれていることがあるので注意。例えば、最終的な更新式の割り算は、要素毎のスカラー演算で、行列演算ではない。</li>
 <li>何かいっぱいシグマがあるけど、めげない。計算ミスしやすい、つらい。</li>
 <li>NMFという名前から行列操作を意識してしまうけど、更新式の導出の過程に行列の微分とか出てこない。更新式の導出は、行列の要素個々に対して行うイメージ。</li>
 </ul>
-
 <p>NMFなんて簡単、と言われますが（要出典）、実際にやってみると結構めんどくさいなー、と思いました（小並感</p>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="NMFアルゴリズムの導出（ユークリッド距離版）" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/machine-learning/">Machine Learning</a>
+  
+  <a class="badge badge-light" href="/tag/matrix-factorization/">Matrix Factorization</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2013/07/27/nmf-euclid/&amp;text=NMF%e3%82%a2%e3%83%ab%e3%82%b4%e3%83%aa%e3%82%ba%e3%83%a0%e3%81%ae%e5%b0%8e%e5%87%ba%ef%bc%88%e3%83%a6%e3%83%bc%e3%82%af%e3%83%aa%e3%83%83%e3%83%89%e8%b7%9d%e9%9b%a2%e7%89%88%ef%bc%89" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2013/07/27/nmf-euclid/&amp;t=NMF%e3%82%a2%e3%83%ab%e3%82%b4%e3%83%aa%e3%82%ba%e3%83%a0%e3%81%ae%e5%b0%8e%e5%87%ba%ef%bc%88%e3%83%a6%e3%83%bc%e3%82%af%e3%83%aa%e3%83%83%e3%83%89%e8%b7%9d%e9%9b%a2%e7%89%88%ef%bc%89" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=NMF%e3%82%a2%e3%83%ab%e3%82%b4%e3%83%aa%e3%82%ba%e3%83%a0%e3%81%ae%e5%b0%8e%e5%87%ba%ef%bc%88%e3%83%a6%e3%83%bc%e3%82%af%e3%83%aa%e3%83%83%e3%83%89%e8%b7%9d%e9%9b%a2%e7%89%88%ef%bc%89&amp;body=https://r9y9.github.io/blog/2013/07/27/nmf-euclid/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2013/07/27/nmf-euclid/&amp;title=NMF%e3%82%a2%e3%83%ab%e3%82%b4%e3%83%aa%e3%82%ba%e3%83%a0%e3%81%ae%e5%b0%8e%e5%87%ba%ef%bc%88%e3%83%a6%e3%83%bc%e3%82%af%e3%83%aa%e3%83%83%e3%83%89%e8%b7%9d%e9%9b%a2%e7%89%88%ef%bc%89" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=NMF%e3%82%a2%e3%83%ab%e3%82%b4%e3%83%aa%e3%82%ba%e3%83%a0%e3%81%ae%e5%b0%8e%e5%87%ba%ef%bc%88%e3%83%a6%e3%83%bc%e3%82%af%e3%83%aa%e3%83%83%e3%83%89%e8%b7%9d%e9%9b%a2%e7%89%88%ef%bc%89%20https://r9y9.github.io/blog/2013/07/27/nmf-euclid/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2013/07/27/nmf-euclid/&amp;title=NMF%e3%82%a2%e3%83%ab%e3%82%b4%e3%83%aa%e3%82%ba%e3%83%a0%e3%81%ae%e5%b0%8e%e5%87%ba%ef%bc%88%e3%83%a6%e3%83%bc%e3%82%af%e3%83%aa%e3%83%83%e3%83%89%e8%b7%9d%e9%9b%a2%e7%89%88%ef%bc%89" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2014/10/19/nmf-music-source-separation/">NMFで音源分離を試してみる</a></li>
+      
+      <li><a href="/blog/2014/08/20/gap-nmf-julia/">Gamma Process Non-negative Matrix Factorization (GaP-NMF) in Julia</a></li>
+      
+      <li><a href="/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/">JuliaTokyo #3 Speech Signal Processing in Julia</a></li>
+      
+      <li><a href="/blog/2014/07/29/neural-networks-in-go-and-python/">Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね</a></li>
+      
+      <li><a href="/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/">Pylearn2, theanoをEC2 g2.x2large で動かす方法</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

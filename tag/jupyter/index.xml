@@ -1,0 +1,1115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jupyter | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/jupyter/</link>
+      <atom:link href="https://r9y9.github.io/tag/jupyter/index.xml" rel="self" type="application/rss+xml" />
+    <description>Jupyter</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Thu, 21 Dec 2017 00:00:00 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Jupyter</title>
+      <link>https://r9y9.github.io/tag/jupyter/</link>
+    </image>
+    
+    <item>
+      <title>Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]</title>
+      <link>https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/</guid>
+      <description>&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter-cxx/jupyter-cxx-demo.gif&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://qiita.com/advent-calendar/2017/jupyter&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jupyter Advent Calendar 2017&lt;/a&gt; 21日目の記事です。&lt;/p&gt;
+&lt;p&gt;C++をJupyterで使う方法はいくつかあります。この記事では、僕が試したことのある以下の4つの方法について、比較しつつ紹介したいと思います。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;root/cling&lt;/a&gt; 付属のカーネル&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;root/root&lt;/a&gt; 付属のカーネル&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/QuantStack/xeus-cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xeus-cling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Keno/Cxx.jl&lt;/a&gt; をIJuliaで使う&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;まとめとして、簡単に特徴などを表にまとめておきますので、選ぶ際の参考にしてください。詳細な説明は後に続きます。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;cling&lt;/a&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&#34;https://github.com/root-project/root&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ROOT&lt;/a&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&#34;https://github.com/QuantStack/xeus-cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xeus-cling&lt;/a&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&#34;%28https://github.com/Keno/Cxx.jl%29&#34;&gt;Cxx.jl&lt;/a&gt; + &lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;IJulia&lt;/a&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C++インタプリタ実装&lt;/td&gt;
+&lt;td&gt;C++&lt;/td&gt;
+&lt;td&gt;C++&lt;/td&gt;
+&lt;td&gt;C++&lt;/td&gt;
+&lt;td&gt;Julia + C++&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(Tab) Code completion&lt;/td&gt;
+&lt;td&gt;○&lt;/td&gt;
+&lt;td&gt;○&lt;/td&gt;
+&lt;td&gt;○&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Cインタプリタ&lt;/td&gt;
+&lt;td&gt;△&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td&gt;△&lt;/td&gt;
+&lt;td&gt;△&lt;/td&gt;
+&lt;td&gt;○&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;%magics&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;%%cpp, %%jsroot, その他&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;△&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;他言語との連携&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;Python, R &lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;Julia&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;バイナリ配布&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://root.cern.ch/download/cling/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式リンク&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://root.cern.ch/downloading-root&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式リンク&lt;/a&gt; (python2系向け）&lt;/td&gt;
+&lt;td&gt;condaで提供&lt;/td&gt;
+&lt;td&gt;△&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;オンラインデモ&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://swanserver.web.cern.ch/swanserver/rootdemo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;rootdemo&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://mybinder.org/v2/gh/QuantStack/xeus-cling/0.0.7-binder?filepath=notebooks%2Fxcpp.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;binderリンク&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;共通事項&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;すべて、clang/llvmをC++インタプリタのベースにしています。Cxx.jl以外は、C++インタプリタであるclingをベースに、さらにその上にjupyterカーネルを実装しています。&lt;/p&gt;
+&lt;h2 id=&#34;1-cling&#34;&gt;1. cling&lt;/h2&gt;
+&lt;p&gt;clingは、いわずとしれた（？）C++インタプリタ実装です。後述するROOTという data analysis framework の一部として、CERNによって開発されています。(20年くらい前の) 古くからあったCINTというC++インタプリタ実装が、clangを使って書き直された、という歴史があります。clingプロジェクトの一環としてJupyterカーネルが開発されています。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;良いところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;clingの起動が速いのでストレスが少ない &lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#34;#fn:5&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;イマイチなところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IPythonだと使える &lt;code&gt;%time&lt;/code&gt; のようなマジックはない&lt;/li&gt;
+&lt;li&gt;cling本体で良いのでは？感が否めない。cling本体のREPLを使えば、Ctrl+Rによるヒストリ検索も使えるし…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使ってみた感想まとめ&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;個人的には、Jupyterは可視化と組み合わせてこそ良さがあると思っているのもありますが、あえてJupyterで使う必要性を僕は感じませんでした。cling自体はとても素晴らしいのと、ノートブックとして実行結果ごとコードを保存したい、といった目的でjupyterを使う場合には、良いと思いました。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;&lt;/code&gt; のあとにcode completionをしようとするとclingが落ちる、というバグがあります。Jupyterの場合はカーネルがリスタートします。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vgvassilev/cling/issues/152&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/vgvassilev/cling/issues/152&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;参考リンク&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;公式web: &lt;a href=&#34;https://cdn.rawgit.com/root-project/cling/master/www/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://cdn.rawgit.com/root-project/cling/master/www/index.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Github: &lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/root-project/cling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;紹介スライド: &lt;a href=&#34;http://llvm.org/devmtg/2010-11/Naumann-Cling.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LLVM Developers&#39; Meeting, &amp;ldquo;Creating cling, an interactive interpreter interface for clang&amp;rdquo;, Axel Naumann, Philippe Canal, Paul Russo, Vassil Vassilev, 04.11.2010, San Jose, CA, United States&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-root&#34;&gt;2. ROOT&lt;/h2&gt;
+&lt;p&gt;ROOTの説明を公式ページから引用します：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A modular scientific software framework. It provides all the functionalities needed to deal with big data processing, statistical analysis, visualisation and storage. It is mainly written in C++ but integrated with other languages such as Python and R.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;日本語の情報が少ない印象ですが、&lt;a href=&#34;https://github.com/akira-okumura/RHEA/wiki/ROOT-%E8%AC%9B%E7%BF%92%E4%BC%9A-2017&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ROOT 講習会 2017 | 高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)&lt;/a&gt; によると、実験系素粒子物理学では標準的なデータ解析ソフトウェア・ライブラリ群のようです。&lt;/p&gt;
+&lt;p&gt;ROOTプロジェクト自体にclingを含みますが、clingが提供するjupyterカーネルとは別で、&lt;a href=&#34;https://github.com/root-project/root/tree/master/bindings/pyroot/JupyROOT&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JupyROOT&lt;/a&gt; というカーネルが開発されています。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;良いところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PythonとC++をミックスできる。&lt;code&gt;%%cpp&lt;/code&gt; magicでC++関数を定義して、ホスト（python) 側から呼び出せる&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;%%jsroot&lt;/code&gt; magic により、グラフをインタラクティブに動かせる&lt;/li&gt;
+&lt;li&gt;IPythonで使えるmagicが使える（&lt;code&gt;%timeit&lt;/code&gt;, &lt;code&gt;%time&lt;/code&gt;, &lt;code&gt;%load_ext&lt;/code&gt;等）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;イマイチなところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Numpyやmatplotlibなど、Pythonを用いた数値計算ではデファクトに近いツールとの連携は微妙に思いました &lt;sup id=&#34;fnref:6&#34;&gt;&lt;a href=&#34;#fn:6&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;。cythonのように、手軽にnumpy arrayをC++に渡す、といった方法はなさそう・・・？（あったら教えてください）&lt;/li&gt;
+&lt;li&gt;ROOTの（でかい）APIを覚えないと使えなさそうで、ハードルが高い&lt;/li&gt;
+&lt;li&gt;公式のbinderのデモノートブック、ちょいちょいカーネルが落ちる…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使ってみた感想まとめ&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Jupyterカーネルはclingのものよりも良いと思いました。PythonとC++をミックスできるのが特に良いと思います。個人的には、ROOTが機能もりもりのデカイソフトウェアなことがあまり好きになれず、使い込んでいないのですが、ROOTのAPIに慣れた人、あるいは好きになれる人には、良いと思います。&lt;/p&gt;
+&lt;p&gt;clingだと &lt;code&gt;#include &amp;lt;iostream&amp;gt;&lt;/code&gt;のあとにcode completionで落ちる、というバグがありまたが、ROOT付属のcling (&lt;code&gt;ROOT 6.10/08&lt;/code&gt; をソースからビルドして使いました) ではそのバグはありませんでした。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考リンク&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;公式ページ: &lt;a href=&#34;https://root.cern.ch/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://root.cern.ch/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Github: &lt;a href=&#34;https://github.com/root-project/root&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/root-project/root&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;オンラインデモ: &lt;a href=&#34;https://swanserver.web.cern.ch/swanserver/rootdemo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://swanserver.web.cern.ch/swanserver/rootdemo/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-xeus-cling&#34;&gt;3. xeus-cling&lt;/h2&gt;
+&lt;p&gt;先月 11月30日に、&lt;a href=&#34;https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jupyter blog で紹介&lt;/a&gt; されたカーネルです。名前の通りclingをベースにしています。C++インタプリタとしては機能的にcling付属カーネルと同じですが、&lt;a href=&#34;https://github.com/QuantStack/xeus&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xeus&lt;/a&gt; というJupyter kernel protocolのC++実装をベースにしている点が異なります。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;良いところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;condaでパッケージとして提供されているので、インストールが楽。clang/clingも併せてインストールしてくれます&lt;/li&gt;
+&lt;li&gt;同じ開発元が、&lt;a href=&#34;https://github.com/QuantStack/xplot&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xplot&lt;/a&gt; という可視化ライブラリを提供している（ただしalphaバージョン）&lt;/li&gt;
+&lt;li&gt;標準ライブラリのヘルプが &lt;code&gt;?&lt;/code&gt; コマンドで確認できます (例. &lt;code&gt;?std::vector&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;イマイチなところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;外部ライブラリをロードしようとしたら動きませんでした（なので &lt;a href=&#34;https://github.com/QuantStack/xeus-cling/pull/94&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;プルリク&lt;/a&gt; 投げました（が、いい方法ではなかったようでcloseされました&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;%timeit&lt;/code&gt; の実装があったので試してみましたが、エラーが出て動きませんでした&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使ってみた感想まとめ&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;少しalphaバージョンの印象を受けました。xplotなど周辺ツールへの期待がありますが、個人的にはmatplotlib等pythonの可視化ツールでいいのでは…という気持ちになりました。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考リンク&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Github: &lt;a href=&#34;https://github.com/QuantStack/xeus-cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/QuantStack/xeus-cling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;紹介記事: &lt;a href=&#34;https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4-cxxjl--ijuliajl&#34;&gt;4. Cxx.jl + IJulia.jl&lt;/h2&gt;
+&lt;p&gt;Cxx.jlは、clangをベースにしたJuliaのC++インタフェースです。JuliaにはIJuliaというJupyterカーネルの実装があるので、IJuliaとCxx.jlを使えば、Jupyter上でC++を使うことができます。過去にCxx.jlに関する記事をいくつか書きましたので、そのリンクを貼っておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/&#34;&gt;Cxx.jlを用いてJulia expression/value をC++に埋め込む実験 | LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2015/12/22/cxx-jl/&#34;&gt;Cxx.jl を使ってみた感想 + OpenCV.jl, Libfreenect2.jl の紹介 | LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;良いところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;JuliaとC++をミックスできます。過去記事に書きましたが、例えばC++関数内でJuliaのプログレスバーを使ったりできます&lt;/li&gt;
+&lt;li&gt;C++インタプリタとCインタプリタを切り替えられます&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;icxx&lt;/code&gt; と &lt;code&gt;cxx&lt;/code&gt; マクロで、それぞれローカル/グローバルスコープを切り替えられます。&lt;/li&gt;
+&lt;li&gt;Juliaの配列をC++に渡すのは非常に簡単にできます。例を以下に示します&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;C++ &amp;gt; #include &amp;lt;iostream&amp;gt;
+true
+
+julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       template &amp;lt;class T&amp;gt;
+       void f(T x, int n) {
+           for (int i = 0; i &amp;lt; n; ++i) {
+               std::cout &amp;lt;&amp;lt; x[i] &amp;lt;&amp;lt; std::endl;
+           }
+       }&amp;quot;&amp;quot;&amp;quot;;
+
+julia&amp;gt; x = rand(5)
+10-element Array{Float64,1}:
+ 0.593086
+ 0.736548
+ 0.344246
+ 0.390799
+ 0.226175
+
+julia&amp;gt; icxx&amp;quot;f($(pointer(x)), $(length(x)));&amp;quot;
+0.593086
+0.736548
+0.344246
+0.390799
+0.226175
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;イマイチなところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cxxパッケージを読み込むのに多少時間がかかります。僕の環境では（プリコンパイルされた状態で）2.5秒程度でした&lt;/li&gt;
+&lt;li&gt;(Tab) Code completionは実装されていません &lt;a href=&#34;https://github.com/Keno/Cxx.jl/issues/61&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;#61&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;icxx&lt;/code&gt; or &lt;code&gt;cxx&lt;/code&gt; で囲まないといけず、syntax highlightはされません&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使ってみた感想まとめ&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;僕は一年以上Cxx.jlを使っているので、バイアスも入っていると思いますが、かなり使いやすいと思います。パッケージのロードに時間がかかるのは、何度もカーネルやjuliaを再起動したりしなければ、まったく気になりません。&lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;IJuliaの設計上の理由&lt;/a&gt; により、magicはありませんが、例えば &lt;code&gt;%time&lt;/code&gt; は &lt;code&gt;@time&lt;/code&gt; マクロで十分であり、不便に感じません。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考リンク&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IJulia: &lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/JuliaLang/IJulia.jl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Cxx : &lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Keno/Cxx.jl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;C++と他言語のやりとりのスムースさの観点から、やはり僕は対話環境でC++を使うならCxx.jlが最高だと思いました。Cxx + JuliaのREPLも便利ですが、Cxx + IJuliaも良いと思います。&lt;/li&gt;
+&lt;li&gt;ただし、C++単体でしか使わない、ということであれば、cling or xeus-clingが良いと思います。ただし xeus-clingは、前述の通り外部ライブラリを読みこもうとするとエラーになる問題があったので、外部ライブラリを読み込んで使用したい場合はパッチ (&lt;a href=&#34;https://github.com/QuantStack/xeus-cling/pull/94&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xeus-cling/#94&lt;/a&gt;) を当てた方がよいかもしれません&lt;/li&gt;
+&lt;li&gt;xeus-clingには、Jupyterブログにのっていたのでどんなものかと思って試してみましたが、周辺ツール含め思ってたよりalpha版のようでした。また、他と比べての機能的な優位性はあまり感じませんでした。ただし、condaパッケージとして提供されているので、敷居が一番低いのは嬉しいですね&lt;/li&gt;
+&lt;li&gt;ROOTのjupyter kernelは、C++とpythonをミックスできるのが特に良く、素晴らしいと思いました。また &lt;code&gt;%%cpp&lt;/code&gt; magicの他にも、ipythonで使える &lt;code&gt;%timeit&lt;/code&gt; などのmagicも使えるのは、ユーザにとっては嬉しいです。Cxx.jlを除けば、ROOTのカーネルが一番良いと思いました。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Interactive Workflows for C++ with Jupyter – Jupyter Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/mugwort_rc/items/b8087d1b6f9498b037d5&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;C++11/14/17インタプリタ環境 Jupyter-Cling - Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/sasaki77/items/f6253e1d6638fba0e744&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JupyterにC++のノートのためのclingカーネルを追加する [Mac] - Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/akira-okumura/RHEA&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;clangをベースにしているので原理的には可能だと思いますが、少なくともjupyterカーネルとしてはありません&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Juliaのmacroを使えばよい、というスタンスで、提供していません。 &lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;参考リンク&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://root.cern.ch/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式ホームページ&lt;/a&gt; より引用: It is mainly written in C++ but integrated with other languages such as Python and R.&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;linux向け&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Cxx.jlだと、パッケージのコンパイルに10秒かかる、とか過去にありました。最近は改善されていますが&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:6&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/rootpy/rootpy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/rootpy/rootpy&lt;/a&gt; ライブラリはありますが、結局このライブラリのAPIを覚えないといけないという…はい…&amp;#160;&lt;a href=&#34;#fnref:6&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017]</title>
+      <link>https://r9y9.github.io/blog/2017/12/14/jupyter-bokeh/</link>
+      <pubDate>Thu, 14 Dec 2017 00:00:30 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/12/14/jupyter-bokeh/</guid>
+      <description>&lt;p&gt;Line &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_1.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;VBar &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_3.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;HBar &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_5.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;ImageRGBA &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_7.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;ImageRGBA &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_3_9.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;前置き&#34;&gt;前置き&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://qiita.com/advent-calendar/2017/jupyter&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jupyter Advent Calendar 2017&lt;/a&gt; 14日目の記事です。この記事は、Jupyter notebookで作成したものをnbconvertでmarkdownに変換し、手で少し修正して作りました。読み物としてはこの記事を、実行するにはノートブックの方を参照していただくのが良いかと思います。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://gist.github.com/r9y9/d57e797c28f6cdc4e44264411c21b76f&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ノートブック (gist)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://nbviewer.jupyter.org/gist/r9y9/d57e797c28f6cdc4e44264411c21b76f&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nbviewer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;適当なニューラルネットの学習過程の可視化（ロス、正解率の遷移等）を題材にして、&lt;a href=&#34;https://bokeh.pydata.org/en/latest/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Bokeh&lt;/a&gt;を使って動的にグラフを更新していくことによる可視化の実用例を紹介します。このノートブックの冒頭に、最後まで実行すると得られるグラフ一覧をまとめました。どうやってグラフを作るのか知りたい方は続きを読んでもらえればと思います。Bokehの詳細な使い方は、公式ドキュメントを参考にしてください。&lt;/p&gt;
+&lt;p&gt;なお、ここで紹介する例は、僕が過去に出た機械学習のコンペ (&lt;a href=&#34;https://deepanalytics.jp/compe/36?tab=compedetail&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://deepanalytics.jp/compe/36?tab=compedetail&lt;/a&gt;) で実際に使用したコードからほぼ取ってきました（8/218位でした）。グラフを動的に更新する方法は &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/user_guide/notebook.html#notebook-handles&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式ドキュメント&lt;/a&gt; に記述されていますが、そのサンプルの内容は「円を描画して色を変える」といった実用性皆無のものであること、またググっても例が多く見つからないことから、このような紹介記事を書くことにしました。参考になれば幸いです。&lt;/p&gt;
+&lt;p&gt;余談ではありますが、こと機械学習に関しては、tensorboardを使ったほうが簡単で良いと思います。僕は最近そうしています。 &lt;a href=&#34;https://qiita.com/r9y9/items/d54162d37ec4f110f4b4&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://qiita.com/r9y9/items/d54162d37ec4f110f4b4&lt;/a&gt;. 色なり位置なり大きさなりを柔軟にカスタマイズしたい、あるいはノートブックで処理を完結させたい、と言った場合には、ここで紹介する方法も良いかもしれません。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;%pylab inline
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Populating the interactive namespace from numpy and matplotlib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from IPython.display import HTML, Image
+import IPython
+from os.path import exists
+
+def summary():
+    baseurl = &amp;quot;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/&amp;quot;
+    for (name, figname, url) in [
+        (&amp;quot;Line&amp;quot;, &amp;quot;line&amp;quot;, &amp;quot;line.html&amp;quot;),
+        (&amp;quot;VBar&amp;quot;, &amp;quot;vbar&amp;quot;, &amp;quot;vbar.html&amp;quot;),
+        (&amp;quot;HBar&amp;quot;, &amp;quot;hbar&amp;quot;, &amp;quot;hbar.html&amp;quot;),
+        (&amp;quot;ImageRGBA&amp;quot;, &amp;quot;gray_image&amp;quot;, &amp;quot;image_rgba.html&amp;quot;),
+        (&amp;quot;ImageRGBA&amp;quot;, &amp;quot;inferno_image&amp;quot;, &amp;quot;image_rgba.html&amp;quot;),
+        ]:
+        gif = &amp;quot;./fig/{}.gif&amp;quot;.format(figname)
+        print(&amp;quot;\n&amp;quot;,name, baseurl + url)
+        if exists(gif):
+            with open(gif, &#39;rb&#39;) as f:
+                IPython.display.display(Image(data=f.read()), format=&amp;quot;gif&amp;quot;)
+
+summary()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(※ブログ先頭に貼ったので省略します)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# True にしてノートブックを実行すると、上記gifの元となる画像を保存し、最後にgifを生成する
+save_img = False
+if save_img:
+    import os
+    from os.path import exists
+    if not exists(&amp;quot;./fig&amp;quot;):
+        os.makedirs(&amp;quot;./fig&amp;quot;)
+    toolbar_location = None
+else:
+    toolbar_location = &amp;quot;above&amp;quot;
+
+# bokehで描画したグラフはnotebookに残らないので、Trueの場合は代わりに事前に保存してあるgifを描画する
+# もしローカルで実行するときは、Falseにしてください
+show_static = True
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
+&lt;p&gt;先述の通り、ニューラルネットの学習過程の可視化を題材として、Jupyter上でのBokehの使い方を紹介していきたいと思います。今回は、PyTorch (v0.3.0) を使ってニューラルネットの学習のコードを書きました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/pytorch/examples/tree/master/mnist&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/pytorch/examples/tree/master/mnist&lt;/a&gt; をベースに、可視化しやすいように少しいじりました。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torchvision import datasets, transforms
+from torch.autograd import Variable
+import numpy as np
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;data&#34;&gt;Data&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;use_cuda = torch.cuda.is_available()
+
+batch_size = 128
+
+kwargs = {&#39;num_workers&#39;: 1, &#39;pin_memory&#39;: True} if use_cuda else {}
+train_loader = torch.utils.data.DataLoader(
+    datasets.MNIST(&#39;./data&#39;, train=True, download=True,
+                   transform=transforms.Compose([
+                       transforms.ToTensor()
+                   ])),
+    batch_size=batch_size, shuffle=True, **kwargs)
+test_loader = torch.utils.data.DataLoader(
+    datasets.MNIST(&#39;./data&#39;, train=False, transform=transforms.Compose([
+                       transforms.ToTensor(),
+                   ])),
+    batch_size=batch_size, shuffle=False, **kwargs)
+
+data_loaders = {&amp;quot;train&amp;quot;: train_loader, &amp;quot;test&amp;quot;:test_loader}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;model&#34;&gt;Model&lt;/h3&gt;
+&lt;p&gt;簡単な畳み込みニューラルネットです。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
+        self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
+        self.conv2_drop = nn.Dropout2d()
+        self.fc1 = nn.Linear(320, 50)
+        self.fc2 = nn.Linear(50, 10)
+
+    def forward(self, x):
+        x = F.relu(F.max_pool2d(self.conv1(x), 2))
+        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
+        x = x.view(-1, 320)
+        x = F.relu(self.fc1(x))
+        x = F.dropout(x, training=self.training)
+        x = self.fc2(x)
+        return F.log_softmax(x, dim=-1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;train-loop&#34;&gt;Train loop&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from tqdm import tnrange
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;epochs = 20
+
+def __train_loop(model, data_loaders, optimizer, epoch, phase):
+    model = model.train() if phase == &amp;quot;train&amp;quot; else model.eval()
+    running_loss = 0
+    running_corrects = 0
+    corrects = [0]*10
+    counts = [0]*10
+    for batch_idx, (x, y) in enumerate(data_loaders[phase]):
+        x = x.cuda() if use_cuda else x
+        y = y.cuda() if use_cuda else y
+        x, y = Variable(x), Variable(y)
+        optimizer.zero_grad()
+        y_hat = model(x)
+
+        # loss
+        loss = F.nll_loss(y_hat, y)
+
+        # update
+        if phase == &amp;quot;train&amp;quot;:
+            loss.backward()
+            optimizer.step()
+        running_loss += loss.data[0]
+
+        # predict
+        preds = torch.max(y_hat.data, 1)[1]
+        match = (preds == y.data).cpu()
+        running_corrects += match.sum()
+
+        # カテゴリごとの正解率を出すのにほしい
+        for i in range(len(match)):
+            if match.view(-1)[i] &amp;gt; 0:
+                corrects[y.data.view(-1)[i]] += 1
+        for i in range(len(match)):
+            counts[y.data.view(-1)[i]] += 1
+
+    # epoch-wise metrics
+    l = running_loss / len(data_loaders[phase])
+    acc = running_corrects / len(data_loaders[phase].dataset)
+    return {&amp;quot;loss&amp;quot;: l, &amp;quot;acc&amp;quot;: acc, &amp;quot;corrects&amp;quot;: corrects, &amp;quot;counts&amp;quot;: counts}
+
+def train_loop(model, data_loaders, optimizer, epochs=12, callback=None):
+    history = {&amp;quot;train&amp;quot;: {}, &amp;quot;test&amp;quot;: {}}
+    for epoch in tnrange(epochs):
+        for phase in [&amp;quot;train&amp;quot;, &amp;quot;test&amp;quot;]:
+            d = __train_loop(model, data_loaders, optimizer, epoch, phase)
+            for k,v in d.items():
+                try:
+                    history[phase][k].append(v)
+                except KeyError:
+                    history[phase][k] = [v]
+
+            # ここでグラフの更新を呼ぶ想定です
+            if callback is not None:
+                callback.on_epoch_end(epoch, phase, history)
+    return history
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;本編&#34;&gt;本編&lt;/h2&gt;
+&lt;h3 id=&#34;0-matplotlib&#34;&gt;0. Matplotlib&lt;/h3&gt;
+&lt;p&gt;まずはじめに、動的ではない（静的な）グラフの例を示します。手書き数字認識のような識別タスクにおいて、最も一般的であると思われる評価尺度として、ロスと正解率を可視化します。&lt;code&gt;train_loop&lt;/code&gt;関数は、返り値にロスと正解率のhistoryを返すようにしたので、それを使ってグラフを作ります。&lt;/p&gt;
+&lt;p&gt;図の作成にはいろんなツールがあると思うのですが、matplotlibが定番で（僕は）大きな不満もないので、よく使っています。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;model = Net().cuda() if use_cuda else Net()
+optimizer = optim.Adadelta(model.parameters())
+history = train_loop(model, data_loaders, optimizer, epochs)
+print(&amp;quot;Test loss: {:.3f}&amp;quot;.format(history[&amp;quot;train&amp;quot;][&amp;quot;loss&amp;quot;][-1]))
+print(&amp;quot;Test acc: {:.3f}&amp;quot;.format(history[&amp;quot;test&amp;quot;][&amp;quot;acc&amp;quot;][-1]))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Test loss: 0.111
+Test acc: 0.989
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;matplotlib.pyplot.figure(figsize=(16,6))
+subplot(1,2,1)
+plot(history[&amp;quot;train&amp;quot;][&amp;quot;loss&amp;quot;], linewidth=3, color=&amp;quot;red&amp;quot;, label=&amp;quot;train loss&amp;quot;)
+plot(history[&amp;quot;test&amp;quot;][&amp;quot;loss&amp;quot;], linewidth=3, color=&amp;quot;blue&amp;quot;, label=&amp;quot;test lsos&amp;quot;)
+xlabel(&amp;quot;epoch&amp;quot;, fontsize=16)
+legend(prop={&amp;quot;size&amp;quot;: 16})
+subplot(1,2,2)
+plot(history[&amp;quot;train&amp;quot;][&amp;quot;acc&amp;quot;], linewidth=3, color=&amp;quot;red&amp;quot;, label=&amp;quot;train acc&amp;quot;)
+plot(history[&amp;quot;test&amp;quot;][&amp;quot;acc&amp;quot;], linewidth=3, color=&amp;quot;blue&amp;quot;, label=&amp;quot;test acc&amp;quot;)
+xlabel(&amp;quot;epoch&amp;quot;, fontsize=16)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;matplotlib.text.Text at 0x7f16fa9ca438&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_16_1.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h3 id=&#34;1-line&#34;&gt;1. Line&lt;/h3&gt;
+&lt;p&gt;次に、上記の線グラフを、Bokehを使って作ってみます。これには、 &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/line.html&lt;/a&gt; が使えます。&lt;/p&gt;
+&lt;p&gt;bokehで作ったグラフをnotebookにinline plotするためには、&lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/io.html#bokeh.io.output_notebook&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;bokeh.io.output_notebook&lt;/a&gt; を呼び出しておく必要があります。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import bokeh
+import bokeh.io
+from bokeh.io import push_notebook, show, output_notebook
+from bokeh.plotting import figure
+try:
+    # 少し古いbokehだとこっち
+    from bokeh.io import gridplot
+except ImportError:
+    from bokeh.layouts import gridplot
+
+output_notebook()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;次に定義する &lt;code&gt;LinePlotsCallback&lt;/code&gt; は、グラフの情報をプロパティに保持し、&lt;code&gt;on_epoch_end&lt;/code&gt; で学習結果のhisotoryを受け取って、ロスと正解率のグラフを更新します。 historyには、今回の場合は、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ロス (float)&lt;/li&gt;
+&lt;li&gt;正解率 (float)&lt;/li&gt;
+&lt;li&gt;カテゴリ毎の総サンプル数 (list)&lt;/li&gt;
+&lt;li&gt;カテゴリ毎の正解サンプル数 (list)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;の4つを含めるように実装しました (&lt;code&gt;train_loop&lt;/code&gt; 関数を参照)。&lt;code&gt;LinePlotsCallback&lt;/code&gt; では、このうちロスと正解率を随時受け取って、グラフを更新します。&lt;code&gt;Line&lt;/code&gt; オブジェクトの更新には、&lt;code&gt;data_source.data[&amp;quot;x&amp;quot;]&lt;/code&gt;, &lt;code&gt;data_source.data[&amp;quot;y&amp;quot;]&lt;/code&gt; に随時値を追加していくことで行います。&lt;/p&gt;
+&lt;p&gt;以降示すグラフでも同じなのですが、グラフを生成する基本的な手順をまとめると、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/plotting.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;bokeh.plotting.figure&lt;/a&gt; により、figureオブジェクトを生成する&lt;/li&gt;
+&lt;li&gt;生成したfigureオブジェクトに対して、線グラフ、棒グラフといったパーツ (レンダラ、bokehでは&lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;glyphs&lt;/a&gt;と呼ぶ) を生成する&lt;/li&gt;
+&lt;li&gt;(今回は格子状に図を配置したかったので）複数のfigureオブジェクトをgrid上にレイアウトする&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;となっています。格子状に配置しない場合は最後のステップは不要ですが、便利なので使います。&lt;/p&gt;
+&lt;p&gt;グラフの更新は、レンダラに値をセットしたあとに、&lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/io.html#bokeh.io.push_notebook&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;bokeh.io.push_notebook&lt;/a&gt; を呼び出すことで行います。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class LinePlotsCallback(object):
+    def __init__(self, epochs=epochs, batch_size=batch_size):
+        # Epoch毎
+        p1 = figure(title=&amp;quot;Loss&amp;quot;, plot_height=300, plot_width=350,
+                        y_range=(0, 0.5), x_range=(-1, epochs+1))
+        p2 = figure(title=&amp;quot;Acc&amp;quot;, plot_height=300, plot_width=350,
+                        y_range=(0.8, 1.0), x_range=(-1, epochs+1))
+
+        self.renderers = {&amp;quot;train&amp;quot;:{}, &amp;quot;test&amp;quot;:{}}
+
+        # 赤: train, 青: テスト
+        for phase, c in [(&amp;quot;train&amp;quot;, &amp;quot;red&amp;quot;), (&amp;quot;test&amp;quot;, &amp;quot;blue&amp;quot;)]:
+            for (p, key) in [(p1, &amp;quot;loss&amp;quot;), (p2, &amp;quot;acc&amp;quot;)]:
+                self.renderers[phase][key] = p.line([], [], color=c, line_width=3)
+
+        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
+
+
+    def on_epoch_end(self, epoch, phase, history):
+        for key in [&amp;quot;loss&amp;quot;, &amp;quot;acc&amp;quot;]:
+            self.renderers[phase][key].data_source.data[&amp;quot;x&amp;quot;].append(epoch)
+            self.renderers[phase][key].data_source.data[&amp;quot;y&amp;quot;].append(history[phase][key][-1])
+        push_notebook()
+        if save_img:
+            bokeh.io.export_png(self.graph, &amp;quot;fig/{:02d}_line.png&amp;quot;.format(epoch))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;callback = LinePlotsCallback()
+if show_static:
+    if exists(&amp;quot;fig/line.gif&amp;quot;):
+        with open(&amp;quot;fig/line.gif&amp;quot;, &#39;rb&#39;) as f:
+            IPython.display.display(Image(data=f.read()), format=&amp;quot;gif&amp;quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_21_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;model = Net().cuda() if use_cuda else Net()
+optimizer = optim.Adadelta(model.parameters())
+history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
+print(&amp;quot;Test loss: {:.3f}&amp;quot;.format(history[&amp;quot;train&amp;quot;][&amp;quot;loss&amp;quot;][-1]))
+print(&amp;quot;Test acc: {:.3f}&amp;quot;.format(history[&amp;quot;test&amp;quot;][&amp;quot;acc&amp;quot;][-1]))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Test loss: 0.113
+Test acc: 0.990
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;2-vbar&#34;&gt;2. VBar&lt;/h3&gt;
+&lt;p&gt;データセット全体の正解率だけでなく、カテゴリ毎の正解率などの尺度を知りたい時がよくあります。次は、数字の各カテゴリごとにどのくらい正解しているのか、といった尺度を可視化するために、縦棒グラフを作ってみます。これには、 &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/vbar.html&lt;/a&gt; が使えます。on_epoch_endで渡されるhistoryのうち、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;カテゴリ毎の総サンプル数 (list)&lt;/li&gt;
+&lt;li&gt;カテゴリ毎の正解サンプル数 (list)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;の二つを使って動的にグラフを更新します。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Line&lt;/code&gt; オブジェクトの更新は、&lt;code&gt;data_source.data[&amp;quot;x&amp;quot;]&lt;/code&gt;, &lt;code&gt;data_source.data[&amp;quot;y&amp;quot;]&lt;/code&gt; に値を追加していくことで行いましたが、&lt;code&gt;VBar&lt;/code&gt;オブジェクトの場合は、&lt;code&gt;data_source.data[&amp;quot;top&amp;quot;]&lt;/code&gt; に値をセットします。下向きの棒グラフが作りたい場合は、&lt;code&gt;data_source.data[&amp;quot;bottom&amp;quot;]&lt;/code&gt; に値をセットすればOKです。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class VBarPlotsCallback(object):
+    def __init__(self, epochs=epochs, batch_size=batch_size):
+        # Epoch毎
+        p1 = figure(title=&amp;quot;Category-wise correctness (train)&amp;quot;,
+                    plot_height=300, plot_width=350, y_range=(0, 7000))
+        p2 = figure(title=&amp;quot;Category-wise correctness (test)&amp;quot;,
+                    plot_height=300, plot_width=350, y_range=(0, 1500))
+
+        self.renderers = {&amp;quot;train&amp;quot;:{}, &amp;quot;test&amp;quot;:{}}
+
+        bar_opts = dict(width=0.8, alpha=0.5)
+        for phase, p in [(&amp;quot;train&amp;quot;, p1), (&amp;quot;test&amp;quot;, p2)]:
+            for (key, c) in [(&amp;quot;corrects&amp;quot;, &amp;quot;blue&amp;quot;), (&amp;quot;counts&amp;quot;, &amp;quot;red&amp;quot;)]:
+                self.renderers[phase][key] = p.vbar(
+                    x=np.arange(0,10), top=[0]*10, name=&amp;quot;test&amp;quot;, color=c, **bar_opts)
+
+        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
+
+    def on_epoch_end(self, epoch, phase, history):
+        for key in [&amp;quot;counts&amp;quot;, &amp;quot;corrects&amp;quot;]:
+            self.renderers[phase][key].data_source.data[&amp;quot;top&amp;quot;] = history[phase][key][-1]
+            push_notebook()
+        if save_img:
+            bokeh.io.export_png(self.graph, &amp;quot;fig/{:02d}_vbar.png&amp;quot;.format(epoch))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;callback = VBarPlotsCallback()
+if show_static:
+    if exists(&amp;quot;fig/vbar.gif&amp;quot;):
+        with open(&amp;quot;fig/vbar.gif&amp;quot;, &#39;rb&#39;) as f:
+            IPython.display.display(Image(data=f.read()), format=&amp;quot;gif&amp;quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_25_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;model = Net().cuda() if use_cuda else Net()
+optimizer = optim.Adadelta(model.parameters())
+history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
+print(&amp;quot;Test loss: {:.3f}&amp;quot;.format(history[&amp;quot;train&amp;quot;][&amp;quot;loss&amp;quot;][-1]))
+print(&amp;quot;Test acc: {:.3f}&amp;quot;.format(history[&amp;quot;test&amp;quot;][&amp;quot;acc&amp;quot;][-1]))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Test loss: 0.115
+Test acc: 0.989
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;3-hbar&#34;&gt;3. HBar&lt;/h3&gt;
+&lt;p&gt;HBarと非常に似たグラフとして、横向きの棒グラフである &lt;a href=&#34;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/hbar.html&lt;/a&gt; があります。VBarの場合と同様に、カテゴリ毎の正解サンプル数を可視化してみます。本質的に可視化する情報は変わりませんが、あくまでデモということで。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;HBar&lt;/code&gt;オブジェクトの更新は、&lt;code&gt;data_source.data[&amp;quot;right&amp;quot;]&lt;/code&gt; or &lt;code&gt;data_source.data[&amp;quot;left&amp;quot;]&lt;/code&gt; に値をセットすればOKです。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class HBarPlotsCallback(object):
+    def __init__(self, epochs=epochs, batch_size=batch_size):
+        # Epoch毎
+        p1 = figure(title=&amp;quot;Category-wise correctness (train)&amp;quot;,
+                    plot_height=300, plot_width=350, x_range=(0, 7000))
+        p2 = figure(title=&amp;quot;Category-wise correctness (test)&amp;quot;,
+                    plot_height=300, plot_width=350, x_range=(0, 1500))
+
+        self.renderers = {&amp;quot;train&amp;quot;:{}, &amp;quot;test&amp;quot;:{}}
+
+        bar_opts = dict(height=0.8, alpha=0.5)
+        for phase, p in [(&amp;quot;train&amp;quot;, p1), (&amp;quot;test&amp;quot;, p2)]:
+            for (key, c) in [(&amp;quot;corrects&amp;quot;, &amp;quot;blue&amp;quot;), (&amp;quot;counts&amp;quot;, &amp;quot;green&amp;quot;)]:
+                self.renderers[phase][key] = p.hbar(
+                    y=np.arange(0,10), right=[0]*10, name=&amp;quot;test&amp;quot;, color=c, **bar_opts)
+
+        self.graph = gridplot([p1, p2], ncols=2, toolbar_location=toolbar_location)
+
+    def on_epoch_end(self, epoch, phase, history):
+        for key in [&amp;quot;counts&amp;quot;, &amp;quot;corrects&amp;quot;]:
+            self.renderers[phase][key].data_source.data[&amp;quot;right&amp;quot;] = history[phase][key][-1]
+            push_notebook()
+        if save_img:
+            bokeh.io.export_png(self.graph, &amp;quot;fig/{:02d}_hbar.png&amp;quot;.format(epoch))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;callback = HBarPlotsCallback()
+if show_static:
+    if exists(&amp;quot;fig/hbar.gif&amp;quot;):
+        with open(&amp;quot;fig/hbar.gif&amp;quot;, &#39;rb&#39;) as f:
+            IPython.display.display(Image(data=f.read()), format=&amp;quot;gif&amp;quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_29_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;model = Net().cuda() if use_cuda else Net()
+optimizer = optim.Adadelta(model.parameters())
+history = train_loop(model, data_loaders, optimizer, epochs, callback=callback)
+print(&amp;quot;Test loss: {:.3f}&amp;quot;.format(history[&amp;quot;train&amp;quot;][&amp;quot;loss&amp;quot;][-1]))
+print(&amp;quot;Test acc: {:.3f}&amp;quot;.format(history[&amp;quot;test&amp;quot;][&amp;quot;acc&amp;quot;][-1]))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Test loss: 0.116
+Test acc: 0.989
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;5-image&#34;&gt;5. Image&lt;/h3&gt;
+&lt;p&gt;最後に、https://bokeh.pydata.org/en/latest/docs/reference/models/glyphs/image_rgba.html を使って、画像を可視化する例を紹介します。例えば生成モデルを学習するときなど、学習の過程で、その生成サンプルを可視化したい場合がよくあるので、そういった場合に使えます。&lt;/p&gt;
+&lt;p&gt;最初に実装したモデルは手書き数字認識のための識別モデルだったため、趣向を変えて、生成モデルである Variational Auto-encoder (VAE) を使います。識別モデルの学習と生成モデルの学習は少し毛色が違うので、（ほとんど同じですが、簡単のため）併せて学習用のコードを書き換えました。&lt;/p&gt;
+&lt;h4 id=&#34;vae&#34;&gt;VAE&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/pytorch/examples/tree/master/vae&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/pytorch/examples/tree/master/vae&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class VAE(nn.Module):
+    def __init__(self):
+        super(VAE, self).__init__()
+
+        self.fc1 = nn.Linear(784, 400)
+        self.fc21 = nn.Linear(400, 20)
+        self.fc22 = nn.Linear(400, 20)
+        self.fc3 = nn.Linear(20, 400)
+        self.fc4 = nn.Linear(400, 784)
+
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+
+    def encode(self, x):
+        h1 = self.relu(self.fc1(x))
+        return self.fc21(h1), self.fc22(h1)
+
+    def reparameterize(self, mu, logvar):
+        if self.training:
+            std = logvar.mul(0.5).exp_()
+            eps = Variable(std.data.new(std.size()).normal_())
+            return eps.mul(std).add_(mu)
+        else:
+            return mu
+
+    def decode(self, z):
+        h3 = self.relu(self.fc3(z))
+        return self.sigmoid(self.fc4(h3))
+
+    def forward(self, x):
+        mu, logvar = self.encode(x.view(-1, 784))
+        z = self.reparameterize(mu, logvar)
+        return self.decode(z), mu, logvar
+
+def loss_function(recon_x, x, mu, logvar):
+    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784))
+
+    # see Appendix B from VAE paper:
+    # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
+    # https://arxiv.org/abs/1312.6114
+    # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
+    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+    # Normalise by same number of elements as in reconstruction
+    KLD /= batch_size * 784
+
+    return BCE + KLD
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;training-loop&#34;&gt;Training loop&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def __train_loop_vae(model, data_loaders, optimizer, epoch, phase):
+    model = model.train() if phase == &amp;quot;train&amp;quot; else model.eval()
+    running_loss = 0
+    recon_batch_first, target = None, None
+    for batch_idx, (x, _) in enumerate(data_loaders[phase]):
+        x = x.cuda() if use_cuda else x
+        x = Variable(x)
+        optimizer.zero_grad()
+        y_hat = model(x)
+
+        # loss
+        recon_batch, mu, logvar = model(x)
+        loss = loss_function(recon_batch, x, mu, logvar)
+
+        # update
+        if phase == &amp;quot;train&amp;quot;:
+            loss.backward()
+            optimizer.step()
+        running_loss += loss.data[0]
+
+        if target is None:
+            target = x
+            recon_batch_first = recon_batch
+
+    # epoch-wise metrics
+    l = running_loss / len(data_loaders[phase])
+    return {&amp;quot;loss&amp;quot;: l, &amp;quot;recon&amp;quot;: recon_batch_first.data.cpu(), &amp;quot;target&amp;quot;: target.data.cpu()}
+
+def train_loop_vae(model, data_loaders, optimizer, epochs=12, callback=None):
+    history = {&amp;quot;train&amp;quot;: {}, &amp;quot;test&amp;quot;: {}}
+    for epoch in tnrange(epochs):
+        for phase in [&amp;quot;train&amp;quot;, &amp;quot;test&amp;quot;]:
+            d = __train_loop_vae(model, data_loaders, optimizer, epoch, phase)
+            for k,v in d.items():
+                try:
+                    history[phase][k].append(v)
+                except KeyError:
+                    history[phase][k] = [v]
+
+            if callback is not None:
+                callback.on_epoch_end(epoch, phase, history)
+    return history
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;さて、準備は終わりです。&lt;/p&gt;
+&lt;p&gt;次に示す &lt;code&gt;ImagePlotsCallback&lt;/code&gt; は、&lt;code&gt;on_epoch_end&lt;/code&gt; で学習結果のhisotoryを受け取って、VAEを通して復元した画像と、復元したい対象の画像を動的に更新します。ImageRGBA の場合は、&lt;code&gt;data_source.data[&amp;quot;image&amp;quot;]&lt;/code&gt; に配列をセットすることで、更新することができます。&lt;/p&gt;
+&lt;p&gt;注意事項として、モノクロ画像を描画する際には、適当なカラーマップをかけて、(w, h) -&amp;gt; (w, h, 4) の配列にしておく必要があります。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from torchvision.utils import make_grid
+from matplotlib.pyplot import cm
+
+def _to_img(batch, cmap=cm.gray):
+    # 128は多かったので半分にします
+    _batch_size = batch_size // 2
+    batch = batch[:_batch_size]
+
+    batch = batch.view(-1,1,28,28)
+    grid = make_grid(batch, nrow=int(np.sqrt(_batch_size)))[0].numpy()
+    # Force squared
+    l = np.min(grid.shape)
+    grid = grid[:l, :l]
+    img = np.uint8(cmap(grid) * 255)
+    return img
+
+class ImagePlotsCallback(object):
+    def __init__(self, epochs=epochs, batch_size=batch_size, cmap=cm.gray):
+        x_range, y_range = (-0.5, 10.5), (-0.5, 10.5)
+        p1 = figure(title=&amp;quot;Reconstructed (train)&amp;quot;,
+                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
+        p2 = figure(title=&amp;quot;Target (train)&amp;quot;,
+                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
+        p3 = figure(title=&amp;quot;Reconstructed (test)&amp;quot;,
+                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
+        p4 = figure(title=&amp;quot;Target (test)&amp;quot;,
+                    plot_height=350, plot_width=350, x_range=x_range, y_range=y_range)
+        self.cmap = cmap
+
+        self.renderers = {&amp;quot;train&amp;quot;:{}, &amp;quot;test&amp;quot;:{}}
+        empty = torch.zeros(batch_size,1,28,28)
+        empty = _to_img(empty, self.cmap)
+        # to adjast aspect ratio
+        r = empty.shape[0]/empty.shape[1]
+
+        # https://github.com/bokeh/bokeh/issues/1666
+        for k, p in [(&amp;quot;recon&amp;quot;, p1), (&amp;quot;target&amp;quot;, p2)]:
+            self.renderers[&amp;quot;train&amp;quot;][k] = p.image_rgba(image=[empty[::-1]], x=[0], y=[0], dw=[10], dh=[r*10])
+        for k, p in [(&amp;quot;recon&amp;quot;, p3), (&amp;quot;target&amp;quot;, p4)]:
+            self.renderers[&amp;quot;test&amp;quot;][k] = p.image_rgba(image=[empty[::-1]], x=[0], y=[0], dw=[10], dh=[r*10])
+
+        self.graph = gridplot([p1, p2, p3, p4], ncols=2, toolbar_location=toolbar_location)
+
+    def on_epoch_end(self, epoch, phase, history):
+        for k in [&amp;quot;recon&amp;quot;, &amp;quot;target&amp;quot;]:
+            self.renderers[phase][k].data_source.data[&amp;quot;image&amp;quot;] = [_to_img(history[phase][k][-1], self.cmap)[::-1]]
+        push_notebook()
+
+        if save_img:
+            bokeh.io.export_png(self.graph, &amp;quot;fig/{:02d}_{}_image.png&amp;quot;.format(epoch, self.cmap.name))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# グレースケール
+callback = ImagePlotsCallback(cmap=cm.gray)
+if show_static:
+    if exists(&amp;quot;fig/gray_image.gif&amp;quot;):
+        with open(&amp;quot;fig/gray_image.gif&amp;quot;, &#39;rb&#39;) as f:
+            IPython.display.display(Image(data=f.read()), format=&amp;quot;gif&amp;quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_38_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# gifを作ったときに見やすいように、shuffle=Falseにする
+kwargs = {&#39;num_workers&#39;: 1, &#39;pin_memory&#39;: True} if use_cuda else {}
+train_loader = torch.utils.data.DataLoader(
+    datasets.MNIST(&#39;./data&#39;, train=True, download=True,
+                   transform=transforms.Compose([
+                       transforms.ToTensor()
+                   ])),
+    batch_size=batch_size, shuffle=False, **kwargs)
+test_loader = torch.utils.data.DataLoader(
+    datasets.MNIST(&#39;./data&#39;, train=False, transform=transforms.Compose([
+                       transforms.ToTensor(),
+                   ])),
+    batch_size=batch_size, shuffle=False, **kwargs)
+
+data_loaders = {&amp;quot;train&amp;quot;: train_loader, &amp;quot;test&amp;quot;:test_loader}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;model = VAE().cuda() if use_cuda else VAE()
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
+history = train_loop_vae(model, data_loaders, optimizer, epochs, callback=callback)
+print(&amp;quot;Test loss: {:.3f}&amp;quot;.format(history[&amp;quot;train&amp;quot;][&amp;quot;loss&amp;quot;][-1]))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Test loss: 0.133
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;本質的な違いはありませんが、異なるカラーマップを試してみます。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;gradient = np.linspace(0,1,256)
+gradient = np.vstack((gradient, gradient))
+pyplot.figure(figsize=(16,0.5))
+imshow(gradient, aspect=&amp;quot;auto&amp;quot;, cmap=cm.inferno)
+axis(&amp;quot;off&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_42_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;callback = ImagePlotsCallback(cmap=cm.inferno)
+if show_static:
+    if exists(&amp;quot;fig/inferno_image.gif&amp;quot;):
+        with open(&amp;quot;fig/inferno_image.gif&amp;quot;, &#39;rb&#39;) as f:
+            IPython.display.display(Image(data=f.read()), format=&amp;quot;gif&amp;quot;)
+else:
+    bokeh.io.show(callback.graph, notebook_handle=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter_with_bokeh_files/jupyter_with_bokeh_43_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;model = VAE().cuda() if use_cuda else VAE()
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
+history = train_loop_vae(model, data_loaders, optimizer, epochs, callback=callback)
+print(&amp;quot;Test loss: {:.3f}&amp;quot;.format(history[&amp;quot;train&amp;quot;][&amp;quot;loss&amp;quot;][-1]))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Test loss: 0.133
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;Bokehによるグラフ作成は、少しとっつきにくいかもしれませんが（matplotlibとかではレンダラとか意識しないですよね）、慣れれば柔軟性が高く、便利なのではないかと思います。&lt;/p&gt;
+&lt;p&gt;今回の記事を書くにあたっては、bokeh v0.12.9 を使いました。もしローカルでnotebookを実行する場合は、バージョンを揃えることをおすすめします。&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/driller/items/0730325bf5c1cd689979&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ipywidgetsとBokeh使ってインタラクティブな可視化をする - Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/y__sama/items/654ed8ab7464718876f9&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jupyter Notebookを動的に使ってみる - Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://bokeh.pydata.org/en/latest/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Welcome to Bokeh — Bokeh 0.12.12 documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/r9y9/items/d54162d37ec4f110f4b4&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PyTorchで学習の過程を確認したいときはtensorboardXを使うのが良かったです -　Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

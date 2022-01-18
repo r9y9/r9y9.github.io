@@ -1,112 +1,857 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>DNN統計的音声合成ツールキット Merlin の中身を理解をする - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="GitHub: https://cstr-edinburgh.github.io/merlin/" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/" />
+  <meta property="og:title" content="DNN統計的音声合成ツールキット Merlin の中身を理解をする | LESS IS MORE" />
+  <meta property="og:description" content="GitHub: https://cstr-edinburgh.github.io/merlin/" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2017-08-16T03:00:00&#43;09:00"
+      />
+    
+    <meta property="article:modified_time" content="2017-08-16T03:00:00&#43;09:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/"
+  },
+  "headline": "DNN統計的音声合成ツールキット Merlin の中身を理解をする",
+  
+  "datePublished": "2017-08-16T03:00:00+09:00",
+  "dateModified": "2017-08-16T03:00:00+09:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "GitHub: https://cstr-edinburgh.github.io/merlin/"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>DNN統計的音声合成ツールキット Merlin の中身を理解をする | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">DNN統計的音声合成ツールキット Merlin の中身を理解をする</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-08-16">August 16, 2017</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="cbffc668d75cf1c5f3c2f257ed1808d7" >
 
-<p>この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>DNN統計的音声合成ツールキット Merlin の中身を理解をする</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Aug 16, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。
 なお、HMM音声合成について簡単に理解していること（HMMとは、状態とは、フルコンテキストラベルとは、くらい）を前提とします。</p>
-
 <h2 id="はじめに">はじめに</h2>
-
 <p>Merlinの概要については以下をご覧ください。</p>
-
 <ul>
-<li><a href="http://ssw9.net/papers/ssw9_PS2-13_Wu.pdf">Wu, Zhizheng, Oliver Watts, and Simon King. &ldquo;Merlin: An open source neural network speech synthesis system.&rdquo; Proc. SSW, Sunnyvale, USA (2016).</a></li>
-<li><a href="http://ssw9.net/papers/ssw9_DS-3_Ronanki.pdf">&ldquo;A Demonstration of the
+<li><a href="http://ssw9.net/papers/ssw9_PS2-13_Wu.pdf" target="_blank" rel="noopener">Wu, Zhizheng, Oliver Watts, and Simon King. &ldquo;Merlin: An open source neural network speech synthesis system.&rdquo; Proc. SSW, Sunnyvale, USA (2016).</a></li>
+<li><a href="http://ssw9.net/papers/ssw9_DS-3_Ronanki.pdf" target="_blank" rel="noopener">&ldquo;A Demonstration of the
 Merlin Open Source Neural Network Speech Synthesis System&rdquo;</a></li>
-<li><a href="https://cstr-edinburgh.github.io/merlin/">公式ドキュメント</a></li>
+<li><a href="https://cstr-edinburgh.github.io/merlin/" target="_blank" rel="noopener">公式ドキュメント</a></li>
 </ul>
-
 <p>Merlinにはデモスクリプトがついています。基本的にユーザが使うインタフェースはrun_merlin.pyというコマンドラインスクリプトで、
 デモスクリプトではrun_merlin.pyに用途に応じた設定ファイルを与えることで、継続長モデルの学習/音響モデルの学習/パラメータ生成など、音声合成に必要なステップを実現しています。</p>
-
 <p>デモスクリプトを実行すると、音声データ (wav) と言語特徴量（HTSのフルコンテキストラベル）から、変換音声が合成されるところまでまるっとやってくれるのですが、それだけでは内部で何をやっているのか、理解することはできません。
 ツールキットを使う目的が、自分が用意したデータセットで音声合成器を作りたい、といった場合には、特に内部を知る必要はありません。
 また、設定ファイルをちょこっといじるだけでこと済むのであれば、知る必要はないかもしれません。
 しかし、モデル構造を変えたい、学習アルゴリズムを変えたい、ポストフィルタを入れたい、といったように、少し進んだ使い方をしようとすれば、内部構造を理解しないとできないことも多いと思います。</p>
-
-<p>run_merlin.py はあらゆる処理 (具体的にはあとで述べます) のエントリーポイントになっているがゆえに、コードはなかなかに複雑になっています<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>。この記事では、run_merlin.pyがいったい何をしているのかを読み解いた結果をまとめます。</p>
-
+<p>run_merlin.py はあらゆる処理 (具体的にはあとで述べます) のエントリーポイントになっているがゆえに、コードはなかなかに複雑になっています<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。この記事では、run_merlin.pyがいったい何をしているのかを読み解いた結果をまとめます。</p>
 <h2 id="merlinでは提供しないこと">Merlinでは提供しないこと</h2>
-
 <p>Merlinが何を提供してくれるのかを理解する前に、何を提供しないのか、をざっくりと整理します。以下のとおりです。</p>
-
 <ul>
 <li>Text-processing (<strong>Frontend</strong>)</li>
 <li>Speech analysis/synthesis (<strong>Backend</strong>)</li>
 </ul>
-
 <p>HTSと同様に、frontend, backendといった部分は提供していません。Merlinの論文にもあるように、HTSの影響を受けているようです。</p>
-
 <p>Frontendには、英語ならFestival、BackendにはWORLDやSTRAIGHTを使ってよろしくやってね、というスタンスです。
 Backendに関しては、Merlinのインストールガイドにあるように、WOLRDをインストールするように促されます。</p>
-
 <p>デモスクリプトでは、Frontendによって生成されたフルコンテキストラベル（HTS書式）が事前に同梱されているので、Festivalをインストールする必要はありません。
 misc以下に、Festivalを使ってフルコンテキストラベルを作るスクリプト (make_labels) があるので、デモデータ以外のデータセットを使う場合は、それを使います。</p>
-
 <h2 id="steps">Steps</h2>
-
 <p>本編です。slt_arcticのデモスクリプトに従い、いくらかのステップに分けて、詳細に見ていきます。なお、以下デモスクリプトと書いた際には、slt_arcticのデモスクリプトを指すものとします。</p>
-
 <ul>
 <li>継続長モデルの学習</li>
 <li>音響モデルの学習</li>
 <li>変換音声の合成</li>
 </ul>
-
 <p>なお、Merlinのスクリプトによってはかれるデータは、基本的に</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">x<span style="color:#f92672">.</span>astype(np<span style="color:#f92672">.</span>float32)<span style="color:#f92672">.</span>tofile(<span style="color:#e6db74">&#34;foobar.bin&#34;</span>)</code></pre></div>
+<pre><code class="language-py">x.astype(np.float32).tofile(&quot;foobar.bin&quot;)
+</code></pre>
 <p>といった感じで、32bit浮動小数点のnumpyの配列がヘッダなしのバイナリフォーマットで保存されています。デバッグ時には、</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">np<span style="color:#f92672">.</span>fromfile(<span style="color:#e6db74">&#34;foobar.bin&#34;</span>, dtype<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>float32)</code></pre></div>
+<pre><code class="language-py">np.fromfile(&quot;foobar.bin&quot;, dtype=np.float32)
+</code></pre>
 <p>として、ファイルを読み込んでインスペクトするのが便利です。注意事項として、ややこしいことに、拡張子は信頼できません。<code>.lab</code> という拡張子であっても、フルコンテキストラベルのテキストファイルである場合もあれば、上述のようにバイナリフォーマットである可能性もあります。つらいですね！</p>
-
 <h3 id="継続長モデルの学習">継続長モデルの学習</h3>
-
 <p>継続長モデルとは、言語特徴量から、継続長を予測するモデルです。Merlinでは、phone-level / state-level のどちらかを選択可能です。Merlinの提供するDNN音声合成では、継続長の予測→音響特徴量の予測→合成、といったスタイルをとります。
-デフォルトでは、state-levelで継続長（具体的には一状態当たりの継続フレーム数）を予測します。状態レベルのアライメントのほうが、時間解像度の高いコンテキストを得られ、結果音声合成の品質が良くなるので、デフォルトになっているのだと思います。 <a href="https://github.com/CSTR-Edinburgh/merlin/issues/18">https://github.com/CSTR-Edinburgh/merlin/issues/18</a> に少し議論があります。</p>
-
+デフォルトでは、state-levelで継続長（具体的には一状態当たりの継続フレーム数）を予測します。状態レベルのアライメントのほうが、時間解像度の高いコンテキストを得られ、結果音声合成の品質が良くなるので、デフォルトになっているのだと思います。 <a href="https://github.com/CSTR-Edinburgh/merlin/issues/18" target="_blank" rel="noopener">https://github.com/CSTR-Edinburgh/merlin/issues/18</a> に少し議論があります。</p>
 <p>デモスクリプトを実行すると、 <code>experiments/slt_arctic_demo/duration_model/</code> 以下に継続長モデル用のデータがは出力されます。いくつか重要なものについて、以下に示します。</p>
-
 <h4 id="data">data</h4>
-
 <ul>
 <li><code>label_phone_align</code>: 音素レベルでのフルコンテキストラベルです</li>
 <li><code>dur</code>: 状態別継続長です。正確には、<code>T</code> をフルコンテキストラベル中の音素数として、<code>(T, 5)</code> の配列が発話ごとに保存されます。5は音素あたりのHMMの状態数で、慣例的に？5が使用されているような気がします。</li>
 </ul>
-
-<h4 id="inter-module">inter_module</h4>
-
+<h4 id="inter_module">inter_module</h4>
 <p>中間結果のファイル群です</p>
-
 <ul>
 <li><code>binary_label_416/</code>: HTS形式の質問ファイルを元に生成した、言語特徴量行列です。デモスクリプトでは、416個の質問があるので、一状態あたり416次元の特徴ベクトルになります。binaryな特徴量（母音か否か）と連続的な特徴量（単語中のsylalbleの数等）があります。<code>(T, 416)</code> の行列が、発話ごとに保存されています。</li>
 <li><code>label_norm_HTS_416.dat</code>: 416次元の特徴ベクトルの正規化に必要な情報です。デモスクリプトでは、言語特徴量に関してはmin/max正規化が行われるので、minおよびmaxの416次元のベクトル（計416*2次元）が保存されています。</li>
@@ -118,35 +863,24 @@ misc以下に、Festivalを使ってフルコンテキストラベルを作る�
 <li><code>ref_data/</code>: RMSEなどの評価基準を計算する際に使われる継続長のテストデータです。<code>data/dur</code> ディレクトリの継続長データを元に、無音区間が除去されたものです</li>
 <li><code>var/</code>: 継続長の分散（not 標準偏差）です。パラメータ生成 (MLPG) に使われる想定のデータです</li>
 </ul>
-
 <p>けっこうたくさんありますね。これだけでも、いかに多くのことがrun_merlin.pyによってなされているか、わかるかと思います。</p>
-
-<h4 id="入力-出力">入力/出力</h4>
-
+<h4 id="入力出力">入力/出力</h4>
 <p>中間ファイルがたくさんあってややこしいですが、整理すると、ネットワーク学習に用いる入力と出力は以下になります。</p>
-
 <ul>
 <li>入力: <code>nn_no_silence_lab_norm_416</code>, 一発話あたりの特徴量のshape: <code>(T, 416)</code></li>
 <li>出力: <code>nn_norm_dur_5</code>, 一発話あたりの特徴量のshape: <code>(T, 5)</code></li>
 </ul>
-
 <p>学習されたモデルは、 <code>nnets_model</code>というフォルダに保存されます。</p>
-
 <h3 id="音響モデルの学習">音響モデルの学習</h3>
-
 <p>音響モデルとは、言語特徴量からメルケプストラム、F0、非周期性成分などの音響特徴量を予測するモデルです。Merlinのデモスクリプトでは、</p>
-
 <ul>
 <li>メルケプストラム: 60次元（動的特徴量を合わせると、180次元)</li>
 <li>対数F0: 1次元（動的特徴量を合わせると、3次元)</li>
 <li>有声 or 無声フラグ (voiced/unvoiced; vuv): 1次元</li>
 <li>非周期性成分: 1次元（動的特徴量を合わせると、3次元)</li>
 </ul>
-
 <p>の計187次元の音響特徴量を予測するモデルを考えます。継続長モデルのときと同様に、出力されるファイルについていくらか説明します。</p>
-
 <h4 id="data-1">data</h4>
-
 <ul>
 <li><code>bap</code>: 発話毎に計算された非周期性成分が入っています。bapはband averaged aperiodicityの略です（専門家の人にとっては当たり前かと思いますが、一応</li>
 <li><code>label_phone_align</code>: phone-levelでアライメントされたHTSのコンテキストラベルが入っています。デフォルトの設定では使いません。</li>
@@ -154,9 +888,7 @@ misc以下に、Festivalを使ってフルコンテキストラベルを作る�
 <li><code>lf0</code>: 対数F0です。なお、WORLDではかれるF0は無声区間で0を取りますが、無声区間の部分を線形補間することによって、非ゼロの値で補完しています。</li>
 <li><code>mgc</code>: メルケプストラムです（フォルダ名は、慣習的にメル一般化ケプストラムを表す <code>mgc</code>となっていますが、デモスクリプトでは実際にはメルケプストラムです）</li>
 </ul>
-
-<h4 id="inter-module-1">inter_module</h4>
-
+<h4 id="inter_module-1">inter_module</h4>
 <ul>
 <li><code>binary_label_425/</code>: 言語特徴量の行列です。継続長モデルの場合と違って、フレーム単位で生成されているのと、フレーム単位ならではの特徴量（音素中の何フレーム目なのか、等）が追加されています。フレーム数を <code>T</code> として、 <code>(T, 425)</code> の配列が発話ごとに保存されています。</li>
 <li><code>label_norm_HTS_425.dat</code>: 言語特徴量のmin/max正規化に必要なmin/maxのベクトルです。</li>
@@ -167,22 +899,15 @@ misc以下に、Festivalを使ってフルコンテキストラベルを作る�
 <li><code>norm_info_mgc_lf0_vuv_bap_187_MVN.dat</code>: 音響特徴量の正規化に必要な、平均と標準偏差です</li>
 <li><code>var/</code>: mgc, lf0, bap, vuvそれぞれの分散です。このうちvuvは、パラメータ生成時にMLPGを行いませんが、保存はされています。</li>
 </ul>
-
-<h4 id="入力-出力-1">入力/出力</h4>
-
+<h4 id="入力出力-1">入力/出力</h4>
 <p>継続長モデルの場合と同様の中間特徴量が出力されています。改めて整理すると、音響モデルの学習に使用する入力と出力は、以下のとおりです。</p>
-
 <ul>
 <li>入力: <code>nn_no_silence_lab_norm_425/</code>, 一発話あたりの特徴量のshape: <code>(T, 425)</code></li>
 <li>出力: <code>nn_norm_mgc_lf0_vuv_bap_187</code>, 一発話あたりの特徴量のshape: <code>(T, 187)</code></li>
 </ul>
-
 <p>学習されたモデルは、 <code>nnets_model</code>というフォルダに保存されます。</p>
-
 <h3 id="波形生成">波形生成</h3>
-
 <p>得られた継続長モデルと音響モデルから、波形を生成する処理は、大雑把にいって以下の手順で行われます。</p>
-
 <ul>
 <li>フルコンテキストラベルから得られる言語特徴量を元に、継続長モデルを使って継続長を予測する</li>
 <li>予測された継続長を使って、フルコンテキストラベルを書き換える。より具体的には、状態毎の start_time, end_time の部分を書き換える。</li>
@@ -191,115 +916,449 @@ misc以下に、Festivalを使ってフルコンテキストラベルを作る�
 <li>生成されたメルケプストラムに対して、Merlinお手製ポストフィルタを掛ける</li>
 <li>得られた音響特徴量 (mgc, f0, bap) から、WORLDを使って波形合成をする</li>
 </ul>
-
-<p>以上です。Merlinの良い所の一つに、ログをたくさんはいてくれるというのがあります。しかし、このうちポストフィルタ（デフォルトでONです）に関しては一切（デフォルトでは）ログがはかれず、気づくのに時間がかかりました。<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup></p>
-
+<p>以上です。Merlinの良い所の一つに、ログをたくさんはいてくれるというのがあります。しかし、このうちポストフィルタ（デフォルトでONです）に関しては一切（デフォルトでは）ログがはかれず、気づくのに時間がかかりました。<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 <p>また、個人的な感覚ですが、このポストフィルタの影響は絶大に思いました。コードを見て、何をしているのか僕には理解できませんでしたが、ヒューリスティックな方法も含んでいるように思いました。興味のある方は、 波形合成用のconfファイルを開いて、</p>
 <pre><code>[Waveform]
-do_post_filtering: False</code></pre>
+do_post_filtering: False
+</code></pre>
 <p>のように、<code>[Waveform]</code> セクションに <code>do_post_filtering</code> という項目を加えて、生成結果を聴き比べてみることをおすすめします。ポストフィルタによって劇的に音質が改善されているのがわかると思います。さらに興味のある方は、コードを読んでみてください。参考文献も探しましたが、僕には見つかりませんでした。ご存知の方がいれば教えていただきたいです。</p>
-
 <h2 id="おわりに">おわりに</h2>
-
-<p>Merlin、最初は使いにくいなと思っていましたが、頑張って読んでみれば、とても勉強になりました（使いやすいとは言っていない）。後半はだれて、適当なまとめになってしまったかもしれません、すいません。もろもろの不満から<a href="https://github.com/r9y9/nnmnkwii">新しいツール</a>を作りましたが、それはまた別の機会に紹介したいと思います。ありがとうございました。</p>
-<div class="footnotes">
-
-<hr />
-
+<p>Merlin、最初は使いにくいなと思っていましたが、頑張って読んでみれば、とても勉強になりました（使いやすいとは言っていない）。後半はだれて、適当なまとめになってしまったかもしれません、すいません。もろもろの不満から<a href="https://github.com/r9y9/nnmnkwii" target="_blank" rel="noopener">新しいツール</a>を作りましたが、それはまた別の機会に紹介したいと思います。ありがとうございました。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1"><a href="http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html">http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html</a> によれば、This is a very clearly written Python script だそうです…。僕に読解力がないだけの可能性があります
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:2">自分で作ったモデルが、どうしてもmerlinに勝てない、なぜだ、と悩んでいたとき、Merlinに言及している論文の一つに、ポストフィルタを使っているとの記述があり、探ってみるとたしかにあった、という感じでした。
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p><a href="http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html" target="_blank" rel="noopener">http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html</a> によれば、This is a very clearly written Python script だそうです…。僕に読解力がないだけの可能性があります&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>自分で作ったモデルが、どうしてもmerlinに勝てない、なぜだ、と悩んでいたとき、Merlinに言及している論文の一つに、ポストフィルタを使っているとの記述があり、探ってみるとたしかにあった、という感じでした。&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="DNN統計的音声合成ツールキット Merlin の中身を理解をする" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/speech-synthesis/">Speech Synthesis</a>
+  
+  <a class="badge badge-light" href="/tag/deep-learning/">Deep Learning</a>
+  
+  <a class="badge badge-light" href="/tag/python/">Python</a>
+  
+  <a class="badge badge-light" href="/tag/merlin/">Merlin</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/&amp;text=DNN%e7%b5%b1%e8%a8%88%e7%9a%84%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%83%84%e3%83%bc%e3%83%ab%e3%82%ad%e3%83%83%e3%83%88%20Merlin%20%e3%81%ae%e4%b8%ad%e8%ba%ab%e3%82%92%e7%90%86%e8%a7%a3%e3%82%92%e3%81%99%e3%82%8b" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/&amp;t=DNN%e7%b5%b1%e8%a8%88%e7%9a%84%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%83%84%e3%83%bc%e3%83%ab%e3%82%ad%e3%83%83%e3%83%88%20Merlin%20%e3%81%ae%e4%b8%ad%e8%ba%ab%e3%82%92%e7%90%86%e8%a7%a3%e3%82%92%e3%81%99%e3%82%8b" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=DNN%e7%b5%b1%e8%a8%88%e7%9a%84%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%83%84%e3%83%bc%e3%83%ab%e3%82%ad%e3%83%83%e3%83%88%20Merlin%20%e3%81%ae%e4%b8%ad%e8%ba%ab%e3%82%92%e7%90%86%e8%a7%a3%e3%82%92%e3%81%99%e3%82%8b&amp;body=https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/&amp;title=DNN%e7%b5%b1%e8%a8%88%e7%9a%84%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%83%84%e3%83%bc%e3%83%ab%e3%82%ad%e3%83%83%e3%83%88%20Merlin%20%e3%81%ae%e4%b8%ad%e8%ba%ab%e3%82%92%e7%90%86%e8%a7%a3%e3%82%92%e3%81%99%e3%82%8b" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=DNN%e7%b5%b1%e8%a8%88%e7%9a%84%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%83%84%e3%83%bc%e3%83%ab%e3%82%ad%e3%83%83%e3%83%88%20Merlin%20%e3%81%ae%e4%b8%ad%e8%ba%ab%e3%82%92%e7%90%86%e8%a7%a3%e3%82%92%e3%81%99%e3%82%8b%20https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/&amp;title=DNN%e7%b5%b1%e8%a8%88%e7%9a%84%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%83%84%e3%83%bc%e3%83%ab%e3%82%ad%e3%83%83%e3%83%88%20Merlin%20%e3%81%ae%e4%b8%ad%e8%ba%ab%e3%82%92%e7%90%86%e8%a7%a3%e3%82%92%e3%81%99%e3%82%8b" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2018/05/20/tacotron2/"> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</a></li>
+      
+      <li><a href="/blog/2017/12/22/deepvoice3_multispeaker/">【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+      
+      <li><a href="/blog/2017/12/13/deepvoice3/">【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+      
+      <li><a href="/blog/2017/11/23/dctts/">Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</a></li>
+      
+      <li><a href="/blog/2017/10/15/tacotron/">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

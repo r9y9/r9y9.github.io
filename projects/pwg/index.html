@@ -1,0 +1,1623 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Preprint: [arXiv:1910.11480](https://arxiv.org/abs/1910.11480) (accepted to [ICASSP 2020](https://2020.ieeeicassp.org/))" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/projects/pwg/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/projects/pwg/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/projects/pwg/" />
+  <meta property="og:title" content="Parallel WaveGAN: A fast waveform generation model based on generative adversarial networks with multi-resolution spectrogram | LESS IS MORE" />
+  <meta property="og:description" content="Preprint: [arXiv:1910.11480](https://arxiv.org/abs/1910.11480) (accepted to [ICASSP 2020](https://2020.ieeeicassp.org/))" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2019-10-21T20:18:27&#43;09:00"
+      />
+    
+    <meta property="article:modified_time" content="2019-10-21T20:18:27&#43;09:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/projects/pwg/"
+  },
+  "headline": "Parallel WaveGAN: A fast waveform generation model based on generative adversarial networks with multi-resolution spectrogram",
+  
+  "datePublished": "2019-10-21T20:18:27+09:00",
+  "dateModified": "2019-10-21T20:18:27+09:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "Preprint: [arXiv:1910.11480](https://arxiv.org/abs/1910.11480) (accepted to [ICASSP 2020](https://2020.ieeeicassp.org/))"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Parallel WaveGAN: A fast waveform generation model based on generative adversarial networks with multi-resolution spectrogram | LESS IS MORE</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="952662edb50f57b07704e535ca032113" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article article-project">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Parallel WaveGAN: A fast waveform generation model based on generative adversarial networks with multi-resolution spectrogram</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+  <span class="author-highlighted">
+      Ryuichi Yamamoto</span>, <span >
+      Eunwoo Song</span>, <span >
+      Jae-Min Kim</span>
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Oct 21, 2019
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>Preprint: <a href="https://arxiv.org/abs/1910.11480" target="_blank" rel="noopener">arXiv:1910.11480</a> (accepted to <a href="https://2020.ieeeicassp.org/" target="_blank" rel="noopener">ICASSP 2020</a>)</p>
+<ul>
+<li><a href="#audio-samples-japanese">Audio samples (Japanese)</a></li>
+<li><a href="#audio-samples-english">Audio samples (English)</a></li>
+</ul>
+<p><em>Japanese samples were used in the subjective evaluations reported in our paper.</em></p>
+<h2 id="authors">Authors</h2>
+<ul>
+<li>Ryuichi Yamamoto (LINE Corp.)</li>
+<li>Eunwoo Song (NAVER Corp.)</li>
+<li>Jae-Min Kim (NAVER Corp.)</li>
+</ul>
+<h2 id="abstract">Abstract</h2>
+<p>We propose Parallel WaveGAN<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, a distillation-free, fast, and small-footprint waveform generation method using a generative adversarial network. In the proposed method, a non-autoregressive WaveNet is trained by jointly optimizing multi-resolution spectrogram and adversarial loss functions, which can effectively capture the time-frequency distribution of the realistic speech waveform. As our method does not require density distillation used in the conventional teacher-student framework, the entire model can be easily trained even with a small number of parameters. In particular, the proposed Parallel WaveGAN has only 1.44 M parameters and can generate 24 kHz speech waveform 28.68 times faster than real-time on a single GPU environment. Perceptual listening test results verify that our proposed method achieves 4.16 mean opinion score within a Transformer-based text-to-speech framework, which is comparative to the best distillation-based Parallel WaveNet system.</p>
+<div align="center"><img src="/images/icassp2020_fig.png" width="60%" /></div>
+<h3 id="systems-used-for-comparision">Systems used for comparision</h3>
+<ul>
+<li><strong>Ground truth</strong>: Recorded speech.</li>
+<li><strong>WaveNet</strong>: Gaussian WaveNet <a href="https://arxiv.org/abs/1807.07281" target="_blank" rel="noopener">[1]</a></li>
+<li><strong>ClariNet-$L^{(1)}$</strong>: ClariNet <a href="https://arxiv.org/abs/1807.07281" target="_blank" rel="noopener">[1]</a> with the single STFT auxiliary loss</li>
+<li><strong>ClariNet-$L^{(1,2,3)}$</strong>: ClariNet with the multi-resolution STFT loss</li>
+<li><strong>ClariNet-GAN-$L^{(1,2,3)}$</strong>: ClariNet with the multi-resolution STFT and adversarial losses <a href="https://arxiv.org/abs/1807.07281" target="_blank" rel="noopener">[2]</a></li>
+<li><strong>Parallel WaveGAN-$L^{(1)}$</strong>: Parallel WaveGAN with th single STFT loss</li>
+<li><strong>Parallel WaveGAN-$L^{(1,2,3)}$</strong>: Parallel WaveGAN with the multi-resolution STFT loss</li>
+</ul>
+<h2 id="audio-samples-japanese">Audio samples (Japanese)</h2>
+<ol>
+<li>Analysis/synthesis</li>
+<li>Text-to-speech (Transformer TTS + vocoder models)</li>
+</ol>
+<h3 id="analysissynthesis">Analysis/synthesis</h3>
+<p>Sample 1</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample01]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample01]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample01]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample01]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample01]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample01]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample01]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table><p>Sample 2</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample02]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample02]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample02]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample02]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample02]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample02]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample02]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table><p>Sample 3</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample03]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample03]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample03]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample03]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample03]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample03]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample03]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table><p>Sample 4</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample04]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample04]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample04]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample04]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample04]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample04]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample04]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table><p>Sample 5</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample05]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample05]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample05]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample05]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample05]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample05]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample05]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table>
+<h3 id="text-to-speech">Text-to-speech</h3>
+<p>Sample 1</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer + WaveNet</th><th>Transformer + ClariNet-$L^{(1,2,3)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample01]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample01]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample01]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Transformer + ClariNet-GAN-$L^{(1,2,3)}$</th><th>Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample01]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample01]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td>
+</tr></tbody></table><p>Sample 2</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer + WaveNet</th><th>Transformer + ClariNet-$L^{(1,2,3)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample02]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample02]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample02]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Transformer + ClariNet-GAN-$L^{(1,2,3)}$</th><th>Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample02]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample02]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td>
+</tr></tbody></table><p>Sample 3</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer + WaveNet</th><th>Transformer + ClariNet-$L^{(1,2,3)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample03]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample03]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample03]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Transformer + ClariNet-GAN-$L^{(1,2,3)}$</th><th>Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample03]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample03]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td>
+</tr></tbody></table><p>Sample 4</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer + WaveNet</th><th>Transformer + ClariNet-$L^{(1,2,3)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample04]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample04]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample04]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Transformer + ClariNet-GAN-$L^{(1,2,3)}$</th><th>Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample04]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample04]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td>
+</tr></tbody></table><p>Sample 5</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer + WaveNet</th><th>Transformer + ClariNet-$L^{(1,2,3)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/AnaSyn/[Sample05]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample05]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample05]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Transformer + ClariNet-GAN-$L^{(1,2,3)}$</th><th>Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample05]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/TTS/[Sample05]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td>
+</tr></tbody></table>
+<h2 id="audio-samples-english">Audio samples (English)</h2>
+<ol>
+<li>Analysis/synthesis</li>
+<li>Text-to-speech (<a href="https://arxiv.org/abs/1910.10909" target="_blank" rel="noopener">ESPnet-TTS</a> + Our Parallel WaveGAN)</li>
+</ol>
+<p><a href="https://keithito.com/LJ-Speech-Dataset/" target="_blank" rel="noopener">LJSpeech dataset</a> is used for the test. Mel-spectrograms (with the range of 70 - 7600 Hz<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>) were used for local conditioning.</p>
+<p><em>Please note that the English samples were not used in the subjective evaluations reported in our paper.</em></p>
+<h3 id="analysissynthesis-1">Analysis/synthesis</h3>
+<p>That is reflected in definite and comprehensive operating procedures.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table><p>The commission also recommends.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table><p>That the secret service consciously set about the task of inculcating and maintaining the highest standard of excellence and esprit, for all of its personnel.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table><p>This involves tight and unswerving discipline as well as the promotion of an outstanding degree of dedication and loyalty to duty.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table><p>The commission emphasizes that it finds no causal connection between the assassination.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>WaveNet</th><th>ClariNet-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-2-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-3-ClariNet (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>ClariNet-$L^{(1,2,3)}$</th><th>ClariNet-GAN-$L^{(1,2,3)}$</th><th>Parallel WaveGAN-$L^{(1)}$</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-4-ClariNet (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-5-ClariNet-GAN (3spec).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-6-Parallel WaveGAN (1spec).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>Parallel WaveGAN-$L^{(1,2,3)}$ <font color="#0000cd">(ours)</font></th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-7-Parallel WaveGAN (3spec) (ours).wav" type="audio/wav"></audio></td><td></td><td></td>
+</tr></tbody></table>
+<h3 id="text-to-speech-1">Text-to-speech</h3>
+<p>We combined our Parallel WaveGAN with <a href="https://arxiv.org/abs/1910.10909" target="_blank" rel="noopener">ESPnet-TTS</a>. The systems used here are as follows:</p>
+<ul>
+<li><strong>Transformer.v3</strong>: Transformer.v3 presented in <a href="https://arxiv.org/abs/1910.10909" target="_blank" rel="noopener">ESPnet-TTS</a>.</li>
+<li><strong>MoL WaveNet</strong>: WaveNet with mixture of logistics output distribution (shipped with ESPnet). Pre-emphasis/de-emphasis were applied to reduce perceptual noise (similar to <a href="https://arxiv.org/abs/1810.11846" target="_blank" rel="noopener">LPCNet</a>).</li>
+<li><strong>Parallel WaveGAN</strong>: Our Parallel WaveGAN with multi-resolution spectrogram loss.</li>
+</ul>
+<p>Note that <strong>Transformer.v3 + MoL WaveNet</strong> is the same as used in <a href="https://espnet.github.io/icassp2020-tts/" target="_blank" rel="noopener">https://espnet.github.io/icassp2020-tts/</a>.
+Mel-spectrograms (with the range of 70 - 11025 Hz) were used for local conditioning.</p>
+<p>That is reflected in definite and comprehensive operating procedures.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer.v3 + MoL WaveNet</th><th>Transformer.v3 + Parallel WaveGAN</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample01]-1-MoL-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample01]-2-Parallel WaveGAN.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><p>The commission also recommends.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer.v3 + MoL WaveNet</th><th>Transformer.v3 + Parallel WaveGAN</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample02]-1-MoL-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample02]-2-Parallel WaveGAN.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><p>That the secret service consciously set about the task of inculcating and maintaining the highest standard of excellence and esprit, for all of its personnel.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer.v3 + MoL WaveNet</th><th>Transformer.v3 + Parallel WaveGAN</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample03]-1-MoL-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample03]-2-Parallel WaveGAN.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><p>This involves tight and unswerving discipline as well as the promotion of an outstanding degree of dedication and loyalty to duty.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer.v3 + MoL WaveNet</th><th>Transformer.v3 + Parallel WaveGAN</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample04]-1-MoL-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample04]-2-Parallel WaveGAN.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><p>The commission emphasizes that it finds no causal connection between the assassination.</p>
+<table><thead>
+<tr><th>Ground truth</th><th>Transformer.v3 + MoL WaveNet</th><th>Transformer.v3 + Parallel WaveGAN</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-1-Ground truth.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample05]-1-MoL-WaveNet.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/icassp2020/LJSpeech/TTS/[LJ-Sample05]-2-Parallel WaveGAN.wav" type="audio/wav"></audio></td>
+</tr></tbody></table>
+<h2 id="references">References</h2>
+<ul>
+<li>W. Ping, K. Peng, and J. Chen, “ClariNet: Parallel wave generation in end-to-end text-to-speech,” in Proc. ICLR, 2019 (<a href="https://arxiv.org/abs/1807.07281" target="_blank" rel="noopener">arXiv</a>).</li>
+<li>R. Yamamoto, E. Song, and J.-M. Kim, “Probability density distillation with generative adversarial networks for high-quality parallel waveform generation,” in Proc. INTERSPEECH, 2019, pp. 699–703. (<a href="https://www.isca-speech.org/archive/Interspeech_2019/abstracts/1965.html" target="_blank" rel="noopener">ISCA archive</a>)</li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Work performed with nVoice, Clova Voice, Naver Corp.</p>
+<h2 id="citation">Citation</h2>
+<pre><code>@inproceedings{yamamoto2020parallel,
+  title={Parallel {WaveGAN}: {A} fast waveform generation model based on generative adversarial networks with multi-resolution spectrogram},
+  author={Yamamoto, Ryuichi and Song, Eunwoo and Kim, Jae-Min},
+  booktitle	= &quot;Proc. of ICASSP&quot;,
+  pages={6199--6203},
+  year={2020}
+}
+</code></pre>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>Note that our work is not closely related to an unsupervised waveform synthesis model, <a href="https://arxiv.org/abs/1802.04208" target="_blank" rel="noopener">WaveGAN</a>.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>Audio quaility can be improved by using the full-band frequency range, but it may suffer from the over-smoothing problem in TTS.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/deep-learning/">Deep Learning</a>
+  
+  <a class="badge badge-light" href="/tag/tts/">TTS</a>
+  
+  <a class="badge badge-light" href="/tag/icassp/">ICASSP</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/projects/pwg/&amp;text=Parallel%20WaveGAN:%20A%20fast%20waveform%20generation%20model%20based%20on%20generative%20adversarial%20networks%20with%20multi-resolution%20spectrogram" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/projects/pwg/&amp;t=Parallel%20WaveGAN:%20A%20fast%20waveform%20generation%20model%20based%20on%20generative%20adversarial%20networks%20with%20multi-resolution%20spectrogram" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Parallel%20WaveGAN:%20A%20fast%20waveform%20generation%20model%20based%20on%20generative%20adversarial%20networks%20with%20multi-resolution%20spectrogram&amp;body=https://r9y9.github.io/projects/pwg/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/projects/pwg/&amp;title=Parallel%20WaveGAN:%20A%20fast%20waveform%20generation%20model%20based%20on%20generative%20adversarial%20networks%20with%20multi-resolution%20spectrogram" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Parallel%20WaveGAN:%20A%20fast%20waveform%20generation%20model%20based%20on%20generative%20adversarial%20networks%20with%20multi-resolution%20spectrogram%20https://r9y9.github.io/projects/pwg/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/projects/pwg/&amp;title=Parallel%20WaveGAN:%20A%20fast%20waveform%20generation%20model%20based%20on%20generative%20adversarial%20networks%20with%20multi-resolution%20spectrogram" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+  
+    
+
+
+
+
+  
+    
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/projects/espnet2-tts/">ESPnet2-TTS: Extending the Edge of TTS Research</a></li>
+      
+      <li><a href="/projects/tts-by-tts/">TTS-by-TTS: TTS-driven Data Augmentation for Fast and High-Quality Speech Synthesis</a></li>
+      
+      <li><a href="/projects/vuvd-pwg/">Parallel waveform synthesis based on generative adversarial networks with voicing-aware conditional discriminators</a></li>
+      
+      <li><a href="/projects/espnet-tts/">ESPnet-TTS: Unified, Reproducible, and Integratable Open Source End-to-End Text-to-Speech Toolkit</a></li>
+      
+      <li><a href="/projects/ttslearn/">ttslearn: Library for Pythonで学ぶ音声合成 (Text-to-speech with Python)</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+    <div class="project-related-pages content-widget-hr">
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+        <h2>Events</h2>
+        
+          
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+<div class="media stream-item view-compact">
+  <div class="media-body">
+
+    <div class="section-subheading article-title mb-0 mt-0">
+      <a href="/talk/linedevday2020pwg/" >Parallel WaveGAN: GPUを利用した高速かつ高品質な音声合成 / Parallel WaveGAN: Fast and High-Quality GPU Text-to-Speech @ LINE DEV DAY 2020</a>
+    </div>
+
+    
+
+    <div class="stream-meta article-metadata">
+
+      
+      <div>
+        <span>
+          Nov 25, 2020 2:20 PM &mdash; 2:50 PM
+        </span>
+        
+      </div>
+      
+
+      
+      <div>
+        
+
+  <span class="author-highlighted">
+      Ryuichi Yamamoto</span>
+      </div>
+      
+    </div>
+
+    
+
+  </div>
+  <div class="ml-3">
+    
+    
+  </div>
+</div>
+
+        
+      
+    </div>
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

@@ -1,119 +1,867 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354] - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="JSUT: https://sites.google.com/site/shinnosuketakamichi/publication/jsut" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2017/11/12/jsut_ver1/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2017/11/12/jsut_ver1/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2017/11/12/jsut_ver1/" />
+  <meta property="og:title" content="日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354] | LESS IS MORE" />
+  <meta property="og:description" content="JSUT: https://sites.google.com/site/shinnosuketakamichi/publication/jsut" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2017-11-12T03:00:00&#43;09:00"
+      />
+    
+    <meta property="article:modified_time" content="2017-11-12T03:00:00&#43;09:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2017/11/12/jsut_ver1/"
+  },
+  "headline": "日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]",
+  
+  "datePublished": "2017-11-12T03:00:00+09:00",
+  "dateModified": "2017-11-12T03:00:00+09:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "JSUT: https://sites.google.com/site/shinnosuketakamichi/publication/jsut"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354] | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-11-12">November 12, 2017</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="f123a5bb4f52580a50d0add16ba8d024" >
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Nov 12, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h2 id="summary">Summary</h2>
 <ul>
-<li>コーパス配布先リンク: <a href="https://sites.google.com/site/shinnosuketakamichi/publication/jsut">JSUT (Japanese speech corpus of Saruwatari Lab, University of Tokyo) - Shinnosuke Takamichi (高道 慎之介)</a></li>
-<li>論文リンク: <a href="https://arxiv.org/abs/1711.00354">arXiv:1711.00354</a></li>
+<li>コーパス配布先リンク: <a href="https://sites.google.com/site/shinnosuketakamichi/publication/jsut" target="_blank" rel="noopener">JSUT (Japanese speech corpus of Saruwatari Lab, University of Tokyo) - Shinnosuke Takamichi (高道 慎之介)</a></li>
+<li>論文リンク: <a href="https://arxiv.org/abs/1711.00354" target="_blank" rel="noopener">arXiv:1711.00354</a></li>
 </ul>
-
 <h2 id="三行まとめ">三行まとめ</h2>
-
 <ul>
 <li>日本語End-to-end音声合成に使えるコーパスは神、ありがとうございます</li>
 <li>クリーンな音声であるとはいえ、冒頭/末尾の無音区間は削除されていない、またボタンポチッみたいな音も稀に入っているので注意</li>
 <li>僕が行った無音区間除去の方法（Juliusで音素アライメントを取って云々）を記録しておくので、必要になった方は参考にどうぞ。ラベルファイルだけほしい人は連絡ください</li>
 </ul>
-
 <h2 id="jsut-とは">JSUT とは</h2>
-
-<p>ツイート引用：
+<p>ツイート引用：</p>
 <div align="center">
 <blockquote class="twitter-tweet" data-lang="en"><p lang="ja" dir="ltr">フリーの日本語音声コーパス（単一話者による10時間データ）を公開しました．音声研究等にお役立てください．<a href="https://t.co/94ShJY44mA">https://t.co/94ShJY44mA</a> <a href="https://t.co/T0etDwD7cS">pic.twitter.com/T0etDwD7cS</a></p>&mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) <a href="https://twitter.com/forthshinji/status/923547202865131520?ref_src=twsrc%5Etfw">October 26, 2017</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div></p>
-
+</div>
 <p>つい先月、JSUT という、日本語 End-to-end 音声合成の研究に使えることを前提に作られた、フリーの大規模音声コーパスが公開されました。詳細は上記リンク先を見てもらうとして、簡単に特徴をまとめると、以下のとおりです。</p>
-
 <ul>
 <li>単一日本語女性話者の音声10時間</li>
-<li>無響室で収録されている、クリーンな音声コーパス <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup></li>
+<li>無響室で収録されている、クリーンな音声コーパス <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></li>
 <li>非営利目的で無料で使える</li>
 </ul>
-
 <p>僕の知る限り、日本語 End-to-end 音声合成に関する研究はまだあまり発展していないように感じていたのですが、その理由の一つに誰でも自由に使えるコーパスがなかったことがあったように思います。このデータセットはとても貴重なので、ぜひ使っていきたいところです。
 高道氏およびコーパスを整備してくださった方、本当にありがとうございます。</p>
-
 <p>この記事では、僕が実際に日本語End-to-end音声合成の実験をしようと思った時に、必要になった前処理（最初と最後の<strong>無音区間の除去</strong>）について書きたいと思います。</p>
-
 <h2 id="問題">問題</h2>
-
 <p>まずはじめに、最初と最後の無音区間を除去したい理由には、以下の二つがありました。</p>
-
 <ol>
-<li>Tacotronのようなattention付きseq2seqモデルにおいて、アライメントを学習するのに不都合なこと。句読点に起因する無音区間ならともかく、最初/最後の無音区間は、テキスト情報からはわからないので、直感的には不要であると思われます。参考までに、<a href="https://arxiv.org/abs/1705.08947">DeepVoice2の論文のsection 4.2</a> では、無音区間をトリミングするのがよかったと書かれています。</li>
+<li>Tacotronのようなattention付きseq2seqモデルにおいて、アライメントを学習するのに不都合なこと。句読点に起因する無音区間ならともかく、最初/最後の無音区間は、テキスト情報からはわからないので、直感的には不要であると思われます。参考までに、<a href="https://arxiv.org/abs/1705.08947" target="_blank" rel="noopener">DeepVoice2の論文のsection 4.2</a> では、無音区間をトリミングするのがよかったと書かれています。</li>
 <li>発話の前、発話の後に、微妙にノイズがある（息を大きく吸う音、ボタンをポチッ、みたいな機械音等）データがあり、そのノイズが不都合なこと。例えばTacotronのようなモデルでは、テキスト情報とスペクトログラムの関係性を学習したいので、テキストに関係のないノイズは可能な限り除去しておきたいところです。参考までに、ボタンポチノイズは 例えば <code>basic5000/wav/BASIC5000_0008.wav</code> に入っています</li>
 </ol>
-
 <p>最初何も考えずに（ダメですが）データを入れたら、アライメントが上手く学習されないなーと思い、データを見ていたところ、後者に気づいた次第です。</p>
-
 <h2 id="方法">方法</h2>
-
 <p>さて、無音区間を除去する一番簡単な方法は、適当にパワーで閾値処理をすることです。しかし、前述の通りボタンをポチッと押したようなノイズは、この方法では難しそうでした。というわけで、少し手間はかかりますが、Juliusで音素アライメントを取って、無音区間を推定することにしました。
-以下、Juliusを使ってアライメントファイル（.lab) を作る方法です。コードは、 <a href="https://github.com/r9y9/segmentation-kit/tree/jsut">https://github.com/r9y9/segmentation-kit/tree/jsut</a> にあります。</p>
-
+以下、Juliusを使ってアライメントファイル（.lab) を作る方法です。コードは、 <a href="https://github.com/r9y9/segmentation-kit/tree/jsut" target="_blank" rel="noopener">https://github.com/r9y9/segmentation-kit/tree/jsut</a> にあります。</p>
 <p>自分で準備するのが面倒だから結果のラベルファイルだけほしいという方がいれば、連絡をいただければお渡しします。Linux環境での実行を想定しています。僕はUbuntu 16.04で作業しています。</p>
-
 <h3 id="準備">準備</h3>
-
 <ul>
-<li><a href="https://github.com/julius-speech/julius">Julius</a> をインストールする。<code>/usr/local/bin/julius</code> にバイナリがあるとします</li>
-<li><a href="http://taku910.github.io/mecab/">MeCab</a>をインストールする</li>
-<li><a href="https://github.com/neologd/mecab-ipadic-neologd">mecab-ipadic-neologd</a> をインストールする</li>
-<li><a href="https://github.com/r9y9/nnmnkwii">nnmnkwii</a> のmasterブランチを入れる</li>
+<li><a href="https://github.com/julius-speech/julius" target="_blank" rel="noopener">Julius</a> をインストールする。<code>/usr/local/bin/julius</code> にバイナリがあるとします</li>
+<li><a href="http://taku910.github.io/mecab/" target="_blank" rel="noopener">MeCab</a>をインストールする</li>
+<li><a href="https://github.com/neologd/mecab-ipadic-neologd" target="_blank" rel="noopener">mecab-ipadic-neologd</a> をインストールする</li>
+<li><a href="https://github.com/r9y9/nnmnkwii" target="_blank" rel="noopener">nnmnkwii</a> のmasterブランチを入れる</li>
 <li><code>pip install mecab-python3 jaconv</code></li>
 <li><code>sudo apt-get install sox</code></li>
-<li><a href="https://github.com/r9y9/segmentation-kit/tree/jsut">Juliusの音素セグメンテーションツールキットのフォーク (jsutブランチ)</a> をクローンする。クローン先を作業ディレクトリとします</li>
+<li><a href="https://github.com/r9y9/segmentation-kit/tree/jsut" target="_blank" rel="noopener">Juliusの音素セグメンテーションツールキットのフォーク (jsutブランチ)</a> をクローンする。クローン先を作業ディレクトリとします</li>
 </ul>
-
 <h3 id="コーパスの場所を設定">コーパスの場所を設定</h3>
-
 <p><code>params.py</code> というファイルに、コーパスの場所を指定する変数 (<code>in_dir</code>) があるので、設定します。僕の場合、以下のようになっています。</p>
 <pre><code># coding: utf-8
-in_dir = &#34;/home/ryuichi/data/jsut_ver1&#34;
-dst_dir = &#34;jsut&#34;</code></pre>
+in_dir = &quot;/home/ryuichi/data/jsut_ver1&quot;
+dst_dir = &quot;jsut&quot;
+</code></pre>
 <h3 id="音素アライメントの実行">音素アライメントの実行</h3>
-<pre><code>bash run.sh</code></pre>
+<pre><code>bash run.sh
+</code></pre>
 <p>でまるっと実行できるようにしました。MeCabで読みを推定するなどの処理は、この記事を書いている時点では <code>a.py</code>, <code>b.py</code>, <code>c.py</code>, <code>d.py</code>というファイルに書かれています。 適当なファイル名で申し訳ありませんという気持ちですが、自分のための書いたコードはこうなってしまいがちです、申し訳ありません。</p>
-
 <p>7000ファイル以上処理するので、三十分くらいかかります。<code>./jsut</code> というディレクトリに、labファイルができていれば正常に実行完了です。最後に、</p>
-<pre><code>Failed number of utterances: 87</code></pre>
+<pre><code>Failed number of utterances: 87
+</code></pre>
 <p>のように、アライメントに失敗したファイル数が表示されるようになっています。失敗の理由には、MeCabでの読みの推定に失敗した（特に数字）などがあります。手で直すことも可能なのですが（実際に一度はやろうとした）非常に大変なので、多少失敗してもよいので大雑把にアライメントを取ることを目的として、スクリプトを作りました。</p>
-
 <p>なお、juliusはwavesurferのフォーマットでラベルファイルを吐きますが、HTKのラベルフォーマットの方が僕には都合がよかったので、変換するようにしました。</p>
-
 <h3 id="コーパスにパッチ">コーパスにパッチ</h3>
-
 <p>便宜上、下記のようにwavディレクトリと同じ階層にラベルファイルがあると都合がよいので、僕はそのようにします。</p>
 <pre><code>tree ~/data/jsut_ver1/ -d -L 2
 /home/ryuichi/data/jsut_ver1/
@@ -143,136 +891,465 @@ dst_dir = &#34;jsut&#34;</code></pre>
 │   └── wav
 └── voiceactress100
     ├── lab
-    └── wav</code></pre>
+    └── wav
+</code></pre>
 <p>以下のコマンドにより、生成されたラベルファイルをコーパス配下にコピーします。この処理は、<code>run.sh</code> では実行しないようになっているので、必要であれば自己責任でおこなってください。</p>
-<pre><code>python d.py</code></pre>
+<pre><code>python d.py
+</code></pre>
 <h2 id="ラベル活用例">ラベル活用例</h2>
-
-<p><a href="https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046">https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046</a> のようなコードを書いて、ボタンポチ音が末尾に入っている <code>basic5000/wav/BASIC5000_0008.wav</code> に対して無音区間削除を行ってみると、結果は以下のようになります。</p>
-
+<p><a href="https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046" target="_blank" rel="noopener">https://gist.github.com/r9y9/db6b5484a6a5deca24e81e76cb17e046</a> のようなコードを書いて、ボタンポチ音が末尾に入っている <code>basic5000/wav/BASIC5000_0008.wav</code> に対して無音区間削除を行ってみると、結果は以下のようになります。</p>
 <div align="center"><img src="/images/jsut_basic5000_08.png" /></div>
-
-<p>パワーベースの閾値処理では上手くいかない一方で<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>、音素アライメントを使った方法では上手く無音区間除去ができています。その他、数十サンプルを目視で確認しましたが、僕の期待どおり上手くいっているようでした。めでたし。</p>
-
+<p>パワーベースの閾値処理では上手くいかない一方で<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>、音素アライメントを使った方法では上手く無音区間除去ができています。その他、数十サンプルを目視で確認しましたが、僕の期待どおり上手くいっているようでした。めでたし。</p>
 <h2 id="おわり">おわり</h2>
-
 <p>以上です。End-to-end系のモデルにとってはデータは命であり、このコーパスは神であります。このコーパスを使って、同じように前処理をしたい人の参考になれば幸いです。</p>
-
 <p>いま僕はこのコーパスを使って、日本語end-to-end音声合成の実験も少しやっているので、まとまったら報告しようと思っています。</p>
-
 <div =align="center">
 <blockquote class="twitter-tweet" data-lang="en"><p lang="ja" dir="ltr">これさ、ASJとかで発表しない？絶対に価値あると思う。諸々のサポートはしますよ。</p>&mdash; Shinnosuke Takamichi (高道 慎之介) (@forthshinji) <a href="https://twitter.com/forthshinji/status/928303639478747136?ref_src=twsrc%5Etfw">November 8, 2017</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>
-
 <p>コーパスを作った本人氏にASJで発表しないかと勧誘を受けていますが、現在の予定は未定です^q^</p>
-
 <h2 id="参考">参考</h2>
-
 <ul>
-<li><a href="https://arxiv.org/abs/1711.00354">Ryosuke Sonobe, Shinnosuke Takamichi and Hiroshi Saruwatari,
+<li><a href="https://arxiv.org/abs/1711.00354" target="_blank" rel="noopener">Ryosuke Sonobe, Shinnosuke Takamichi and Hiroshi Saruwatari,
 &ldquo;JSUT corpus: free large-scale Japanese speech corpus for end-to-end speech synthesis,&rdquo;
 arXiv preprint, 1711.00354, 2017.</a></li>
-<li><a href="https://arxiv.org/abs/1705.08947">Sercan Arik, Gregory Diamos, Andrew Gibiansky, et al, &ldquo;Deep Voice 2: Multi-Speaker Neural Text-to-Speech&rdquo;,   arXiv:1705.08947, 2017.</a></li>
+<li><a href="https://arxiv.org/abs/1705.08947" target="_blank" rel="noopener">Sercan Arik, Gregory Diamos, Andrew Gibiansky, et al, &ldquo;Deep Voice 2: Multi-Speaker Neural Text-to-Speech&rdquo;, 	arXiv:1705.08947, 2017.</a></li>
 </ul>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1">以前ブログでEnd-to-end英語音声合成に使えると書いた <a href="https://keithito.com/LJ-Speech-Dataset/">LJSpeech</a>はクリーンではないんですねー
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:2">このサンプルで上手くいくように閾値を調整すると、他のサンプルでトリミングしすぎてしまうようになってしまいます
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>以前ブログでEnd-to-end英語音声合成に使えると書いた <a href="https://keithito.com/LJ-Speech-Dataset/" target="_blank" rel="noopener">LJSpeech</a>はクリーンではないんですねー&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>このサンプルで上手くいくように閾値を調整すると、他のサンプルでトリミングしすぎてしまうようになってしまいます&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 [arXiv:1711.00354]" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/speech-synthesis/">Speech Synthesis</a>
+  
+  <a class="badge badge-light" href="/tag/corpus/">Corpus</a>
+  
+  <a class="badge badge-light" href="/tag/jsut/">JSUT</a>
+  
+  <a class="badge badge-light" href="/tag/end-to-end/">End-to-End</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2017/11/12/jsut_ver1/&amp;text=%e6%97%a5%e6%9c%ac%e8%aa%9e%20End-to-end%20%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%81%ab%e4%bd%bf%e3%81%88%e3%82%8b%e3%82%b3%e3%83%bc%e3%83%91%e3%82%b9%20JSUT%20%e3%81%ae%e5%89%8d%e5%87%a6%e7%90%86%20[arXiv:1711.00354]" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2017/11/12/jsut_ver1/&amp;t=%e6%97%a5%e6%9c%ac%e8%aa%9e%20End-to-end%20%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%81%ab%e4%bd%bf%e3%81%88%e3%82%8b%e3%82%b3%e3%83%bc%e3%83%91%e3%82%b9%20JSUT%20%e3%81%ae%e5%89%8d%e5%87%a6%e7%90%86%20[arXiv:1711.00354]" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e6%97%a5%e6%9c%ac%e8%aa%9e%20End-to-end%20%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%81%ab%e4%bd%bf%e3%81%88%e3%82%8b%e3%82%b3%e3%83%bc%e3%83%91%e3%82%b9%20JSUT%20%e3%81%ae%e5%89%8d%e5%87%a6%e7%90%86%20[arXiv:1711.00354]&amp;body=https://r9y9.github.io/blog/2017/11/12/jsut_ver1/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2017/11/12/jsut_ver1/&amp;title=%e6%97%a5%e6%9c%ac%e8%aa%9e%20End-to-end%20%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%81%ab%e4%bd%bf%e3%81%88%e3%82%8b%e3%82%b3%e3%83%bc%e3%83%91%e3%82%b9%20JSUT%20%e3%81%ae%e5%89%8d%e5%87%a6%e7%90%86%20[arXiv:1711.00354]" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=%e6%97%a5%e6%9c%ac%e8%aa%9e%20End-to-end%20%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%81%ab%e4%bd%bf%e3%81%88%e3%82%8b%e3%82%b3%e3%83%bc%e3%83%91%e3%82%b9%20JSUT%20%e3%81%ae%e5%89%8d%e5%87%a6%e7%90%86%20[arXiv:1711.00354]%20https://r9y9.github.io/blog/2017/11/12/jsut_ver1/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2017/11/12/jsut_ver1/&amp;title=%e6%97%a5%e6%9c%ac%e8%aa%9e%20End-to-end%20%e9%9f%b3%e5%a3%b0%e5%90%88%e6%88%90%e3%81%ab%e4%bd%bf%e3%81%88%e3%82%8b%e3%82%b3%e3%83%bc%e3%83%91%e3%82%b9%20JSUT%20%e3%81%ae%e5%89%8d%e5%87%a6%e7%90%86%20[arXiv:1711.00354]" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2019/06/11/ljspeech/">LJSpeech は価値のあるデータセットですが、ニューラルボコーダの品質比較には向かないと思います</a></li>
+      
+      <li><a href="/blog/2018/05/20/tacotron2/"> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</a></li>
+      
+      <li><a href="/blog/2017/10/15/tacotron/">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</a></li>
+      
+      <li><a href="/blog/2018/01/28/wavenet_vocoder/">WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]</a></li>
+      
+      <li><a href="/blog/2017/12/22/deepvoice3_multispeaker/">【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

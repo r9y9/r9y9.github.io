@@ -1,337 +1,1375 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969] - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="GitHub: https://github.com/r9y9/deepvoice3_pytorch" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2017/11/23/dctts/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2017/11/23/dctts/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2017/11/23/dctts/" />
+  <meta property="og:title" content="Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969] | LESS IS MORE" />
+  <meta property="og:description" content="GitHub: https://github.com/r9y9/deepvoice3_pytorch" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2017-11-23T19:30:00&#43;09:00"
+      />
+    
+    <meta property="article:modified_time" content="2017-11-23T19:30:00&#43;09:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2017/11/23/dctts/"
+  },
+  "headline": "Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]",
+  
+  "datePublished": "2017-11-23T19:30:00+09:00",
+  "dateModified": "2017-11-23T19:30:00+09:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "GitHub: https://github.com/r9y9/deepvoice3_pytorch"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969] | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-11-23">November 23, 2017</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="6ee5d42e9702a54f1e695ddaf0c6367e" >
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Nov 23, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h2 id="summary">Summary</h2>
 <ul>
-<li>論文リンク: <a href="https://arxiv.org/abs/1710.08969">arXiv:1710.08969</a></li>
-<li>コード: <a href="https://github.com/r9y9/deepvoice3_pytorch">https://github.com/r9y9/deepvoice3_pytorch</a></li>
+<li>論文リンク: <a href="https://arxiv.org/abs/1710.08969" target="_blank" rel="noopener">arXiv:1710.08969</a></li>
+<li>コード: <a href="https://github.com/r9y9/deepvoice3_pytorch" target="_blank" rel="noopener">https://github.com/r9y9/deepvoice3_pytorch</a></li>
 </ul>
-
 <h2 id="三行まとめ">三行まとめ</h2>
-
 <ul>
-<li><a href="https://arxiv.org/abs/1710.08969">arXiv:1710.08969: Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention.</a> を読んで、実装しました</li>
+<li><a href="https://arxiv.org/abs/1710.08969" target="_blank" rel="noopener">arXiv:1710.08969: Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention.</a> を読んで、実装しました</li>
 <li>RNNではなくCNNを使うのが肝で、オープンソースTacotronと同等以上の品質でありながら、<strong>高速に (一日程度で) 学習できる</strong> のが売りのようです。</li>
-<li><a href="https://keithito.com/LJ-Speech-Dataset/">LJSpeech Dataset</a> を使って、英語TTSモデルを作りました（学習時間一日くらい）。完全再現とまではいきませんが、大まかに論文の主張を確認できました。</li>
+<li><a href="https://keithito.com/LJ-Speech-Dataset/" target="_blank" rel="noopener">LJSpeech Dataset</a> を使って、英語TTSモデルを作りました（学習時間一日くらい）。完全再現とまではいきませんが、大まかに論文の主張を確認できました。</li>
 </ul>
-
 <h2 id="前置き">前置き</h2>
-
-<p>本当は <a href="https://arxiv.org/abs/1710.07654">DeepVoice3</a> の実装をしていたのですが、どうも上手くいかなかったので気分を変えてやってみました。
+<p>本当は <a href="https://arxiv.org/abs/1710.07654" target="_blank" rel="noopener">DeepVoice3</a> の実装をしていたのですが、どうも上手くいかなかったので気分を変えてやってみました。
 以前 Tacotronに関する長いブログ記事 (<a href="/blog/2017/10/15/tacotron/">リンク</a>) を書いてしまったのですが、読む方も書く方もつらいので、簡潔にまとめることにしました。興味のある人は続きもどうぞ。</p>
-
 <h2 id="概要">概要</h2>
-
 <p>End-to-endテキスト音声合成 (Text-to-speech synthesis; TTS) のための <strong>Attention付き畳み込みニューラルネット (CNN)</strong> が提案されています。SampleRNN, Char2Wav, Tacotronなどの従来提案されてきたRNNをベースとする方法では、モデルの構造上計算が並列化しにくく、
 学習/推論に時間がかかることが問題としてありました。本論文では、主に以下の二つのアイデアによって、従来法より速く学習できるモデルを提案しています。</p>
-
 <ol>
-<li>RNNではなくCNNを使うこと (参考論文: <a href="https://arxiv.org/abs/1705.03122">arXiv:1705.03122</a>)</li>
+<li>RNNではなくCNNを使うこと (参考論文: <a href="https://arxiv.org/abs/1705.03122" target="_blank" rel="noopener">arXiv:1705.03122</a>)</li>
 <li>Attentionがmotonicになりやすくする効果を持つLossを考えること (<strong>Guided attention</strong>)</li>
 </ol>
-
-<p>実験では、オープンソースTacotron (<a href="https://github.com/keithito/tacotron">keithito/tacotron</a>) の12日学習されたモデルと比較し、主観評価により同等以上の品質が得られたことが示されています。</p>
-
-<h3 id="deepvoice3-https-arxiv-org-abs-1710-07654-との違い"><a href="https://arxiv.org/abs/1710.07654">DeepVoice3</a> との違い</h3>
-
+<p>実験では、オープンソースTacotron (<a href="https://github.com/keithito/tacotron" target="_blank" rel="noopener">keithito/tacotron</a>) の12日学習されたモデルと比較し、主観評価により同等以上の品質が得られたことが示されています。</p>
+<h3 id="deepvoice3httpsarxivorgabs171007654-との違い"><a href="https://arxiv.org/abs/1710.07654" target="_blank" rel="noopener">DeepVoice3</a> との違い</h3>
 <p>ほぼ同時期に発表されたDeepVoice3も同じく、CNNをベースとするものです。論文を読みましたが、モチベーションとアプローチの基本は DeepVoice3 と同じに思いました。しかし、ネットワーク構造は DeepVoice3とは大きく異なります。いくつか提案法の特徴を挙げると、以下のとおりです。</p>
-
 <ul>
-<li>ネットワークが深い（DeepVoice3だとEncoder, Decoder, Converter それぞれ10未満ですが、この論文ではDecoderだけで20以上）。すべてにおいて深いです。カーネルサイズは3と小さいです<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">1</a></sup></li>
+<li>ネットワークが深い（DeepVoice3だとEncoder, Decoder, Converter それぞれ10未満ですが、この論文ではDecoderだけで20以上）。すべてにおいて深いです。カーネルサイズは3と小さいです<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></li>
 <li>Fully-connected layer ではなく1x1 convolutionを使っています</li>
 <li>チャンネル数が大きい（256とか512とか、さらにネットワーク内で二倍になっていたりする）。DeepVoice3だとEncoderは64です</li>
 <li>レイヤーの深さに対して指数上に大きくなるDilationを使っています（DeepVoiceではすべてdilation=1）</li>
 <li>アテンションレイヤーは一つ（DeepVoice3は複数</li>
 </ul>
-
-<p>DeepVoice3は、<a href="https://arxiv.org/abs/1705.03122">arXiv:1705.03122</a> のモデル構造とかなり似通っている一方で、本論文では（参考文献としてあげられていますが）影も形もないくらい変わっている、という印象を受けます。</p>
-
+<p>DeepVoice3は、<a href="https://arxiv.org/abs/1705.03122" target="_blank" rel="noopener">arXiv:1705.03122</a> のモデル構造とかなり似通っている一方で、本論文では（参考文献としてあげられていますが）影も形もないくらい変わっている、という印象を受けます。</p>
 <p>ロスに関しては、Guided attentionに関するロスが加わるのに加えて、TacotronやDeepVoice3とは異なり、スペクトログラム/メルスペクトログラムに関して binary divergence (定義は論文参照) をロスに加えているという違いがあります。</p>
-
 <h2 id="実験">実験</h2>
-
-<p><a href="https://keithito.com/LJ-Speech-Dataset/">LJSpeech Dataset</a> を使って、17時間くらい（26.5万ステップ）学習しました。計算資源の都合上、SSRNのチャンネル数は512ではなくその半分の256にしました。</p>
-
-<p>なお、実装するにあたっては、厳密に再現しようとはせず、色々雰囲気でごまかしました。もともとDeepVoice3の実装をしていたのもあり、アイデアをいくつか借りています。例えば、デコーダの出力をいつ止めるか、というdone flag predictionをネットワークに入れています。Dropoutについて言及がありませんが、ないと汎化しにくい印象があったので<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">2</a></sup>、足しました。</p>
-
-<p>計算速度は、バッチサイズ16で、4.3 step/sec くらいの計算速度でした。僕のマシンのGPUはGTX 1080Ti です。使用したハイパーパラメータは<a href="https://github.com/r9y9/deepvoice3_pytorch/blob/70dc880fae185d96effaee97f0ce55b5c0d13b61/hparams.py">こちら</a>です。学習に使用したコマンドは以下です（メモ）。</p>
+<p><a href="https://keithito.com/LJ-Speech-Dataset/" target="_blank" rel="noopener">LJSpeech Dataset</a> を使って、17時間くらい（26.5万ステップ）学習しました。計算資源の都合上、SSRNのチャンネル数は512ではなくその半分の256にしました。</p>
+<p>なお、実装するにあたっては、厳密に再現しようとはせず、色々雰囲気でごまかしました。もともとDeepVoice3の実装をしていたのもあり、アイデアをいくつか借りています。例えば、デコーダの出力をいつ止めるか、というdone flag predictionをネットワークに入れています。Dropoutについて言及がありませんが、ないと汎化しにくい印象があったので<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>、足しました。</p>
+<p>計算速度は、バッチサイズ16で、4.3 step/sec くらいの計算速度でした。僕のマシンのGPUはGTX 1080Ti です。使用したハイパーパラメータは<a href="https://github.com/r9y9/deepvoice3_pytorch/blob/70dc880fae185d96effaee97f0ce55b5c0d13b61/hparams.py" target="_blank" rel="noopener">こちら</a>です。学習に使用したコマンドは以下です（メモ）。</p>
 <pre><code>python train.py --data-root=./data/ljspeech --checkpoint-dir=checkpoints_nyanko \
-    --hparams=&#34;use_preset=True,builder=nyanko&#34; \
-    --log-event-path=log/nyanko_preset</code></pre>
+    --hparams=&quot;use_preset=True,builder=nyanko&quot; \
+    --log-event-path=log/nyanko_preset
+</code></pre>
 <h3 id="アライメントの学習過程">アライメントの学習過程</h3>
-
 <p>数万ステップで、綺麗にmonotonicになりました。GIFは、同じ音声に対するアライメントではなく、毎度違う（ランダムな）音声サンプルに対するアライメントを計算して、くっつけたものです（わかりずらくすいません</p>
-
 <div align="center"><img src="/images/dctts/alignment.gif" /></div>
-
 <h3 id="各種ロスの遷移">各種ロスの遷移</h3>
-
 <div align="center"><img src="/images/dctts/dctts_tensorboard.png" /></div>
-
 <p>見づらくて申し訳ありませんという感じですが、僕のための簡易ログということで貼っておきます。binary divergenceは、すぐに収束したようでした。</p>
-
 <h3 id="音声サンプル">音声サンプル</h3>
-
-<h4 id="公式音声サンプル-https-tachi-hi-github-io-tts-samples-と同じ文章-抜粋"><a href="https://tachi-hi.github.io/tts_samples/">公式音声サンプル</a> と同じ文章（抜粋）</h4>
-
+<h4 id="公式音声サンプルhttpstachi-higithubiotts_samples-と同じ文章抜粋"><a href="https://tachi-hi.github.io/tts_samples/" target="_blank" rel="noopener">公式音声サンプル</a> と同じ文章（抜粋）</h4>
 <p>公式サンプルとの比較です。11/23時点で、公式のサンプル数が15個と多いので、適当に3つ選びました。公式と比べると少し異なっている印象を受けますが、まぁまぁ良いかなと思いました（曖昧ですが</p>
-
 <p>icassp stands for the international conference on acoustics, speech and signal processing.</p>
-
 <p>(90 chars, 14 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/6_nyanko/0_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/6_nyanko/0_checkpoint_step000265000_alignment.png" /></div>
-
 <p>a matrix is positive definite, if all eigenvalues are positive.</p>
-
 <p>(63 chars, 12 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/6_nyanko/2_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/6_nyanko/2_checkpoint_step000265000_alignment.png" /></div>
-
 <p>a spectrogram is obtained by applying es-tee-ef-tee to a signal.</p>
-
 <p>(64 chars, 11 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/6_nyanko/6_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/6_nyanko/6_checkpoint_step000265000_alignment.png" /></div>
-
-<h4 id="keithito-tacotron-のサンプル-https-keithito-github-io-audio-samples-と同じ文章"><a href="https://keithito.github.io/audio-samples/">keithito/tacotron のサンプル</a> と同じ文章</h4>
-
+<h4 id="keithitotacotron-のサンプルhttpskeithitogithubioaudio-samples-と同じ文章"><a href="https://keithito.github.io/audio-samples/" target="_blank" rel="noopener">keithito/tacotron のサンプル</a> と同じ文章</h4>
 <p>Scientists at the CERN laboratory say they have discovered a new particle.</p>
-
 <p>(74 chars, 13 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/3_keithito/0_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/3_keithito/0_checkpoint_step000265000_alignment.png" /></div>
-
 <p>There&rsquo;s a way to measure the acute emotional intelligence that has never gone out of style.</p>
-
 <p>(91 chars, 18 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/3_keithito/1_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/3_keithito/1_checkpoint_step000265000_alignment.png" /></div>
-
 <p>President Trump met with other leaders at the Group of 20 conference.</p>
-
 <p>(69 chars, 13 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/3_keithito/2_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/3_keithito/2_checkpoint_step000265000_alignment.png" /></div>
-
 <p>The Senate&rsquo;s bill to repeal and replace the Affordable Care Act is now imperiled.</p>
-
 <p>(81 chars, 16 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/3_keithito/3_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/3_keithito/3_checkpoint_step000265000_alignment.png" /></div>
-
 <p>Generative adversarial network or variational auto-encoder.</p>
-
 <p>(59 chars, 7 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/3_keithito/4_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/3_keithito/4_checkpoint_step000265000_alignment.png" /></div>
-
 <p>The buses aren&rsquo;t the problem, they actually provide a solution.</p>
-
 <p>(63 chars, 13 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/nyanko/3_keithito/5_checkpoint_step000265000.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/nyanko/3_keithito/5_checkpoint_step000265000_alignment.png" /></div>
-
-<h2 id="まとめ-わかったことなど">まとめ &amp; わかったことなど</h2>
-
+<h2 id="まとめ--わかったことなど">まとめ &amp; わかったことなど</h2>
 <ul>
 <li>Tacotronでは学習に何日もかかっていましたが（計算も遅く1日で10万step程度）、1日でそれなりの品質になりました。</li>
 <li>Guided atetntionがあると、確かに速くattentionがmonotonicになりました。</li>
-<li>2時間程度の学習では <a href="https://tachi-hi.github.io/tts_samples/">ここ</a> にあるのと同程度の品質にはなりませんでした…</li>
+<li>2時間程度の学習では <a href="https://tachi-hi.github.io/tts_samples/" target="_blank" rel="noopener">ここ</a> にあるのと同程度の品質にはなりませんでした…</li>
 <li>DeepVoice3のモデルアーキテクチャで学習した場合と比べると、品質は向上しました</li>
 <li>DeepVoice3と比べると、深いせいなのか学習が難しいように思いました。重みの初期化のパラメータをちょっといじると、sigmoidの出力が0 or 1になって学習が止まる、といったことがありました。重みの初期化はとても重要でした</li>
 <li>上記にも関連して、勾配のノルムが爆発的に大きくなることがしばしばあり、クリッピングを入れました（重要でした）</li>
 <li>Binary divergenceをロスにいれても品質には影響がないように感じました。ただしないと学習初期に勾配が爆発しやすかったです</li>
 <li>提案法は色々なアイデアが盛り込まれているのですが、実際のところどれが重要な要素なのか、といった点に関しては、論文では明らかにされていなかったように思います。今後その辺りを明らかにする論文があってもいいのではないかと思いました。</li>
-<li>学習に使うGPUメモリ量、Tacotronより多い（SSRNのチャンネル数512, バッチサイズ16で <del>8GBくらい</del> 5~6GB くらいでした）……厳しい……<sup class="footnote-ref" id="fnref:5"><a href="#fn:5">3</a></sup></li>
+<li>学習に使うGPUメモリ量、Tacotronより多い（SSRNのチャンネル数512, バッチサイズ16で <del>8GBくらい</del> 5~6GB くらいでした）……厳しい……<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></li>
 <li>2017/12/19追記: Dropoutなしだと、入力テキストとは無縁の英語らしき何かが生成されるようになってしまいました。Dropoutはやはり重要でした</li>
 </ul>
-
 <p>一番の学びは、ネットワークの重みの初期化方法は重要、ということでした。おしまい</p>
-
 <h2 id="参考">参考</h2>
-
 <ul>
-<li><a href="https://arxiv.org/abs/1710.08969">Hideyuki Tachibana, Katsuya Uenoyama, Shunsuke Aihara, &ldquo;Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention&rdquo;. arXiv:1710.08969, Oct 2017.</a></li>
-<li><a href="https://arxiv.org/abs/1710.07654">Wei Ping, Kainan Peng, Andrew Gibiansky, et al, &ldquo;Deep Voice 3: 2000-Speaker Neural Text-to-Speech&rdquo;, arXiv:1710.07654, Oct. 2017.</a></li>
-<li><a href="https://arxiv.org/abs/1705.03122">Jonas Gehring, Michael Auli, David Grangier, et al, &ldquo;Convolutional Sequence to Sequence Learning&rdquo;, arXiv:1705.03122, May 2017.</a></li>
-<li><a href="https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/He_Delving_Deep_into_ICCV_2015_paper.pdf">He, Kaiming, et al. &ldquo;Delving deep into rectifiers: Surpassing human-level performance on imagenet classification.&rdquo; Proceedings of the IEEE international conference on computer vision. 2015.</a></li>
+<li><a href="https://arxiv.org/abs/1710.08969" target="_blank" rel="noopener">Hideyuki Tachibana, Katsuya Uenoyama, Shunsuke Aihara, &ldquo;Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention&rdquo;. arXiv:1710.08969, Oct 2017.</a></li>
+<li><a href="https://arxiv.org/abs/1710.07654" target="_blank" rel="noopener">Wei Ping, Kainan Peng, Andrew Gibiansky, et al, &ldquo;Deep Voice 3: 2000-Speaker Neural Text-to-Speech&rdquo;, arXiv:1710.07654, Oct. 2017.</a></li>
+<li><a href="https://arxiv.org/abs/1705.03122" target="_blank" rel="noopener">Jonas Gehring, Michael Auli, David Grangier, et al, &ldquo;Convolutional Sequence to Sequence Learning&rdquo;, arXiv:1705.03122, May 2017.</a></li>
+<li><a href="https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/He_Delving_Deep_into_ICCV_2015_paper.pdf" target="_blank" rel="noopener">He, Kaiming, et al. &ldquo;Delving deep into rectifiers: Surpassing human-level performance on imagenet classification.&rdquo; Proceedings of the IEEE international conference on computer vision. 2015.</a></li>
 </ul>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:2">DeepVoice3でカーネルサイズ3で試すと、全然うまくいきませんでした
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-<li id="fn:4">推論時にアテンションの制約をいれても、「ふぁふぁふぁふぁふぁ」みたいな繰り返しが起きてしまいました
- <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
-<li id="fn:5">論文ではエンコーダデコーダの学習とSRNNの学習を別々でおこなっていますが、僕は一緒にやりました。そのせいもあります
- <a class="footnote-return" href="#fnref:5"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>DeepVoice3でカーネルサイズ3で試すと、全然うまくいきませんでした&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>推論時にアテンションの制約をいれても、「ふぁふぁふぁふぁふぁ」みたいな繰り返しが起きてしまいました&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>論文ではエンコーダデコーダの学習とSRNNの学習を別々でおこなっていますが、僕は一緒にやりました。そのせいもあります&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/speech-synthesis/">Speech Synthesis</a>
+  
+  <a class="badge badge-light" href="/tag/python/">Python</a>
+  
+  <a class="badge badge-light" href="/tag/deep-learning/">Deep Learning</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2017/11/23/dctts/&amp;text=Efficiently%20Trainable%20Text-to-Speech%20System%20Based%20on%20Deep%20Convolutional%20Networks%20with%20Guided%20Attention.%20[arXiv:1710.08969]" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2017/11/23/dctts/&amp;t=Efficiently%20Trainable%20Text-to-Speech%20System%20Based%20on%20Deep%20Convolutional%20Networks%20with%20Guided%20Attention.%20[arXiv:1710.08969]" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Efficiently%20Trainable%20Text-to-Speech%20System%20Based%20on%20Deep%20Convolutional%20Networks%20with%20Guided%20Attention.%20[arXiv:1710.08969]&amp;body=https://r9y9.github.io/blog/2017/11/23/dctts/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2017/11/23/dctts/&amp;title=Efficiently%20Trainable%20Text-to-Speech%20System%20Based%20on%20Deep%20Convolutional%20Networks%20with%20Guided%20Attention.%20[arXiv:1710.08969]" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Efficiently%20Trainable%20Text-to-Speech%20System%20Based%20on%20Deep%20Convolutional%20Networks%20with%20Guided%20Attention.%20[arXiv:1710.08969]%20https://r9y9.github.io/blog/2017/11/23/dctts/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2017/11/23/dctts/&amp;title=Efficiently%20Trainable%20Text-to-Speech%20System%20Based%20on%20Deep%20Convolutional%20Networks%20with%20Guided%20Attention.%20[arXiv:1710.08969]" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2018/05/20/tacotron2/"> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</a></li>
+      
+      <li><a href="/blog/2017/12/22/deepvoice3_multispeaker/">【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+      
+      <li><a href="/blog/2017/12/13/deepvoice3/">【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+      
+      <li><a href="/blog/2017/10/15/tacotron/">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</a></li>
+      
+      <li><a href="/blog/2017/10/10/gantts-jp/">GAN 日本語音声合成 [arXiv:1709.08041]</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

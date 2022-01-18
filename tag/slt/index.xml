@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SLT | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/slt/</link>
+      <atom:link href="https://r9y9.github.io/tag/slt/index.xml" rel="self" type="application/rss+xml" />
+    <description>SLT</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Fri, 06 Nov 2020 16:43:44 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>SLT</title>
+      <link>https://r9y9.github.io/tag/slt/</link>
+    </image>
+    
+    <item>
+      <title>Improved Parallel WaveGAN with perceptually weighted spectrogram loss</title>
+      <link>https://r9y9.github.io/projects/pwg-pwsl/</link>
+      <pubDate>Fri, 06 Nov 2020 16:43:44 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/pwg-pwsl/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

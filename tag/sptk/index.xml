@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SPTK | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/sptk/</link>
+      <atom:link href="https://r9y9.github.io/tag/sptk/index.xml" rel="self" type="application/rss+xml" />
+    <description>SPTK</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 06 Sep 2015 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>SPTK</title>
+      <link>https://r9y9.github.io/tag/sptk/</link>
+    </image>
+    
+    <item>
+      <title>pysptk: SPTKのpythonラッパーを作った (part 2)</title>
+      <link>https://r9y9.github.io/blog/2015/09/06/pysptk/</link>
+      <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2015/09/06/pysptk/</guid>
+      <description>&lt;p&gt;2015/09/05:&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://t.co/WFBmYEIVce&#34;&gt;https://t.co/WFBmYEIVce&lt;/a&gt; SPTKのpythonラッパー（マシなやつ）完成&lt;br&gt;ドキュメント &lt;a href=&#34;http://t.co/jYhw1y3Bzg&#34;&gt;http://t.co/jYhw1y3Bzg&lt;/a&gt;&lt;br&gt;pip install pysptk でインストールできるようになりました。pypi童貞捨てれた&lt;/p&gt;&amp;mdash; 山本 龍一 / Ryuichi Yamamoto (@r9y9) &lt;a href=&#34;https://twitter.com/r9y9/status/639848868075560960?ref_src=twsrc%5Etfw&#34;&gt;September 4, 2015&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;p&gt;ずいぶん前に、swig遊びをしがてらpythonのラッパーを書いていたんですが、cythonを使って新しく作りなおしました。かなりパワーアップしました。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pip install pysptk
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;でインストールできるので、よろしければどうぞ&lt;/p&gt;
+&lt;h2 id=&#34;なぜ作ったのか&#34;&gt;なぜ作ったのか&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;cythonとsphinxで遊んでたらできた&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+&lt;p&gt;以下のデモを参考にどうぞ&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/pysptk/blob/51c103e5a7e9746c96cd78043df4e48fe2d6a3a8/examples/pysptk%20introduction.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Introduction to pysptk&lt;/a&gt;: メル一般化ケプストラム分析とか&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/pysptk/blob/51c103e5a7e9746c96cd78043df4e48fe2d6a3a8/examples/Speech%20analysis%20and%20re-synthesis.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Speech analysis and re-synthesis&lt;/a&gt;: 音声の分析・再合成のデモ。合成音声はnotebook上で再生できます&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ドキュメント&#34;&gt;ドキュメント&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://pysptk.readthedocs.org&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://pysptk.readthedocs.org&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;ぼやき&#34;&gt;ぼやき&lt;/h2&gt;
+&lt;p&gt;SPTKの関数、変な値入れるとexitしたりセグフォったりするので、ちゃんとテスト書いてほしいなあ&lt;/p&gt;
+&lt;h2 id=&#34;関連&#34;&gt;関連&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/08/10/sptk-from-python/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SPTKのPythonラッパーを書いた - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SPTKのJuliaラッパーも書いた</title>
+      <link>https://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</link>
+      <pubDate>Mon, 15 Sep 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</guid>
+      <description>&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/IMG_0960.JPG &#34;sea&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;夏も終わったようですね。またSPTKかという感じですが、Juliaから使うためのラッパーを書きました。必要そうなのはだいたいラップしたので、よろしければどうぞ。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Julia wrapper for Speech Signal Processing Toolkit (SPTK) | Github&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;かれこれ、Go, Python, Juliaと、3つの言語でラッパーを書いてしまいました。どれだけSPTK好きなんだと。そしてどれだけ言語触ってるんだ絞れと。うーん、とはいえどれも良いところと悪いところがあってですね（何も言ってない）、難しい…&lt;/p&gt;
+&lt;p&gt;おしまい&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SPTKのPythonラッパーを書いた</title>
+      <link>https://r9y9.github.io/blog/2014/08/10/sptk-from-python/</link>
+      <pubDate>Sun, 10 Aug 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/08/10/sptk-from-python/</guid>
+      <description>&lt;h2 id=&#34;20150906-追記&#34;&gt;2015/09/06 追記&lt;/h2&gt;
+&lt;p&gt;ましなpythonラッパーを新しく作りました: &lt;a href=&#34;https://r9y9.github.io/blog/2015/09/06/pysptk/&#34;&gt;Pysptk: SPTKのpythonラッパーを作った (Part 2)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;20140810-追記&#34;&gt;2014/08/10 追記&lt;/h2&gt;
+&lt;p&gt;ipython notebookによる簡単なチュートリアルを貼っておきます&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://nbviewer.ipython.org/github/r9y9/SPTK/blob/master/notebook/SPTK%20calling%20from%20python.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SPTK を Pythonから呼ぶ | nbviewer&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;20141109&#34;&gt;2014/11/09&lt;/h2&gt;
+&lt;p&gt;タイポ修正しました…&lt;/p&gt;
+&lt;p&gt;scipy.mixture -&amp;gt; sklearn.mixture&lt;/p&gt;
+&lt;p&gt;SPTKの中で最も価値がある（と僕が思っている）メルケプストラム分析、メルケプストラムからの波形合成（MLSA filter）がpythonから可能になります。&lt;/p&gt;
+&lt;p&gt;ご自由にどうぞ&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Speech Signal Processing Toolkit (SPTK) for API use with python | Github&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;注意ですが、&lt;code&gt;SPTK.h&lt;/code&gt;にある関数を全部ラップしているわけではないです。僕が必要なものしか、現状はラップしていません（例えば、GMMとかラップする必要ないですよね？sklearn.mixture使えばいいし）。ただ、大方有用なものはラップしたと思います。&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Goで音声信号処理をしたいのでSPTKのGoラッパーを書く - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Goでも書いたのにPythonでも書いてしまった。&lt;/p&gt;
+&lt;p&gt;一年くらい前に元指導教員の先生と「Pythonから使えたらいいですよね」と話をしていました。先生、ようやく書きました。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Goで音声信号処理をしたいのでSPTKのGoラッパーを書く</title>
+      <link>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</link>
+      <pubDate>Mon, 10 Feb 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</guid>
+      <description>&lt;p&gt;2014/07/22 追記：
+パッケージの一部として書きました（&lt;a href=&#34;http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GOSSP - Go言語で音声信号処理 - LESS IS MORE&lt;/a&gt;を参照）。
+SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ&lt;/p&gt;
+&lt;p&gt;&amp;ndash;&lt;/p&gt;
+&lt;p&gt;Goが最近オススメです（n度目&lt;/p&gt;
+&lt;p&gt;Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SPTK&lt;/a&gt; をGoから使えるようにする&lt;/p&gt;
+&lt;h2 id=&#34;cgo&#34;&gt;cgo&lt;/h2&gt;
+&lt;p&gt;GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う &lt;a href=&#34;https://golang.org/cmd/cgo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://golang.org/cmd/cgo/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Cの関数や変数などには、 &lt;code&gt;C.&lt;/code&gt; でアクセスできる&lt;/p&gt;
+&lt;h2 id=&#34;ラッパー&#34;&gt;ラッパー&lt;/h2&gt;
+&lt;p&gt;例えば以下のように書く。MFCCの計算を例に上げる。必要に応じで&lt;code&gt;SPTK.h&lt;/code&gt;に定義されている関数をラップする&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package sptk
+
+// #cgo pkg-config: SPTK
+// #include &amp;lt;stdio.h&amp;gt;
+// #include &amp;lt;SPTK/SPTK.h&amp;gt;
+import &amp;quot;C&amp;quot;
+
+func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 {
+	// Convert go bool to C.Boolean (so annoying..
+	var dftmodeInGo, usehammingInGo C.Boolean
+	if dftmode {
+		dftmodeInGo = 1
+	} else {
+		dftmodeInGo = 0
+	}
+	if usehamming {
+		usehammingInGo = 1
+	} else {
+		usehammingInGo = 0
+	}
+
+	resultBuffer := make([]float64, m)
+	C.mfcc((*_Ctype_double)(&amp;amp;audioBuffer[0]), (*_Ctype_double)(&amp;amp;resultBuffer[0]), C.double(sampleRate), C.double(alpha), C.double(eps), C.int(wlng), C.int(flng), C.int(m), C.int(n), C.int(ceplift), dftmodeInGo, usehammingInGo)
+	return resultBuffer
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;このパッケージを使う前に、 &lt;a href=&#34;https://github.com/r9y9/SPTK&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/SPTK&lt;/a&gt; を使ってSPTKをインストールする。本家のを使ってもいいですが、その場合は #cgo の設定が変わると思います。公式のSPTK、pkg-configに対応してくれんかな…&lt;/p&gt;
+&lt;p&gt;最初は、LDFLAGS つけ忘れてて、symbol not foundってなってつらまった。次回から気をつけよう&lt;/p&gt;
+&lt;p&gt;SPTKの、特に（メル）ケプストラム分析当たりは本当に難しいので、論文読んで実装するのも大変だし中身がわからなくてもラップする方が合理的、という結論に至りました。簡単なもの（例えば、メルケプからMLSA filterの係数への変換とか）は、依存関係を少なくするためにもGo nativeで書きなおした方がいいです&lt;/p&gt;
+&lt;p&gt;コードは気が向いたら上げる&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MLSA digital filter のC&#43;&#43;実装</title>
+      <link>https://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</link>
+      <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MLSAフィルタわからん&lt;/a&gt;という記事を書いて早2ヶ月、ようやく出来た。&lt;/p&gt;
+&lt;p&gt;Mel-log spectrum approximate (MLSA) filterというのは、対数振幅スペクトルを近似するようにメルケプストラムから直接音声を合成するデジタルフィルタです。&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SPTK&lt;/a&gt;のmlsa filterと比較して完全に計算結果が一致したので、間違ってはないはず。MLSAフィルタを使ってメルケプから音声合成するプログラムをC++で自分で書きたいという稀有な人であれば、役に立つと思います。基本的に、SPTKのmlsa filterの再実装です。&lt;/p&gt;
+&lt;h1 id=&#34;mlsa_filterh&#34;&gt;mlsa_filter.h&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://gist.github.com/r9y9/7735120&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://gist.github.com/r9y9/7735120&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;#pragma once
+
+#include &amp;lt;cmath&amp;gt;
+#include &amp;lt;memory&amp;gt;
+#include &amp;lt;vector&amp;gt;
+#include &amp;lt;cassert&amp;gt;
+
+namespace sp {
+
+/**
+ * MLSA BASE digital filter (Mel-log Spectrum Approximate digital filter)
+ */
+class mlsa_base_filter {
+public:
+  mlsa_base_filter(const int order, const double alpha);
+
+  template &amp;lt;class Vector&amp;gt;
+  double filter(const double x, const Vector&amp;amp; b);
+
+ private:
+  mlsa_base_filter();
+
+  double alpha_;
+  std::vector&amp;lt;double&amp;gt; delay_;
+};
+
+mlsa_base_filter::mlsa_base_filter(const int order, const double alpha)
+: alpha_(alpha),
+  delay_(order+1)
+{
+}
+
+template &amp;lt;class Vector&amp;gt;
+double mlsa_base_filter::filter(const double x, const Vector&amp;amp; b)
+{
+  double result = 0.0;
+
+  delay_[0] = x;
+  delay_[1] = (1.0-alpha_*alpha_)*delay_[0] + alpha_*delay_[1];
+
+  for (size_t i = 2; i &amp;lt; b.size(); ++i) {
+    delay_[i] = delay_[i] + alpha_*(delay_[i+1]-delay_[i-1]);
+    result += delay_[i] * b[i];
+  }
+
+  // special case
+  // TODO: other solution?
+  if (b.size() == 2) {
+    result += delay_[1] * b[1];
+  }
+
+  // t &amp;lt;- t+1 in time
+  for (size_t i = delay_.size()-1; i &amp;gt; 1; --i) {
+    delay_[i] = delay_[i-1];
+  }
+
+  return result;
+}
+
+/**
+ * MLSA digital filter cascaded
+ */
+class mlsa_base_cascaded_filter {
+ public:
+  mlsa_base_cascaded_filter(const int order,
+			    const double alpha,
+			    const int n_pade);
+
+  template &amp;lt;class Vector&amp;gt;
+  double filter(const double x, const Vector&amp;amp; b);
+
+ private:
+  mlsa_base_cascaded_filter();
+
+  std::vector&amp;lt;std::unique_ptr&amp;lt;mlsa_base_filter&amp;gt;&amp;gt; base_f_; // cascadad filters
+  std::vector&amp;lt;double&amp;gt; delay_;
+  std::vector&amp;lt;double&amp;gt; pade_coef_;
+};
+
+mlsa_base_cascaded_filter::mlsa_base_cascaded_filter(const int order,
+						     const double alpha,
+						     const int n_pade)
+  : delay_(n_pade + 1),
+  pade_coef_(n_pade + 1)
+{
+  using std::unique_ptr;
+
+  if (n_pade != 4 &amp;amp;&amp;amp; n_pade != 5) {
+    std::cerr &amp;lt;&amp;lt; &amp;quot;The number of pade approximations must be 4 or 5.&amp;quot;
+	      &amp;lt;&amp;lt; std::endl;
+  }
+  assert(n_pade == 4 || n_pade == 5);
+
+  for (int i = 0; i &amp;lt;= n_pade; ++i) {
+    mlsa_base_filter* p = new mlsa_base_filter(order, alpha);
+    base_f_.push_back(unique_ptr&amp;lt;mlsa_base_filter&amp;gt;(p));
+  }
+
+  if (n_pade == 4) {
+    pade_coef_[0] = 1.0;
+    pade_coef_[1] = 4.999273e-1;
+    pade_coef_[2] = 1.067005e-1;
+    pade_coef_[3] = 1.170221e-2;
+    pade_coef_[4] = 5.656279e-4;
+  }
+
+  if (n_pade == 5) {
+    pade_coef_[0] = 1.0;
+    pade_coef_[1] = 4.999391e-1;
+    pade_coef_[2] = 1.107098e-1;
+    pade_coef_[3] = 1.369984e-2;
+    pade_coef_[4] = 9.564853e-4;
+    pade_coef_[5] = 3.041721e-5;
+  }
+}
+
+template &amp;lt;class Vector&amp;gt;
+double mlsa_base_cascaded_filter::filter(const double x, const Vector&amp;amp; b)
+{
+  double result = 0.0;
+  double feed_back = 0.0;
+
+  for (size_t i = pade_coef_.size()-1; i &amp;gt;= 1; --i) {
+    delay_[i] = base_f_[i]-&amp;gt;filter(delay_[i-1], b);
+    double v = delay_[i] * pade_coef_[i];
+    if (i % 2 == 1) {
+      feed_back += v;
+    } else {
+      feed_back -= v;
+    }
+    result += v;
+  }
+
+  delay_[0] = feed_back + x;
+  result += delay_[0];
+
+  return result;
+}
+
+/**
+ * MLSA digital filter (Mel-log Spectrum Approximate digital filter)
+ * The filter consists of two stage cascade filters
+ */
+class mlsa_filter {
+ public:
+  mlsa_filter(const int order, const double alpha, const int n_pade);
+ ~mlsa_filter();
+
+ template &amp;lt;class Vector&amp;gt;
+ double filter(const double x, const Vector&amp;amp; b);
+
+ private:
+ mlsa_filter();
+
+  double alpha_;
+  std::unique_ptr&amp;lt;mlsa_base_cascaded_filter&amp;gt; f1_; // first stage
+  std::unique_ptr&amp;lt;mlsa_base_cascaded_filter&amp;gt; f2_; // second stage
+};
+
+mlsa_filter::mlsa_filter(const int order,
+			 const double alpha,
+			 const int n_pade)
+  : alpha_(alpha),
+  f1_(new mlsa_base_cascaded_filter(2, alpha, n_pade)),
+  f2_(new mlsa_base_cascaded_filter(order, alpha, n_pade))
+{
+}
+
+mlsa_filter::~mlsa_filter()
+{
+}
+
+template &amp;lt;class Vector&amp;gt;
+double mlsa_filter::filter(const double x, const Vector&amp;amp; b)
+{
+  // 1. First stage filtering
+  Vector b1 = {0, b[1]};
+  double y = f1_-&amp;gt;filter(x, b1);
+
+  // 2. Second stage filtering
+  double result = f2_-&amp;gt;filter(y, b);
+
+  return result;
+}
+
+} // end namespace sp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;使い方&#34;&gt;使い方&lt;/h1&gt;
+&lt;p&gt;mlsa_filter.hをインクルードすればおｋ&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;mlsa_filter.h&amp;quot;
+
+// セットアップ
+const double alpha = 0.42;
+const int order = 30;
+const int n_pade = 5;
+sp::mlsa_filter mlsa_f(order, alpha, n_pade);
+
+...
+// MLSA フィルタリング
+出力一サンプル = mlsa_f.filter(入力一サンプル, フィルタ係数);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;何で再実装したのか&#34;&gt;何で再実装したのか&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;mlsa filterをC++的なインタフェースで使いたかった&lt;/li&gt;
+&lt;li&gt;コード見たらまったく意味がわからなくて、意地でも理解してやろうと思った&lt;/li&gt;
+&lt;li&gt;反省はしている&lt;/li&gt;
+&lt;li&gt;知り合いの声質変換やってる方がMLSAフィルタを波形合成に使ってるっていうし、ちょっとやってみようかなって&lt;/li&gt;
+&lt;li&gt;あと最近音声合成の低レベルに手をつけようとと思ってたし勉強にもなるかなって&lt;/li&gt;
+&lt;li&gt;思ったんだ……んだ…だ…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;車輪の再開発はあんま良くないと思ってるけど許して。
+誰かがリファクタせないかんのだ&lt;/p&gt;
+&lt;h1 id=&#34;感想&#34;&gt;感想&lt;/h1&gt;
+&lt;p&gt;SPTKのmlsa filterは、正直に言うとこれまで読んできたコードの中で一二を争うほど難解でした（いうてC言語はあまり読んできてないので、Cだとこれが普通なのかもしれないけど）。特に、元コードの d: delayという変数の使われ方が複雑過ぎて、とても読みにくくございました。MLSAフィルタは複数のbase filterのcascade接続で表されるわけだけど、それぞれの遅延が一つのdという変数で管理されていたのです。つまり、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;d[1] ~ d[5] までは、あるフィルタの遅延&lt;/li&gt;
+&lt;li&gt;d[6] ~ d[11] までは、別のフィルタの遅延&lt;/li&gt;
+&lt;li&gt;d[12] ~ にはまた別のフィルタの遅延&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;という感じです。&lt;/p&gt;
+&lt;p&gt;改善しようと思って、base filterというクラスを作ってそのクラスの状態として各フィルタの遅延を持たせて、見通しを良くしました&lt;/p&gt;
+&lt;h2 id=&#34;さいごに&#34;&gt;さいごに&lt;/h2&gt;
+&lt;p&gt;MLSAフィルタ、難しいですね（小並感&lt;/p&gt;
+&lt;p&gt;いつかリアルタイム声質変換がやってみたいので、それに使う予定（worldを使うことになるかもしれんけど）。戸田先生当たりがやってる声質変換を一回真似してみたいと思ってる&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SPTKをC&#43;&#43;から使えるようにする</title>
+      <link>https://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</link>
+      <pubDate>Sun, 01 Dec 2013 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;音声信号処理ツールキットSPTK&lt;/a&gt;をC++から使おうと思ったら意外とハマってしまったので、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;C++から使えるようにC++コンパイラでコンパイルできるようにした&lt;/li&gt;
+&lt;li&gt;使いやすいようにwafを組み込みんだ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;リポジトリ: &lt;a href=&#34;https://github.com/r9y9/SPTK&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/SPTK&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;というわけで、使い方について簡単に書いておく&lt;/p&gt;
+&lt;h1 id=&#34;sptk-について&#34;&gt;SPTK について&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;SPTKを使うと何ができるか: &lt;a href=&#34;http://aidiary.hatenablog.com/entry/20120701/1341126474&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SPTKの使い方 (1) インストール・波形描画・音声再生 | 人工知能に関する断創録&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SPTKとは: &lt;a href=&#34;[http://sp-tk.sourceforge.net/]&#34;&gt;Speech Signal Processing Toolkit (SPTK)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;sptk-with-waf&#34;&gt;SPTK with waf&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/SPTK&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SPTK with waf&lt;/a&gt;は、SPTKをwafでビルド管理できるようにしたものです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SPTKを共有ライブラリとしてインストールできます。&lt;/li&gt;
+&lt;li&gt;C、C++の好きな方でコンパイルできます。&lt;/li&gt;
+&lt;li&gt;wafが使えます（速い、出力がキレイ）&lt;/li&gt;
+&lt;li&gt;自分のC、C++コードからSPTKのメソッドを呼べます。&lt;/li&gt;
+&lt;li&gt;コマンドラインツールはインストールされません。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;コマンドラインツールを使いたい人は、元のconfigure scriptを使えば十分です。&lt;/p&gt;
+&lt;h1 id=&#34;環境&#34;&gt;環境&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Unix系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ubuntu 12.04 LTS 64 bitとMac OS X 10.9では確認済み&lt;/p&gt;
+&lt;h1 id=&#34;sptkのインストール&#34;&gt;SPTKのインストール&lt;/h1&gt;
+&lt;p&gt;リポジトリをクローンしたあと、&lt;/p&gt;
+&lt;h2 id=&#34;build&#34;&gt;Build&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt; ./waf configure &amp;amp;&amp;amp; ./waf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;build-with-clang&#34;&gt;Build with clang++&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt; CXX=clang++ ./waf configure &amp;amp;&amp;amp; ./waf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;build-with-gcc&#34;&gt;Build with gcc&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt; git checkout c
+ ./waf configure &amp;amp;&amp;amp; ./waf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;build-with-clang-1&#34;&gt;Build with clang&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt; git checkout c
+ CC=clang ./waf configure &amp;amp;&amp;amp; ./waf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;install&#34;&gt;Install&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt; sudo ./waf install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Include files: &lt;code&gt;/usr/local/include/SPTK&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Library: &lt;code&gt;/usr/local/lib/SPTK&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Pkg-config: &lt;code&gt;/usr/local/lib/pkgconfig&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;オリジナルのSPTKとはインストール場所が異なります（オリジナルは、&lt;code&gt;/usr/local/SPTK&lt;/code&gt;）&lt;/p&gt;
+&lt;h1 id=&#34;sptkを使ってコードを書く&#34;&gt;SPTKを使ってコードを書く&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;SPTK/SPTK.h&amp;gt;&lt;/code&gt; をインクルードして、好きな関数を呼ぶ&lt;/p&gt;
+&lt;p&gt;コンパイルは、例えば以下のようにする&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; g++ test.cpp `pkg-config SPTK --cflags --libs`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;面倒なので、example/ 内のコードを修正して使う（wafを使おう）のがおすすめです。&lt;/p&gt;
+&lt;br/&gt;
+&lt;h1 id=&#34;きっかけ&#34;&gt;きっかけ&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;SPTKはコマンドラインツールだと思ってたけど、どうやらSPTK.hをインクルードすれば一通りのツールを使えるらしい&lt;/li&gt;
+&lt;li&gt;SPTK.hをインクルードして使う方法のマニュアルが見つからない…&lt;/li&gt;
+&lt;li&gt;SPTKはC言語で書かれてるし、C++から使うの地味にめんどくさい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;cから簡単に使いたかった&#34;&gt;C++から簡単に使いたかった&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;gccやclangだけじゃなくg++やclang++でコンパイルできるようにしよう&lt;/li&gt;
+&lt;li&gt;自分のコードのビルド管理にはwafを使ってるし、wafで管理できるようにしてしまおう&lt;/li&gt;
+&lt;li&gt;waf素晴らしいしな （参考: &lt;a href=&#34;http://d.hatena.ne.jp/tanakh/20100212&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;waf チュートリアル | 純粋関数型雑記帳 &lt;/a&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;最後に&#34;&gt;最後に&lt;/h1&gt;
+&lt;p&gt;SPTKもwafも素晴らしいので積極的に使おう＾＾&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>MFCCの計算方法についてメモ</title>
+      <link>https://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</link>
+      <pubDate>Sun, 24 Nov 2013 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</guid>
+      <description>&lt;h2 id=&#34;mfcc-とは&#34;&gt;MFCC とは&lt;/h2&gt;
+&lt;p&gt;Mel-Frequency Cepstral Coefficients (MFCCs) のこと。音声認識でよく使われる、音声の特徴表現の代表的なもの。&lt;/p&gt;
+&lt;h3 id=&#34;算出手順&#34;&gt;算出手順&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;音声信号を適当な長さのフレームで切り出し&lt;/li&gt;
+&lt;li&gt;窓がけ&lt;/li&gt;
+&lt;li&gt;フーリエ変換して対数振幅スペクトルを求める&lt;/li&gt;
+&lt;li&gt;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&lt;/li&gt;
+&lt;li&gt;離散コサイン変換により、MFCCを求める&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以上。SPTKのmfccコマンドのソースもだいたいそうなってた。&lt;/p&gt;
+&lt;h3 id=&#34;さて&#34;&gt;さて&lt;/h3&gt;
+&lt;h4 id=&#34;ここに音声波形があるじゃろ&#34;&gt;ここに音声波形があるじゃろ？？&lt;/h4&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/speech-signal.png &#34;音声信号を適当な長さのフレームで切り出し&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h4 id=&#34;音声波形を窓がけして&#34;&gt;音声波形を窓がけして…&lt;/h4&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/windowed-signal.png &#34;窓がけ&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h4 id=&#34;さらにフーリエ変換して対数取って&#34;&gt;さらにフーリエ変換して対数取って…&lt;/h4&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/log-amplitude.png &#34;フーリエ変換して振幅スペクトルを求める&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h4 id=&#34;ここでメルフィルタバンクの出番じゃ&#34;&gt;ここでメルフィルタバンクの出番じゃ&lt;/h4&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/after-mel-filterbank.png &#34;メルフィルタバンクを掛けて、メル周波数スペクトルを求める&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h4 id=&#34;最後に離散コサイン変換で完成じゃ&#34;&gt;最後に離散コサイン変換で完成じゃ&lt;/h4&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/MFCC.png &#34;離散コサイン変換により、MFCCを求める&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;MFCC求めたかったら、普通はHTKかSPTK使えばいいんじゃないですかね。自分で書くと面倒くさいです&lt;/li&gt;
+&lt;li&gt;正規化はどうするのがいいのか、まだよくわかってない。単純にDCT（IIを使った）を最後に掛けると、かなり大きい値になって使いにくい。ので、 &lt;a href=&#34;http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf&lt;/a&gt; にもあるとおり、mel-filterbankの数（今回の場合は64）で割った。&lt;/li&gt;
+&lt;li&gt;間違ってるかもしれないけどご愛嬌&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://research.cs.tamu.edu/prism/lectures/sp/l9.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;L9: Cepstral analysis [PDF]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://shower.human.waseda.ac.jp/~m-kouki/pukiwiki_public/66.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;メル周波数ケプストラム（MFCC） | Miyazawa’s Pukiwiki 公開版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://aidiary.hatenablog.com/entry/20120225/1330179868&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;メル周波数ケプストラム係数（MFCC） | 人工知能に関する断創録&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,120 +1,859 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>Juliaをソースからビルドする - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="[Julia advent calendar 2016](https://qiita.com/advent-calendar/2016/julialang)" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/" />
+  <meta property="og:title" content="Juliaをソースからビルドする / Building Julia from source | LESS IS MORE" />
+  <meta property="og:description" content="[Julia advent calendar 2016](https://qiita.com/advent-calendar/2016/julialang)" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2016-12-23T18:06:08&#43;09:00"
+      />
+    
+    <meta property="article:modified_time" content="2016-12-23T18:06:08&#43;09:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/"
+  },
+  "headline": "Juliaをソースからビルドする / Building Julia from source",
+  
+  "datePublished": "2016-12-23T18:06:08+09:00",
+  "dateModified": "2016-12-23T18:06:08+09:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "[Julia advent calendar 2016](https://qiita.com/advent-calendar/2016/julialang)"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Juliaをソースからビルドする / Building Julia from source | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">Juliaをソースからビルドする</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-12-23">December 23, 2016</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="f2c337c54e9bc5df6891b00745d4758d" >
 
-<p><a href="http://qiita.com/advent-calendar/2016/julialang">Julia advent calendar 2016</a> 23日目の記事です。</p>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
 
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Juliaをソースからビルドする / Building Julia from source</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Dec 23, 2016
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    1 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p><a href="https://qiita.com/advent-calendar/2016/julialang" target="_blank" rel="noopener">Julia advent calendar 2016</a> 23日目の記事です。</p>
 <h2 id="はじめに">はじめに</h2>
-
-<p>Juilaを最も簡単にインストールする方法は、<a href="http://julialang.org/downloads/">公式のダウンロードページ</a>からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。</p>
-
-<p>僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。</p>
-
+<p>Juilaを最も簡単にインストールする方法は、<a href="http://julialang.org/downloads/" target="_blank" rel="noopener">公式のダウンロードページ</a>からバイナリ or インストーラを使用することだと思います。多くの人は、処理系をソースからビルドして使用することはめったにないと思いますが<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>、自分好みにビルドをカスタマイズしてJuliaを使いたいというコアな方向けに、僕がよく使うビルド時のオプションや便利そうなオプション、ビルド時のTipsなどを紹介しようと思います。</p>
+<p>僕がソースからビルドすることになった主な理由は、ソースからビルドしないと使えないパッケージがあったからです<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。</p>
 <h2 id="下準備">下準備</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/JuliaLang/julia <span style="color:#f92672">&amp;&amp;</span> cd julia</code></pre></div>
+<pre><code class="language-bash">git clone https://github.com/JuliaLang/julia &amp;&amp; cd julia
+</code></pre>
 <h2 id="ビルドのカスタマイズ方法">ビルドのカスタマイズ方法</h2>
-
-<p>Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに <code>override LLVM_VER=3.7.1</code> のような書き方で記述することで、カスタマイズ可能です（詳細は<a href="https://github.com/JuliaLang/julia#source-download-and-compilation">公式の説明</a>をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。</p>
+<p>Juliaのビルドシステムでは、Make.userというファイルで、ユーザがいくらかカスタマイズすることを許可しています。プロジェクトトップにMake.userを作成し、そこに <code>override LLVM_VER=3.7.1</code> のような書き方で記述することで、カスタマイズ可能です（詳細は<a href="https://github.com/JuliaLang/julia#source-download-and-compilation" target="_blank" rel="noopener">公式の説明</a>をご覧ください）。例えば僕の場合、主な開発環境であるmacOSではMake.userを以下のように記述しています（項目の説明は後ほどします）。</p>
 <pre><code>override LLVM_VER=3.7.1
 override LLVM_ASSERTIONS=1
 override BUILD_LLVM_CLANG=1
-override USE_LLVM_SHLIB=1</code></pre>
+override USE_LLVM_SHLIB=1
+</code></pre>
 <p>あとは、通常通りmakeコマンドを走らせることで、ビルドを行います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make -j4</code></pre></div>
+<pre><code class="language-bash">make -j4
+</code></pre>
 <p>コア数は適当に指定します。llvm, openblasあたりのビルドが結構重いので、並列ビルドがオススメです。</p>
-
 <h2 id="僕がよく使うオプション">僕がよく使うオプション</h2>
-
 <p>ここから、僕がよく使うオプションをいくつか解説します。</p>
-
-<h3 id="llvm-ver">LLVM_VER</h3>
-
-<p>llvmのバージョンを表します。Julia上でC++を使いたいというcrazyな人に激推しの <a href="https://github.com/Keno/Cxx.jl">Keno/Cxx.jl</a> というパッケージがあるのですが、このパッケージはclangとllvmの3.7.1以上を必要とします（Cxx.jlについては、過去に何度か記事を書いたので、例えば <a href="http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/">Cxx.jlを用いてJulia expression/value をC++に埋め込む実験</a> をご覧ください）。llvm 3.3がデフォルトだったJulia v0.4時代では、明示的に3.7.1と指定する必要がありました。いまは、</p>
-
+<h3 id="llvm_ver">LLVM_VER</h3>
+<p>llvmのバージョンを表します。Julia上でC++を使いたいというcrazyな人に激推しの <a href="https://github.com/Keno/Cxx.jl" target="_blank" rel="noopener">Keno/Cxx.jl</a> というパッケージがあるのですが、このパッケージはclangとllvmの3.7.1以上を必要とします（Cxx.jlについては、過去に何度か記事を書いたので、例えば <a href="http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/" target="_blank" rel="noopener">Cxx.jlを用いてJulia expression/value をC++に埋め込む実験</a> をご覧ください）。llvm 3.3がデフォルトだったJulia v0.4時代では、明示的に3.7.1と指定する必要がありました。いまは、</p>
 <ul>
-<li>Julia v0.5の公式配布バイナリでも、<code>Pkg.add(&quot;Cxx&quot;)</code>でインストールできるとされている（<a href="https://github.com/Keno/Cxx.jl/issues/287">Keno/Cxx.jl/#287</a>）</li>
-<li>かつ現状のデフォルトバージョンが3.7.1 (もうすぐ3.9.1になりそうですが <a href="https://github.com/JuliaLang/julia/pull/19678/files">JuliaLang/julia/#19768</a>)</li>
+<li>Julia v0.5の公式配布バイナリでも、<code>Pkg.add(&quot;Cxx&quot;)</code>でインストールできるとされている（<a href="https://github.com/Keno/Cxx.jl/issues/287" target="_blank" rel="noopener">Keno/Cxx.jl/#287</a>）</li>
+<li>かつ現状のデフォルトバージョンが3.7.1 (もうすぐ3.9.1になりそうですが <a href="https://github.com/JuliaLang/julia/pull/19678/files" target="_blank" rel="noopener">JuliaLang/julia/#19768</a>)</li>
 </ul>
-
-<p>なので、僕の場合は明示的にLLVM_VERを指定する必要はなくなってきましたが、例えば、LLVMのNVPTX backendを使ってJuliaでCUDAカーネルを書けるようにする <a href="https://github.com/JuliaGPU/CUDAnative.jl">JuliaGPU/CUDAnative.jl</a> （要 llvm 3.9）のような、experimentalなパッケージを試したい場合など、LLVM_VERを指定したくなる場合もあるかと思います。</p>
-
-<h3 id="llvm-assertions">LLVM_ASSERTIONS</h3>
-
+<p>なので、僕の場合は明示的にLLVM_VERを指定する必要はなくなってきましたが、例えば、LLVMのNVPTX backendを使ってJuliaでCUDAカーネルを書けるようにする <a href="https://github.com/JuliaGPU/CUDAnative.jl" target="_blank" rel="noopener">JuliaGPU/CUDAnative.jl</a> （要 llvm 3.9）のような、experimentalなパッケージを試したい場合など、LLVM_VERを指定したくなる場合もあるかと思います。</p>
+<h3 id="llvm_assertions">LLVM_ASSERTIONS</h3>
 <p>LLVMをassert付きでビルドするかどうかを表します。ONにするとビルドかかる時間が長くなり、LLVMのパフォーマンスが若干落ちますが、デバッグには便利です。Juliaのコード生成周りでエラーを起こしやすいようなコードを書くときには、ONにしておくと便利です。</p>
-
-<h3 id="build-llvm-clang">BUILD_LLVM_CLANG</h3>
-
-<p>llvmとあわせて、clangをビルドするかどうか、というオプションです。Cxx.jlに必要なので、僕はそのためにONにしています。その他必要なケースとしては、clangのaddress/memory sanitizerを使いたい場合が考えられます。詳細は<a href="http://docs.julialang.org/en/stable/devdocs/sanitizers/">devdocs/sanitizers</a> をご覧ください。</p>
-
+<h3 id="build_llvm_clang">BUILD_LLVM_CLANG</h3>
+<p>llvmとあわせて、clangをビルドするかどうか、というオプションです。Cxx.jlに必要なので、僕はそのためにONにしています。その他必要なケースとしては、clangのaddress/memory sanitizerを使いたい場合が考えられます。詳細は<a href="http://docs.julialang.org/en/stable/devdocs/sanitizers/" target="_blank" rel="noopener">devdocs/sanitizers</a> をご覧ください。</p>
 <h2 id="cc-cxx">CC, CXX</h2>
-
 <p>コンパイラの指定です。僕の場合 ubuntu 14.04では、（Cxx.jlのために）以下のように設定しています。</p>
 <pre><code>override CC=gcc-6
-override CXX=g++-6</code></pre>
-<p>参考: <a href="https://github.com/r9y9/julia-cxx">https://github.com/r9y9/julia-cxx</a></p>
-
+override CXX=g++-6
+</code></pre>
+<p>参考: <a href="https://github.com/r9y9/julia-cxx" target="_blank" rel="noopener">https://github.com/r9y9/julia-cxx</a></p>
 <p>macOS では特に設定していませんが、Julia以外のプロジェクトをビルドするときに、たまに</p>
-<pre><code>CXX=usr/local/bin/clang++ cmake ${path_to_project}</code></pre>
+<pre><code>CXX=usr/local/bin/clang++ cmake ${path_to_project}
+</code></pre>
 <p>のように、xcode付属のclangではなく、自前でビルドしたclangを使いたい場合などに、CC, CXXを指定したりします。</p>
-
-<h3 id="use-clang">USE_CLANG</h3>
-
+<h3 id="use_clang">USE_CLANG</h3>
 <p>clangを使ってビルドするかどうかを表します。gccを使いたくない、というときにオンにします。</p>
-
-<h3 id="use-llvm-shlib">USE_LLVM_SHLIB</h3>
-
+<h3 id="use_llvm_shlib">USE_LLVM_SHLIB</h3>
 <p>llvmを共有ライブラリとしてビルドするかどうかを表します。v0.4ではデフォルトがオフで、v0.5からはオンになっています。llvmの共有ライブラリをdlopenして色々いじりたい場合（何度もアレですが、Cxx.jlを使いたい場合とか）は、オンにする必要があります。</p>
-
-<h3 id="use-system-lib-name">USE_SYSTEM_${LIB_NAME}</h3>
-
+<h3 id="use_system_lib_name">USE_SYSTEM_${LIB_NAME}</h3>
 <p>Juliaでは、デフォルトで依存ライブラリをソースからビルドします。システムにインストールされたライブラリを使用したい場合、USE_SYSTEM_XXX （e.g. <code>USE_SYSTEM_BLAS</code>）をオンにします。ビルド時間を短縮することが可能です。</p>
-
-<p>USE_SYSTEM_xxx にどのようなものがあるのかは、<a href="https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Make.inc#L25-L47">Make.inc</a> をご覧ください。</p>
-
+<p>USE_SYSTEM_xxx にどのようなものがあるのかは、<a href="https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Make.inc#L25-L47" target="_blank" rel="noopener">Make.inc</a> をご覧ください。</p>
 <h2 id="便利そうなオプション">便利そうなオプション</h2>
-
-<h3 id="use-intel-mkl">USE_INTEL_MKL</h3>
-
+<h3 id="use_intel_mkl">USE_INTEL_MKL</h3>
 <p>MKLを使うかどうかを表します。MKLを持っている場合にオンにすれば、一部パフォーマンスが向上しそうですね。</p>
-
-<h3 id="use-gpl-libs">USE_GPL_LIBS</h3>
-
+<h3 id="use_gpl_libs">USE_GPL_LIBS</h3>
 <p>GPLのライブラリ（FFTWなど）を使用するかどうかを表します。使ったことはありませんが、Juliaを組み込みで使用したい場合に、便利かもしれません。</p>
-
 <h2 id="ビルド時のtips">ビルド時のTips</h2>
-
-<p>Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、</p>
-
+<p>Juliaは依存関係が多く、cloneした直後の状態からのビルドには一時間以上かかることもあります<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。また、masterを追いかけている場合は、途中でビルドにこけてしまうことも珍しくありません。個人的な経験で言えば、</p>
 <ul>
 <li>llvm</li>
 <li>openblas</li>
@@ -122,13 +861,9 @@ override CXX=g++-6</code></pre>
 <li>mbettls</li>
 <li>libunwind</li>
 </ul>
-
-<p>あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに <code>make clean &amp;&amp; make</code> をして、案の定駄目で、よくわからずに <code>make distcleannall</code> してしまうこともありました（<code>distcleanall</code>が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">4</a></sup>。過去の失敗から、僕が学んできたTipsを紹介します。</p>
-
+<p>あたりの依存関係のビルドで、何度も失敗しています。僕がソースビルドをし始めたころ、よく調べずに <code>make clean &amp;&amp; make</code> をして、案の定駄目で、よくわからずに <code>make distcleannall</code> してしまうこともありました（<code>distcleanall</code>が必要なケースは稀であり、そうでない場合は非常に時間を無駄にします）<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>。過去の失敗から、僕が学んできたTipsを紹介します。</p>
 <h3 id="プロジェクトトップmakefileのcleanコマンドを適切に使い分ける">プロジェクトトップMakefileのcleanコマンドを適切に使い分ける</h3>
-
 <p>cleanコマンドにはさまざまなものがあります。ビルドのし直しが不要なものまでcleanして、無駄に時間を消費しないように、正しく使い分けましょう。以下、基本的なcleanコマンドを簡単にまとめます。</p>
-
 <table>
 <thead>
 <tr>
@@ -136,47 +871,36 @@ override CXX=g++-6</code></pre>
 <th>説明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>clean</td>
 <td>Julia本体のclean</td>
 </tr>
-
 <tr>
 <td>cleanall</td>
 <td>Julia本体、flisp、libuvのclean</td>
 </tr>
-
 <tr>
 <td>distclean</td>
 <td>binary配布用の成果物をclean</td>
 </tr>
-
 <tr>
 <td>distcleanall</td>
 <td>deps以下の依存関係をすべてclean</td>
 </tr>
 </tbody>
 </table>
-
 <p>よほどのことがない限り、 <code>make distcleanall</code> を使わないようにしましょう。<code>make distclean</code> はほとんど使う必要はないと思います。</p>
-
-<p>コマンドの詳細、その他コマンドについては、<a href="https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Makefile">julia/Makefile</a> をご覧ください</p>
-
+<p>コマンドの詳細、その他コマンドについては、<a href="https://github.com/JuliaLang/julia/blob/d8ecebe1a47fd401ef63a80250c096a21843a82d/Makefile" target="_blank" rel="noopener">julia/Makefile</a> をご覧ください</p>
 <h3 id="サブディレクトリのmakefileを使いわける">サブディレクトリのMakefileを使いわける</h3>
-
 <ul>
 <li><strong>deps</strong>: 依存関係</li>
 <li><strong>src</strong>: コンパイラ (C, C++, flisp)</li>
 <li><strong>base</strong>: 標準ライブラリ (Julia)</li>
 <li><strong>doc</strong>: ドキュメント</li>
 </ul>
-
 <p>など（一部です）、Makefileは復数のサブディレクトリにわかれています。依存関係のビルドに失敗した場合には、depsディレクトリ以下のMakefileが使えます。</p>
-
 <p>depsディレクトリ以下、依存関係のcleanコマンドには、大きく以下の二種類があります。</p>
-
 <table>
 <thead>
 <tr>
@@ -184,135 +908,467 @@ override CXX=g++-6</code></pre>
 <th>説明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>clean-xxx</td>
 <td>xxx の clean</td>
 </tr>
-
 <tr>
 <td>distclean-xxx</td>
 <td>xxx の clean と <code>rm -rf ビルドディレクトリ</code></td>
 </tr>
 </tbody>
 </table>
-
 <p>例えばlibgit2のバージョンが変わってエラーが出たからといって、すべてをビルドし直す必要は基本的にはありません。まずは、</p>
-<pre><code>make -C deps clean-libgit2 &amp;&amp; make</code></pre>
+<pre><code>make -C deps clean-libgit2 &amp;&amp; make
+</code></pre>
 <p>としてビルドし直し、それでも駄目な場合は、</p>
-<pre><code>make -C deps distclean-libgit2 &amp;&amp; make</code></pre>
+<pre><code>make -C deps distclean-libgit2 &amp;&amp; make
+</code></pre>
 <p>といった具合に、軽いcleanコマンドから順に試しましょう。</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <ul>
 <li>Make.user をプロジェクトトップに配置することで、ビルドをカスタマイズできます</li>
 <li>ビルドに失敗したとき、良く考えずに <code>make distcleanall</code> するのをやめましょう（自戒</li>
 <li>サブディレクトリの Makefile を使い分けて、rebuildは最小限にしましょう</li>
 </ul>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1">大変ですよね
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:2"><a href="https://github.com/Keno/Cxx.jl">https://github.com/Keno/Cxx.jl</a> です
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-<li id="fn:3">環境によります
- <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
-<li id="fn:4">僕があほなだけの可能性が大いにあります
- <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>大変ですよね&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p><a href="https://github.com/Keno/Cxx.jl" target="_blank" rel="noopener">https://github.com/Keno/Cxx.jl</a> です&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>環境によります&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>僕があほなだけの可能性が大いにあります&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Juliaをソースからビルドする" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/julia/">Julia</a>
+  
+  <a class="badge badge-light" href="/tag/advent-calendar/">Advent Calendar</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/&amp;text=Julia%e3%82%92%e3%82%bd%e3%83%bc%e3%82%b9%e3%81%8b%e3%82%89%e3%83%93%e3%83%ab%e3%83%89%e3%81%99%e3%82%8b%20/%20Building%20Julia%20from%20source" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/&amp;t=Julia%e3%82%92%e3%82%bd%e3%83%bc%e3%82%b9%e3%81%8b%e3%82%89%e3%83%93%e3%83%ab%e3%83%89%e3%81%99%e3%82%8b%20/%20Building%20Julia%20from%20source" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Julia%e3%82%92%e3%82%bd%e3%83%bc%e3%82%b9%e3%81%8b%e3%82%89%e3%83%93%e3%83%ab%e3%83%89%e3%81%99%e3%82%8b%20/%20Building%20Julia%20from%20source&amp;body=https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/&amp;title=Julia%e3%82%92%e3%82%bd%e3%83%bc%e3%82%b9%e3%81%8b%e3%82%89%e3%83%93%e3%83%ab%e3%83%89%e3%81%99%e3%82%8b%20/%20Building%20Julia%20from%20source" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Julia%e3%82%92%e3%82%bd%e3%83%bc%e3%82%b9%e3%81%8b%e3%82%89%e3%83%93%e3%83%ab%e3%83%89%e3%81%99%e3%82%8b%20/%20Building%20Julia%20from%20source%20https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/&amp;title=Julia%e3%82%92%e3%82%bd%e3%83%bc%e3%82%b9%e3%81%8b%e3%82%89%e3%83%93%e3%83%ab%e3%83%89%e3%81%99%e3%82%8b%20/%20Building%20Julia%20from%20source" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2017/12/21/jupyter-cxx/">Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]</a></li>
+      
+      <li><a href="/blog/2015/12/22/cxx-jl/">Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</a></li>
+      
+      <li><a href="/blog/2015/12/08/julia-type-annotations/">Julia: 値と変数に対する Type Annotation の違い</a></li>
+      
+      <li><a href="/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/">ccallにおけるポインタ周りのハマりどころとその解決法</a></li>
+      
+      <li><a href="/blog/2017/12/14/jupyter-bokeh/">ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017]</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

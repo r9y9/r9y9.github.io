@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cling | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/cling/</link>
+      <atom:link href="https://r9y9.github.io/tag/cling/index.xml" rel="self" type="application/rss+xml" />
+    <description>cling</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Thu, 21 Dec 2017 00:00:00 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>cling</title>
+      <link>https://r9y9.github.io/tag/cling/</link>
+    </image>
+    
+    <item>
+      <title>Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]</title>
+      <link>https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/</guid>
+      <description>&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;https://r9y9.github.io/images/jupyter-cxx/jupyter-cxx-demo.gif&#34; alt=&#34;&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://qiita.com/advent-calendar/2017/jupyter&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jupyter Advent Calendar 2017&lt;/a&gt; 21日目の記事です。&lt;/p&gt;
+&lt;p&gt;C++をJupyterで使う方法はいくつかあります。この記事では、僕が試したことのある以下の4つの方法について、比較しつつ紹介したいと思います。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;root/cling&lt;/a&gt; 付属のカーネル&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;root/root&lt;/a&gt; 付属のカーネル&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/QuantStack/xeus-cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xeus-cling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Keno/Cxx.jl&lt;/a&gt; をIJuliaで使う&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;まとめとして、簡単に特徴などを表にまとめておきますので、選ぶ際の参考にしてください。詳細な説明は後に続きます。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;cling&lt;/a&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&#34;https://github.com/root-project/root&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ROOT&lt;/a&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&#34;https://github.com/QuantStack/xeus-cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xeus-cling&lt;/a&gt;&lt;/th&gt;
+&lt;th&gt;&lt;a href=&#34;%28https://github.com/Keno/Cxx.jl%29&#34;&gt;Cxx.jl&lt;/a&gt; + &lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;IJulia&lt;/a&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C++インタプリタ実装&lt;/td&gt;
+&lt;td&gt;C++&lt;/td&gt;
+&lt;td&gt;C++&lt;/td&gt;
+&lt;td&gt;C++&lt;/td&gt;
+&lt;td&gt;Julia + C++&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(Tab) Code completion&lt;/td&gt;
+&lt;td&gt;○&lt;/td&gt;
+&lt;td&gt;○&lt;/td&gt;
+&lt;td&gt;○&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Cインタプリタ&lt;/td&gt;
+&lt;td&gt;△&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td&gt;△&lt;/td&gt;
+&lt;td&gt;△&lt;/td&gt;
+&lt;td&gt;○&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;%magics&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;%%cpp, %%jsroot, その他&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;△&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;他言語との連携&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;Python, R &lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;Julia&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;バイナリ配布&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://root.cern.ch/download/cling/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式リンク&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://root.cern.ch/downloading-root&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式リンク&lt;/a&gt; (python2系向け）&lt;/td&gt;
+&lt;td&gt;condaで提供&lt;/td&gt;
+&lt;td&gt;△&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;オンラインデモ&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://swanserver.web.cern.ch/swanserver/rootdemo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;rootdemo&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://mybinder.org/v2/gh/QuantStack/xeus-cling/0.0.7-binder?filepath=notebooks%2Fxcpp.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;binderリンク&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;共通事項&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;すべて、clang/llvmをC++インタプリタのベースにしています。Cxx.jl以外は、C++インタプリタであるclingをベースに、さらにその上にjupyterカーネルを実装しています。&lt;/p&gt;
+&lt;h2 id=&#34;1-cling&#34;&gt;1. cling&lt;/h2&gt;
+&lt;p&gt;clingは、いわずとしれた（？）C++インタプリタ実装です。後述するROOTという data analysis framework の一部として、CERNによって開発されています。(20年くらい前の) 古くからあったCINTというC++インタプリタ実装が、clangを使って書き直された、という歴史があります。clingプロジェクトの一環としてJupyterカーネルが開発されています。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;良いところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;clingの起動が速いのでストレスが少ない &lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#34;#fn:5&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;イマイチなところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IPythonだと使える &lt;code&gt;%time&lt;/code&gt; のようなマジックはない&lt;/li&gt;
+&lt;li&gt;cling本体で良いのでは？感が否めない。cling本体のREPLを使えば、Ctrl+Rによるヒストリ検索も使えるし…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使ってみた感想まとめ&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;個人的には、Jupyterは可視化と組み合わせてこそ良さがあると思っているのもありますが、あえてJupyterで使う必要性を僕は感じませんでした。cling自体はとても素晴らしいのと、ノートブックとして実行結果ごとコードを保存したい、といった目的でjupyterを使う場合には、良いと思いました。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;&lt;/code&gt; のあとにcode completionをしようとするとclingが落ちる、というバグがあります。Jupyterの場合はカーネルがリスタートします。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vgvassilev/cling/issues/152&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/vgvassilev/cling/issues/152&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;参考リンク&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;公式web: &lt;a href=&#34;https://cdn.rawgit.com/root-project/cling/master/www/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://cdn.rawgit.com/root-project/cling/master/www/index.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Github: &lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/root-project/cling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;紹介スライド: &lt;a href=&#34;http://llvm.org/devmtg/2010-11/Naumann-Cling.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LLVM Developers&#39; Meeting, &amp;ldquo;Creating cling, an interactive interpreter interface for clang&amp;rdquo;, Axel Naumann, Philippe Canal, Paul Russo, Vassil Vassilev, 04.11.2010, San Jose, CA, United States&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-root&#34;&gt;2. ROOT&lt;/h2&gt;
+&lt;p&gt;ROOTの説明を公式ページから引用します：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A modular scientific software framework. It provides all the functionalities needed to deal with big data processing, statistical analysis, visualisation and storage. It is mainly written in C++ but integrated with other languages such as Python and R.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;日本語の情報が少ない印象ですが、&lt;a href=&#34;https://github.com/akira-okumura/RHEA/wiki/ROOT-%E8%AC%9B%E7%BF%92%E4%BC%9A-2017&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ROOT 講習会 2017 | 高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)&lt;/a&gt; によると、実験系素粒子物理学では標準的なデータ解析ソフトウェア・ライブラリ群のようです。&lt;/p&gt;
+&lt;p&gt;ROOTプロジェクト自体にclingを含みますが、clingが提供するjupyterカーネルとは別で、&lt;a href=&#34;https://github.com/root-project/root/tree/master/bindings/pyroot/JupyROOT&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JupyROOT&lt;/a&gt; というカーネルが開発されています。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;良いところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PythonとC++をミックスできる。&lt;code&gt;%%cpp&lt;/code&gt; magicでC++関数を定義して、ホスト（python) 側から呼び出せる&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;%%jsroot&lt;/code&gt; magic により、グラフをインタラクティブに動かせる&lt;/li&gt;
+&lt;li&gt;IPythonで使えるmagicが使える（&lt;code&gt;%timeit&lt;/code&gt;, &lt;code&gt;%time&lt;/code&gt;, &lt;code&gt;%load_ext&lt;/code&gt;等）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;イマイチなところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Numpyやmatplotlibなど、Pythonを用いた数値計算ではデファクトに近いツールとの連携は微妙に思いました &lt;sup id=&#34;fnref:6&#34;&gt;&lt;a href=&#34;#fn:6&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;。cythonのように、手軽にnumpy arrayをC++に渡す、といった方法はなさそう・・・？（あったら教えてください）&lt;/li&gt;
+&lt;li&gt;ROOTの（でかい）APIを覚えないと使えなさそうで、ハードルが高い&lt;/li&gt;
+&lt;li&gt;公式のbinderのデモノートブック、ちょいちょいカーネルが落ちる…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使ってみた感想まとめ&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Jupyterカーネルはclingのものよりも良いと思いました。PythonとC++をミックスできるのが特に良いと思います。個人的には、ROOTが機能もりもりのデカイソフトウェアなことがあまり好きになれず、使い込んでいないのですが、ROOTのAPIに慣れた人、あるいは好きになれる人には、良いと思います。&lt;/p&gt;
+&lt;p&gt;clingだと &lt;code&gt;#include &amp;lt;iostream&amp;gt;&lt;/code&gt;のあとにcode completionで落ちる、というバグがありまたが、ROOT付属のcling (&lt;code&gt;ROOT 6.10/08&lt;/code&gt; をソースからビルドして使いました) ではそのバグはありませんでした。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考リンク&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;公式ページ: &lt;a href=&#34;https://root.cern.ch/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://root.cern.ch/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Github: &lt;a href=&#34;https://github.com/root-project/root&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/root-project/root&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;オンラインデモ: &lt;a href=&#34;https://swanserver.web.cern.ch/swanserver/rootdemo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://swanserver.web.cern.ch/swanserver/rootdemo/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-xeus-cling&#34;&gt;3. xeus-cling&lt;/h2&gt;
+&lt;p&gt;先月 11月30日に、&lt;a href=&#34;https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jupyter blog で紹介&lt;/a&gt; されたカーネルです。名前の通りclingをベースにしています。C++インタプリタとしては機能的にcling付属カーネルと同じですが、&lt;a href=&#34;https://github.com/QuantStack/xeus&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xeus&lt;/a&gt; というJupyter kernel protocolのC++実装をベースにしている点が異なります。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;良いところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;condaでパッケージとして提供されているので、インストールが楽。clang/clingも併せてインストールしてくれます&lt;/li&gt;
+&lt;li&gt;同じ開発元が、&lt;a href=&#34;https://github.com/QuantStack/xplot&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xplot&lt;/a&gt; という可視化ライブラリを提供している（ただしalphaバージョン）&lt;/li&gt;
+&lt;li&gt;標準ライブラリのヘルプが &lt;code&gt;?&lt;/code&gt; コマンドで確認できます (例. &lt;code&gt;?std::vector&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;イマイチなところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;外部ライブラリをロードしようとしたら動きませんでした（なので &lt;a href=&#34;https://github.com/QuantStack/xeus-cling/pull/94&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;プルリク&lt;/a&gt; 投げました（が、いい方法ではなかったようでcloseされました&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;%timeit&lt;/code&gt; の実装があったので試してみましたが、エラーが出て動きませんでした&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使ってみた感想まとめ&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;少しalphaバージョンの印象を受けました。xplotなど周辺ツールへの期待がありますが、個人的にはmatplotlib等pythonの可視化ツールでいいのでは…という気持ちになりました。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考リンク&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Github: &lt;a href=&#34;https://github.com/QuantStack/xeus-cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/QuantStack/xeus-cling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;紹介記事: &lt;a href=&#34;https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4-cxxjl--ijuliajl&#34;&gt;4. Cxx.jl + IJulia.jl&lt;/h2&gt;
+&lt;p&gt;Cxx.jlは、clangをベースにしたJuliaのC++インタフェースです。JuliaにはIJuliaというJupyterカーネルの実装があるので、IJuliaとCxx.jlを使えば、Jupyter上でC++を使うことができます。過去にCxx.jlに関する記事をいくつか書きましたので、そのリンクを貼っておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/&#34;&gt;Cxx.jlを用いてJulia expression/value をC++に埋め込む実験 | LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2015/12/22/cxx-jl/&#34;&gt;Cxx.jl を使ってみた感想 + OpenCV.jl, Libfreenect2.jl の紹介 | LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;良いところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;JuliaとC++をミックスできます。過去記事に書きましたが、例えばC++関数内でJuliaのプログレスバーを使ったりできます&lt;/li&gt;
+&lt;li&gt;C++インタプリタとCインタプリタを切り替えられます&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;icxx&lt;/code&gt; と &lt;code&gt;cxx&lt;/code&gt; マクロで、それぞれローカル/グローバルスコープを切り替えられます。&lt;/li&gt;
+&lt;li&gt;Juliaの配列をC++に渡すのは非常に簡単にできます。例を以下に示します&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-jl&#34;&gt;C++ &amp;gt; #include &amp;lt;iostream&amp;gt;
+true
+
+julia&amp;gt; cxx&amp;quot;&amp;quot;&amp;quot;
+       template &amp;lt;class T&amp;gt;
+       void f(T x, int n) {
+           for (int i = 0; i &amp;lt; n; ++i) {
+               std::cout &amp;lt;&amp;lt; x[i] &amp;lt;&amp;lt; std::endl;
+           }
+       }&amp;quot;&amp;quot;&amp;quot;;
+
+julia&amp;gt; x = rand(5)
+10-element Array{Float64,1}:
+ 0.593086
+ 0.736548
+ 0.344246
+ 0.390799
+ 0.226175
+
+julia&amp;gt; icxx&amp;quot;f($(pointer(x)), $(length(x)));&amp;quot;
+0.593086
+0.736548
+0.344246
+0.390799
+0.226175
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;イマイチなところ&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cxxパッケージを読み込むのに多少時間がかかります。僕の環境では（プリコンパイルされた状態で）2.5秒程度でした&lt;/li&gt;
+&lt;li&gt;(Tab) Code completionは実装されていません &lt;a href=&#34;https://github.com/Keno/Cxx.jl/issues/61&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;#61&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;icxx&lt;/code&gt; or &lt;code&gt;cxx&lt;/code&gt; で囲まないといけず、syntax highlightはされません&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;使ってみた感想まとめ&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;僕は一年以上Cxx.jlを使っているので、バイアスも入っていると思いますが、かなり使いやすいと思います。パッケージのロードに時間がかかるのは、何度もカーネルやjuliaを再起動したりしなければ、まったく気になりません。&lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;IJuliaの設計上の理由&lt;/a&gt; により、magicはありませんが、例えば &lt;code&gt;%time&lt;/code&gt; は &lt;code&gt;@time&lt;/code&gt; マクロで十分であり、不便に感じません。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考リンク&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IJulia: &lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/JuliaLang/IJulia.jl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Cxx : &lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Keno/Cxx.jl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;C++と他言語のやりとりのスムースさの観点から、やはり僕は対話環境でC++を使うならCxx.jlが最高だと思いました。Cxx + JuliaのREPLも便利ですが、Cxx + IJuliaも良いと思います。&lt;/li&gt;
+&lt;li&gt;ただし、C++単体でしか使わない、ということであれば、cling or xeus-clingが良いと思います。ただし xeus-clingは、前述の通り外部ライブラリを読みこもうとするとエラーになる問題があったので、外部ライブラリを読み込んで使用したい場合はパッチ (&lt;a href=&#34;https://github.com/QuantStack/xeus-cling/pull/94&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;xeus-cling/#94&lt;/a&gt;) を当てた方がよいかもしれません&lt;/li&gt;
+&lt;li&gt;xeus-clingには、Jupyterブログにのっていたのでどんなものかと思って試してみましたが、周辺ツール含め思ってたよりalpha版のようでした。また、他と比べての機能的な優位性はあまり感じませんでした。ただし、condaパッケージとして提供されているので、敷居が一番低いのは嬉しいですね&lt;/li&gt;
+&lt;li&gt;ROOTのjupyter kernelは、C++とpythonをミックスできるのが特に良く、素晴らしいと思いました。また &lt;code&gt;%%cpp&lt;/code&gt; magicの他にも、ipythonで使える &lt;code&gt;%timeit&lt;/code&gt; などのmagicも使えるのは、ユーザにとっては嬉しいです。Cxx.jlを除けば、ROOTのカーネルが一番良いと思いました。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.jupyter.org/interactive-workflows-for-c-with-jupyter-fe9b54227d92&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Interactive Workflows for C++ with Jupyter – Jupyter Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/mugwort_rc/items/b8087d1b6f9498b037d5&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;C++11/14/17インタプリタ環境 Jupyter-Cling - Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/sasaki77/items/f6253e1d6638fba0e744&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JupyterにC++のノートのためのclingカーネルを追加する [Mac] - Qiita&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/akira-okumura/RHEA&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;clangをベースにしているので原理的には可能だと思いますが、少なくともjupyterカーネルとしてはありません&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Juliaのmacroを使えばよい、というスタンスで、提供していません。 &lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;参考リンク&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://root.cern.ch/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式ホームページ&lt;/a&gt; より引用: It is mainly written in C++ but integrated with other languages such as Python and R.&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;linux向け&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Cxx.jlだと、パッケージのコンパイルに10秒かかる、とか過去にありました。最近は改善されていますが&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:6&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/rootpy/rootpy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/rootpy/rootpy&lt;/a&gt; ライブラリはありますが、結局このライブラリのAPIを覚えないといけないという…はい…&amp;#160;&lt;a href=&#34;#fnref:6&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

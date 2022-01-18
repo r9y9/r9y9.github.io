@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/go/</link>
+      <atom:link href="https://r9y9.github.io/tag/go/index.xml" rel="self" type="application/rss+xml" />
+    <description>Go</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 29 Jul 2014 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Go</title>
+      <link>https://r9y9.github.io/tag/go/</link>
+    </image>
+    
+    <item>
+      <title>Goでニューラルネットいくつか書いたけどやっぱPythonが楽でいいですね</title>
+      <link>https://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</link>
+      <pubDate>Tue, 29 Jul 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</guid>
+      <description>&lt;p&gt;いまいち成果出ないので気分転換にブログをだらだら書いてみるテストです。&lt;/p&gt;
+&lt;h2 id=&#34;まえがき&#34;&gt;まえがき&lt;/h2&gt;
+&lt;p&gt;半年くらい前に、某深層学習に興味を持ってやってみようかなーと思っていた時期があって、その時にGoでいくつかニューラルネットを書きました（参考：&lt;a href=&#34;http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Restricted Boltzmann Machines with MNIST - LESS IS MORE&lt;/a&gt;、&lt;a href=&#34;https://github.com/r9y9/nnet&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;githubに上げたコード&lt;/a&gt;）。なぜGoだったかというと、僕がGoに興味を持ち始めていたからというのが大きいです。Goを知る前は、たくさん計算するようなコードを書くときはC++だったけれど、C++は色々つらいものがあるし、GoはC++には速度面で劣るもののそこそこ速く、かつスクリプト的な書きやすさもあります。C++のデバッグやメンテに費やす膨大な時間に比べれば、計算時間が1.5~2倍に増えるくらい気にしないというスタンスで、僕はC++のかわりGoを使おうとしていました（※今でも間違っているとは思いませんが、とはいえ、厳しいパフォーマンスを求められる場合や既存の資産を有効活用したい場合など、必要な場面ではC++を書いています）。&lt;/p&gt;
+&lt;h2 id=&#34;goで機械学習&#34;&gt;Goで機械学習&lt;/h2&gt;
+&lt;p&gt;僕は機械学習がけっこう好きなので、Goでコード書くかーと思っていたのですが、結果としてまったく捗りませんでした。ニューラルネットをてきとーに書いたくらいです。&lt;/p&gt;
+&lt;p&gt;検索するとわかりますが、現状、他の主流な言語に比べて圧倒的に数値計算のライブラリが少ないです。特に、線形代数、行列演算のデファクト的なライブラリがないのはつらいです。いくつか代表的なものをあげます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/skelterjohn/go.matrix&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;skelterjohn/go.matrix&lt;/a&gt; - もうまったくメンテされていないし、たぶんするつもりはないと思います。使い勝手は、僕にとってはそんなに悪くなかった（試しに&lt;a href=&#34;https://gist.github.com/r9y9/9030922&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NMF&lt;/a&gt;を書いてみた）ですが、実装は純粋なGoで書かれていて、GPUを使って計算するのが流行りな時代では、例えば大きなニューラルネットをパラメータを変えながら何度も学習するのにはしんどいと思いました。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gonum/matrix&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;gonum/matrix&lt;/a&gt; - 比較的最近出てきたライブラリで、&lt;a href=&#34;https://code.google.com/p/biogo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;biogo&lt;/a&gt; から行列演算に関する部分を切り出して作られたもののようです。行列演算の内部でblasを使っていて、かつ将来的にはcublasにも対応したい、みたいな投稿をGoogle Groupsで見たのもあって、半年くらい前にはgoで行列演算を行うならこのライブラリを使うべきだと判断しました（以前けっこう調べました：&lt;a href=&#34;http://qiita.com/r9y9/items/7f93a89e3a88bb4ed263&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;gonum/matrix のデザインコンセプトに関するメモ - Qiita&lt;/a&gt;）。しかし、それほど頻繁にアップデートされていませんし、機能もまだ少ないです。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自分で作るかー、という考えも生まれなかったことはないですが、端的に言えばそれを行うだけのやる気がありませんでした。まぁ本当に必要だったら多少難しくてもやるのですが、ほら、僕達にはpythonがあるじゃないですか…&lt;/p&gt;
+&lt;h2 id=&#34;pythonで機械学習&#34;&gt;Pythonで機械学習&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.google.co.jp/search?q=python&amp;#43;%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&amp;amp;oq=python&amp;#43;%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;python 機械学習 - Google 検索&lt;/a&gt; 約 119,000 件（2014/07/29現在）&lt;/p&gt;
+&lt;p&gt;もうみんなやってますよね。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.google.co.jp/search?q=Golang&amp;#43;%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&amp;amp;oq=Golang&amp;#43;%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Golang 機械学習 - Google 検索&lt;/a&gt; 約 9,130 件（2014/07/29現在）&lt;/p&gt;
+&lt;p&gt;いつかpythonのように増えるんでしょうか。正直に言って、わかりません（正確には、あんま考えていませんごめんなさい）&lt;/p&gt;
+&lt;p&gt;さて、僕もよくpython使います。機械学習のコードを書くときは、だいたいpythonを使うようになりました（昔はC++で書いていました）。なぜかって、numpy, scipyのおかげで、とても簡潔に、かつ上手く書けばそこそこ速く書けるからです。加えて、ライブラリがとても豊富なんですよね、機械学習にかかわらず。numpy, scipyに加えて、matplotlibという優秀な描画ライブラリがあるのが、僕がpythonを使う大きな理由になっています。&lt;/p&gt;
+&lt;p&gt;pythonの機械学習ライブラリは、&lt;a href=&#34;http://scikit-learn.org/stable/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;scikit-learn&lt;/a&gt; が特に有名でしょうか。僕もちょいちょい使います。使っていて最近おどろいたのは、scipy.mixtureには通常のGMMだけでなく変分GMM、無限混合GMMも入っていることですよね。自分で実装しようとしたら、たぶんとても大変です。昔変分GMMの更新式を導出したことがありますが、何度も心が折れそうになりました。いやー、いい時代になったもんですよ…（遠い目&lt;/p&gt;
+&lt;h2 id=&#34;pythonでニューラルネットpylearn2を使おう&#34;&gt;Pythonでニューラルネット（pylearn2を使おう）&lt;/h2&gt;
+&lt;p&gt;Deep何とかを含め流行りのニューラルネットが使える機械学習のライブラリでは、僕は &lt;a href=&#34;https://github.com/lisa-lab/pylearn2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;pylearn2&lt;/a&gt; がよさ気だなーと思っています。理由は、高速かつ拡張性が高いからです。pylearn2は、数学的な記号表現からGPUコード（GPUがなければCPU向けのコード）を生成するmathコンパイラ &lt;a href=&#34;https://github.com/Theano/Theano&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Theano&lt;/a&gt; で書かれているためpythonでありながら高速で、かつ機械学習に置いて重要なコンポーネントであるデータ、モデル、アルゴリズムが上手く分離されて設計されているのがいいところかなと思います（全部ごっちゃに書いていませんか？僕はそうですごめんなさい。データはともかくモデルと学習を上手く切り分けるの難しい）。A Machine Learning library based on Theanoとのことですが、Deep learningで有名な &lt;a href=&#34;http://lisa.iro.umontreal.ca/index_en.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;lisa lab&lt;/a&gt; 発ということもあり、ニューラルネットのライブラリという印象が少し強いですね。&lt;/p&gt;
+&lt;p&gt;一つ重要なこととして、このライブラリはかなり研究者向けです。ブラックボックスとして使うのではなく、中身を読んで必要に応じて自分で拡張を書きたい人に向いているかと思います。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://arxiv.org/pdf/1308.4214v1.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Ian J. Goodfellow, David Warde-Farley, Pascal Lamblin, Vincent Dumoulin, Mehdi Mirza, Razvan Pascanu, James Bergstra, Frédéric Bastien, and Yoshua Bengio. “Pylearn2: a machine learning research library”. arXiv preprint arXiv:1308.4214&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;↑の論文のIntroductionの部分に、その旨は明記されています。と、論文のリンクを貼っておいてなんですが、&lt;a href=&#34;http://www-etud.iro.umontreal.ca/~goodfeli/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Ian Goodfellow&lt;/a&gt; のホームページにもっと簡潔に書いてありました。以下、引用します。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I wrote most of Pylearn2, a python library designed to make machine learning research convenient. Its mission is to provide a toolbox of interchangeable parts that provide a lot of flexibility for setting up machine learning experiments, providing enough extensibility that pretty much any research idea is feasible within the context of the library. This is in contrast to other machine learning libraries such as scikits-learn that are designed to be black boxes that just work. Think of pylearn2 as user friendly for machine learning researchers and scikits-learn as user friendly for developers that want to apply machine learning.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;pylearn2では、Multi-layer Perceptron (MLP)、Deep Bolztmann Machines (DBM)、新しいものでMaxout Network等、手軽に試すことができます（まぁゆうて計算はめっちゃ時間かかるけど）。先述の通りmathコンパイラの &lt;a href=&#34;https://github.com/Theano/Theano&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Theano&lt;/a&gt; を使って実装されているので、GPUがある場合はGPUを使って計算してくれます。環境構築に関しては、今はAWSという便利なサービスがあるので、GPUを持っていなくてもウェブ上でポチポチしてるだけで簡単にGPU環境を構築できます（参考：&lt;a href=&#34;http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pylearn2, theanoをEC2 g2.x2large で動かす方法 - LESS IS MORE&lt;/a&gt;）。本当にいい時代になったものですね（二回目&lt;/p&gt;
+&lt;p&gt;pylearn2、コードやドキュメント、活発なgithubでの開発、議論を見ていて、素晴らしいなーと思いました（まだ使い始めたばかりの僕の意見にあまり信憑性はないのですが…）。僕もこれくらい汎用性、拡張性のあるコードを書きたい人生でした…（自分の書いたニューラルネットのコードを見ながら）&lt;/p&gt;
+&lt;h2 id=&#34;pylearn2は遅いって&#34;&gt;Pylearn2は遅いって？&lt;/h2&gt;
+&lt;p&gt;本当に速さを求めるなら &lt;a href=&#34;https://code.google.com/p/cuda-convnet2/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;cuda-convnet2&lt;/a&gt; や &lt;a href=&#34;http://caffe.berkeleyvision.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Cafee&lt;/a&gt;、もしくは直でcudaのAPIをだな…と言いたいところですが、確かにpylearn2は他の深層学習のライブラリに比べて遅いようです。最近、Convolutional Neural Network (CNN) に関するベンチマークがGithubで公開されていました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/soumith/convnet-benchmarks&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;soumith/convnet-benchmarks&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;現時点でまだ work in progressと書いてありますが、参考になると思います。優劣の問題ではなく、必要に応じて使い分ければいいと僕は思っています。&lt;/p&gt;
+&lt;p&gt;さてさて、本当はここから僕が書いたGoのニューラルネットのコードがいかにクソかという話を書こうかと思ったのですが、長くなったのでまた今度にします。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Goでニューラルネットとか機械学習をやるのは現状しんどいし（&lt;a href=&#34;https://github.com/sjwhitworth/golearn&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;golearn&lt;/a&gt;とかあるけど、まだまだearly stage）、おとなしくpython使うのが無難&lt;/li&gt;
+&lt;li&gt;pythonはやっぱり楽。ライブラリ豊富だし。ニューラルネットならpylearn2がおすすめ。ただし自分で拡張まで書きたい人向けです。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;散々pythonいいよゆうてますが、どちらかといえば僕はGoの方が好きです。機械学習には現状pythonを使うのがいいんじゃないかなーと思って、Goでニューラルネットを書いていた時を思い出しながらつらつらと書いてみました。&lt;/p&gt;
+&lt;p&gt;おわり。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>GOSSP - Go言語で音声信号処理</title>
+      <link>https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</link>
+      <pubDate>Sun, 08 Jun 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</guid>
+      <description>&lt;h1 id=&#34;cからgoへ&#34;&gt;C++からGoへ&lt;/h1&gt;
+&lt;p&gt;みなさん、C++で信号処理のアルゴリズムを書くのはつらいと思ったことはありませんか？C++で書くと速いのはいいけれど、いかんせん書くのが大変、コンパイルエラーは読みづらい、はたまたライブラリをビルドしようとしたら依存関係が上手く解決できず……そんな覚えはないでしょうか？謎のコンパイルエラーに悩みたくない、ガーベジコレクションほしい、Pythonのようにさくっと書きたい、型推論もほしい、でも動作は速い方がいい、そう思ったことはないでしょうか。&lt;/p&gt;
+&lt;p&gt;そこでGoです。もちろん、そういった思いに完全に答えてくれるわけではありませんが、厳しいパフォーマンスを要求される場合でなければ、Goの方が良い場合も多いと僕は思っています。
+とはいえ、まだ比較的新しい言語のため、ライブラリは少なく信号処理を始めるのも大変です。というわけで、僕がC++をやめてGoに移行したことを思い出し、Goでの信号処理の基礎と、今まで整備してきたGoでの音声信号処理ライブラリを紹介します。&lt;/p&gt;
+&lt;p&gt;Goの良いところ/悪いところについては書きません。正直、本当は何の言語でもいいと思っていますが、僕はGoが好きなので、ちょっとでもGoで信号処理したいと思う人が増えるといいなーと思って書いてみます。&lt;/p&gt;
+&lt;p&gt;あとで書きますが、僕が書いたコードで使えそうなものは、以下にまとめました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/gossp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/gossp&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;基礎&#34;&gt;基礎&lt;/h1&gt;
+&lt;h2 id=&#34;wavファイルの読み込み書き込み-wavhttpgodocorggithubcommjibsongo-dspwav&#34;&gt;Wavファイルの読み込み/書き込み &lt;a href=&#34;http://godoc.org/github.com/mjibson/go-dsp/wav&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[wav]&lt;/a&gt;&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/speech_signal.png &#34;Speech signal example.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;まずは音声ファイルの読み込みですね。wavファイルの読み込みさえできれば十分でしょう。&lt;/p&gt;
+&lt;p&gt;これは、すでに有用なライブラリが存在します。&lt;a href=&#34;https://github.com/mjibson/go-dsp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GO-DSP&lt;/a&gt; とういデジタル信号処理のライブラリに含まれるwavパッケージを使いましょう。&lt;/p&gt;
+&lt;p&gt;次のように書くことができます。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;github.com/mjibson/go-dsp/wav&amp;quot;
+	&amp;quot;log&amp;quot;
+	&amp;quot;os&amp;quot;
+)
+
+func main() {
+	// ファイルのオープン
+	file, err := os.Open(&amp;quot;./test.wav&amp;quot;)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Wavファイルの読み込み
+	w, werr := wav.ReadWav(file)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+
+	// データを表示
+	for i, val := range w.Data {
+		fmt.Println(i, val)
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;簡単ですね。&lt;/p&gt;
+&lt;p&gt;Goはウェブ周りの標準パッケージが充実しているので、以前&lt;a href=&#34;http://qiita.com/r9y9/items/35a1cf139332a3072fc8&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;qiitaに書いた記事&lt;/a&gt;のように、wavファイルを受け取って何らかの処理をする、みたいなサーバも簡単に書くことができます&lt;/p&gt;
+&lt;p&gt;wavファイルの書き込み＋ユーティリティを追加したかったので、僕は自分でカスタムしたパッケージを使っています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/go-dsp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/go-dsp&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;高速フーリエ変換-fast-fourier-transform-fft-ffthttpgodocorggithubcommjibsongo-dspfft&#34;&gt;高速フーリエ変換 (Fast Fourier Transform; FFT) &lt;a href=&#34;http://godoc.org/github.com/mjibson/go-dsp/fft&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[fft]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;言わずとしれたFFTです。音のスペクトルを求めるのに必須の処理です。で、Goではどうすればいいのか？ということですが、こちらもすでに有用なライブラリが存在します。&lt;a href=&#34;https://github.com/mjibson/go-dsp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GO-DSP&lt;/a&gt;に含まれる、fftパッケージを使いましょう。&lt;/p&gt;
+&lt;p&gt;このfftパッケージは、go routinesを使って平行化されているため速いです。僕は、1次元のフーリエ変換以外めったに使いませんが、N次元のフーリエ変換をサポートしているのもこのライブラリのいいところです。&lt;/p&gt;
+&lt;h3 id=&#34;参考&#34;&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://mattjibson.com/blog/2013/01/04/go-dsp-fft-performance-with-go-routines/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;go-dsp FFT performance with go routines · Matt Jibson&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使い方は、とても簡単です。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;github.com/mjibson/go-dsp/fft&amp;quot;
+)
+
+func main() {
+	fmt.Println(fft.FFTReal([]float64{1, 2, 3, 4, 5, 6, 7, 8}))
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;離散コサイン変換-discrete-cosine-transform-dct-dcthttpgodocorggithubcomr9y9gosspdct&#34;&gt;離散コサイン変換 (Discrete Cosine Transform; DCT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/dct&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[dct]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;DCTは、Mel-Frequency Cepstrum Coefficients (通称MFCC) 求めるのに必要な変換です。こちらは、残念ながら良さそうなライブラリがなかったので、自分で書きました。&lt;/p&gt;
+&lt;p&gt;使い方はFFTとほとんど一緒です。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;github.com/r9y9/gossp/dct&amp;quot;
+)
+
+func main() {
+	y := dct.DCTOrthogonal([]float64{1, 2, 3, 4, 5, 6, 7, 8})
+	fmt.Println(dct.IDCTOrthogonal(y)) // 直交変換では、逆変換すると元に戻る
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;さて、基本的なところは一旦ここまでです。次からは、少し音声寄りの信号処理手法の紹介です。&lt;/p&gt;
+&lt;h1 id=&#34;時間周波数解析&#34;&gt;時間周波数解析&lt;/h1&gt;
+&lt;h2 id=&#34;短時間フーリエ変換-short-time-fourier-transform-stft-stfthttpgodocorggithubcomr9y9gosspstft&#34;&gt;短時間フーリエ変換 (Short Time Fourier Transform; STFT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/stft&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[stft]&lt;/a&gt;&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/stft.png &#34;STFT spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;STFTは、音声の時間周波数解析手法として定番の方法ですね。音声を可視化したり、何らかの認識アルゴリズムの特徴抽出に使ったり、まぁ色々です。&lt;/p&gt;
+&lt;p&gt;次のようなコードを書くと、スペクトログラムが作れます&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+	&amp;quot;flag&amp;quot;
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;github.com/r9y9/gossp&amp;quot;
+	&amp;quot;github.com/r9y9/gossp/io&amp;quot;
+	&amp;quot;github.com/r9y9/gossp/stft&amp;quot;
+	&amp;quot;github.com/r9y9/gossp/window&amp;quot;
+	&amp;quot;log&amp;quot;
+	&amp;quot;math&amp;quot;
+)
+
+func main() {
+	filename := flag.String(&amp;quot;i&amp;quot;, &amp;quot;input.wav&amp;quot;, &amp;quot;Input filename&amp;quot;)
+	flag.Parse()
+
+	w, werr := io.ReadWav(*filename)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+	data := w.GetMonoData()
+
+	s := &amp;amp;stft.STFT{
+		FrameShift: int(float64(w.SampleRate) / 100.0), // 0.01 sec,
+		FrameLen:   2048,
+		Window:     window.CreateHanning(2048),
+	}
+
+	spectrogram := s.STFT(data)
+	amplitudeSpectrogram, _ := gossp.SplitSpectrogram(spectrogram)
+	PrintMatrixAsGnuplotFormat(amplitudeSpectrogram)
+}
+
+func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
+	fmt.Println(&amp;quot;#&amp;quot;, len(matrix[0]), len(matrix))
+	for i, vec := range matrix {
+		for j, val := range vec {
+			fmt.Println(i, j, math.Log(val))
+		}
+		fmt.Println(&amp;quot;&amp;quot;)
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上の画像は、gnuplotで表示したものです&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;set pm3d map
+sp &amp;quot;spectrogram.txt&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;逆短時間フーリエ変換-inverse-short-time-fourier-transform-istft-stfthttpgodocorggithubcomr9y9gosspstft&#34;&gt;逆短時間フーリエ変換 (Inverse Short Time Fourier Transform; ISTFT) &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/stft&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[stft]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;ISTFTは、STFTの逆変換でスペクトログラムから時間領域の信号に戻すために使います。スペクトログラムを加工するような音源分離、ノイズ除去手法を使う場合には、必須の処理です。これはstftと同じパッケージ下にあります。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;	reconstructed := s.ISTFT(spectrogram)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;これで、スペクトログラムから音声を再構築することができます。&lt;/p&gt;
+&lt;p&gt;逆変換の仕組みは、意外と難しかったりします。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.306.7858&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;D. W. Griffin and J. S. Lim, &amp;ldquo;Signal estimation from modified short-time Fourier transform,&amp;rdquo; IEEE Trans. ASSP, vol.32, no.2, pp.236–243, Apr. 1984.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://research.cs.tamu.edu/prism/lectures/sp/l6.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;L6: Short-time Fourier analysis and synthesis&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yukara-13.hatenablog.com/entry/2013/11/17/210204&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pythonで短時間フーリエ変換（STFT）と逆変換 - 音楽プログラミングの超入門（仮）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;この辺を参考にしました。興味のある人は読んで見てください。&lt;/p&gt;
+&lt;h2 id=&#34;連続ウェーブレット変換-continuous-wavelet-transform-cwt&#34;&gt;連続ウェーブレット変換 (Continuous Wavelet Transform; CWT)&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/morlet_6_log.png &#34;Morlet Wavelet spectrogram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;これは何回かブログで書きました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;FFTを使った連続ウェーブレット変換の高速化 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;コードは、テストがまだ通らないので開発中ということで…orz&lt;/p&gt;
+&lt;h2 id=&#34;逆連続ウェーブレット変換-inverse-continuous-wavelet-transform-icwt&#34;&gt;逆連続ウェーブレット変換 (Inverse Continuous Wavelet Transform; ICWT)&lt;/h2&gt;
+&lt;p&gt;連続ウェーブレット変換の逆変換ですね。これもけっこう難しいです。こちらもまだテストに通っていないので、開発中です。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;さて、この辺でまた一区切りです。次は、より音声に特化した信号処理手法を紹介します。&lt;/p&gt;
+&lt;p&gt;※以降紹介するもののうち、多くは&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SPTK&lt;/a&gt;のGo-portになっていて、一部はcgoを使ってラップしただけです（後々はpure goにしたいけれど、特にメルケプストラム分析あたりは難しいのでできていません）&lt;/p&gt;
+&lt;h1 id=&#34;音声分析系&#34;&gt;音声分析系&lt;/h1&gt;
+&lt;h2 id=&#34;基本周波数推定-f0httpgodocorggithubcomr9y9gosspf0&#34;&gt;基本周波数推定 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/f0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[f0]&lt;/a&gt;&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/arayuru_f0.png &#34;Fundamental frequency trajectory example.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;ざっくり言えば音の高さを求める方法ですね。一応、音声に特化した方法をいくつか使えるようにしました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;A. de Cheveigne and H. Kawahara. YIN, a fundamental frequency estimator for speech and music. J. Acoust. Soc. Am., 111(4):1917–1930, 2002.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cise.ufl.edu/~acamacho/publications/dissertation.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;A. Camacho. SWIPE: A sawtooth waveform inspired pitch estimator for speech and music. PhD thesis, University of Florida, 2007.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ただしYINはもどきです。&lt;/p&gt;
+&lt;p&gt;以前、&lt;a href=&#34;https://github.com/r9y9/go-world&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GO-WORLD&lt;/a&gt;という音声分析合成系WORLDのGoラッパーを書いたので、それを使えばF0推定手法Dioが使えます。&lt;/p&gt;
+&lt;h3 id=&#34;参考-1&#34;&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/03/22/go-world/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;メルケプストラム分析-mgcephttpgodocorggithubcomr9y9gosspmgcep&#34;&gt;メルケプストラム分析 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/mgcep&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[mgcep]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;音声合成界隈ではよく聞くメルケプストラム（※MFCCとは異なります）を求めるための分析手法です。メルケプストラムは、HMM（Hidden Markov Models; 隠れマルコフモデル）音声合成や統計的声質変換において、声道特徴（いわゆる、声質）のパラメータ表現としてよく使われています。メルケプストラムの前に、LPCとかPARCORとか色々あるのですが、現在のHMM音声合成で最もよく使われているのはメルケプストラムな気がするので、メルケプストラム分析があれば十分な気がします。&lt;/p&gt;
+&lt;p&gt;これは、SPTKをcgoを使ってラップしました&lt;/p&gt;
+&lt;h3 id=&#34;参考-2&#34;&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://ci.nii.ac.jp/naid/40004638236/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;徳田恵一, 小林隆夫, 深田俊明, 斎藤博徳, 今井 聖, “メルケプストラムをパラメータとする音声のスペクトル推定,” 信学論(A), vol.J74-A, no.8, pp.1240–1248, Aug. 1991.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;メル一般化ケプストラム分析-mgcephttpgodocorggithubcomr9y9gosspmgcep&#34;&gt;メル一般化ケプストラム分析 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/mgcep&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[mgcep]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;メル一般化ケプストラム分析は、その名の通りメルケプストラム分析を一般化したものです。メルケプストラム分析はもちろん、LPCも包含します（詳細は、参考文献をチェックしてみてください）。論文をいくつかあさっている限り、あんまり使われていない気はしますが、これもSPTKをラップしてGoから使えるようにしました。メルケプストラム分析もメル一般化ケプストラム分析に含まれるので、mgcepという一つのパッケージにしました。&lt;/p&gt;
+&lt;h3 id=&#34;参考-3&#34;&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.utdallas.edu/~john.hanse/nPublications/JP-55-SpeechComm-Yapanel-Hansen-PMVDR-Feb08.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tokuda, K., Masuko, T., Kobayashi, T., Imai, S., 1994. Mel-generalized Cepstral Analysis-A Uniﬁed Approach to Speech Spectral Estimation, ISCA ICSLP-94: Inter. Conf. Spoken Lang. Proc., Yokohama, Japan, pp. 1043–1046.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;音声合成系&#34;&gt;音声合成系&lt;/h1&gt;
+&lt;h2 id=&#34;励起信号の生成-excitehttpgodocorggithubcomr9y9gosspexcite&#34;&gt;励起信号の生成 &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/excite&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[excite]&lt;/a&gt;&lt;/h2&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/pulse_excite.png &#34;Exciation eignal.&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;SPTKのexciteのGo実装です。いわゆるPulseExcitationという奴ですね。非周期成分まったく考慮しない単純な励起信号です。&lt;/p&gt;
+&lt;p&gt;高品質な波形合成が必要な場合は、WORLDやSTRAIGHTを使うのが良いです。&lt;/p&gt;
+&lt;h2 id=&#34;mlsa-mel-log-spectrum-approximation-デジタルフィルタ-vocoderhttpgodocorggithubcomr9y9gosspvocoder&#34;&gt;MLSA (Mel Log Spectrum Approximation) デジタルフィルタ &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/vocoder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[vocoder]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;MLSAフィルタは、メルケプストラムと励起信号から音声波形を合成するためのデジタルフィルタです。HMM音声合成の波形合成部で使われています（今もきっと）。Pure goで書き直しました。&lt;/p&gt;
+&lt;p&gt;昔、C++でも書いたことあります。&lt;/p&gt;
+&lt;h3 id=&#34;参考-4&#34;&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MLSA digital filter のC++実装 - LESS IS MORE&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;mglsa-mel-genaralized-log-spectrum-approximation-デジタルフィルタ-vocoderhttpgodocorggithubcomr9y9gosspvocoder&#34;&gt;MGLSA (Mel Genaralized-Log Spectrum Approximation) デジタルフィルタ &lt;a href=&#34;http://godoc.org/github.com/r9y9/gossp/vocoder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[vocoder]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;MGLSAフィルタは、メル一般化ケプストラムから波形を合成するためのデジタルフィルタですね。これも pure goで書きました。&lt;/p&gt;
+&lt;h2 id=&#34;sptkの再実装について&#34;&gt;&lt;strong&gt;※SPTKの再実装について&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;SPTKの実装をGoで書き直したものについては、SPTKの実装と結果が一致するかどうかを確認するテストを書いてあります。よって、誤った結果になるということは（計算誤差が影響する場合を除き）基本的にないので、お気になさらず。&lt;/p&gt;
+&lt;h2 id=&#34;高品質な音声分析変換合成系-world-go-worldhttpgodocorggithubcomr9y9go-world&#34;&gt;高品質な音声分析変換合成系 WORLD &lt;a href=&#34;http://godoc.org/github.com/r9y9/go-world&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[go-world]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2014/03/22/go-world/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;以前WORLDのGoラッパーを書いたので、色々使えると思います。統計ベースの音声合成とか、声質変換とか。僕は声質変換に使おうと思ってラップしました。&lt;/p&gt;
+&lt;h1 id=&#34;おわりに&#34;&gt;おわりに&lt;/h1&gt;
+&lt;p&gt;長々と書きましたが、Go言語での信号処理の基礎と、今まで整備してきた音声信号処理ライブラリを簡単に紹介しました。僕が書いたものは、まとめてGithubで公開しています。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/gossp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/gossp&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;使ってももらって、あわよくばバグとか報告してもらって、改善していければいいなーというのと、あとGithubのissue管理便利だし使おうと思ってGithubに上げました。&lt;/p&gt;
+&lt;p&gt;みなさん、Goで音声信号処理始めてみませんか？&lt;/p&gt;
+&lt;h1 id=&#34;余談&#34;&gt;余談&lt;/h1&gt;
+&lt;h2 id=&#34;pythonではダメなのその他言語は&#34;&gt;Pythonではダメなの？その他言語は？&lt;/h2&gt;
+&lt;p&gt;なんでGoなの？と思う人がいると思います。冒頭にも書いたとおり、正直好きなのにすればいいですが、適当に書いて速いのがいいならC++だし、型を意識せずさくっと書きたいならPythonだし、そこそこ速くて型があって型推論もあって、とかだったらGoがいいかなと僕は思います。&lt;/p&gt;
+&lt;p&gt;Goの特徴（≒良さ）ついては、&lt;a href=&#34;http://www.slideshare.net/ymotongpoo/20130228-gobp-study-66-16830134&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;20130228 Goノススメ（BPStudy #66） | SlideShare&lt;/a&gt;
+の11枚目が僕にはドンピシャです。&lt;/p&gt;
+&lt;p&gt;numpy, scipy, matplotlib, scikit-learnあたりが最強すぎるので、僕はpythonも良く使います。&lt;/p&gt;
+&lt;h2 id=&#34;きっかけ&#34;&gt;きっかけ&lt;/h2&gt;
+&lt;p&gt;この記事を書いたきっかけは、友人にGoをおすすめしまくっていたのに全然聞いてくれなかったからでした。Goでも信号処理はできるよ&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>cgo の基本的な使い方とポインタ周りのTips (Go v1.2)</title>
+      <link>https://r9y9.github.io/blog/2014/03/22/cgo-tips/</link>
+      <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/03/22/cgo-tips/</guid>
+      <description>&lt;p&gt;C/C++ライブラリのGoラッパーを書くためには、cgoというパッケージを使うのだけど、特にCのポインタ周りにハマりどころが多かったので、少しまとめとく&lt;/p&gt;
+&lt;p&gt;cgoの基礎については、以下の二つを読むことを推奨&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://golang.org/cmd/cgo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://golang.org/cmd/cgo/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.google.com/p/go-wiki/wiki/cgo&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://code.google.com/p/go-wiki/wiki/cgo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;この記事では、cgo基本的な使い方と、いくつかポインタ絡みのTipsをまとめる。Tipsのみ必要な場合は、最初の方は飛ばして下さい&lt;/p&gt;
+&lt;h2 id=&#34;cgo&#34;&gt;cgo&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Cgo enables the creation of Go packages that call C code.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://golang.org/cmd/cgo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://golang.org/cmd/cgo/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;cgoとは、GoからCの関数/型にアクセスするために用いるパッケージのこと。cgoを使えば、GoからCのコードが呼べる。つまり、&lt;strong&gt;Cで書かれたライブラリが、Goでも再利用できる&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;なお、go v1.2 から、C++もサポートされている様子
+&lt;a href=&#34;http://golang.org/doc/go1.2#cgo_and_cpp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://golang.org/doc/go1.2#cgo_and_cpp&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ただし、C++ライブラリの使用方法については現時点でドキュメントはほぼ無し。僕の経験では、extern &amp;ldquo;C&amp;rdquo; を付けておくとC++用のコンパイラでコンパイルされたライブラリでも呼べる&lt;/p&gt;
+&lt;h2 id=&#34;基本的な使い方&#34;&gt;基本的な使い方&lt;/h2&gt;
+&lt;p&gt;まず、Cの型/関数にアクセスするために、cgoパッケージのimportを行う&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;import &amp;quot;C&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;import文のすぐ上のコメントにinclude &amp;lt;ヘッダ.h&amp;gt; と書けば、コンパイルする際に自動で読み込まれるので、必要なヘッダを書く&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;// #include &amp;lt;stdio.h&amp;gt;
+// #include &amp;lt;stdlib.h&amp;gt;
+import &amp;quot;C&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;これで、C.int, C.float, C.double, *C.char、C.malloc, C.free などのようにして、Cの型や関数にアクセスできる&lt;/p&gt;
+&lt;h2 id=&#34;外部ライブラリを呼ぶ&#34;&gt;外部ライブラリを呼ぶ&lt;/h2&gt;
+&lt;p&gt;通常は、ヘッダファイルをincludeするだけでなく、何かしらのライブラリとリンクして用いることが多いので、そのような場合には、ライブラリの依存関係をgoのコードに記述する&lt;/p&gt;
+&lt;p&gt;cgoでは、includeの設定と同様に、CFLAGS、CPPFLAGS、CXXFLAGS、LDFLAGS、pkg-configを記述することができる&lt;/p&gt;
+&lt;p&gt;pkg-configを使うと 、&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;// #cgo pkg-config: png cairo
+// #include &amp;lt;png.h&amp;gt;
+import &amp;quot;C&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;こんな感じ（&lt;a href=&#34;http://golang.org/cmd/cgo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Goの公式ページ&lt;/a&gt;から参照）&lt;/p&gt;
+&lt;h2 id=&#34;tips&#34;&gt;Tips&lt;/h2&gt;
+&lt;p&gt;さて、ここからTips。主に、&lt;a href=&#34;ml.cs.yamanashi.ac.jp/world/&#34;&gt;WORLD&lt;/a&gt;のGoラッパーを書いていたときに得た知見です。ラッパーは、&lt;a href=&#34;https://github.com/r9y9/go-world&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Github&lt;/a&gt;にあげた&lt;/p&gt;
+&lt;h2 id=&#34;1-goのスライスをcのポインタとして関数の引数に渡す&#34;&gt;1. GoのスライスをCのポインタとして関数の引数に渡す&lt;/h2&gt;
+&lt;p&gt;例えば、[]float64 -&amp;gt; double* のイメージ&lt;/p&gt;
+&lt;p&gt;これは比較的簡単にできる。以前qiitaにも書いた
+&lt;a href=&#34;http://qiita.com/r9y9/items/e6d879c9b7d4f2697593&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://qiita.com/r9y9/items/e6d879c9b7d4f2697593&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;(*C.double)(&amp;amp;slice[0])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;のようにキャストしてやればOK&lt;/p&gt;
+&lt;h2 id=&#34;2-goのスライスのスライスをcのポインタのポインタとして関数の引数に渡す&#34;&gt;2. GoのスライスのスライスをCのポインタのポインタとして関数の引数に渡す&lt;/h2&gt;
+&lt;p&gt;[][]float64 -&amp;gt; double** のようなイメージ&lt;/p&gt;
+&lt;p&gt;例として、worldから引っ張ってきた以下のようなCの関数を考える&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;void Star(double *x, int x_length, int fs, double *time_axis, double *f0,
+  int f0_length, double **spectrogram);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;**spectrogramには処理結果が格納される。もちろん処理結果はGoの型で扱いたいんだが、では****spectrogramにどうやってGoの型を渡すか？**ということが問題になる&lt;/p&gt;
+&lt;p&gt;doubleの二次元配列なので、&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;s := [][]float64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;というスライスのスライスを考えて、キャストして渡したいところだけど、結論から言うとこれはできない&lt;/p&gt;
+&lt;p&gt;ではどうするかというと、苦肉の策として、&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;wspace := make([]*C.double, len(f0))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;というスライスを考えて、&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(**C.double)(&amp;amp;wspace[0])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;とすれば、double**として関数の引数に渡すことができる。他にも方法がある気がするが、これでも期待通りの動作をする（あまりハックっぽいことしたくない…&lt;/p&gt;
+&lt;p&gt;まとめると、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;[][]float64 -&amp;gt; double**はできないが、&lt;/li&gt;
+&lt;li&gt;[]*C.double -&amp;gt; double**はできる。よって、一応Goの型をdouble**に渡すことはできる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;です。&lt;/p&gt;
+&lt;h2 id=&#34;3-ポインタのポインタからスライスのスライスへの変換&#34;&gt;3. ポインタのポインタからスライスのスライスへの変換&lt;/h2&gt;
+&lt;p&gt;double** -&amp;gt; [][]float64 のようなイメージ&lt;/p&gt;
+&lt;p&gt;Tipsその2の例より、Cの関数の処理が終われば**spectrogramにデータが格納される。もちろん処理結果はGoの型で扱いたいので、[][]float64 にしたい。ただし、先程の例では、Cの関数に渡した型は実際には []*C.doubleで、Cの型を含んでいる。&lt;/p&gt;
+&lt;p&gt;そこで、次に問題になるのは、**[]*C.doubleにから[][]float64 に変換するにはどうするか？**ということ。そして、これも面倒です…（※節の頭でdouble** -&amp;gt; [][]float64と書いたけど、正確には []*C.double -&amp;gt; [][]float64）&lt;/p&gt;
+&lt;p&gt;結論から言えば、直接の変換は難しいけど中間変数をかませばできる&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;[]bytes型でtmp変数を作り、&lt;code&gt;C.GoBytes&lt;/code&gt; を使って*C.double -&amp;gt; []bytes にコピー&lt;/li&gt;
+&lt;li&gt;encoding/binaryパッケージを使って、[]bytes -&amp;gt; []float64 に書き込み&lt;/li&gt;
+&lt;li&gt;この処理をsliceOfSlices[0], sliceOfSlices[1], &amp;hellip; に対して繰り返す&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以上。とても面倒ですね…&lt;/p&gt;
+&lt;p&gt;さて、結局上のStarのラッパーは以下のようになった&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {
+	FFTSize := C.size_t(C.GetFFTSizeForStar(C.int(fs)))
+	numFreqBins := FFTSize/2 + 1
+
+	// Create workspace
+	wspace := make([]*C.double, len(f0))
+	for i := range wspace {
+		wspace[i] = (*C.double)(C.malloc(byteSizeOfFloat64 * numFreqBins))
+		defer C.free(unsafe.Pointer(wspace[i]))
+	}
+
+	// Perform star
+	C.Star((*C.double)(&amp;amp;x[0]),
+		C.int(len(x)),
+		C.int(fs),
+		(*C.double)(&amp;amp;timeAxis[0]),
+		(*C.double)(&amp;amp;f0[0]),
+		C.int(len(f0)),
+		(**C.double)(&amp;amp;wspace[0]))
+
+	// Copy to go slice
+	spectrogram := make([][]float64, len(f0))
+	for i := range spectrogram {
+		spectrogram[i] = CArrayToGoSlice(wspace[i], C.int(numFreqBins))
+	}
+
+	return spectrogram
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上で使っているutility function&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func CArrayToGoSlice(array *C.double, length C.int) []float64 {
+	slice := make([]float64, int(length))
+	b := C.GoBytes(unsafe.Pointer(array), C.int(byteSizeOfFloat64*length))
+	err := binary.Read(bytes.NewReader(b), binary.LittleEndian, slice)
+	if err != nil {
+		panic(err)
+	}
+	return slice
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;[]*C.double のスライスを作り、作業領域のメモリを確保する（Tips2の内容+メモリ確保）&lt;/li&gt;
+&lt;li&gt;[]&lt;em&gt;C.double のスライスをdouble&lt;/em&gt;* にキャストして、Cの関数を実行（Tips2の内容）&lt;/li&gt;
+&lt;li&gt;[]*C.double から[][]float64に変換する（Tips3の内容）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;という手順になってます&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;※2013/03/27 追記&lt;/strong&gt;
+:もっとシンプルかつ効率的（copyの必要がないように）に書けた。[][]float64で返り値用のスライスを作り、それを[]*double型に変換してCに渡せば、[][]float64に変更が反映されるので、そもそも[]*doubleから[][]float64に変換する必要はなかった。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func Star(x []float64, fs int, timeAxis, f0 []float64) [][]float64 {
+	FFTSize := C.size_t(C.GetFFTSizeForStar(C.int(fs)))
+	numFreqBins := C.size_t(FFTSize/2 + 1)
+
+	spectrogram := make([][]float64, len(f0))
+	for i := range spectrogram {
+		spectrogram[i] = make([]float64, numFreqBins)
+	}
+
+	spectrogramUsedInC := Make2DCArrayAlternative(spectrogram)
+
+	// Perform star
+	C.Star((*C.double)(&amp;amp;x[0]),
+		C.int(len(x)),
+		C.int(fs),
+		(*C.double)(&amp;amp;timeAxis[0]),
+		(*C.double)(&amp;amp;f0[0]),
+		C.int(len(f0)),
+		(**C.double)(&amp;amp;spectrogramUsedInC[0]))
+
+	return spectrogram
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;
+func Make2DCArrayAlternative(matrix [][]float64) []*C.double {
+	alternative := make([]*C.double, len(matrix))
+	for i := range alternative {
+		// DO NOT free because the source slice is managed by Go
+		alternative[i] = (*C.double)(&amp;amp;matrix[i][0])
+	}
+	return alternative
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;ポインタのポインタを引数に取る関数のラップはめんどくさい&lt;/li&gt;
+&lt;li&gt;Goは使いやすいのに &lt;del&gt;cgoは使いにくい&lt;/del&gt;&lt;/li&gt;
+&lt;li&gt;cgoつらい&lt;/li&gt;
+&lt;li&gt;よりいい方法があれば教えて下さい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;20140810-追記&#34;&gt;2014/08/10 追記&lt;/h2&gt;
+&lt;p&gt;cgo使いにくいと書いたけど、あとから考えてみればcgoさんまじ使いやすかったです（遅い&lt;/p&gt;
+&lt;p&gt;Juliaのccallはもっと使いやすい。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>音声分析変換合成システムWORLDのGoラッパーを書いた</title>
+      <link>https://r9y9.github.io/blog/2014/03/22/go-world/</link>
+      <pubDate>Sat, 22 Mar 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/03/22/go-world/</guid>
+      <description>&lt;h2 id=&#34;音声分析変換合成システムworld&#34;&gt;音声分析変換合成システムWORLD&lt;/h2&gt;
+&lt;p&gt;WORLDとは、山梨大学の森勢先生が作られている高品質な音声分析変換合成システムです。非常に高品質かつ高速に動作するのが良い所です。詳細は以下のURLへ&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://ml.cs.yamanashi.ac.jp/world/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://ml.cs.yamanashi.ac.jp/world/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;オリジナルはC+＋で書かれていますが、Goからも使えるようにラッパーを書きました。非常にいいソフトウェアなので、もしよろしければどうぞ&lt;/p&gt;
+&lt;h2 id=&#34;go-world&#34;&gt;GO-WORLD&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/go-world&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/go-world&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;使い方について、ほんの少し解説を書きます&lt;/p&gt;
+&lt;p&gt;※ubuntu12.04でのみ動作確認してます。&lt;/p&gt;
+&lt;h2 id=&#34;準備&#34;&gt;準備&lt;/h2&gt;
+&lt;h3 id=&#34;1-worldのインストール&#34;&gt;1. WORLDのインストール&lt;/h3&gt;
+&lt;p&gt;まずWORLDをインストールする必要があります。公式のパッケージではinstallerに相当するものがなかったので、作りました&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/world&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/world&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt; ./waf configure &amp;amp;&amp;amp; ./waf
+ sudo ./waf install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;でインストールできます。&lt;/p&gt;
+&lt;p&gt;なお、WORLDは最新版ではなく0.1.2としています。最新版にすると自分の環境でビルドコケてしまったので…&lt;/p&gt;
+&lt;h3 id=&#34;2-go-worldのインストール&#34;&gt;2. GO-WORLDのインストール&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;go get github.com/r9y9/go-world
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;簡単ですね！&lt;/p&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+&lt;h3 id=&#34;1-インポートする&#34;&gt;1. インポートする&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;import &amp;quot;github.com/r9y9/go-world&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;2-worldのインスタンスを作る&#34;&gt;2. worldのインスタンスを作る&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;w := world.New(sampleRate, framePeriod) // e.g. (44100, 5)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;3-好きなworldのメソッドを呼ぶ&#34;&gt;3. 好きなworldのメソッドを呼ぶ&lt;/h3&gt;
+&lt;h4 id=&#34;基本周波数の推定-dio&#34;&gt;基本周波数の推定: Dio&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;timeAxis, f0 := w.Dio(input, w.NewDioOption()) // default option is used
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;スペクトル包絡の推定-star&#34;&gt;スペクトル包絡の推定: Star&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;spectrogram := w.Star(input, timeAxis, f0)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;励起信号の推定-platinum&#34;&gt;励起信号の推定: Platinum&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;residual := w.Platinum(input, timeAxis, f0, spectrogram)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;パラメータから音声の再合成-synthesis&#34;&gt;パラメータから音声の再合成: Synthesis&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;synthesized := w.Synthesis(f0, spectrogram, residual, len(input))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;使い方例&#34;&gt;使い方例.&lt;/h2&gt;
+&lt;p&gt;音声（wavファイル）を分析して、パラメータから音声を再合成する例を紹介します。80行弱と少し長いですがはっつけておきます&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+	&amp;quot;flag&amp;quot;
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;github.com/mjibson/go-dsp/wav&amp;quot;
+	&amp;quot;github.com/r9y9/go-world&amp;quot;
+	&amp;quot;log&amp;quot;
+	&amp;quot;os&amp;quot;
+)
+
+var defaultDioOption = world.DioOption{
+	F0Floor:          80.0,
+	F0Ceil:           640.0,
+	FramePeriod:      5,
+	ChannelsInOctave: 4.0,
+	Speed:            6,
+}
+
+// 音声を基本周波数、スペクトル包絡、励起信号の三つに分解したあと、再合成します
+func worldExample(input []float64, sampleRate int) []float64 {
+	w := world.New(sampleRate, defaultDioOption.FramePeriod)
+
+	// 1. Fundamental frequency
+	timeAxis, f0 := w.Dio(input, defaultDioOption)
+
+	// 2. Spectral envelope
+	spectrogram := w.Star(input, timeAxis, f0)
+
+	// 3. Excitation spectrum
+	residual := w.Platinum(input, timeAxis, f0, spectrogram)
+
+	// 4. Synthesis
+	return w.Synthesis(f0, spectrogram, residual, len(input))
+}
+
+// 音声を基本周波数、スペクトル包絡、非周期成分の三つに分解したあと、再合成します
+func worldExampleAp(input []float64, sampleRate int) []float64 {
+	w := world.New(sampleRate, defaultDioOption.FramePeriod)
+
+	// 1. Fundamental frequency
+	timeAxis, f0 := w.Dio(input, defaultDioOption)
+
+	// 2. Spectral envelope
+	spectrogram := w.Star(input, timeAxis, f0)
+
+	// 3. Apiriodiciy
+	apiriodicity, targetF0 := w.AperiodicityRatio(input, f0)
+
+	// 4. Synthesis
+	return w.SynthesisFromAperiodicity(f0, spectrogram, apiriodicity, targetF0, len(input))
+}
+
+func GetMonoDataFromWavData(data [][]int) []float64 {
+	y := make([]float64, len(data))
+	for i, val := range data {
+		y[i] = float64(val[0])
+	}
+	return y
+}
+
+func main() {
+	ifilename := flag.String(&amp;quot;i&amp;quot;, &amp;quot;default.wav&amp;quot;, &amp;quot;Input filename&amp;quot;)
+	flag.Parse()
+
+	// Read wav data
+	file, err := os.Open(*ifilename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	w, werr := wav.ReadWav(file)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+	input := GetMonoDataFromWavData(w.Data)
+	sampleRate := int(w.SampleRate)
+
+	synthesized := worldExample(input, sampleRate)
+	// synthesized := worldExampleAp(input, sampleRate)
+
+	for i, val := range synthesized {
+		fmt.Println(i, val)
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Goだとメモリ管理きにしなくていいしそこそこ速いし読みやすいし書きやすいし楽でいいですね（信者&lt;/p&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;GoはC++ほど速くはないですが、C++の何倍も書きやすいし読みやすい（メンテしやすい）ので、個人的にオススメです（パフォーマンスが厳しく要求される場合には、C++の方がいいかもしれません）&lt;/li&gt;
+&lt;li&gt;WORLD良いソフトウェアなので使いましょう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ちなみに&#34;&gt;ちなみに&lt;/h2&gt;
+&lt;p&gt;元はと言えば、オレオレ基本周波数推定（YINもどき）が微妙に精度悪くて代替を探していたとき、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SPTKのRAPTかSWIPE使おうかな…&lt;/li&gt;
+&lt;li&gt;RAPTもSWIPEもSPTK.hにインタフェースがない…&lt;/li&gt;
+&lt;li&gt;うわRAPTのコード意味わからん&lt;/li&gt;
+&lt;li&gt;SWIPEのコードまじ謎&lt;/li&gt;
+&lt;li&gt;後藤さんのPreFest実装しよう&lt;/li&gt;
+&lt;li&gt;あれ上手くいかない…orz&lt;/li&gt;
+&lt;li&gt;どうしようかな…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;となっていたときに、森勢先生が書いたと思われる以下の文献を見つけて、&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://crestmuse.jp/handbookMI/pdf/2_2_PitchExtraction_Morise.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;2-2 基本周波数推定（歌声研究に関する視点から）&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本方法は，低域に雑音が存在する音声に対する推定は困難であるが，低域の雑音が存在しない音声の場合，SWIPE′ や NDF と実質的に同等の性能を達成しつつ，計算時間を SWIPE′の 1/42, NDF の 1/80 にまで低減可能である．&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;あぁworld使おう（白目&lt;/p&gt;
+&lt;p&gt;となり、ラッパーを書くにいたりましたとさ、おしまい&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Goで音声信号処理をしたいのでSPTKのGoラッパーを書く</title>
+      <link>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</link>
+      <pubDate>Mon, 10 Feb 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</guid>
+      <description>&lt;p&gt;2014/07/22 追記：
+パッケージの一部として書きました（&lt;a href=&#34;http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GOSSP - Go言語で音声信号処理 - LESS IS MORE&lt;/a&gt;を参照）。
+SPTKのラップも含め、いくつかGoで信号処理アルゴリズムを実装したので、お求めの方はどうぞ&lt;/p&gt;
+&lt;p&gt;&amp;ndash;&lt;/p&gt;
+&lt;p&gt;Goが最近オススメです（n度目&lt;/p&gt;
+&lt;p&gt;Goで音声信号処理をしたいけど、全部一から書くのは大変だし、既存の資産は出来るだけ再利用したい。というわけで、C言語製の&lt;a href=&#34;http://sp-tk.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SPTK&lt;/a&gt; をGoから使えるようにする&lt;/p&gt;
+&lt;h2 id=&#34;cgo&#34;&gt;cgo&lt;/h2&gt;
+&lt;p&gt;GoにはC言語のライブラリを使うには、cgoというパッケージを使えばできる。使い方は、公式のページ等を見るといいと思う &lt;a href=&#34;https://golang.org/cmd/cgo/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://golang.org/cmd/cgo/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Cの関数や変数などには、 &lt;code&gt;C.&lt;/code&gt; でアクセスできる&lt;/p&gt;
+&lt;h2 id=&#34;ラッパー&#34;&gt;ラッパー&lt;/h2&gt;
+&lt;p&gt;例えば以下のように書く。MFCCの計算を例に上げる。必要に応じで&lt;code&gt;SPTK.h&lt;/code&gt;に定義されている関数をラップする&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package sptk
+
+// #cgo pkg-config: SPTK
+// #include &amp;lt;stdio.h&amp;gt;
+// #include &amp;lt;SPTK/SPTK.h&amp;gt;
+import &amp;quot;C&amp;quot;
+
+func MFCC(audioBuffer []float64, sampleRate int, alpha, eps float64, wlng, flng, m, n, ceplift int, dftmode, usehamming bool) []float64 {
+	// Convert go bool to C.Boolean (so annoying..
+	var dftmodeInGo, usehammingInGo C.Boolean
+	if dftmode {
+		dftmodeInGo = 1
+	} else {
+		dftmodeInGo = 0
+	}
+	if usehamming {
+		usehammingInGo = 1
+	} else {
+		usehammingInGo = 0
+	}
+
+	resultBuffer := make([]float64, m)
+	C.mfcc((*_Ctype_double)(&amp;amp;audioBuffer[0]), (*_Ctype_double)(&amp;amp;resultBuffer[0]), C.double(sampleRate), C.double(alpha), C.double(eps), C.int(wlng), C.int(flng), C.int(m), C.int(n), C.int(ceplift), dftmodeInGo, usehammingInGo)
+	return resultBuffer
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;このパッケージを使う前に、 &lt;a href=&#34;https://github.com/r9y9/SPTK&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/SPTK&lt;/a&gt; を使ってSPTKをインストールする。本家のを使ってもいいですが、その場合は #cgo の設定が変わると思います。公式のSPTK、pkg-configに対応してくれんかな…&lt;/p&gt;
+&lt;p&gt;最初は、LDFLAGS つけ忘れてて、symbol not foundってなってつらまった。次回から気をつけよう&lt;/p&gt;
+&lt;p&gt;SPTKの、特に（メル）ケプストラム分析当たりは本当に難しいので、論文読んで実装するのも大変だし中身がわからなくてもラップする方が合理的、という結論に至りました。簡単なもの（例えば、メルケプからMLSA filterの係数への変換とか）は、依存関係を少なくするためにもGo nativeで書きなおした方がいいです&lt;/p&gt;
+&lt;p&gt;コードは気が向いたら上げる&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Goでクロマベクトルを求める</title>
+      <link>https://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</link>
+      <pubDate>Tue, 28 Jan 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</guid>
+      <description>&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/pcp_result.png &#34;Chromagram&#34;&#34; class=&#34;image&#34;&gt;&lt;/div&gt;
+&lt;p&gt;Chromagram。ドレミの歌の冒頭を分析した結果です&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;github.com/mjibson/go-dsp/wav&amp;quot;
+	&amp;quot;github.com/r9y9/go-msptools/pcp&amp;quot;
+	&amp;quot;log&amp;quot;
+	&amp;quot;os&amp;quot;
+)
+
+func main() {
+	// reading data
+	file, err := os.Open(&amp;quot;/path/to/file.wav&amp;quot;)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	wav, werr := wav.ReadWav(file)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+
+	// convert to []float64 from []int
+	data := make([]float64, len(wav.Data[0]))
+	for i := range data {
+		data[i] = float64(wav.Data[0][i])
+	}
+
+	// settings for analysis
+	frameShift := int(float64(wav.SampleRate) / 100.0) // 0.01 sec
+	sampleRate := int(wav.SampleRate)
+
+	// create PCP extrator
+	p := pcp.NewPCP(sampleRate, frameShift)
+
+	// analysis roop
+	result := make([][]float64, p.NumFrames(data))
+	for i := 0; i &amp;lt; p.NumFrames(data); i++ {
+		pcp := p.PCP(data, i*frameShift)
+		//pcp := p.PCPNormalized(data, i*frameShift)
+		result[i] = pcp
+	}
+
+	// print as a gnuplot 3D plotting format
+	fmt.Println(&amp;quot;#&amp;quot;, len(result[0]), len(result))
+	for i, spec := range result {
+		for j, val := range spec {
+			fmt.Println(i, j, val)
+		}
+		fmt.Println(&amp;quot;&amp;quot;)
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;こんな感じでOK。Chromagramをgnuplot形式で標準出力に出力します&lt;/p&gt;
+&lt;h2 id=&#34;pitch-class-profile-pcp-in-go-codehttpsgithubcomr9y9go-msptoolstreemasterpcp&#34;&gt;Pitch Class Profile (PCP) in Go &lt;a href=&#34;https://github.com/r9y9/go-msptools/tree/master/pcp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[Code]&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;どうやってクロマベクトルを計算しているかざっくり説明すると、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;入力信号をガボールウェーブレット変換&lt;/li&gt;
+&lt;li&gt;オクターブ無視して12次元に圧縮（例えば55Hz, 110Hz, 220Hz, 440Hz はすべてAとする）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;という手順で求めてます&lt;/p&gt;
+&lt;p&gt;Goかどうかなんてどうでもいいんだけど、まぁC++に比べて書きやすすぎて泣けるよね&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Goで信号処理</title>
+      <link>https://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</link>
+      <pubDate>Mon, 27 Jan 2014 00:00:00 +0000</pubDate>
+      <guid>https://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</guid>
+      <description>&lt;p&gt;最近Go言語を触っていて、これがなかなかいい感じ。そこそこ速いので、信号処理や機械学習も行けると思う&lt;/p&gt;
+&lt;h2 id=&#34;goの良い所&#34;&gt;Goの良い所&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;デフォでたくさん便利なパッケージがある。http, json, os, &amp;hellip;&lt;/li&gt;
+&lt;li&gt;パッケージのインストールはとても簡単。go getするだけ&lt;/li&gt;
+&lt;li&gt;デフォでテストの枠組みがある&lt;/li&gt;
+&lt;li&gt;gofmtでコードのformattingしてくれるので書き方で迷わなくて良い&lt;/li&gt;
+&lt;li&gt;使わないパッケージをimportするとコンパイルエラーになるし自然と疎結合なコードを書くようになる&lt;/li&gt;
+&lt;li&gt;並列処理を言語レベルでサポート&lt;/li&gt;
+&lt;li&gt;GCあるのでメモリ管理なんてしなくていい&lt;/li&gt;
+&lt;li&gt;全般的にC++より書きやすい（ここ重要）&lt;/li&gt;
+&lt;li&gt;そこそこ速い（C++よりは遅いけど）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ホントはPythonでさくっと書きたいけどパフォーマンスもほしいからC++で書くかー（嫌だけど）。と思ってた自分にはちょうどいい&lt;/p&gt;
+&lt;h2 id=&#34;goの悪い所主にcと比べて&#34;&gt;Goの悪い所（主にC++と比べて）&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;ちょっと遅い。さっと試したウェーブレット変換は、1.5倍くらい遅かった気がする（うろ覚え）&lt;/li&gt;
+&lt;li&gt;C++やpythonに比べるとライブラリは少ない&lt;/li&gt;
+&lt;li&gt;言語仕様とかそのへんが優れてるかどうかは判断つきませんごめんなさい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;go-msptools&#34;&gt;Go-msptools&lt;/h1&gt;
+&lt;p&gt;2014/07/22 追記：
+Go-msptoolsはGOSSPに吸収されました。（&lt;a href=&#34;https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/&#34;&gt;GOSSP - Go言語で音声信号処理 - LESS IS MORE&lt;/a&gt;を参照）&lt;/p&gt;
+&lt;h2 id=&#34;おまけ音の信号処理に役立ちそうなライブラリ&#34;&gt;おまけ：音の信号処理に役立ちそうなライブラリ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mjibson/go-dsp/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;go-dsp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.google.com/p/portaudio-go/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;portaudio-go&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

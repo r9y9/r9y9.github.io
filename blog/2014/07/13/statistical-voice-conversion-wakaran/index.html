@@ -1,390 +1,1125 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>統計的声質変換クッソムズすぎワロタ（実装の話） - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="https://gist.github.com/r9y9/88bda659c97f46f42525" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/" />
+  <meta property="og:title" content="統計的声質変換クッソムズすぎワロタ（実装の話） | LESS IS MORE" />
+  <meta property="og:description" content="https://gist.github.com/r9y9/88bda659c97f46f42525" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2014-07-13T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2014-07-13T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/"
+  },
+  "headline": "統計的声質変換クッソムズすぎワロタ（実装の話）",
+  
+  "datePublished": "2014-07-13T00:00:00Z",
+  "dateModified": "2014-07-13T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "https://gist.github.com/r9y9/88bda659c97f46f42525"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>統計的声質変換クッソムズすぎワロタ（実装の話） | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">統計的声質変換クッソムズすぎワロタ（実装の話）</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-07-13">July 13, 2014</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="f2c298d7b98546adb9a5fc0a5397a6a0" >
 
-<p>2014/07/28 追記：<br />
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>統計的声質変換クッソムズすぎワロタ（実装の話）</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jul 13, 2014
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    6 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>2014/07/28 追記：
 重み行列の構築の部分を改良したのでちょいアップデート。具体的にはdense matrixとして構築してからスパース行列に変換していたのを、はじめからスパース行列として構築するようにして無駄にメモリを使わないようにしました。あとdiffが見やすいようにgistにあげました
-<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
-
+<a href="https://gist.github.com/r9y9/88bda659c97f46f42525" target="_blank" rel="noopener">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
 <h2 id="まえがき">まえがき</h2>
-
-<p>前回、<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ - LESS IS MORE</a> という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。</p>
-
-<p>Twitter引用:
+<p>前回、<a href="http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/" target="_blank" rel="noopener">統計的声質変換クッソムズすぎワロタ - LESS IS MORE</a> という記事を書いたら研究者の方々等ちょいちょい反応してくださって嬉しかったです。差分スペクトル補正、その道の人が聴いても音質がいいそう。これはいい情報です。</p>
+<p>Twitter引用:</p>
 <blockquote class="twitter-tweet" lang="en"><p>統計的声質変換クッソムズすぎワロタ - LESS IS MORE <a href="http://t.co/8RkeXIf6Ym">http://t.co/8RkeXIf6Ym</a> <a href="https://twitter.com/r9y9">@r9y9</a>さんから ムズすぎと言いながら，最後の音はしっかり出ているあたり凄いなぁ．</p>&mdash; M. Morise (忍者系研究者) (@m_morise) <a href="https://twitter.com/m_morise/statuses/485339123171852289">July 5, 2014</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
-
-<p><blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/ballforest">@ballforest</a> 従来のパラメータ変換と比較すると、音質は従来よりもよさそうな気はしますがスペクトル包絡の性差ががっつりと影響しそうな気もするんですよね。</p>&mdash; 縄文人（妖精系研究者なのです） (@dicekicker) <a href="https://twitter.com/dicekicker/statuses/485380534122463232">July 5, 2014</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
-
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/ballforest">@ballforest</a> 従来のパラメータ変換と比較すると、音質は従来よりもよさそうな気はしますがスペクトル包絡の性差ががっつりと影響しそうな気もするんですよね。</p>&mdash; 縄文人（妖精系研究者なのです） (@dicekicker) <a href="https://twitter.com/dicekicker/statuses/485380534122463232">July 5, 2014</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>異性間に関しては、実験が必要ですね。異性間だとF0が結構変わってくると思いますが、差分スペクトル補正の場合そもそもF0をいじらないという前提なので、F0とスペクトル包絡が完全に独立でない（ですよね？）以上、同姓間に比べて音質は劣化する気はします。簡単にやったところ、少なくとも僕の主観的には劣化しました</p>
-
 <p>ところで、結構いい感じにできたぜひゃっはーと思って、先輩に聞かせてみたら違いわかんねと言われて心が折れそうになりました。やはり現実はつらいです。</p>
-
 <h2 id="実装の話">実装の話</h2>
-
 <p>さて、今回は少し実装のことを書こうと思います。学習&amp;変換部分はPythonで書いています。その他はGo（※Goの話は書きません）。</p>
-
-<h2 id="トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz">トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz</h2>
-
+<h3 id="トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz">トラジェクトリベースのパラメータ変換が遅いのは僕の実装が悪いからでした本当に申し訳ありませんでしたorz</h3>
 <p>前回トラジェクトリベースは処理が激重だと書きました。なんと、4秒程度の音声（フレームシフト5msで777フレーム）に対して変換部分に600秒ほどかかっていたのですが（重すぎワロタ）、結果から言えばPythonでも12秒くらいまでに高速化されました（混合数64, メルケプの次元数40+デルタ=80次元、分散共分散はfull）。本当にごめんなさい。</p>
-
 <p>何ヶ月か前、ノリでトラジェクトリベースの変換を実装しようと思ってサクッと書いたのがそのままで、つまりとても効率の悪い実装になっていました。具体的には放置していた問題が二つあって、</p>
-
 <ul>
 <li>ナイーブな逆行列の計算</li>
 <li>スパース性の無視</li>
 </ul>
-
 <p>です。特に後者はかなりパフォーマンスに影響していました</p>
-
-<h2 id="ナイーブな逆行列の計算">ナイーブな逆行列の計算</h2>
-
-<p><a href="http://d.hatena.ne.jp/sleepy_yoshi/20120513/p1">numpy.linalg.invとnumpy.linalg.solveを用いた逆行列計算 - 睡眠不足？！ (id:sleepy_yoshi)</a></p>
-
+<h3 id="ナイーブな逆行列の計算">ナイーブな逆行列の計算</h3>
+<p><a href="http://d.hatena.ne.jp/sleepy_yoshi/20120513/p1" target="_blank" rel="noopener">numpy.linalg.invとnumpy.linalg.solveを用いた逆行列計算 - 睡眠不足？！ (id:sleepy_yoshi)</a></p>
 <p><code>numpy.linalg.inv</code>を使っていましたよね。しかも<code>numpy.linalg.solve</code>のほうが速いことを知っていながら。一ヶ月前の自分を問い詰めたい。<code>numpy.linalg.solve</code>で置き換えたら少し速くなりました。</p>
-
 <ul>
-<li>600秒 -&gt; 570秒 （うろ覚え）</li>
+<li>600秒 -&gt; 570秒</li>
 </ul>
-
-<p>1.05倍の高速化（微妙）</p>
-
-<h2 id="スパース性の無視">スパース性の無視</h2>
-
+<p>1.05倍の高速化</p>
+<h3 id="スパース性の無視">スパース性の無視</h3>
 <ul>
-<li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf">T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007</a>.</li>
+<li><a href="http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf" target="_blank" rel="noopener">T. Toda, A. W. Black, and K. Tokuda, “Voice conversion based on maximum likelihood estimation of spectral parameter trajectory,” IEEE Trans. Audio, Speech, Lang. Process, vol. 15, no. 8, pp. 2222–2235, Nov. 2007</a>.</li>
 </ul>
-
 <p>論文を見ていただければわかるのですが、トラジェクトリベースの変換法における多くの計算は、行列を使って表すことができます。で、論文中の$W$という行列は、サイズがめちゃくちゃでかいのですがほとんどの要素は0です。この性質を使わない理由はないですよね？？</p>
-
 <p>…残念なことに、僕は密行列として扱って計算していました。ほら、疎行列ってちょっと扱いづらいじゃないですか…めんどくさそう…と思って放置してました。ごめんなさい</p>
-
 <p>pythonで疎行列を扱うなら、scipy.sparseを使えば良さそうです。結果、$W$を疎行列として扱うことで行列演算は大きく高速化されました。</p>
-
 <ul>
 <li>570秒 -&gt; 12秒くらい</li>
 </ul>
-
 <p>単純に考えると50倍の高速化ですか。本当にアホだった。最初からscipy.sparse使っておけばよかったです。</p>
-
 <p>scipy.sparseの使い方は以下を参考にしました。みなさんぜひ使いましょう</p>
-
 <ul>
-<li><a href="http://sucrose.hatenablog.com/entry/2013/04/07/130625">Python で疎行列(SciPy) - 唯物是真 @Scaled_Wurm</a></li>
-<li><a href="http://docs.scipy.org/doc/scipy/reference/sparse.html">Sparse matrices (scipy.sparse) — SciPy v0.14.0 Reference Guide</a></li>
-<li><a href="http://lucidfrontier45.wordpress.com/2011/08/02/scipysparse_matmul/">scipy.sparseで疎行列の行列積 | frontier45</a></li>
+<li><a href="http://sucrose.hatenablog.com/entry/2013/04/07/130625" target="_blank" rel="noopener">Python で疎行列(SciPy) - 唯物是真 @Scaled_Wurm</a></li>
+<li><a href="http://docs.scipy.org/doc/scipy/reference/sparse.html" target="_blank" rel="noopener">Sparse matrices (scipy.sparse) — SciPy v0.14.0 Reference Guide</a></li>
+<li><a href="http://lucidfrontier45.wordpress.com/2011/08/02/scipysparse_matmul/" target="_blank" rel="noopener">scipy.sparseで疎行列の行列積 | frontier45</a></li>
 </ul>
-
 <h2 id="コード">コード</h2>
-
 <p>メモ的な意味で主要なコードを貼っておきます。
-<a href="https://gist.github.com/r9y9/88bda659c97f46f42525">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/python</span>
-<span style="color:#75715e"># coding: utf-8</span>
+<a href="https://gist.github.com/r9y9/88bda659c97f46f42525" target="_blank" rel="noopener">https://gist.github.com/r9y9/88bda659c97f46f42525</a></p>
+<pre><code class="language-python">#!/usr/bin/python
+# coding: utf-8
 
-<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
-<span style="color:#f92672">from</span> numpy <span style="color:#f92672">import</span> linalg
-<span style="color:#f92672">from</span> sklearn.mixture <span style="color:#f92672">import</span> GMM
-<span style="color:#f92672">import</span> scipy.linalg
-<span style="color:#f92672">import</span> scipy.sparse
-<span style="color:#f92672">import</span> scipy.sparse.linalg
+import numpy as np
+from numpy import linalg
+from sklearn.mixture import GMM
+import scipy.linalg
+import scipy.sparse
+import scipy.sparse.linalg
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">GMMMap</span>:
-    <span style="color:#e6db74">&#34;&#34;&#34;GMM-based frame-by-frame speech parameter mapping. 
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    GMMMap represents a class to transform spectral features of a source
-</span><span style="color:#e6db74">    speaker to that of a target speaker based on Gaussian Mixture Models
-</span><span style="color:#e6db74">    of source and target joint spectral features.
-</span><span style="color:#e6db74">    
-</span><span style="color:#e6db74">    Notation
-</span><span style="color:#e6db74">    --------
-</span><span style="color:#e6db74">    Source speaker&#39;s feature: X = {x_t}, 0 &lt;= t &lt; T
-</span><span style="color:#e6db74">    Target speaker&#39;s feature: Y = {y_t}, 0 &lt;= t &lt; T
-</span><span style="color:#e6db74">    where T is the number of time frames.
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    Parameters
-</span><span style="color:#e6db74">    ----------
-</span><span style="color:#e6db74">    gmm : scipy.mixture.GMM
-</span><span style="color:#e6db74">        Gaussian Mixture Models of source and target joint features
-</span><span style="color:#e6db74">    
-</span><span style="color:#e6db74">    swap : bool
-</span><span style="color:#e6db74">        True: source -&gt; target
-</span><span style="color:#e6db74">        False target -&gt; source
-</span><span style="color:#e6db74">    
-</span><span style="color:#e6db74">    Attributes
-</span><span style="color:#e6db74">    ----------
-</span><span style="color:#e6db74">    num_mixtures : int
-</span><span style="color:#e6db74">        the number of Gaussian mixtures
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    weights : array, shape (`num_mixtures`)
-</span><span style="color:#e6db74">        weights for each gaussian
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    src_means : array, shape (`num_mixtures`, `order of spectral feature`)
-</span><span style="color:#e6db74">        means of GMM for a source speaker
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    tgt_means : array, shape (`num_mixtures`, `order of spectral feature`)
-</span><span style="color:#e6db74">        means of GMM for a target speaker
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    covarXX : array, shape (`num_mixtures`, `order of spectral feature`, 
-</span><span style="color:#e6db74">        `order of spectral feature`)
-</span><span style="color:#e6db74">        variance matrix of source speaker&#39;s spectral feature
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    covarXY : array, shape (`num_mixtures`, `order of spectral feature`, 
-</span><span style="color:#e6db74">        `order of spectral feature`)
-</span><span style="color:#e6db74">        covariance matrix of source and target speaker&#39;s spectral feature
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    covarYX : array, shape (`num_mixtures`, `order of spectral feature`, 
-</span><span style="color:#e6db74">        `order of spectral feature`)
-</span><span style="color:#e6db74">        covariance matrix of target and source speaker&#39;s spectral feature
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    covarYY : array, shape (`num_mixtures`, `order of spectral feature`, 
-</span><span style="color:#e6db74">        `order of spectral feature`)
-</span><span style="color:#e6db74">        variance matrix of target speaker&#39;s spectral feature
-</span><span style="color:#e6db74">    
-</span><span style="color:#e6db74">    D : array, shape (`num_mixtures`, `order of spectral feature`, 
-</span><span style="color:#e6db74">        `order of spectral feature`)
-</span><span style="color:#e6db74">        covariance matrices of target static spectral features
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    px : scipy.mixture.GMM
-</span><span style="color:#e6db74">        Gaussian Mixture Models of source speaker&#39;s features
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    Reference
-</span><span style="color:#e6db74">    ---------
-</span><span style="color:#e6db74">      - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
-</span><span style="color:#e6db74">        of Spectral Parameter Trajectory.
-</span><span style="color:#e6db74">        http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
-    <span style="color:#66d9ef">def</span> __init__(self, gmm, swap<span style="color:#f92672">=</span>False):
-        <span style="color:#75715e"># D is the order of spectral feature for a speaker</span>
-        self<span style="color:#f92672">.</span>num_mixtures, D <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>means_<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>], gmm<span style="color:#f92672">.</span>means_<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
-        self<span style="color:#f92672">.</span>weights <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>weights_
+class GMMMap:
+    &quot;&quot;&quot;GMM-based frame-by-frame speech parameter mapping.
 
-        <span style="color:#75715e"># Split source and target parameters from joint GMM</span>
-        self<span style="color:#f92672">.</span>src_means <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>means_[:, <span style="color:#ae81ff">0</span>:D]
-        self<span style="color:#f92672">.</span>tgt_means <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>means_[:, D:]
-        self<span style="color:#f92672">.</span>covarXX <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>covars_[:, :D, :D]
-        self<span style="color:#f92672">.</span>covarXY <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>covars_[:, :D, D:]
-        self<span style="color:#f92672">.</span>covarYX <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>covars_[:, D:, :D]
-        self<span style="color:#f92672">.</span>covarYY <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>covars_[:, D:, D:]
+    GMMMap represents a class to transform spectral features of a source
+    speaker to that of a target speaker based on Gaussian Mixture Models
+    of source and target joint spectral features.
 
-        <span style="color:#75715e"># swap src and target parameters</span>
-        <span style="color:#66d9ef">if</span> swap:
-            self<span style="color:#f92672">.</span>tgt_means, self<span style="color:#f92672">.</span>src_means <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>src_means, self<span style="color:#f92672">.</span>tgt_means
-            self<span style="color:#f92672">.</span>covarYY, self<span style="color:#f92672">.</span>covarXX <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>covarXX, self<span style="color:#f92672">.</span>covarYY
-            self<span style="color:#f92672">.</span>covarYX, self<span style="color:#f92672">.</span>covarXY <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>XY, self<span style="color:#f92672">.</span>covarYX
+    Notation
+    --------
+    Source speaker's feature: X = {x_t}, 0 &lt;= t &lt; T
+    Target speaker's feature: Y = {y_t}, 0 &lt;= t &lt; T
+    where T is the number of time frames.
 
-        <span style="color:#75715e"># Compute D eq.(12) in [Toda 2007]</span>
-        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(self<span style="color:#f92672">.</span>num_mixtures<span style="color:#f92672">*</span>D<span style="color:#f92672">*</span>D)<span style="color:#f92672">.</span>reshape(self<span style="color:#f92672">.</span>num_mixtures, D, D)
-        <span style="color:#66d9ef">for</span> m <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>num_mixtures):
-            xx_inv_xy <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>solve(self<span style="color:#f92672">.</span>covarXX[m], self<span style="color:#f92672">.</span>covarXY[m])
-            self<span style="color:#f92672">.</span>D[m] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>covarYY[m] <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>covarYX[m], xx_inv_xy)
+    Parameters
+    ----------
+    gmm : scipy.mixture.GMM
+        Gaussian Mixture Models of source and target joint features
 
-        <span style="color:#75715e"># p(x), which is used to compute posterior prob. for a given source</span>
-        <span style="color:#75715e"># spectral feature in mapping stage.</span>
-        self<span style="color:#f92672">.</span>px <span style="color:#f92672">=</span> GMM(n_components<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>num_mixtures, covariance_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;full&#34;</span>)
-        self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>means_ <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>src_means
-        self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>covars_ <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>covarXX
-        self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>weights_ <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>weights
+    swap : bool
+        True: source -&gt; target
+        False target -&gt; source
 
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convert</span>(self, src):
-        <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">        Mapping source spectral feature x to target spectral feature y 
-</span><span style="color:#e6db74">        so that minimize the mean least squared error.
-</span><span style="color:#e6db74">        More specifically, it returns the value E(p(y|x)].
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">        Parameters
-</span><span style="color:#e6db74">        ----------
-</span><span style="color:#e6db74">        src : array, shape (`order of spectral feature`)
-</span><span style="color:#e6db74">            source speaker&#39;s spectral feature that will be transformed
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">        Return
-</span><span style="color:#e6db74">        ------
-</span><span style="color:#e6db74">        converted spectral feature
-</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
-        D <span style="color:#f92672">=</span> len(src)
+    Attributes
+    ----------
+    num_mixtures : int
+        the number of Gaussian mixtures
 
-        <span style="color:#75715e"># Eq.(11)</span>
-        E <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((self<span style="color:#f92672">.</span>num_mixtures, D))
-        <span style="color:#66d9ef">for</span> m <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>num_mixtures):
-            xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>solve(self<span style="color:#f92672">.</span>covarXX[m], src <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>src_means[m])
-            E[m] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>tgt_means[m] <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>covarYX[m]<span style="color:#f92672">.</span>dot(xx)
-                
-        <span style="color:#75715e"># Eq.(9) p(m|x)</span>
-        posterior <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>predict_proba(np<span style="color:#f92672">.</span>atleast_2d(src))
+    weights : array, shape (`num_mixtures`)
+        weights for each gaussian
 
-        <span style="color:#75715e"># Eq.(13) conditinal mean E[p(y|x)]</span>
-        <span style="color:#66d9ef">return</span> posterior<span style="color:#f92672">.</span>dot(E)
-            
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TrajectoryGMMMap</span>(GMMMap):
-    <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">    Trajectory-based speech parameter mapping for voice conversion
-</span><span style="color:#e6db74">    based on the maximum likelihood criterion.
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    Parameters
-</span><span style="color:#e6db74">    ----------
-</span><span style="color:#e6db74">    gmm : scipy.mixture.GMM
-</span><span style="color:#e6db74">        Gaussian Mixture Models of source and target speaker joint features
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    gv : scipy.mixture.GMM (default=None)
-</span><span style="color:#e6db74">        Gaussian Mixture Models of target speaker&#39;s global variance of spectral
-</span><span style="color:#e6db74">        feature
-</span><span style="color:#e6db74">    
-</span><span style="color:#e6db74">    swap : bool (default=False)
-</span><span style="color:#e6db74">        True: source -&gt; target
-</span><span style="color:#e6db74">        False target -&gt; source
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    Attributes
-</span><span style="color:#e6db74">    ----------
-</span><span style="color:#e6db74">    TODO 
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">    Reference
-</span><span style="color:#e6db74">    ---------
-</span><span style="color:#e6db74">      - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
-</span><span style="color:#e6db74">        of Spectral Parameter Trajectory.
-</span><span style="color:#e6db74">        http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
-</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
-    <span style="color:#66d9ef">def</span> __init__(self, gmm, T, gv<span style="color:#f92672">=</span>None, swap<span style="color:#f92672">=</span>False):
-        GMMMap<span style="color:#f92672">.</span>__init__(self, gmm, swap)
+    src_means : array, shape (`num_mixtures`, `order of spectral feature`)
+        means of GMM for a source speaker
 
-        self<span style="color:#f92672">.</span>T <span style="color:#f92672">=</span> T
-        <span style="color:#75715e"># shape[1] = d(src) + d(src_delta) + d(tgt) + d(tgt_delta)</span>
-        D <span style="color:#f92672">=</span> gmm<span style="color:#f92672">.</span>means_<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">4</span>
+    tgt_means : array, shape (`num_mixtures`, `order of spectral feature`)
+        means of GMM for a target speaker
 
-        <span style="color:#75715e">## Setup for Trajectory-based mapping</span>
-        self<span style="color:#f92672">.</span>__construct_weight_matrix(T, D)
+    covarXX : array, shape (`num_mixtures`, `order of spectral feature`,
+        `order of spectral feature`)
+        variance matrix of source speaker's spectral feature
 
-        <span style="color:#75715e">## Setup for GV post-filtering</span>
-        <span style="color:#75715e"># It is assumed that GV is modeled as a single mixture GMM</span>
-        <span style="color:#66d9ef">if</span> gv <span style="color:#f92672">!=</span> None:
-            self<span style="color:#f92672">.</span>gv_mean <span style="color:#f92672">=</span> gv<span style="color:#f92672">.</span>means_[<span style="color:#ae81ff">0</span>]
-            self<span style="color:#f92672">.</span>gv_covar <span style="color:#f92672">=</span> gv<span style="color:#f92672">.</span>covars_[<span style="color:#ae81ff">0</span>]
-            self<span style="color:#f92672">.</span>Pv <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>inv(self<span style="color:#f92672">.</span>gv_covar)
+    covarXY : array, shape (`num_mixtures`, `order of spectral feature`,
+        `order of spectral feature`)
+        covariance matrix of source and target speaker's spectral feature
 
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__construct_weight_matrix</span>(self, T, D):
-        <span style="color:#75715e"># Construct Weight matrix W</span>
-        <span style="color:#75715e"># Eq.(25) ~ (28)</span>
-        <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> range(T):
-            w0 <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>lil_matrix((D, D<span style="color:#f92672">*</span>T))
-            w1 <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>lil_matrix((D, D<span style="color:#f92672">*</span>T))
-            w0[<span style="color:#ae81ff">0</span>:,t<span style="color:#f92672">*</span>D:(t<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>D] <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>diags(np<span style="color:#f92672">.</span>ones(D), <span style="color:#ae81ff">0</span>)
+    covarYX : array, shape (`num_mixtures`, `order of spectral feature`,
+        `order of spectral feature`)
+        covariance matrix of target and source speaker's spectral feature
 
-            <span style="color:#66d9ef">if</span> t<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>:
-                tmp <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(D)
-                tmp<span style="color:#f92672">.</span>fill(<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span>)
-                w1[<span style="color:#ae81ff">0</span>:,(t<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>D:t<span style="color:#f92672">*</span>D] <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>diags(tmp, <span style="color:#ae81ff">0</span>)
-            <span style="color:#66d9ef">if</span> t<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> T:
-                tmp <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(D)
-                tmp<span style="color:#f92672">.</span>fill(<span style="color:#ae81ff">0.5</span>)
-                w1[<span style="color:#ae81ff">0</span>:,(t<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>D:(t<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>)<span style="color:#f92672">*</span>D] <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>diags(tmp, <span style="color:#ae81ff">0</span>)
+    covarYY : array, shape (`num_mixtures`, `order of spectral feature`,
+        `order of spectral feature`)
+        variance matrix of target speaker's spectral feature
 
-            W_t <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>vstack([w0, w1])
+    D : array, shape (`num_mixtures`, `order of spectral feature`,
+        `order of spectral feature`)
+        covariance matrices of target static spectral features
 
-            <span style="color:#75715e"># Slower</span>
-            <span style="color:#75715e"># self.W[2*D*t:2*D*(t+1),:] = W_t</span>
+    px : scipy.mixture.GMM
+        Gaussian Mixture Models of source speaker's features
 
-            <span style="color:#66d9ef">if</span> t <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-                self<span style="color:#f92672">.</span>W <span style="color:#f92672">=</span> W_t
-            <span style="color:#66d9ef">else</span>:
-                self<span style="color:#f92672">.</span>W <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>vstack([self<span style="color:#f92672">.</span>W, W_t])
+    Reference
+    ---------
+      - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
+        of Spectral Parameter Trajectory.
+        http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
 
-        self<span style="color:#f92672">.</span>W <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>csr_matrix(self<span style="color:#f92672">.</span>W)
+    &quot;&quot;&quot;
+    def __init__(self, gmm, swap=False):
+        # D is the order of spectral feature for a speaker
+        self.num_mixtures, D = gmm.means_.shape[0], gmm.means_.shape[1]/2
+        self.weights = gmm.weights_
 
-        <span style="color:#66d9ef">assert</span> self<span style="color:#f92672">.</span>W<span style="color:#f92672">.</span>shape <span style="color:#f92672">==</span> (<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>D<span style="color:#f92672">*</span>T, D<span style="color:#f92672">*</span>T)
-        
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convert</span>(self, src):
-        <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">        Mapping source spectral feature x to target spectral feature y 
-</span><span style="color:#e6db74">        so that maximize the likelihood of y given x.
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">        Parameters
-</span><span style="color:#e6db74">        ----------
-</span><span style="color:#e6db74">        src : array, shape (`the number of frames`, `the order of spectral feature`)
-</span><span style="color:#e6db74">            a sequence of source speaker&#39;s spectral feature that will be
-</span><span style="color:#e6db74">            transformed
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">        Return
-</span><span style="color:#e6db74">        ------
-</span><span style="color:#e6db74">        a sequence of transformed spectral features
-</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
-        T, D <span style="color:#f92672">=</span> src<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>], src<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
+        # Split source and target parameters from joint GMM
+        self.src_means = gmm.means_[:, 0:D]
+        self.tgt_means = gmm.means_[:, D:]
+        self.covarXX = gmm.covars_[:, :D, :D]
+        self.covarXY = gmm.covars_[:, :D, D:]
+        self.covarYX = gmm.covars_[:, D:, :D]
+        self.covarYY = gmm.covars_[:, D:, D:]
 
-        <span style="color:#66d9ef">if</span> T <span style="color:#f92672">!=</span> self<span style="color:#f92672">.</span>T:
-            self<span style="color:#f92672">.</span>__construct_weight_matrix(T, D)
+        # swap src and target parameters
+        if swap:
+            self.tgt_means, self.src_means = self.src_means, self.tgt_means
+            self.covarYY, self.covarXX = self.covarXX, self.covarYY
+            self.covarYX, self.covarXY = self.XY, self.covarYX
 
-        <span style="color:#75715e"># A suboptimum mixture sequence  (eq.37)</span>
-        optimum_mix <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>px<span style="color:#f92672">.</span>predict(src)
+        # Compute D eq.(12) in [Toda 2007]
+        self.D = np.zeros(self.num_mixtures*D*D).reshape(self.num_mixtures, D, D)
+        for m in range(self.num_mixtures):
+            xx_inv_xy = np.linalg.solve(self.covarXX[m], self.covarXY[m])
+            self.D[m] = self.covarYY[m] - np.dot(self.covarYX[m], xx_inv_xy)
 
-        <span style="color:#75715e"># Compute E eq.(40)</span>
-        self<span style="color:#f92672">.</span>E <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((T, <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>D))
-        <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> range(T):
-            m <span style="color:#f92672">=</span> optimum_mix[t] <span style="color:#75715e"># estimated mixture index at time t</span>
-            xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>solve(self<span style="color:#f92672">.</span>covarXX[m], src[t] <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>src_means[m])
-            <span style="color:#75715e"># Eq. (22)</span>
-            self<span style="color:#f92672">.</span>E[t] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>tgt_means[m] <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>covarYX[m], xx)
-        self<span style="color:#f92672">.</span>E <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>E<span style="color:#f92672">.</span>flatten()
+        # p(x), which is used to compute posterior prob. for a given source
+        # spectral feature in mapping stage.
+        self.px = GMM(n_components=self.num_mixtures, covariance_type=&quot;full&quot;)
+        self.px.means_ = self.src_means
+        self.px.covars_ = self.covarXX
+        self.px.weights_ = self.weights
 
-        <span style="color:#75715e"># Compute D eq.(41). Note that self.D represents D^-1.</span>
-        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((T, <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>D, <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>D))
-        <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> range(T):
-            m <span style="color:#f92672">=</span> optimum_mix[t]
-            xx_inv_xy <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>solve(self<span style="color:#f92672">.</span>covarXX[m], self<span style="color:#f92672">.</span>covarXY[m])
-            <span style="color:#75715e"># Eq. (23)</span>
-            self<span style="color:#f92672">.</span>D[t] <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>covarYY[m] <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>covarYX[m], xx_inv_xy)
-            self<span style="color:#f92672">.</span>D[t] <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>inv(self<span style="color:#f92672">.</span>D[t])
-        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>block_diag(<span style="color:#f92672">*</span>self<span style="color:#f92672">.</span>D)
+    def convert(self, src):
+        &quot;&quot;&quot;
+        Mapping source spectral feature x to target spectral feature y
+        so that minimize the mean least squared error.
+        More specifically, it returns the value E(p(y|x)].
 
-        <span style="color:#75715e"># represent D as a sparse matrix</span>
-        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>csr_matrix(self<span style="color:#f92672">.</span>D)
+        Parameters
+        ----------
+        src : array, shape (`order of spectral feature`)
+            source speaker's spectral feature that will be transformed
 
-        <span style="color:#75715e"># Compute target static features</span>
-        <span style="color:#75715e"># eq.(39)</span>
-        covar <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>W<span style="color:#f92672">.</span>T<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>D<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W))
-        y <span style="color:#f92672">=</span> scipy<span style="color:#f92672">.</span>sparse<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>spsolve(covar, self<span style="color:#f92672">.</span>W<span style="color:#f92672">.</span>T<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>D<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>E)),\
-                                        use_umfpack<span style="color:#f92672">=</span>False)
-        <span style="color:#66d9ef">return</span> y<span style="color:#f92672">.</span>reshape((T, D))</code></pre></div>
+        Return
+        ------
+        converted spectral feature
+        &quot;&quot;&quot;
+        D = len(src)
+
+        # Eq.(11)
+        E = np.zeros((self.num_mixtures, D))
+        for m in range(self.num_mixtures):
+            xx = np.linalg.solve(self.covarXX[m], src - self.src_means[m])
+            E[m] = self.tgt_means[m] + self.covarYX[m].dot(xx)
+
+        # Eq.(9) p(m|x)
+        posterior = self.px.predict_proba(np.atleast_2d(src))
+
+        # Eq.(13) conditinal mean E[p(y|x)]
+        return posterior.dot(E)
+
+class TrajectoryGMMMap(GMMMap):
+    &quot;&quot;&quot;
+    Trajectory-based speech parameter mapping for voice conversion
+    based on the maximum likelihood criterion.
+
+    Parameters
+    ----------
+    gmm : scipy.mixture.GMM
+        Gaussian Mixture Models of source and target speaker joint features
+
+    gv : scipy.mixture.GMM (default=None)
+        Gaussian Mixture Models of target speaker's global variance of spectral
+        feature
+
+    swap : bool (default=False)
+        True: source -&gt; target
+        False target -&gt; source
+
+    Attributes
+    ----------
+    TODO
+
+    Reference
+    ---------
+      - [Toda 2007] Voice Conversion Based on Maximum Likelihood Estimation
+        of Spectral Parameter Trajectory.
+        http://isw3.naist.jp/~tomoki/Tomoki/Journals/IEEE-Nov-2007_MLVC.pdf
+    &quot;&quot;&quot;
+    def __init__(self, gmm, T, gv=None, swap=False):
+        GMMMap.__init__(self, gmm, swap)
+
+        self.T = T
+        # shape[1] = d(src) + d(src_delta) + d(tgt) + d(tgt_delta)
+        D = gmm.means_.shape[1] / 4
+
+        ## Setup for Trajectory-based mapping
+        self.__construct_weight_matrix(T, D)
+
+        ## Setup for GV post-filtering
+        # It is assumed that GV is modeled as a single mixture GMM
+        if gv != None:
+            self.gv_mean = gv.means_[0]
+            self.gv_covar = gv.covars_[0]
+            self.Pv = np.linalg.inv(self.gv_covar)
+
+    def __construct_weight_matrix(self, T, D):
+        # Construct Weight matrix W
+        # Eq.(25) ~ (28)
+        for t in range(T):
+            w0 = scipy.sparse.lil_matrix((D, D*T))
+            w1 = scipy.sparse.lil_matrix((D, D*T))
+            w0[0:,t*D:(t+1)*D] = scipy.sparse.diags(np.ones(D), 0)
+
+            if t-1 &gt;= 0:
+                tmp = np.zeros(D)
+                tmp.fill(-0.5)
+                w1[0:,(t-1)*D:t*D] = scipy.sparse.diags(tmp, 0)
+            if t+1 &lt; T:
+                tmp = np.zeros(D)
+                tmp.fill(0.5)
+                w1[0:,(t+1)*D:(t+2)*D] = scipy.sparse.diags(tmp, 0)
+
+            W_t = scipy.sparse.vstack([w0, w1])
+
+            # Slower
+            # self.W[2*D*t:2*D*(t+1),:] = W_t
+
+            if t == 0:
+                self.W = W_t
+            else:
+                self.W = scipy.sparse.vstack([self.W, W_t])
+
+        self.W = scipy.sparse.csr_matrix(self.W)
+
+        assert self.W.shape == (2*D*T, D*T)
+
+    def convert(self, src):
+        &quot;&quot;&quot;
+        Mapping source spectral feature x to target spectral feature y
+        so that maximize the likelihood of y given x.
+
+        Parameters
+        ----------
+        src : array, shape (`the number of frames`, `the order of spectral feature`)
+            a sequence of source speaker's spectral feature that will be
+            transformed
+
+        Return
+        ------
+        a sequence of transformed spectral features
+        &quot;&quot;&quot;
+        T, D = src.shape[0], src.shape[1]/2
+
+        if T != self.T:
+            self.__construct_weight_matrix(T, D)
+
+        # A suboptimum mixture sequence  (eq.37)
+        optimum_mix = self.px.predict(src)
+
+        # Compute E eq.(40)
+        self.E = np.zeros((T, 2*D))
+        for t in range(T):
+            m = optimum_mix[t] # estimated mixture index at time t
+            xx = np.linalg.solve(self.covarXX[m], src[t] - self.src_means[m])
+            # Eq. (22)
+            self.E[t] = self.tgt_means[m] + np.dot(self.covarYX[m], xx)
+        self.E = self.E.flatten()
+
+        # Compute D eq.(41). Note that self.D represents D^-1.
+        self.D = np.zeros((T, 2*D, 2*D))
+        for t in range(T):
+            m = optimum_mix[t]
+            xx_inv_xy = np.linalg.solve(self.covarXX[m], self.covarXY[m])
+            # Eq. (23)
+            self.D[t] = self.covarYY[m] - np.dot(self.covarYX[m], xx_inv_xy)
+            self.D[t] = np.linalg.inv(self.D[t])
+        self.D = scipy.linalg.block_diag(*self.D)
+
+        # represent D as a sparse matrix
+        self.D = scipy.sparse.csr_matrix(self.D)
+
+        # Compute target static features
+        # eq.(39)
+        covar = self.W.T.dot(self.D.dot(self.W))
+        y = scipy.sparse.linalg.spsolve(covar, self.W.T.dot(self.D.dot(self.E)),\
+                                        use_umfpack=False)
+        return y.reshape((T, D))
+</code></pre>
 <h2 id="結論">結論</h2>
-
 <ul>
 <li>疎行列の演算を考えるときは、間違ってもめんどくさいとか思わずに疎行列を積極的に使おう</li>
 <li>統計的声質変換ムズすぎ</li>
 </ul>
-
 <h2 id="おまけめも">おまけめも</h2>
-
 <p>僕が変換精度を改善するために考えていることのめも</p>
-
 <ul>
 <li>統計的な手法を使う限りover-smoothingの問題はついてくる。ならば、逆にover-smoothingされることで都合の良い特徴量を考えることはできないか</li>
 <li>メルケプとかそもそもスペクトル包絡をコンパクトにparamtricに表現するために考えられたもの（だと思ってる）ので、高品質な変換を考えるならばスペクトル包絡をそのまま使うなりした方がいいんじゃないか。とはいえスペクトル包絡をそのまま使うのはぼちぼち高次元なので、個人性に依存する部分を残した形で非線形次元削減したらどうか（例えばニューラルネットを使って統計的に個人性に依存する部分を見つけ出すとか）</li>
@@ -393,95 +1128,429 @@
 <li>識別モデルもっと使ってもいいんじゃないか</li>
 <li>波形合成にSPTKのmlsadfコマンド使ってる？あれ実はフレーム間のメルケプが線形補間されてるんですよね。本当に線形補間でいいんでしょうか？他の補間法も試したらどうですかね</li>
 </ul>
-
 <p>こんなかんじですか。おやすみなさい</p>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="統計的声質変換クッソムズすぎワロタ（実装の話）" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/voice-conversion/">Voice Conversion</a>
+  
+  <a class="badge badge-light" href="/tag/machine-learning/">Machine Learning</a>
+  
+  <a class="badge badge-light" href="/tag/speech-signal-processing/">Speech Signal Processing</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/&amp;text=%e7%b5%b1%e8%a8%88%e7%9a%84%e5%a3%b0%e8%b3%aa%e5%a4%89%e6%8f%9b%e3%82%af%e3%83%83%e3%82%bd%e3%83%a0%e3%82%ba%e3%81%99%e3%81%8e%e3%83%af%e3%83%ad%e3%82%bf%ef%bc%88%e5%ae%9f%e8%a3%85%e3%81%ae%e8%a9%b1%ef%bc%89" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/&amp;t=%e7%b5%b1%e8%a8%88%e7%9a%84%e5%a3%b0%e8%b3%aa%e5%a4%89%e6%8f%9b%e3%82%af%e3%83%83%e3%82%bd%e3%83%a0%e3%82%ba%e3%81%99%e3%81%8e%e3%83%af%e3%83%ad%e3%82%bf%ef%bc%88%e5%ae%9f%e8%a3%85%e3%81%ae%e8%a9%b1%ef%bc%89" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e7%b5%b1%e8%a8%88%e7%9a%84%e5%a3%b0%e8%b3%aa%e5%a4%89%e6%8f%9b%e3%82%af%e3%83%83%e3%82%bd%e3%83%a0%e3%82%ba%e3%81%99%e3%81%8e%e3%83%af%e3%83%ad%e3%82%bf%ef%bc%88%e5%ae%9f%e8%a3%85%e3%81%ae%e8%a9%b1%ef%bc%89&amp;body=https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/&amp;title=%e7%b5%b1%e8%a8%88%e7%9a%84%e5%a3%b0%e8%b3%aa%e5%a4%89%e6%8f%9b%e3%82%af%e3%83%83%e3%82%bd%e3%83%a0%e3%82%ba%e3%81%99%e3%81%8e%e3%83%af%e3%83%ad%e3%82%bf%ef%bc%88%e5%ae%9f%e8%a3%85%e3%81%ae%e8%a9%b1%ef%bc%89" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=%e7%b5%b1%e8%a8%88%e7%9a%84%e5%a3%b0%e8%b3%aa%e5%a4%89%e6%8f%9b%e3%82%af%e3%83%83%e3%82%bd%e3%83%a0%e3%82%ba%e3%81%99%e3%81%8e%e3%83%af%e3%83%ad%e3%82%bf%ef%bc%88%e5%ae%9f%e8%a3%85%e3%81%ae%e8%a9%b1%ef%bc%89%20https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/&amp;title=%e7%b5%b1%e8%a8%88%e7%9a%84%e5%a3%b0%e8%b3%aa%e5%a4%89%e6%8f%9b%e3%82%af%e3%83%83%e3%82%bd%e3%83%a0%e3%82%ba%e3%81%99%e3%81%8e%e3%83%af%e3%83%ad%e3%82%bf%ef%bc%88%e5%ae%9f%e8%a3%85%e3%81%ae%e8%a9%b1%ef%bc%89" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2014/11/12/statistical-voice-conversion-code/">統計的声質変換クッソムズすぎワロタ（チュートリアル編）</a></li>
+      
+      <li><a href="/blog/2014/07/05/statistical-voice-conversion-muzui/">統計的声質変換クッソムズすぎワロタ</a></li>
+      
+      <li><a href="/blog/2017/10/05/ganvc/">【声質変換編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</a></li>
+      
+      <li><a href="/blog/2015/09/06/pysptk/">pysptk: SPTKのpythonラッパーを作った (part 2)</a></li>
+      
+      <li><a href="/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/">最近の音声信号処理遊びの進捗</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

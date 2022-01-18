@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GAN | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/gan/</link>
+      <atom:link href="https://r9y9.github.io/tag/gan/index.xml" rel="self" type="application/rss+xml" />
+    <description>GAN</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 10 Oct 2017 11:45:32 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>GAN</title>
+      <link>https://r9y9.github.io/tag/gan/</link>
+    </image>
+    
+    <item>
+      <title>GAN 日本語音声合成 [arXiv:1709.08041]</title>
+      <link>https://r9y9.github.io/blog/2017/10/10/gantts-jp/</link>
+      <pubDate>Tue, 10 Oct 2017 11:45:32 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/10/10/gantts-jp/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;10/11 追記&lt;/strong&gt;: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: &lt;a href=&#34;https://ieeexplore.ieee.org/document/8063435/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ieeexplore.ieee.org/document/8063435/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;arXiv論文リンク: &lt;a href=&#34;https://arxiv.org/abs/1709.08041&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv:1709.08041&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/09/gantts/&#34;&gt;前回の記事&lt;/a&gt; の続きです。これでこのシリーズは終わりの予定です。&lt;/p&gt;
+&lt;p&gt;前回は英語音声合成でしたが、以前書いた &lt;a href=&#34;https://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/&#34;&gt;DNN日本語音声合成の記事&lt;/a&gt; で使ったデータと同じものを使い、日本語音声合成をやってみましたので、結果を残しておきます。&lt;/p&gt;
+&lt;h2 id=&#34;実験&#34;&gt;実験&lt;/h2&gt;
+&lt;h3 id=&#34;実験条件&#34;&gt;実験条件&lt;/h3&gt;
+&lt;p&gt;HTSのNIT-ATR503のデモデータ (&lt;a href=&#34;https://github.com/r9y9/nnmnkwii_gallery/blob/4899437e22528399ca50c34097a2db2bed782f8b/data/NIT-ATR503_COPYING&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ライセンス&lt;/a&gt;) から、wavデータ503発話を用います。442を学習用、56を評価用、残り5をテスト用にします（※英語音声とtrain/evalの比率は同じです）。継続長モデルは、state-levelではなくphone-levelです。サンプリング周波数が48kHzなので、mgcの次元を25から60に増やしました。モデル構造は、すべて英語音声合成の場合と同じです。ADV loss は0次を除くmgcを用いて計算しました。F0は入れていません。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/r9y9/gantts&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;gantts&lt;/a&gt; の &lt;a href=&#34;https://github.com/r9y9/gantts/tree/jp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;jpブランチ&lt;/a&gt; をチェックアウトして、以下のシェルを実行すると、ここに貼った結果が得られます。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; ./jp_tts_demo.sh jp_tts_order59
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;ただし、シェル中に、&lt;code&gt;HTS_ROOT&lt;/code&gt; という変数があり、シェル実行前に、環境に合わせてディレクトリを指定する必要があります。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-diff&#34;&gt;diff --git a/jp_tts_demo.sh b/jp_tts_demo.sh
+index 7a8f12c..b18e604 100755
+--- a/jp_tts_demo.sh
++++ b/jp_tts_demo.sh
+@@ -8,7 +8,7 @@ experiment_id=$1
+ fs=48000
+
+ # Needs adjastment
+-HTS_DEMO_ROOT=~/local/HTS-demo_NIT-ATR503-M001
++HTS_DEMO_ROOT=HTS日本語デモの場所を指定してください
+
+ # Flags
+ run_duration_training=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;変換音声の比較&#34;&gt;変換音声の比較&lt;/h3&gt;
+&lt;h4 id=&#34;音響モデルのみ適用&#34;&gt;音響モデルのみ適用&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;自然音声&lt;/li&gt;
+&lt;li&gt;ベースライン&lt;/li&gt;
+&lt;li&gt;GAN&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;の順に音声を貼ります。聴きやすいように、soxで音量を正規化しています。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j49&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j49.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/baseline/test/nitech_jp_atr503_m001_j49.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/gan/test/nitech_jp_atr503_m001_j49.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j50&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j50.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/baseline/test/nitech_jp_atr503_m001_j50.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/gan/test/nitech_jp_atr503_m001_j50.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j51&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j51.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/baseline/test/nitech_jp_atr503_m001_j51.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/gan/test/nitech_jp_atr503_m001_j51.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j52&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j52.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/baseline/test/nitech_jp_atr503_m001_j52.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/gan/test/nitech_jp_atr503_m001_j52.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j53&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j53.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/baseline/test/nitech_jp_atr503_m001_j53.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/acoustic_only/gan/test/nitech_jp_atr503_m001_j53.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;h4 id=&#34;音響モデル継続長モデルを適用&#34;&gt;音響モデル＋継続長モデルを適用&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j49&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j49.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/baseline/test/nitech_jp_atr503_m001_j49.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/gan/test/nitech_jp_atr503_m001_j49.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j50&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j50.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/baseline/test/nitech_jp_atr503_m001_j50.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/gan/test/nitech_jp_atr503_m001_j50.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j51&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j51.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/baseline/test/nitech_jp_atr503_m001_j51.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/gan/test/nitech_jp_atr503_m001_j51.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j52&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j52.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/baseline/test/nitech_jp_atr503_m001_j52.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/gan/test/nitech_jp_atr503_m001_j52.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;nitech_jp_atr503_m001_j53&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/nit-atr503/nitech_jp_atr503_m001_j53.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/baseline/test/nitech_jp_atr503_m001_j53.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/jp_tts_order59/duration_acoustic/gan/test/nitech_jp_atr503_m001_j53.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;どうでしょうか。ちょっと早口になってしまっている箇所もありますが、全体的には明瞭性が上がって、品質が改善されたような感じがします。若干ノイジーな感じは、音響モデルにRNNを使えば改善されるのですが、今回は計算リソースの都合上、Feed-forward型のサンプルとなっています。&lt;/p&gt;
+&lt;h3 id=&#34;gv&#34;&gt;GV&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;nitech_jp_atr503_m001_j49&lt;/code&gt; に対して計算した結果です。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/jp-gantts/nitech_jp_atr503_m001_j49_gv.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;英語音声合成の実験でも確認しているのですが、mgcの次元を大きく取ると、高次元でGVが若干落ちる傾向にあります。ただし、&lt;a href=&#34;https://twitter.com/r9y9/status/915213687891169280&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;一週間前の僕のツイート&lt;/a&gt; によると、なぜかそんなこともなく（当時ばりばりのプロトタイピングの時期だったので、コードが残っておらず、いまは再現できないという、、すいません）、僕が何かミスをしている可能性もあります。ただ、品質はそんなに悪くないように思います。&lt;/p&gt;
+&lt;h3 id=&#34;変調スペクトル&#34;&gt;変調スペクトル&lt;/h3&gt;
+&lt;p&gt;評価用セットで平均を取ったものです。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/jp-gantts/ms.png&#34; /&gt;&lt;/div&gt;
+&lt;h3 id=&#34;特徴量の分布&#34;&gt;特徴量の分布&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;nitech_jp_atr503_m001_j49&lt;/code&gt; に対して計算した結果です。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/jp-gantts/nitech_jp_atr503_m001_j49_scatter.png&#34; /&gt;&lt;/div&gt;
+&lt;h3 id=&#34;おまけ-htsデモと聴き比べ&#34;&gt;おまけ: HTSデモと聴き比べ&lt;/h3&gt;
+&lt;p&gt;HTSデモを実行すると生成されるサンプルとの聴き比べです。注意事項ですが、&lt;strong&gt;実験条件がまったく異なります&lt;/strong&gt;。あくまで参考程度にどうぞ。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;HTSデモ&lt;/li&gt;
+&lt;li&gt;ベースライン&lt;/li&gt;
+&lt;li&gt;GAN&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;の順に音声を貼ります。&lt;/p&gt;
+&lt;p&gt;1 こんにちは&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/hts_nit_atr503_2mix/phrase01.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/baseline/phrase01.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/gan/phrase01.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;2 それではさようなら&lt;/p&gt;
+&lt;p&gt;HTS&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/hts_nit_atr503_2mix/phrase02.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/baseline/phrase02.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/gan/phrase02.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;3 はじめまして&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/hts_nit_atr503_2mix/phrase03.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/baseline/phrase03.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/gan/phrase03.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;4 ようこそ名古屋工業大学へ&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/hts_nit_atr503_2mix/phrase04.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/baseline/phrase04.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/gan/phrase04.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;5 今夜の名古屋の天気は雨です&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/hts_nit_atr503_2mix/phrase05.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/baseline/phrase05.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/jp-gantts/test/gan/phrase05.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;アイデアはシンプル、効果は素晴らしいという、僕の好きな（試したくなる）研究の紹介でした。ありがとうございました。&lt;/p&gt;
+&lt;p&gt;GANシリーズのその他記事へのリンクは以下の通りです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/05/ganvc/&#34;&gt;GAN 声質変換 (en) 編はこちら&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/09/gantts/&#34;&gt;GAN 音声合成 (en) 編はこちら&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;追記: 図を作るのに使ったノートブックは &lt;a href=&#34;http://nbviewer.jupyter.org/gist/r9y9/185a56417cee27d9f785b8caf1c9f5ec&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;こちら&lt;/a&gt; においておきました。&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1709.08041&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, Hiroshi Saruwatari, &amp;ldquo;Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks&amp;rdquo;, arXiv:1709.08041 [cs.SD], Sep. 2017&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【音声合成編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
+      <link>https://r9y9.github.io/blog/2017/10/09/gantts/</link>
+      <pubDate>Mon, 09 Oct 2017 02:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/10/09/gantts/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;10/11 追記&lt;/strong&gt;: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: &lt;a href=&#34;https://ieeexplore.ieee.org/document/8063435/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ieeexplore.ieee.org/document/8063435/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;arXiv論文リンク: &lt;a href=&#34;https://arxiv.org/abs/1709.08041&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv:1709.08041&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/05/ganvc/&#34;&gt;前回の記事&lt;/a&gt; の続きです。音響モデルの学習にGANを使うというアイデアは、声質変換だけでなく音声合成にも応用できます。&lt;a href=&#34;http://festvox.org/cmu_arctic/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CMU ARCTIC&lt;/a&gt; を使った英語音声合成の実験を行って、ある程度良い結果がでたので、まとめようと思います。音声サンプルだけ聴きたい方は真ん中の方まで読み飛ばしてください。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;コードはこちら: &lt;a href=&#34;https:github.com/r9y9/gantts&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9/gantts | PyTorch implementation of GAN-based text-to-speech and voice conversion (VC) &lt;/a&gt; (VCのコードも一緒です)&lt;/li&gt;
+&lt;li&gt;音声サンプル付きデモノートブックはこちら: &lt;a href=&#34;http://nbviewer.jupyter.org/github/r9y9/gantts/blob/master/notebooks/Test%20TTS.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;The effects of adversarial training in text-to-speech synthesis | nbviewer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;前回の記事でも書いた注意書きですが、厳密に同じ結果を再現しようとは思っていません。同様のアイデアを試す、といったことに主眼を置いています。&lt;/p&gt;
+&lt;h2 id=&#34;実験&#34;&gt;実験&lt;/h2&gt;
+&lt;h3 id=&#34;実験条件&#34;&gt;実験条件&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;http://festvox.org/cmu_arctic/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CMU ARCTIC&lt;/a&gt; から、話者 &lt;code&gt;slt&lt;/code&gt; のwavデータそれぞれ1131発話すべてを用います。
+&lt;a href=&#34;https://github.com/CSTR-Edinburgh/merlin&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Merlin&lt;/a&gt;  の slt デモの条件と同様に、1000を学習用、126を評価用、残り5をテスト用にします。継続長モデル（state-level）には &lt;strong&gt;Bidirectional-LSTM RNN&lt;/strong&gt; を、音響モデルには &lt;strong&gt;Feed-forward型&lt;/strong&gt; のニューラルネットを使用しました&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。継続長モデル、音響モデルの両方にGANを取り入れました。論文の肝である &lt;strong&gt;ADV loss&lt;/strong&gt; についてですが、mgcのみ（0次は除く）を使って計算するパターンと、mgc + lf0で計算するパターンとで比較しました&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;実験の結果 (ADV loss: mgcのみ) は、 &lt;a href=&#34;https://github.com/r9y9/gantts/tree/a5ec247ba7ee1a160875661f8899f56f8010be5b&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;a5ec247&lt;/a&gt; をチェックアウトして、下記のシェルを実行すると再現できます。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./tts_demo.sh tts_test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;データのダウンロード、特徴抽出、モデル学習、音声サンプル合成まで一通り行われます。&lt;code&gt;tts_test&lt;/code&gt; の部分は何でもよいです。tensorboard用に吐くログイベント名、モデル出力先、音声サンプル出力先の決定に使われます。詳細はコードを参照ください。 (ADV loss: mgc + lf0) の結果は、&lt;a href=&#34;https://github.com/r9y9/gantts/blob/a5ec247ba7ee1a160875661f8899f56f8010be5b/hparams.py&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ハイパーパラメータ&lt;/a&gt;を下記のように変更してシェルを実行すると再現できます。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-diff&#34;&gt;diff --git a/hparams.py b/hparams.py
+index d82296c..e73dc57 100644
+--- a/hparams.py
++++ b/hparams.py
+@@ -175,7 +175,7 @@ tts_acoustic = tf.contrib.training.HParams(
+     # Streams used for computing adversarial loss
+     # NOTE: you should probably change discriminator&#39;s `in_dim`
+     # if you change the adv_streams
+-    adversarial_streams=[True, False, False, False],
++    adversarial_streams=[True, True, False, False],
+     # Don&#39;t switch this on unless you are sure what you are doing
+     # If True, you will need to adjast `in_dim` for discriminator.
+     # Rationale for this is that power coefficients are less meaningful
+@@ -202,7 +202,7 @@ tts_acoustic = tf.contrib.training.HParams(
+     # Discriminator
+     discriminator=&amp;quot;MLP&amp;quot;,
+     discriminator_params={
+-        &amp;quot;in_dim&amp;quot;: 24,
++        &amp;quot;in_dim&amp;quot;: 25,
+         &amp;quot;out_dim&amp;quot;: 1,
+         &amp;quot;num_hidden&amp;quot;: 2,
+         &amp;quot;hidden_dim&amp;quot;: 256,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;変換音声の比較&#34;&gt;変換音声の比較&lt;/h3&gt;
+&lt;h4 id=&#34;音響モデルのみ適用-adv-loss-mgcのみ&#34;&gt;音響モデルのみ適用 (ADV loss: mgcのみ)&lt;/h4&gt;
+&lt;p&gt;継続長モデルを適用しない、かつ ADV lossにmgcのみを用いる場合です。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;自然音声&lt;/li&gt;
+&lt;li&gt;ベースライン&lt;/li&gt;
+&lt;li&gt;GAN&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;の順に音声を貼ります。聴きやすいように、soxで音量を正規化しています。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0535&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/baseline/test/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0536&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/baseline/test/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0537&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/baseline/test/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0538&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/baseline/test/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0539&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/baseline/test/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;VCの場合と同じように、音声の明瞭性が上がったように思います。&lt;/p&gt;
+&lt;h4 id=&#34;音響モデル継続長モデルを適用-adv-loss-mgcのみ&#34;&gt;音響モデル＋継続長モデルを適用 (ADV loss: mgcのみ)&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0535&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/baseline/test/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/gan/test/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0536&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/baseline/test/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/gan/test/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0537&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/baseline/test/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/gan/test/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0538&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/baseline/test/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/gan/test/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0539&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/baseline/test/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/duration_acoustic/gan/test/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;音声の明瞭性が上がっているとは思いますが、継続長に関しては、ベースライン/GANで差異がほとんどないように感じられると思います。これは、（僕が実験した範囲では少なくとも）DiscriminatorがGeneartorに勝ちやすくて (音響モデルの場合は、そんなことはない)、 ADV lossが下がるどころか上がってしまい、結果 MGE lossを最小化する場合とほとんど変わっていない、という結果になっています。論文に記載の内容とは異なり、state-levelの継続長モデルではあるものの、ハイパーパラメータなどなどいろいろ変えて試したのですが、上手くいきませんでした。&lt;/p&gt;
+&lt;h4 id=&#34;adv-loss-mgc-vs-mgc--lf0&#34;&gt;ADV loss: mgc vs mgc + lf0&lt;/h4&gt;
+&lt;p&gt;次に、ロスの比較です。F0の変化に着目しやすいように、継続長モデルを使わず、音響モデルのみを適用します。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;自然音声&lt;/li&gt;
+&lt;li&gt;ADV loss (mgcのみ, 24次元)&lt;/li&gt;
+&lt;li&gt;ADV loss (mgc + lf0, 25次元)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;の順に音声を貼ります。また、WORLD (dio + stonemask) で分析したF0の可視化結果も併せて貼っておきます。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0535&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24_advf0/acoustic_only/gan/test/arctic_b0535.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/gantts/arctic_b0535_f0.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0536&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24_advf0/acoustic_only/gan/test/arctic_b0536.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/gantts/arctic_b0536_f0.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0537&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24_advf0/acoustic_only/gan/test/arctic_b0537.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/gantts/arctic_b0537_f0.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0538&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24_advf0/acoustic_only/gan/test/arctic_b0538.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/gantts/arctic_b0538_f0.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;arctic_b0539&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/slt/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24/acoustic_only/gan/test/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/gantts/tts_order24_advf0/acoustic_only/gan/test/arctic_b0539.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/gantts/arctic_b0539_f0.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;どうでしょうか。上手くいっている場合も（arctic_b537とか）あれば、上手くいっていない場合 (arctic_b539とか) もあるように思います。僕にはF0が不自然に揺れているように感じ場合が多くありました。ここでは5つしか音声を貼っていませんが、その他126個の評価用音声でも聴き比べていると、ADV lossにF0を入れない方がよい気がしました（あくまで僕の主観ですが&lt;/p&gt;
+&lt;p&gt;このあたりは、F0の抽出法、補間法に強く依存しそうです。今回は、F0抽出のパラメータをまったくチューニングしていないので、そのせいもあった（f0分析エラーに引っ張られて悪くなった）のかもしれません。&lt;/p&gt;
+&lt;h3 id=&#34;global-variance-は補償されているのか&#34;&gt;Global variance は補償されているのか？&lt;/h3&gt;
+&lt;p&gt;F0の話は終わりで、スペクトル特徴量に着目して結果を分析していきます。以下、ADV loss (mgcのみ)、継続長モデル＋音響モデルを適用したサンプルでの分析結果です。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/gantts/arctic_b0537_gv.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;大まかに、論文で示されているのと同様の結果が得られました。なお、これは &lt;code&gt;arctic_b0537&lt;/code&gt; の一発話に対して計算したもので、テストセットの平均ではありません（すいません）。また、これはテストセット中のサンプルの中で、GVが補償されていることがわかりやすい例をピックアップしました。ただし、他のテストサンプルにおいても同様の傾向が見られるのは確認しています。&lt;/p&gt;
+&lt;h3 id=&#34;modulation-spectrum-変調スペクトル-は補償されているのか&#34;&gt;Modulation spectrum (変調スペクトル) は補償されているのか？&lt;/h3&gt;
+&lt;p&gt;評価用の音声126発話それぞれで変調スペクトルを計算し、それらの平均を取り、適当な特徴量の次元をピックアップしたものを示します。横軸は変調周波数です。一番右端が50Hzです。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/gantts/ms.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;arctic_b0537&lt;/code&gt; の一発話に対して計算したものです。&lt;strong&gt;VCの場合とは異なり&lt;/strong&gt;、ベースライン、GANともに、低次元であっても10Hzを越えた辺りから自然音声とは大きく異っています。これはなぜなのか、僕にはまだわかっていません。また、VCの場合と同様に、高次元になるほど、GANベースの方が変調スペクトルは自然音声に近いこともわかります。GANによって、変調スペクトルはある程度補償されていると言えると思います。&lt;/p&gt;
+&lt;h3 id=&#34;特徴量の分布&#34;&gt;特徴量の分布&lt;/h3&gt;
+ &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/gantts/arctic_b0537_scatter.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;arctic_b0537&lt;/code&gt; の一発話に対して計算したものです。論文で示されているほど顕著ではない気がしますが、おおまかに同様の結果が得られました。&lt;/p&gt;
+&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;GANのチューニングは難しい。人力（直感）ハイパーパラメータのチューニングを試しましたが、大変でした。そしてあまりうまくできた自信がありません。潤沢な計算資源でなんとかしたい…&lt;/li&gt;
+&lt;li&gt;GANの学習は不安定（に感じる）が、通常の MSE loss の学習は安定で、かつBidirectional LSTM RNNは安定してよいです（結果をここに貼っていなくて申し訳ですが）。ただし、計算にものすごく時間がかかるのと、GPUメモリをかなり使うので、とりあえず通常のfeed forward型で実験した結果をまとめました&lt;/li&gt;
+&lt;li&gt;state-levelの継続長モデルに、GANを使うのはあまり上手くできませんでした。ここに貼ったサンプルからはわからないのですが（すいません）、GとDが上手く競い合わず、Dが勝ってしまう場合がほとんどでした（結果それが一番まし）。上手く競い合わせるようとすると、早口音声が生成されてしまったり、と失敗がありました。&lt;/li&gt;
+&lt;li&gt;F0を ADV lossに加えると、より自然音声に近づくと感じる場合もあるが、一方でF0が不自然に揺れてしまう場合もありました。これはF0の抽出法、補間法にも依存するので、調査が必要です&lt;/li&gt;
+&lt;li&gt;mgc, lf0, vuv, bapすべてで ADV lossに加えると、残念な結果を見ることになりました。理想的にはこれでも上手くいくと思って最初に試したのですが、だめでした。興味のある人はためしてみてください&lt;/li&gt;
+&lt;li&gt;mgcの0次（パワー成分）は、ADV lossに加えない方がよい。考えてみると、特にフレーム単位のモデルの場合（RNNではなく）、パワー情報はnatural/generated の識別にはほとんど寄与しなさそうです。これはArxivの方の論文には書いていないのですが（僕の見逃しでなければ）、&lt;a href=&#34;http://sython.org/papers/ASJ/saito2017asja.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ASJの原稿&lt;/a&gt; には書いてあるんですよね。一つのハマりどころでした&lt;/li&gt;
+&lt;li&gt;DにRNNを使った実験も少しやってみたのですが、うまく競い合わせるのが難しそうでした。DにRNNを使うのは本質的には良いと思っているので、この辺りはもう少し色々試行錯誤したいと思っています&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;GANの学習は大変でしたが、上手く学習できれば品質向上につながることを確認できました。今後、計算リソースが空き次第、RNNでの実験も進めようと思うのと、日本語でやってみようと思っています。&lt;/p&gt;
+&lt;p&gt;GANシリーズのその他記事へのリンクは以下の通りです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/05/ganvc/&#34;&gt;GAN 声質変換 (en) 編はこちら&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/10/gantts-jp/&#34;&gt;GAN 音声合成 (ja) 編はこちら&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;Arxivにあるペーパーだけでなく、その他いろいろ参考にしました。ありがとうございます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1709.08041&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, Hiroshi Saruwatari, &amp;ldquo;Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks&amp;rdquo;, arXiv:1709.08041 [cs.SD], Sep. 2017&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sython.org/papers/SIG-SLP/saito201702slp.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, and Hiroshi Saruwatari, &amp;ldquo;Training algorithm to deceive anti-spoofing verification for DNN-based text-to-speech synthesis,&amp;rdquo; IPSJ SIG Technical Report, 2017-SLP-115, no. 1, pp. 1-6, Feb., 2017. (in Japanese)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jstage.jst.go.jp/article/transinf/E100.D/8/E100.D_2017EDL8034/_article&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, and Hiroshi Saruwatari, &amp;ldquo;Voice conversion using input-to-output highway networks,&amp;rdquo; IEICE Transactions on Information and Systems, Vol.E100-D, No.8, pp.1925&amp;ndash;1928, Aug. 2017&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/ShinnosukeTakamichi/dnnantispoofing&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.slideshare.net/ShinnosukeTakamichi/dnnantispoofing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/YukiSaito8/Saito2017icassp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.slideshare.net/YukiSaito8/Saito2017icassp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/SythonUK/whisperVC&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/SythonUK/whisperVC&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sython.org/papers/ASJ/saito2017asja.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, and Hiroshi Saruwatari, &amp;ldquo;Experimental investigation of divergences in adversarial DNN-based speech synthesis,&amp;rdquo; Proc. ASJ, Spring meeting, 1-8-7, &amp;ndash;, Sep., 2017. (in Japanese)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;継続長モデル、音響モデルともにRNNを使うと良くなることがわかっているのですが、計算リソースの都合上、今回は音響モデルはFeed-forwardにしました。Feed-forwardだと30分で終わる計算が、RNNだと数時間かかってしまうので…&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;他も色々やったのですが、だいたい失敗でした。&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>【声質変換編】Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks [arXiv:1709.08041]</title>
+      <link>https://r9y9.github.io/blog/2017/10/05/ganvc/</link>
+      <pubDate>Thu, 05 Oct 2017 23:25:36 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/10/05/ganvc/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;10/11 追記&lt;/strong&gt;: IEEE TASLPのペーパー (Open access) が公開されたようなので、リンクを貼っておきます: &lt;a href=&#34;https://ieeexplore.ieee.org/document/8063435/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://ieeexplore.ieee.org/document/8063435/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;arXiv論文リンク: &lt;a href=&#34;https://arxiv.org/abs/1709.08041&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv:1709.08041&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;2017年9月末に、表題の &lt;a href=&#34;https://arxiv.org/abs/1709.08041&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;論文&lt;/a&gt; が公開されたのと、&lt;a href=&#34;https://github.com/r9y9/nnmnkwii&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nnmnkwii&lt;/a&gt; という designed for easy and fast prototyping を目指すライブラリを作ったのもあるので、実装してみました。僕が実験した限りでは、声質変換 (Voice conversion; VC) では安定して良くなりました（音声合成ではまだ実験中です）。この記事では、声質変換について僕が実験した結果をまとめようと思います。音声合成については、また後日まとめます&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;コードはこちら: &lt;a href=&#34;https:github.com/r9y9/gantts&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9/gantts | PyTorch implementation of GAN-based text-to-speech and voice conversion (VC) &lt;/a&gt; (TTSのコードも一緒です)&lt;/li&gt;
+&lt;li&gt;音声サンプルを聴きたい方はこちら: &lt;a href=&#34;http://nbviewer.jupyter.org/github/r9y9/gantts/blob/master/notebooks/Test%20VC.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;The effects of adversarial training in voice conversion | nbviewer&lt;/a&gt; (※解説はまったくありませんのであしからず)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、厳密に同じ結果を再現しようとは思っていません。同様のアイデアを試す、といったことに主眼を置いています。コードに関しては、ここに貼った結果を再現できるように気をつけました。&lt;/p&gt;
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+&lt;p&gt;一言でいえば、音響モデルの学習に Generative Adversarial Net (&lt;strong&gt;GAN&lt;/strong&gt;) を導入する、といったものです。少し具体的には、&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;音響モデル（生成モデル）が生成した音響特徴量を偽物か本物かを見分けようとする識別モデルと、&lt;/li&gt;
+&lt;li&gt;生成誤差を小さくしつつ (Minimum Generation Error loss; &lt;strong&gt;MGE loss&lt;/strong&gt; の最小化) 、生成した特徴量を識別モデルに本物だと誤認識させようとする (Adversarial loss; &lt;strong&gt;ADV loss&lt;/strong&gt; の最小化) 生成モデル&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;を交互に学習することで、自然音声の特徴量と生成した特徴量の分布を近づけるような、より良い音響モデルを獲得する、といった方法です。&lt;/p&gt;
+&lt;h2 id=&#34;ベースライン&#34;&gt;ベースライン&lt;/h2&gt;
+&lt;p&gt;ベースラインとしては、 &lt;strong&gt;MGE training&lt;/strong&gt; が挙げられています。DNN音声合成でよくあるロス関数として、音響特徴量 (静的特徴量 + 動的特徴量) に対する Mean Squared Error (&lt;strong&gt;MSE loss&lt;/strong&gt;) というものがあります。これは、特徴量の各次元毎に誤差に正規分布を考えて、その対数尤度を最大化することを意味します。
+しかし、&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;静的特徴量と動的特徴量の間には本来 deterministic な関係があることが無視されていること&lt;/li&gt;
+&lt;li&gt;ロスがフレーム単位で計算されるので、 (動的特徴量が含まれているとはいえ) 時間構造が無視されてしまっていること&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;から、それらの問題を解決するために、系列単位で、かつパラメータ生成後の静的特徴量の領域でロスを計算する方法、MGE training が提案されています。&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;h2 id=&#34;実験&#34;&gt;実験&lt;/h2&gt;
+&lt;h3 id=&#34;実験条件&#34;&gt;実験条件&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;http://festvox.org/cmu_arctic/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CMU ARCTIC&lt;/a&gt; から、話者 &lt;code&gt;clb&lt;/code&gt; と &lt;code&gt;slt&lt;/code&gt; のwavデータそれぞれ500発話を用います。439を学習用、56を評価用、残り5をテスト用にします。音響特徴量には、WORLDを使って59次のメルケプストラムを抽出し、0次を除く59次元のベクトルを各フレーム毎の特徴量とします。F0、非周期性指標に関しては、元話者のものをそのまま使い、差分スペクトル法を用いて波形合成を行いました。F0の変換はしていません。音響モデルには、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jstage.jst.go.jp/article/transinf/E100.D/8/E100.D_2017EDL8034/_article&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, and Hiroshi Saruwatari, &amp;ldquo;Voice conversion using input-to-output highway networks,&amp;rdquo; IEICE Transactions on Information and Systems, Vol.E100-D, No.8, pp.1925&amp;ndash;1928, Aug. 2017&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;で述べられている highway network を用います。ただし、活性化関数をReLUからLeakyReLUにしたり、Dropoutを入れたり、アーキテクチャは微妙に変えています。前者は、調べたら勾配が消えにくくて学習の不安定なGANに良いと書いてある記事があったので（ちゃんと理解しておらず安直ですが、実験したところ悪影響はなさそうでしたので様子見）、後者は、GANの学習の安定化につながった気がします（少なくともTTSでは）。Discriminatorには、Dropout付きの多層ニューラルネットを使いました。MGE loss と ADV loss をバランスする重み &lt;code&gt;w_d&lt;/code&gt; は、 1.0 にしました。層の数、ニューロンの数等、その他詳細が知りたい方は、コードを参照してください。実験に使用したコードの正確なバージョンは  &lt;a href=&#34;https://github.com/r9y9/gantts/tree/ccbb51b51634b272f0a71f29ad4c28edd8ce3429&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ccbb51b&lt;/a&gt; です。ハイパーパラメータは &lt;a href=&#34;https://github.com/r9y9/gantts/blob/ccbb51b51634b272f0a71f29ad4c28edd8ce3429/hparams.py&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;こちら&lt;/a&gt; です。&lt;/p&gt;
+&lt;p&gt;ここで示す結果を再現したい場合は、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;コードをチェックアウト&lt;/li&gt;
+&lt;li&gt;パッケージと依存関係をインストール&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;clb&lt;/code&gt; と &lt;code&gt;slt&lt;/code&gt; のデータをダウンロード（僕の場合は、 &lt;code&gt;~/data/cmu_arctic&lt;/code&gt; にあります&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;そして、以下のスクリプトを実行すればOKです。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./vc_demo.sh ~/data/cmu_arctic
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;なお実行には、GPUメモリが4GBくらいは必要です（バッチサイズ32の場合）。GTX 1080Ti + i7-7700K の計算環境で、約1時間半くらいで終わります。スクリプト実行が完了すれば、&lt;code&gt;generated&lt;/code&gt; ディレクトリに、ベースライン/GAN それぞれで変換した音声が出力されます。以下に順に示す図については、&lt;a href=&#34;http://nbviewer.jupyter.org/github/r9y9/gantts/blob/master/notebooks/Test%20VC.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;デモノートブック&lt;/a&gt; を実行すると作ることができます。&lt;/p&gt;
+&lt;h3 id=&#34;変換音声の比較&#34;&gt;変換音声の比較&lt;/h3&gt;
+&lt;p&gt;テストセットの5つのデータに対しての変換音声、およびその元音声、ターゲット音声を比較できるように貼っておきます。下記の順番です。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;元話者の音声&lt;/li&gt;
+&lt;li&gt;ターゲット話者の音声&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MGE Loss&lt;/strong&gt; を最小化して得られたモデルによる変換音声&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MGE loss + ADV loss&lt;/strong&gt; を最小化して得られたモデルによる変換音声&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;比較しやすいように、音量はsoxで正規化しました。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;arctic_a0496&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/src/arctic_a0496.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/tgt/arctic_a0496.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/baseline/test/arctic_a0496.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/gan/test/arctic_a0496.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_a0497&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/src/arctic_a0497.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/tgt/arctic_a0497.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/baseline/test/arctic_a0497.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/gan/test/arctic_a0497.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_a0498&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/src/arctic_a0498.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/tgt/arctic_a0498.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/baseline/test/arctic_a0498.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/gan/test/arctic_a0498.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_a0499&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/src/arctic_a0499.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/tgt/arctic_a0499.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/baseline/test/arctic_a0499.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/gan/test/arctic_a0499.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;strong&gt;arctic_a0500&lt;/strong&gt;&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/src/arctic_a0500.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/tgt/arctic_a0500.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/baseline/test/arctic_a0500.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/ganvc/gan/test/arctic_a0500.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;&lt;code&gt;clb&lt;/code&gt;, &lt;code&gt;slt&lt;/code&gt; は違いがわかりにくいと以前誰かから指摘されたのですが、これに慣れてしまいました。わかりづらかったらすいません。僕の耳では、明瞭性が上がって、良くなっているように思います。&lt;/p&gt;
+&lt;h3 id=&#34;global-variance-は補償されているのか&#34;&gt;Global variance は補償されているのか？&lt;/h3&gt;
+&lt;p&gt;統計ベースの手法では、変換音声の &lt;strong&gt;Global variance (GV)&lt;/strong&gt; が落ちてしまい、品質が劣化してしまう問題がよく知られています。GANベースの手法によって、この問題に対処できているのかどうか、実際に確認しました。以下に、データセット中の一サンプルを適当にピックアップして、GVを計算したものを示します。縦軸は対数、横軸はメルケプストラムの次元です。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/ganvc/gv.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;おおおまか、論文で示されているのと同等の結果を得ることができました。&lt;/p&gt;
+&lt;h3 id=&#34;modulation-spectrum-変調スペクトル-は補償されているのか&#34;&gt;Modulation spectrum (変調スペクトル) は補償されているのか？&lt;/h3&gt;
+&lt;p&gt;GVをより一般化ものとして、変調スペクトルという概念があります。端的に言えば、パラメータ系列の時間方向に対する離散フーリエ変換の二乗（の対数※定義によるかもですが、ここでは対数をとったもの）です。統計処理によって劣化した変換音声は、変調スペクトルが自然音声と比べて小さくなっていることが知られています。というわけで、GANベースの方法によって、変調スペクトルは補償されているのか？ということを調べてみました。これは、論文には書いていません（が、きっとされていると思います）。以下に、評価用の音声56発話それぞれで変調スペクトルを計算し、それらの平均を取り、適当な特徴量の次元をピックアップしたものを示します。横軸は変調周波数です。一番右端が50Hzです。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/ganvc/ms.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;特に高次元の変調スペクトルに対して、ベースラインは大きく落ちている一方で、GANベースでは比較的自然音声と近いことがわかります。しかし、高次元になるほど、自然音声とGANベースでも違いが出ているのがわかります。改善の余地はありそうですね。&lt;/p&gt;
+&lt;h3 id=&#34;特徴量の分布&#34;&gt;特徴量の分布&lt;/h3&gt;
+&lt;p&gt;論文で示されているscatter plotですが、同じことをやってみました。&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/ganvc/scatter.png&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;概ね、論文通りの結果となっています。&lt;/p&gt;
+&lt;h3 id=&#34;詐称率について&#34;&gt;詐称率について&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;w_d&lt;/code&gt; を変化させて、詐称率がどうなるかは実験していないのですが、&lt;code&gt;w_d = 1.0&lt;/code&gt; の場合に、だいたい0.7 ~ 0.9 くらいに収まることを確認しました。TTSでは0.99くらいの、論文と同様の結果が出ました。くらい、というのは、どのくらい Discriminator を学習させるか、初期化としてのMGE学習（例えば25epochくらい）のあと生成された特徴量に対して学習させるのか、それとも初期化とは別でベースライン用のモデル（100epochとか）を使って生成された特徴量に対して学習させるのか、によって変わってくるのと、その辺りが論文からではあまりわからなかったのと、学習率や最適化アルゴリズムやデータによっても変わってくるのと、詐称率の計算は品質にはまったく関係ないのもあって、あまり真面目にやっていません。すいません&lt;/p&gt;
+&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;効果は劇的、明らかに良くなりました。素晴らしいですね&lt;/li&gt;
+&lt;li&gt;論文で書かれている反復回数 (25epochとか)よりも、100, 200と多く学習させる方がよかったです（知覚的な差は微妙ですが）ロスは下がり続けていました。&lt;/li&gt;
+&lt;li&gt;実装はそんなに大変ではなかったですが、GANの学習が難しい感じがしました（VCではあまり失敗しないが、TTSではよく失敗する。落とし所を探し中&lt;/li&gt;
+&lt;li&gt;Adam は学習は速いが、過学習ししやすい。GANも不安定になりがちな気がしました&lt;/li&gt;
+&lt;li&gt;Adagrad は収束は遅いが、安定&lt;/li&gt;
+&lt;li&gt;MGE loss と ADV loss の重みの計算は、適当にclipするようにしました。しなくてもだいたい収束しますが、バグがあると簡単に発散しますね〜haha&lt;/li&gt;
+&lt;li&gt;gradient clipping をいれました。TTSでは少なくとも良くなった気がします。VCはなしでも安定しているようです。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;とても良くなりました。素晴らしいです。今回もWORLDにお世話になりました。続いて、TTSでも実験を進めていきます。&lt;/p&gt;
+&lt;p&gt;GANシリーズのその他記事へのリンクは以下の通りです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/09/gantts/&#34;&gt;GAN 音声合成 (en) 編はこちら&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/10/10/gantts-jp/&#34;&gt;GAN 音声合成 (ja) 編はこちら&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;p&gt;Arxivにあるペーパーだけでなく、その他いろいろ参考にしました。ありがとうございます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1709.08041&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, Hiroshi Saruwatari, &amp;ldquo;Statistical Parametric Speech Synthesis Incorporating Generative Adversarial Networks&amp;rdquo;, arXiv:1709.08041 [cs.SD], Sep. 2017&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sython.org/papers/SIG-SLP/saito201702slp.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, and Hiroshi Saruwatari, &amp;ldquo;Training algorithm to deceive anti-spoofing verification for DNN-based text-to-speech synthesis,&amp;rdquo; IPSJ SIG Technical Report, 2017-SLP-115, no. 1, pp. 1-6, Feb., 2017. (in Japanese)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jstage.jst.go.jp/article/transinf/E100.D/8/E100.D_2017EDL8034/_article&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, and Hiroshi Saruwatari, &amp;ldquo;Voice conversion using input-to-output highway networks,&amp;rdquo; IEICE Transactions on Information and Systems, Vol.E100-D, No.8, pp.1925&amp;ndash;1928, Aug. 2017&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/ShinnosukeTakamichi/dnnantispoofing&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.slideshare.net/ShinnosukeTakamichi/dnnantispoofing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/YukiSaito8/Saito2017icassp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.slideshare.net/YukiSaito8/Saito2017icassp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/SythonUK/whisperVC&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/SythonUK/whisperVC&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Kobayashi, Kazuhiro, et al. &amp;ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&amp;rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;論文では有効性が示されていますが、僕が試した範囲内で、かつ僕の耳にによれば、あまり大きな改善は確認できていません。客観的な評価は、そのうちする予定です。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

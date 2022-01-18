@@ -1,625 +1,357 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
-  <url>
-    <loc>http://r9y9.github.io/</loc>
-    <lastmod>2020-05-10T14:42:25+09:00</lastmod>
-  </url>
   
   <url>
-    <loc>http://r9y9.github.io/blog/2020/05/10/nnsvs/</loc>
-    <lastmod>2020-05-10T14:42:25+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/post/</loc>
-    <lastmod>2020-05-10T14:42:25+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/deep-learning/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/</loc>
-    <lastmod>2019-06-11T00:00:30+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/espnet2-tts/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2019/06/11/ljspeech/</loc>
-    <lastmod>2019-06-11T00:00:30+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/icassp/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/speech-synthesis/</loc>
-    <lastmod>2019-06-11T00:00:30+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2018/05/20/tacotron2/</loc>
-    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/dnn/</loc>
-    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/open-source/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/python/</loc>
-    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/speech/</loc>
-    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/project/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/</loc>
-    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/wavenet/</loc>
-    <lastmod>2018-05-20T14:21:30+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/</loc>
-    <lastmod>2018-01-28T00:14:35+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/</loc>
-    <lastmod>2017-12-22T15:30:00+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tags/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/c&#43;&#43;/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/c&#43;&#43;/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/cling/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/12/21/jupyter-cxx/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/tts/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/julia/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/julia/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/jupyter/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/python/</loc><lastmod>2021-08-11T16:27:22+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/jupyter/</loc>
-    <lastmod>2017-12-21T00:00:00+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/ttslearn/</loc><lastmod>2021-08-11T16:27:22+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/bokeh/</loc>
-    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-07-30T12:11:03+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/python/</loc>
-    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/ieee-spl/</loc><lastmod>2021-07-30T12:11:03+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/pytorch/</loc>
-    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-07-30T12:11:03+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/visualization/</loc>
-    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/va-pwg/</loc><lastmod>2021-07-30T12:11:03+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/12/14/jupyter-bokeh/</loc>
-    <lastmod>2017-12-14T00:00:30+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/mtl_accent/</loc><lastmod>2021-07-10T12:11:03+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/12/13/deepvoice3/</loc>
-    <lastmod>2017-12-13T12:15:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-07-10T12:11:03+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/11/23/dctts/</loc>
-    <lastmod>2017-11-23T19:30:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-07-10T12:11:03+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/corpus/</loc>
-    <lastmod>2017-11-12T03:00:00+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/nlp/</loc><lastmod>2021-07-10T12:11:03+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/corpus/</loc>
-    <lastmod>2017-11-12T03:00:00+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/mbhnpwg/</loc><lastmod>2021-04-02T20:34:36+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/end-to-end/</loc>
-    <lastmod>2017-11-12T03:00:00+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/interspeech/</loc><lastmod>2021-04-02T20:34:36+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/11/12/jsut_ver1/</loc>
-    <lastmod>2017-11-12T03:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-04-02T20:34:36+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/10/15/tacotron/</loc>
-    <lastmod>2017-10-15T14:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2021-04-02T20:34:36+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/10/10/gantts-jp/</loc>
-    <lastmod>2017-10-10T11:45:32+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/pbp_bert/</loc><lastmod>2021-04-02T20:34:36+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/10/09/gantts/</loc>
-    <lastmod>2017-10-09T02:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2020-11-25T16:40:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/10/05/ganvc/</loc>
-    <lastmod>2017-10-05T23:25:36+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/presentation/</loc><lastmod>2020-11-25T16:40:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</loc>
-    <lastmod>2017-08-16T23:10:56+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/event/</loc><lastmod>2020-11-25T16:40:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/speech-synthesis/</loc>
-    <lastmod>2017-08-16T23:10:56+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/speech-processing/</loc><lastmod>2020-11-25T16:40:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</loc>
-    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2020-11-25T16:40:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/merlin/</loc>
-    <lastmod>2017-08-16T03:00:00+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2020-11-25T16:40:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/nlp/</loc>
-    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/talk/linedevday2020panel/</loc><lastmod>2020-11-25T16:40:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/nlp/</loc>
-    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/talk/linedevday2020pwg/</loc><lastmod>2020-11-25T14:20:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/06/09/nlp100/</loc>
-    <lastmod>2017-06-09T21:58:50+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/pwg-pwsl/</loc><lastmod>2020-11-06T16:43:44+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2017/01/04/2017/</loc>
-    <lastmod>2017-01-04T22:59:32+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2020-11-06T16:43:44+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</loc>
-    <lastmod>2016-12-23T18:06:08+09:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2020-11-06T16:43:44+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</loc>
-    <lastmod>2016-01-24T22:32:08+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/slt/</loc><lastmod>2020-11-06T16:43:44+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/tags/pcl/</loc>
-    <lastmod>2016-01-18T00:44:46+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/tts-by-tts/</loc><lastmod>2020-10-26T16:37:12+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</loc>
-    <lastmod>2016-01-18T00:44:46+09:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/vuvd-pwg/</loc><lastmod>2020-10-21T23:38:48+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2015/12/22/cxx-jl/</loc>
-    <lastmod>2015-12-22T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/post/</loc><lastmod>2020-05-10T14:42:25+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/julia-julia-advent-calendar-2015/</loc>
-    <lastmod>2015-12-22T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2020/05/10/nnsvs/</loc><lastmod>2020-05-10T14:42:25+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</loc>
-    <lastmod>2015-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/research/</loc><lastmod>2020-05-10T14:42:25+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2015/09/06/pysptk/</loc>
-    <lastmod>2015-09-06T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/singing-voice-synthesis/</loc><lastmod>2020-05-10T14:42:25+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/speech-signal-processing/</loc>
-    <lastmod>2015-09-06T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/mbg_excitnet/</loc><lastmod>2020-04-22T16:51:09+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/speech-signal-processing-python/</loc>
-    <lastmod>2015-09-06T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/asr/</loc><lastmod>2020-03-16T13:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/speech-signal-processing-julia/</loc>
-    <lastmod>2015-08-23T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/talk/asj-espnet2-tutorial/</loc><lastmod>2020-03-16T13:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</loc>
-    <lastmod>2015-08-23T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/invited-talk/</loc><lastmod>2020-03-16T13:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/julia-speech-signal-processing-machine-learning/</loc>
-    <lastmod>2015-04-26T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2020-03-16T13:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</loc>
-    <lastmod>2015-04-26T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2020-03-16T13:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</loc>
-    <lastmod>2014-12-09T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2020-03-16T13:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/voice-conversion-machine-learning-speech-signal-processing/</loc>
-    <lastmod>2014-11-12T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/espnet-tts/</loc><lastmod>2019-10-24T16:21:27+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</loc>
-    <lastmod>2014-11-12T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2019-10-24T16:21:27+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/machine-learning/</loc>
-    <lastmod>2014-10-19T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2019-10-24T16:21:27+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/machine-learning-matrix-factorization/</loc>
-    <lastmod>2014-10-19T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc></loc><lastmod>2019-10-24T16:21:27+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</loc>
-    <lastmod>2014-10-19T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/pwg/</loc><lastmod>2019-10-21T20:18:27+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/julia-juliatokyo-bindeps/</loc>
-    <lastmod>2014-09-30T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/gan-pwn/</loc><lastmod>2019-06-25T17:20:29+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/09/30/juliatokyo2/</loc>
-    <lastmod>2014-09-30T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/corpus/</loc><lastmod>2019-06-11T00:00:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</loc>
-    <lastmod>2014-09-15T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2019/06/11/ljspeech/</loc><lastmod>2019-06-11T00:00:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/summer/</loc>
-    <lastmod>2014-09-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/speech-synthesis/</loc><lastmod>2019-06-11T00:00:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/09/01/summer/</loc>
-    <lastmod>2014-09-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2018/05/20/tacotron2/</loc><lastmod>2018-05-20T14:21:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</loc>
-    <lastmod>2014-08-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/end-to-end/</loc><lastmod>2018-05-20T14:21:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/julia-machine-learning/</loc>
-    <lastmod>2014-08-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/wavenet/</loc><lastmod>2018-05-20T14:21:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/life/</loc>
-    <lastmod>2014-08-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/deep-learninng/</loc><lastmod>2018-01-28T00:14:35+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/08/20/life/</loc>
-    <lastmod>2014-08-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/</loc><lastmod>2018-01-28T00:14:35+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/08/10/sptk-from-python/</loc>
-    <lastmod>2014-08-10T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/wavenet/</loc><lastmod>2018-01-10T16:12:53+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/python-scipy/</loc>
-    <lastmod>2014-08-05T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/projects/deepvoice3/</loc><lastmod>2017-12-27T16:17:42+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</loc>
-    <lastmod>2014-08-05T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/</loc><lastmod>2017-12-22T15:30:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/go/</loc>
-    <lastmod>2014-07-29T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/advent-calendar/</loc><lastmod>2017-12-21T00:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/go-python-machine-learning/</loc>
-    <lastmod>2014-07-29T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/c-/</loc><lastmod>2017-12-21T00:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</loc>
-    <lastmod>2014-07-29T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/cling/</loc><lastmod>2017-12-21T00:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/machine-learning-ec2-gpu/</loc>
-    <lastmod>2014-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/12/21/jupyter-cxx/</loc><lastmod>2017-12-21T00:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</loc>
-    <lastmod>2014-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/julia/</loc><lastmod>2017-12-21T00:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</loc>
-    <lastmod>2014-07-13T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/jupyter/</loc><lastmod>2017-12-21T00:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</loc>
-    <lastmod>2014-07-05T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/bokeh/</loc><lastmod>2017-12-14T00:00:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</loc>
-    <lastmod>2014-06-08T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/pytorch/</loc><lastmod>2017-12-14T00:00:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/speech-signal-processing-go/</loc>
-    <lastmod>2014-06-08T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/visualization/</loc><lastmod>2017-12-14T00:00:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/signal-processing-wavelet-transform-continuous-wavelet/</loc>
-    <lastmod>2014-06-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/12/14/jupyter-bokeh/</loc><lastmod>2017-12-14T00:00:30+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/</loc>
-    <lastmod>2014-06-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/12/13/deepvoice3/</loc><lastmod>2017-12-13T12:15:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/python-neural-networks-machine-larning/</loc>
-    <lastmod>2014-05-11T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/11/23/dctts/</loc><lastmod>2017-11-23T19:30:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</loc>
-    <lastmod>2014-05-11T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/jsut/</loc><lastmod>2017-11-12T03:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/03/22/cgo-tips/</loc>
-    <lastmod>2014-03-22T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/11/12/jsut_ver1/</loc><lastmod>2017-11-12T03:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/go-cgo/</loc>
-    <lastmod>2014-03-22T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/10/15/tacotron/</loc><lastmod>2017-10-15T14:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/03/22/go-world/</loc>
-    <lastmod>2014-03-22T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/gan/</loc><lastmod>2017-10-10T11:45:32+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/neural-network-rbm-machine-learning/</loc>
-    <lastmod>2014-03-06T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/10/10/gantts-jp/</loc><lastmod>2017-10-10T11:45:32+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</loc>
-    <lastmod>2014-03-06T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/10/09/gantts/</loc><lastmod>2017-10-09T02:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/graphical-model/</loc>
-    <lastmod>2014-03-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/voice-conversion/</loc><lastmod>2017-10-05T23:25:36+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</loc>
-    <lastmod>2014-03-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/10/05/ganvc/</loc><lastmod>2017-10-05T23:25:36+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/go-speech-signal-processing/</loc>
-    <lastmod>2014-02-10T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/08/16/japanese-dnn-tts/</loc><lastmod>2017-08-16T23:10:56+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</loc>
-    <lastmod>2014-02-10T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</loc><lastmod>2017-08-16T03:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/02/02/ready-to-use-go/</loc>
-    <lastmod>2014-02-02T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/merlin/</loc><lastmod>2017-08-16T03:00:00+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/go-music-signal-processing/</loc>
-    <lastmod>2014-01-28T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2017/06/09/nlp100/</loc><lastmod>2017-06-09T21:58:50+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</loc>
-    <lastmod>2014-01-28T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/</loc><lastmod>2016-12-23T18:06:08+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</loc>
-    <lastmod>2014-01-27T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2016/01/24/passing-julia-expressions-to-cxx/</loc><lastmod>2016-01-24T22:32:08+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</loc>
-    <lastmod>2013-12-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/pcl/</loc><lastmod>2016-01-18T00:44:46+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/speech-signal-processing-speech-synthesis/</loc>
-    <lastmod>2013-12-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2016/01/18/trying-to-use-pcl-in-dynamic-language/</loc><lastmod>2016-01-18T00:44:46+09:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</loc>
-    <lastmod>2013-12-01T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2015/12/22/cxx-jl/</loc><lastmod>2015-12-22T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</loc>
-    <lastmod>2013-11-24T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2015/12/08/julia-type-annotations/</loc><lastmod>2015-12-08T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/11/16/mel-spectrogram/</loc>
-    <lastmod>2013-11-16T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2015/09/06/pysptk/</loc><lastmod>2015-09-06T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/daily/</loc>
-    <lastmod>2013-11-03T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/speech-signal-processing/</loc><lastmod>2015-09-06T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</loc>
-    <lastmod>2013-11-03T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/sptk/</loc><lastmod>2015-09-06T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/inverse-continous-wavelet-transform-wavelet-transform-signal-reconstruction-signal-processing/</loc>
-    <lastmod>2013-10-21T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/</loc><lastmod>2015-08-23T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</loc>
-    <lastmod>2013-10-21T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/juliatokyo/</loc><lastmod>2015-04-26T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</loc>
-    <lastmod>2013-10-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2015/04/26/juliatokyo3-speech-signal-processing-in-julia/</loc><lastmod>2015-04-26T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/wavelet-transform-short-time-fourier-transform-signal-processing-visualization/</loc>
-    <lastmod>2013-10-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/machine-learning/</loc><lastmod>2015-04-26T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/10/20/wavelet-stft-visualization/</loc>
-    <lastmod>2013-10-20T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/</loc><lastmod>2014-12-09T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</loc>
-    <lastmod>2013-09-23T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/tutorial/</loc><lastmod>2014-11-12T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/music-signal-processing-source-separation-matrix-factorization/</loc>
-    <lastmod>2013-09-14T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2014/11/12/statistical-voice-conversion-code/</loc><lastmod>2014-11-12T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/09/14/hpss/</loc>
-    <lastmod>2013-09-14T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/matrix-factorization/</loc><lastmod>2014-10-19T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/machine-learning-digit-recognition/</loc>
-    <lastmod>2013-08-06T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2014/10/19/nmf-music-source-separation/</loc><lastmod>2014-10-19T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</loc>
-    <lastmod>2013-08-06T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/tag/bindeps/</loc><lastmod>2014-09-30T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</loc>
-    <lastmod>2013-07-31T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2014/09/30/juliatokyo2/</loc><lastmod>2014-09-30T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/categories/probability/</loc>
-    <lastmod>2013-07-31T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2014/09/15/sptk-for-julia/</loc><lastmod>2014-09-15T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</loc>
-    <lastmod>2013-07-28T00:00:00+00:00</lastmod>
-  </url>
-  
+    <loc>https://r9y9.github.io/blog/2014/08/20/gap-nmf-julia/</loc><lastmod>2014-08-20T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>http://r9y9.github.io/blog/2013/07/27/nmf-euclid/</loc>
-    <lastmod>2013-07-27T00:00:00+00:00</lastmod>
-  </url>
-  
-</urlset>
+    <loc>https://r9y9.github.io/tag/non-parametric-bayes/</loc><lastmod>2014-08-20T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/08/10/sptk-from-python/</loc><lastmod>2014-08-10T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/scipy/</loc><lastmod>2014-08-05T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/08/05/tokyo-scipy/</loc><lastmod>2014-08-05T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/go/</loc><lastmod>2014-07-29T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/07/29/neural-networks-in-go-and-python/</loc><lastmod>2014-07-29T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/aws/</loc><lastmod>2014-07-20T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/ec2/</loc><lastmod>2014-07-20T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/gpu/</loc><lastmod>2014-07-20T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/07/20/pylearn2-on-ec2-g2-2xlarge/</loc><lastmod>2014-07-20T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/07/13/statistical-voice-conversion-wakaran/</loc><lastmod>2014-07-13T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/07/05/statistical-voice-conversion-muzui/</loc><lastmod>2014-07-05T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/</loc><lastmod>2014-06-08T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/continuous-wavelet-transform/</loc><lastmod>2014-06-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/signal-processing/</loc><lastmod>2014-06-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/wavelet-transform/</loc><lastmod>2014-06-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/06/01/continuous-wavelet-transform-types/</loc><lastmod>2014-06-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/</loc><lastmod>2014-05-11T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/cgo/</loc><lastmod>2014-03-22T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/03/22/cgo-tips/</loc><lastmod>2014-03-22T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/world/</loc><lastmod>2014-03-22T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/03/22/go-world/</loc><lastmod>2014-03-22T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/rbm/</loc><lastmod>2014-03-06T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/</loc><lastmod>2014-03-06T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/graphical-model/</loc><lastmod>2014-03-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/random-field/</loc><lastmod>2014-03-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/03/01/difference-between-mrf-and-crf/</loc><lastmod>2014-03-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/02/10/sptk-go-wrapper/</loc><lastmod>2014-02-10T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/01/28/go-chroma-vector/</loc><lastmod>2014-01-28T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/music-signal-processing/</loc><lastmod>2014-01-28T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2014/01/27/start-coding-go-msptools/</loc><lastmod>2014-01-27T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/</loc><lastmod>2013-12-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/12/01/sptk-with-waf/</loc><lastmod>2013-12-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/11/24/mfcc-calculation-memo/</loc><lastmod>2013-11-24T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/daily/</loc><lastmod>2013-11-03T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/11/03/mit-media-lab-talk-participated/</loc><lastmod>2013-11-03T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/inverse-cwt/</loc><lastmod>2013-10-21T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/</loc><lastmod>2013-10-21T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/fft/</loc><lastmod>2013-10-20T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/</loc><lastmod>2013-10-20T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/wavelett-transform/</loc><lastmod>2013-10-20T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/09/23/mlsa-filter-wakaran/</loc><lastmod>2013-09-23T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/source-separation/</loc><lastmod>2013-09-14T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/09/14/hpss/</loc><lastmod>2013-09-14T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/digit-recognition/</loc><lastmod>2013-08-06T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/mnist/</loc><lastmod>2013-08-06T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/08/06/naive-bayes-mnist/</loc><lastmod>2013-08-06T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/07/31/multinomial-categorical-diff/</loc><lastmod>2013-07-31T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/probability/</loc><lastmod>2013-07-31T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/07/28/naive-bayes-formulation/</loc><lastmod>2013-07-28T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/blog/2013/07/27/nmf-euclid/</loc><lastmod>2013-07-27T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/admin/</loc></url>
+  <url>
+    <loc>https://r9y9.github.io/categories/</loc></url>
+  <url>
+    <loc>https://r9y9.github.io/publication_types/</loc></url></urlset>

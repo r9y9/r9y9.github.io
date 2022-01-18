@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Merlin | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/merlin/</link>
+      <atom:link href="https://r9y9.github.io/tag/merlin/index.xml" rel="self" type="application/rss+xml" />
+    <description>Merlin</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Wed, 16 Aug 2017 03:00:00 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>Merlin</title>
+      <link>https://r9y9.github.io/tag/merlin/</link>
+    </image>
+    
+    <item>
+      <title>DNN統計的音声合成ツールキット Merlin の中身を理解をする</title>
+      <link>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</link>
+      <pubDate>Wed, 16 Aug 2017 03:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2017/08/16/trying-to-understand-merlin/</guid>
+      <description>&lt;p&gt;この記事では、音声合成ツールキットであるMerlinが、具体的に何をしているのか（特徴量の正規化、無音区間の削除、ポストフィルタなど、コードを読まないとわからないこと）、その中身を僕が理解した範囲でまとめます。
+なお、HMM音声合成について簡単に理解していること（HMMとは、状態とは、フルコンテキストラベルとは、くらい）を前提とします。&lt;/p&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;Merlinの概要については以下をご覧ください。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://ssw9.net/papers/ssw9_PS2-13_Wu.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wu, Zhizheng, Oliver Watts, and Simon King. &amp;ldquo;Merlin: An open source neural network speech synthesis system.&amp;rdquo; Proc. SSW, Sunnyvale, USA (2016).&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ssw9.net/papers/ssw9_DS-3_Ronanki.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&amp;ldquo;A Demonstration of the
+Merlin Open Source Neural Network Speech Synthesis System&amp;rdquo;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cstr-edinburgh.github.io/merlin/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式ドキュメント&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Merlinにはデモスクリプトがついています。基本的にユーザが使うインタフェースはrun_merlin.pyというコマンドラインスクリプトで、
+デモスクリプトではrun_merlin.pyに用途に応じた設定ファイルを与えることで、継続長モデルの学習/音響モデルの学習/パラメータ生成など、音声合成に必要なステップを実現しています。&lt;/p&gt;
+&lt;p&gt;デモスクリプトを実行すると、音声データ (wav) と言語特徴量（HTSのフルコンテキストラベル）から、変換音声が合成されるところまでまるっとやってくれるのですが、それだけでは内部で何をやっているのか、理解することはできません。
+ツールキットを使う目的が、自分が用意したデータセットで音声合成器を作りたい、といった場合には、特に内部を知る必要はありません。
+また、設定ファイルをちょこっといじるだけでこと済むのであれば、知る必要はないかもしれません。
+しかし、モデル構造を変えたい、学習アルゴリズムを変えたい、ポストフィルタを入れたい、といったように、少し進んだ使い方をしようとすれば、内部構造を理解しないとできないことも多いと思います。&lt;/p&gt;
+&lt;p&gt;run_merlin.py はあらゆる処理 (具体的にはあとで述べます) のエントリーポイントになっているがゆえに、コードはなかなかに複雑になっています&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。この記事では、run_merlin.pyがいったい何をしているのかを読み解いた結果をまとめます。&lt;/p&gt;
+&lt;h2 id=&#34;merlinでは提供しないこと&#34;&gt;Merlinでは提供しないこと&lt;/h2&gt;
+&lt;p&gt;Merlinが何を提供してくれるのかを理解する前に、何を提供しないのか、をざっくりと整理します。以下のとおりです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Text-processing (&lt;strong&gt;Frontend&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;Speech analysis/synthesis (&lt;strong&gt;Backend&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;HTSと同様に、frontend, backendといった部分は提供していません。Merlinの論文にもあるように、HTSの影響を受けているようです。&lt;/p&gt;
+&lt;p&gt;Frontendには、英語ならFestival、BackendにはWORLDやSTRAIGHTを使ってよろしくやってね、というスタンスです。
+Backendに関しては、Merlinのインストールガイドにあるように、WOLRDをインストールするように促されます。&lt;/p&gt;
+&lt;p&gt;デモスクリプトでは、Frontendによって生成されたフルコンテキストラベル（HTS書式）が事前に同梱されているので、Festivalをインストールする必要はありません。
+misc以下に、Festivalを使ってフルコンテキストラベルを作るスクリプト (make_labels) があるので、デモデータ以外のデータセットを使う場合は、それを使います。&lt;/p&gt;
+&lt;h2 id=&#34;steps&#34;&gt;Steps&lt;/h2&gt;
+&lt;p&gt;本編です。slt_arcticのデモスクリプトに従い、いくらかのステップに分けて、詳細に見ていきます。なお、以下デモスクリプトと書いた際には、slt_arcticのデモスクリプトを指すものとします。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;継続長モデルの学習&lt;/li&gt;
+&lt;li&gt;音響モデルの学習&lt;/li&gt;
+&lt;li&gt;変換音声の合成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、Merlinのスクリプトによってはかれるデータは、基本的に&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-py&#34;&gt;x.astype(np.float32).tofile(&amp;quot;foobar.bin&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;といった感じで、32bit浮動小数点のnumpyの配列がヘッダなしのバイナリフォーマットで保存されています。デバッグ時には、&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-py&#34;&gt;np.fromfile(&amp;quot;foobar.bin&amp;quot;, dtype=np.float32)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;として、ファイルを読み込んでインスペクトするのが便利です。注意事項として、ややこしいことに、拡張子は信頼できません。&lt;code&gt;.lab&lt;/code&gt; という拡張子であっても、フルコンテキストラベルのテキストファイルである場合もあれば、上述のようにバイナリフォーマットである可能性もあります。つらいですね！&lt;/p&gt;
+&lt;h3 id=&#34;継続長モデルの学習&#34;&gt;継続長モデルの学習&lt;/h3&gt;
+&lt;p&gt;継続長モデルとは、言語特徴量から、継続長を予測するモデルです。Merlinでは、phone-level / state-level のどちらかを選択可能です。Merlinの提供するDNN音声合成では、継続長の予測→音響特徴量の予測→合成、といったスタイルをとります。
+デフォルトでは、state-levelで継続長（具体的には一状態当たりの継続フレーム数）を予測します。状態レベルのアライメントのほうが、時間解像度の高いコンテキストを得られ、結果音声合成の品質が良くなるので、デフォルトになっているのだと思います。 &lt;a href=&#34;https://github.com/CSTR-Edinburgh/merlin/issues/18&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/CSTR-Edinburgh/merlin/issues/18&lt;/a&gt; に少し議論があります。&lt;/p&gt;
+&lt;p&gt;デモスクリプトを実行すると、 &lt;code&gt;experiments/slt_arctic_demo/duration_model/&lt;/code&gt; 以下に継続長モデル用のデータがは出力されます。いくつか重要なものについて、以下に示します。&lt;/p&gt;
+&lt;h4 id=&#34;data&#34;&gt;data&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;label_phone_align&lt;/code&gt;: 音素レベルでのフルコンテキストラベルです&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dur&lt;/code&gt;: 状態別継続長です。正確には、&lt;code&gt;T&lt;/code&gt; をフルコンテキストラベル中の音素数として、&lt;code&gt;(T, 5)&lt;/code&gt; の配列が発話ごとに保存されます。5は音素あたりのHMMの状態数で、慣例的に？5が使用されているような気がします。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;inter_module&#34;&gt;inter_module&lt;/h4&gt;
+&lt;p&gt;中間結果のファイル群です&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;binary_label_416/&lt;/code&gt;: HTS形式の質問ファイルを元に生成した、言語特徴量行列です。デモスクリプトでは、416個の質問があるので、一状態あたり416次元の特徴ベクトルになります。binaryな特徴量（母音か否か）と連続的な特徴量（単語中のsylalbleの数等）があります。&lt;code&gt;(T, 416)&lt;/code&gt; の行列が、発話ごとに保存されています。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;label_norm_HTS_416.dat&lt;/code&gt;: 416次元の特徴ベクトルの正規化に必要な情報です。デモスクリプトでは、言語特徴量に関してはmin/max正規化が行われるので、minおよびmaxの416次元のベクトル（計416*2次元）が保存されています。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nn_dur_5/&lt;/code&gt;: 無音区間が除去された、状態別継続長です。フォルダ名からは察することは難しいですが、無音区間が除去されています。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nn_no_silence_lab_416/&lt;/code&gt;: 無音区間が除去された、言語特徴量行列です。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nn_no_silence_lab_norm_416/&lt;/code&gt;: 無音区間が除去された、min/max正規化された言語特徴量行列です。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nn_norm_dur_5/&lt;/code&gt; 無音区間が除去された、mean/variance正規化された状態別継続長です。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;norm_info_dur_5_MVN.dat&lt;/code&gt;: 継続長の正規化に必要な情報です。具体的には、Mean-variance正規化（N(0, 1)になるようにする）が行われるので、平均と標準偏差（not 分散）が入っています。状態レベルでのアライメントを使用する場合は、5*2で計10次元のベクトルです。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ref_data/&lt;/code&gt;: RMSEなどの評価基準を計算する際に使われる継続長のテストデータです。&lt;code&gt;data/dur&lt;/code&gt; ディレクトリの継続長データを元に、無音区間が除去されたものです&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;var/&lt;/code&gt;: 継続長の分散（not 標準偏差）です。パラメータ生成 (MLPG) に使われる想定のデータです&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;けっこうたくさんありますね。これだけでも、いかに多くのことがrun_merlin.pyによってなされているか、わかるかと思います。&lt;/p&gt;
+&lt;h4 id=&#34;入力出力&#34;&gt;入力/出力&lt;/h4&gt;
+&lt;p&gt;中間ファイルがたくさんあってややこしいですが、整理すると、ネットワーク学習に用いる入力と出力は以下になります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;入力: &lt;code&gt;nn_no_silence_lab_norm_416&lt;/code&gt;, 一発話あたりの特徴量のshape: &lt;code&gt;(T, 416)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;出力: &lt;code&gt;nn_norm_dur_5&lt;/code&gt;, 一発話あたりの特徴量のshape: &lt;code&gt;(T, 5)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;学習されたモデルは、 &lt;code&gt;nnets_model&lt;/code&gt;というフォルダに保存されます。&lt;/p&gt;
+&lt;h3 id=&#34;音響モデルの学習&#34;&gt;音響モデルの学習&lt;/h3&gt;
+&lt;p&gt;音響モデルとは、言語特徴量からメルケプストラム、F0、非周期性成分などの音響特徴量を予測するモデルです。Merlinのデモスクリプトでは、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;メルケプストラム: 60次元（動的特徴量を合わせると、180次元)&lt;/li&gt;
+&lt;li&gt;対数F0: 1次元（動的特徴量を合わせると、3次元)&lt;/li&gt;
+&lt;li&gt;有声 or 無声フラグ (voiced/unvoiced; vuv): 1次元&lt;/li&gt;
+&lt;li&gt;非周期性成分: 1次元（動的特徴量を合わせると、3次元)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;の計187次元の音響特徴量を予測するモデルを考えます。継続長モデルのときと同様に、出力されるファイルについていくらか説明します。&lt;/p&gt;
+&lt;h4 id=&#34;data-1&#34;&gt;data&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;bap&lt;/code&gt;: 発話毎に計算された非周期性成分が入っています。bapはband averaged aperiodicityの略です（専門家の人にとっては当たり前かと思いますが、一応&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;label_phone_align&lt;/code&gt;: phone-levelでアライメントされたHTSのコンテキストラベルが入っています。デフォルトの設定では使いません。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;label_state_align&lt;/code&gt;: state-levelでアライメントされたHTSのコンテキストラベルが入っています&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;lf0&lt;/code&gt;: 対数F0です。なお、WORLDではかれるF0は無声区間で0を取りますが、無声区間の部分を線形補間することによって、非ゼロの値で補完しています。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mgc&lt;/code&gt;: メルケプストラムです（フォルダ名は、慣習的にメル一般化ケプストラムを表す &lt;code&gt;mgc&lt;/code&gt;となっていますが、デモスクリプトでは実際にはメルケプストラムです）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;inter_module-1&#34;&gt;inter_module&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;binary_label_425/&lt;/code&gt;: 言語特徴量の行列です。継続長モデルの場合と違って、フレーム単位で生成されているのと、フレーム単位ならではの特徴量（音素中の何フレーム目なのか、等）が追加されています。フレーム数を &lt;code&gt;T&lt;/code&gt; として、 &lt;code&gt;(T, 425)&lt;/code&gt; の配列が発話ごとに保存されています。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;label_norm_HTS_425.dat&lt;/code&gt;: 言語特徴量のmin/max正規化に必要なmin/maxのベクトルです。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nn_mgc_lf0_vuv_bap_187/&lt;/code&gt;: mgc, lf0, vuv, bapを結合した音響特徴量です。よくcmp (composed featureから来ていると思われる) と表されるものです。ディレクトリ名からは判別が付きませんが、無音区間は削除されています。ややこしい&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nn_no_silence_lab_425/&lt;/code&gt;: &lt;code&gt;binary_label_425&lt;/code&gt; の言語特徴量から無音区間を削除したものです&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nn_no_silence_lab_norm_425/&lt;/code&gt;: それをさらにmin/max正規化したものです&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nn_norm_mgc_lf0_vuv_bap_187/&lt;/code&gt;: &lt;code&gt;nn_mgc_lf0_vuv_bap_187/&lt;/code&gt;の音響特徴量をN(0, 1)になるようにmean/variance正規化したものです&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;norm_info_mgc_lf0_vuv_bap_187_MVN.dat&lt;/code&gt;: 音響特徴量の正規化に必要な、平均と標準偏差です&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;var/&lt;/code&gt;: mgc, lf0, bap, vuvそれぞれの分散です。このうちvuvは、パラメータ生成時にMLPGを行いませんが、保存はされています。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;入力出力-1&#34;&gt;入力/出力&lt;/h4&gt;
+&lt;p&gt;継続長モデルの場合と同様の中間特徴量が出力されています。改めて整理すると、音響モデルの学習に使用する入力と出力は、以下のとおりです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;入力: &lt;code&gt;nn_no_silence_lab_norm_425/&lt;/code&gt;, 一発話あたりの特徴量のshape: &lt;code&gt;(T, 425)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;出力: &lt;code&gt;nn_norm_mgc_lf0_vuv_bap_187&lt;/code&gt;, 一発話あたりの特徴量のshape: &lt;code&gt;(T, 187)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;学習されたモデルは、 &lt;code&gt;nnets_model&lt;/code&gt;というフォルダに保存されます。&lt;/p&gt;
+&lt;h3 id=&#34;波形生成&#34;&gt;波形生成&lt;/h3&gt;
+&lt;p&gt;得られた継続長モデルと音響モデルから、波形を生成する処理は、大雑把にいって以下の手順で行われます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;フルコンテキストラベルから得られる言語特徴量を元に、継続長モデルを使って継続長を予測する&lt;/li&gt;
+&lt;li&gt;予測された継続長を使って、フルコンテキストラベルを書き換える。より具体的には、状態毎の start_time, end_time の部分を書き換える。&lt;/li&gt;
+&lt;li&gt;書き換えられたフルコンテキストラベルから、音響モデル用のフレームレベルの言語特徴量を計算し、音響モデルを使って音響特徴量を予測する&lt;/li&gt;
+&lt;li&gt;予測された音響特徴量（static + delta + delta-delta) から、静的特徴量をMLPGによって生成する。MLPGによって生成するのは、mgc, lf0, bapのみで、vuvについてはそのまま使う。波形合成にはvuvを直接使うのではなく、vuv &amp;lt; 0.5以下のf0を0として扱う。&lt;/li&gt;
+&lt;li&gt;生成されたメルケプストラムに対して、Merlinお手製ポストフィルタを掛ける&lt;/li&gt;
+&lt;li&gt;得られた音響特徴量 (mgc, f0, bap) から、WORLDを使って波形合成をする&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以上です。Merlinの良い所の一つに、ログをたくさんはいてくれるというのがあります。しかし、このうちポストフィルタ（デフォルトでONです）に関しては一切（デフォルトでは）ログがはかれず、気づくのに時間がかかりました。&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;また、個人的な感覚ですが、このポストフィルタの影響は絶大に思いました。コードを見て、何をしているのか僕には理解できませんでしたが、ヒューリスティックな方法も含んでいるように思いました。興味のある方は、 波形合成用のconfファイルを開いて、&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[Waveform]
+do_post_filtering: False
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;のように、&lt;code&gt;[Waveform]&lt;/code&gt; セクションに &lt;code&gt;do_post_filtering&lt;/code&gt; という項目を加えて、生成結果を聴き比べてみることをおすすめします。ポストフィルタによって劇的に音質が改善されているのがわかると思います。さらに興味のある方は、コードを読んでみてください。参考文献も探しましたが、僕には見つかりませんでした。ご存知の方がいれば教えていただきたいです。&lt;/p&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;Merlin、最初は使いにくいなと思っていましたが、頑張って読んでみれば、とても勉強になりました（使いやすいとは言っていない）。後半はだれて、適当なまとめになってしまったかもしれません、すいません。もろもろの不満から&lt;a href=&#34;https://github.com/r9y9/nnmnkwii&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;新しいツール&lt;/a&gt;を作りましたが、それはまた別の機会に紹介したいと思います。ありがとうございました。&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html&lt;/a&gt; によれば、This is a very clearly written Python script だそうです…。僕に読解力がないだけの可能性があります&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;自分で作ったモデルが、どうしてもmerlinに勝てない、なぜだ、と悩んでいたとき、Merlinに言及している論文の一つに、ポストフィルタを使っているとの記述があり、探ってみるとたしかにあった、という感じでした。&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

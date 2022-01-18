@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ICASSP | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/icassp/</link>
+      <atom:link href="https://r9y9.github.io/tag/icassp/index.xml" rel="self" type="application/rss+xml" />
+    <description>ICASSP</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Wed, 06 Oct 2021 20:42:37 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>ICASSP</title>
+      <link>https://r9y9.github.io/tag/icassp/</link>
+    </image>
+    
+    <item>
+      <title>ESPnet2-TTS: Extending the Edge of TTS Research</title>
+      <link>https://r9y9.github.io/projects/espnet2-tts/</link>
+      <pubDate>Wed, 06 Oct 2021 20:42:37 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/espnet2-tts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>A Unified accent estimation method based on multi-task learning for Japanese text-to-speech</title>
+      <link>https://r9y9.github.io/projects/mtl_accent/</link>
+      <pubDate>Sat, 10 Jul 2021 12:11:03 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/mtl_accent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TTS-by-TTS: TTS-driven Data Augmentation for Fast and High-Quality Speech Synthesis</title>
+      <link>https://r9y9.github.io/projects/tts-by-tts/</link>
+      <pubDate>Mon, 26 Oct 2020 16:37:12 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/tts-by-tts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Parallel waveform synthesis based on generative adversarial networks with voicing-aware conditional discriminators</title>
+      <link>https://r9y9.github.io/projects/vuvd-pwg/</link>
+      <pubDate>Wed, 21 Oct 2020 23:38:48 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/vuvd-pwg/</guid>
+      <description>&lt;p&gt;Preprint: &lt;a href=&#34;https://arxiv.org/abs/2010.14151&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv:2010.14151&lt;/a&gt; (accepted to &lt;a href=&#34;https://2021.ieeeicassp.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ICASSP 2021&lt;/a&gt;)&lt;/p&gt;
+&lt;h2 id=&#34;table-of-contents&#34;&gt;Table of contents&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#analysis-synthesis&#34;&gt;Analysis/synthesis samples (Japanese)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#text-to-speech&#34;&gt;Text-to-speech samples (Japanese)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#bonus-analysis-synthesis-english&#34;&gt;Bonus: analysis/synthesis samples for CMU ARCTIC (English)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;authors&#34;&gt;Authors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ryuichi Yamamoto (LINE Corp.)&lt;/li&gt;
+&lt;li&gt;Eunwoo Song (NAVER Corp.)&lt;/li&gt;
+&lt;li&gt;Min-Jae Hwang (Search Solutions Inc.)&lt;/li&gt;
+&lt;li&gt;Jae-Min Kim (NAVER Corp.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
+&lt;p&gt;This paper proposes voicing-aware conditional discriminators for Parallel WaveGAN-based waveform synthesis systems. In this framework, we adopt a projection-based conditioning method that can significantly improve the discriminator’s performance. Furthermore, the conventional discriminator is separated into two waveform discriminators for modeling voiced and unvoiced speech. As each discriminator learns the distinctive characteristics of the harmonic and noise components, respectively, the adversarial training process becomes more efficient, allowing the generator to produce more realistic speech waveforms. Subjective test results demonstrate the superiority of the proposed method over the conventional Parallel WaveGAN and WaveNet systems. In particular, our speaker-independently trained model within a FastSpeech 2 based text-to-speech framework achieves the mean opinion scores of 4.20, 4.18, 4.21, and 4.31 for four Japanese speakers, respectively.&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/icassp2021_fig.png&#34; width=&#34;50%&#34; /&gt;&lt;/div&gt;
+&lt;h2 id=&#34;systems-for-comparision&#34;&gt;Systems for comparision&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;System&lt;/th&gt;
+&lt;th&gt;Voiced segments&lt;/th&gt;
+&lt;th&gt;Unvoiced segments&lt;/th&gt;
+&lt;th&gt;Discriminator conditioning&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;S1-WaveNet &lt;a href=&#34;https://arxiv.org/abs/1807.07281&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[1]&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S2-PWG &lt;a href=&#34;https://arxiv.org/abs/1910.11480&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[2]&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S3-PWG-cGAN-D&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S4-PWG-V/UV-D&lt;/td&gt;
+&lt;td&gt;$D^{\mathrm{{v}}}$&lt;/td&gt;
+&lt;td&gt;$D^{\mathrm{{v}}}$&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S5-PWG-V/UV-D&lt;/td&gt;
+&lt;td&gt;$D^{\mathrm{{uv}}}$&lt;/td&gt;
+&lt;td&gt;$D^{\mathrm{{v}}}$&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S6-PWG-V/UV-D&lt;/td&gt;
+&lt;td&gt;$D^{\mathrm{{uv}}}$&lt;/td&gt;
+&lt;td&gt;$D^{\mathrm{{uv}}}$&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S7-PWG-V/UV-D (proposed)&lt;/td&gt;
+&lt;td&gt;$D^{\mathrm{{v}}}$&lt;/td&gt;
+&lt;td&gt;$D^{\mathrm{{uv}}}$&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Recordings&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;$D^{\mathrm{{v}}}$: 1-D dilated CNN discrimiantor with the reseptive field size of 127.&lt;/li&gt;
+&lt;li&gt;$D^{\mathrm{{uv}}}$: 1-D CNN discrimiantor with the reseptive field size of 13.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;PWG denotes Parallel WaveGAN for short. Systems S2-PWG and S3-PWG-cGAN-D used $D^{\mathrm{{v}}}$  as the primary discriminator. &lt;strong&gt;Note that all the Parallel WaveGAN systems used the same generator architecture and training configurations; they only differed in the discriminator settings.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;analysissynthesis&#34;&gt;Analysis/synthesis&lt;/h2&gt;
+&lt;h3 id=&#34;f1-female&#34;&gt;F1 (female)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;S1-WaveNet&lt;/th&gt;&lt;th&gt;S2-PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;S7-PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/AnaSyn/[Test01]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/AnaSyn/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/AnaSyn/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/AnaSyn/[Test01]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;S3-PWG-cGAN-D&lt;/th&gt;&lt;th&gt;S4-PWG-V/UV-D&lt;/th&gt;&lt;th&gt;S5-PWG-V/UV-D&lt;/th&gt;&lt;th&gt;S6-PWG-V/UV-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/AnaSyn/[Test01]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/AnaSyn/[Test01]-S4-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/AnaSyn/[Test01]-S5-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/AnaSyn/[Test01]-S6-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;f2-female&#34;&gt;F2 (female)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;S1-WaveNet&lt;/th&gt;&lt;th&gt;S2-PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;S7-PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/AnaSyn/[Test01]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/AnaSyn/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/AnaSyn/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/AnaSyn/[Test01]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;S3-PWG-cGAN-D&lt;/th&gt;&lt;th&gt;S4-PWG-V/UV-D&lt;/th&gt;&lt;th&gt;S5-PWG-V/UV-D&lt;/th&gt;&lt;th&gt;S6-PWG-V/UV-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/AnaSyn/[Test01]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/AnaSyn/[Test01]-S4-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/AnaSyn/[Test01]-S5-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/AnaSyn/[Test01]-S6-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;m1-male&#34;&gt;M1 (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;S1-WaveNet&lt;/th&gt;&lt;th&gt;S2-PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;S7-PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/AnaSyn/[Test01]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/AnaSyn/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/AnaSyn/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/AnaSyn/[Test01]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;S3-PWG-cGAN-D&lt;/th&gt;&lt;th&gt;S4-PWG-V/UV-D&lt;/th&gt;&lt;th&gt;S5-PWG-V/UV-D&lt;/th&gt;&lt;th&gt;S6-PWG-V/UV-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/AnaSyn/[Test01]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/AnaSyn/[Test01]-S4-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/AnaSyn/[Test01]-S5-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/AnaSyn/[Test01]-S6-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;m2-male&#34;&gt;M2 (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;S1-WaveNet&lt;/th&gt;&lt;th&gt;S2-PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;S7-PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/AnaSyn/[Test01]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/AnaSyn/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/AnaSyn/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/AnaSyn/[Test01]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;S3-PWG-cGAN-D&lt;/th&gt;&lt;th&gt;S4-PWG-V/UV-D&lt;/th&gt;&lt;th&gt;S5-PWG-V/UV-D&lt;/th&gt;&lt;th&gt;S6-PWG-V/UV-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/AnaSyn/[Test01]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/AnaSyn/[Test01]-S4-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/AnaSyn/[Test01]-S5-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/AnaSyn/[Test01]-S6-PWG-VUV-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&#34;text-to-speech&#34;&gt;Text-to-speech&lt;/h2&gt;
+&lt;p&gt;FastSpeech 2 (&lt;a href=&#34;https://arxiv.org/abs/2006.04558&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[3]&lt;/a&gt;) based acoustic models were used for text-to-speech experiments.&lt;/p&gt;
+&lt;h3 id=&#34;f1-female-1&#34;&gt;F1 (female)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test01]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test01]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test01]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test02]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test02]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test02]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test02]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test02]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test03]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test03]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test03]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test03]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F1/TTS/[Test03]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;f2-female-1&#34;&gt;F2 (female)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test01]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test01]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test01]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test02]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test02]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test02]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test02]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test02]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test03]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test03]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test03]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test03]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/F2/TTS/[Test03]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;m1-male-1&#34;&gt;M1 (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test01]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test01]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test01]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test02]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test02]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test02]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test02]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test02]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test03]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test03]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test03]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test03]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M1/TTS/[Test03]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;m2-male-1&#34;&gt;M2 (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test01]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test01]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test01]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test02]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test02]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test02]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test02]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test02]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;FastSpeech 2 + WaveNet&lt;/th&gt;&lt;th&gt;FastSpeech 2 + PWG&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;FastSpeech 2 + PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test03]-R1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test03]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test03]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test03]-S7-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;FastSpeech 2 + PWG-cGAN-D&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/M2/TTS/[Test03]-S3-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&#34;bonus-analysissynthesis-english&#34;&gt;Bonus: Analysis/synthesis (English)&lt;/h2&gt;
+&lt;p&gt;Samples for &lt;a href=&#34;http://www.festvox.org/cmu_arctic/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CMU ARCTIC database&lt;/a&gt; are provided as follows. The models were trained using total six speakers (clb, slt, bdl, rms, jmk, and ksp) in a speaker-independent way.
+The models were similary configured as the above experiments.&lt;/p&gt;
+&lt;h3 id=&#34;clb-female&#34;&gt;clb (female)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test01]-clb_arctic_b0490_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test01]-clb_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test01]-clb_arctic_b0490_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test01]-clb_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test02]-clb_arctic_b0491_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test02]-clb_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test02]-clb_arctic_b0491_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test02]-clb_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test03]-clb_arctic_b0492_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test03]-clb_arctic_b0492_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test03]-clb_arctic_b0492_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/clb/AnaSyn/[Test03]-clb_arctic_b0492_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;slt-female&#34;&gt;slt (female)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test01]-slt_arctic_b0490_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test01]-slt_arctic_b0490_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test01]-slt_arctic_b0490_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test01]-slt_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test02]-slt_arctic_b0491_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test02]-slt_arctic_b0491_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test02]-slt_arctic_b0491_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test02]-slt_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test03]-slt_arctic_b0492_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test03]-slt_arctic_b0492_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test03]-slt_arctic_b0492_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/slt/AnaSyn/[Test03]-slt_arctic_b0492_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;bdl-male&#34;&gt;bdl (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test01]-bdl_arctic_b0490_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test01]-bdl_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test01]-bdl_arctic_b0490_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test01]-bdl_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test02]-bdl_arctic_b0491_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test02]-bdl_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test02]-bdl_arctic_b0491_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test02]-bdl_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test03]-bdl_arctic_b0492_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test03]-bdl_arctic_b0492_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test03]-bdl_arctic_b0492_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/bdl/AnaSyn/[Test03]-bdl_arctic_b0492_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;rms-male&#34;&gt;rms (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test01]-rms_arctic_b0490_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test01]-rms_arctic_b0490_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test01]-rms_arctic_b0490_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test01]-rms_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test02]-rms_arctic_b0491_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test02]-rms_arctic_b0491_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test02]-rms_arctic_b0491_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test02]-rms_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test03]-rms_arctic_b0492_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test03]-rms_arctic_b0492_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test03]-rms_arctic_b0492_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/rms/AnaSyn/[Test03]-rms_arctic_b0492_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;jmk-male&#34;&gt;jmk (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test01]-jmk_arctic_b0490_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test01]-jmk_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test01]-jmk_arctic_b0490_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test01]-jmk_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test02]-jmk_arctic_b0491_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test02]-jmk_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test02]-jmk_arctic_b0491_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test02]-jmk_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test03]-jmk_arctic_b0492_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test03]-jmk_arctic_b0492_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test03]-jmk_arctic_b0492_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/jmk/AnaSyn/[Test03]-jmk_arctic_b0492_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;ksp-male&#34;&gt;ksp (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test01]-ksp_arctic_b0490_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test01]-ksp_arctic_b0490_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test01]-ksp_arctic_b0490_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test01]-ksp_arctic_b0490_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test02]-ksp_arctic_b0491_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test02]-ksp_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test02]-ksp_arctic_b0491_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test02]-ksp_arctic_b0491_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;th&gt;PWG-cGAN-D&lt;/th&gt;&lt;th&gt;&lt;font color=&#34;#0000cd&#34;&gt;PWG-V/UV-D (ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test03]-ksp_arctic_b0492_ref-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test03]-ksp_arctic_b0492_gen-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test03]-ksp_arctic_b0492_gen-PWG-cGAN-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2021-pwg-vuvd/bonus/ksp/AnaSyn/[Test03]-ksp_arctic_b0492_gen-PWG-VUV-D (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;[1] W. Ping, K. Peng, and J. Chen, “ClariNet: Parallel wave generation in end-to-end text-to-speech,” in Proc. ICLR, 2019 &lt;a href=&#34;https://arxiv.org/abs/1807.07281&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;[2] R Yamamoto, E Song, and J.-M Kim, “Parallel WaveGAN:A fast waveform generation model based on generative adversarial networks with multi-resolution spectrogram,”  in Proc. ICASSP, 2020, pp. 6199–6203. &lt;a href=&#34;https://arxiv.org/abs/1910.11480&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;[3] Y Ren, C Hu, T Qin, S Zhao, Z Zhao, and T.-Y Liu, “Fast-speech 2: Fast and high-quality end-to-end text-to-speech,”arXiv preprint arXiv:2006.04558, 2020. &lt;a href=&#34;https://arxiv.org/abs/2006.04558&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;acknowledgements&#34;&gt;Acknowledgements&lt;/h2&gt;
+&lt;p&gt;Work performed with nVoice, Clova Voice, Naver Corp.&lt;/p&gt;
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;@inproceedings{yamamoto2020parallel,
+  title={Parallel waveform synthesis based on generative adversarial networks with voicing-aware conditional discriminators},
+  author={Ryuichi Yamamoto and Eunwoo Song and Min-Jae Hwang and Jae-Min Kim},
+  booktitle=&amp;quot;Proc. of ICASSP (in press)&amp;quot;,
+  year={2021},
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ESPnet-TTS: Unified, Reproducible, and Integratable Open Source End-to-End Text-to-Speech Toolkit</title>
+      <link>https://r9y9.github.io/projects/espnet-tts/</link>
+      <pubDate>Thu, 24 Oct 2019 16:21:27 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/espnet-tts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Parallel WaveGAN: A fast waveform generation model based on generative adversarial networks with multi-resolution spectrogram</title>
+      <link>https://r9y9.github.io/projects/pwg/</link>
+      <pubDate>Mon, 21 Oct 2019 20:18:27 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/pwg/</guid>
+      <description>&lt;p&gt;Preprint: &lt;a href=&#34;https://arxiv.org/abs/1910.11480&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv:1910.11480&lt;/a&gt; (accepted to &lt;a href=&#34;https://2020.ieeeicassp.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ICASSP 2020&lt;/a&gt;)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#audio-samples-japanese&#34;&gt;Audio samples (Japanese)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#audio-samples-english&#34;&gt;Audio samples (English)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Japanese samples were used in the subjective evaluations reported in our paper.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;authors&#34;&gt;Authors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ryuichi Yamamoto (LINE Corp.)&lt;/li&gt;
+&lt;li&gt;Eunwoo Song (NAVER Corp.)&lt;/li&gt;
+&lt;li&gt;Jae-Min Kim (NAVER Corp.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
+&lt;p&gt;We propose Parallel WaveGAN&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, a distillation-free, fast, and small-footprint waveform generation method using a generative adversarial network. In the proposed method, a non-autoregressive WaveNet is trained by jointly optimizing multi-resolution spectrogram and adversarial loss functions, which can effectively capture the time-frequency distribution of the realistic speech waveform. As our method does not require density distillation used in the conventional teacher-student framework, the entire model can be easily trained even with a small number of parameters. In particular, the proposed Parallel WaveGAN has only 1.44 M parameters and can generate 24 kHz speech waveform 28.68 times faster than real-time on a single GPU environment. Perceptual listening test results verify that our proposed method achieves 4.16 mean opinion score within a Transformer-based text-to-speech framework, which is comparative to the best distillation-based Parallel WaveNet system.&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/icassp2020_fig.png&#34; width=&#34;60%&#34; /&gt;&lt;/div&gt;
+&lt;h3 id=&#34;systems-used-for-comparision&#34;&gt;Systems used for comparision&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Ground truth&lt;/strong&gt;: Recorded speech.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;WaveNet&lt;/strong&gt;: Gaussian WaveNet &lt;a href=&#34;https://arxiv.org/abs/1807.07281&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[1]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ClariNet-$L^{(1)}$&lt;/strong&gt;: ClariNet &lt;a href=&#34;https://arxiv.org/abs/1807.07281&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[1]&lt;/a&gt; with the single STFT auxiliary loss&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ClariNet-$L^{(1,2,3)}$&lt;/strong&gt;: ClariNet with the multi-resolution STFT loss&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/strong&gt;: ClariNet with the multi-resolution STFT and adversarial losses &lt;a href=&#34;https://arxiv.org/abs/1807.07281&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;[2]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Parallel WaveGAN-$L^{(1)}$&lt;/strong&gt;: Parallel WaveGAN with th single STFT loss&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Parallel WaveGAN-$L^{(1,2,3)}$&lt;/strong&gt;: Parallel WaveGAN with the multi-resolution STFT loss&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;audio-samples-japanese&#34;&gt;Audio samples (Japanese)&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Analysis/synthesis&lt;/li&gt;
+&lt;li&gt;Text-to-speech (Transformer TTS + vocoder models)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;analysissynthesis&#34;&gt;Analysis/synthesis&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample01]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample01]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample01]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample01]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample01]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample01]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample01]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample02]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample02]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample02]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample02]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample02]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample02]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample02]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample03]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample03]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample03]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample03]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample03]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample03]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample03]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 4&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample04]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample04]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample04]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample04]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample04]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample04]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample04]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 5&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample05]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample05]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample05]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample05]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample05]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample05]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample05]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;text-to-speech&#34;&gt;Text-to-speech&lt;/h3&gt;
+&lt;p&gt;Sample 1&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer + WaveNet&lt;/th&gt;&lt;th&gt;Transformer + ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample01]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample01]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample01]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Transformer + ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample01]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample01]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer + WaveNet&lt;/th&gt;&lt;th&gt;Transformer + ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample02]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample02]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample02]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Transformer + ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample02]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample02]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer + WaveNet&lt;/th&gt;&lt;th&gt;Transformer + ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample03]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample03]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample03]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Transformer + ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample03]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample03]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 4&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer + WaveNet&lt;/th&gt;&lt;th&gt;Transformer + ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample04]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample04]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample04]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Transformer + ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample04]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample04]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 5&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer + WaveNet&lt;/th&gt;&lt;th&gt;Transformer + ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/AnaSyn/[Sample05]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample05]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample05]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Transformer + ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Transformer + Parallel WaveGAN--$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample05]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/TTS/[Sample05]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&#34;audio-samples-english&#34;&gt;Audio samples (English)&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Analysis/synthesis&lt;/li&gt;
+&lt;li&gt;Text-to-speech (&lt;a href=&#34;https://arxiv.org/abs/1910.10909&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ESPnet-TTS&lt;/a&gt; + Our Parallel WaveGAN)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://keithito.com/LJ-Speech-Dataset/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LJSpeech dataset&lt;/a&gt; is used for the test. Mel-spectrograms (with the range of 70 - 7600 Hz&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;) were used for local conditioning.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Please note that the English samples were not used in the subjective evaluations reported in our paper.&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;analysissynthesis-1&#34;&gt;Analysis/synthesis&lt;/h3&gt;
+&lt;p&gt;That is reflected in definite and comprehensive operating procedures.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;The commission also recommends.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;That the secret service consciously set about the task of inculcating and maintaining the highest standard of excellence and esprit, for all of its personnel.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;This involves tight and unswerving discipline as well as the promotion of an outstanding degree of dedication and loyalty to duty.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;The commission emphasizes that it finds no causal connection between the assassination.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;ClariNet-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-2-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-3-ClariNet (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;ClariNet-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;ClariNet-GAN-$L^{(1,2,3)}$&lt;/th&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1)}$&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-4-ClariNet (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-5-ClariNet-GAN (3spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-6-Parallel WaveGAN (1spec).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Parallel WaveGAN-$L^{(1,2,3)}$ &lt;font color=&#34;#0000cd&#34;&gt;(ours)&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-7-Parallel WaveGAN (3spec) (ours).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;text-to-speech-1&#34;&gt;Text-to-speech&lt;/h3&gt;
+&lt;p&gt;We combined our Parallel WaveGAN with &lt;a href=&#34;https://arxiv.org/abs/1910.10909&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ESPnet-TTS&lt;/a&gt;. The systems used here are as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Transformer.v3&lt;/strong&gt;: Transformer.v3 presented in &lt;a href=&#34;https://arxiv.org/abs/1910.10909&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ESPnet-TTS&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MoL WaveNet&lt;/strong&gt;: WaveNet with mixture of logistics output distribution (shipped with ESPnet). Pre-emphasis/de-emphasis were applied to reduce perceptual noise (similar to &lt;a href=&#34;https://arxiv.org/abs/1810.11846&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LPCNet&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Parallel WaveGAN&lt;/strong&gt;: Our Parallel WaveGAN with multi-resolution spectrogram loss.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note that &lt;strong&gt;Transformer.v3 + MoL WaveNet&lt;/strong&gt; is the same as used in &lt;a href=&#34;https://espnet.github.io/icassp2020-tts/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://espnet.github.io/icassp2020-tts/&lt;/a&gt;.
+Mel-spectrograms (with the range of 70 - 11025 Hz) were used for local conditioning.&lt;/p&gt;
+&lt;p&gt;That is reflected in definite and comprehensive operating procedures.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer.v3 + MoL WaveNet&lt;/th&gt;&lt;th&gt;Transformer.v3 + Parallel WaveGAN&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample01]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample01]-1-MoL-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample01]-2-Parallel WaveGAN.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;The commission also recommends.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer.v3 + MoL WaveNet&lt;/th&gt;&lt;th&gt;Transformer.v3 + Parallel WaveGAN&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample02]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample02]-1-MoL-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample02]-2-Parallel WaveGAN.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;That the secret service consciously set about the task of inculcating and maintaining the highest standard of excellence and esprit, for all of its personnel.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer.v3 + MoL WaveNet&lt;/th&gt;&lt;th&gt;Transformer.v3 + Parallel WaveGAN&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample03]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample03]-1-MoL-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample03]-2-Parallel WaveGAN.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;This involves tight and unswerving discipline as well as the promotion of an outstanding degree of dedication and loyalty to duty.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer.v3 + MoL WaveNet&lt;/th&gt;&lt;th&gt;Transformer.v3 + Parallel WaveGAN&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample04]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample04]-1-MoL-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample04]-2-Parallel WaveGAN.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;The commission emphasizes that it finds no causal connection between the assassination.&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Ground truth&lt;/th&gt;&lt;th&gt;Transformer.v3 + MoL WaveNet&lt;/th&gt;&lt;th&gt;Transformer.v3 + Parallel WaveGAN&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/AnaSyn/[LJ-Sample05]-1-Ground truth.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample05]-1-MoL-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/icassp2020/LJSpeech/TTS/[LJ-Sample05]-2-Parallel WaveGAN.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;W. Ping, K. Peng, and J. Chen, “ClariNet: Parallel wave generation in end-to-end text-to-speech,” in Proc. ICLR, 2019 (&lt;a href=&#34;https://arxiv.org/abs/1807.07281&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;arXiv&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;R. Yamamoto, E. Song, and J.-M. Kim, “Probability density distillation with generative adversarial networks for high-quality parallel waveform generation,” in Proc. INTERSPEECH, 2019, pp. 699–703. (&lt;a href=&#34;https://www.isca-speech.org/archive/Interspeech_2019/abstracts/1965.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ISCA archive&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;acknowledgements&#34;&gt;Acknowledgements&lt;/h2&gt;
+&lt;p&gt;Work performed with nVoice, Clova Voice, Naver Corp.&lt;/p&gt;
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;@inproceedings{yamamoto2020parallel,
+  title={Parallel {WaveGAN}: {A} fast waveform generation model based on generative adversarial networks with multi-resolution spectrogram},
+  author={Yamamoto, Ryuichi and Song, Eunwoo and Kim, Jae-Min},
+  booktitle	= &amp;quot;Proc. of ICASSP&amp;quot;,
+  pages={6199--6203},
+  year={2020}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Note that our work is not closely related to an unsupervised waveform synthesis model, &lt;a href=&#34;https://arxiv.org/abs/1802.04208&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;WaveGAN&lt;/a&gt;.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Audio quaility can be improved by using the full-band frequency range, but it may suffer from the over-smoothing problem in TTS.&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

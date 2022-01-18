@@ -1,332 +1,1005 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD] - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Audio samples: https://r9y9.github.io/deepvoice3_pytorch/" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/" />
+  <meta property="og:title" content="【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD] | LESS IS MORE" />
+  <meta property="og:description" content="Audio samples: https://r9y9.github.io/deepvoice3_pytorch/" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2017-12-22T15:30:00&#43;09:00"
+      />
+    
+    <meta property="article:modified_time" content="2017-12-22T15:30:00&#43;09:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/"
+  },
+  "headline": "【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]",
+  
+  "datePublished": "2017-12-22T15:30:00+09:00",
+  "dateModified": "2017-12-22T15:30:00+09:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "Audio samples: https://r9y9.github.io/deepvoice3_pytorch/"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD] | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-12-22">December 22, 2017</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="eab1b2f00688d185620743406d81b7c5" >
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Dec 22, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h2 id="summary">Summary</h2>
 <ul>
-<li>論文リンク: <a href="https://arxiv.org/abs/1710.07654">arXiv:1710.07654</a></li>
-<li>コード: <a href="https://github.com/r9y9/deepvoice3_pytorch">https://github.com/r9y9/deepvoice3_pytorch</a></li>
-<li>VCTK: <a href="http://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html">http://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html</a></li>
-<li>音声サンプルまとめ: <a href="https://r9y9.github.io/deepvoice3_pytorch/">https://r9y9.github.io/deepvoice3_pytorch/</a></li>
+<li>論文リンク: <a href="https://arxiv.org/abs/1710.07654" target="_blank" rel="noopener">arXiv:1710.07654</a></li>
+<li>コード: <a href="https://github.com/r9y9/deepvoice3_pytorch" target="_blank" rel="noopener">https://github.com/r9y9/deepvoice3_pytorch</a></li>
+<li>VCTK: <a href="https://datashare.ed.ac.uk/handle/10283/2950" target="_blank" rel="noopener">https://datashare.ed.ac.uk/handle/10283/2950</a></li>
+<li>音声サンプルまとめ: <a href="https://r9y9.github.io/deepvoice3_pytorch/" target="_blank" rel="noopener">https://r9y9.github.io/deepvoice3_pytorch/</a></li>
 </ul>
-
 <h2 id="三行まとめ">三行まとめ</h2>
-
 <ul>
-<li><a href="https://arxiv.org/abs/1710.07654">arXiv:1710.07654: Deep Voice 3: 2000-Speaker Neural Text-to-Speech</a> を読んで、複数話者の場合のモデルを実装しました</li>
-<li>論文のタイトル通りの2000話者とはいきませんが、<a href="http://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html">VCTK</a> を使って、108 話者対応の英語TTSモデルを作りました（学習時間1日くらい）</li>
+<li><a href="https://arxiv.org/abs/1710.07654" target="_blank" rel="noopener">arXiv:1710.07654: Deep Voice 3: 2000-Speaker Neural Text-to-Speech</a> を読んで、複数話者の場合のモデルを実装しました</li>
+<li>論文のタイトル通りの2000話者とはいきませんが、<a href="https://datashare.ed.ac.uk/handle/10283/2950" target="_blank" rel="noopener">VCTK</a> を使って、108 話者対応の英語TTSモデルを作りました（学習時間1日くらい）</li>
 <li>入力する話者IDを変えることで、一つのモデルでバリエーションに富んだ音声サンプルを生成できることを確認しました</li>
 </ul>
-
 <h2 id="概要">概要</h2>
-
 <p><a href="/blog/2017/12/13/deepvoice3/">【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a> の続編です。</p>
-
-<p>論文概要は前回紹介したものと同じなので、話者の条件付けの部分についてのみ簡単に述べます。なお、話者の条件付けに関しては、DeepVoice2の論文 (<a href="https://arxiv.org/abs/1705.08947">arXiv:1705.08947 [cs.CL]</a>) の方が詳しいです。</p>
-
+<p>論文概要は前回紹介したものと同じなので、話者の条件付けの部分についてのみ簡単に述べます。なお、話者の条件付けに関しては、DeepVoice2の論文 (<a href="https://arxiv.org/abs/1705.08947" target="_blank" rel="noopener">arXiv:1705.08947 [cs.CL]</a>) の方が詳しいです。</p>
 <p>まず基本的に、話者の情報は trainable embedding としてモデルに組み込みます。text embeddingのうようにネットワークの入力の一箇所に入れるような設計では学習が上手くかない（話者情報を無視するようになってしまうのだと思います）ため、ネットワークのあらゆるところに入れるのがポイントのようです。具体的には、Encoder, Decoder (+ Attention), Converterのすべてに入れます。さらに具体的には、ネットワークの基本要素である Gated linear unit + Conv1d のすべてに入れます。詳細は論文に記載のarchitectureの図を参照してください。</p>
-
 <p>話者の条件付けに関して、一つ注意を加えるとすれば、本論文には明示的に書かれていませんが、 speaker embeddingは各時間stepすべてにexpandして用いるのだと思います（でないと実装するときに困る）。DeepVoice2の論文にはその旨が明示的に書かれています。</p>
-
 <h2 id="vctk-の前処理">VCTK の前処理</h2>
-
 <p>実験に入る前に、VCTKの前処理について、簡単にまとめたいと思います。VCTKの音声データには、数秒に渡る無音区間がそれなりに入っているので、それを取り除く必要があります。以前、<a href="/blog/2017/11/12/jsut_ver1/">日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理</a> で書いた内容と同じように、音素アライメントを取って無音区間を除去します。僕は以下の二つの方法をためしました。</p>
-
 <ul>
-<li><a href="https://github.com/lowerquality/gentle">Gentle</a> (<a href="https://github.com/kaldi-asr/kaldi">Kaldi</a>ベース)</li>
-<li><a href="https://github.com/CSTR-Edinburgh/merlin">Merlin</a> 付属のアライメントツール (<a href="http://festvox.org/cmu_arctic/">festvox</a>ベース) (<a href="https://gist.github.com/kastnerkyle/cc0ac48d34860c5bb3f9112f4d9a0300">便利スクリプト</a>)</li>
+<li><a href="https://github.com/lowerquality/gentle" target="_blank" rel="noopener">Gentle</a> (<a href="https://github.com/kaldi-asr/kaldi" target="_blank" rel="noopener">Kaldi</a>ベース)</li>
+<li><a href="https://github.com/CSTR-Edinburgh/merlin" target="_blank" rel="noopener">Merlin</a> 付属のアライメントツール (<a href="http://festvox.org/cmu_arctic/" target="_blank" rel="noopener">festvox</a>ベース) (<a href="https://gist.github.com/kastnerkyle/cc0ac48d34860c5bb3f9112f4d9a0300" target="_blank" rel="noopener">便利スクリプト</a>)</li>
 </ul>
-
-<p>論文中には、（無音除去のため、という文脈ではないのですが<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>）Gentleを使った旨が書かれています。しかし、試したところアライメントが失敗するケースがそれなりにあり、<a href="https://github.com/facebookresearch/loop">loop</a> は後者の方法を用いており良い結果も出ていることから、結論としては僕は後者を採用しました。なお、両方のコードは残してあるので、気になる方は両方ためしてみてください。</p>
-
+<p>論文中には、（無音除去のため、という文脈ではないのですが<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>）Gentleを使った旨が書かれています。しかし、試したところアライメントが失敗するケースがそれなりにあり、<a href="https://github.com/facebookresearch/loop" target="_blank" rel="noopener">loop</a> は後者の方法を用いており良い結果も出ていることから、結論としては僕は後者を採用しました。なお、両方のコードは残してあるので、気になる方は両方ためしてみてください。</p>
 <h2 id="実験">実験</h2>
-
-<p><a href="http://homepages.inf.ed.ac.uk/jyamagis/page3/page58/page58.html">VCTK</a> の108話者分のすべて<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>を使用して、20時間くらい（30万ステップ x 2）学習しました。30万ステップ学習した後できたモデルをベースに、さらに30万ステップ学習しました<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>。モデルは、単一話者の場合とほとんど同じですが、変更を加えた点を以下にまとめます。</p>
-
+<p><a href="https://datashare.ed.ac.uk/handle/10283/2950" target="_blank" rel="noopener">VCTK</a> の108話者分のすべて<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>を使用して、20時間くらい（30万ステップ x 2）学習しました。30万ステップ学習した後できたモデルをベースに、さらに30万ステップ学習しました<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。モデルは、単一話者の場合とほとんど同じですが、変更を加えた点を以下にまとめます。</p>
 <ul>
 <li><strong>共通</strong>: Speaker embedding を追加しました。</li>
 <li><strong>共通</strong>: Speaker embeddingをすべての時間ステップにexpandしたあと、Dropoutを適用するようにしました（論文には書いていませんが、結論から言えば重要でした…）</li>
 <li><strong>Decoder</strong>: アテンションのレイヤー数を2から1に減らしました</li>
 </ul>
-
 <p>計算速度は、バッチサイズ16で、8.6 step/sec くらいでした。GPUメモリの使用量は9GB程度でした。Convolution BlockごとにLinearレイヤーが追加されるので、それなりにメモリ使用量が増えます。PyTorch v0.3.0を使いました。</p>
-
 <p>学習に使用したコマンドは以下です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">python train.py --data-root<span style="color:#f92672">=</span>./data/vctk --checkpoint-dir<span style="color:#f92672">=</span>checkpoints_vctk <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>   --hparams<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;preset=deepvoice3_vctk,builder=deepvoice3_multispeaker&#34;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>   --log-event-path<span style="color:#f92672">=</span>log/deepvoice3_multispeaker_vctk_preset <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>   --load-embedding<span style="color:#f92672">=</span>20171221_deepvoice3_checkpoint_step000300000.pth
- <span style="color:#75715e"># &lt;&lt; 30万ステップで一旦打ち切り &gt;&gt;</span>
- <span style="color:#75715e"># もう一度0から30万ステップまで学習しなおし</span>
- python train.py --data-root<span style="color:#f92672">=</span>./data/vctk --checkpoint-dir<span style="color:#f92672">=</span>checkpoints_vctk_fineturn <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>   --hparams<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;preset=deepvoice3_vctk,builder=deepvoice3_multispeaker&#34;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>   --log-event-path<span style="color:#f92672">=</span>log/deepvoice3_multispeaker_vctk_preset_fine <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>   --restore-parts<span style="color:#f92672">=</span>./checkpoints_vctk/checkpont_step000300000.pth</code></pre></div>
+<pre><code class="language-sh">python train.py --data-root=./data/vctk --checkpoint-dir=checkpoints_vctk \
+   --hparams=&quot;preset=deepvoice3_vctk,builder=deepvoice3_multispeaker&quot; \
+   --log-event-path=log/deepvoice3_multispeaker_vctk_preset \
+   --load-embedding=20171221_deepvoice3_checkpoint_step000300000.pth
+ # &lt;&lt; 30万ステップで一旦打ち切り &gt;&gt;
+ # もう一度0から30万ステップまで学習しなおし
+ python train.py --data-root=./data/vctk --checkpoint-dir=checkpoints_vctk_fineturn \
+   --hparams=&quot;preset=deepvoice3_vctk,builder=deepvoice3_multispeaker&quot; \
+   --log-event-path=log/deepvoice3_multispeaker_vctk_preset_fine \
+   --restore-parts=./checkpoints_vctk/checkpont_step000300000.pth
+</code></pre>
 <p>学習を高速化するため、LJSpeechで30万ステップ学習したモデルのembeddingの部分を再利用しました。また、cyclic annealingのような効果が得られることを期待して、一度学習を打ち切って、さらに0stepからファインチューニングしてみました。</p>
-
-<p>コードのコミットハッシュは <a href="https://github.com/r9y9/deepvoice3_pytorch/tree/0421749af908905d181f089f06956fddd0982d47">0421749</a> です。正確なハイパーパラメータが知りたい場合は、ここから辿れると思います。</p>
-
+<p>コードのコミットハッシュは <a href="https://github.com/r9y9/deepvoice3_pytorch/tree/0421749af908905d181f089f06956fddd0982d47" target="_blank" rel="noopener">0421749</a> です。正確なハイパーパラメータが知りたい場合は、ここから辿れると思います。</p>
 <h3 id="アライメントの学習過程-30万ステップ">アライメントの学習過程 (~30万ステップ)</h3>
-
 <div align="center"><img src="/images/deepvoice3_multispeaker/alignments.gif" /></div>
-
 <h3 id="学習された-speaker-embedding-の可視化">学習された Speaker embedding の可視化</h3>
-
 <div align="center"><img src="/images/deepvoice3_multispeaker/speaker_embedding.png" /></div>
-
 <p>論文のappendixに書かれているのと同じように、学習されたEmbeddingに対してPCAをかけて可視化しました。論文の図とは少々異なりますが、期待通り、男女はほぼ線形分離できるようになっていることは確認できました。</p>
-
 <h3 id="音声サンプル">音声サンプル</h3>
-
 <p>最初に僕の感想を述べておくと、LJSpeechで単一話者モデルを学習した場合と比べると、汎化しにくい印象がありました。文字がスキップされるといったエラーケースも比較して多いように思いました。
-たくさんサンプルを貼るのは大変なので、興味のある方は自分で適当な未知テキストを与えて合成してみてください。学習済みモデルは <a href="https://github.com/r9y9/deepvoice3_pytorch#pretrained-models">deepvoice3_pytorch#pretrained-models</a> からダウンロードできるようにしてあります。</p>
-
-<h3 id="loop-https-ytaigman-github-io-loop-network-3-multiple-speakers-from-vctk-と同じ文章"><a href="https://ytaigman.github.io/loop/#network-3-multiple-speakers-from-vctk">Loop</a> と同じ文章</h3>
-
+たくさんサンプルを貼るのは大変なので、興味のある方は自分で適当な未知テキストを与えて合成してみてください。学習済みモデルは <a href="https://github.com/r9y9/deepvoice3_pytorch#pretrained-models" target="_blank" rel="noopener">deepvoice3_pytorch#pretrained-models</a> からダウンロードできるようにしてあります。</p>
+<h3 id="loophttpsytaigmangithubioloopnetwork-3-multiple-speakers-from-vctk-と同じ文章"><a href="https://ytaigman.github.io/loop/#network-3-multiple-speakers-from-vctk" target="_blank" rel="noopener">Loop</a> と同じ文章</h3>
 <p>Some have accepted this as a miracle without any physical explanation</p>
-
 <p>(69 chars, 11 words)</p>
-
 <p>speaker IDが若い順に12サンプルの話者ID を与えて、合成した結果を貼っておきます。</p>
-
 <p><strong>225, 23,  F,    English,    Southern,  England</strong> (ID, AGE,  GENDER,  ACCENTS,  REGION)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker0.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>226,  22,  M,    English,    Surrey</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker1.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>227,  38,  M,    English,    Cumbria</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker2.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>228,  22,  F,    English,    Southern  England</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker3.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>229,  23,  F,    English,    Southern  England</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker4.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>230,  22,  F,    English,    Stockton-on-tees</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker5.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>231,  23,  F,    English,    Southern  England</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker6.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>232,  23,  M,    English,    Southern  England</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker7.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>233,  23,  F,    English,    Staffordshire</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker8.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>234,  22,  F,    Scottish,  West  Dumfries</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker9.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>236,  23,  F,    English,    Manchester</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker10.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p><strong>237,  22,  M,    Scottish,  Fife</strong></p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/loop/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker11.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <p>声質だけでなく、話速にもバリエーションが出ているのがわかります。<code>231</code> の最初で一部音が消えています（こういったエラーケースはよくあります）。</p>
-
-<h4 id="keithito-tacotron-のサンプル-https-keithito-github-io-audio-samples-と同じ文章"><a href="https://keithito.github.io/audio-samples/">keithito/tacotron のサンプル</a> と同じ文章</h4>
-
+<h4 id="keithitotacotron-のサンプルhttpskeithitogithubioaudio-samples-と同じ文章"><a href="https://keithito.github.io/audio-samples/" target="_blank" rel="noopener">keithito/tacotron のサンプル</a> と同じ文章</h4>
 <p>簡単に汎化性能をチェックするために、未知文章でテストします。</p>
-
 <ul>
 <li>男性 (292,  23,  M,    NorthernIrish,  Belfast)</li>
 <li>女性 (288,  22,  F,    Irish,  Dublin)</li>
 </ul>
-
 <p>の二つのサンプルを貼っておきます。</p>
-
 <p>Scientists at the CERN laboratory say they have discovered a new particle.</p>
-
 <p>(74 chars, 13 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62_alignment.png" /></div>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/0_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61_alignment.png" /></div>
-
 <p>There&rsquo;s a way to measure the acute emotional intelligence that has never gone out of style.</p>
-
 <p>(91 chars, 18 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/1_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/1_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62_alignment.png" /></div>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/1_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/1_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61_alignment.png" /></div>
-
 <p>President Trump met with other leaders at the Group of 20 conference.</p>
-
 <p>(69 chars, 13 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/2_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/2_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62_alignment.png" /></div>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/2_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/2_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61_alignment.png" /></div>
-
 <p>The Senate&rsquo;s bill to repeal and replace the Affordable Care Act is now imperiled.</p>
-
 <p>(81 chars, 16 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/3_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/3_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62_alignment.png" /></div>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/3_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/3_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61_alignment.png" /></div>
-
 <p>Generative adversarial network or variational auto-encoder.</p>
-
 <p>(59 chars, 7 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/4_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/4_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62_alignment.png" /></div>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/4_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/4_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61_alignment.png" /></div>
-
 <p>The buses aren&rsquo;t the problem, they actually provide a solution.</p>
-
 <p>(63 chars, 13 words)</p>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/5_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/5_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker62_alignment.png" /></div>
-
-<p><audio controls="controls" >
+<audio controls="controls" >
 <source src="/audio/deepvoice3_multispeaker/3_keithito/5_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61.wav" autoplay/>
 Your browser does not support the audio element.
-</audio></p>
-
+</audio>
 <div align="center"><img src="/audio/deepvoice3_multispeaker/3_keithito/5_20171222_deepvoice3_vctk108_checkpoint_step000300000_speaker61_alignment.png" /></div>
-
 <p>ところどころ音が抜けているのが目立ちます。色々実験しましたが、やはり単一話者 24hのデータで学習したモデルに比べると、一話者あたり30分~1h程度のデータでは、汎化させるのが難しい印象を持ちました。</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <ul>
 <li>複数話者版のDeepVoice3を実装して、実際に108話者のデータセットで学習し、それなりに動くことを確認できました</li>
 <li>複数話者版のDeepVoice3では、アテンションの学習が単一話者の場合と比べて難しい印象でした。アテンションレイヤーの数を2から1に減らすと、アライメントがくっきりする傾向にあることを確認しました。</li>
@@ -335,124 +1008,455 @@ Your browser does not support the audio element.
 <li>Speaker embedding をすべての時刻に同一の値をexpandしてしまうと過学習しやすいのではないかいう予測を元に、各時刻でランダム性をいれることでその問題を緩和できないかと考え、Dropoutを足してみました。上手く言ったように思います</li>
 <li>論文の内容について詳しく触れていませんが、実はけっこう雑というか、文章と図に不一致があったりします（例えば図1にあるEncoder PreNet/PostNet は文章中で説明がない）。著者に連絡して確認するのが一番良いのですが、どういうモデルなら上手くいくか考えて試行錯誤するのも楽しいので、今回は雰囲気で実装しました。それなりに上手く動いているように思います</li>
 </ul>
-
-<p>次は、DeepVoice3、Tacotron 2 (<a href="https://arxiv.org/abs/1712.0588">arXiv:1712.05884 [cs.CL]</a>) で有効性が示されている WaveNet Vocoder を実装して、品質を改善してみようと思っています。</p>
-
+<p>次は、DeepVoice3、Tacotron 2 (<a href="https://arxiv.org/abs/1712.0588" target="_blank" rel="noopener">arXiv:1712.05884 [cs.CL]</a>) で有効性が示されている WaveNet Vocoder を実装して、品質を改善してみようと思っています。</p>
 <h2 id="参考">参考</h2>
-
 <ul>
-<li><a href="https://arxiv.org/abs/1710.07654">Wei Ping, Kainan Peng, Andrew Gibiansky, et al, &ldquo;Deep Voice 3: 2000-Speaker Neural Text-to-Speech&rdquo;, arXiv:1710.07654, Oct. 2017.</a></li>
-<li><a href="https://arxiv.org/abs/1705.08947">Sercan Arik, Gregory Diamos, Andrew Gibiansky,, et al, &ldquo;Deep Voice 2: Multi-Speaker Neural Text-to-Speech&rdquo;, arXiv:1705.08947, May 2017.</a></li>
-<li><a href="https://arxiv.org/abs/1712.05884">Jonathan Shen, Ruoming Pang, Ron J. Weiss, et al, &ldquo;Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions&rdquo;, arXiv:1712.05884, Dec 2017.</a></li>
+<li><a href="https://arxiv.org/abs/1710.07654" target="_blank" rel="noopener">Wei Ping, Kainan Peng, Andrew Gibiansky, et al, &ldquo;Deep Voice 3: 2000-Speaker Neural Text-to-Speech&rdquo;, arXiv:1710.07654, Oct. 2017.</a></li>
+<li><a href="https://arxiv.org/abs/1705.08947" target="_blank" rel="noopener">Sercan Arik, Gregory Diamos, Andrew Gibiansky,, et al, &ldquo;Deep Voice 2: Multi-Speaker Neural Text-to-Speech&rdquo;, arXiv:1705.08947, May 2017.</a></li>
+<li><a href="https://arxiv.org/abs/1712.05884" target="_blank" rel="noopener">Jonathan Shen, Ruoming Pang, Ron J. Weiss, et al, &ldquo;Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions&rdquo;, arXiv:1712.05884, Dec 2017.</a></li>
 </ul>
-
 <h2 id="関連記事">関連記事</h2>
-
 <ul>
 <li><a href="/blog/2017/12/13/deepvoice3/">【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD] | LESS IS MORE</a></li>
 <li><a href="/blog/2017/11/23/dctts/">Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969] | LESS IS MORE</a></li>
 <li><a href="/blog/2017/11/12/jsut_ver1/">日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 | LESS IS MORE</a></li>
 </ul>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1">VCTKの無音区間除去のためという文脈ではなく、テキストにshort pause / long pause を挿入するためです
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:2">transcriptionがない1話者 (p315) のデータは除いています
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-<li id="fn:3">Dropoutをきつくするとロスが下がりにくく、一方でゆるくすると汎化しにくい印象がありました。ので、Dropoutきつめである程度汎化させたあと、Dropoutをゆるめにしてfine turningする、といった戦略を取ってみました。
- <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>VCTKの無音区間除去のためという文脈ではなく、テキストにshort pause / long pause を挿入するためです&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>transcriptionがない1話者 (p315) のデータは除いています&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>Dropoutをきつくするとロスが下がりにくく、一方でゆるくすると汎化しにくい印象がありました。ので、Dropoutきつめである程度汎化させたあと、Dropoutをゆるめにしてfine turningする、といった戦略を取ってみました。&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/speech-synthesis/">Speech Synthesis</a>
+  
+  <a class="badge badge-light" href="/tag/python/">Python</a>
+  
+  <a class="badge badge-light" href="/tag/deep-learning/">Deep Learning</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/&amp;text=%e3%80%90108%20%e8%a9%b1%e8%80%85%e7%b7%a8%e3%80%91Deep%20Voice%203:%202000-Speaker%20Neural%20Text-to-Speech%20/%20arXiv:1710.07654%20[cs.SD]" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/&amp;t=%e3%80%90108%20%e8%a9%b1%e8%80%85%e7%b7%a8%e3%80%91Deep%20Voice%203:%202000-Speaker%20Neural%20Text-to-Speech%20/%20arXiv:1710.07654%20[cs.SD]" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e3%80%90108%20%e8%a9%b1%e8%80%85%e7%b7%a8%e3%80%91Deep%20Voice%203:%202000-Speaker%20Neural%20Text-to-Speech%20/%20arXiv:1710.07654%20[cs.SD]&amp;body=https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/&amp;title=%e3%80%90108%20%e8%a9%b1%e8%80%85%e7%b7%a8%e3%80%91Deep%20Voice%203:%202000-Speaker%20Neural%20Text-to-Speech%20/%20arXiv:1710.07654%20[cs.SD]" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=%e3%80%90108%20%e8%a9%b1%e8%80%85%e7%b7%a8%e3%80%91Deep%20Voice%203:%202000-Speaker%20Neural%20Text-to-Speech%20/%20arXiv:1710.07654%20[cs.SD]%20https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2017/12/22/deepvoice3_multispeaker/&amp;title=%e3%80%90108%20%e8%a9%b1%e8%80%85%e7%b7%a8%e3%80%91Deep%20Voice%203:%202000-Speaker%20Neural%20Text-to-Speech%20/%20arXiv:1710.07654%20[cs.SD]" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2018/05/20/tacotron2/"> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</a></li>
+      
+      <li><a href="/blog/2017/12/13/deepvoice3/">【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+      
+      <li><a href="/blog/2017/11/23/dctts/">Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</a></li>
+      
+      <li><a href="/blog/2017/10/15/tacotron/">Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135 [cs.CL]</a></li>
+      
+      <li><a href="/blog/2017/10/10/gantts-jp/">GAN 日本語音声合成 [arXiv:1709.08041]</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

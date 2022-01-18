@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ASR | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/asr/</link>
+      <atom:link href="https://r9y9.github.io/tag/asr/index.xml" rel="self" type="application/rss+xml" />
+    <description>ASR</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Mon, 16 Mar 2020 13:00:00 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>ASR</title>
+      <link>https://r9y9.github.io/tag/asr/</link>
+    </image>
+    
+    <item>
+      <title>End-to-End 音声合成の研究を加速させるツールキット ESPnet-TTS / ESPnet-TTS: A toolkit to accelerate research on end-to-end speech synthesis @ ASJ 2020s</title>
+      <link>https://r9y9.github.io/talk/asj-espnet2-tutorial/</link>
+      <pubDate>Mon, 16 Mar 2020 13:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/talk/asj-espnet2-tutorial/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

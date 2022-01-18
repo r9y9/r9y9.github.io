@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>WaveNet | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/wavenet/</link>
+      <atom:link href="https://r9y9.github.io/tag/wavenet/index.xml" rel="self" type="application/rss+xml" />
+    <description>WaveNet</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 20 May 2018 14:21:30 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>WaveNet</title>
+      <link>https://r9y9.github.io/tag/wavenet/</link>
+    </image>
+    
+    <item>
+      <title> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</title>
+      <link>https://r9y9.github.io/blog/2018/05/20/tacotron2/</link>
+      <pubDate>Sun, 20 May 2018 14:21:30 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2018/05/20/tacotron2/</guid>
+      <description>&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;Thank you for coming to see my blog post about WaveNet text-to-speech.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/intro.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;ul&gt;
+&lt;li&gt;論文リンク: &lt;a href=&#34;https://arxiv.org/abs/1712.05884&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://arxiv.org/abs/1712.05884&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;オンラインデモ: &lt;a href=&#34;https://colab.research.google.com/github/r9y9/Colaboratory/blob/master/Tacotron2_and_WaveNet_text_to_speech_demo.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tacotron2: WaveNet-based text-to-speech demo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;コード &lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9/wavenet_vocoder&lt;/a&gt;, &lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Rayhane-mamah/Tacotron-2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;音声サンプル: &lt;a href=&#34;https://r9y9.github.io/wavenet_vocoder/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://r9y9.github.io/wavenet_vocoder/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三行まとめ&#34;&gt;三行まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;自作WaveNet (&lt;strong&gt;WN&lt;/strong&gt;) と既存実装Tacotron 2 (WNを除く) を組み合わせて、英語TTSを作りました&lt;/li&gt;
+&lt;li&gt;LJSpeechを学習データとした場合、自分史上 &lt;strong&gt;最高品質&lt;/strong&gt; のTTSができたと思います&lt;/li&gt;
+&lt;li&gt;Tacotron 2と Deep Voice 3 のabstractを読ませた音声サンプルを貼っておきますので、興味のある方はどうぞ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なお、Tacotron 2 の解説はしません。申し訳ありません（なぜなら僕がまだ十分に読み込んでいないため）&lt;/p&gt;
+&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;過去に、WaveNetを実装しました（参考: &lt;a href=&#34;https://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/&#34;&gt;WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]&lt;/a&gt;）。過去記事から引用します。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Tacotron2 は、あとはやればほぼできる感じですが、直近では僕の中で優先度が低めのため、しばらく実験をする予定はありません。興味のある方はやってみてください。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;やりたいことの一つとしてあったとはいえ、当初の予定通り、スクラッチでTacotron 2を実装する時間は取れなかったのですが、既存実装を使ってみたところ十分に上手く動いているように思えたので、ありがたく使わせていただき、WaveNet TTSを実現することができました。というわけで、結果をここにカジュアルに残しておこうという趣旨の記事になります。&lt;/p&gt;
+&lt;p&gt;オープンなデータセット、コードを使って、実際どの程度の品質が得られるのか？学習/推論にどのくらい時間がかかるのか？いうのが気になる方には、参考になるかもしれませんので、よろしければ続きをどうぞ。&lt;/p&gt;
+&lt;h2 id=&#34;実験条件&#34;&gt;実験条件&lt;/h2&gt;
+&lt;p&gt;細かい内容はコードに譲るとして、重要な点だけリストアップします&lt;/p&gt;
+&lt;h3 id=&#34;pre-trained-modelshyper-parameters-へのリンク&#34;&gt;Pre-trained models、hyper parameters へのリンク&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Tacotron2 (mel-spectrogram prediction part): trained 189k steps on LJSpeech dataset (&lt;a href=&#34;https://www.dropbox.com/s/vx7y4qqs732sqgg/pretrained.tar.gz?dl=0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pre-trained model&lt;/a&gt;, &lt;a href=&#34;https://github.com/r9y9/Tacotron-2/blob/9ce1a0e65b9217cdc19599c192c5cd68b4cece5b/hparams.py&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hyper params&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;WaveNet: trained over 1000k steps on LJSpeech dataset (&lt;a href=&#34;https://www.dropbox.com/s/zdbfprugbagfp2w/20180510_mixture_lj_checkpoint_step000320000_ema.pth?dl=0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pre-trained model&lt;/a&gt;, &lt;a href=&#34;https://www.dropbox.com/s/0vsd7973w20eskz/20180510_mixture_lj_checkpoint_step000320000_ema.json?dl=0&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hyper params&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;wavenet&#34;&gt;WaveNet&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;1000k step以上訓練されたモデル (2018/1/27に作ったもの、10日くらい&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;学習した）をベースに、さらに 320k step学習（約3日）しました。再学習したのは、以前のコードには &lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder/issues/33&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;wavenet_vocoder/issues/33&lt;/a&gt; こんなバグがあったからです。&lt;/li&gt;
+&lt;li&gt;評価には、exponential moving averagingされたパラメータを使いました。decay パラメータはTaco2論文と同じ 0.9999&lt;/li&gt;
+&lt;li&gt;学習には、Mel-spectrogram prediction networkにより出力される Ground-truth-aligned (GTA) なメルスペクトログラムではなく、生音声から計算されるメルスペクトログラムを使いました。時間の都合上そうしましたが、GTAを使うとより品質が向上すると考えられます&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tacotron-2-mel-spectrogram-prediction&#34;&gt;Tacotron 2 (mel-spectrogram prediction)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Rayhane-mamah/Tacotron-2&lt;/a&gt; にはWaveNet実装も含まれていますが、mel-spectrogram prediction の部分だけ使用しました&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2/issues/30#issue-317360759&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Rayhane-mamah/Tacotron-2/issues/30#issue-317360759&lt;/a&gt; で公開されている 182k step学習されたモデルを、さらに7k stepほど（数時間くらい）学習させました。再学習させた理由は、自分の実装とRayhane氏の実装で想定するメルスペクトログラムのレンジが異なっていたためです（僕: &lt;code&gt;[0, 1]&lt;/code&gt;, Rayhane: &lt;code&gt;[-4, 4]&lt;/code&gt;）。そういう経緯から、&lt;code&gt;[-4, 4]&lt;/code&gt; のレンジであったところ，&lt;code&gt;[0, 4]&lt;/code&gt; にして学習しなおしました。直接 &lt;code&gt;[0, 1]&lt;/code&gt; にして学習しなかったのは（それでも動く、と僕は思っているのですが）、mel-spectrogram のレンジを大きく取った方が良い、という報告がいくつかあったからです（例えば &lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2/issues/4#issuecomment-377728945&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Rayhane-mamah/Tacotron-2/issues/4#issuecomment-377728945&lt;/a&gt; )。Attention seq2seq は経験上学習が難しいので、僕の直感よりも先人の知恵を優先することにした次第です。WNに入力するときには、 Taco2が出力するメルスペクトログラムを &lt;code&gt;c = np.interp(c, (0, 4), (0, 1))&lt;/code&gt; とレンジを変換して与えました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;デモ音声&#34;&gt;デモ音声&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://r9y9.github.io/wavenet_vocoder/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://r9y9.github.io/wavenet_vocoder/&lt;/a&gt; にサンプルはたくさんあります。が、ここでは違うサンプルをと思い、Tacotron 2 と Deep Voice 3の abstract を読ませてみました。
+学習データに若干残響が乗っているので（ノイズっぽい）それが反映されてしまっているのですが、個人的にはまぁまぁよい結果が得られたと思っています。興味がある方は、DeepVoice3など僕の過去記事で触れているTTS結果と比べてみてください。&lt;/p&gt;
+&lt;p&gt;なお、推論の計算速度は,、僕のローカル環境（GTX 1080Ti, i7-7700K）でざっと 170 timesteps / second といった感じでした。これは、Parallel WaveNet の論文で触れられている数字とおおまかに一致します。&lt;/p&gt;
+&lt;p&gt;This paper describes Tacotron 2, a neural network architecture for speech synthesis directly from text.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00001.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;The system is composed of a recurrent sequence-to-sequence feature prediction network that maps character embeddings to mel-scale spectrograms, followed by a modified WaveNet model acting as a vocoder to synthesize timedomain waveforms from those spectrograms.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00002.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;Our model achieves a mean opinion score of 4.53 comparable to a MOS of 4.58 for professionally recorded speech.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00003.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;To validate our design choices, we present ablation studies of key components of our system and evaluate the impact of using mel spectrograms as the input to WaveNet instead of linguistic, duration, and F0 features.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00004.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;We further demonstrate that using a compact acoustic intermediate representation enables significant simplification of the WaveNet architecture.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00005.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;We present Deep Voice 3, a fully-convolutional attention-based neural text-to-speech system.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00006.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;Deep Voice 3 matches state-of-the-art neural speech synthesis systems in naturalness while training ten times faster.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00007.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;We scale Deep Voice 3 to data set sizes unprecedented for TTS, training on more than eight hundred hours of audio from over two thousand speakers.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00008.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;In addition, we identify common error modes of attention-based speech synthesis networks, demonstrate how to mitigate them, and compare several different waveform synthesis methods.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00009.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;p&gt;We also describe how to scale inference to ten million queries per day on one single-GPU server.&lt;/p&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/tacotron2/20180510_mixture_lj_checkpoint_step000320000_ema_speech-mel-00010.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;h2 id=&#34;オンラインデモ&#34;&gt;オンラインデモ&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://colab.research.google.com/github/r9y9/Colaboratory/blob/master/Tacotron2_and_WaveNet_text_to_speech_demo.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tacotron2: WaveNet-based text-to-speech demo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Google Colabで動かせるようにデモノートブックを作りました。環境構築が不要なので、手軽にお試しできるかと思います。&lt;/p&gt;
+&lt;h2 id=&#34;雑記&#34;&gt;雑記&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;WaveNetを学習するときに、Mel-spectrogram precition networkのGTAな出力でなく、生メルスペクトログラムをそのまま使っても品質の良い音声合成ができるのは個人的に驚きでした。これはつまり、Taco2が　(non teacher-forcingな条件で) 十分良いメルスペクトログラムを予測できている、ということなのだと思います。&lt;/li&gt;
+&lt;li&gt;収束性を向上させるために、出力を127.5 倍するとよい、という件ですが、僕はやっていません。なぜなら、僕がまだこの方法の妥当性を理解できていないからです。&lt;a href=&#34;https://twitter.com/__dhgrs__/status/995962302896599040&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@__dhgrs__さんの報告&lt;/a&gt; によると、やはり有効に働くようですね…&lt;/li&gt;
+&lt;li&gt;これまた &lt;a href=&#34;http://www.monthly-hack.com/entry/2018/02/23/203208&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@__dhgrs__さんのブログ記事&lt;/a&gt; にも書かれていますが、Mixture of Logistic distributions (MoLとします) を使った場合は、categoricalを考えてsoftmaxを使う場合に比べると十分な品質を得るのに大幅に計算時間が必要になりますね、、体験的には10倍程度です。計算にあまりに時間がかかるので、スクラッチで何度も学習するのは厳しく、学習済みモデルを何度も繰り返しfine turningしていくという、秘伝のタレ方式で学習を行いました（再現性なしです、懺悔）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Rayhane-mamah/Tacotron-2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Rayhane-mamah/Tacotron-2&lt;/a&gt; 今回使わせてもらったTaco2実装は、僕の実装も一部使われているようでした。これとは別の NVIDIA から出た &lt;a href=&#34;https://github.com/NVIDIA/tacotron2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/NVIDIA/tacotron2&lt;/a&gt; の謝辞には僕の名前を入れていただいていたり、他にもそういうケースがそれなりにあって、端的にいって光栄であり、うれしいお思いです。&lt;/li&gt;
+&lt;li&gt;非公開のデータセットを使って学習/生成したWaveNet TTS のサンプルもあります。公開できないのでここにはあげていませんが、とても高品質な音声合成（主観ですが）ができることを確認しています&lt;/li&gt;
+&lt;li&gt;このプロジェクトをはじめたことで、なんと光栄にも&lt;a href=&#34;http://www.nict.go.jp/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NICT&lt;/a&gt;でのトークの機会をもらうことができました。オープソースについて是非はあると思いますが、個人的には良いことがとても多いなと思います。プレゼン資料は、https://github.com/r9y9/wavenet_vocoder/issues/57 に置いてあります（が、スライドだけで読み物として成立するものではないと思います、すみません）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;p&gt;WaveNet TTSをようやく作ることができました。Sample-levelでautoregressive modelを考えるというアプローチが本当に動かくのか疑問だったのですが、実際に作ってみて、上手く行くということを体感することができました。めでたし。&lt;/p&gt;
+&lt;p&gt;Googleの研究者さま、素晴らしい研究をありがとうございます。WaveNetは本当にすごかった&lt;/p&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1609.03499&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Aaron van den Oord, Sander Dieleman, Heiga Zen, et al, &amp;ldquo;WaveNet: A Generative Model for Raw Audio&amp;rdquo;, 	arXiv:1609.03499, Sep 2016.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1711.10433&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Aaron van den Oord, Yazhe Li, Igor Babuschkin, et al, &amp;ldquo;Parallel WaveNet: Fast High-Fidelity Speech Synthesis&amp;rdquo;, 	arXiv:1711.10433, Nov 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.isca-speech.org/archive/Interspeech_2017/pdfs/0314.PDF&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tamamori, Akira, et al. &amp;ldquo;Speaker-dependent WaveNet vocoder.&amp;rdquo; Proceedings of Interspeech. 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1712.05884&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jonathan Shen, Ruoming Pang, Ron J. Weiss, et al, &amp;ldquo;Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions&amp;rdquo;, arXiv:1712.05884, Dec 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1710.07654&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wei Ping, Kainan Peng, Andrew Gibiansky, et al, &amp;ldquo;Deep Voice 3: 2000-Speaker Neural Text-to-Speech&amp;rdquo;, arXiv:1710.07654, Oct. 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1611.09482&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tom Le Paine, Pooya Khorrami, Shiyu Chang, et al, &amp;ldquo;Fast Wavenet Generation Algorithm&amp;rdquo;, arXiv:1611.09482, Nov. 2016&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.monthly-hack.com/entry/2018/02/23/203208&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;VQ-VAEの追試で得たWaveNetのノウハウをまとめてみた。 - Monthly Hacker&amp;rsquo;s Blog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;曖昧な表現で申し訳ございません&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;僕が使った当時は、WNの部分は十分にテストされていなかったのと、WNのコードは僕のコードをtfにtranslateした感じな（著者がそういってます）ので、WNは自分の実装を使った次第です&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;</description>
+    </item>
+    
+    <item>
+      <title>WaveNet vocoder をやってみましたので、その記録です / WaveNet: A Generative Model for Raw Audio [arXiv:1609.03499]</title>
+      <link>https://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/</link>
+      <pubDate>Sun, 28 Jan 2018 00:14:35 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2018/01/28/wavenet_vocoder/</guid>
+      <description>&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;コード: &lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/wavenet_vocoder&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;音声サンプル: &lt;a href=&#34;https://r9y9.github.io/wavenet_vocoder/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://r9y9.github.io/wavenet_vocoder/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三行まとめ&#34;&gt;三行まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Local / global conditioning を最低要件と考えて、WaveNet を実装しました&lt;/li&gt;
+&lt;li&gt;DeepVoice3 / Tacotron2 の一部として使えることを目標に作りました&lt;/li&gt;
+&lt;li&gt;PixelCNN++ の旨味を少し拝借し、16-bit linear PCMのscalarを入力として、（まぁまぁ）良い22.5kHzの音声を生成させるところまでできました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Tacotron2 は、あとはやればほぼできる感じですが、直近では僕の中で優先度が低めのため、しばらく実験をする予定はありません。興味のある方はやってみてください。&lt;/p&gt;
+&lt;h2 id=&#34;音声サンプル&#34;&gt;音声サンプル&lt;/h2&gt;
+&lt;p&gt;左右どちらかが合成音声です^^&lt;/p&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/0_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/0_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/1_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/1_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/2_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/2_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/3_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/3_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/4_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/4_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/5_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/5_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/6_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/6_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/7_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/7_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/8_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/8_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/9_checkpoint_step000410000_ema_predicted.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;&lt;/td&gt;&lt;td&gt;
+&lt;audio controls=&#34;controls&#34; &gt;
+&lt;source src=&#34;https://r9y9.github.io/audio/wavenet_vocoder/mixture_lj/9_checkpoint_step000410000_ema_target.wav&#34; autoplay/&gt;
+Your browser does not support the audio element.
+&lt;/audio&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;自分で書いた背景&#34;&gt;自分で書いた背景&lt;/h2&gt;
+&lt;p&gt;WaveNetが発表されたのは、一年以上前 (&lt;a href=&#34;https://deepmind.com/blog/wavenet-generative-model-raw-audio/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;記事&lt;/a&gt;) のことです。発表後すぐに、いくつかオープンソースの実装が出ていたように記憶しています。
+一方で、僕が確認していた限りでは、local / global conditioningを十分にサポートした実装がなかったように思います。
+例えば、Githubで一番スターが付いている &lt;a href=&#34;https://github.com/ibab/tensorflow-wavene&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ibab/tensorflow-wavenet&lt;/a&gt; では、いまだに十分にサポートされていません（&lt;a href=&#34;https://github.com/ibab/tensorflow-wavenet/issues/112&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;#112&lt;/a&gt;）。
+これはつまり、生成モデルとしては使えても、TTSには使えない、ということで、僕の要望を満たしてくれるものではありませんでした。また、ちょうど最近、Parallel WaveNetが発表されたのもあり、勉強も兼ねて、local / global conditioningを最低要件として置いて、自分で実装してみようと思った次第です。&lt;/p&gt;
+&lt;p&gt;実装を通して僕が一番知りたかった（体感したかった）のは、WaveNetで本当に自然音声並みの品質の音声を生成できるのか？ということなので、Parallel WaveNetで提案されているような推論を高速化するための工夫に関しては手を付けていませんので、あしからず。&lt;/p&gt;
+&lt;h2 id=&#34;実験を通して得た知見&#34;&gt;実験を通して得た知見&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Dropoutの有無については、WaveNetの論文に書いていませんが、僕は5%をゼロにする形で使いました。問題なく動いていそうです。PixelCNN++にはDropoutを使う旨が書かれていたので、WaveNetでも使われているのかなと推測しています。&lt;/li&gt;
+&lt;li&gt;Gradient clippingの有無は、両方試しましたが、なくてもあっても学習は安定していました。&lt;/li&gt;
+&lt;li&gt;条件付けする特徴量と音声サンプルの時間解像度を合わせるのには、（少なくともLJSpeechを使う場合には）同じ値をduplicateするのではなく、Transposed convolutionを使うほうが良さそうです。 ref: &lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder/issues/1#issuecomment-357486766&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9/wavenet_vocoder/#1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;初期のWaveNetでは、音声サンプルを256階調にmu-law quantizeして入力します。僕もはじめそうしていたのですが、22.5kHzのLJSpeechのデータを扱っていた時、そもそもmulaw / inv-mulaw で明らかに品質が劣化していることに気づきました。512階調にすればまだましになりましたが、どうせならと思ってPixelCNN++で提案されているMixture of logistic distributionsを使った次第です。&lt;/li&gt;
+&lt;li&gt;Mixture of logistic distributionsを使う場合は、分散の下限を小さくするのが重要な気がしました (PixelCNN++でいう&lt;a href=&#34;https://github.com/openai/pixel-cnn/blob/2b03725126c580a07af47c498d456cec17a9735e/pixel_cnn_pp/nn.py#L54&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;pixel_cnn_pp/nn.py#L54&lt;/a&gt; の部分)。でないと、生成される音声がノイジーになりやすい印象を受けました。直感的には、external featureで条件付けする場合は特に、logistic distributionがかなりピーキー（分散がすごく小さく）なり得るので、そのピーキーな分布を十分表現できる必要があるのかなと思っています。生成時には確率分布からサンプリングすることになるので、分散の下限値を大きくとってしまった場合、ノイジーになりえるのは想像がつきます。 ref: &lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder/issues/7#issuecomment-360011074&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9/wavenet_vocoder/#7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;WaveNetの実装は（比較的）簡単だったので、人のコード読むのツライ…という方は、（僕のコードを再利用なんてせずに）自分で実装するのも良いかなと思いました。勉強にもなりました。&lt;/li&gt;
+&lt;li&gt;WaveNetが発表された当時は、個人レベルの計算環境でやるのは無理なんじゃないかと思って手を出していなかったのですが、最近はそれが疑問に思えてきたので、実際にやってみました。僕のPCには1台しかGPUがついていませんが (GTX 1080 Ti)、個人でも可能だと示せたかと思います。&lt;/li&gt;
+&lt;li&gt;実験をはじめた当初、バッチサイズ1でもGPUメモリ (12GB) を使いきってしまう…とつらまっていたのですが、Parallel WaveNetの論文でも言及されている通り、音声の一部を短く（7680サンプルとか）切り取って使っても、品質には影響しなさそうなことを確認しました。参考までに、この記事に貼ったサンプルは、バッチサイズ2、一音声あたりの長さ8000に制限して、実験して得たものです。学習時間は、パラメータを変えながら重ね重ねファインチューニングしていたので正確なことは言えないのですが、トータルでいえば10日くらい学習したかもしれません。ただ、1日くらいで、それなりにまともな音声はでます。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;WaveNetのすごさを実際に体感することができました。まだやりたいことは残っていますが、僕はそこそこ満足しました。&lt;/li&gt;
+&lt;li&gt;今後のTODO及び過去/現在の進捗は、 &lt;a href=&#34;https://github.com/r9y9/wavenet_vocoder/issues/1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9/wavenet_vocoder/#1&lt;/a&gt; にまとめています。海外の方との議論も見つかるので、興味のある方は見てください。&lt;/li&gt;
+&lt;li&gt;実装をはじめた当初からコードを公開していたのですが、どうやら興味を持った方が複数いたようで、上記issueにて有益なコメントをたくさんもらいました。感謝感謝&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考にした論文&#34;&gt;参考にした論文&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1609.03499&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Aaron van den Oord, Sander Dieleman, Heiga Zen, et al, &amp;ldquo;WaveNet: A Generative Model for Raw Audio&amp;rdquo;, arXiv:1609.03499, Sep 2016.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1711.10433&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Aaron van den Oord, Yazhe Li, Igor Babuschkin, et al, &amp;ldquo;Parallel WaveNet: Fast High-Fidelity Speech Synthesis&amp;rdquo;, arXiv:1711.10433, Nov 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.isca-speech.org/archive/Interspeech_2017/pdfs/0314.PDF&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tamamori, Akira, et al. &amp;ldquo;Speaker-dependent WaveNet vocoder.&amp;rdquo; Proceedings of Interspeech. 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1712.05884&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jonathan Shen, Ruoming Pang, Ron J. Weiss, et al, &amp;ldquo;Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions&amp;rdquo;, arXiv:1712.05884, Dec 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1710.07654&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wei Ping, Kainan Peng, Andrew Gibiansky, et al, &amp;ldquo;Deep Voice 3: 2000-Speaker Neural Text-to-Speech&amp;rdquo;, arXiv:1710.07654, Oct. 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1701.05517&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tim Salimans, Andrej Karpathy, Xi Chen, Diederik P. Kingma, &amp;ldquo;PixelCNN++: Improving the PixelCNN with Discretized Logistic Mixture Likelihood and Other Modifications&amp;rdquo;, arXiv:1701.05517, Jan. 2017.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考になったコード&#34;&gt;参考になったコード&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/tensorflow/magenta/tree/master/magenta/models/nsynth/wavenet&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;tensorflow/magenta/nsynth/wavenet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/musyoku/wavenet&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;musyoku/wavenet&lt;/a&gt; コードはもちろん、こちら &lt;a href=&#34;https://github.com/musyoku/wavenet/issues/4&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;#4&lt;/a&gt;  のイシューも役に立ちました。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/ibab/tensorflow-wavenet&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ibab/tensorflow-wavenet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/openai/pixel-cnn&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;openai/pixel-cnn&lt;/a&gt; PixelCNN++の公式実装です&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/pclucas14/pixel-cnn-pp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;pclucas14/pixel-cnn-pp&lt;/a&gt; PixelCNN++のPyTorch実装です&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考になりそうなコード&#34;&gt;参考になりそうなコード&lt;/h2&gt;
+&lt;p&gt;※僕は参考にしませんでしたが、役に立つかもしれません&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kan-bayashi/PytorchWaveNetVocoder&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/kan-bayashi/PytorchWaveNetVocoder&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/tomlepaine/fast-wavenet&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/tomlepaine/fast-wavenet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vincentherrmann/pytorch-wavenet&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/vincentherrmann/pytorch-wavenet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/dhpollack/fast-wavenet.pytorch&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/dhpollack/fast-wavenet.pytorch&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

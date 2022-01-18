@@ -1,425 +1,1443 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>GOSSP - Go言語で音声信号処理 - LESS IS MORE</title>
-</head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
-
-
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">GOSSP - Go言語で音声信号処理</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-06-08">June 08, 2014</time></span>
-			<section itemprop="entry-text">
-				
-
-<h1 id="c-からgoへ">C++からGoへ</h1>
-
-<p>みなさん、C++で信号処理のアルゴリズムを書くのはつらいと思ったことはありませんか？C++で書くと速いのはいいけれど、いかんせん書くのが大変、コンパイルエラーは読みづらい、はたまたライブラリをビルドしようとしたら依存関係が上手く解決できず……そんな覚えはないでしょうか？謎のコンパイルエラーに悩みたくない、ガーベジコレクションほしい、Pythonのようにさくっと書きたい、型推論もほしい、でも動作は速い方がいい、そう思ったことはないでしょうか。</p>
-
-<p>そこでGoです。もちろん、そういった思いに完全に答えてくれるわけではありませんが、厳しいパフォーマンスを要求される場合でなければ、Goの方が良い場合も多いと僕は思っています。
-とはいえ、まだ比較的新しい言語のため、ライブラリは少なく信号処理を始めるのも大変です。というわけで、僕がC++をやめてGoに移行したことを思い出し、Goでの信号処理の基礎と、今まで整備してきたGoでの音声信号処理ライブラリを紹介します。</p>
-
-<p>Goの良いところ/悪いところについては書きません。正直、本当は何の言語でもいいと思っていますが、僕はGoが好きなので、ちょっとでもGoで信号処理したいと思う人が増えるといいなーと思って書いてみます。</p>
-
-<p>あとで書きますが、僕が書いたコードで使えそうなものは、以下にまとめました。</p>
-
-<p><a href="https://github.com/r9y9/gossp">https://github.com/r9y9/gossp</a></p>
-
-<h1 id="基礎">基礎</h1>
-
-<h2 id="wavファイルの読み込み-書き込み-wav-http-godoc-org-github-com-mjibson-go-dsp-wav">Wavファイルの読み込み/書き込み <a href="http://godoc.org/github.com/mjibson/go-dsp/wav">[wav]</a></h2>
-
-<div align="center"><img src="/images/speech_signal.png "Speech signal example."" class="image"></div>
-
-<p>まずは音声ファイルの読み込みですね。wavファイルの読み込みさえできれば十分でしょう。</p>
-
-<p>これは、すでに有用なライブラリが存在します。<a href="https://github.com/mjibson/go-dsp">GO-DSP</a> とういデジタル信号処理のライブラリに含まれるwavパッケージを使いましょう。</p>
-
-<p>次のように書くことができます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/mjibson/go-dsp/wav&#34;</span>
-	<span style="color:#e6db74">&#34;log&#34;</span>
-	<span style="color:#e6db74">&#34;os&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#75715e">// ファイルのオープン
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;./test.wav&#34;</span>)
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
-	}
-
-	<span style="color:#75715e">// Wavファイルの読み込み 
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">werr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">wav</span>.<span style="color:#a6e22e">ReadWav</span>(<span style="color:#a6e22e">file</span>)
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">werr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">werr</span>)
-	}
-
-	<span style="color:#75715e">// データを表示
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">val</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Data</span> {
-		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">val</span>)
-	}
-}</code></pre></div>
-<p>簡単ですね。</p>
-
-<p>Goはウェブ周りの標準パッケージが充実しているので、以前<a href="http://qiita.com/r9y9/items/35a1cf139332a3072fc8">qiitaに書いた記事</a>のように、wavファイルを受け取って何らかの処理をする、みたいなサーバも簡単に書くことができます</p>
-
-<p>wavファイルの書き込み＋ユーティリティを追加したかったので、僕は自分でカスタムしたパッケージを使っています。</p>
-
-<p><a href="https://github.com/r9y9/go-dsp">https://github.com/r9y9/go-dsp</a></p>
-
-<h2 id="高速フーリエ変換-fast-fourier-transform-fft-fft-http-godoc-org-github-com-mjibson-go-dsp-fft">高速フーリエ変換 (Fast Fourier Transform; FFT) <a href="http://godoc.org/github.com/mjibson/go-dsp/fft">[fft]</a></h2>
-
-<p>言わずとしれたFFTです。音のスペクトルを求めるのに必須の処理です。で、Goではどうすればいいのか？ということですが、こちらもすでに有用なライブラリが存在します。<a href="https://github.com/mjibson/go-dsp">GO-DSP</a>に含まれる、fftパッケージを使いましょう。</p>
-
-<p>このfftパッケージは、go routinesを使って平行化されているため速いです。僕は、1次元のフーリエ変換以外めったに使いませんが、N次元のフーリエ変換をサポートしているのもこのライブラリのいいところです。</p>
-
-<h3 id="参考">参考</h3>
-
-<ul>
-<li><a href="http://mattjibson.com/blog/2013/01/04/go-dsp-fft-performance-with-go-routines/">go-dsp FFT performance with go routines · Matt Jibson</a></li>
-</ul>
-
-<p>使い方は、とても簡単です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/mjibson/go-dsp/fft&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">fft</span>.<span style="color:#a6e22e">FFTReal</span>([]<span style="color:#66d9ef">float64</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>}))
-}</code></pre></div>
-<h2 id="離散コサイン変換-discrete-cosine-transform-dct-dct-http-godoc-org-github-com-r9y9-gossp-dct">離散コサイン変換 (Discrete Cosine Transform; DCT) <a href="http://godoc.org/github.com/r9y9/gossp/dct">[dct]</a></h2>
-
-<p>DCTは、Mel-Frequency Cepstrum Coefficients (通称MFCC) 求めるのに必要な変換です。こちらは、残念ながら良さそうなライブラリがなかったので、自分で書きました。</p>
-
-<p>使い方はFFTとほとんど一緒です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/r9y9/gossp/dct&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dct</span>.<span style="color:#a6e22e">DCTOrthogonal</span>([]<span style="color:#66d9ef">float64</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>})
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">dct</span>.<span style="color:#a6e22e">IDCTOrthogonal</span>(<span style="color:#a6e22e">y</span>)) <span style="color:#75715e">// 直交変換では、逆変換すると元に戻る
-</span><span style="color:#75715e"></span>}</code></pre></div>
-<p>さて、基本的なところは一旦ここまでです。次からは、少し音声寄りの信号処理手法の紹介です。</p>
-
-<h1 id="時間周波数解析">時間周波数解析</h1>
-
-<h2 id="短時間フーリエ変換-short-time-fourier-transform-stft-stft-http-godoc-org-github-com-r9y9-gossp-stft">短時間フーリエ変換 (Short Time Fourier Transform; STFT) <a href="http://godoc.org/github.com/r9y9/gossp/stft">[stft]</a></h2>
-
-<div align="center"><img src="/images/stft.png "STFT spectrogram"" class="image"></div>
-
-<p>STFTは、音声の時間周波数解析手法として定番の方法ですね。音声を可視化したり、何らかの認識アルゴリズムの特徴抽出に使ったり、まぁ色々です。</p>
-
-<p>次のようなコードを書くと、スペクトログラムが作れます</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;flag&#34;</span>
-	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/r9y9/gossp&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/r9y9/gossp/io&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/r9y9/gossp/stft&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/r9y9/gossp/window&#34;</span>
-	<span style="color:#e6db74">&#34;log&#34;</span>
-	<span style="color:#e6db74">&#34;math&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#a6e22e">filename</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">String</span>(<span style="color:#e6db74">&#34;i&#34;</span>, <span style="color:#e6db74">&#34;input.wav&#34;</span>, <span style="color:#e6db74">&#34;Input filename&#34;</span>)
-	<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Parse</span>()
-
-	<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">werr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">ReadWav</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">filename</span>)
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">werr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">werr</span>)
-	}
-	<span style="color:#a6e22e">data</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">GetMonoData</span>()
-
-	<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">stft</span>.<span style="color:#a6e22e">STFT</span>{
-		<span style="color:#a6e22e">FrameShift</span>: int(float64(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">SampleRate</span>) <span style="color:#f92672">/</span> <span style="color:#ae81ff">100.0</span>), <span style="color:#75715e">// 0.01 sec,
-</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">FrameLen</span>:   <span style="color:#ae81ff">2048</span>,
-		<span style="color:#a6e22e">Window</span>:     <span style="color:#a6e22e">window</span>.<span style="color:#a6e22e">CreateHanning</span>(<span style="color:#ae81ff">2048</span>),
-	}
-
-	<span style="color:#a6e22e">spectrogram</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">STFT</span>(<span style="color:#a6e22e">data</span>)
-	<span style="color:#a6e22e">amplitudeSpectrogram</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gossp</span>.<span style="color:#a6e22e">SplitSpectrogram</span>(<span style="color:#a6e22e">spectrogram</span>)
-	<span style="color:#a6e22e">PrintMatrixAsGnuplotFormat</span>(<span style="color:#a6e22e">amplitudeSpectrogram</span>)
-}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">PrintMatrixAsGnuplotFormat</span>(<span style="color:#a6e22e">matrix</span> [][]<span style="color:#66d9ef">float64</span>) {
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;#&#34;</span>, len(<span style="color:#a6e22e">matrix</span>[<span style="color:#ae81ff">0</span>]), len(<span style="color:#a6e22e">matrix</span>))
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">vec</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">matrix</span> {
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span>, <span style="color:#a6e22e">val</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">vec</span> {
-			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span>, <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#a6e22e">val</span>))
-		}
-		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;&#34;</span>)
-	}
-}</code></pre></div>
-<p>上の画像は、gnuplotで表示したものです</p>
-<pre><code>set pm3d map
-sp &#34;spectrogram.txt&#34;</code></pre>
-<h2 id="逆短時間フーリエ変換-inverse-short-time-fourier-transform-istft-stft-http-godoc-org-github-com-r9y9-gossp-stft">逆短時間フーリエ変換 (Inverse Short Time Fourier Transform; ISTFT) <a href="http://godoc.org/github.com/r9y9/gossp/stft">[stft]</a></h2>
-
-<p>ISTFTは、STFTの逆変換でスペクトログラムから時間領域の信号に戻すために使います。スペクトログラムを加工するような音源分離、ノイズ除去手法を使う場合には、必須の処理です。これはstftと同じパッケージ下にあります。</p>
-<pre><code>	reconstructed := s.ISTFT(spectrogram)</code></pre>
-<p>これで、スペクトログラムから音声を再構築することができます。</p>
-
-<p>逆変換の仕組みは、意外と難しかったりします。</p>
-
-<ul>
-<li><a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.306.7858">D. W. Griffin and J. S. Lim, &ldquo;Signal estimation from modified short-time Fourier transform,&rdquo; IEEE Trans. ASSP, vol.32, no.2, pp.236–243, Apr. 1984.</a></li>
-<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l6.pdf">L6: Short-time Fourier analysis and synthesis</a></li>
-<li><a href="http://yukara-13.hatenablog.com/entry/2013/11/17/210204">Pythonで短時間フーリエ変換（STFT）と逆変換 - 音楽プログラミングの超入門（仮）</a></li>
-</ul>
-
-<p>この辺を参考にしました。興味のある人は読んで見てください。</p>
-
-<h2 id="連続ウェーブレット変換-continuous-wavelet-transform-cwt">連続ウェーブレット変換 (Continuous Wavelet Transform; CWT)</h2>
-
-<div align="center"><img src="/images/morlet_6_log.png "Morlet Wavelet spectrogram"" class="image"></div>
-
-<p>これは何回かブログで書きました。</p>
-
-<ul>
-<li><a href="http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/">FFTを使った連続ウェーブレット変換の高速化 - LESS IS MORE</a></li>
-<li><a href="http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/">連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG - LESS IS MORE</a></li>
-</ul>
-
-<p>コードは、テストがまだ通らないので開発中ということで…orz</p>
-
-<h2 id="逆連続ウェーブレット変換-inverse-continuous-wavelet-transform-icwt">逆連続ウェーブレット変換 (Inverse Continuous Wavelet Transform; ICWT)</h2>
-
-<p>連続ウェーブレット変換の逆変換ですね。これもけっこう難しいです。こちらもまだテストに通っていないので、開発中です。</p>
-
-<ul>
-<li><a href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/">逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE</a></li>
-</ul>
-
-<p>さて、この辺でまた一区切りです。次は、より音声に特化した信号処理手法を紹介します。</p>
-
-<p>※以降紹介するもののうち、多くは<a href="http://sp-tk.sourceforge.net/">SPTK</a>のGo-portになっていて、一部はcgoを使ってラップしただけです（後々はpure goにしたいけれど、特にメルケプストラム分析あたりは難しいのでできていません）</p>
-
-<h1 id="音声分析系">音声分析系</h1>
-
-<h2 id="基本周波数推定-f0-http-godoc-org-github-com-r9y9-gossp-f0">基本周波数推定 <a href="http://godoc.org/github.com/r9y9/gossp/f0">[f0]</a></h2>
-
-<div align="center"><img src="/images/arayuru_f0.png "Fundamental frequency trajectory example."" class="image"></div>
-
-<p>ざっくり言えば音の高さを求める方法ですね。一応、音声に特化した方法をいくつか使えるようにしました。</p>
-
-<ul>
-<li><a href="http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf">A. de Cheveigne and H. Kawahara. YIN, a fundamental frequency estimator for speech and music. J. Acoust. Soc. Am., 111(4):1917–1930, 2002.</a></li>
-<li><a href="http://www.cise.ufl.edu/~acamacho/publications/dissertation.pdf">A. Camacho. SWIPE: A sawtooth waveform inspired pitch estimator for speech and music. PhD thesis, University of Florida, 2007.</a></li>
-</ul>
-
-<p>ただしYINはもどきです。</p>
-
-<p>以前、<a href="https://github.com/r9y9/go-world">GO-WORLD</a>という音声分析合成系WORLDのGoラッパーを書いたので、それを使えばF0推定手法Dioが使えます。</p>
-
-<h3 id="参考-1">参考</h3>
-
-<ul>
-<li><a href="http://r9y9.github.io/blog/2014/03/22/go-world/">音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE</a></li>
-</ul>
-
-<h2 id="メルケプストラム分析-mgcep-http-godoc-org-github-com-r9y9-gossp-mgcep">メルケプストラム分析 <a href="http://godoc.org/github.com/r9y9/gossp/mgcep">[mgcep]</a></h2>
-
-<p>音声合成界隈ではよく聞くメルケプストラム（※MFCCとは異なります）を求めるための分析手法です。メルケプストラムは、HMM（Hidden Markov Models; 隠れマルコフモデル）音声合成や統計的声質変換において、声道特徴（いわゆる、声質）のパラメータ表現としてよく使われています。メルケプストラムの前に、LPCとかPARCORとか色々あるのですが、現在のHMM音声合成で最もよく使われているのはメルケプストラムな気がするので、メルケプストラム分析があれば十分な気がします。</p>
-
-<p>これは、SPTKをcgoを使ってラップしました</p>
-
-<h3 id="参考-2">参考</h3>
-
-<ul>
-<li><a href="http://ci.nii.ac.jp/naid/40004638236/">徳田恵一, 小林隆夫, 深田俊明, 斎藤博徳, 今井 聖, “メルケプストラムをパラメータとする音声のスペクトル推定,” 信学論(A), vol.J74-A, no.8, pp.1240–1248, Aug. 1991.</a></li>
-</ul>
-
-<h2 id="メル一般化ケプストラム分析-mgcep-http-godoc-org-github-com-r9y9-gossp-mgcep">メル一般化ケプストラム分析 <a href="http://godoc.org/github.com/r9y9/gossp/mgcep">[mgcep]</a></h2>
-
-<p>メル一般化ケプストラム分析は、その名の通りメルケプストラム分析を一般化したものです。メルケプストラム分析はもちろん、LPCも包含します（詳細は、参考文献をチェックしてみてください）。論文をいくつかあさっている限り、あんまり使われていない気はしますが、これもSPTKをラップしてGoから使えるようにしました。メルケプストラム分析もメル一般化ケプストラム分析に含まれるので、mgcepという一つのパッケージにしました。</p>
-
-<h3 id="参考-3">参考</h3>
-
-<ul>
-<li><a href="http://www.utdallas.edu/~john.hanse/nPublications/JP-55-SpeechComm-Yapanel-Hansen-PMVDR-Feb08.pdf">Tokuda, K., Masuko, T., Kobayashi, T., Imai, S., 1994. Mel-generalized Cepstral Analysis-A Uniﬁed Approach to Speech Spectral Estimation, ISCA ICSLP-94: Inter. Conf. Spoken Lang. Proc., Yokohama, Japan, pp. 1043–1046.</a></li>
-</ul>
-
-<h1 id="音声合成系">音声合成系</h1>
-
-<h2 id="励起信号の生成-excite-http-godoc-org-github-com-r9y9-gossp-excite">励起信号の生成 <a href="http://godoc.org/github.com/r9y9/gossp/excite">[excite]</a></h2>
-
-<div align="center"><img src="/images/pulse_excite.png "Exciation eignal."" class="image"></div>
-
-<p>SPTKのexciteのGo実装です。いわゆるPulseExcitationという奴ですね。非周期成分まったく考慮しない単純な励起信号です。</p>
-
-<p>高品質な波形合成が必要な場合は、WORLDやSTRAIGHTを使うのが良いです。</p>
-
-<h2 id="mlsa-mel-log-spectrum-approximation-デジタルフィルタ-vocoder-http-godoc-org-github-com-r9y9-gossp-vocoder">MLSA (Mel Log Spectrum Approximation) デジタルフィルタ <a href="http://godoc.org/github.com/r9y9/gossp/vocoder">[vocoder]</a></h2>
-
-<p>MLSAフィルタは、メルケプストラムと励起信号から音声波形を合成するためのデジタルフィルタです。HMM音声合成の波形合成部で使われています（今もきっと）。Pure goで書き直しました。</p>
-
-<p>昔、C++でも書いたことあります。</p>
-
-<h3 id="参考-4">参考</h3>
-
-<ul>
-<li><a href="http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/">MLSA digital filter のC++実装 - LESS IS MORE</a></li>
-</ul>
-
-<h2 id="mglsa-mel-genaralized-log-spectrum-approximation-デジタルフィルタ-vocoder-http-godoc-org-github-com-r9y9-gossp-vocoder">MGLSA (Mel Genaralized-Log Spectrum Approximation) デジタルフィルタ <a href="http://godoc.org/github.com/r9y9/gossp/vocoder">[vocoder]</a></h2>
-
-<p>MGLSAフィルタは、メル一般化ケプストラムから波形を合成するためのデジタルフィルタですね。これも pure goで書きました。</p>
-
-<h2 id="sptkの再実装について"><strong>※SPTKの再実装について</strong></h2>
-
-<p>SPTKの実装をGoで書き直したものについては、SPTKの実装と結果が一致するかどうかを確認するテストを書いてあります。よって、誤った結果になるということは（計算誤差が影響する場合を除き）基本的にないので、お気になさらず。</p>
-
-<h2 id="高品質な音声分析変換合成系-world-go-world-http-godoc-org-github-com-r9y9-go-world">高品質な音声分析変換合成系 WORLD <a href="http://godoc.org/github.com/r9y9/go-world">[go-world]</a></h2>
-
-<p><a href="http://r9y9.github.io/blog/2014/03/22/go-world/">音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE</a></p>
-
-<p>以前WORLDのGoラッパーを書いたので、色々使えると思います。統計ベースの音声合成とか、声質変換とか。僕は声質変換に使おうと思ってラップしました。</p>
-
-<h1 id="おわりに">おわりに</h1>
-
-<p>長々と書きましたが、Go言語での信号処理の基礎と、今まで整備してきた音声信号処理ライブラリを簡単に紹介しました。僕が書いたものは、まとめてGithubで公開しています。</p>
-
-<p><a href="https://github.com/r9y9/gossp">https://github.com/r9y9/gossp</a></p>
-
-<p>使ってももらって、あわよくばバグとか報告してもらって、改善していければいいなーというのと、あとGithubのissue管理便利だし使おうと思ってGithubに上げました。</p>
-
-<p>みなさん、Goで音声信号処理始めてみませんか？</p>
-
-<h1 id="余談">余談</h1>
-
-<h2 id="pythonではダメなの-その他言語は">Pythonではダメなの？その他言語は？</h2>
-
-<p>なんでGoなの？と思う人がいると思います。冒頭にも書いたとおり、正直好きなのにすればいいですが、適当に書いて速いのがいいならC++だし、型を意識せずさくっと書きたいならPythonだし、そこそこ速くて型があって型推論もあって、とかだったらGoがいいかなと僕は思います。</p>
-
-<p>Goの特徴（≒良さ）ついては、<a href="http://www.slideshare.net/ymotongpoo/20130228-gobp-study-66-16830134">20130228 Goノススメ（BPStudy #66） | SlideShare</a>
- の11枚目が僕にはドンピシャです。</p>
-
-<p>numpy, scipy, matplotlib, scikit-learnあたりが最強すぎるので、僕はpythonも良く使います。</p>
-
-<h2 id="きっかけ">きっかけ</h2>
-
-<p>この記事を書いたきっかけは、友人にGoをおすすめしまくっていたのに全然聞いてくれなかったからでした。Goでも信号処理はできるよ</p>
-
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="GOSSP - Go言語で音声信号処理" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    </div>
-</div>
-
-
-			</section>
-		</article>
-	</main>
-
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
-</div>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="https://github.com/r9y9/gossp" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
 <script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
 </script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+
+  
+
+  
+
+  
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
+  
+  
+  
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/" />
+  <meta property="og:title" content="GOSSP - Go言語で音声信号処理 | LESS IS MORE" />
+  <meta property="og:description" content="https://github.com/r9y9/gossp" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2014-06-08T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2014-06-08T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/"
+  },
+  "headline": "GOSSP - Go言語で音声信号処理",
+  
+  "datePublished": "2014-06-08T00:00:00Z",
+  "dateModified": "2014-06-08T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "https://github.com/r9y9/gossp"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>GOSSP - Go言語で音声信号処理 | LESS IS MORE</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="0f103649e2b273be64619c526ded86be" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>GOSSP - Go言語で音声信号処理</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jun 8, 2014
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h1 id="cからgoへ">C++からGoへ</h1>
+<p>みなさん、C++で信号処理のアルゴリズムを書くのはつらいと思ったことはありませんか？C++で書くと速いのはいいけれど、いかんせん書くのが大変、コンパイルエラーは読みづらい、はたまたライブラリをビルドしようとしたら依存関係が上手く解決できず……そんな覚えはないでしょうか？謎のコンパイルエラーに悩みたくない、ガーベジコレクションほしい、Pythonのようにさくっと書きたい、型推論もほしい、でも動作は速い方がいい、そう思ったことはないでしょうか。</p>
+<p>そこでGoです。もちろん、そういった思いに完全に答えてくれるわけではありませんが、厳しいパフォーマンスを要求される場合でなければ、Goの方が良い場合も多いと僕は思っています。
+とはいえ、まだ比較的新しい言語のため、ライブラリは少なく信号処理を始めるのも大変です。というわけで、僕がC++をやめてGoに移行したことを思い出し、Goでの信号処理の基礎と、今まで整備してきたGoでの音声信号処理ライブラリを紹介します。</p>
+<p>Goの良いところ/悪いところについては書きません。正直、本当は何の言語でもいいと思っていますが、僕はGoが好きなので、ちょっとでもGoで信号処理したいと思う人が増えるといいなーと思って書いてみます。</p>
+<p>あとで書きますが、僕が書いたコードで使えそうなものは、以下にまとめました。</p>
+<p><a href="https://github.com/r9y9/gossp" target="_blank" rel="noopener">https://github.com/r9y9/gossp</a></p>
+<h1 id="基礎">基礎</h1>
+<h2 id="wavファイルの読み込み書き込み-wavhttpgodocorggithubcommjibsongo-dspwav">Wavファイルの読み込み/書き込み <a href="http://godoc.org/github.com/mjibson/go-dsp/wav" target="_blank" rel="noopener">[wav]</a></h2>
+<div align="center"><img src="/images/speech_signal.png "Speech signal example."" class="image"></div>
+<p>まずは音声ファイルの読み込みですね。wavファイルの読み込みさえできれば十分でしょう。</p>
+<p>これは、すでに有用なライブラリが存在します。<a href="https://github.com/mjibson/go-dsp" target="_blank" rel="noopener">GO-DSP</a> とういデジタル信号処理のライブラリに含まれるwavパッケージを使いましょう。</p>
+<p>次のように書くことができます。</p>
+<pre><code class="language-go">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/mjibson/go-dsp/wav&quot;
+	&quot;log&quot;
+	&quot;os&quot;
+)
+
+func main() {
+	// ファイルのオープン
+	file, err := os.Open(&quot;./test.wav&quot;)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Wavファイルの読み込み
+	w, werr := wav.ReadWav(file)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+
+	// データを表示
+	for i, val := range w.Data {
+		fmt.Println(i, val)
+	}
+}
+</code></pre>
+<p>簡単ですね。</p>
+<p>Goはウェブ周りの標準パッケージが充実しているので、以前<a href="http://qiita.com/r9y9/items/35a1cf139332a3072fc8" target="_blank" rel="noopener">qiitaに書いた記事</a>のように、wavファイルを受け取って何らかの処理をする、みたいなサーバも簡単に書くことができます</p>
+<p>wavファイルの書き込み＋ユーティリティを追加したかったので、僕は自分でカスタムしたパッケージを使っています。</p>
+<p><a href="https://github.com/r9y9/go-dsp" target="_blank" rel="noopener">https://github.com/r9y9/go-dsp</a></p>
+<h2 id="高速フーリエ変換-fast-fourier-transform-fft-ffthttpgodocorggithubcommjibsongo-dspfft">高速フーリエ変換 (Fast Fourier Transform; FFT) <a href="http://godoc.org/github.com/mjibson/go-dsp/fft" target="_blank" rel="noopener">[fft]</a></h2>
+<p>言わずとしれたFFTです。音のスペクトルを求めるのに必須の処理です。で、Goではどうすればいいのか？ということですが、こちらもすでに有用なライブラリが存在します。<a href="https://github.com/mjibson/go-dsp" target="_blank" rel="noopener">GO-DSP</a>に含まれる、fftパッケージを使いましょう。</p>
+<p>このfftパッケージは、go routinesを使って平行化されているため速いです。僕は、1次元のフーリエ変換以外めったに使いませんが、N次元のフーリエ変換をサポートしているのもこのライブラリのいいところです。</p>
+<h3 id="参考">参考</h3>
+<ul>
+<li><a href="http://mattjibson.com/blog/2013/01/04/go-dsp-fft-performance-with-go-routines/" target="_blank" rel="noopener">go-dsp FFT performance with go routines · Matt Jibson</a></li>
+</ul>
+<p>使い方は、とても簡単です。</p>
+<pre><code class="language-go">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/mjibson/go-dsp/fft&quot;
+)
+
+func main() {
+	fmt.Println(fft.FFTReal([]float64{1, 2, 3, 4, 5, 6, 7, 8}))
+}
+</code></pre>
+<h2 id="離散コサイン変換-discrete-cosine-transform-dct-dcthttpgodocorggithubcomr9y9gosspdct">離散コサイン変換 (Discrete Cosine Transform; DCT) <a href="http://godoc.org/github.com/r9y9/gossp/dct" target="_blank" rel="noopener">[dct]</a></h2>
+<p>DCTは、Mel-Frequency Cepstrum Coefficients (通称MFCC) 求めるのに必要な変換です。こちらは、残念ながら良さそうなライブラリがなかったので、自分で書きました。</p>
+<p>使い方はFFTとほとんど一緒です。</p>
+<pre><code class="language-go">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/r9y9/gossp/dct&quot;
+)
+
+func main() {
+	y := dct.DCTOrthogonal([]float64{1, 2, 3, 4, 5, 6, 7, 8})
+	fmt.Println(dct.IDCTOrthogonal(y)) // 直交変換では、逆変換すると元に戻る
+}
+</code></pre>
+<p>さて、基本的なところは一旦ここまでです。次からは、少し音声寄りの信号処理手法の紹介です。</p>
+<h1 id="時間周波数解析">時間周波数解析</h1>
+<h2 id="短時間フーリエ変換-short-time-fourier-transform-stft-stfthttpgodocorggithubcomr9y9gosspstft">短時間フーリエ変換 (Short Time Fourier Transform; STFT) <a href="http://godoc.org/github.com/r9y9/gossp/stft" target="_blank" rel="noopener">[stft]</a></h2>
+<div align="center"><img src="/images/stft.png "STFT spectrogram"" class="image"></div>
+<p>STFTは、音声の時間周波数解析手法として定番の方法ですね。音声を可視化したり、何らかの認識アルゴリズムの特徴抽出に使ったり、まぁ色々です。</p>
+<p>次のようなコードを書くと、スペクトログラムが作れます</p>
+<pre><code class="language-go">package main
+
+import (
+	&quot;flag&quot;
+	&quot;fmt&quot;
+	&quot;github.com/r9y9/gossp&quot;
+	&quot;github.com/r9y9/gossp/io&quot;
+	&quot;github.com/r9y9/gossp/stft&quot;
+	&quot;github.com/r9y9/gossp/window&quot;
+	&quot;log&quot;
+	&quot;math&quot;
+)
+
+func main() {
+	filename := flag.String(&quot;i&quot;, &quot;input.wav&quot;, &quot;Input filename&quot;)
+	flag.Parse()
+
+	w, werr := io.ReadWav(*filename)
+	if werr != nil {
+		log.Fatal(werr)
+	}
+	data := w.GetMonoData()
+
+	s := &amp;stft.STFT{
+		FrameShift: int(float64(w.SampleRate) / 100.0), // 0.01 sec,
+		FrameLen:   2048,
+		Window:     window.CreateHanning(2048),
+	}
+
+	spectrogram := s.STFT(data)
+	amplitudeSpectrogram, _ := gossp.SplitSpectrogram(spectrogram)
+	PrintMatrixAsGnuplotFormat(amplitudeSpectrogram)
+}
+
+func PrintMatrixAsGnuplotFormat(matrix [][]float64) {
+	fmt.Println(&quot;#&quot;, len(matrix[0]), len(matrix))
+	for i, vec := range matrix {
+		for j, val := range vec {
+			fmt.Println(i, j, math.Log(val))
+		}
+		fmt.Println(&quot;&quot;)
+	}
+}
+</code></pre>
+<p>上の画像は、gnuplotで表示したものです</p>
+<pre><code>set pm3d map
+sp &quot;spectrogram.txt&quot;
+</code></pre>
+<h2 id="逆短時間フーリエ変換-inverse-short-time-fourier-transform-istft-stfthttpgodocorggithubcomr9y9gosspstft">逆短時間フーリエ変換 (Inverse Short Time Fourier Transform; ISTFT) <a href="http://godoc.org/github.com/r9y9/gossp/stft" target="_blank" rel="noopener">[stft]</a></h2>
+<p>ISTFTは、STFTの逆変換でスペクトログラムから時間領域の信号に戻すために使います。スペクトログラムを加工するような音源分離、ノイズ除去手法を使う場合には、必須の処理です。これはstftと同じパッケージ下にあります。</p>
+<pre><code>	reconstructed := s.ISTFT(spectrogram)
+</code></pre>
+<p>これで、スペクトログラムから音声を再構築することができます。</p>
+<p>逆変換の仕組みは、意外と難しかったりします。</p>
+<ul>
+<li><a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.306.7858" target="_blank" rel="noopener">D. W. Griffin and J. S. Lim, &ldquo;Signal estimation from modified short-time Fourier transform,&rdquo; IEEE Trans. ASSP, vol.32, no.2, pp.236–243, Apr. 1984.</a></li>
+<li><a href="http://research.cs.tamu.edu/prism/lectures/sp/l6.pdf" target="_blank" rel="noopener">L6: Short-time Fourier analysis and synthesis</a></li>
+<li><a href="http://yukara-13.hatenablog.com/entry/2013/11/17/210204" target="_blank" rel="noopener">Pythonで短時間フーリエ変換（STFT）と逆変換 - 音楽プログラミングの超入門（仮）</a></li>
+</ul>
+<p>この辺を参考にしました。興味のある人は読んで見てください。</p>
+<h2 id="連続ウェーブレット変換-continuous-wavelet-transform-cwt">連続ウェーブレット変換 (Continuous Wavelet Transform; CWT)</h2>
+<div align="center"><img src="/images/morlet_6_log.png "Morlet Wavelet spectrogram"" class="image"></div>
+<p>これは何回かブログで書きました。</p>
+<ul>
+<li><a href="http://r9y9.github.io/blog/2013/10/20/continuous-wavelet-tranform/" target="_blank" rel="noopener">FFTを使った連続ウェーブレット変換の高速化 - LESS IS MORE</a></li>
+<li><a href="http://r9y9.github.io/blog/2014/06/01/continuouos-wavelet-transform-types/" target="_blank" rel="noopener">連続ウェーブレット変換に使うマザーウェーブレット色々: Morlet, Paul, DOG - LESS IS MORE</a></li>
+</ul>
+<p>コードは、テストがまだ通らないので開発中ということで…orz</p>
+<h2 id="逆連続ウェーブレット変換-inverse-continuous-wavelet-transform-icwt">逆連続ウェーブレット変換 (Inverse Continuous Wavelet Transform; ICWT)</h2>
+<p>連続ウェーブレット変換の逆変換ですね。これもけっこう難しいです。こちらもまだテストに通っていないので、開発中です。</p>
+<ul>
+<li><a href="http://r9y9.github.io/blog/2013/10/21/signal-reconstruction-using-invere-cwt/" target="_blank" rel="noopener">逆連続ウェーブレット変換による信号の再構成 - LESS IS MORE</a></li>
+</ul>
+<p>さて、この辺でまた一区切りです。次は、より音声に特化した信号処理手法を紹介します。</p>
+<p>※以降紹介するもののうち、多くは<a href="http://sp-tk.sourceforge.net/" target="_blank" rel="noopener">SPTK</a>のGo-portになっていて、一部はcgoを使ってラップしただけです（後々はpure goにしたいけれど、特にメルケプストラム分析あたりは難しいのでできていません）</p>
+<h1 id="音声分析系">音声分析系</h1>
+<h2 id="基本周波数推定-f0httpgodocorggithubcomr9y9gosspf0">基本周波数推定 <a href="http://godoc.org/github.com/r9y9/gossp/f0" target="_blank" rel="noopener">[f0]</a></h2>
+<div align="center"><img src="/images/arayuru_f0.png "Fundamental frequency trajectory example."" class="image"></div>
+<p>ざっくり言えば音の高さを求める方法ですね。一応、音声に特化した方法をいくつか使えるようにしました。</p>
+<ul>
+<li><a href="http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf" target="_blank" rel="noopener">A. de Cheveigne and H. Kawahara. YIN, a fundamental frequency estimator for speech and music. J. Acoust. Soc. Am., 111(4):1917–1930, 2002.</a></li>
+<li><a href="http://www.cise.ufl.edu/~acamacho/publications/dissertation.pdf" target="_blank" rel="noopener">A. Camacho. SWIPE: A sawtooth waveform inspired pitch estimator for speech and music. PhD thesis, University of Florida, 2007.</a></li>
+</ul>
+<p>ただしYINはもどきです。</p>
+<p>以前、<a href="https://github.com/r9y9/go-world" target="_blank" rel="noopener">GO-WORLD</a>という音声分析合成系WORLDのGoラッパーを書いたので、それを使えばF0推定手法Dioが使えます。</p>
+<h3 id="参考-1">参考</h3>
+<ul>
+<li><a href="http://r9y9.github.io/blog/2014/03/22/go-world/" target="_blank" rel="noopener">音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE</a></li>
+</ul>
+<h2 id="メルケプストラム分析-mgcephttpgodocorggithubcomr9y9gosspmgcep">メルケプストラム分析 <a href="http://godoc.org/github.com/r9y9/gossp/mgcep" target="_blank" rel="noopener">[mgcep]</a></h2>
+<p>音声合成界隈ではよく聞くメルケプストラム（※MFCCとは異なります）を求めるための分析手法です。メルケプストラムは、HMM（Hidden Markov Models; 隠れマルコフモデル）音声合成や統計的声質変換において、声道特徴（いわゆる、声質）のパラメータ表現としてよく使われています。メルケプストラムの前に、LPCとかPARCORとか色々あるのですが、現在のHMM音声合成で最もよく使われているのはメルケプストラムな気がするので、メルケプストラム分析があれば十分な気がします。</p>
+<p>これは、SPTKをcgoを使ってラップしました</p>
+<h3 id="参考-2">参考</h3>
+<ul>
+<li><a href="http://ci.nii.ac.jp/naid/40004638236/" target="_blank" rel="noopener">徳田恵一, 小林隆夫, 深田俊明, 斎藤博徳, 今井 聖, “メルケプストラムをパラメータとする音声のスペクトル推定,” 信学論(A), vol.J74-A, no.8, pp.1240–1248, Aug. 1991.</a></li>
+</ul>
+<h2 id="メル一般化ケプストラム分析-mgcephttpgodocorggithubcomr9y9gosspmgcep">メル一般化ケプストラム分析 <a href="http://godoc.org/github.com/r9y9/gossp/mgcep" target="_blank" rel="noopener">[mgcep]</a></h2>
+<p>メル一般化ケプストラム分析は、その名の通りメルケプストラム分析を一般化したものです。メルケプストラム分析はもちろん、LPCも包含します（詳細は、参考文献をチェックしてみてください）。論文をいくつかあさっている限り、あんまり使われていない気はしますが、これもSPTKをラップしてGoから使えるようにしました。メルケプストラム分析もメル一般化ケプストラム分析に含まれるので、mgcepという一つのパッケージにしました。</p>
+<h3 id="参考-3">参考</h3>
+<ul>
+<li><a href="http://www.utdallas.edu/~john.hanse/nPublications/JP-55-SpeechComm-Yapanel-Hansen-PMVDR-Feb08.pdf" target="_blank" rel="noopener">Tokuda, K., Masuko, T., Kobayashi, T., Imai, S., 1994. Mel-generalized Cepstral Analysis-A Uniﬁed Approach to Speech Spectral Estimation, ISCA ICSLP-94: Inter. Conf. Spoken Lang. Proc., Yokohama, Japan, pp. 1043–1046.</a></li>
+</ul>
+<h1 id="音声合成系">音声合成系</h1>
+<h2 id="励起信号の生成-excitehttpgodocorggithubcomr9y9gosspexcite">励起信号の生成 <a href="http://godoc.org/github.com/r9y9/gossp/excite" target="_blank" rel="noopener">[excite]</a></h2>
+<div align="center"><img src="/images/pulse_excite.png "Exciation eignal."" class="image"></div>
+<p>SPTKのexciteのGo実装です。いわゆるPulseExcitationという奴ですね。非周期成分まったく考慮しない単純な励起信号です。</p>
+<p>高品質な波形合成が必要な場合は、WORLDやSTRAIGHTを使うのが良いです。</p>
+<h2 id="mlsa-mel-log-spectrum-approximation-デジタルフィルタ-vocoderhttpgodocorggithubcomr9y9gosspvocoder">MLSA (Mel Log Spectrum Approximation) デジタルフィルタ <a href="http://godoc.org/github.com/r9y9/gossp/vocoder" target="_blank" rel="noopener">[vocoder]</a></h2>
+<p>MLSAフィルタは、メルケプストラムと励起信号から音声波形を合成するためのデジタルフィルタです。HMM音声合成の波形合成部で使われています（今もきっと）。Pure goで書き直しました。</p>
+<p>昔、C++でも書いたことあります。</p>
+<h3 id="参考-4">参考</h3>
+<ul>
+<li><a href="http://r9y9.github.io/blog/2013/12/01/mlsa-filter-with-c-plus-plus/" target="_blank" rel="noopener">MLSA digital filter のC++実装 - LESS IS MORE</a></li>
+</ul>
+<h2 id="mglsa-mel-genaralized-log-spectrum-approximation-デジタルフィルタ-vocoderhttpgodocorggithubcomr9y9gosspvocoder">MGLSA (Mel Genaralized-Log Spectrum Approximation) デジタルフィルタ <a href="http://godoc.org/github.com/r9y9/gossp/vocoder" target="_blank" rel="noopener">[vocoder]</a></h2>
+<p>MGLSAフィルタは、メル一般化ケプストラムから波形を合成するためのデジタルフィルタですね。これも pure goで書きました。</p>
+<h2 id="sptkの再実装について"><strong>※SPTKの再実装について</strong></h2>
+<p>SPTKの実装をGoで書き直したものについては、SPTKの実装と結果が一致するかどうかを確認するテストを書いてあります。よって、誤った結果になるということは（計算誤差が影響する場合を除き）基本的にないので、お気になさらず。</p>
+<h2 id="高品質な音声分析変換合成系-world-go-worldhttpgodocorggithubcomr9y9go-world">高品質な音声分析変換合成系 WORLD <a href="http://godoc.org/github.com/r9y9/go-world" target="_blank" rel="noopener">[go-world]</a></h2>
+<p><a href="http://r9y9.github.io/blog/2014/03/22/go-world/" target="_blank" rel="noopener">音声分析変換合成システムWORLDのGoラッパーを書いた - LESS IS MORE</a></p>
+<p>以前WORLDのGoラッパーを書いたので、色々使えると思います。統計ベースの音声合成とか、声質変換とか。僕は声質変換に使おうと思ってラップしました。</p>
+<h1 id="おわりに">おわりに</h1>
+<p>長々と書きましたが、Go言語での信号処理の基礎と、今まで整備してきた音声信号処理ライブラリを簡単に紹介しました。僕が書いたものは、まとめてGithubで公開しています。</p>
+<p><a href="https://github.com/r9y9/gossp" target="_blank" rel="noopener">https://github.com/r9y9/gossp</a></p>
+<p>使ってももらって、あわよくばバグとか報告してもらって、改善していければいいなーというのと、あとGithubのissue管理便利だし使おうと思ってGithubに上げました。</p>
+<p>みなさん、Goで音声信号処理始めてみませんか？</p>
+<h1 id="余談">余談</h1>
+<h2 id="pythonではダメなのその他言語は">Pythonではダメなの？その他言語は？</h2>
+<p>なんでGoなの？と思う人がいると思います。冒頭にも書いたとおり、正直好きなのにすればいいですが、適当に書いて速いのがいいならC++だし、型を意識せずさくっと書きたいならPythonだし、そこそこ速くて型があって型推論もあって、とかだったらGoがいいかなと僕は思います。</p>
+<p>Goの特徴（≒良さ）ついては、<a href="http://www.slideshare.net/ymotongpoo/20130228-gobp-study-66-16830134" target="_blank" rel="noopener">20130228 Goノススメ（BPStudy #66） | SlideShare</a>
+の11枚目が僕にはドンピシャです。</p>
+<p>numpy, scipy, matplotlib, scikit-learnあたりが最強すぎるので、僕はpythonも良く使います。</p>
+<h2 id="きっかけ">きっかけ</h2>
+<p>この記事を書いたきっかけは、友人にGoをおすすめしまくっていたのに全然聞いてくれなかったからでした。Goでも信号処理はできるよ</p>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/speech-signal-processing/">Speech Signal Processing</a>
+  
+  <a class="badge badge-light" href="/tag/go/">Go</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/&amp;text=GOSSP%20-%20Go%e8%a8%80%e8%aa%9e%e3%81%a7%e9%9f%b3%e5%a3%b0%e4%bf%a1%e5%8f%b7%e5%87%a6%e7%90%86" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/&amp;t=GOSSP%20-%20Go%e8%a8%80%e8%aa%9e%e3%81%a7%e9%9f%b3%e5%a3%b0%e4%bf%a1%e5%8f%b7%e5%87%a6%e7%90%86" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=GOSSP%20-%20Go%e8%a8%80%e8%aa%9e%e3%81%a7%e9%9f%b3%e5%a3%b0%e4%bf%a1%e5%8f%b7%e5%87%a6%e7%90%86&amp;body=https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/&amp;title=GOSSP%20-%20Go%e8%a8%80%e8%aa%9e%e3%81%a7%e9%9f%b3%e5%a3%b0%e4%bf%a1%e5%8f%b7%e5%87%a6%e7%90%86" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=GOSSP%20-%20Go%e8%a8%80%e8%aa%9e%e3%81%a7%e9%9f%b3%e5%a3%b0%e4%bf%a1%e5%8f%b7%e5%87%a6%e7%90%86%20https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2014/06/08/gossp-speech-signal-processing-for-go/&amp;title=GOSSP%20-%20Go%e8%a8%80%e8%aa%9e%e3%81%a7%e9%9f%b3%e5%a3%b0%e4%bf%a1%e5%8f%b7%e5%87%a6%e7%90%86" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2014/03/22/go-world/">音声分析変換合成システムWORLDのGoラッパーを書いた</a></li>
+      
+      <li><a href="/blog/2014/02/10/sptk-go-wrapper/">Goで音声信号処理をしたいのでSPTKのGoラッパーを書く</a></li>
+      
+      <li><a href="/blog/2014/01/27/start-coding-go-msptools/">Goで信号処理</a></li>
+      
+      <li><a href="/blog/2015/09/06/pysptk/">pysptk: SPTKのpythonラッパーを作った (part 2)</a></li>
+      
+      <li><a href="/blog/2015/08/23/speech-analysis-and-synthesis-in-julia/">最近の音声信号処理遊びの進捗</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

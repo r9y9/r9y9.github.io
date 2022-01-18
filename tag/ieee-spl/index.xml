@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IEEE SPL | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/ieee-spl/</link>
+      <atom:link href="https://r9y9.github.io/tag/ieee-spl/index.xml" rel="self" type="application/rss+xml" />
+    <description>IEEE SPL</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Fri, 30 Jul 2021 12:11:03 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
+      <title>IEEE SPL</title>
+      <link>https://r9y9.github.io/tag/ieee-spl/</link>
+    </image>
+    
+    <item>
+      <title>Voicing-Aware Parallel WaveGAN for High-Quality Speech Synthesis</title>
+      <link>https://r9y9.github.io/projects/va-pwg/</link>
+      <pubDate>Fri, 30 Jul 2021 12:11:03 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/va-pwg/</guid>
+      <description>&lt;p&gt;Submitted to &lt;a href=&#34;https://signalprocessingsociety.org/publications-resources/ieee-signal-processing-letters&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;IEEE signal processing letters&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#authors&#34;&gt;Authors&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#abstract&#34;&gt;Abstract&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#tts-samples&#34;&gt;TTS samples&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#m1-male&#34;&gt;M1 (male)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#m2-male&#34;&gt;M2 (male)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#f1-female&#34;&gt;F1 (female)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#f2-female&#34;&gt;F2 (female)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#acknowledgements&#34;&gt;Acknowledgements&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;authors&#34;&gt;Authors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ryuichi Yamamoto (LINE Corp.)&lt;/li&gt;
+&lt;li&gt;Min-Jae Hwang (Search Solutions Inc.)&lt;/li&gt;
+&lt;li&gt;Eunwoo Song (NAVER Corp.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
+&lt;p&gt;This letter proposes a voicing-aware Parallel Wave- GAN (VA-PWG) vocoder for a neural text-to-speech (TTS) system. To generate a high-quality speech waveform, it is important to reflect the distinct characteristics of voiced and unvoiced speech signals well. However, it is difficult for the conventional PWG model to accurately represent this condition, since the single unified architectures of the generator and discriminator are insufficient to capture those characteristics. In the proposed method, both the generator and discriminator are divided into their subnetworks to individually model the voicing state-dependent characteristics of a speech signal. In particular, a VA-generator consisting of two sub-WaveNets generates the harmonic and noise components of a speech signal by inputting pitch-dependent sine wave and Gaussian noise sources, respectively. Likewise, a VA-discriminator consisting of two sub-discriminators learns the distinct characteristics of harmonic and noise components by feeding the voiced and unvoiced waveforms, respectively. Subjective evaluation results verified the effectiveness of the proposed VA-PWG vocoder by achieving a 4.25 mean opinion score from a speaker-independent training scenario that was 11% higher than that of a conventional PWG vocoder.&lt;/p&gt;
+&lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/va-pwg.png&#34; width=&#34;80%&#34; /&gt;&lt;/div&gt;
+&lt;h2 id=&#34;tts-samples&#34;&gt;TTS samples&lt;/h2&gt;
+&lt;h3 id=&#34;m1-male&#34;&gt;M1 (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1: “鹿児島県で最大震度三を観測しています。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test01]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test01]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test01]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test01]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2: “葉加瀬太郎の情熱大陸です。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test02]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test02]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test02]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test02]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test02]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test02]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3: “それでうちの部は半分に減らされる。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test03]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test03]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test03]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test03]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test03]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M1/TTS/[Test03]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;m2-male&#34;&gt;M2 (male)&lt;/h3&gt;
+&lt;p&gt;Sample 1: “ヨメの、レオンティーンさんですね。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test01]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test01]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test01]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test01]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2: “御予約は、二泊三日ですね。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test02]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test02]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test02]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test02]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test02]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test02]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3: “わたさちの、ローリーさんですね。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test03]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test03]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test03]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test03]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test03]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/M2/TTS/[Test03]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;f1-female&#34;&gt;F1 (female)&lt;/h3&gt;
+&lt;p&gt;Sample 1: “かわいそうに、助けてやらなくてはと、家に連れて帰りましたとさ。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test01]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test01]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test01]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test01]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2: “失礼のないよう、笑顔で挨拶して。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test02]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test02]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test02]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test02]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test02]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test02]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3: “照れていたので、ちょっと意外な気がしましたー。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test03]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test03]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test03]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test03]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test03]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F1/TTS/[Test03]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;f2-female&#34;&gt;F2 (female)&lt;/h3&gt;
+&lt;p&gt;Sample 1: “そして目に留まったのは、お気に入りの居酒屋の前にあるゴミの山。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test01]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test01]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test01]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test01]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test01]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test01]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2: “今ひとつ、時間が足りず。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test02]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test02]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test02]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test02]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test02]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test02]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3: “実はこの道の先に、高い山があってね。”&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;WaveNet&lt;/th&gt;&lt;th&gt;PWG&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test03]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test03]-S1-WaveNet.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test03]-S2-PWG.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;VA-PWG-G&lt;/th&gt;&lt;th&gt;VA-PWG-D&lt;/th&gt;&lt;th&gt;VA-PWG-GD (proposed)&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test03]-S3-VA-PWG-G.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test03]-S4-VA-PWG-D.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/va-pwg/F2/TTS/[Test03]-S5-VA-PWG-GD (proposed).wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&#34;acknowledgements&#34;&gt;Acknowledgements&lt;/h2&gt;
+&lt;p&gt;Work performed with nVoice, Clova Voice, Naver Corp.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

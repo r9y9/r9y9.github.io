@@ -1,334 +1,1436 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>PythonによるニューラルネットのToyコード - LESS IS MORE</title>
-</head>
-<body>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
 
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
+  
+  
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">PythonによるニューラルネットのToyコード</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-05-11">May 11, 2014</time></span>
-			<section itemprop="entry-text">
-				<p>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。</p>
-
-<p>このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/python</span>
-<span style="color:#75715e"># coding: utf-8</span>
-
-<span style="color:#75715e"># ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の</span>
-<span style="color:#75715e"># デモコードです。</span>
-<span style="color:#75715e"># 誤差伝搬法によってニューラルネットを学習します。</span>
-<span style="color:#75715e"># XORの学習、テストの簡単なデモコードもついています</span>
-<span style="color:#75715e"># 2014/05/10 Ryuichi Yamamoto</span>
-
-<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sigmoid</span>(x):
-    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>exp(<span style="color:#f92672">-</span>x))
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">dsigmoid</span>(y):
-    <span style="color:#66d9ef">return</span> y <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> y)
-
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NeuralNet</span>:
-    <span style="color:#66d9ef">def</span> __init__(self, num_input, num_hidden, num_output):
-        <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">        パラメータの初期化
-</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
-        <span style="color:#75715e"># 入力層から隠れ層への重み行列</span>
-        self<span style="color:#f92672">.</span>W1 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">1.0</span>, (num_input, num_hidden))
-        self<span style="color:#f92672">.</span>hidden_bias <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>ones(num_hidden, dtype<span style="color:#f92672">=</span>float)
-        <span style="color:#75715e"># 隠れ層から出力層への重み行列</span>
-        self<span style="color:#f92672">.</span>W2 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>uniform(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">1.0</span>, (num_hidden, num_output))
-        self<span style="color:#f92672">.</span>output_bias <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>ones(num_output, dtype<span style="color:#f92672">=</span>float)
-
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forward</span>(self, x):
-        <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">        前向き伝搬の計算
-</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
-        h <span style="color:#f92672">=</span> sigmoid(np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W1<span style="color:#f92672">.</span>T, x) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>hidden_bias)
-        <span style="color:#66d9ef">return</span> sigmoid(np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W2<span style="color:#f92672">.</span>T, h) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>output_bias)
-
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cost</span>(self, data, target):
-        <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">        最小化したい誤差関数
-</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
-        N <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
-        E <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>
-        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(N):
-            y, t <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>forward(data[i]), target[i]
-            E <span style="color:#f92672">+=</span> np<span style="color:#f92672">.</span>sum((y <span style="color:#f92672">-</span> t) <span style="color:#f92672">*</span> (y <span style="color:#f92672">-</span> t))
-        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.5</span> <span style="color:#f92672">*</span> E <span style="color:#f92672">/</span> float(N)
-
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train</span>(self, data, target, epoches<span style="color:#f92672">=</span><span style="color:#ae81ff">30000</span>, learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,\
-              monitor_period<span style="color:#f92672">=</span>None):
-        <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">        Stochastic Gradient Decent (SGD) による学習
-</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
-        <span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(epoches):
-            <span style="color:#75715e"># 学習データから1サンプルをランダムに選ぶ</span>
-            index <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">0</span>, data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])
-            x, t <span style="color:#f92672">=</span> data[index], target[index]
-
-            <span style="color:#75715e"># 入力から出力まで前向きに信号を伝搬</span>
-            h <span style="color:#f92672">=</span> sigmoid(np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W1<span style="color:#f92672">.</span>T, x) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>hidden_bias)
-            y <span style="color:#f92672">=</span> sigmoid(np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W2<span style="color:#f92672">.</span>T, h) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>output_bias)
-
-            <span style="color:#75715e"># 隠れ層-&gt;出力層の重みの修正量を計算</span>
-            output_delta <span style="color:#f92672">=</span> (y <span style="color:#f92672">-</span> t) <span style="color:#f92672">*</span> dsigmoid(y)
-            grad_W2 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>dot(np<span style="color:#f92672">.</span>atleast_2d(h)<span style="color:#f92672">.</span>T, np<span style="color:#f92672">.</span>atleast_2d(output_delta))
-
-            <span style="color:#75715e"># 隠れ層-&gt;出力層の重みを更新</span>
-            self<span style="color:#f92672">.</span>W2 <span style="color:#f92672">-=</span> learning_rate <span style="color:#f92672">*</span> grad_W2
-            self<span style="color:#f92672">.</span>output_bias <span style="color:#f92672">-=</span> learning_rate <span style="color:#f92672">*</span> output_delta
-
-            <span style="color:#75715e"># 入力層-&gt;隠れ層の重みの修正量を計算</span>
-            hidden_delta <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>dot(self<span style="color:#f92672">.</span>W2, output_delta) <span style="color:#f92672">*</span> dsigmoid(h)
-            grad_W1 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>dot(np<span style="color:#f92672">.</span>atleast_2d(x)<span style="color:#f92672">.</span>T, np<span style="color:#f92672">.</span>atleast_2d(hidden_delta))
-
-            <span style="color:#75715e"># 入力層-&gt;隠れ層の重みを更新</span>
-            self<span style="color:#f92672">.</span>W1 <span style="color:#f92672">-=</span> learning_rate <span style="color:#f92672">*</span> grad_W1
-            self<span style="color:#f92672">.</span>hidden_bias <span style="color:#f92672">-=</span> learning_rate <span style="color:#f92672">*</span> hidden_delta
-
-            <span style="color:#75715e"># 現在の目的関数の値を出力</span>
-            <span style="color:#66d9ef">if</span> monitor_period <span style="color:#f92672">!=</span> None <span style="color:#f92672">and</span> epoch <span style="color:#f92672">%</span> monitor_period <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-                <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Epoch </span><span style="color:#e6db74">%d</span><span style="color:#e6db74">, Cost </span><span style="color:#e6db74">%f</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (epoch, self<span style="color:#f92672">.</span>cost(data, target))
-
-        <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Training finished.&#34;</span>
-
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict</span>(self, x):
-        <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">        出力層の最も反応するニューロンの番号を返します
-</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
-        <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>argmax(self<span style="color:#f92672">.</span>forward(x))
-
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
-    <span style="color:#f92672">import</span> argparse
-
-    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser(description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Specify options&#34;</span>)
-    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--epoches&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;epoches&#34;</span>, type<span style="color:#f92672">=</span>int, required<span style="color:#f92672">=</span>True)
-    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--learning_rate&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;learning_rate&#34;</span>,\
-                        type<span style="color:#f92672">=</span>float, default<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>)
-    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--hidden&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span>, type<span style="color:#f92672">=</span>int, default<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>)
-    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
-
-    nn <span style="color:#f92672">=</span> NeuralNet(<span style="color:#ae81ff">2</span>, args<span style="color:#f92672">.</span>hidden, <span style="color:#ae81ff">1</span>)
-
-    data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span> ,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>]])
-    target <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>])
-
-    nn<span style="color:#f92672">.</span>train(data, target, args<span style="color:#f92672">.</span>epoches, args<span style="color:#f92672">.</span>learning_rate,\
-             monitor_period<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>)
-
-    <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> data:
-        <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> : predicted </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (x, nn<span style="color:#f92672">.</span>forward(x))</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/python</span>
-<span style="color:#75715e"># coding: utf-8</span>
-
-<span style="color:#75715e"># MNISTを用いたニューラルネットによる手書き数字認識のデモコードです</span>
-<span style="color:#75715e"># 学習方法やパラメータによりますが、だいたい 90 ~ 97% くらいの精度出ます。</span>
-<span style="color:#75715e"># 使い方は、コードを読むか、</span>
-<span style="color:#75715e"># python mnist_net.py -h</span>
-<span style="color:#75715e"># としてください</span>
-<span style="color:#75715e"># 参考までに、</span>
-<span style="color:#75715e"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100</span>
-<span style="color:#75715e"># とすると、テストセットに対して、93.2%の正解率です</span>
-<span style="color:#75715e"># 僕の環境では、学習、認識合わせて（だいたい）5分くらいかかりました。</span>
-<span style="color:#75715e"># 2014/05/10 Ryuichi Yamamoto</span>
-
-<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
-<span style="color:#f92672">from</span> sklearn.externals <span style="color:#f92672">import</span> joblib
-<span style="color:#f92672">import</span> cPickle
-<span style="color:#f92672">import</span> gzip
-<span style="color:#f92672">import</span> os
-
-<span style="color:#75715e"># 作成したニューラルネットのパッケージ</span>
-<span style="color:#f92672">import</span> net
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_mnist_dataset</span>(dataset):
-    <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">    MNISTのデータセットをダウンロードします
-</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
-    <span style="color:#75715e"># Download the MNIST dataset if it is not present</span>
-    data_dir, data_file <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>split(dataset)
-    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>isfile(dataset)) <span style="color:#f92672">and</span> data_file <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;mnist.pkl.gz&#39;</span>:
-        <span style="color:#f92672">import</span> urllib
-        origin <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz&#39;</span>
-        <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;Downloading data from </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> origin
-        urllib<span style="color:#f92672">.</span>urlretrieve(origin, dataset)
-
-    f <span style="color:#f92672">=</span> gzip<span style="color:#f92672">.</span>open(dataset, <span style="color:#e6db74">&#39;rb&#39;</span>)
-    train_set, valid_set, test_set <span style="color:#f92672">=</span> cPickle<span style="color:#f92672">.</span>load(f)
-    f<span style="color:#f92672">.</span>close()
-
-    <span style="color:#66d9ef">return</span> train_set, valid_set, test_set
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">augument_labels</span>(labels, order):
-    <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">    1次元のラベルデータを、ラベルの種類数(order)次元に拡張します
-</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
-    new_labels <span style="color:#f92672">=</span> []
-    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(labels<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]):
-        v <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(order)
-        v[labels[i]] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-        new_labels<span style="color:#f92672">.</span>append(v)
-
-    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>array(new_labels)<span style="color:#f92672">.</span>reshape((labels<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>], order))        
-
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
-    <span style="color:#f92672">import</span> argparse
-
-    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser(description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;MNIST手書き数字認識のデモ&#34;</span>)
-    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--epoches&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;epoches&#34;</span>, type<span style="color:#f92672">=</span>int, required<span style="color:#f92672">=</span>True)
-    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--learning_rate&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;learning_rate&#34;</span>,\
-                        type<span style="color:#f92672">=</span>float, default<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>)
-    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--hidden&#34;</span>, dest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span>, type<span style="color:#f92672">=</span>int, default<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
-    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
-
-    train_set, valid_set, test_set <span style="color:#f92672">=</span> load_mnist_dataset(<span style="color:#e6db74">&#34;mnist.pkl.gz&#34;</span>)
-    n_labels <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span> <span style="color:#75715e"># 0,1,2,3,4,5,6,7,9</span>
-    n_features <span style="color:#f92672">=</span> <span style="color:#ae81ff">28</span><span style="color:#f92672">*</span><span style="color:#ae81ff">28</span>
-
-    <span style="color:#75715e"># モデルを新しく作る</span>
-    nn <span style="color:#f92672">=</span> net<span style="color:#f92672">.</span>NeuralNet(n_features, args<span style="color:#f92672">.</span>hidden, n_labels)
-
-    <span style="color:#75715e"># モデルを読み込む</span>
-    <span style="color:#75715e"># nn = joblib.load(&#34;./nn_mnist.pkl&#34;)</span>
-
-    nn<span style="color:#f92672">.</span>train(train_set[<span style="color:#ae81ff">0</span>], augument_labels(train_set[<span style="color:#ae81ff">1</span>], n_labels),\
-             args<span style="color:#f92672">.</span>epoches, args<span style="color:#f92672">.</span>learning_rate, monitor_period<span style="color:#f92672">=</span><span style="color:#ae81ff">2000</span>)
-
-    <span style="color:#75715e">## テスト</span>
-    test_data, labels <span style="color:#f92672">=</span> test_set
-    results <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(len(test_data), dtype<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>int)
-    <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> range(len(test_data)):
-        results[n] <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>predict(test_data[n])
-        <span style="color:#75715e"># print &#34;%d : predicted %s, expected %s&#34; % (n, results[n], labels[n])</span>
-    <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;recognition rate: &#34;</span>, (results <span style="color:#f92672">==</span> labels)<span style="color:#f92672">.</span>mean()
-
-    <span style="color:#75715e"># モデルを保存</span>
-    model_filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;nn_mnist.pkl&#34;</span>
-    joblib<span style="color:#f92672">.</span>dump(nn, model_filename, compress<span style="color:#f92672">=</span><span style="color:#ae81ff">9</span>)
-    <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;The model parameters are dumped to &#34;</span> <span style="color:#f92672">+</span> model_filename</code></pre></div>
-<p><a href="https://github.com/r9y9/python-neural-net-toy-codes">https://github.com/r9y9/python-neural-net-toy-codes</a></p>
-
-<p>以下のようなコマンドを叩いて、正解率が97%くらいになるまで学習してから入力層から隠れ層への重みを可視化してみた</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100 # epochesは適当に</span></code></pre></div>
-<div align="center"><img src="/images/nn_mnist_W1_100.png" alt="Input to Hidden weight filters after trained on MNIST." class="image"></div>
-
-<p>興味深いことに、RBMと違って重み行列の解釈はしにくい。生成モデルの尤度を最大化することと、誤差を最小化することはこんなにも違うんだなぁというこなみな感想</p>
-
-<p>RBMについては、以下へ</p>
-
-<p><a href="http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/">Restricted Boltzmann Machines with MNIST - LESS IS MORE</a></p>
-
-<p>おわり</p>
-
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="PythonによるニューラルネットのToyコード" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    </div>
-</div>
 
 
-			</section>
-		</article>
-	</main>
 
 
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
 
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
 
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
 
-</div>
+  
 
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="https://github.com/r9y9/python-neural-net-toy-codes" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
 <script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
 </script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+
+  
+
+  
+
+  
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
+  
+  
+  
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/" />
+  <meta property="og:title" content="PythonによるニューラルネットのToyコード | LESS IS MORE" />
+  <meta property="og:description" content="https://github.com/r9y9/python-neural-net-toy-codes" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2014-05-11T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2014-05-11T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/"
+  },
+  "headline": "PythonによるニューラルネットのToyコード",
+  
+  "datePublished": "2014-05-11T00:00:00Z",
+  "dateModified": "2014-05-11T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "https://github.com/r9y9/python-neural-net-toy-codes"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>PythonによるニューラルネットのToyコード | LESS IS MORE</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="de2ee3dcd0baf308c616396ffd5727af" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>PythonによるニューラルネットのToyコード</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    May 11, 2014
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>1000番煎じだけど、知り合いにニューラルネットを教えていて、その過程で書いたコード。わかりやすさ重視。</p>
+<p>このために、誤差伝播法をn回導出しました（意訳：何回もメモなくしました）</p>
+<pre><code class="language-python">#!/usr/bin/python
+# coding: utf-8
+
+# ニューラルネットワーク(Feed-Forward Neural Networks)の学習、認識の
+# デモコードです。
+# 誤差伝搬法によってニューラルネットを学習します。
+# XORの学習、テストの簡単なデモコードもついています
+# 2014/05/10 Ryuichi Yamamoto
+
+import numpy as np
+
+def sigmoid(x):
+    return 1.0 / (1.0 + np.exp(-x))
+
+def dsigmoid(y):
+    return y * (1.0 - y)
+
+class NeuralNet:
+    def __init__(self, num_input, num_hidden, num_output):
+        &quot;&quot;&quot;
+        パラメータの初期化
+        &quot;&quot;&quot;
+        # 入力層から隠れ層への重み行列
+        self.W1 = np.random.uniform(-1.0, 1.0, (num_input, num_hidden))
+        self.hidden_bias = np.ones(num_hidden, dtype=float)
+        # 隠れ層から出力層への重み行列
+        self.W2 = np.random.uniform(-1.0, 1.0, (num_hidden, num_output))
+        self.output_bias = np.ones(num_output, dtype=float)
+
+    def forward(self, x):
+        &quot;&quot;&quot;
+        前向き伝搬の計算
+        &quot;&quot;&quot;
+        h = sigmoid(np.dot(self.W1.T, x) + self.hidden_bias)
+        return sigmoid(np.dot(self.W2.T, h) + self.output_bias)
+
+    def cost(self, data, target):
+        &quot;&quot;&quot;
+        最小化したい誤差関数
+        &quot;&quot;&quot;
+        N = data.shape[0]
+        E = 0.0
+        for i in range(N):
+            y, t = self.forward(data[i]), target[i]
+            E += np.sum((y - t) * (y - t))
+        return 0.5 * E / float(N)
+
+    def train(self, data, target, epoches=30000, learning_rate=0.1,\
+              monitor_period=None):
+        &quot;&quot;&quot;
+        Stochastic Gradient Decent (SGD) による学習
+        &quot;&quot;&quot;
+        for epoch in range(epoches):
+            # 学習データから1サンプルをランダムに選ぶ
+            index = np.random.randint(0, data.shape[0])
+            x, t = data[index], target[index]
+
+            # 入力から出力まで前向きに信号を伝搬
+            h = sigmoid(np.dot(self.W1.T, x) + self.hidden_bias)
+            y = sigmoid(np.dot(self.W2.T, h) + self.output_bias)
+
+            # 隠れ層-&gt;出力層の重みの修正量を計算
+            output_delta = (y - t) * dsigmoid(y)
+            grad_W2 = np.dot(np.atleast_2d(h).T, np.atleast_2d(output_delta))
+
+            # 隠れ層-&gt;出力層の重みを更新
+            self.W2 -= learning_rate * grad_W2
+            self.output_bias -= learning_rate * output_delta
+
+            # 入力層-&gt;隠れ層の重みの修正量を計算
+            hidden_delta = np.dot(self.W2, output_delta) * dsigmoid(h)
+            grad_W1 = np.dot(np.atleast_2d(x).T, np.atleast_2d(hidden_delta))
+
+            # 入力層-&gt;隠れ層の重みを更新
+            self.W1 -= learning_rate * grad_W1
+            self.hidden_bias -= learning_rate * hidden_delta
+
+            # 現在の目的関数の値を出力
+            if monitor_period != None and epoch % monitor_period == 0:
+                print &quot;Epoch %d, Cost %f&quot; % (epoch, self.cost(data, target))
+
+        print &quot;Training finished.&quot;
+
+    def predict(self, x):
+        &quot;&quot;&quot;
+        出力層の最も反応するニューロンの番号を返します
+        &quot;&quot;&quot;
+        return np.argmax(self.forward(x))
+
+if __name__ == &quot;__main__&quot;:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=&quot;Specify options&quot;)
+    parser.add_argument(&quot;--epoches&quot;, dest=&quot;epoches&quot;, type=int, required=True)
+    parser.add_argument(&quot;--learning_rate&quot;, dest=&quot;learning_rate&quot;,\
+                        type=float, default=0.1)
+    parser.add_argument(&quot;--hidden&quot;, dest=&quot;hidden&quot;, type=int, default=20)
+    args = parser.parse_args()
+
+    nn = NeuralNet(2, args.hidden, 1)
+
+    data = np.array([[0, 0], [0 ,1], [1, 0], [1, 1]])
+    target = np.array([0, 1, 1, 0])
+
+    nn.train(data, target, args.epoches, args.learning_rate,\
+             monitor_period=1000)
+
+    for x in data:
+        print &quot;%s : predicted %s&quot; % (x, nn.forward(x))
+</code></pre>
+<pre><code class="language-python">#!/usr/bin/python
+# coding: utf-8
+
+# MNISTを用いたニューラルネットによる手書き数字認識のデモコードです
+# 学習方法やパラメータによりますが、だいたい 90 ~ 97% くらいの精度出ます。
+# 使い方は、コードを読むか、
+# python mnist_net.py -h
+# としてください
+# 参考までに、
+# python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100
+# とすると、テストセットに対して、93.2%の正解率です
+# 僕の環境では、学習、認識合わせて（だいたい）5分くらいかかりました。
+# 2014/05/10 Ryuichi Yamamoto
+
+import numpy as np
+from sklearn.externals import joblib
+import cPickle
+import gzip
+import os
+
+# 作成したニューラルネットのパッケージ
+import net
+
+def load_mnist_dataset(dataset):
+    &quot;&quot;&quot;
+    MNISTのデータセットをダウンロードします
+    &quot;&quot;&quot;
+    # Download the MNIST dataset if it is not present
+    data_dir, data_file = os.path.split(dataset)
+    if (not os.path.isfile(dataset)) and data_file == 'mnist.pkl.gz':
+        import urllib
+        origin = 'http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz'
+        print 'Downloading data from %s' % origin
+        urllib.urlretrieve(origin, dataset)
+
+    f = gzip.open(dataset, 'rb')
+    train_set, valid_set, test_set = cPickle.load(f)
+    f.close()
+
+    return train_set, valid_set, test_set
+
+def augument_labels(labels, order):
+    &quot;&quot;&quot;
+    1次元のラベルデータを、ラベルの種類数(order)次元に拡張します
+    &quot;&quot;&quot;
+    new_labels = []
+    for i in range(labels.shape[0]):
+        v = np.zeros(order)
+        v[labels[i]] = 1
+        new_labels.append(v)
+
+    return np.array(new_labels).reshape((labels.shape[0], order))
+
+if __name__ == &quot;__main__&quot;:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=&quot;MNIST手書き数字認識のデモ&quot;)
+    parser.add_argument(&quot;--epoches&quot;, dest=&quot;epoches&quot;, type=int, required=True)
+    parser.add_argument(&quot;--learning_rate&quot;, dest=&quot;learning_rate&quot;,\
+                        type=float, default=0.1)
+    parser.add_argument(&quot;--hidden&quot;, dest=&quot;hidden&quot;, type=int, default=100)
+    args = parser.parse_args()
+
+    train_set, valid_set, test_set = load_mnist_dataset(&quot;mnist.pkl.gz&quot;)
+    n_labels = 10 # 0,1,2,3,4,5,6,7,9
+    n_features = 28*28
+
+    # モデルを新しく作る
+    nn = net.NeuralNet(n_features, args.hidden, n_labels)
+
+    # モデルを読み込む
+    # nn = joblib.load(&quot;./nn_mnist.pkl&quot;)
+
+    nn.train(train_set[0], augument_labels(train_set[1], n_labels),\
+             args.epoches, args.learning_rate, monitor_period=2000)
+
+    ## テスト
+    test_data, labels = test_set
+    results = np.arange(len(test_data), dtype=np.int)
+    for n in range(len(test_data)):
+        results[n] = nn.predict(test_data[n])
+        # print &quot;%d : predicted %s, expected %s&quot; % (n, results[n], labels[n])
+    print &quot;recognition rate: &quot;, (results == labels).mean()
+
+    # モデルを保存
+    model_filename = &quot;nn_mnist.pkl&quot;
+    joblib.dump(nn, model_filename, compress=9)
+    print &quot;The model parameters are dumped to &quot; + model_filename
+</code></pre>
+<p><a href="https://github.com/r9y9/python-neural-net-toy-codes" target="_blank" rel="noopener">https://github.com/r9y9/python-neural-net-toy-codes</a></p>
+<p>以下のようなコマンドを叩いて、正解率が97%くらいになるまで学習してから入力層から隠れ層への重みを可視化してみた</p>
+<pre><code class="language-bash"># python mnist_net.py --epoches 50000 --learning_rate 0.1 --hidden 100 # epochesは適当に
+</code></pre>
+<div align="center"><img src="/images/nn_mnist_W1_100.png" alt="Input to Hidden weight filters after trained on MNIST." class="image"></div>
+<p>興味深いことに、RBMと違って重み行列の解釈はしにくい。生成モデルの尤度を最大化することと、誤差を最小化することはこんなにも違うんだなぁというこなみな感想</p>
+<p>RBMについては、以下へ</p>
+<p><a href="http://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/" target="_blank" rel="noopener">Restricted Boltzmann Machines with MNIST - LESS IS MORE</a></p>
+<p>おわり</p>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/python/">Python</a>
+  
+  <a class="badge badge-light" href="/tag/deep-learning/">Deep Learning</a>
+  
+  <a class="badge badge-light" href="/tag/machine-learning/">Machine Learning</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/&amp;text=Python%e3%81%ab%e3%82%88%e3%82%8b%e3%83%8b%e3%83%a5%e3%83%bc%e3%83%a9%e3%83%ab%e3%83%8d%e3%83%83%e3%83%88%e3%81%aeToy%e3%82%b3%e3%83%bc%e3%83%89" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/&amp;t=Python%e3%81%ab%e3%82%88%e3%82%8b%e3%83%8b%e3%83%a5%e3%83%bc%e3%83%a9%e3%83%ab%e3%83%8d%e3%83%83%e3%83%88%e3%81%aeToy%e3%82%b3%e3%83%bc%e3%83%89" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Python%e3%81%ab%e3%82%88%e3%82%8b%e3%83%8b%e3%83%a5%e3%83%bc%e3%83%a9%e3%83%ab%e3%83%8d%e3%83%83%e3%83%88%e3%81%aeToy%e3%82%b3%e3%83%bc%e3%83%89&amp;body=https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/&amp;title=Python%e3%81%ab%e3%82%88%e3%82%8b%e3%83%8b%e3%83%a5%e3%83%bc%e3%83%a9%e3%83%ab%e3%83%8d%e3%83%83%e3%83%88%e3%81%aeToy%e3%82%b3%e3%83%bc%e3%83%89" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Python%e3%81%ab%e3%82%88%e3%82%8b%e3%83%8b%e3%83%a5%e3%83%bc%e3%83%a9%e3%83%ab%e3%83%8d%e3%83%83%e3%83%88%e3%81%aeToy%e3%82%b3%e3%83%bc%e3%83%89%20https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2014/05/11/python-feed-forward-neural-network-toy-code/&amp;title=Python%e3%81%ab%e3%82%88%e3%82%8b%e3%83%8b%e3%83%a5%e3%83%bc%e3%83%a9%e3%83%ab%e3%83%8d%e3%83%83%e3%83%88%e3%81%aeToy%e3%82%b3%e3%83%bc%e3%83%89" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/projects/ttslearn/">ttslearn: Library for Pythonで学ぶ音声合成 (Text-to-speech with Python)</a></li>
+      
+      <li><a href="/blog/2018/05/20/tacotron2/"> WN-based TTSやりました / Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions [arXiv:1712.05884]</a></li>
+      
+      <li><a href="/blog/2017/12/22/deepvoice3_multispeaker/">【108 話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+      
+      <li><a href="/blog/2017/12/13/deepvoice3/">【単一話者編】Deep Voice 3: 2000-Speaker Neural Text-to-Speech / arXiv:1710.07654 [cs.SD]</a></li>
+      
+      <li><a href="/blog/2017/11/23/dctts/">Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969]</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

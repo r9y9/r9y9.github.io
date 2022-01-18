@@ -1,65 +1,824 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>Restricted Boltzmann Machines with MNIST - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="https://github.com/r9y9/nnet" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/" />
+  <meta property="og:title" content="Restricted Boltzmann Machines with MNIST | LESS IS MORE" />
+  <meta property="og:description" content="https://github.com/r9y9/nnet" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2014-03-06T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2014-03-06T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/"
+  },
+  "headline": "Restricted Boltzmann Machines with MNIST",
+  
+  "datePublished": "2014-03-06T00:00:00Z",
+  "dateModified": "2014-03-06T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "https://github.com/r9y9/nnet"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Restricted Boltzmann Machines with MNIST | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">Restricted Boltzmann Machines with MNIST</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-03-06">March 06, 2014</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="724a935aaae00fca36936066c1c9ca38" >
 
-<div align="center"><img src="/images/RBM_mnist_Hidden_500_layers.png "RBM training result on MNIST handwritten digit dataset. Each image represents a filter learned by RBM."" class="image"></div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
 
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Restricted Boltzmann Machines with MNIST</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Mar 6, 2014
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    8 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <div align="center"><img src="/images/RBM_mnist_Hidden_500_layers.png "RBM training result on MNIST handwritten digit dataset. Each image represents a filter learned by RBM."" class="image"></div>
 <p>ディープ某を使った研究を再現してみたくて、最近某ニューラルネットに手を出し始めた。で、手始めにRestricted Boltzmann Machinesを実装してみたので、</p>
-
 <ul>
 <li>MNISTを使って学習した結果の重み（22*22=484個）を貼っとく（↑）</li>
 <li>得た知見をまとめとく</li>
 <li>Goのコード貼っとく</li>
 </ul>
-
 <p>ってな感じで書いておく</p>
-
 <p>(本当はRBMについて自分なりの解釈を書こうと思ったのだけど、それはまた今度)</p>
-
 <h2 id="実験条件">実験条件</h2>
-
 <p>データベースはmnist。手書き数字認識で有名なアレ。学習の条件は、</p>
-
 <ul>
 <li>隠れ層のユニット数: 500</li>
+</ul>
+<ul>
 <li>mini-batch size: 20</li>
 <li>iterationの回数: 15</li>
 </ul>
-
 <h2 id="対数尤度の変化">対数尤度の変化</h2>
-
 <div align="center"><img src="/images/RBM_mnist_Hidden_500_log_likelihood.png "Pseudo log-likelihood on mnist databae."" class="image"></div>
-
 <p>以下グラフに表示している生データ</p>
 <pre><code>0 -196.59046099622128
 1 -70.31708616742365
@@ -75,19 +834,14 @@
 11 -58.57805165724595
 12 -57.71043215987184
 13 -58.17783142034138
-14 -57.53629129936344</code></pre>
-<p>尤度上がると安心する。厳密に対数尤度を計算することは難しいので、<a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a> にある擬似尤度を参考にした</p>
-
+14 -57.53629129936344
+</code></pre>
+<p>尤度上がると安心する。厳密に対数尤度を計算することは難しいので、<a href="http://deeplearning.net/tutorial/rbm.html" target="_blank" rel="noopener">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a> にある擬似尤度を参考にした</p>
 <h2 id="学習時間">学習時間</h2>
-
 <p>うちのcore2duoのPCで4時間弱だった気がする（うろ覚え</p>
-
 <p>隠れ層のユニット数100だと、40分ほどだった</p>
-
 <h2 id="知見">知見</h2>
-
 <p>今の所、試行錯誤して自分が得た知見は、</p>
-
 <ul>
 <li>sample by sampleのSGDよりmini-batch SGDの方が安定して尤度上がる</li>
 <li>mini-batch sizeを大きくしすぎると学習が進まない。20くらいがちょうど良かった</li>
@@ -98,485 +852,810 @@
 <li>学習率超重要すぎわろた。今回の場合は0.1くらいかちょうど良かった</li>
 <li>隠れ層のユニット数が大きいほど学習が上手く行けばと尤度は上がる(?)</li>
 </ul>
-
-<p>まぁだいたい <a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a> に書いてあるけど、実際に肌で感じて理解した。persistent CDはもうちょっと成果出て欲しい。データ変えると成果出るんかな？</p>
-
+<p>まぁだいたい <a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf" target="_blank" rel="noopener">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a> に書いてあるけど、実際に肌で感じて理解した。persistent CDはもうちょっと成果出て欲しい。データ変えると成果出るんかな？</p>
 <h2 id="コード">コード</h2>
-
 <p>コアの部分だけ、一応</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">rbm</span>
+<pre><code class="language-go">package rbm
 
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;encoding/json&#34;</span>
-	<span style="color:#e6db74">&#34;errors&#34;</span>
-	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/r9y9/nn&#34;</span> <span style="color:#75715e">// sigmoid, matrix
-</span><span style="color:#75715e"></span>	<span style="color:#e6db74">&#34;math&#34;</span>
-	<span style="color:#e6db74">&#34;math/rand&#34;</span>
-	<span style="color:#e6db74">&#34;os&#34;</span>
-	<span style="color:#e6db74">&#34;time&#34;</span>
+import (
+	&quot;encoding/json&quot;
+	&quot;errors&quot;
+	&quot;fmt&quot;
+	&quot;github.com/r9y9/nn&quot; // sigmoid, matrix
+	&quot;math&quot;
+	&quot;math/rand&quot;
+	&quot;os&quot;
+	&quot;time&quot;
 )
 
-<span style="color:#75715e">// References:
-</span><span style="color:#75715e">// [1] G. Hinton, &#34;A Practical Guide to Training Restricted Boltzmann Machines&#34;,
-</span><span style="color:#75715e">// UTML TR 2010-003.
-</span><span style="color:#75715e">// url: http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf
-</span><span style="color:#75715e">//
-</span><span style="color:#75715e">// [2] A. Fischer and C. Igel. &#34;An introduction to restricted Boltzmann machines&#34;,
-</span><span style="color:#75715e">// Proc. of the 17th Iberoamerican Congress on Pattern Recognition (CIARP),
-</span><span style="color:#75715e">// Volume 7441 of LNCS, pages 14–36. Springer, 2012
-</span><span style="color:#75715e">// url: http://image.diku.dk/igel/paper/AItRBM-proof.pdf
-</span><span style="color:#75715e">//
-</span><span style="color:#75715e">// [3] Restricted Boltzmann Machines (RBM),  DeepLearning tutorial
-</span><span style="color:#75715e">// url: http://deeplearning.net/tutorial/rbm.html
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// Notes about implementation:
-</span><span style="color:#75715e">// Notation used in this code basically follows [2].
-</span><span style="color:#75715e">// e.g. W for weight, B for bias of visible layer, C for bias of hidden layer.
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// Graphical representation of Restricted Boltzmann Machines (RBM).
-</span><span style="color:#75715e">//
-</span><span style="color:#75715e">//     ○ ○ .... ○  h(hidden layer), c(bias)
-</span><span style="color:#75715e">//     /\ /\ /    /\
-</span><span style="color:#75715e">//    ○ ○ ○ ... ○ v(visible layer), b(bias)
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">RBM</span> <span style="color:#66d9ef">struct</span> {
-	<span style="color:#a6e22e">W</span>               [][]<span style="color:#66d9ef">float64</span> <span style="color:#75715e">// Weight
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">B</span>               []<span style="color:#66d9ef">float64</span>   <span style="color:#75715e">// Bias of visible layer
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">C</span>               []<span style="color:#66d9ef">float64</span>   <span style="color:#75715e">// Bias of hidden layer
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">NumHiddenUnits</span>  <span style="color:#66d9ef">int</span>
-	<span style="color:#a6e22e">NumVisibleUnits</span> <span style="color:#66d9ef">int</span>
-	<span style="color:#a6e22e">Option</span>          <span style="color:#a6e22e">TrainingOption</span>
+// References:
+// [1] G. Hinton, &quot;A Practical Guide to Training Restricted Boltzmann Machines&quot;,
+// UTML TR 2010-003.
+// url: http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf
+//
+// [2] A. Fischer and C. Igel. &quot;An introduction to restricted Boltzmann machines&quot;,
+// Proc. of the 17th Iberoamerican Congress on Pattern Recognition (CIARP),
+// Volume 7441 of LNCS, pages 14–36. Springer, 2012
+// url: http://image.diku.dk/igel/paper/AItRBM-proof.pdf
+//
+// [3] Restricted Boltzmann Machines (RBM),  DeepLearning tutorial
+// url: http://deeplearning.net/tutorial/rbm.html
+
+// Notes about implementation:
+// Notation used in this code basically follows [2].
+// e.g. W for weight, B for bias of visible layer, C for bias of hidden layer.
+
+// Graphical representation of Restricted Boltzmann Machines (RBM).
+//
+//     ○ ○ .... ○  h(hidden layer), c(bias)
+//     /\ /\ /    /\
+//    ○ ○ ○ ... ○ v(visible layer), b(bias)
+type RBM struct {
+	W               [][]float64 // Weight
+	B               []float64   // Bias of visible layer
+	C               []float64   // Bias of hidden layer
+	NumHiddenUnits  int
+	NumVisibleUnits int
+	Option          TrainingOption
 }
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TrainingOption</span> <span style="color:#66d9ef">struct</span> {
-	<span style="color:#a6e22e">LearningRate</span>        <span style="color:#66d9ef">float64</span>
-	<span style="color:#a6e22e">OrderOfGibbsSamping</span> <span style="color:#66d9ef">int</span> <span style="color:#75715e">// It is known that 1 is enough for many cases.
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Epoches</span>             <span style="color:#66d9ef">int</span>
-	<span style="color:#a6e22e">MiniBatchSize</span>       <span style="color:#66d9ef">int</span>
-	<span style="color:#a6e22e">L2Regularization</span>    <span style="color:#66d9ef">bool</span>
-	<span style="color:#a6e22e">RegularizationRate</span>  <span style="color:#66d9ef">float64</span>
+type TrainingOption struct {
+	LearningRate        float64
+	OrderOfGibbsSamping int // It is known that 1 is enough for many cases.
+	Epoches             int
+	MiniBatchSize       int
+	L2Regularization    bool
+	RegularizationRate  float64
 }
 
-<span style="color:#75715e">// NewRBM creates new RBM instance. It requires input data and number of
-</span><span style="color:#75715e">// hidden units to initialize RBM.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewRBM</span>(<span style="color:#a6e22e">numVisibleUnits</span>, <span style="color:#a6e22e">numHiddenUnits</span> <span style="color:#66d9ef">int</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span> {
-	<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">RBM</span>)
-	<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Seed</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UnixNano</span>())
+// NewRBM creates new RBM instance. It requires input data and number of
+// hidden units to initialize RBM.
+func NewRBM(numVisibleUnits, numHiddenUnits int) *RBM {
+	rbm := new(RBM)
+	rand.Seed(time.Now().UnixNano())
 
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span> = <span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">MakeMatrix</span>(<span style="color:#a6e22e">numHiddenUnits</span>, <span style="color:#a6e22e">numVisibleUnits</span>)
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span> = make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">numVisibleUnits</span>)
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span> = make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">numHiddenUnits</span>)
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span> = <span style="color:#a6e22e">numVisibleUnits</span>
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span> = <span style="color:#a6e22e">numHiddenUnits</span>
+	rbm.W = nn.MakeMatrix(numHiddenUnits, numVisibleUnits)
+	rbm.B = make([]float64, numVisibleUnits)
+	rbm.C = make([]float64, numHiddenUnits)
+	rbm.NumVisibleUnits = numVisibleUnits
+	rbm.NumHiddenUnits = numHiddenUnits
 
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">InitRBM</span>()
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rbm</span>
+	rbm.InitRBM()
+	return rbm
 }
 
-<span style="color:#75715e">// NewRBMWithParameters returns RBM instance given RBM parameters.
-</span><span style="color:#75715e">// This func will be used in Deep Belief Networks.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewRBMWithParameters</span>(<span style="color:#a6e22e">W</span> [][]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">B</span>, <span style="color:#a6e22e">C</span> []<span style="color:#66d9ef">float64</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>, <span style="color:#66d9ef">error</span>) {
-	<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">RBM</span>)
+// NewRBMWithParameters returns RBM instance given RBM parameters.
+// This func will be used in Deep Belief Networks.
+func NewRBMWithParameters(W [][]float64, B, C []float64) (*RBM, error) {
+	rbm := new(RBM)
 
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span> = len(<span style="color:#a6e22e">B</span>)
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span> = len(<span style="color:#a6e22e">C</span>)
+	rbm.NumVisibleUnits = len(B)
+	rbm.NumHiddenUnits = len(C)
 
-	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">W</span>) <span style="color:#f92672">!=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span> <span style="color:#f92672">||</span> len(<span style="color:#a6e22e">W</span>[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">!=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Shape of weight matrix is wrong.&#34;</span>)
+	if len(W) != rbm.NumHiddenUnits || len(W[0]) != rbm.NumVisibleUnits {
+		return nil, errors.New(&quot;Shape of weight matrix is wrong.&quot;)
 	}
 
-	<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Seed</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UnixNano</span>())
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span> = <span style="color:#a6e22e">W</span>
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span> = <span style="color:#a6e22e">B</span>
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span> = <span style="color:#a6e22e">C</span>
+	rand.Seed(time.Now().UnixNano())
+	rbm.W = W
+	rbm.B = B
+	rbm.C = C
 
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rbm</span>, <span style="color:#66d9ef">nil</span>
+	return rbm, nil
 }
 
-<span style="color:#75715e">// LoadRBM loads RBM from a dump file and return its instatnce.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">LoadRBM</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>, <span style="color:#66d9ef">error</span>) {
-	<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">filename</span>)
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
+// LoadRBM loads RBM from a dump file and return its instatnce.
+func LoadRBM(filename string) (*RBM, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
 	}
-	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">Close</span>()
+	defer file.Close()
 
-	<span style="color:#a6e22e">decoder</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">NewDecoder</span>(<span style="color:#a6e22e">file</span>)
-	<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">RBM</span>{}
-	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">decoder</span>.<span style="color:#a6e22e">Decode</span>(<span style="color:#a6e22e">rbm</span>)
+	decoder := json.NewDecoder(file)
+	rbm := &amp;RBM{}
+	err = decoder.Decode(rbm)
 
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
+	if err != nil {
+		return nil, err
 	}
 
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rbm</span>, <span style="color:#66d9ef">nil</span>
+	return rbm, nil
 }
 
-<span style="color:#75715e">// Dump writes RBM parameters to file in json format.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">Dump</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
-	<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#a6e22e">filename</span>)
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+// Dump writes RBM parameters to file in json format.
+func (rbm *RBM) Dump(filename string) error {
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
 	}
-	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">Close</span>()
+	defer file.Close()
 
-	<span style="color:#a6e22e">encoder</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">NewEncoder</span>(<span style="color:#a6e22e">file</span>)
-	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">encoder</span>.<span style="color:#a6e22e">Encode</span>(<span style="color:#a6e22e">rbm</span>)
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	encoder := json.NewEncoder(file)
+	err = encoder.Encode(rbm)
+	if err != nil {
+		return err
 	}
 
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+	return nil
 }
 
-<span style="color:#75715e">// Heuristic initialization of visible bias.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">InitVisibleBiasUsingTrainingData</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>) {
-	<span style="color:#75715e">// Init B (bias of visible layer)
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">activeRateInVisibleLayer</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">getActiveRateInVisibleLayer</span>(<span style="color:#a6e22e">data</span>)
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#a6e22e">activeRateInVisibleLayer</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">activeRateInVisibleLayer</span>[<span style="color:#a6e22e">j</span>]))
+// Heuristic initialization of visible bias.
+func (rbm *RBM) InitVisibleBiasUsingTrainingData(data [][]float64) {
+	// Init B (bias of visible layer)
+	activeRateInVisibleLayer := rbm.getActiveRateInVisibleLayer(data)
+	for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+		rbm.B[j] = math.Log(activeRateInVisibleLayer[j] / (1.0 - activeRateInVisibleLayer[j]))
 	}
 }
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">getActiveRateInVisibleLayer</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>) []<span style="color:#66d9ef">float64</span> {
-	<span style="color:#a6e22e">rate</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>)
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">sample</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">data</span> {
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-			<span style="color:#a6e22e">rate</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">sample</span>[<span style="color:#a6e22e">j</span>]
+func (rbm *RBM) getActiveRateInVisibleLayer(data [][]float64) []float64 {
+	rate := make([]float64, rbm.NumVisibleUnits)
+	for _, sample := range data {
+		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+			rate[j] += sample[j]
 		}
 	}
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">rate</span> {
-		<span style="color:#a6e22e">rate</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">/=</span> float64(len(<span style="color:#a6e22e">data</span>))
+	for j := range rate {
+		rate[j] /= float64(len(data))
 	}
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rate</span>
+	return rate
 }
 
-<span style="color:#75715e">// InitRBM performes a heuristic parameter initialization.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">InitRBM</span>() {
-	<span style="color:#75715e">// Init W
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-			<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] = <span style="color:#ae81ff">0.01</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">NormFloat64</span>()
+// InitRBM performes a heuristic parameter initialization.
+func (rbm *RBM) InitRBM() {
+	// Init W
+	for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+			rbm.W[i][j] = 0.01 * rand.NormFloat64()
 		}
 	}
 
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#ae81ff">0.0</span>
+	for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+		rbm.B[j] = 0.0
 	}
 
-	<span style="color:#75715e">// Init C (bias of hidden layer)
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#ae81ff">0.0</span>
+	// Init C (bias of hidden layer)
+	for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+		rbm.C[i] = 0.0
 	}
 }
 
-<span style="color:#75715e">// P_H_Given_V returns the conditinal probability of a hidden unit given a set of visible units.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">P_H_Given_V</span>(<span style="color:#a6e22e">hiddenIndex</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
-	<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">hiddenIndex</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>]
+// P_H_Given_V returns the conditinal probability of a hidden unit given a set of visible units.
+func (rbm *RBM) P_H_Given_V(hiddenIndex int, v []float64) float64 {
+	sum := 0.0
+	for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+		sum += rbm.W[hiddenIndex][j] * v[j]
 	}
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">Sigmoid</span>(<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span>[<span style="color:#a6e22e">hiddenIndex</span>])
+	return nn.Sigmoid(sum + rbm.C[hiddenIndex])
 }
 
-<span style="color:#75715e">// P_V_Given_H returns the conditinal probability of a visible unit given a set of hidden units.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">P_V_Given_H</span>(<span style="color:#a6e22e">visibleIndex</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">h</span> []<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
-	<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">visibleIndex</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">h</span>[<span style="color:#a6e22e">i</span>]
+// P_V_Given_H returns the conditinal probability of a visible unit given a set of hidden units.
+func (rbm *RBM) P_V_Given_H(visibleIndex int, h []float64) float64 {
+	sum := 0.0
+	for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+		sum += rbm.W[i][visibleIndex] * h[i]
 	}
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">Sigmoid</span>(<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">visibleIndex</span>])
+	return nn.Sigmoid(sum + rbm.B[visibleIndex])
 }
 
-<span style="color:#75715e">// GibbsSampling performs k-Gibbs sampling algorithm,
-</span><span style="color:#75715e">// where k is the number of iterations in gibbs sampling.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">GibbsSampling</span>(<span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">k</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
-	<span style="color:#75715e">// Initial value is set to input
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">vUsedInSamping</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">v</span>))
-	copy(<span style="color:#a6e22e">vUsedInSamping</span>, <span style="color:#a6e22e">v</span>)
+// GibbsSampling performs k-Gibbs sampling algorithm,
+// where k is the number of iterations in gibbs sampling.
+func (rbm *RBM) GibbsSampling(v []float64, k int) []float64 {
+	// Initial value is set to input
+	vUsedInSamping := make([]float64, len(v))
+	copy(vUsedInSamping, v)
 
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">t</span> &lt; <span style="color:#a6e22e">k</span>; <span style="color:#a6e22e">t</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">sampledH</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>)
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-			<span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">P_H_Given_V</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">vUsedInSamping</span>)
-			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span> &gt; <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Float64</span>() {
-				<span style="color:#a6e22e">sampledH</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#ae81ff">1.0</span>
-			} <span style="color:#66d9ef">else</span> {
-				<span style="color:#a6e22e">sampledH</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#ae81ff">0.0</span>
+	for t := 0; t &lt; k; t++ {
+		sampledH := make([]float64, rbm.NumHiddenUnits)
+		for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+			p := rbm.P_H_Given_V(i, vUsedInSamping)
+			if p &gt; rand.Float64() {
+				sampledH[i] = 1.0
+			} else {
+				sampledH[i] = 0.0
 			}
 		}
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-			<span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">P_V_Given_H</span>(<span style="color:#a6e22e">j</span>, <span style="color:#a6e22e">sampledH</span>)
-			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span> &gt; <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Float64</span>() {
-				<span style="color:#a6e22e">vUsedInSamping</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#ae81ff">1.0</span>
-			} <span style="color:#66d9ef">else</span> {
-				<span style="color:#a6e22e">vUsedInSamping</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#ae81ff">0.0</span>
+		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+			p := rbm.P_V_Given_H(j, sampledH)
+			if p &gt; rand.Float64() {
+				vUsedInSamping[j] = 1.0
+			} else {
+				vUsedInSamping[j] = 0.0
 			}
 		}
 	}
 
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">vUsedInSamping</span>
+	return vUsedInSamping
 }
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">flip</span>(<span style="color:#a6e22e">x</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">bit</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
-	<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">x</span>))
-	copy(<span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">x</span>)
-	<span style="color:#a6e22e">y</span>[<span style="color:#a6e22e">bit</span>] = <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">x</span>[<span style="color:#a6e22e">bit</span>]
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">y</span>
+func flip(x []float64, bit int) []float64 {
+	y := make([]float64, len(x))
+	copy(y, x)
+	y[bit] = 1.0 - x[bit]
+	return y
 }
 
-<span style="color:#75715e">// FreeEnergy returns F(v), the free energy of RBM given a visible vector v.
-</span><span style="color:#75715e">// refs: eq. (25) in [1].
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">FreeEnergy</span>(<span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
-	<span style="color:#a6e22e">energy</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
+// FreeEnergy returns F(v), the free energy of RBM given a visible vector v.
+// refs: eq. (25) in [1].
+func (rbm *RBM) FreeEnergy(v []float64) float64 {
+	energy := 0.0
 
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">energy</span> <span style="color:#f92672">-=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>]
+	for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+		energy -= rbm.B[j] * v[j]
 	}
 
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span>[<span style="color:#a6e22e">i</span>]
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-			<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">*</span> <span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>]
+	for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+		sum := rbm.C[i]
+		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+			sum += rbm.W[i][j] * v[j]
 		}
-		<span style="color:#a6e22e">energy</span> <span style="color:#f92672">-=</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Exp</span>(<span style="color:#a6e22e">sum</span>))
+		energy -= math.Log(1 + math.Exp(sum))
 	}
 
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">energy</span>
+	return energy
 }
 
-<span style="color:#75715e">// PseudoLogLikelihood returns pseudo log-likelihood for a given input data.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">PseudoLogLikelihood</span>(<span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
-	<span style="color:#a6e22e">bitIndex</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Int</span>() <span style="color:#f92672">%</span> len(<span style="color:#a6e22e">v</span>)
-	<span style="color:#a6e22e">fe</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">FreeEnergy</span>(<span style="color:#a6e22e">v</span>)
-	<span style="color:#a6e22e">feFlip</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">FreeEnergy</span>(<span style="color:#a6e22e">flip</span>(<span style="color:#a6e22e">v</span>, <span style="color:#a6e22e">bitIndex</span>))
-	<span style="color:#a6e22e">cost</span> <span style="color:#f92672">:=</span> float64(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Log</span>(<span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">Sigmoid</span>(<span style="color:#a6e22e">feFlip</span><span style="color:#f92672">-</span><span style="color:#a6e22e">fe</span>))
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cost</span>
+// PseudoLogLikelihood returns pseudo log-likelihood for a given input data.
+func (rbm *RBM) PseudoLogLikelihood(v []float64) float64 {
+	bitIndex := rand.Int() % len(v)
+	fe := rbm.FreeEnergy(v)
+	feFlip := rbm.FreeEnergy(flip(v, bitIndex))
+	cost := float64(rbm.NumVisibleUnits) * math.Log(nn.Sigmoid(feFlip-fe))
+	return cost
 }
 
-<span style="color:#75715e">// PseudoLogLikelihood returns pseudo log-likelihood for a given dataset (or mini-batch).
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">PseudoLogLikelihoodForAllData</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
-	<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">data</span> {
-		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">PseudoLogLikelihood</span>(<span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>])
+// PseudoLogLikelihood returns pseudo log-likelihood for a given dataset (or mini-batch).
+func (rbm *RBM) PseudoLogLikelihoodForAllData(data [][]float64) float64 {
+	sum := 0.0
+	for i := range data {
+		sum += rbm.PseudoLogLikelihood(data[i])
 	}
-	<span style="color:#a6e22e">cost</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sum</span> <span style="color:#f92672">/</span> float64(len(<span style="color:#a6e22e">data</span>))
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cost</span>
+	cost := sum / float64(len(data))
+	return cost
 }
 
-<span style="color:#75715e">// ComputeGradient returns gradients of RBM parameters for a given (mini-batch) dataset.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">ComputeGradient</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>) ([][]<span style="color:#66d9ef">float64</span>, []<span style="color:#66d9ef">float64</span>, []<span style="color:#66d9ef">float64</span>) {
-	<span style="color:#a6e22e">gradW</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">nn</span>.<span style="color:#a6e22e">MakeMatrix</span>(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>)
-	<span style="color:#a6e22e">gradB</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>)
-	<span style="color:#a6e22e">gradC</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>)
+// ComputeGradient returns gradients of RBM parameters for a given (mini-batch) dataset.
+func (rbm *RBM) ComputeGradient(data [][]float64) ([][]float64, []float64, []float64) {
+	gradW := nn.MakeMatrix(rbm.NumHiddenUnits, rbm.NumVisibleUnits)
+	gradB := make([]float64, rbm.NumVisibleUnits)
+	gradC := make([]float64, rbm.NumHiddenUnits)
 
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">data</span> {
-		<span style="color:#75715e">// Gibbs Sampling
-</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">gibbsStart</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">v</span>
-		<span style="color:#a6e22e">vAfterSamping</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">GibbsSampling</span>(<span style="color:#a6e22e">gibbsStart</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">OrderOfGibbsSamping</span>)
+	for _, v := range data {
+		// Gibbs Sampling
+		gibbsStart := v
+		vAfterSamping := rbm.GibbsSampling(gibbsStart, rbm.Option.OrderOfGibbsSamping)
 
-		<span style="color:#75715e">// pre-computation that is used in gradient computation
-</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">p_h_given_v1</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>)
-		<span style="color:#a6e22e">p_h_given_v2</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>)
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-			<span style="color:#a6e22e">p_h_given_v1</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">P_H_Given_V</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span>)
-			<span style="color:#a6e22e">p_h_given_v2</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">P_H_Given_V</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">vAfterSamping</span>)
+		// pre-computation that is used in gradient computation
+		p_h_given_v1 := make([]float64, rbm.NumHiddenUnits)
+		p_h_given_v2 := make([]float64, rbm.NumHiddenUnits)
+		for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+			p_h_given_v1[i] = rbm.P_H_Given_V(i, v)
+			p_h_given_v2[i] = rbm.P_H_Given_V(i, vAfterSamping)
 		}
 
-		<span style="color:#75715e">// Gompute gradient of W
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-				<span style="color:#a6e22e">gradW</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">p_h_given_v1</span>[<span style="color:#a6e22e">i</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">p_h_given_v2</span>[<span style="color:#a6e22e">i</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">vAfterSamping</span>[<span style="color:#a6e22e">j</span>]
+		// Gompute gradient of W
+		for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+			for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+				gradW[i][j] += p_h_given_v1[i]*v[j] - p_h_given_v2[i]*vAfterSamping[j]
 			}
 		}
 
-		<span style="color:#75715e">// Gompute gradient of B
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-			<span style="color:#a6e22e">gradB</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">v</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">vAfterSamping</span>[<span style="color:#a6e22e">j</span>]
+		// Gompute gradient of B
+		for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+			gradB[j] += v[j] - vAfterSamping[j]
 		}
 
-		<span style="color:#75715e">// Gompute gradient of C
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-			<span style="color:#a6e22e">gradC</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">p_h_given_v1</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">p_h_given_v2</span>[<span style="color:#a6e22e">i</span>]
+		// Gompute gradient of C
+		for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+			gradC[i] += p_h_given_v1[i] - p_h_given_v2[i]
 		}
 	}
 
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">gradW</span>, <span style="color:#a6e22e">gradB</span>, <span style="color:#a6e22e">gradC</span>
+	return gradW, gradB, gradC
 }
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">ParseTrainingOption</span>(<span style="color:#a6e22e">option</span> <span style="color:#a6e22e">TrainingOption</span>) <span style="color:#66d9ef">error</span> {
-	<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span> = <span style="color:#a6e22e">option</span>
+func (rbm *RBM) ParseTrainingOption(option TrainingOption) error {
+	rbm.Option = option
 
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Number of mini-batchs must be larger than zero.&#34;</span>)
+	if rbm.Option.MiniBatchSize &lt;= 0 {
+		return errors.New(&quot;Number of mini-batchs must be larger than zero.&quot;)
 	}
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">Epoches</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Epoches must be larger than zero.&#34;</span>)
+	if rbm.Option.Epoches &lt;= 0 {
+		return errors.New(&quot;Epoches must be larger than zero.&quot;)
 	}
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">OrderOfGibbsSamping</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Order of Gibbs sampling must be larger than zero.&#34;</span>)
+	if rbm.Option.OrderOfGibbsSamping &lt;= 0 {
+		return errors.New(&quot;Order of Gibbs sampling must be larger than zero.&quot;)
 	}
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">LearningRate</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Learning rate must be specified to train RBMs.&#34;</span>)
+	if rbm.Option.LearningRate == 0 {
+		return errors.New(&quot;Learning rate must be specified to train RBMs.&quot;)
 	}
 
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+	return nil
 }
 
-<span style="color:#75715e">// Train performs Contrastive divergense learning algorithm to train RBM.
-</span><span style="color:#75715e">// The alrogithm is basedd on (mini-batch) Stochastic Gradient Ascent.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rbm</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RBM</span>) <span style="color:#a6e22e">Train</span>(<span style="color:#a6e22e">data</span> [][]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">option</span> <span style="color:#a6e22e">TrainingOption</span>) <span style="color:#66d9ef">error</span> {
-	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">ParseTrainingOption</span>(<span style="color:#a6e22e">option</span>)
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+// Train performs Contrastive divergense learning algorithm to train RBM.
+// The alrogithm is basedd on (mini-batch) Stochastic Gradient Ascent.
+func (rbm *RBM) Train(data [][]float64, option TrainingOption) error {
+	err := rbm.ParseTrainingOption(option)
+	if err != nil {
+		return err
 	}
 
-	<span style="color:#a6e22e">numMiniBatches</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">data</span>) <span style="color:#f92672">/</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>
+	numMiniBatches := len(data) / rbm.Option.MiniBatchSize
 
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">epoch</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">epoch</span> &lt; <span style="color:#a6e22e">option</span>.<span style="color:#a6e22e">Epoches</span>; <span style="color:#a6e22e">epoch</span><span style="color:#f92672">++</span> {
-		<span style="color:#75715e">// Monitoring
-</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">epoch</span>, <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">PseudoLogLikelihoodForAllData</span>(<span style="color:#a6e22e">data</span>))
+	for epoch := 0; epoch &lt; option.Epoches; epoch++ {
+		// Monitoring
+		fmt.Println(epoch, rbm.PseudoLogLikelihoodForAllData(data))
 
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">m</span> &lt; <span style="color:#a6e22e">numMiniBatches</span>; <span style="color:#a6e22e">m</span><span style="color:#f92672">++</span> {
-			<span style="color:#75715e">// Compute Gradient
-</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">batch</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">m</span><span style="color:#f92672">*</span><span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span> : (<span style="color:#a6e22e">m</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span><span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>]
-			<span style="color:#a6e22e">gradW</span>, <span style="color:#a6e22e">gradB</span>, <span style="color:#a6e22e">gradC</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">ComputeGradient</span>(<span style="color:#a6e22e">batch</span>)
+		for m := 0; m &lt; numMiniBatches; m++ {
+			// Compute Gradient
+			batch := data[m*rbm.Option.MiniBatchSize : (m+1)*rbm.Option.MiniBatchSize]
+			gradW, gradB, gradC := rbm.ComputeGradient(batch)
 
-			<span style="color:#75715e">// Update W
-</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-				<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-					<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">LearningRate</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">gradW</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>)
-					<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">L2Regularization</span> {
-						<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">W</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">*=</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">RegularizationRate</span>)
+			// Update W
+			for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+				for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+					rbm.W[i][j] += rbm.Option.LearningRate * gradW[i][j] / float64(rbm.Option.MiniBatchSize)
+					if rbm.Option.L2Regularization {
+						rbm.W[i][j] *= (1.0 - rbm.Option.RegularizationRate)
 					}
 				}
 			}
 
-			<span style="color:#75715e">// Update B
-</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumVisibleUnits</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
-				<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">B</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">LearningRate</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">gradB</span>[<span style="color:#a6e22e">j</span>] <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>)
+			// Update B
+			for j := 0; j &lt; rbm.NumVisibleUnits; j++ {
+				rbm.B[j] += rbm.Option.LearningRate * gradB[j] / float64(rbm.Option.MiniBatchSize)
 			}
 
-			<span style="color:#75715e">// Update C
-</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">NumHiddenUnits</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-				<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">C</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">LearningRate</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">gradC</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">rbm</span>.<span style="color:#a6e22e">Option</span>.<span style="color:#a6e22e">MiniBatchSize</span>)
+			// Update C
+			for i := 0; i &lt; rbm.NumHiddenUnits; i++ {
+				rbm.C[i] += rbm.Option.LearningRate * gradC[i] / float64(rbm.Option.MiniBatchSize)
 			}
 		}
 	}
 
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-}</code></pre></div>
+	return nil
+}
+</code></pre>
 <p>使い方とかは察して（どうせ誰も使わないはず</p>
-
 <p>今は、通常のRBMのvisible layerを連続値に拡張した Gaussian Bernoulli RBMを学習しようとしてるんだけど、これがムズイ。実装ミスもあるかもだけど、局所解に落ちまくってる気がする。</p>
-
 <p>Gaussian Bernoulli RBM、Deep Belief Networks, Deep Neural Networksについてはまた今度</p>
-
 <p>2014/05/11
 要望があったので、もろもろコードあげました
-<a href="https://github.com/r9y9/nnet">https://github.com/r9y9/nnet</a></p>
-
+<a href="https://github.com/r9y9/nnet" target="_blank" rel="noopener">https://github.com/r9y9/nnet</a></p>
 <h2 id="参考資料">参考資料</h2>
-
 <ul>
-<li><a href="http://image.diku.dk/igel/paper/AItRBM-proof.pdf">An Introduction to Restricted Boltzmann Machines (PDF)</a></li>
-<li><a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a></li>
-<li><a href="http://mglab.blogspot.jp/2012/08/restricted-boltzmann-machine.html">Restricted Boltzmann Machineの学習手法についての簡単なまとめ | 映像奮闘記</a></li>
-<li><a href="http://d.hatena.ne.jp/saket/20121212">ゆるふわ Restricted Boltzmann Machine | Risky Dune</a></li>
-<li><a href="http://deeplearning.net/tutorial/rbm.html">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a></li>
-<li><a href="http://imonad.com/rbm/restricted-boltzmann-machine/">Restricted Boltzmann Machine - Short Tutorial | iMonad</a>
-
-<ul>
-<li><a href="http://scikit-learn.org/stable/auto_examples/plot_rbm_logistic_classification.html">Restricted Boltzmann Machine features for digit classification | scikit-learn</a></li>
-</ul></li>
+<li><a href="http://image.diku.dk/igel/paper/AItRBM-proof.pdf" target="_blank" rel="noopener">An Introduction to Restricted Boltzmann Machines (PDF)</a></li>
+<li><a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf" target="_blank" rel="noopener">A Practical Guide to Training Restricted Boltzmann Machines (PDF)</a></li>
+<li><a href="http://mglab.blogspot.jp/2012/08/restricted-boltzmann-machine.html" target="_blank" rel="noopener">Restricted Boltzmann Machineの学習手法についての簡単なまとめ | 映像奮闘記</a></li>
+<li><a href="http://d.hatena.ne.jp/saket/20121212" target="_blank" rel="noopener">ゆるふわ Restricted Boltzmann Machine | Risky Dune</a></li>
+<li><a href="http://deeplearning.net/tutorial/rbm.html" target="_blank" rel="noopener">Restricted Boltzmann Machines (RBM) | DeepLearning Tutorial</a></li>
+<li><a href="http://imonad.com/rbm/restricted-boltzmann-machine/" target="_blank" rel="noopener">Restricted Boltzmann Machine - Short Tutorial | iMonad</a></li>
+<li><a href="http://scikit-learn.org/stable/auto_examples/plot_rbm_logistic_classification.html" target="_blank" rel="noopener">Restricted Boltzmann Machine features for digit classification | scikit-learn</a></li>
 </ul>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="Restricted Boltzmann Machines with MNIST" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/deep-learning/">Deep Learning</a>
+  
+  <a class="badge badge-light" href="/tag/rbm/">RBM</a>
+  
+  <a class="badge badge-light" href="/tag/machine-learning/">Machine Learning</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/&amp;text=Restricted%20Boltzmann%20Machines%20with%20MNIST" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/&amp;t=Restricted%20Boltzmann%20Machines%20with%20MNIST" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Restricted%20Boltzmann%20Machines%20with%20MNIST&amp;body=https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/&amp;title=Restricted%20Boltzmann%20Machines%20with%20MNIST" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Restricted%20Boltzmann%20Machines%20with%20MNIST%20https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2014/03/06/restricted-boltzmann-machines-mnist/&amp;title=Restricted%20Boltzmann%20Machines%20with%20MNIST" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2014/05/11/python-feed-forward-neural-network-toy-code/">PythonによるニューラルネットのToyコード</a></li>
+      
+      <li><a href="/projects/espnet2-tts/">ESPnet2-TTS: Extending the Edge of TTS Research</a></li>
+      
+      <li><a href="/projects/ttslearn/">ttslearn: Library for Pythonで学ぶ音声合成 (Text-to-speech with Python)</a></li>
+      
+      <li><a href="/projects/va-pwg/">Voicing-Aware Parallel WaveGAN for High-Quality Speech Synthesis</a></li>
+      
+      <li><a href="/projects/mtl_accent/">A Unified accent estimation method based on multi-task learning for Japanese text-to-speech</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-

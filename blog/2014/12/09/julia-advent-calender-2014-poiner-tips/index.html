@@ -1,325 +1,1395 @@
-<!DOCTYPE html>
-<html lang="ja-jp">
+<!DOCTYPE html><html lang="en-us" >
+
+
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.70.0" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="LESS IS MORE">
-<link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-<title>ccallにおけるポインタ周りのハマりどころとその解決法 - LESS IS MORE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@100;300;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Ryuichi Yamamoto" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="[Julia Advent Calendar 2014](https://qiita.com/advent-calendar/2014/julialang)" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.5ab694c3410cda25601718e85611f5d5.css" />
+
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-44433856-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-44433856-1', {});
+  gtag('set', {'cookie_flags': 'SameSite=None;Secure'});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@r9y9" />
+    <meta property="twitter:creator" content="@r9y9" />
+  
+  <meta property="og:site_name" content="LESS IS MORE" />
+  <meta property="og:url" content="https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/" />
+  <meta property="og:title" content="ccallにおけるポインタ周りのハマりどころとその解決法 | LESS IS MORE" />
+  <meta property="og:description" content="[Julia Advent Calendar 2014](https://qiita.com/advent-calendar/2014/julialang)" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2014-12-09T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2014-12-09T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/"
+  },
+  "headline": "ccallにおけるポインタ周りのハマりどころとその解決法",
+  
+  "datePublished": "2014-12-09T00:00:00Z",
+  "dateModified": "2014-12-09T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Ryuichi Yamamoto"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "LESS IS MORE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "[Julia Advent Calendar 2014](https://qiita.com/advent-calendar/2014/julialang)"
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>ccallにおけるポインタ周りのハマりどころとその解決法 | LESS IS MORE</title>
 </head>
-<body>
-
-<div class="container">
-
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/r9y9.jpg" width="70" height="70"></a>
-		</div>
-		
-	</header>
 
 
-	<main role="main">
-		<article itemscope itemtype="https://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">ccallにおけるポインタ周りのハマりどころとその解決法</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2014-12-09">December 09, 2014</time></span>
-			<section itemprop="entry-text">
-				
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="bba5e5885ad2f9c713ab10763b68e92f" >
 
-<p><a href="http://qiita.com/advent-calendar/2014/julialang">Julia Advent Calendar 2014</a> 9日目の記事です。</p>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.8f76bdc9e086322ed5147724ebba3d06.js"></script>
 
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">LESS IS MORE</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>ccallにおけるポインタ周りのハマりどころとその解決法</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Dec 9, 2014
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p><a href="https://qiita.com/advent-calendar/2014/julialang" target="_blank" rel="noopener">Julia Advent Calendar 2014</a> 9日目の記事です。</p>
 <h2 id="はじめに">はじめに</h2>
-
 <p>CやFortranの関数をJuliaから呼ぶために使用する<code>ccall</code>において、ポインタに関係するハマりどころとその解決法を紹介します。純粋なJuliaを使っている場合にはポインタを意識することはめったにないと思うので、<code>ccall</code> を使う人（計算が重いボトルネック部分をCで書いてJuliaから呼びたい人、Cのライブラリのラッパーを書きたい/書いてる人）を主な読者と想定して記事を書きました（限定的でごめんなさい）。</p>
-
-<p>困った時は、公式ドキュメントの <a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/">Calling C and Fortran Code</a> を参考にしましょう。</p>
-
+<p>困った時は、公式ドキュメントの <a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/" target="_blank" rel="noopener">Calling C and Fortran Code</a> を参考にしましょう。</p>
 <p><strong>注意</strong>: 最新版の公式ドキュメントをいくつか引用していますが、ドキュメントは日々更新されていますので、この記事を読んで頂いた時点とは異なる可能性があることにご注意ください。</p>
-
 <h2 id="こんなとき">こんなとき</h2>
-
 <p><code>ccall</code> を使う際に、ポインタに関する以下のような疑問を持つことがあります。</p>
-
 <ul>
 <li>ポインタを引数に持つ（例. <code>double*</code>）関数のラッピングはどうすればいいのか？</li>
 <li>構造体のポインタを引数に持つ関数のラッピングはどうすれば？</li>
 <li>ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</li>
 </ul>
-
-<p>一つ目は非常に簡単で、<code>Array</code>（Cの関数が<code>double*</code>を取るならば<code>Array{Float64,1}</code>）をそのまま渡せばよいだけです。ドキュメントの<a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/#array-conversions">Array Conversions</a>にも書かれています。が、残りの二つに関してはハマりどころがあります。順に説明します。</p>
-
+<p>一つ目は非常に簡単で、<code>Array</code>（Cの関数が<code>double*</code>を取るならば<code>Array{Float64,1}</code>）をそのまま渡せばよいだけです。ドキュメントの<a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/#array-conversions" target="_blank" rel="noopener">Array Conversions</a>にも書かれています。が、残りの二つに関してはハマりどころがあります。順に説明します。</p>
 <h2 id="構造体のポインタを引数に持つ関数のラッピングはどうすれば">構造体のポインタを引数に持つ関数のラッピングはどうすれば？</h2>
-
 <p>現状のドキュメントは少し不親切なので、引用した上で、整理します。</p>
-
-<p><a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/">Calling C and Fortran Code</a> より引用:
-&gt; Currently, it is not possible to pass structs and other non-primitive types from Julia to C libraries. However, C functions that generate and use opaque struct types by passing pointers to them can return such values to Julia as Ptr{Void}, which can then be passed to other C functions as Ptr{Void}. Memory allocation and deallocation of such objects must be handled by calls to the appropriate cleanup routines in the libraries being used, just like in any C program.</p>
-
+<p><a href="http://docs.julialang.org/en/latest/manual/calling-c-and-fortran-code/" target="_blank" rel="noopener">Calling C and Fortran Code</a> より引用:</p>
+<blockquote>
+<p>Currently, it is not possible to pass structs and other non-primitive types from Julia to C libraries. However, C functions that generate and use opaque struct types by passing pointers to them can return such values to Julia as Ptr{Void}, which can then be passed to other C functions as Ptr{Void}. Memory allocation and deallocation of such objects must be handled by calls to the appropriate cleanup routines in the libraries being used, just like in any C program.</p>
+</blockquote>
 <p>冒頭に it is not possible とあります。が、決して不可能なわけではありません。上記文章の要点をまとめると、</p>
-
 <ul>
 <li>opaqueな構造体はCからJuliaへポインタとして渡すことができる</li>
 <li>そのポインタは <code>Ptr{Void}</code> としてCの関数に渡すことができる</li>
 </ul>
-
 <p>と書かれています。つまり、一般には構造体は渡せないけどポインタ渡しはできるよ、ということです。</p>
-
-<p>じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）</p>
-
+<p>じゃあnon-opaqueな構造体についてはどうなんだ？Juliaの型を渡せないのか？という疑問が出てきます。結論からいえば、non-opaqueな構造体についてもポインタ渡しは可能です。つまり、Cの構造体に相当するimmutableな型<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>をjuliaで宣言してあげれば、juliaの型をCに渡すことが可能です（値渡しはできません）</p>
 <p>例を示します。</p>
-
 <h3 id="cコード">Cコード</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
-   <span style="color:#66d9ef">double</span> a;
-   <span style="color:#66d9ef">int</span> b;
+<pre><code class="language-c">typedef struct {
+   double a;
+   int b;
 } Foo;
 
-<span style="color:#75715e"># 構造体のポインタを引数にとる関数1
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>(Foo<span style="color:#f92672">*</span> foo) {
-    printf(<span style="color:#e6db74">&#34;a=%lf</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, foo<span style="color:#f92672">-&gt;</span>a);
-    printf(<span style="color:#e6db74">&#34;b=%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, foo<span style="color:#f92672">-&gt;</span>b);
+# 構造体のポインタを引数にとる関数1
+void print(Foo* foo) {
+    printf(&quot;a=%lf\n&quot;, foo-&gt;a);
+    printf(&quot;b=%d\n&quot;, foo-&gt;b);
 }
 
-<span style="color:#75715e"># 構造体のポインタを引数にとる関数2
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reset</span>(Foo<span style="color:#f92672">*</span> foo) {
-    foo<span style="color:#f92672">-&gt;</span>a <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>;
-    foo<span style="color:#f92672">-&gt;</span>b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-}</code></pre></div>
+# 構造体のポインタを引数にとる関数2
+void reset(Foo* foo) {
+    foo-&gt;a = 0.0;
+    foo-&gt;b = 0;
+}
+</code></pre>
 <h3 id="juliaコード">Juliaコード</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#75715e"># Cの構造体 Foo に相当する型を宣言します</span>
+<pre><code class="language-julia"># Cの構造体 Foo に相当する型を宣言します
 immutable Foo
-    a<span style="color:#f92672">::</span><span style="color:#66d9ef">Float64</span>
-    b<span style="color:#f92672">::</span><span style="color:#66d9ef">Int32</span> <span style="color:#75715e"># cのintはjuliaのInt32に対応します</span>
-<span style="color:#66d9ef">end</span>
+    a::Float64
+    b::Int32 # cのintはjuliaのInt32に対応します
+end
 
-foo <span style="color:#f92672">=</span> Foo(<span style="color:#ae81ff">10.0</span>, <span style="color:#ae81ff">2</span>)
+foo = Foo(10.0, 2)
 
-<span style="color:#75715e"># Cの関数に、ポインタとしてJuliaの型を渡すことができます</span>
-<span style="color:#66d9ef">ccall</span>(<span style="color:#f92672">:</span>print, <span style="color:#e6db74">&#34;libfoo&#34;</span>, <span style="color:#66d9ef">Void</span>, (<span style="color:#66d9ef">Ptr</span>{Foo},), <span style="color:#f92672">&amp;</span>foo)
+# Cの関数に、ポインタとしてJuliaの型を渡すことができます
+ccall(:print, &quot;libfoo&quot;, Void, (Ptr{Foo},), &amp;foo)
 
-<span style="color:#75715e"># ポインタで渡す場合、Cで変更した結果はJuliaにも反映されます</span>
-<span style="color:#66d9ef">ccall</span>(<span style="color:#f92672">:</span>reset, <span style="color:#e6db74">&#34;libfoo&#34;</span>, <span style="color:#66d9ef">Void</span>, (<span style="color:#66d9ef">Ptr</span>{Foo},), <span style="color:#f92672">&amp;</span>foo)
+# ポインタで渡す場合、Cで変更した結果はJuliaにも反映されます
+ccall(:reset, &quot;libfoo&quot;, Void, (Ptr{Foo},), &amp;foo)
 
-<span style="color:#75715e"># foo(0.0, 0) と表示される</span>
-println(foo)</code></pre></div>
+# foo(0.0, 0) と表示される
+println(foo)
+</code></pre>
 <p>ちなみにJuliaからCへ値渡しをしてもエラーにならないので、お気をつけください（ハマりました）。</p>
-
-<p>公式ドキュメントは不親切と言いましたが、 プルリクエスト <a href="https://github.com/JuliaLang/julia/pull/8948">update documentation for passing struct pointers to C #8948</a>（まだマージはされていない）で改善されているので、もしかするとこの記事が読まれる頃には改善されているかもしれません。</p>
-
-<p>また、値渡しを可能にしようとする動きもあります（<a href="https://github.com/JuliaLang/julia/pull/3466">RFC: Make struct passing work properly #3466</a>, <a href="https://github.com/JuliaLang/julia/pull/2818">WIP: types as C-structs #2818</a> マージ待ち）。</p>
-
+<p>公式ドキュメントは不親切と言いましたが、 プルリクエスト <a href="https://github.com/JuliaLang/julia/pull/8948" target="_blank" rel="noopener">update documentation for passing struct pointers to C #8948</a>（まだマージはされていない）で改善されているので、もしかするとこの記事が読まれる頃には改善されているかもしれません。</p>
+<p>また、値渡しを可能にしようとする動きもあります（<a href="https://github.com/JuliaLang/julia/pull/3466" target="_blank" rel="noopener">RFC: Make struct passing work properly #3466</a>, <a href="https://github.com/JuliaLang/julia/pull/2818" target="_blank" rel="noopener">WIP: types as C-structs #2818</a> マージ待ち）。</p>
 <h3 id="構造体渡しのまとめ">構造体渡しのまとめ</h3>
-
 <ul>
 <li>Cの構造体に相当するJuliaの型を定義して、ポインタで渡せばOK</li>
 <li>値渡しは現状できない</li>
 <li>ポインタを受けることはできる（Ptr{Void}として受ける）</li>
 </ul>
-
-<h2 id="ポインタのポインタを引数に持つ-例-double-関数のラッピングは">ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
-
+<h2 id="ポインタのポインタを引数に持つ例-double関数のラッピングは">ポインタのポインタを引数に持つ（例. <code>double**</code>）関数のラッピングは？</h2>
 <p>さて、これはドキュメントにまったく書かれておらず、かつハマりやすいと僕は思っています。例を交えつつ解説します。以下のような関数のラッピングを考えます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fooo</span>(<span style="color:#66d9ef">double</span><span style="color:#f92672">**</span> input, <span style="color:#66d9ef">int</span> w, <span style="color:#66d9ef">int</span> h, <span style="color:#66d9ef">double</span><span style="color:#f92672">**</span> output);</code></pre></div>
+<pre><code class="language-c">void fooo(double** input, int w, int h, double** output);
+</code></pre>
 <p><code>input</code>は入力の行列、<code>output</code>は計算結果が格納される行列、行列のサイズは共に 列数<code>w</code>、行数<code>h</code> だと思ってください。Juliaからは <code>input::Array{Float64,2}</code> を入力として、<code>output::Array{Float64,2}</code> を得たいとします。</p>
-
 <p><code>double*</code>を引数にとる場合は<code>Array{Float64,1}</code>を渡せばよかったのに対して、<code>double**</code>を引数に取る関数に <code>Array{Float64,2}</code>や<code>Array{Array{Float64,1},1}</code>を単純に渡すだけでは、残念ながらコンパイルエラーになります。はい、すでに若干面倒ですね。。さて、どうすればいいかですが、</p>
-
 <ul>
 <li>どんな型で渡せばいいか</li>
 <li>どのように型を変換するか</li>
 <li>変換した型をどのように元に戻すか</li>
 </ul>
-
 <p>という三点に分けて説明します。</p>
-
 <h3 id="1-どんな型で渡せばいいか">1. どんな型で渡せばいいか</h3>
-
 <p><code>Array{Ptr{Float64}}</code> で渡せばよいです。外側のArrayは、<code>ccall</code> がポインタに変換してくれるので、Juliaの型でいえば<code>Ptr{Ptr{Float64}}</code>、Cの型で言えば<code>double**</code>になるわけです。</p>
-
 <h3 id="2-どのように型を変換するか">2. どのように型を変換するか</h3>
-
 <p>ここがハマりどころです。今回の例では、<code>Array{Float64,2}</code> を <code>Array{Ptr{Float64},1}</code> に変換すればよいので、例えば以下のような実装が思いつきます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#75715e"># Array{T,2} -&gt; Array{Ptr{T}}</span>
-<span style="color:#66d9ef">function</span> ptrarray2d{T<span style="color:#f92672">&lt;:</span><span style="color:#66d9ef">Real</span>}(src<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{T,<span style="color:#ae81ff">2</span>})
-    dst <span style="color:#f92672">=</span> <span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{T}, size(src, <span style="color:#ae81ff">2</span>))
-    <span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>size(src, <span style="color:#ae81ff">2</span>)
-        dst[i] <span style="color:#f92672">=</span> pointer(src[<span style="color:#f92672">:</span>,i], <span style="color:#ae81ff">1</span>) <span style="color:#75715e"># 先頭要素のポインタを取り出す</span>
-    <span style="color:#66d9ef">end</span>
+<pre><code class="language-julia"># Array{T,2} -&gt; Array{Ptr{T}}
+function ptrarray2d{T&lt;:Real}(src::Array{T,2})
+    dst = Array{Ptr{T}, size(src, 2))
+    for i=1:size(src, 2)
+        dst[i] = pointer(src[:,i], 1) # 先頭要素のポインタを取り出す
+    end
     dst
-<span style="color:#66d9ef">end</span></code></pre></div>
+end
+</code></pre>
 <p>実はこの実装はバグを含んでいます。バグがあるとしたら一行しか該当する部分はないですが、</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia">dst[i] <span style="color:#f92672">=</span> pointer(src[<span style="color:#f92672">:</span>,i], <span style="color:#ae81ff">1</span>)</code></pre></div>
-<p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
-
-<p>Array <code>A</code>に対する syntax <code>X = A[I_1, I_2, ..., I_n]</code> は <code>X = getindex(A, I_1, I_2, ..., I_n)</code> と等価です。詳細は、<a href="http://docs.julialang.org/en/latest/manual/arrays/">Multi-dimensional Arrays</a>や<a href="http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex">標準ライブラリのドキュメント</a> を参考にしてください</p>
-
+<pre><code class="language-julia">dst[i] = pointer(src[:,i], 1)
+</code></pre>
+<p>ここが間違っています。何が間違っているかというと、<code>pointer(src[:,i], 1)</code>は一見<code>src</code>の<code>i</code>列目の先頭要素のポインタを指しているような気がしますが、<code>src[:,1]</code>で <code>getindex</code>という関数が走って内部データのコピーを行っているので、そのコピーに対するポインタを指している（元データの<code>i</code>列目のポインタを指していない）点が間違っています<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。これは、JuliaのArray実装ついて多少知らないとわからないと思うので、ハマりどころと書きました。</p>
+<p>Array <code>A</code>に対する syntax <code>X = A[I_1, I_2, ..., I_n]</code> は <code>X = getindex(A, I_1, I_2, ..., I_n)</code> と等価です。詳細は、<a href="http://docs.julialang.org/en/latest/manual/arrays/" target="_blank" rel="noopener">Multi-dimensional Arrays</a>や<a href="http://docs.julialang.org/en/latest/stdlib/base/?highlight=getindex#Base.getindex" target="_blank" rel="noopener">標準ライブラリのドキュメント</a> を参考にしてください</p>
 <p>さて、正解を示します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#75715e"># Array{T,2} -&gt; Array{Ptr{T}}</span>
-<span style="color:#66d9ef">function</span> ptrarray2d{T<span style="color:#f92672">&lt;:</span><span style="color:#66d9ef">Real</span>}(src<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{T,<span style="color:#ae81ff">2</span>})
-    dst <span style="color:#f92672">=</span> <span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{T}, size(src, <span style="color:#ae81ff">2</span>))
-    <span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>size(src, <span style="color:#ae81ff">2</span>)
-         dst[i] <span style="color:#f92672">=</span> pointer(sub(src, <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>size(src,<span style="color:#ae81ff">1</span>), i), <span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">end</span>
+<pre><code class="language-julia"># Array{T,2} -&gt; Array{Ptr{T}}
+function ptrarray2d{T&lt;:Real}(src::Array{T,2})
+    dst = Array{Ptr{T}, size(src, 2))
+    for i=1:size(src, 2)
+         dst[i] = pointer(sub(src, 1:size(src,1), i), 1)
+    end
     dst
-<span style="color:#66d9ef">end</span></code></pre></div>
-<p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>。</p>
-
+end
+</code></pre>
+<p>違いは <code>SubArray</code>を使うようになった点です。<code>SubArray</code>は、indexingを行うときにコピーを作らないので、期待した通りに<code>i</code>列目の先頭要素のポインタを取得することができます。<code>SubArray</code>について、以下引用しておきます<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。</p>
 <blockquote>
 <p>SubArray is a specialization of AbstractArray that performs indexing by reference rather than by copying. A SubArray is created with the sub() function, which is called the same way as getindex() (with an array and a series of index arguments). The result of sub() looks the same as the result of getindex(), except the data is left in place. sub() stores the input index vectors in a SubArray object, which can later be used to index the original array indirectly.</p>
 </blockquote>
-
-<p>引用元: <a href="http://docs.julialang.org/en/latest/manual/arrays/#implementation">Multi-dimensional Arrays</a></p>
-
+<p>引用元: <a href="http://docs.julialang.org/en/latest/manual/arrays/#implementation" target="_blank" rel="noopener">Multi-dimensional Arrays</a></p>
 <h3 id="3-変換した型をどのように元に戻すか">3. 変換した型をどのように元に戻すか</h3>
-
 <p>Juliaで計算結果（上の例でいう <code>double** output</code>）を受け取りたい場合、ポインタに変換した値をJuliaのArrayに戻す必要があります（必ずしもそうではないですが、まぁほぼそうでしょう）。つまり、<code>Array(Ptr{Float64},1)</code>を<code>Array{Float64,2}</code>したいわけです。幸いにも、これは<code>pointer_to_array</code>を使うと簡単にできます。コードを以下に示します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#75715e"># ccallを実行した後の計算結果が coutput に格納されているとします</span>
-coutput<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>},<span style="color:#ae81ff">1</span>}
+<pre><code class="language-julia"># ccallを実行した後の計算結果が coutput に格納されているとします
+coutput::Array{Ptr{Float64},1}
 
-<span style="color:#75715e"># Cに渡した型 Array{Ptr{Float64},1} から Array{Float64,2}に変換</span>
-<span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>length(coutput)
-    output[<span style="color:#f92672">:</span>,i] <span style="color:#f92672">=</span> pointer_to_array(coutput[i], size(output, <span style="color:#ae81ff">1</span>))
-<span style="color:#66d9ef">end</span></code></pre></div>
+# Cに渡した型 Array{Ptr{Float64},1} から Array{Float64,2}に変換
+for i=1:length(coutput)
+    output[:,i] = pointer_to_array(coutput[i], size(output, 1))
+end
+</code></pre>
 <p><code>pointer_to_array</code> は、その名前の通りの関数ですね。pointerをArrayに変換してくれます。</p>
-
 <h3 id="1-2-3-をまとめる">1, 2, 3 をまとめる</h3>
-
 <p>最後に、1, 2, 3の内容をまとめて、ポインタのポインタを引数にもつ関数のラッパー例を書いておきます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-julia" data-lang="julia"><span style="color:#66d9ef">function</span> fooo(input<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Float64</span>,<span style="color:#ae81ff">2</span>})
-    h, w <span style="color:#f92672">=</span> size(intput)
-    output <span style="color:#f92672">=</span> <span style="color:#66d9ef">Array</span>(<span style="color:#66d9ef">Float64</span>, h, w)
-    
-    <span style="color:#75715e"># C関数に渡す用の変数</span>
-    cinput<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>}} <span style="color:#f92672">=</span> ptrarray2d(input)
-    coutput<span style="color:#f92672">::</span><span style="color:#66d9ef">Array</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>}} <span style="color:#f92672">=</span> ptrarray2d(output)
-    
-    <span style="color:#66d9ef">ccall</span>(<span style="color:#f92672">:</span>fooo, <span style="color:#e6db74">&#34;libfooo&#34;</span>, <span style="color:#66d9ef">Void</span>,
-    		 (<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>}}, <span style="color:#66d9ef">Int</span>, <span style="color:#66d9ef">Int</span>, <span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Ptr</span>{<span style="color:#66d9ef">Float64</span>}}), 
+<pre><code class="language-julia">function fooo(input::Array{Float64,2})
+    h, w = size(intput)
+    output = Array(Float64, h, w)
+
+    # C関数に渡す用の変数
+    cinput::Array{Ptr{Float64}} = ptrarray2d(input)
+    coutput::Array{Ptr{Float64}} = ptrarray2d(output)
+
+    ccall(:fooo, &quot;libfooo&quot;, Void,
+    		 (Ptr{Ptr{Float64}}, Int, Int, Ptr{Ptr{Float64}}),
     		 cinput, w, h, coutput)
 
-    <span style="color:#75715e"># coutputをJuliaのArrayに変換</span>
-    <span style="color:#66d9ef">for</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>length(coutput)
-        output[i,<span style="color:#f92672">:</span>] <span style="color:#f92672">=</span> pointer_to_array(coutput[i], h)
-    <span style="color:#66d9ef">end</span>
+    # coutputをJuliaのArrayに変換
+    for i=1:length(coutput)
+        output[i,:] = pointer_to_array(coutput[i], h)
+    end
 
     output
-<span style="color:#66d9ef">end</span></code></pre></div>
+end
+</code></pre>
 <h3 id="ポインタのポインタまとめ">ポインタのポインタまとめ</h3>
-
 <ul>
 <li><code>Array</code>のindexingはコピーを作るのである要素のポインタがほしい時は注意</li>
 <li>行/列の先頭のポインタがほしいときは <code>SubArray</code> を使いましょう</li>
 </ul>
-
 <h2 id="おわりに">おわりに</h2>
-
-<p>ポインタにまつわるハマりどころとその解決法を紹介しました。今回紹介したものはすべて <a href="https://github.com/r9y9/WORLD.jl">WORLD.jl</a> という <a href="http://ml.cs.yamanashi.ac.jp/world/">音声分析変換合成システムWORLD</a> のラッパーを書いていたときに得た知見です。やっと<code>WORLD.jl</code>が安定して動くようになってきて公式パッケージにしようかなぁと考えているところですので、興味のある方はぜひ触ってみてください。</p>
-<div class="footnotes">
-
-<hr />
-
+<p>ポインタにまつわるハマりどころとその解決法を紹介しました。今回紹介したものはすべて <a href="https://github.com/r9y9/WORLD.jl" target="_blank" rel="noopener">WORLD.jl</a> という <a href="http://ml.cs.yamanashi.ac.jp/world/" target="_blank" rel="noopener">音声分析変換合成システムWORLD</a> のラッパーを書いていたときに得た知見です。やっと<code>WORLD.jl</code>が安定して動くようになってきて公式パッケージにしようかなぁと考えているところですので、興味のある方はぜひ触ってみてください。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1">immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも <a href="https://github.com/JuliaLang/julia/pull/8948">#8948</a> にはそう書いてあります
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:2">たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-<li id="fn:3">ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。
- <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも <a href="https://github.com/JuliaLang/julia/pull/8948" target="_blank" rel="noopener">#8948</a> にはそう書いてあります&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
-				
-<div class="social">
-    <div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="r9y9" data-text="ccallにおけるポインタ周りのハマりどころとその解決法" data-related="r9y9">Tweet</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/julia/">Julia</a>
+  
+  <a class="badge badge-light" href="/tag/advent-calendar/">Advent Calendar</a>
+  
 </div>
 
 
-			</section>
-		</article>
-	</main>
 
-
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<address>
-			<div class="avatar-bottom">
-				<a href="/">
-					
-					<img src="/images/r9y9.jpg">
-					
-				</a>
-			</div>
-
-		<div class="copyright">Copyright &copy;
-			<a href="/about">Ryuichi YAMAMOTO</a> All rights reserved.
-
-			<a href="https://github.com/r9y9">
-				<span class="github">Github</span>
-			</a>
-		</div>
-		</address>
-	</footer>
-
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/&amp;text=ccall%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8b%e3%83%9d%e3%82%a4%e3%83%b3%e3%82%bf%e5%91%a8%e3%82%8a%e3%81%ae%e3%83%8f%e3%83%9e%e3%82%8a%e3%81%a9%e3%81%93%e3%82%8d%e3%81%a8%e3%81%9d%e3%81%ae%e8%a7%a3%e6%b1%ba%e6%b3%95" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/&amp;t=ccall%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8b%e3%83%9d%e3%82%a4%e3%83%b3%e3%82%bf%e5%91%a8%e3%82%8a%e3%81%ae%e3%83%8f%e3%83%9e%e3%82%8a%e3%81%a9%e3%81%93%e3%82%8d%e3%81%a8%e3%81%9d%e3%81%ae%e8%a7%a3%e6%b1%ba%e6%b3%95" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=ccall%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8b%e3%83%9d%e3%82%a4%e3%83%b3%e3%82%bf%e5%91%a8%e3%82%8a%e3%81%ae%e3%83%8f%e3%83%9e%e3%82%8a%e3%81%a9%e3%81%93%e3%82%8d%e3%81%a8%e3%81%9d%e3%81%ae%e8%a7%a3%e6%b1%ba%e6%b3%95&amp;body=https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/&amp;title=ccall%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8b%e3%83%9d%e3%82%a4%e3%83%b3%e3%82%bf%e5%91%a8%e3%82%8a%e3%81%ae%e3%83%8f%e3%83%9e%e3%82%8a%e3%81%a9%e3%81%93%e3%82%8d%e3%81%a8%e3%81%9d%e3%81%ae%e8%a7%a3%e6%b1%ba%e6%b3%95" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=ccall%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8b%e3%83%9d%e3%82%a4%e3%83%b3%e3%82%bf%e5%91%a8%e3%82%8a%e3%81%ae%e3%83%8f%e3%83%9e%e3%82%8a%e3%81%a9%e3%81%93%e3%82%8d%e3%81%a8%e3%81%9d%e3%81%ae%e8%a7%a3%e6%b1%ba%e6%b3%95%20https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/blog/2014/12/09/julia-advent-calender-2014-poiner-tips/&amp;title=ccall%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8b%e3%83%9d%e3%82%a4%e3%83%b3%e3%82%bf%e5%91%a8%e3%82%8a%e3%81%ae%e3%83%8f%e3%83%9e%e3%82%8a%e3%81%a9%e3%81%93%e3%82%8d%e3%81%a8%e3%81%9d%e3%81%ae%e8%a7%a3%e6%b1%ba%e6%b3%95" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-44433856-1', 'auto');
-	ga('send', 'pageview');
-</script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
 
-<script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-         HTML: ["input/TeX","output/HTML-CSS"],
-         TeX: {
-                Macros: {
-                         bm: ["\\boldsymbol{#1}", 1],
-                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
-                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
-                extensions: ["AMSmath.js","AMSsymbols.js"],
-                equationNumbers: { autoNumber: "AMS" } },
-         extensions: ["tex2jax.js"],
-         jax: ["input/TeX","output/HTML-CSS"],
-         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                    processEscapes: true },
-         "HTML-CSS": { availableFonts: ["TeX"],
-                       linebreaks: { automatic: true } }
-     });
- </script>
 
- <script type="text/x-mathjax-config">
-     MathJax.Hub.Config({
-       tex2jax: {
-         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-       }
-     });
- </script>
 
- <script type="text/javascript" async
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
- </script>
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://r9y9.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu9a6b89dbc1edcab0fae981898a920c5a_1154946_270x270_fill_q75_lanczos_center.jpg" alt="Ryuichi Yamamoto"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://r9y9.github.io/">Ryuichi Yamamoto</a></h5>
+      <h6 class="card-subtitle">Research Scientist</h6>
+      <p class="card-text">I am a research scientist passionate about speech synthesis. I love to write code and enjoy open-source collaboration on GitHub. Please feel free to reach out on Twitter and GitHub.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:zryuichi@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/r9y9" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/2017/12/21/jupyter-cxx/">Interactive C&#43;&#43;: Jupyter上で対話的にC&#43;&#43;を使う方法の紹介 [Jupyter Advent Calendar 2017]</a></li>
+      
+      <li><a href="/blog/2016/12/23/julia-advent-calender-2016-customize-source-build/">Juliaをソースからビルドする / Building Julia from source</a></li>
+      
+      <li><a href="/blog/2015/12/22/cxx-jl/">Cxx.jl を使ってみた感想 &#43; OpenCV.jl, Libfreenect2.jl の紹介</a></li>
+      
+      <li><a href="/blog/2015/12/08/julia-type-annotations/">Julia: 値と変数に対する Type Annotation の違い</a></li>
+      
+      <li><a href="/blog/2017/12/14/jupyter-bokeh/">ニューラルネットの学習過程の可視化を題材に、Jupyter &#43; Bokeh で動的な描画を行う方法の紹介 [Jupyter Advent Calendar 2017]</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+  <p class="powered-by">
+    Copyright © Ryuichi YAMAMOTO All rights reserved.
+  </p>
+  
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/go.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.1cb9e2fc8399acee94eab837265b73bf.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.247fd8f54253895301106e3006f53f38.js"></script>
+
+    
+
+
 
 
 
 
 </body>
 </html>
-
