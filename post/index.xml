@@ -5,12 +5,113 @@
     <link>https://r9y9.github.io/post/</link>
       <atom:link href="https://r9y9.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Blog posts</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 10 May 2020 14:42:25 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 18 Jan 2022 20:59:28 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu80af6620f812c701b45cf64bd91e2f1f_1204_512x512_fill_lanczos_center_3.png</url>
       <title>Blog posts</title>
       <link>https://r9y9.github.io/post/</link>
     </image>
+    
+    <item>
+      <title>Hugo Academic を使ってウェブサイトをアップデートしました</title>
+      <link>https://r9y9.github.io/blog/2022/01/18/hugo-academic/</link>
+      <pubDate>Tue, 18 Jan 2022 20:59:28 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2022/01/18/hugo-academic/</guid>
+      <description>&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;新: 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt; &lt;a href=&#34;https://github.com/r9y9/website&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/website&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/&#34;&gt;トップページ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/post/&#34;&gt;ブログ一覧&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/project/&#34;&gt;デモページ一覧&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;旧: 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt; &lt;a href=&#34;https://github.com/r9y9/blog&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/blog&lt;/a&gt; + 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt; &lt;a href=&#34;https://github.com/r9y9/demos-src&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/demos-src&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これまで、ブログとデモページ&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;をそれぞれ個別に &lt;a href=&#34;https://gohugo.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Hugo&lt;/a&gt; で管理していましたが、それらを統合して一つの Hugo site として管理するように変更しました。
+内部的に色々変わっていますが、URL はほぼ変わらないようにしています。&lt;/p&gt;
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;2年振りくらいにブログを書いています。大したことを書くわけではないのですが、ウェブサイト（ブログ含む）を大幅にアップデートしたので、その記録を残しておきます。&lt;/p&gt;
+&lt;h2 id=&#34;why&#34;&gt;Why&lt;/h2&gt;
+&lt;p&gt;なぜ大幅にアップデートをしたのか、理由は以下のとおりです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;経歴をまとめたプロフィールページなどコンテンツを追加したかった。ただし、これまでは、ブログとデモページをそれらに特化した個別の Hugo site として管理しており、それ以外の情報を追加することが容易ではなかった。プロフィール用に別の Hugo site を作ることも検討したが、管理のし易さの観点から一つの Hugo site にまとめたかった。&lt;/li&gt;
+&lt;li&gt;Hugo の theme を修正してレイアウトを調整するのが大変だったので、いい感じレスポンシブにしてくれる、スマホで見てもレイアウトが崩れない Hugo theme を使いたくなった。
+&lt;ul&gt;
+&lt;li&gt;これまでは、minimal な theme をベースに自分で修正して使っていたが、限界がきた。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;後者のレイアウトの問題は、theme を変えれば済む話とも言えますが、前者の問題を解決するためには、theme 変更に加えて複数のsiteを統合する必要がありました。&lt;/p&gt;
+&lt;h2 id=&#34;アップデートに関してやったこと&#34;&gt;アップデートに関してやったこと&lt;/h2&gt;
+&lt;h3 id=&#34;基本方針&#34;&gt;基本方針&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Static site generator として Hugo を使う。速い。&lt;/li&gt;
+&lt;li&gt;Hugo theme には &lt;a href=&#34;https://github.com/wowchemy/starter-hugo-academic&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/wowchemy/starter-hugo-academic&lt;/a&gt; を使う。デザインがシンプルで好み、かつカスタマイズが柔軟にできそうだったので。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;具体的な手順&#34;&gt;具体的な手順&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/wowchemy/starter-hugo-academic&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;starter-hugo-academic&lt;/a&gt; をベースに、全体のレイアウトを作る。僕の場合、Home (トップページ) に &lt;code&gt;Profile&lt;/code&gt;, &lt;code&gt;Posts&lt;/code&gt;, &lt;code&gt;Projects&lt;/code&gt;, &lt;code&gt;Talks&lt;/code&gt; の4つのコンテンツを配置しました。このうち、&lt;code&gt;Profile&lt;/code&gt; には、CV&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;のリンクを貼るようにしました。
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Publications&lt;/code&gt; コンテンツを作ることも考えましたが、Google Scholarで良くない？と思って作っていません。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/blog&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ブログ&lt;/a&gt; のコンテンツを &lt;code&gt;Posts&lt;/code&gt; に移行する。一覧は&lt;a href=&#34;https://r9y9.github.io/post/&#34;&gt;こちら&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://wowchemy.com/docs/content/front-matter/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://wowchemy.com/docs/content/front-matter/&lt;/a&gt; にも書かれている通り、Hugo academic ならではの front matter がありますが、基本的には markdown + 必要なstatic filesをコピーするだけで移行はできました。&lt;/li&gt;
+&lt;li&gt;Hugo academic に &lt;code&gt;summary&lt;/code&gt; を表示する機能があったので、すべてのブログ記事に &lt;code&gt;summary&lt;/code&gt; を設定しました。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/wowchemy/wowchemy-hugo-themes/issues/1404&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tableのレイアウトが崩れる問題&lt;/a&gt;があったので、微妙にcssを修正しました。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r9y9/demos-src&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;デモページ&lt;/a&gt; のコンテンツを &lt;code&gt;Projects&lt;/code&gt; に移行する。一覧は&lt;a href=&#34;https://r9y9.github.io/project/&#34;&gt;こちら&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;blogを移行するのとまったく同じように移行できました&lt;/li&gt;
+&lt;li&gt;論文に記載したデモページのURLが404にならないように、URLが変わらないようにする、あるいは リダイレクトを設定しました。Hugoだと、&lt;a href=&#34;https://gohugo.io/content-management/urls/#aliases&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;aliases&lt;/code&gt;&lt;/a&gt; というパラメータを front matter に書くことでリダイレクトを実現できます。&lt;/li&gt;
+&lt;li&gt;これまでの取り組みを整理するいい機会だと思って、共著論文のデモページもコンテンツに追加しました。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Talks&lt;/code&gt; のコンテンツをおまけで新しく追加しました。&lt;a href=&#34;https://r9y9.github.io/talk/linedevday2020pwg/&#34;&gt;LINE DEV DAYでの過去の発表&lt;/a&gt;とか&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;雑感&#34;&gt;雑感&lt;/h2&gt;
+&lt;h3 id=&#34;良かったこと&#34;&gt;良かったこと&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;ウェブサイトはいい感じになった。プロフィールの追加ができたことはもちろん、モバイル端末で見てもレイアウトが崩れなくなったのは地味に嬉しい&lt;/li&gt;
+&lt;li&gt;ブログとデモサイトを一つの Hugo site として管理することで、相互のコンテンツを行き来しやすくなった。具体的には、記事の終わりに、&lt;code&gt;Related&lt;/code&gt; というセクションに関連するブログ記事やデモページのリンクが表示されるようになった。また、ページのヘッダーから、相互のコンテンツを行き来することもできる。&lt;/li&gt;
+&lt;li&gt;管理するリポジトリの数が4から2に減った。
+&lt;ul&gt;
+&lt;li&gt;旧: 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt;&lt;a href=&#34;https://github.com/r9y9/blog&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;blog&lt;/a&gt;, 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt;&lt;a href=&#34;https://github.com/r9y9/r9y9.github.io&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9.github.io&lt;/a&gt;, 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt;&lt;a href=&#34;https://github.com/r9y9/demos-src&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;demos-src&lt;/a&gt;, 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt;&lt;a href=&#34;https://github.com/r9y9/demos&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;demos&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;新: 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt;&lt;a href=&#34;https://github.com/r9y9/website&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;website&lt;/a&gt;, 
+  &lt;i class=&#34;fab fa-github  pr-1 fa-fw&#34;&gt;&lt;/i&gt;&lt;a href=&#34;https://github.com/r9y9/r9y9.github.io&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;r9y9.github.io&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;悪かったこと&#34;&gt;悪かったこと&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/wowchemy/starter-hugo-academic&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/wowchemy/starter-hugo-academic&lt;/a&gt; はカスタマイズの自由度は高い一方で、適切に設定するのが難しかった。ドキュメントは豊富だが量が多く、全部読んで使いこなすのは大変に感じた。&lt;/li&gt;
+&lt;li&gt;大変だった・・・もうしばらくウェブサイトを大きく更新したくないなと思いました。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;おわりです。ただの備忘録ですが、ここまで読んで頂きありがとうございました。&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;音声合成の論文を書くときに、読者や査読者が音声サンプルを聴取できるようにデモページを作ることがあります。例えば&lt;a href=&#34;https://r9y9.github.io/projects/vuvd-pwg/&#34;&gt;こちら&lt;/a&gt;です。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;CVの提出を求められることがたまにあるので、これまでの実績を整理するいい機会かなと思って作りました &lt;a href=&#34;https://github.com/r9y9/cv&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/cv&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
     
     <item>
       <title>NNSVS: Pytorchベースの研究用歌声合成ライブラリ</title>
