@@ -5,12 +5,22 @@
     <link>https://r9y9.github.io/tag/presentation/</link>
       <atom:link href="https://r9y9.github.io/tag/presentation/index.xml" rel="self" type="application/rss+xml" />
     <description>Presentation</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Wed, 25 Nov 2020 16:40:00 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Fri, 03 Dec 2021 13:00:00 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
       <title>Presentation</title>
       <link>https://r9y9.github.io/tag/presentation/</link>
     </image>
+    
+    <item>
+      <title>国際会議Interspeech2021参加報告 / Report on Participation in Interspeech2021 @SLP研究会</title>
+      <link>https://r9y9.github.io/talk/sp-interspeech2021report/</link>
+      <pubDate>Fri, 03 Dec 2021 13:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/talk/sp-interspeech2021report/</guid>
+      <description>&lt;h3 id=&#34;abstract-ja&#34;&gt;Abstract (ja)&lt;/h3&gt;
+&lt;p&gt;2021 年 8 月 30 日から 9 月 3 日にかけてチェコ・ブルノおよびオンラインのハイブリッド形式で Interspeech2021 が開催された．ここでは，会議概要や最新の技術動向，注目の発表について報告する．&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>ここまで来た音声技術・今後の展望 / Current progress on speech technologies and its future prospects @ LINE DEV DAY 2020</title>
