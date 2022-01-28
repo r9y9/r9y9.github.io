@@ -5,12 +5,21 @@
     <link>https://r9y9.github.io/tag/research/</link>
       <atom:link href="https://r9y9.github.io/tag/research/index.xml" rel="self" type="application/rss+xml" />
     <description>Research</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 10 May 2020 14:42:25 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 25 Jan 2022 10:30:00 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
       <title>Research</title>
       <link>https://r9y9.github.io/tag/research/</link>
     </image>
+    
+    <item>
+      <title>企業における音声合成の研究開発 / Research and development for TTS in industry @名古屋工業大学</title>
+      <link>https://r9y9.github.io/talk/202201nit-lecture/</link>
+      <pubDate>Tue, 25 Jan 2022 10:30:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/talk/202201nit-lecture/</guid>
+      <description>&lt;p&gt;恩師である酒向先生 (&lt;a href=&#34;http://sakoweb.net/joomla3/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://sakoweb.net/joomla3/&lt;/a&gt;) にお声がけいただき、母校の名古屋工業大学で講義をさせていただきました。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>NNSVS: Pytorchベースの研究用歌声合成ライブラリ</title>

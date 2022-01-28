@@ -4,7 +4,25 @@
   
   
   <url>
-    <loc></loc><lastmod>2022-01-18T20:59:28+09:00</lastmod></url>
+    <loc></loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/</loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/presentation/</loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/event/</loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/research/</loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc></loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/speech-synthesis/</loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tags/</loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/tag/tts/</loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
+  <url>
+    <loc>https://r9y9.github.io/talk/202201nit-lecture/</loc><lastmod>2022-01-25T10:30:00+09:00</lastmod></url>
   <url>
     <loc>https://r9y9.github.io/post/</loc><lastmod>2022-01-18T20:59:28+09:00</lastmod></url>
   <url>
@@ -12,17 +30,7 @@
   <url>
     <loc>https://r9y9.github.io/blog/2022/01/18/hugo-academic/</loc><lastmod>2022-01-18T20:59:28+09:00</lastmod></url>
   <url>
-    <loc>https://r9y9.github.io/</loc><lastmod>2022-01-18T20:59:28+09:00</lastmod></url>
-  <url>
-    <loc></loc><lastmod>2022-01-18T20:59:28+09:00</lastmod></url>
-  <url>
-    <loc>https://r9y9.github.io/tags/</loc><lastmod>2022-01-18T20:59:28+09:00</lastmod></url>
-  <url>
     <loc>https://r9y9.github.io/tag/interspeech/</loc><lastmod>2021-12-03T13:00:00+09:00</lastmod></url>
-  <url>
-    <loc>https://r9y9.github.io/tag/presentation/</loc><lastmod>2021-12-03T13:00:00+09:00</lastmod></url>
-  <url>
-    <loc>https://r9y9.github.io/event/</loc><lastmod>2021-12-03T13:00:00+09:00</lastmod></url>
   <url>
     <loc></loc><lastmod>2021-12-03T13:00:00+09:00</lastmod></url>
   <url>
@@ -51,8 +59,6 @@
     <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
     <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
-  <url>
-    <loc>https://r9y9.github.io/tag/tts/</loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
     <loc></loc><lastmod>2021-10-06T20:42:37+09:00</lastmod></url>
   <url>
@@ -112,8 +118,6 @@
   <url>
     <loc>https://r9y9.github.io/blog/2020/05/10/nnsvs/</loc><lastmod>2020-05-10T14:42:25+09:00</lastmod></url>
   <url>
-    <loc>https://r9y9.github.io/tag/research/</loc><lastmod>2020-05-10T14:42:25+09:00</lastmod></url>
-  <url>
     <loc>https://r9y9.github.io/tag/singing-voice-synthesis/</loc><lastmod>2020-05-10T14:42:25+09:00</lastmod></url>
   <url>
     <loc>https://r9y9.github.io/projects/mbg_excitnet/</loc><lastmod>2020-04-22T16:51:09+09:00</lastmod></url>
@@ -145,8 +149,6 @@
     <loc>https://r9y9.github.io/tag/corpus/</loc><lastmod>2019-06-11T00:00:30+09:00</lastmod></url>
   <url>
     <loc>https://r9y9.github.io/blog/2019/06/11/ljspeech/</loc><lastmod>2019-06-11T00:00:30+09:00</lastmod></url>
-  <url>
-    <loc>https://r9y9.github.io/tag/speech-synthesis/</loc><lastmod>2019-06-11T00:00:30+09:00</lastmod></url>
   <url>
     <loc>https://r9y9.github.io/blog/2018/05/20/tacotron2/</loc><lastmod>2018-05-20T14:21:30+09:00</lastmod></url>
   <url>
