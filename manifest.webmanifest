@@ -2,8 +2,8 @@
   "name": "LESS IS MORE",
   "short_name": "LESS IS MORE",
   "lang": "en-us",
-  "theme_color": "#bbdefb",
-  "background_color": "#bbdefb",
+  "theme_color": "#1565c0",
+  "background_color": "#1565c0",
   "icons": [{
     "src": "/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_192x192_fill_lanczos_center_3.png",
     "sizes": "192x192",
