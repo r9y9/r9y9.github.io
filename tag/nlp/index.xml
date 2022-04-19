@@ -5,7 +5,7 @@
     <link>https://r9y9.github.io/tag/nlp/</link>
       <atom:link href="https://r9y9.github.io/tag/nlp/index.xml" rel="self" type="application/rss+xml" />
     <description>NLP</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sat, 10 Jul 2021 12:11:03 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Mon, 04 Apr 2022 12:11:03 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
       <title>NLP</title>
@@ -13,9 +13,9 @@
     </image>
     
     <item>
-      <title>A Unified accent estimation method based on multi-task learning for Japanese text-to-speech</title>
+      <title>A Unified Accent Estimation Method Based on Multi-Task Learning for Japanese Text-to-Speech</title>
       <link>https://r9y9.github.io/projects/mtl_accent/</link>
-      <pubDate>Sat, 10 Jul 2021 12:11:03 +0900</pubDate>
+      <pubDate>Mon, 04 Apr 2022 12:11:03 +0900</pubDate>
       <guid>https://r9y9.github.io/projects/mtl_accent/</guid>
       <description></description>
     </item>

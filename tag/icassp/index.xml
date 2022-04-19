@@ -21,14 +21,6 @@
     </item>
     
     <item>
-      <title>A Unified accent estimation method based on multi-task learning for Japanese text-to-speech</title>
-      <link>https://r9y9.github.io/projects/mtl_accent/</link>
-      <pubDate>Sat, 10 Jul 2021 12:11:03 +0900</pubDate>
-      <guid>https://r9y9.github.io/projects/mtl_accent/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>TTS-by-TTS: TTS-driven Data Augmentation for Fast and High-Quality Speech Synthesis</title>
       <link>https://r9y9.github.io/projects/tts-by-tts/</link>
       <pubDate>Mon, 26 Oct 2020 16:37:12 +0900</pubDate>

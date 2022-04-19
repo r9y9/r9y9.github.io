@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VC | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/vc/</link>
+      <atom:link href="https://r9y9.github.io/tag/vc/index.xml" rel="self" type="application/rss+xml" />
+    <description>VC</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Mon, 04 Apr 2022 12:11:04 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
+      <title>VC</title>
+      <link>https://r9y9.github.io/tag/vc/</link>
+    </image>
+    
+    <item>
+      <title>Cross-Speaker Emotion Transfer for Low-Resource Text-to-Speech Using Non-Parallel Voice Conversion with Pitch-Shift Data Augmentation</title>
+      <link>https://r9y9.github.io/projects/vc-tts-ps/</link>
+      <pubDate>Mon, 04 Apr 2022 12:11:04 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/vc-tts-ps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Language Model-Based Emotion Prediction Methods for Emotional Speech Synthesis Systems</title>
+      <link>https://r9y9.github.io/projects/lmemotiontts/</link>
+      <pubDate>Mon, 04 Apr 2022 12:11:01 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/lmemotiontts/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

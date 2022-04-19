@@ -5,12 +5,44 @@
     <link>https://r9y9.github.io/tag/tts/</link>
       <atom:link href="https://r9y9.github.io/tag/tts/index.xml" rel="self" type="application/rss+xml" />
     <description>TTS</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 25 Jan 2022 10:30:00 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Mon, 04 Apr 2022 12:11:07 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
       <title>TTS</title>
       <link>https://r9y9.github.io/tag/tts/</link>
     </image>
+    
+    <item>
+      <title>DRSpeech: Degradation-Robust Text-to-Speech Synthesis with Frame-Level and Utterance-Level Acoustic Representation Learning</title>
+      <link>https://r9y9.github.io/projects/drspeech/</link>
+      <pubDate>Mon, 04 Apr 2022 12:11:07 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/drspeech/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TTS-by-TTS 2: Data-selective Augmentation for Neural Speech Synthesis Using Ranking Support Vector Machine with Variational Autoencoder</title>
+      <link>https://r9y9.github.io/projects/tts-by-tts2/</link>
+      <pubDate>Mon, 04 Apr 2022 12:11:05 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/tts-by-tts2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cross-Speaker Emotion Transfer for Low-Resource Text-to-Speech Using Non-Parallel Voice Conversion with Pitch-Shift Data Augmentation</title>
+      <link>https://r9y9.github.io/projects/vc-tts-ps/</link>
+      <pubDate>Mon, 04 Apr 2022 12:11:04 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/vc-tts-ps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Language Model-Based Emotion Prediction Methods for Emotional Speech Synthesis Systems</title>
+      <link>https://r9y9.github.io/projects/lmemotiontts/</link>
+      <pubDate>Mon, 04 Apr 2022 12:11:01 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/lmemotiontts/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>企業における音声合成の研究開発 / Research and development for TTS in industry @名古屋工業大学</title>

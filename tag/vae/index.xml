@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VAE | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/vae/</link>
+      <atom:link href="https://r9y9.github.io/tag/vae/index.xml" rel="self" type="application/rss+xml" />
+    <description>VAE</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Mon, 04 Apr 2022 12:11:05 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
+      <title>VAE</title>
+      <link>https://r9y9.github.io/tag/vae/</link>
+    </image>
+    
+    <item>
+      <title>TTS-by-TTS 2: Data-selective Augmentation for Neural Speech Synthesis Using Ranking Support Vector Machine with Variational Autoencoder</title>
+      <link>https://r9y9.github.io/projects/tts-by-tts2/</link>
+      <pubDate>Mon, 04 Apr 2022 12:11:05 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/tts-by-tts2/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
