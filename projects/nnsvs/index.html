@@ -60,7 +60,7 @@
   
     
   
-  <meta name="description" content="Submitted to ICASSP 2023" />
+  <meta name="description" content="Submitted to [ICASSP 2023](https://2023.ieeeicassp.org/)" />
 
   
   <link rel="alternate" hreflang="en-us" href="https://r9y9.github.io/projects/nnsvs/" />
@@ -346,16 +346,16 @@
   <meta property="og:site_name" content="LESS IS MORE" />
   <meta property="og:url" content="https://r9y9.github.io/projects/nnsvs/" />
   <meta property="og:title" content="NNSVS: Neural Network Based Singing Voice Synthesis Toolkit | LESS IS MORE" />
-  <meta property="og:description" content="Submitted to ICASSP 2023" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png" />
+  <meta property="og:description" content="Submitted to [ICASSP 2023](https://2023.ieeeicassp.org/)" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
     
       <meta
         property="article:published_time"
-        content="2022-10-16T14:50:26&#43;09:00"
+        content="2022-10-18T22:17:44&#43;09:00"
       />
     
-    <meta property="article:modified_time" content="2022-10-16T14:50:26&#43;09:00">
+    <meta property="article:modified_time" content="2022-10-18T22:17:44&#43;09:00">
   
 
   
@@ -381,8 +381,8 @@
   },
   "headline": "NNSVS: Neural Network Based Singing Voice Synthesis Toolkit",
   
-  "datePublished": "2022-10-16T14:50:26+09:00",
-  "dateModified": "2022-10-16T14:50:26+09:00",
+  "datePublished": "2022-10-18T22:17:44+09:00",
+  "dateModified": "2022-10-18T22:17:44+09:00",
   
   "author": {
     "@type": "Person",
@@ -397,7 +397,7 @@
       "url": "https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "Submitted to ICASSP 2023"
+  "description": "Submitted to [ICASSP 2023](https://2023.ieeeicassp.org/)"
 }
 </script>
 
@@ -585,7 +585,7 @@
           
 
           <li class="nav-item">
-            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+            <a class="nav-link " href="/#projects"><span>Projects</span></a>
           </li>
 
           
@@ -622,7 +622,7 @@
           
 
           <li class="nav-item">
-            <a class="nav-link " href="/#projects"><span>Projects</span></a>
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
           </li>
 
           
@@ -770,7 +770,7 @@
     
       
     
-    Oct 16, 2022
+    Oct 18, 2022
   </span>
   
 
@@ -815,6 +815,12 @@
 <li><a href="#as">A/S</a></li>
 </ul>
 </li>
+<li><a href="#appendix">Appendix</a>
+<ul>
+<li><a href="#note-pitch-distribution">Note pitch distribution</a></li>
+</ul>
+</li>
+<li><a href="#references">References</a></li>
 </ul>
 <h2 id="authors">Authors</h2>
 <ul>
@@ -827,138 +833,272 @@
 NNSVS is inspired by Sinsy, one of the open-source pioneers in singing voice synthesis research, and provides many new features such as multi-stream autoregressive models, autoregressive fundamental frequency models, and neural vocoders.
 Furthermore, NNSVS provides extensive documentation and scripts to build complete singing voice synthesis systems.
 Experimental results demonstrate that our best system significantly outperforms our reproduction of Sinsy and other baseline systems.
-The toolkit is available on GitHub at <a href="https://github.com/nnsvs/nnsvs" target="_blank" rel="noopener">https://github.com/nnsvs/nnsvs</a>.</p>
+The toolkit is available at <a href="https://github.com/nnsvs/nnsvs" target="_blank" rel="noopener">https://github.com/nnsvs/nnsvs</a>.</p>
 <h2 id="systems">Systems</h2>
-<p>TBD</p>
+<p>The following table summarizes the systems used in our experiments. All the models were trained on Namine Ritsu&rsquo;s database [1].</p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Acoustic Features</th>
+<th>Multi-stream Architecture</th>
+<th>Autoregressive streams</th>
+<th>Vocoder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sinsy [2]</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>No</td>
+<td>-</td>
+<td>hn-uSFGAN  [5]</td>
+</tr>
+<tr>
+<td>Sinsy (w/ pitch correction)</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>No</td>
+<td>-</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>Sinsy (w/ vibrato modeling)</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>No</td>
+<td>-</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>Muskits RNN [3]</td>
+<td>MEL</td>
+<td>No</td>
+<td>-</td>
+<td>HiFi-GAN [6]</td>
+</tr>
+<tr>
+<td>DiffSinger [4]</td>
+<td>MEL, LF0, VUV</td>
+<td>Yes</td>
+<td>-</td>
+<td>hn-HiFi-GAN</td>
+</tr>
+<tr>
+<td>NNSVS-Mel v1</td>
+<td>MEL, LF0, VUV</td>
+<td>Yes</td>
+<td>-</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>NNSVS-Mel v2</td>
+<td>MEL, LF0, VUV</td>
+<td>Yes</td>
+<td>LF0</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>NNSVS-Mel v3</td>
+<td>MEL, LF0, VUV</td>
+<td>Yes</td>
+<td>MEL, LF0</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>NNSVS-WORLD v0 [1]</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>No</td>
+<td>-</td>
+<td>WORLD</td>
+</tr>
+<tr>
+<td>NNSVS-WORLD v1</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>Yes</td>
+<td>-</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>NNSVS-WORLD v2</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>Yes</td>
+<td>LF0</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>NNSVS-WORLD v3</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>Yes</td>
+<td>MGC, LF0</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>NNSVS-WORLD v4</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>Yes</td>
+<td>MGC, LF0, BAP</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>hn-HiFI-GAN (A/S)</td>
+<td>MEL, LF0, VUV</td>
+<td>-</td>
+<td>-</td>
+<td>hn-HiFi-GAN</td>
+</tr>
+<tr>
+<td>hn-uSFGAN-Mel (A/S)</td>
+<td>MEL, LF0, VUV</td>
+<td>-</td>
+<td>-</td>
+<td>hn-uSFGAN</td>
+</tr>
+<tr>
+<td>hn-uSFGAN-WORLD (A/S)</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>-</td>
+<td>-</td>
+<td>hn-uSFGAN</td>
+</tr>
+</tbody>
+</table>
+<p>Notes on baselines</p>
+<ul>
+<li>Muskits and DiffSinger baseline systems were trained with thier offical code (<a href="https://github.com/SJTMusicTeam/Muskits/tree/1f1855d914d2077f33ad9675866f474005cd8034/egs/namine_ritsu_utagoe_db/svs1" target="_blank" rel="noopener">Muskits</a> and <a href="https://github.com/MoonInTheRiver/DiffSinger" target="_blank" rel="noopener">DiffSinger</a>).</li>
+<li>hn-HiFi-GAN is the vocoder used by DiffSinger. The detail of its implementation can be found <a href="https://github.com/nnsvs/ParallelWaveGAN/blob/5a1e0e0c6972cfa0efcbd17d4b42c453e611234d/parallel_wavegan/models/hnhifigan.py#L173" target="_blank" rel="noopener">here</a>.</li>
+<li>Sinsy systems are based on NNSVS&rsquo;s implementation.</li>
+<li>NNSVS-WORLD v0 uses the model trained with the earlier version of NNSVS (as of Nov. 2021) [1]. See <a href="https://www.youtube.com/watch?v=pKeo9IE_L1I" target="_blank" rel="noopener">here</a> for details.</li>
+</ul>
 <h2 id="samples">Samples</h2>
 <h3 id="svs">SVS</h3>
+<p>Samples generated from musical score.</p>
 <p>Sample 1: 1st color</p>
 <table><thead>
-<tr><th>Recording</th><th>NNSVS pre-trained</th><th>NNSVS-WORLD v1</th></tr>
+<tr><th>Recording</th><th>Sinsy</th><th>Sinsy (with pitch correction)</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Recording.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS pre-trained.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Sinsy.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Sinsy (with pitch correction).wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>NNSVS-WORLD v2</th><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
+<tr><th>Sinsy (with vibrato modeling)</th><th>Muskits RNN</th><th>DiffSinger</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Sinsy (with vibrato modeling).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Muskits RNN.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-DiffSinger.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
 <tr><th>NNSVS-Mel v1</th><th>NNSVS-Mel v2</th><th>NNSVS-Mel v3</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-Mel v1.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-Mel v2.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-Mel v3.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Sinsy</th><th>Sinsy (pitch corr)</th><th>Sinsy (vibrato modeling)</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Sinsy.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Sinsy (pitch corr).wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Sinsy (vibrato modeling).wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v0</th><th>NNSVS-WORLD v1</th><th>NNSVS-WORLD v2</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v0.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Muskits RNN</th><th>DiffSinger</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-Muskits RNN.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-DiffSinger.wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test01]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
 <td></td></tr></tbody></table><p>Sample 2: ARROW</p>
 <table><thead>
-<tr><th>Recording</th><th>NNSVS pre-trained</th><th>NNSVS-WORLD v1</th></tr>
+<tr><th>Recording</th><th>Sinsy</th><th>Sinsy (with pitch correction)</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Recording.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS pre-trained.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Sinsy (with vibrato modeling).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Sinsy (with pitch correction).wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>NNSVS-WORLD v2</th><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
+<tr><th>Sinsy (with vibrato modeling)</th><th>Muskits RNN</th><th>DiffSinger</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Sinsy (with vibrato modeling).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Muskits RNN.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-DiffSinger.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
 <tr><th>NNSVS-Mel v1</th><th>NNSVS-Mel v2</th><th>NNSVS-Mel v3</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-Mel v1.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-Mel v2.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-Mel v3.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Sinsy</th><th>Sinsy (pitch corr)</th><th>Sinsy (vibrato modeling)</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Sinsy (vibrato modeling).wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Sinsy (pitch corr).wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Sinsy (vibrato modeling).wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v0</th><th>NNSVS-WORLD v1</th><th>NNSVS-WORLD v2</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v0.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Muskits RNN</th><th>DiffSinger</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-Muskits RNN.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-DiffSinger.wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test02]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
 <td></td></tr></tbody></table><p>Sample 3: BC</p>
 <table><thead>
-<tr><th>Recording</th><th>NNSVS pre-trained</th><th>NNSVS-WORLD v1</th></tr>
+<tr><th>Recording</th><th>Sinsy</th><th>Sinsy (with pitch correction)</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Recording.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS pre-trained.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Sinsy.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Sinsy (with pitch correction).wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>NNSVS-WORLD v2</th><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
+<tr><th>Sinsy (with vibrato modeling)</th><th>Muskits RNN</th><th>DiffSinger</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Sinsy (with vibrato modeling).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Muskits RNN.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-DiffSinger.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
 <tr><th>NNSVS-Mel v1</th><th>NNSVS-Mel v2</th><th>NNSVS-Mel v3</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-Mel v1.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-Mel v2.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-Mel v3.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Sinsy</th><th>Sinsy (pitch corr)</th><th>Sinsy (vibrato modeling)</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Sinsy.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Sinsy (pitch corr).wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Sinsy (vibrato modeling).wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v0</th><th>NNSVS-WORLD v1</th><th>NNSVS-WORLD v2</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v0.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Muskits RNN</th><th>DiffSinger</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-Muskits RNN.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-DiffSinger.wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test03]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
 <td></td></tr></tbody></table><p>Sample 4: Close to you</p>
 <table><thead>
-<tr><th>Recording</th><th>NNSVS pre-trained</th><th>NNSVS-WORLD v1</th></tr>
+<tr><th>Recording</th><th>Sinsy</th><th>Sinsy (with pitch correction)</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Recording.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS pre-trained.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Sinsy.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Sinsy (with pitch correction).wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>NNSVS-WORLD v2</th><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
+<tr><th>Sinsy (with vibrato modeling)</th><th>Muskits RNN</th><th>DiffSinger</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Sinsy (with vibrato modeling).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Muskits RNN.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-DiffSinger.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
 <tr><th>NNSVS-Mel v1</th><th>NNSVS-Mel v2</th><th>NNSVS-Mel v3</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-Mel v1.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-Mel v2.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-Mel v3.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Sinsy</th><th>Sinsy (pitch corr)</th><th>Sinsy (vibrato modeling)</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Sinsy (vibrato modeling).wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Sinsy (pitch corr).wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Sinsy (vibrato modeling).wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v0</th><th>NNSVS-WORLD v1</th><th>NNSVS-WORLD v2</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v0.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Muskits RNN</th><th>DiffSinger</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-Muskits RNN.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-DiffSinger.wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test04]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
 <td></td></tr></tbody></table><p>Sample 5: ERROR</p>
 <table><thead>
-<tr><th>Recording</th><th>NNSVS pre-trained</th><th>NNSVS-WORLD v1</th></tr>
+<tr><th>Recording</th><th>Sinsy</th><th>Sinsy (with pitch correction)</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Recording.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS pre-trained.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Sinsy.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Sinsy (with pitch correction).wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>NNSVS-WORLD v2</th><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
+<tr><th>Sinsy (with vibrato modeling)</th><th>Muskits RNN</th><th>DiffSinger</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Sinsy (with vibrato modeling).wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Muskits RNN.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-DiffSinger.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
 <tr><th>NNSVS-Mel v1</th><th>NNSVS-Mel v2</th><th>NNSVS-Mel v3</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-Mel v1.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-Mel v2.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-Mel v3.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Sinsy</th><th>Sinsy (pitch corr)</th><th>Sinsy (vibrato modeling)</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Sinsy (vibrato modeling).wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Sinsy (pitch corr).wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Sinsy (vibrato modeling).wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v0</th><th>NNSVS-WORLD v1</th><th>NNSVS-WORLD v2</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v0.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v1.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v2.wav" type="audio/wav"></audio></td>
 </tr></tbody></table><table><thead>
-<tr><th>Muskits RNN</th><th>DiffSinger</th></tr>
-</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Muskits RNN.wav" type="audio/wav"></audio></td>
-<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-DiffSinger.wav" type="audio/wav"></audio></td>
+<tr><th>NNSVS-WORLD v3</th><th>NNSVS-WORLD v4</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v3.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-NNSVS-WORLD v4.wav" type="audio/wav"></audio></td>
 <td></td></tr></tbody></table>
 <h3 id="as">A/S</h3>
+<p>Samples generated from extracted features (i.e., analysis-by-synthesis).</p>
 <p>Sample 1: 1st color</p>
 <table><thead>
 <tr><th>Recording</th><th>hn-HiFi-GAN</th><th>hn-USFGAN-Mel</th></tr>
@@ -1005,6 +1145,21 @@ The toolkit is available on GitHub at <a href="https://github.com/nnsvs/nnsvs" t
 <tr><th>hn-USFGAN-WORLD</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/AnaSyn/[Test05]-hn-USFGAN-WORLD.wav" type="audio/wav"></audio></td>
 <td></td><td></td></tr></tbody></table>
+<h2 id="appendix">Appendix</h2>
+<h3 id="note-pitch-distribution">Note pitch distribution</h3>
+<p>We selected test songs to cover wide ranges of pitch, which distributions are shown in the following figure.
+Pitch is presented as MIDI note number, where A4 (69) corresponds to 440 Hz.
+The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880 Hz).</p>
+<div align="center"><img src="/images/ritsu_pitch_dist.png" width="100%" /></div>
+<h2 id="references">References</h2>
+<ul>
+<li>[1] Canon, [NamineRitsu] Blue (YOASOBI) [ENUNU model Ver.2, Singing DBVer.2 release], <a href="https://www.youtube.com/watch?v=pKeo9IE_L1I" target="_blank" rel="noopener">https://www.youtube.com/watch?v=pKeo9IE_L1I</a>, Accessed: 2022.10.06.</li>
+<li>[2] Y. Hono, K. Hashimoto, K. Oura, et al., “Sinsy: A deep neural network-based singing voice synthesis system,” IEEE/ACM Trans. on Audio, Speech, and Language Processing, vol. 29, pp. 2803.</li>
+<li>[3] J. Shi, S. Guo, T. Qian, et al., “Muskits: an End-to-end Music Processing Toolkit for Singing Voice Synthesis,” in Proc. Interspeech, 2022, pp. 4277–4281.</li>
+<li>[4] J. Liu, C. Li, Y. Ren, et al., “DiffSinger: Singing Voice Synthesis via Shallow Diffusion Mechanism”, AAAI, vol. 36, no. 10, pp. 11020-11028, Jun. 2022.</li>
+<li>[5] R. Yoneyama, Y.-C. Wu, and T. Toda, “Unified Source-Filter GAN with Harmonic-plus-Noise Source Excitation Generation,” in Proc. Interspeech, 2022, pp. 848–852.</li>
+<li>[6] J. Kong, J. Kim, and J. Bae, “HiFi-GAN: Generative adversarial networks for efficient and high fidelity speech synthesis,” NeurIPS, vol. 33, pp. 17 022–17 033, 2020.</li>
+</ul>
 
     </div>
 
@@ -1236,15 +1391,15 @@ The toolkit is available on GitHub at <a href="https://github.com/nnsvs/nnsvs" t
     <h3>Related</h3>
     <ul>
       
+      <li><a href="/projects/dualcyclegan/">Non-parallel High-Quality Audio Super Resolution with Domain Adaptation and Resampling CycleGANs</a></li>
+      
+      <li><a href="/projects/lvits/">Fast and high-fidelity end-to-end text-to-speech for edge devices with multi-band generation and inverse short-time Fourier transform</a></li>
+      
       <li><a href="/projects/ttslearn/">ttslearn: Library for Pythonで学ぶ音声合成 (Text-to-speech with Python)</a></li>
       
       <li><a href="/projects/espnet2-tts/">ESPnet2-TTS: Extending the Edge of TTS Research</a></li>
       
       <li><a href="/blog/2020/05/10/nnsvs/">NNSVS: Pytorchベースの研究用歌声合成ライブラリ</a></li>
-      
-      <li><a href="/talk/asj-espnet2-tutorial/">End-to-End 音声合成の研究を加速させるツールキット ESPnet-TTS / ESPnet-TTS: A toolkit to accelerate research on end-to-end speech synthesis @ ASJ 2020s</a></li>
-      
-      <li><a href="/projects/espnet-tts/">ESPnet-TTS: Unified, Reproducible, and Integratable Open Source End-to-End Text-to-Speech Toolkit</a></li>
       
     </ul>
   </div>

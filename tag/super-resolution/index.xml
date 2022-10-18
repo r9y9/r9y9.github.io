@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Super resolution | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/super-resolution/</link>
+      <atom:link href="https://r9y9.github.io/tag/super-resolution/index.xml" rel="self" type="application/rss+xml" />
+    <description>Super resolution</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 18 Oct 2022 21:17:44 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
+      <title>Super resolution</title>
+      <link>https://r9y9.github.io/tag/super-resolution/</link>
+    </image>
+    
+    <item>
+      <title>Non-parallel High-Quality Audio Super Resolution with Domain Adaptation and Resampling CycleGANs</title>
+      <link>https://r9y9.github.io/projects/dualcyclegan/</link>
+      <pubDate>Tue, 18 Oct 2022 21:17:44 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/dualcyclegan/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

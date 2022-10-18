@@ -5,7 +5,7 @@
     <link>https://r9y9.github.io/tag/end-to-end/</link>
       <atom:link href="https://r9y9.github.io/tag/end-to-end/index.xml" rel="self" type="application/rss+xml" />
     <description>End-to-End</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 16 Oct 2022 14:47:59 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 18 Oct 2022 14:47:59 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
       <title>End-to-End</title>
@@ -15,7 +15,7 @@
     <item>
       <title>Period VITS: Variational Inference With Explicit Pitch Modeling For End-to-End Emotional Speech Synthesis</title>
       <link>https://r9y9.github.io/projects/period-vits/</link>
-      <pubDate>Sun, 16 Oct 2022 14:47:59 +0900</pubDate>
+      <pubDate>Tue, 18 Oct 2022 14:47:59 +0900</pubDate>
       <guid>https://r9y9.github.io/projects/period-vits/</guid>
       <description></description>
     </item>
