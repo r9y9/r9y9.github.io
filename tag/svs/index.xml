@@ -13,11 +13,11 @@
     </image>
     
     <item>
-      <title>NNSVS: Neural Network Based Singing Voice Synthesis Toolkit</title>
+      <title>NNSVS: A Neural Network Based Singing Voice Synthesis Toolkit</title>
       <link>https://r9y9.github.io/projects/nnsvs/</link>
       <pubDate>Tue, 18 Oct 2022 22:17:44 +0900</pubDate>
       <guid>https://r9y9.github.io/projects/nnsvs/</guid>
-      <description>&lt;p&gt;Submitted to &lt;a href=&#34;https://2023.ieeeicassp.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ICASSP 2023&lt;/a&gt;.&lt;/p&gt;
+      <description>&lt;p&gt;Submitted to &lt;a href=&#34;https://2023.ieeeicassp.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ICASSP 2023&lt;/a&gt; (arXiv: TBD).&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#authors&#34;&gt;Authors&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#abstract&#34;&gt;Abstract&lt;/a&gt;&lt;/li&gt;
@@ -28,6 +28,13 @@
 &lt;li&gt;&lt;a href=&#34;#as&#34;&gt;A/S&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#mixed-demo&#34;&gt;Mixed demo&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#sample-1&#34;&gt;Sample 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#sample-2&#34;&gt;Sample 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#acknowledgments&#34;&gt;Acknowledgments&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#appendix&#34;&gt;Appendix&lt;/a&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#note-pitch-distribution&#34;&gt;Note pitch distribution&lt;/a&gt;&lt;/li&gt;
@@ -42,11 +49,7 @@
 &lt;li&gt;Tomoki Toda (Nagoya University)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
-&lt;p&gt;This paper describes the design of NNSVS, open-source software for neural network-based singing voice synthesis research.
-NNSVS is inspired by Sinsy, one of the open-source pioneers in singing voice synthesis research, and provides many new features such as multi-stream autoregressive models, autoregressive fundamental frequency models, and neural vocoders.
-Furthermore, NNSVS provides extensive documentation and scripts to build complete singing voice synthesis systems.
-Experimental results demonstrate that our best system significantly outperforms our reproduction of Sinsy and other baseline systems.
-The toolkit is available at &lt;a href=&#34;https://github.com/nnsvs/nnsvs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/nnsvs/nnsvs&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This paper describes the design of NNSVS, an open-source software for neural network-based singing voice synthesis research. NNSVS is inspired by Sinsy, an open-source pioneer in singing voice synthesis research, and provides many additional features such as multi-stream models, autoregressive fundamental frequency models, and neural vocoders. Furthermore, NNSVS provides extensive documentation and numerous scripts to build complete singing voice synthesis systems. Experimental results demonstrate that our best system significantly outperforms our reproduction of Sinsy and other baseline systems. The toolkit is available at &lt;a href=&#34;https://github.com/nnsvs/nnsvs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/nnsvs/nnsvs&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;systems&#34;&gt;Systems&lt;/h2&gt;
 &lt;p&gt;The following table summarizes the systems used in our experiments. All the models were trained on Namine Ritsu&amp;rsquo;s database [1].&lt;/p&gt;
 &lt;table&gt;
@@ -182,6 +185,7 @@ The toolkit is available at &lt;a href=&#34;https://github.com/nnsvs/nnsvs&#34; 
 &lt;li&gt;NNSVS-WORLD v0 uses the model trained with the earlier version of NNSVS (as of Nov. 2021) [1]. See &lt;a href=&#34;https://www.youtube.com/watch?v=pKeo9IE_L1I&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt; for details.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;samples&#34;&gt;Samples&lt;/h2&gt;
+&lt;p&gt;The following samples are vocal only. Mixed demo can be found &lt;a href=&#34;#mixed-demo&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;svs&#34;&gt;SVS&lt;/h3&gt;
 &lt;p&gt;Samples generated from musical score.&lt;/p&gt;
 &lt;p&gt;Sample 1: 1st color&lt;/p&gt;
@@ -358,11 +362,29 @@ The toolkit is available at &lt;a href=&#34;https://github.com/nnsvs/nnsvs&#34; 
 &lt;tr&gt;&lt;th&gt;hn-USFGAN-WORLD&lt;/th&gt;&lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202210_nnsvs/AnaSyn/[Test05]-hn-USFGAN-WORLD.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&#34;mixed-demo&#34;&gt;Mixed demo&lt;/h2&gt;
+&lt;p&gt;System: NNSVS-WORLD v4&lt;/p&gt;
+&lt;h3 id=&#34;sample-1&#34;&gt;Sample 1&lt;/h3&gt;
+&lt;p&gt;ERROR (from test data)&lt;/p&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/u2210L3JXPo&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&#34;sample-2&#34;&gt;Sample 2&lt;/h3&gt;
+&lt;p&gt;WAVE (from training data)&lt;/p&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/_5T0HPfeGjs&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;acknowledgments&#34;&gt;Acknowledgments&lt;/h2&gt;
+&lt;p&gt;This work was partly supported by JST CREST Grant Number JPMJCR19A3.&lt;/p&gt;
 &lt;h2 id=&#34;appendix&#34;&gt;Appendix&lt;/h2&gt;
 &lt;h3 id=&#34;note-pitch-distribution&#34;&gt;Note pitch distribution&lt;/h3&gt;
-&lt;p&gt;We selected test songs to cover wide ranges of pitch, which distributions are shown in the following figure.
+&lt;p&gt;We selected test songs to cover a wide range of note pitches. Their distributions are shown in the following figure.
 Pitch is presented as MIDI note number, where A4 (69) corresponds to 440 Hz.
-The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880 Hz).&lt;/p&gt;
+The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880 Hz), whereas those of the training data were D#3 (146.8 Hz) and B5 (987.8 Hz).&lt;/p&gt;
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/ritsu_pitch_dist.png&#34; width=&#34;100%&#34; /&gt;&lt;/div&gt;
 &lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
 &lt;ul&gt;

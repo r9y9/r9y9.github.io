@@ -345,7 +345,7 @@
   
   <meta property="og:site_name" content="LESS IS MORE" />
   <meta property="og:url" content="https://r9y9.github.io/projects/nnsvs/" />
-  <meta property="og:title" content="NNSVS: Neural Network Based Singing Voice Synthesis Toolkit | LESS IS MORE" />
+  <meta property="og:title" content="NNSVS: A Neural Network Based Singing Voice Synthesis Toolkit | LESS IS MORE" />
   <meta property="og:description" content="Submitted to [ICASSP 2023](https://2023.ieeeicassp.org/)" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
@@ -379,7 +379,7 @@
     "@type": "WebPage",
     "@id": "https://r9y9.github.io/projects/nnsvs/"
   },
-  "headline": "NNSVS: Neural Network Based Singing Voice Synthesis Toolkit",
+  "headline": "NNSVS: A Neural Network Based Singing Voice Synthesis Toolkit",
   
   "datePublished": "2022-10-18T22:17:44+09:00",
   "dateModified": "2022-10-18T22:17:44+09:00",
@@ -413,7 +413,7 @@
 
 
 
-  <title>NNSVS: Neural Network Based Singing Voice Synthesis Toolkit | LESS IS MORE</title>
+  <title>NNSVS: A Neural Network Based Singing Voice Synthesis Toolkit | LESS IS MORE</title>
 </head>
 
 
@@ -739,7 +739,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>NNSVS: Neural Network Based Singing Voice Synthesis Toolkit</h1>
+  <h1>NNSVS: A Neural Network Based Singing Voice Synthesis Toolkit</h1>
 
   
 
@@ -795,6 +795,47 @@
 
 
 
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+<a class="btn btn-outline-primary btn-page-header" href="https://www.youtube.com/watch?v=u2210L3JXPo" target="_blank" rel="noopener">
+  Video
+</a>
+
+
+
+
+
+</div>
+
 
   
 </div>
@@ -804,7 +845,7 @@
   <div class="article-container">
 
     <div class="article-style">
-      <p>Submitted to <a href="https://2023.ieeeicassp.org/" target="_blank" rel="noopener">ICASSP 2023</a>.</p>
+      <p>Submitted to <a href="https://2023.ieeeicassp.org/" target="_blank" rel="noopener">ICASSP 2023</a> (arXiv: TBD).</p>
 <ul>
 <li><a href="#authors">Authors</a></li>
 <li><a href="#abstract">Abstract</a></li>
@@ -815,6 +856,13 @@
 <li><a href="#as">A/S</a></li>
 </ul>
 </li>
+<li><a href="#mixed-demo">Mixed demo</a>
+<ul>
+<li><a href="#sample-1">Sample 1</a></li>
+<li><a href="#sample-2">Sample 2</a></li>
+</ul>
+</li>
+<li><a href="#acknowledgments">Acknowledgments</a></li>
 <li><a href="#appendix">Appendix</a>
 <ul>
 <li><a href="#note-pitch-distribution">Note pitch distribution</a></li>
@@ -829,11 +877,7 @@
 <li>Tomoki Toda (Nagoya University)</li>
 </ul>
 <h2 id="abstract">Abstract</h2>
-<p>This paper describes the design of NNSVS, open-source software for neural network-based singing voice synthesis research.
-NNSVS is inspired by Sinsy, one of the open-source pioneers in singing voice synthesis research, and provides many new features such as multi-stream autoregressive models, autoregressive fundamental frequency models, and neural vocoders.
-Furthermore, NNSVS provides extensive documentation and scripts to build complete singing voice synthesis systems.
-Experimental results demonstrate that our best system significantly outperforms our reproduction of Sinsy and other baseline systems.
-The toolkit is available at <a href="https://github.com/nnsvs/nnsvs" target="_blank" rel="noopener">https://github.com/nnsvs/nnsvs</a>.</p>
+<p>This paper describes the design of NNSVS, an open-source software for neural network-based singing voice synthesis research. NNSVS is inspired by Sinsy, an open-source pioneer in singing voice synthesis research, and provides many additional features such as multi-stream models, autoregressive fundamental frequency models, and neural vocoders. Furthermore, NNSVS provides extensive documentation and numerous scripts to build complete singing voice synthesis systems. Experimental results demonstrate that our best system significantly outperforms our reproduction of Sinsy and other baseline systems. The toolkit is available at <a href="https://github.com/nnsvs/nnsvs" target="_blank" rel="noopener">https://github.com/nnsvs/nnsvs</a>.</p>
 <h2 id="systems">Systems</h2>
 <p>The following table summarizes the systems used in our experiments. All the models were trained on Namine Ritsu&rsquo;s database [1].</p>
 <table>
@@ -969,6 +1013,7 @@ The toolkit is available at <a href="https://github.com/nnsvs/nnsvs" target="_bl
 <li>NNSVS-WORLD v0 uses the model trained with the earlier version of NNSVS (as of Nov. 2021) [1]. See <a href="https://www.youtube.com/watch?v=pKeo9IE_L1I" target="_blank" rel="noopener">here</a> for details.</li>
 </ul>
 <h2 id="samples">Samples</h2>
+<p>The following samples are vocal only. Mixed demo can be found <a href="#mixed-demo">here</a>.</p>
 <h3 id="svs">SVS</h3>
 <p>Samples generated from musical score.</p>
 <p>Sample 1: 1st color</p>
@@ -1145,11 +1190,29 @@ The toolkit is available at <a href="https://github.com/nnsvs/nnsvs" target="_bl
 <tr><th>hn-USFGAN-WORLD</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202210_nnsvs/AnaSyn/[Test05]-hn-USFGAN-WORLD.wav" type="audio/wav"></audio></td>
 <td></td><td></td></tr></tbody></table>
+<h2 id="mixed-demo">Mixed demo</h2>
+<p>System: NNSVS-WORLD v4</p>
+<h3 id="sample-1">Sample 1</h3>
+<p>ERROR (from test data)</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/u2210L3JXPo" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<h3 id="sample-2">Sample 2</h3>
+<p>WAVE (from training data)</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/_5T0HPfeGjs" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This work was partly supported by JST CREST Grant Number JPMJCR19A3.</p>
 <h2 id="appendix">Appendix</h2>
 <h3 id="note-pitch-distribution">Note pitch distribution</h3>
-<p>We selected test songs to cover wide ranges of pitch, which distributions are shown in the following figure.
+<p>We selected test songs to cover a wide range of note pitches. Their distributions are shown in the following figure.
 Pitch is presented as MIDI note number, where A4 (69) corresponds to 440 Hz.
-The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880 Hz).</p>
+The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880 Hz), whereas those of the training data were D#3 (146.8 Hz) and B5 (987.8 Hz).</p>
 <div align="center"><img src="/images/ritsu_pitch_dist.png" width="100%" /></div>
 <h2 id="references">References</h2>
 <ul>
@@ -1195,7 +1258,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/projects/nnsvs/&amp;text=NNSVS:%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/projects/nnsvs/&amp;text=NNSVS:%20A%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -1208,7 +1271,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/projects/nnsvs/&amp;t=NNSVS:%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/projects/nnsvs/&amp;t=NNSVS:%20A%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -1221,7 +1284,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
       
       
       <li>
-        <a href="mailto:?subject=NNSVS:%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit&amp;body=https://r9y9.github.io/projects/nnsvs/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+        <a href="mailto:?subject=NNSVS:%20A%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit&amp;body=https://r9y9.github.io/projects/nnsvs/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -1234,7 +1297,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/projects/nnsvs/&amp;title=NNSVS:%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/projects/nnsvs/&amp;title=NNSVS:%20A%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -1247,7 +1310,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
       
       
       <li>
-        <a href="whatsapp://send?text=NNSVS:%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit%20https://r9y9.github.io/projects/nnsvs/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+        <a href="whatsapp://send?text=NNSVS:%20A%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit%20https://r9y9.github.io/projects/nnsvs/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -1260,7 +1323,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/projects/nnsvs/&amp;title=NNSVS:%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/projects/nnsvs/&amp;title=NNSVS:%20A%20Neural%20Network%20Based%20Singing%20Voice%20Synthesis%20Toolkit" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -1393,7 +1456,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
       
       <li><a href="/projects/dualcyclegan/">Non-parallel High-Quality Audio Super Resolution with Domain Adaptation and Resampling CycleGANs</a></li>
       
-      <li><a href="/projects/lvits/">Fast and high-fidelity end-to-end text-to-speech for edge devices with multi-band generation and inverse short-time Fourier transform</a></li>
+      <li><a href="/projects/lvits/">Lightweight and High-Fidelity End-to-End Text-to-Speech with Multi-Band Generation and Inverse Short-Time Fourier Transform</a></li>
       
       <li><a href="/projects/ttslearn/">ttslearn: Library for Pythonで学ぶ音声合成 (Text-to-speech with Python)</a></li>
       
