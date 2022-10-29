@@ -32,6 +32,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#sample-1&#34;&gt;Sample 1&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#sample-2&#34;&gt;Sample 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#sample-3&#34;&gt;Sample 3&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#acknowledgments&#34;&gt;Acknowledgments&lt;/a&gt;&lt;/li&gt;
@@ -372,6 +373,13 @@
 &lt;/div&gt;
 
 &lt;h3 id=&#34;sample-2&#34;&gt;Sample 2&lt;/h3&gt;
+&lt;p&gt;ARROW (from test data)&lt;/p&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/OqwVNUjzgAE&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&#34;sample-3&#34;&gt;Sample 3&lt;/h3&gt;
 &lt;p&gt;WAVE (from training data)&lt;/p&gt;
 
 &lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
@@ -382,10 +390,10 @@
 &lt;p&gt;This work was partly supported by JST CREST Grant Number JPMJCR19A3.&lt;/p&gt;
 &lt;h2 id=&#34;appendix&#34;&gt;Appendix&lt;/h2&gt;
 &lt;h3 id=&#34;note-pitch-distribution&#34;&gt;Note pitch distribution&lt;/h3&gt;
-&lt;p&gt;We selected test songs to cover a wide range of note pitches. Their distributions are shown in the following figure.
-Pitch is presented as MIDI note number, where A4 (69) corresponds to 440 Hz.
-The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880 Hz), whereas those of the training data were D#3 (146.8 Hz) and B5 (987.8 Hz).&lt;/p&gt;
+&lt;p&gt;We selected test songs to cover a wide range of note pitches. Their distributions are shown in the following figure.&lt;/p&gt;
 &lt;div align=&#34;center&#34;&gt;&lt;img src=&#34;https://r9y9.github.io/images/ritsu_pitch_dist.png&#34; width=&#34;100%&#34; /&gt;&lt;/div&gt;
+&lt;p&gt;Pitch is presented as MIDI note number, where A4 (69) corresponds to 440 Hz.
+The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880 Hz), whereas those of the training data were D#3 (146.8 Hz) and B5 (987.8 Hz).&lt;/p&gt;
 &lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;[1] Canon, [NamineRitsu] Blue (YOASOBI) [ENUNU model Ver.2, Singing DBVer.2 release], &lt;a href=&#34;https://www.youtube.com/watch?v=pKeo9IE_L1I&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://www.youtube.com/watch?v=pKeo9IE_L1I&lt;/a&gt;, Accessed: 2022.10.06.&lt;/li&gt;
