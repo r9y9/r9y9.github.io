@@ -185,6 +185,10 @@
 &lt;li&gt;Sinsy systems are based on NNSVS&amp;rsquo;s implementation.&lt;/li&gt;
 &lt;li&gt;NNSVS-WORLD v0 uses the model trained with the earlier version of NNSVS (as of Nov. 2021) [1]. See &lt;a href=&#34;https://www.youtube.com/watch?v=pKeo9IE_L1I&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt; for details.&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;Notes on NNSVS systems&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The code for reproducing experiments are available at &lt;a href=&#34;https://github.com/nnsvs/nnsvs/pull/151&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nnsvs/#151&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;samples&#34;&gt;Samples&lt;/h2&gt;
 &lt;p&gt;The following samples are vocal only. Mixed demo can be found &lt;a href=&#34;#mixed-demo&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;svs&#34;&gt;SVS&lt;/h3&gt;
