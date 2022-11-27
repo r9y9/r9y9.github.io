@@ -855,6 +855,7 @@
     <div class="article-style">
       <p>Preprint: <a href="https://arxiv.org/abs/2210.15987" target="_blank" rel="noopener">arXiv:2210.15987</a> (Submitted to <a href="https://2023.ieeeicassp.org/" target="_blank" rel="noopener">ICASSP 2023</a>)</p>
 <ul>
+<li><a href="#updates">Updates</a></li>
 <li><a href="#authors">Authors</a></li>
 <li><a href="#abstract">Abstract</a></li>
 <li><a href="#systems">Systems</a></li>
@@ -871,6 +872,11 @@
 <li><a href="#sample-3">Sample 3</a></li>
 </ul>
 </li>
+<li><a href="#bonus-samples">Bonus samples</a>
+<ul>
+<li><a href="#diffusion-models">Diffusion models</a></li>
+</ul>
+</li>
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 <li><a href="#appendix">Appendix</a>
 <ul>
@@ -878,6 +884,11 @@
 </ul>
 </li>
 <li><a href="#references">References</a></li>
+</ul>
+<h2 id="updates">Updates</h2>
+<ul>
+<li>2022/11/27: Added samples of diffusion-based acoustic models. See <a href="#bonus-samples">Bonus samples</a>.</li>
+<li>2022/10/18: Created the demo page.</li>
 </ul>
 <h2 id="authors">Authors</h2>
 <ul>
@@ -1023,7 +1034,7 @@
 </ul>
 <p>Notes on NNSVS systems</p>
 <ul>
-<li>The code for reproducing experiments are available at <a href="https://github.com/nnsvs/nnsvs/pull/151" target="_blank" rel="noopener">nnsvs/#151</a>.</li>
+<li>The code for reproducing experiments are available <a href="https://github.com/nnsvs/nnsvs/tree/master/recipes/namine_ritsu_utagoe_db/icassp2023-24k-world" target="_blank" rel="noopener">here</a>.</li>
 </ul>
 <h2 id="samples">Samples</h2>
 <p>The following samples are vocal only. Mixed demo can be found <a href="#mixed-demo">here</a>.</p>
@@ -1226,6 +1237,97 @@
   <iframe src="https://www.youtube.com/embed/_5T0HPfeGjs" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
 </div>
 
+<h2 id="bonus-samples">Bonus samples</h2>
+<h3 id="diffusion-models">Diffusion models</h3>
+<p>We integrated the diffusion model for SVS [4] to improve naturalness of synthetic voice.
+The following table summarizes the systems for bonus samples.</p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Acoustic Features</th>
+<th>Autoregressive streams</th>
+<th>Diffusion streams</th>
+<th>Vocoder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NNSVS-WORLD v4*</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>LF0, MGC, BAP</td>
+<td>-</td>
+<td>SiFi-GAN [7]</td>
+</tr>
+<tr>
+<td>NNSVS-Mel v5</td>
+<td>MEL, lF0, VUV</td>
+<td>LF0</td>
+<td>MEL</td>
+<td>SiFi-GAN</td>
+</tr>
+<tr>
+<td>NNSVS-WORLD v5</td>
+<td>MGC, LF0, VUV, BAP</td>
+<td>LF0</td>
+<td>MGC, BAP</td>
+<td>SiFi-GAN</td>
+</tr>
+</tbody>
+</table>
+<p>NNSVS-WORLD v4* is the best model (as of 2022/09) reported in our paper with the following two changes:</p>
+<ul>
+<li>sampling rate was changed from 24 kHz to 48 kHz</li>
+<li>the vocoder was changed from hn-uSFGAN to SiFI-GAN [7].</li>
+</ul>
+<p>NNSVS-Mel v5 and NNSVS-WORLD v5 are the systems using diffusion-based multi-stream acoustic models.</p>
+<p>Note that we used 48 kHz sampling rate for the additional experiments.</p>
+<p>Sample 1: 1st color</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-WORLD v4*</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test01]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test01]-NNSVS-WORLD v4*.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test01]-NNSVS-Mel v5 (SiFi-GAN).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>NNSVS-WORLD v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test01]-NNSVS-WORLD v5 (SiFi-GAN).wav" type="audio/wav"></audio></td>
+<td></td><td></td></tr></tbody></table><p>Sample 2: ARROW</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-WORLD v4*</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test02]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test02]-NNSVS-WORLD v4*.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test02]-NNSVS-Mel v5.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>NNSVS-WORLD v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test02]-NNSVS-WORLD v5.wav" type="audio/wav"></audio></td>
+<td></td><td></td></tr></tbody></table><p>Sample 3: BC</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-WORLD v4*</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test03]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test03]-NNSVS-WORLD v4*.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test03]-NNSVS-Mel v5 (SiFi-GAN).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>NNSVS-WORLD v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test03]-NNSVS-WORLD v5.wav" type="audio/wav"></audio></td>
+<td></td><td></td></tr></tbody></table><p>Sample 4: Close to you</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-WORLD v4*</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test04]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test04]-NNSVS-WORLD v4*.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test04]-NNSVS-Mel v5 (SiFi-GAN).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>NNSVS-WORLD v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test04]-NNSVS-WORLD v5.wav" type="audio/wav"></audio></td>
+<td></td><td></td></tr></tbody></table><p>Sample 5: ERROR</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-WORLD v4*</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test05]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test05]-NNSVS-WORLD v4*.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test05]-NNSVS-Mel v5 (SiFi-GAN).wav" type="audio/wav"></audio></td>
+</tr></tbody></table><table><thead>
+<tr><th>NNSVS-WORLD v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test05]-NNSVS-WORLD v5.wav" type="audio/wav"></audio></td>
+<td></td><td></td></tr></tbody></table>
 <h2 id="acknowledgments">Acknowledgments</h2>
 <p>This work was partly supported by JST CREST Grant Number JPMJCR19A3.</p>
 <h2 id="appendix">Appendix</h2>
@@ -1242,6 +1344,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
 <li>[4] J. Liu, C. Li, Y. Ren, et al., “DiffSinger: Singing Voice Synthesis via Shallow Diffusion Mechanism”, AAAI, vol. 36, no. 10, pp. 11020-11028, Jun. 2022.</li>
 <li>[5] R. Yoneyama, Y.-C. Wu, and T. Toda, “Unified Source-Filter GAN with Harmonic-plus-Noise Source Excitation Generation,” in Proc. Interspeech, 2022, pp. 848–852.</li>
 <li>[6] J. Kong, J. Kim, and J. Bae, “HiFi-GAN: Generative adversarial networks for efficient and high fidelity speech synthesis,” NeurIPS, vol. 33, pp. 17 022–17 033, 2020.</li>
+<li>[7] R. Yoneyama, Y.-C. Wu, and T. Toda, “Source-Filter HiFi-GAN: Fast and Pitch Controllable High-Fidelity Neural Vocoder.&quot; arXiv preprint arXiv:2210.15533, 2022.</li>
 </ul>
 
     </div>
