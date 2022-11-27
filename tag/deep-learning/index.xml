@@ -38,7 +38,8 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#bonus-samples&#34;&gt;Bonus samples&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#diffusion-models&#34;&gt;Diffusion models&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#japanese&#34;&gt;Japanese&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#mandarin&#34;&gt;Mandarin&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#acknowledgments&#34;&gt;Acknowledgments&lt;/a&gt;&lt;/li&gt;
@@ -402,7 +403,6 @@
 &lt;/div&gt;
 
 &lt;h2 id=&#34;bonus-samples&#34;&gt;Bonus samples&lt;/h2&gt;
-&lt;h3 id=&#34;diffusion-models&#34;&gt;Diffusion models&lt;/h3&gt;
 &lt;p&gt;We integrated the diffusion model for SVS [4] to improve naturalness of synthetic voice.
 The following table summarizes the systems for bonus samples.&lt;/p&gt;
 &lt;table&gt;
@@ -446,6 +446,7 @@ The following table summarizes the systems for bonus samples.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;NNSVS-Mel v5 and NNSVS-WORLD v5 are the systems using diffusion-based multi-stream acoustic models.&lt;/p&gt;
 &lt;p&gt;Note that we used 48 kHz sampling rate for the additional experiments.&lt;/p&gt;
+&lt;h3 id=&#34;japanese&#34;&gt;Japanese&lt;/h3&gt;
 &lt;p&gt;Sample 1: 1st color&lt;/p&gt;
 &lt;table&gt;&lt;thead&gt;
 &lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;NNSVS-WORLD v4*&lt;/th&gt;&lt;th&gt;NNSVS-Mel v5&lt;/th&gt;&lt;/tr&gt;
@@ -492,6 +493,34 @@ The following table summarizes the systems for bonus samples.&lt;/p&gt;
 &lt;tr&gt;&lt;th&gt;NNSVS-WORLD v5&lt;/th&gt;&lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS/[Test05]-NNSVS-WORLD v5.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&#34;mandarin&#34;&gt;Mandarin&lt;/h3&gt;
+&lt;p&gt;We provide Mandarin SVS samples using &lt;a href=&#34;https://wenet.org.cn/opencpop/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Opencpop database&lt;/a&gt; [8].&lt;/p&gt;
+&lt;p&gt;Sample 1: 2044001628&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;NNSVS-Mel v5&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test01]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test01]-NNSVS-Mel v5.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 2: 2044001629&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;NNSVS-Mel v5&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test02]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test02]-NNSVS-Mel v5.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 3: 2092003412&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;NNSVS-Mel v5&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test03]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test03]-NNSVS-Mel v5.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 4: 2093003457&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;NNSVS-Mel v5&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test04]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test04]-NNSVS-Mel v5.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;Sample 5: 2093003458&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;&lt;th&gt;Recording&lt;/th&gt;&lt;th&gt;NNSVS-Mel v5&lt;/th&gt;&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test05]-Recording.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;td&gt;&lt;audio controls=&#34;&#34;&gt;&lt;source src=&#34;https://r9y9.github.io/audio/202211_nnsvs/SVS_opencpop/[Test05]-NNSVS-Mel v5.wav&#34; type=&#34;audio/wav&#34;&gt;&lt;/audio&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
 &lt;h2 id=&#34;acknowledgments&#34;&gt;Acknowledgments&lt;/h2&gt;
 &lt;p&gt;This work was partly supported by JST CREST Grant Number JPMJCR19A3.&lt;/p&gt;
 &lt;h2 id=&#34;appendix&#34;&gt;Appendix&lt;/h2&gt;
@@ -509,6 +538,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
 &lt;li&gt;[5] R. Yoneyama, Y.-C. Wu, and T. Toda, “Unified Source-Filter GAN with Harmonic-plus-Noise Source Excitation Generation,” in Proc. Interspeech, 2022, pp. 848–852.&lt;/li&gt;
 &lt;li&gt;[6] J. Kong, J. Kim, and J. Bae, “HiFi-GAN: Generative adversarial networks for efficient and high fidelity speech synthesis,” NeurIPS, vol. 33, pp. 17 022–17 033, 2020.&lt;/li&gt;
 &lt;li&gt;[7] R. Yoneyama, Y.-C. Wu, and T. Toda, “Source-Filter HiFi-GAN: Fast and Pitch Controllable High-Fidelity Neural Vocoder.&amp;quot; arXiv preprint arXiv:2210.15533, 2022.&lt;/li&gt;
+&lt;li&gt;[8] Y. Wang, X. Wang, P. Zhu, et al., “Opencpop: a high-quality open source chinese popular song corpus for singing voice synthesis,&amp;quot; arXiv:2201.07429, 2022.&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

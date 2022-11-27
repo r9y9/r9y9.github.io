@@ -874,7 +874,8 @@
 </li>
 <li><a href="#bonus-samples">Bonus samples</a>
 <ul>
-<li><a href="#diffusion-models">Diffusion models</a></li>
+<li><a href="#japanese">Japanese</a></li>
+<li><a href="#mandarin">Mandarin</a></li>
 </ul>
 </li>
 <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -1238,7 +1239,6 @@
 </div>
 
 <h2 id="bonus-samples">Bonus samples</h2>
-<h3 id="diffusion-models">Diffusion models</h3>
 <p>We integrated the diffusion model for SVS [4] to improve naturalness of synthetic voice.
 The following table summarizes the systems for bonus samples.</p>
 <table>
@@ -1282,6 +1282,7 @@ The following table summarizes the systems for bonus samples.</p>
 </ul>
 <p>NNSVS-Mel v5 and NNSVS-WORLD v5 are the systems using diffusion-based multi-stream acoustic models.</p>
 <p>Note that we used 48 kHz sampling rate for the additional experiments.</p>
+<h3 id="japanese">Japanese</h3>
 <p>Sample 1: 1st color</p>
 <table><thead>
 <tr><th>Recording</th><th>NNSVS-WORLD v4*</th><th>NNSVS-Mel v5</th></tr>
@@ -1328,6 +1329,34 @@ The following table summarizes the systems for bonus samples.</p>
 <tr><th>NNSVS-WORLD v5</th></tr>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS/[Test05]-NNSVS-WORLD v5.wav" type="audio/wav"></audio></td>
 <td></td><td></td></tr></tbody></table>
+<h3 id="mandarin">Mandarin</h3>
+<p>We provide Mandarin SVS samples using <a href="https://wenet.org.cn/opencpop/" target="_blank" rel="noopener">Opencpop database</a> [8].</p>
+<p>Sample 1: 2044001628</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test01]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test01]-NNSVS-Mel v5.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><p>Sample 2: 2044001629</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test02]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test02]-NNSVS-Mel v5.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><p>Sample 3: 2092003412</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test03]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test03]-NNSVS-Mel v5.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><p>Sample 4: 2093003457</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test04]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test04]-NNSVS-Mel v5.wav" type="audio/wav"></audio></td>
+</tr></tbody></table><p>Sample 5: 2093003458</p>
+<table><thead>
+<tr><th>Recording</th><th>NNSVS-Mel v5</th></tr>
+</thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test05]-Recording.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test05]-NNSVS-Mel v5.wav" type="audio/wav"></audio></td>
+</tr></tbody></table>
 <h2 id="acknowledgments">Acknowledgments</h2>
 <p>This work was partly supported by JST CREST Grant Number JPMJCR19A3.</p>
 <h2 id="appendix">Appendix</h2>
@@ -1345,6 +1374,7 @@ The lowerest and highest notes of the test songs were D#4 (155.6 Hz) and A5 (880
 <li>[5] R. Yoneyama, Y.-C. Wu, and T. Toda, “Unified Source-Filter GAN with Harmonic-plus-Noise Source Excitation Generation,” in Proc. Interspeech, 2022, pp. 848–852.</li>
 <li>[6] J. Kong, J. Kim, and J. Bae, “HiFi-GAN: Generative adversarial networks for efficient and high fidelity speech synthesis,” NeurIPS, vol. 33, pp. 17 022–17 033, 2020.</li>
 <li>[7] R. Yoneyama, Y.-C. Wu, and T. Toda, “Source-Filter HiFi-GAN: Fast and Pitch Controllable High-Fidelity Neural Vocoder.&quot; arXiv preprint arXiv:2210.15533, 2022.</li>
+<li>[8] Y. Wang, X. Wang, P. Zhu, et al., “Opencpop: a high-quality open source chinese popular song corpus for singing voice synthesis,&quot; arXiv:2201.07429, 2022.</li>
 </ul>
 
     </div>
