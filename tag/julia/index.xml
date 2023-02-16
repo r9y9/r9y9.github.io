@@ -133,7 +133,7 @@
 &lt;ul&gt;
 &lt;li&gt;公式web: &lt;a href=&#34;https://cdn.rawgit.com/root-project/cling/master/www/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://cdn.rawgit.com/root-project/cling/master/www/index.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Github: &lt;a href=&#34;https://github.com/root-project/cling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/root-project/cling&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;紹介スライド: &lt;a href=&#34;http://llvm.org/devmtg/2010-11/Naumann-Cling.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LLVM Developers&#39; Meeting, &amp;ldquo;Creating cling, an interactive interpreter interface for clang&amp;rdquo;, Axel Naumann, Philippe Canal, Paul Russo, Vassil Vassilev, 04.11.2010, San Jose, CA, United States&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;紹介スライド: &lt;a href=&#34;http://llvm.org/devmtg/2010-11/Naumann-Cling.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LLVM Developers&amp;rsquo; Meeting, &amp;ldquo;Creating cling, an interactive interpreter interface for clang&amp;rdquo;, Axel Naumann, Philippe Canal, Paul Russo, Vassil Vassilev, 04.11.2010, San Jose, CA, United States&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;2-root&#34;&gt;2. ROOT&lt;/h2&gt;
 &lt;p&gt;ROOTの説明を公式ページから引用します：&lt;/p&gt;
@@ -249,29 +249,29 @@ julia&amp;gt; icxx&amp;quot;f($(pointer(x)), $(length(x)));&amp;quot;
 &lt;li&gt;&lt;a href=&#34;https://qiita.com/sasaki77/items/f6253e1d6638fba0e744&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;JupyterにC++のノートのためのclingカーネルを追加する [Mac] - Qiita&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/akira-okumura/RHEA&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;高エネルギー宇宙物理学のための ROOT 入門 – ROOT for High-Energy Astrophysics (RHEA)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;clangをベースにしているので原理的には可能だと思いますが、少なくともjupyterカーネルとしてはありません&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;Juliaのmacroを使えばよい、というスタンスで、提供していません。 &lt;a href=&#34;https://github.com/JuliaLang/IJulia.jl/blob/42d103eaa89d8cf1ab3bc0a8ee0e298bb9a91f80/src/magics.jl#L1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;参考リンク&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;https://root.cern.ch/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;公式ホームページ&lt;/a&gt; より引用: It is mainly written in C++ but integrated with other languages such as Python and R.&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
 &lt;p&gt;linux向け&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:5&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:5&#34;&gt;
 &lt;p&gt;Cxx.jlだと、パッケージのコンパイルに10秒かかる、とか過去にありました。最近は改善されていますが&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:6&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:6&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/rootpy/rootpy&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/rootpy/rootpy&lt;/a&gt; ライブラリはありますが、結局このライブラリのAPIを覚えないといけないという…はい…&amp;#160;&lt;a href=&#34;#fnref:6&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -302,20 +302,20 @@ julia&amp;gt; icxx&amp;quot;f($(pointer(x)), $(length(x)));&amp;quot;
 &lt;/ul&gt;
 &lt;h2 id=&#34;今後&#34;&gt;今後&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.amazon.co.jp/dp/4061529242&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;深層学習による自然言語処理&lt;/a&gt;を買ったので&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;、それを読んで、自然言語処理の勉強を続けようと思います。&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;ナイーブな実装多し、コピペ多し、descriptiveでない変数名多し、等&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;掘り返して探す気力がない・・・&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;Amazonによると、僕は5/29に買っている模様。なお現在の進捗は0&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -457,23 +457,23 @@ override CXX=g++-6
 &lt;li&gt;ビルドに失敗したとき、良く考えずに &lt;code&gt;make distcleanall&lt;/code&gt; するのをやめましょう（自戒&lt;/li&gt;
 &lt;li&gt;サブディレクトリの Makefile を使い分けて、rebuildは最小限にしましょう&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;大変ですよね&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/Keno/Cxx.jl&lt;/a&gt; です&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;環境によります&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
 &lt;p&gt;僕があほなだけの可能性が大いにあります&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -893,29 +893,29 @@ elapsed time: 39.194405845 seconds
 &lt;li&gt;&lt;a href=&#34;https://github.com/Keno/Cxx.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Keno/Cxx.jl&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://r9y9.github.io/blog/2015/12/22/cxx-jl/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Cxx.jl を使ってみた感想 + OpenCV.jl, Libfreenect2.jl の紹介&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;僕、ラッパー作ってばっかり…&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;opencvはpythonラッパーについて触れられているのに、PCLのラッパーは無いだと？うーむ、じゃあ作ってみるかーと、思った気もします。&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;公式にサポートはされていますが、過去にcythonではまったことがあるので、懐疑的&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
 &lt;p&gt;cythonでも同じようにかけますが、pythonだと&lt;code&gt;PointCloud(dtype=T)&lt;/code&gt;みたいに書くことになるんですかね&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:5&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:5&#34;&gt;
 &lt;p&gt;PCLVisualizerはGUIで使った方が便利なので、JuliaのREPLから使うことが多いですが&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:6&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:6&#34;&gt;
 &lt;p&gt;python-pclよりもインストールは大変だと思いますが…&amp;#160;&lt;a href=&#34;#fnref:6&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -1061,26 +1061,26 @@ int add&amp;lt;int&amp;gt;(int x, int y) { return x + y; }
 &lt;p&gt;実は、この記事を読んでも、きっと今は　Cxx.jl をビルドできないんじゃないかなと思うんですが、もしどうしてもビルドしたい、ということであれば、僕のローカルの llvm, clang, lldb, julia の revision を調べて教えるので、言ってください。&lt;/p&gt;
 &lt;h3 id=&#34;20151228-追記&#34;&gt;2015/12/28 追記&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;http://qiita.com/r9y9/items/37633ed37e22612b5224&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Cxx.jl を動作させるための julia, llvm, clang, lldb のコミットハッシュ | qiita&lt;/a&gt;&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;例えば template を多用している場合、Cインタフェースを作るのは面倒です&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;※正確に理解していないため、あまり宛てにしないでください）&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;多少の試行錯誤、というのは、Julia と Cxx.jl のリビジョンは、経験的には必ずしも（特にJuliaの）masterで動作しないので、Julia と Cxx.jl を master から少し遡って、ビルドできるか試行錯誤する、という意味です&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
 &lt;p&gt;ビルドが通ったことがある、の方が正確ですが&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:5&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:5&#34;&gt;
 &lt;p&gt;なお、現状のJulia masterとCxx.jl masterでは、エラーが出ると踏んでおります、、、&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -1271,14 +1271,14 @@ s()
 &lt;/ul&gt;
 &lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://twitter.com/sorami&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@sorami&lt;/a&gt;さんを筆頭とする運営の方々、本当にありがとうございました！楽しかったです。&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;とスライドに書いたけど、考えなおすと、僕が思う品質の高さ順、の方が正確です、失礼しました。MelGeneneralizedCepstrumsは一番気合入れて書いたけど、ユーザーがいるかといったらいないし、RobustPCAはさっと書いただけだけど、アルゴリズムとしては汎用的だし。またRobustPCAだけ毛色が違いますが、応用例で紹介したのでリストに入れておきました。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -1444,20 +1444,20 @@ end
 &lt;/ul&gt;
 &lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 &lt;p&gt;ポインタにまつわるハマりどころとその解決法を紹介しました。今回紹介したものはすべて &lt;a href=&#34;https://github.com/r9y9/WORLD.jl&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;WORLD.jl&lt;/a&gt; という &lt;a href=&#34;http://ml.cs.yamanashi.ac.jp/world/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;音声分析変換合成システムWORLD&lt;/a&gt; のラッパーを書いていたときに得た知見です。やっと&lt;code&gt;WORLD.jl&lt;/code&gt;が安定して動くようになってきて公式パッケージにしようかなぁと考えているところですので、興味のある方はぜひ触ってみてください。&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;immutableでなければいけない理由はまだよくわかっていないのですが、少なくとも &lt;a href=&#34;https://github.com/JuliaLang/julia/pull/8948&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;#8948&lt;/a&gt; にはそう書いてあります&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;たちの悪いことに、この実装でもだいたい上手く動くんですよね…。数値型がimmutableだからコピーしてもそうそうアドレスが変わらないとかそういう理由だろうかと考えていますが、ちょっとよくわかっていないです&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;ArrayとSubArrayの使い分けはどうすればいいのか、それぞれどういう目的で作られたのか等、僕も勉強中で理解が曖昧なため説明できません、すみません。&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     

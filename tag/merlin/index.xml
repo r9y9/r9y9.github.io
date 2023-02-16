@@ -142,17 +142,17 @@ do_post_filtering: False
 &lt;p&gt;のように、&lt;code&gt;[Waveform]&lt;/code&gt; セクションに &lt;code&gt;do_post_filtering&lt;/code&gt; という項目を加えて、生成結果を聴き比べてみることをおすすめします。ポストフィルタによって劇的に音質が改善されているのがわかると思います。さらに興味のある方は、コードを読んでみてください。参考文献も探しましたが、僕には見つかりませんでした。ご存知の方がいれば教えていただきたいです。&lt;/p&gt;
 &lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 &lt;p&gt;Merlin、最初は使いにくいなと思っていましたが、頑張って読んでみれば、とても勉強になりました（使いやすいとは言っていない）。後半はだれて、適当なまとめになってしまったかもしれません、すいません。もろもろの不満から&lt;a href=&#34;https://github.com/r9y9/nnmnkwii&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;新しいツール&lt;/a&gt;を作りましたが、それはまた別の機会に紹介したいと思います。ありがとうございました。&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html&lt;/a&gt; によれば、This is a very clearly written Python script だそうです…。僕に読解力がないだけの可能性があります&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;自分で作ったモデルが、どうしてもmerlinに勝てない、なぜだ、と悩んでいたとき、Merlinに言及している論文の一つに、ポストフィルタを使っているとの記述があり、探ってみるとたしかにあった、という感じでした。&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     

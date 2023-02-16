@@ -1352,20 +1352,20 @@ The models were similary configured as the above experiments.&lt;/p&gt;
 &lt;li&gt;WORLD: &lt;a href=&#34;https://github.com/mmorise/World&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/mmorise/World&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Y. Hono et al, &amp;ldquo;Recent Development of the DNN-based Singing Voice Synthesis System — Sinsy,&amp;rdquo; Proc. of APSIPA, 2017. (&lt;a href=&#34;http://www.apsipa.org/proceedings/2018/pdfs/0001003.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PDF&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;NEUTRINO並の品質の歌声合成エンジンが作れたらいいなとは思っていますが、まだまだ道のりは長そうです。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;http://sinsy.sourceforge.net/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://sinsy.sourceforge.net/&lt;/a&gt; 有名なものにsinsyがありますが、DNNモデルの学習など、すべてがオープンソースなわけではありません&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;万が一の場合は、察してください…&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -1687,17 +1687,17 @@ Mel-spectrograms (with the range of 70 - 11025 Hz) were used for local condition
   year={2020}
 }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;Note that our work is not closely related to an unsupervised waveform synthesis model, &lt;a href=&#34;https://arxiv.org/abs/1802.04208&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;WaveGAN&lt;/a&gt;.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;Audio quaility can be improved by using the full-band frequency range, but it may suffer from the over-smoothing problem in TTS.&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -1954,17 +1954,17 @@ Your browser does not support the audio element.
 &lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1611.09482&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tom Le Paine, Pooya Khorrami, Shiyu Chang, et al, &amp;ldquo;Fast Wavenet Generation Algorithm&amp;rdquo;, arXiv:1611.09482, Nov. 2016&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.monthly-hack.com/entry/2018/02/23/203208&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;VQ-VAEの追試で得たWaveNetのノウハウをまとめてみた。 - Monthly Hacker&amp;rsquo;s Blog&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;曖昧な表現で申し訳ございません&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;僕が使った当時は、WNの部分は十分にテストされていなかったのと、WNのコードは僕のコードをtfにtranslateした感じな（著者がそういってます）ので、WNは自分の実装を使った次第です&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -2194,20 +2194,20 @@ Your browser does not support the audio element.
 &lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/11/23/dctts/&#34;&gt;Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention. [arXiv:1710.08969] | LESS IS MORE&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://r9y9.github.io/blog/2017/11/12/jsut_ver1/&#34;&gt;日本語 End-to-end 音声合成に使えるコーパス JSUT の前処理 | LESS IS MORE&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;VCTKの無音区間除去のためという文脈ではなく、テキストにshort pause / long pause を挿入するためです&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;transcriptionがない1話者 (p315) のデータは除いています&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;Dropoutをきつくするとロスが下がりにくく、一方でゆるくすると汎化しにくい印象がありました。ので、Dropoutきつめである程度汎化させたあと、Dropoutをゆるめにしてfine turningする、といった戦略を取ってみました。&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -2505,20 +2505,20 @@ Your browser does not support the audio element.
 &lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1705.03122&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Jonas Gehring, Michael Auli, David Grangier, et al, &amp;ldquo;Convolutional Sequence to Sequence Learning&amp;rdquo;, arXiv:1705.03122, May 2017.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/He_Delving_Deep_into_ICCV_2015_paper.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;He, Kaiming, et al. &amp;ldquo;Delving deep into rectifiers: Surpassing human-level performance on imagenet classification.&amp;rdquo; Proceedings of the IEEE international conference on computer vision. 2015.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;DeepVoice3でカーネルサイズ3で試すと、全然うまくいきませんでした&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;推論時にアテンションの制約をいれても、「ふぁふぁふぁふぁふぁ」みたいな繰り返しが起きてしまいました&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;論文ではエンコーダデコーダの学習とSRNNの学習を別々でおこなっていますが、僕は一緒にやりました。そのせいもあります&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -3029,23 +3029,23 @@ Your browser does not support the audio element.
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1703.10135&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Tacotron: Towards End-to-End Speech Synthesis / arXiv:1703.10135&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;URLには現時点のgitのコミットハッシュが入っています。最新版は、 &lt;a href=&#34;https://github.com/r9y9/tacotron_pytorch&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/r9y9/tacotron_pytorch&lt;/a&gt; から直接辿ってください。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/keithito/tacotron/pull/43#issuecomment-332068107&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/keithito/tacotron/pull/43#issuecomment-332068107&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;dropoutを切ってしまうと、アライメントが死んでしまうというバグ？に苦しんでおり…未だ原因を突き止められていません&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
 &lt;p&gt;たとえばロスはちょっと違って、高周波数帯域に比べて低周波数帯域の重みを少し大きくしていたりしています。これは既存のtf実装に従いました。&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -3623,17 +3623,17 @@ Your browser does not support the audio element.
 &lt;li&gt;&lt;a href=&#34;https://github.com/SythonUK/whisperVC&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/SythonUK/whisperVC&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://sython.org/papers/ASJ/saito2017asja.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Yuki Saito, Shinnosuke Takamichi, and Hiroshi Saruwatari, &amp;ldquo;Experimental investigation of divergences in adversarial DNN-based speech synthesis,&amp;rdquo; Proc. ASJ, Spring meeting, 1-8-7, &amp;ndash;, Sep., 2017. (in Japanese)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;継続長モデル、音響モデルともにRNNを使うと良くなることがわかっているのですが、計算リソースの都合上、今回は音響モデルはFeed-forwardにしました。Feed-forwardだと30分で終わる計算が、RNNだと数時間かかってしまうので…&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;他も色々やったのですが、だいたい失敗でした。&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -3819,14 +3819,14 @@ Your browser does not support the audio element.
 &lt;li&gt;&lt;a href=&#34;https://github.com/SythonUK/whisperVC&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/SythonUK/whisperVC&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Kobayashi, Kazuhiro, et al. &amp;ldquo;Statistical Singing Voice Conversion with Direct Waveform Modification based on the Spectrum Differential.&amp;rdquo; Fifteenth Annual Conference of the International Speech Communication Association. 2014.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;論文では有効性が示されていますが、僕が試した範囲内で、かつ僕の耳にによれば、あまり大きな改善は確認できていません。客観的な評価は、そのうちする予定です。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -3999,29 +3999,29 @@ Your browser does not support the audio element.
 &lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 &lt;p&gt;いままでさんざん、汎用性とは程遠いクソコードを書いてきましたが、今回こそは少しはマシなものを作ろうと思って作りました。僕以外の人にも役に立てば幸いです。あと、この記事を書いた目的は、いろんな人に使ってみてほしいのと、使ってみた結果のフィードバックがほしい（バグ見つけた、そもそもエラーで動かん、ここがクソ、等）ということなので、フィードバックをくださると助かります。よろしくお願いします。&lt;/p&gt;
 &lt;p&gt;ちなみに名前ですが、ななみ or しちみと読んでください。何でもいいのですが、常識的に考えてあぁ確かに読めないなぁと思いました（小並感）。ドキュメントにあるロゴは、昔三次元物体追跡の実験をしていたときに撮ったく某モンのポイントクラウドですが、そのうち七味的な画像に変えようと思っています。適当ですいません&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;リンク切れが怖いので、v0.0.1のリンクを貼りました。できれば、最新版をご覧ください。 &lt;a href=&#34;https://r9y9.github.io/nnmnkwii/latest/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://r9y9.github.io/nnmnkwii/latest/&lt;/a&gt; こちらからたどれます&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;知っている人にはまたか、と言われそう&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
 &lt;p&gt;音響モデルの提供をライブラリの範囲外とすることで、間接的に達成されています&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
 &lt;p&gt;バグにエンカウントしたらすぐに使うのをやめてしまう人には、向いていないかもしれません。&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:5&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:5&#34;&gt;
 &lt;p&gt;Merlinは、エジンバラ大学の優秀な研究者の方々によって作られています&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:6&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:6&#34;&gt;
 &lt;p&gt;f0分析、スペクトル包絡抽出、非周期性成分の抽出法がすべてことなる、またポストフィルタの種類も異なる。条件をある程度揃えて比較するのが面倒そうだったので（なにせHTSを使ったモデルの学習は数時間かかるし…）、手を抜きました、すいません&amp;#160;&lt;a href=&#34;#fnref:6&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -4155,17 +4155,17 @@ do_post_filtering: False
 &lt;p&gt;のように、&lt;code&gt;[Waveform]&lt;/code&gt; セクションに &lt;code&gt;do_post_filtering&lt;/code&gt; という項目を加えて、生成結果を聴き比べてみることをおすすめします。ポストフィルタによって劇的に音質が改善されているのがわかると思います。さらに興味のある方は、コードを読んでみてください。参考文献も探しましたが、僕には見つかりませんでした。ご存知の方がいれば教えていただきたいです。&lt;/p&gt;
 &lt;h2 id=&#34;おわりに&#34;&gt;おわりに&lt;/h2&gt;
 &lt;p&gt;Merlin、最初は使いにくいなと思っていましたが、頑張って読んでみれば、とても勉強になりました（使いやすいとは言っていない）。後半はだれて、適当なまとめになってしまったかもしれません、すいません。もろもろの不満から&lt;a href=&#34;https://github.com/r9y9/nnmnkwii&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;新しいツール&lt;/a&gt;を作りましたが、それはまた別の機会に紹介したいと思います。ありがとうございました。&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
 &lt;p&gt;&lt;a href=&#34;http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://jrmeyer.github.io/merlin/2017/02/14/Installing-Merlin.html&lt;/a&gt; によれば、This is a very clearly written Python script だそうです…。僕に読解力がないだけの可能性があります&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
 &lt;p&gt;自分で作ったモデルが、どうしてもmerlinに勝てない、なぜだ、と悩んでいたとき、Merlinに言及している論文の一つに、ポストフィルタを使っているとの記述があり、探ってみるとたしかにあった、という感じでした。&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;
+&lt;/div&gt;
 </description>
     </item>
     
