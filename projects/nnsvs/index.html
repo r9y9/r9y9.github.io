@@ -878,6 +878,11 @@
 <li><a href="#mandarin">Mandarin</a></li>
 </ul>
 </li>
+<li><a href="#error-cases">Error cases</a>
+<ul>
+<li><a href="#unstable-pitch-of-diffsinger">Unstable pitch of DiffSinger</a></li>
+</ul>
+</li>
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 <li><a href="#appendix">Appendix</a>
 <ul>
@@ -888,6 +893,7 @@
 </ul>
 <h2 id="updates">Updates</h2>
 <ul>
+<li>2023/02/27: Added error cases to address reviewer&rsquo;s comments. See <a href="#error-cases">Error cases</a>.</li>
 <li>2022/11/27: Added samples of diffusion-based acoustic models. See <a href="#bonus-samples">Bonus samples</a>.</li>
 <li>2022/10/18: Created the demo page.</li>
 </ul>
@@ -1357,6 +1363,18 @@ The following table summarizes the systems for bonus samples.</p>
 </thead><tbody><tr><td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test05]-Recording.wav" type="audio/wav"></audio></td>
 <td><audio controls=""><source src="/audio/202211_nnsvs/SVS_opencpop/[Test05]-NNSVS-Mel v5.wav" type="audio/wav"></audio></td>
 </tr></tbody></table>
+<h2 id="error-cases">Error cases</h2>
+<h3 id="unstable-pitch-of-diffsinger">Unstable pitch of DiffSinger</h3>
+<div align="center"><img src="/images/nnsvs/error_diffsinger_unstable_pitch.png" width="100%" /></div>
+<table><thead>
+<tr><th>DiffSinger</th><th>Recording</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-DiffSinger.wav" type="audio/wav"></audio></td>
+<td><audio controls=""><source src="/audio/202210_nnsvs/SVS/[Test05]-Recording.wav" type="audio/wav"></audio></td>
+</tr></tbody></table>
+<p>As shown in the figure (blue: discontinous F0; green: unstable vibrato), the pitch contour of the DiffSinger is sometimes unstable.</p>
 <h2 id="acknowledgments">Acknowledgments</h2>
 <p>This work was partly supported by JST CREST Grant Number JPMJCR19A3.</p>
 <h2 id="appendix">Appendix</h2>
