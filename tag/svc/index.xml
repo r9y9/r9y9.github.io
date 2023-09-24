@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SVC | LESS IS MORE</title>
+    <link>https://r9y9.github.io/tag/svc/</link>
+      <atom:link href="https://r9y9.github.io/tag/svc/index.xml" rel="self" type="application/rss+xml" />
+    <description>SVC</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Fri, 22 Sep 2023 09:00:00 +0900</lastBuildDate>
+    <image>
+      <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
+      <title>SVC</title>
+      <link>https://r9y9.github.io/tag/svc/</link>
+    </image>
+    
+    <item>
+      <title>A Comparative Study of Voice Conversion Models with Large-Scale Speech and Singing Data: The Nagoya University Systems for the Singing Voice Conversion Challenge 2023</title>
+      <link>https://r9y9.github.io/projects/svcc2023/</link>
+      <pubDate>Fri, 22 Sep 2023 09:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/svcc2023/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
