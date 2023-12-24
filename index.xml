@@ -5,12 +5,36 @@
     <link>https://r9y9.github.io/</link>
       <atom:link href="https://r9y9.github.io/index.xml" rel="self" type="application/rss+xml" />
     <description>LESS IS MORE</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Fri, 22 Sep 2023 09:00:00 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 24 Dec 2023 12:00:00 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
       <title>LESS IS MORE</title>
       <link>https://r9y9.github.io/</link>
     </image>
+    
+    <item>
+      <title>PromptTTS&#43;&#43;: Controlling Speaker Identity in Prompt-based Text-to-Speech using Natural Language Descriptions</title>
+      <link>https://r9y9.github.io/projects/promptttspp/</link>
+      <pubDate>Sun, 24 Dec 2023 12:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/promptttspp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Enhancing Multilingual TTS with Voice Conversion based Data Augmentation and Posterior Embedding</title>
+      <link>https://r9y9.github.io/projects/mmvtts/</link>
+      <pubDate>Sun, 24 Dec 2023 11:57:59 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/mmvtts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Electrolaryngeal Speech Intelligibility Enhancement Through Robust Linguistic Encoders</title>
+      <link>https://r9y9.github.io/projects/elsie/</link>
+      <pubDate>Sun, 24 Dec 2023 08:00:00 +0900</pubDate>
+      <guid>https://r9y9.github.io/projects/elsie/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>A Comparative Study of Voice Conversion Models with Large-Scale Speech and Singing Data: The T13 Systems for the Singing Voice Conversion Challenge 2023</title>
@@ -165,22 +189,6 @@
 &lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
 &lt;p&gt;Additional samples: &lt;a href=&#34;https://anonymous7n.github.io/asru2023/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://anonymous7n.github.io/asru2023/&lt;/a&gt;&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>PromptTTS&#43;&#43;: Controlling Speaker Identity in Prompt-based Text-to-Speech using Natural Language Descriptions</title>
-      <link>https://r9y9.github.io/projects/promptttspp/</link>
-      <pubDate>Mon, 18 Sep 2023 09:00:00 +0900</pubDate>
-      <guid>https://r9y9.github.io/projects/promptttspp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Electrolaryngeal Speech Intelligibility Enhancement Through Robust Linguistic Encoders</title>
-      <link>https://r9y9.github.io/projects/elsie/</link>
-      <pubDate>Mon, 18 Sep 2023 08:00:00 +0900</pubDate>
-      <guid>https://r9y9.github.io/projects/elsie/</guid>
-      <description></description>
     </item>
     
     <item>
