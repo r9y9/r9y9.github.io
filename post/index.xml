@@ -5,12 +5,128 @@
     <link>https://r9y9.github.io/post/</link>
       <atom:link href="https://r9y9.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Blog posts</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Tue, 18 Jan 2022 20:59:28 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Sun, 31 Dec 2023 23:09:56 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
       <title>Blog posts</title>
       <link>https://r9y9.github.io/post/</link>
     </image>
+    
+    <item>
+      <title>2023年の振り返り/Looking Back at 2023</title>
+      <link>https://r9y9.github.io/blog/2023/12/31/2023/</link>
+      <pubDate>Sun, 31 Dec 2023 23:09:56 +0900</pubDate>
+      <guid>https://r9y9.github.io/blog/2023/12/31/2023/</guid>
+      <description>&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;新年明けましておめでとうございます。今年もよろしくお願いします。ブログを書かなくなって久しいですが、久しぶりになんか書いてみます。自分用のメモみたいなものですが、よろしければご覧ください。&lt;/p&gt;
+&lt;h2 id=&#34;2023年-タイムライン&#34;&gt;2023年 タイムライン&lt;/h2&gt;
+&lt;p&gt;Googleカレンダーを見ながら思い出せる範囲で書いてみます&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1月
+&lt;ul&gt;
+&lt;li&gt;静岡旅行に行きました。&lt;a href=&#34;https://tabelog.com/shizuoka/A2201/A220101/22033418/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;海鮮丼&lt;/a&gt;が美味しかったです&lt;/li&gt;
+&lt;li&gt;家事代行サービスの利用を始めました。月2回の頻度で今も続けていますが、水回りの掃除がかなり楽になりました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;2月
+&lt;ul&gt;
+&lt;li&gt;ICASSP 2023 論文アクセプト 4/4&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;3月
+&lt;ul&gt;
+&lt;li&gt;年度末で仕事が忙しかったような気がします&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;4月
+&lt;ul&gt;
+&lt;li&gt;博士研究の中間発表をしました。タイトル: Neural Singing Voice Synthesis Towards Unified and Controllable Voice Synthesis。学生が選ぶ優秀発表賞、というのをもらいました&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/2306.14422&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;The singing voice conversion challenge 2023&lt;/a&gt; に参加することになって、音声変換について色々勉強しなおしました。&lt;/li&gt;
+&lt;li&gt;ICASSP 2023 の発表資料準備も並行してやらなくてはいけず、忙しかった気がします&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;6月
+&lt;ul&gt;
+&lt;li&gt;ICASSP 2023 @ギリシャ に参加しました。NNSVS について発表しました。 &lt;a href=&#34;https://arxiv.org/abs/2210.15987&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://arxiv.org/abs/2210.15987&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;7月
+&lt;ul&gt;
+&lt;li&gt;ASRU 2023 に SVCC 2023 の話で論文を投稿しました。 &lt;a href=&#34;https://arxiv.org/abs/2310.05203&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://arxiv.org/abs/2310.05203&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;8月
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://linecorp.com/ja/career/newgrads/internship/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;LINEサマーインターンシップ&lt;/a&gt; でメンターをやりました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;9月
+&lt;ul&gt;
+&lt;li&gt;ASRU 2023 論文アクセプト。blind review は初めてでしたが、良いreview結果で安心しました&lt;/li&gt;
+&lt;li&gt;LINEサマーインターンシップ終わり。自分がメンターをした件については、成果をまとめて ICASSP 2024 に論文を出しました &lt;a href=&#34;https://arxiv.org/abs/2309.08140&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://arxiv.org/abs/2309.08140&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;音響学会に参加しました。母校である名工大での開催だったというのもあり、せっかくなので発表しました。発表は10年振りだったと思います。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;10月
+&lt;ul&gt;
+&lt;li&gt;L/Y 合併&lt;/li&gt;
+&lt;li&gt;久しぶりにチームラボの展示を見に行きました。自分が携わった作品がまだあって懐かしみを感じました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;11月
+&lt;ul&gt;
+&lt;li&gt;L/Y 合併後、仕事がずっとバタバタ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;12月
+&lt;ul&gt;
+&lt;li&gt;ICASSP 2024 論文アクセプト 3/4&lt;/li&gt;
+&lt;li&gt;ASRU 2023 @ 台北 に参加しました。SVCC 2023 の論文を発表しました。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なんだか仕事のことばかりになってしまいましたが、まぁこんなもんですかね。&lt;/p&gt;
+&lt;h2 id=&#34;仕事&#34;&gt;仕事&lt;/h2&gt;
+&lt;p&gt;どんな仕事をしているかこれまで一切書いてこなかったので、良い機会だと思って書きます。&lt;/p&gt;
+&lt;p&gt;二年くらい前からTech Leadとして、音声合成の研究開発をしています。自分の仕事を一言で表すと「チームの成果を最大化すること」だと考えて、チームメンバーの成長支援、問題解決、インターンサポート、採用活動、チームの開発方針の意思決定など、必要に応じてメンバー皆さんと協力して行なっています。また、自分自身もindividual contributor (IC) として、技術的な課題の解決にも携わっています。&lt;/p&gt;
+&lt;p&gt;弊チームの中だと、自分は音声合成に関する経験が比較的豊富であることから、自分からチームメンバーへの「知識蒸留」を心がけて仕事をしています &amp;amp; してきました。知識蒸留を心がけるようにして何年も経つと、自分が伝えられる有益な知識や経験はまだあるのかと不安に思うこともありますが、学び続ける姿勢を保つことによって、自分の知識、経験を常にアップデートし続けられるようにしています。自分自身の知識蒸留を心がけてはいるものの、僕自身、チームメンバーから学ぶこともとても多いです。相互に学び合える関係性ができていると良いのかなと思っています。&lt;/p&gt;
+&lt;p&gt;今年を振り返るとどうかというと、割とICとして力を発揮できたような気がします。これには以下のような良いことがありました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自分自身、まだ一人の研究者 or エンジニアとしての価値を発揮できるという実感を得られたこと。主著論文 x 2 アクセプト、共著もいくらか。また、コードもたくさん書けました。自分が主導した研究テーマをインターン生と一緒に進めて、ICASSP 2024 論文採択まで持っていけたのも良かったです。&lt;/li&gt;
+&lt;li&gt;チームメンバーに仕事をまかせられるようになってきたこと。各自が自立して仕事をしてくれるようになり、結果として自分がICとして仕事をする時間ができるようになったのだと思います。チームを大きくするにつれて、自分がいなくても成立するチームを作ることをずっと意識してきましたが、ある程度実現できているのかなと思います。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;その他の雑感は以下の通りです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;インターンや新卒社員を含む方々のメンターをすることで、若い人の成長を見ることができて多くの刺激が得られました。彼らの成長にいかにして貢献するか、というのは最近よく考えることであり、とても重要なことであると感じます。未来を作るのは若い人たちなので。若い人たちが成長していく様を見ていると、自分も刺激を受けて、より成長したいと思わされます。&lt;/li&gt;
+&lt;li&gt;音声合成に加えて、歌声合成、音声・歌声変換の技術の開発に取り組みました。自分自身の技術の幅を広くできたように思います。&lt;/li&gt;
+&lt;li&gt;技術は人の役に立ってナンボであると考えているので、研究成果をプロダクトに活かすべく奮闘中です。が、まだ道半ばです。最近は良い感じに進みつつはあるので、2024年も引き続き頑張ります。なお、昨今のAI系の急速な発展を受けて、論文を通すための研究&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;ではなく、人の役に立つ研究、技術開発をしたい、というのを強く意識するようになりました。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;大学&#34;&gt;大学&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;社会人博士は予想以上に厳しいです。ジャーナルを書かないといけないですが、まだ一本も書けていません。あまり悲観はしていませんが、このままだと成果なしD3になってしまう予定です。研究を進めたいところですが、直近もなかなかまとまった時間が取れそうにないのが正直なところ。一応、国際会議に通ったカンファレンスペーパーはあるので、それをベースに書ければ、と先生とは相談しています。2024年は頑張ります…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;プライベート&#34;&gt;プライベート&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://ymarket.craftbeer.nagoya/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ワイマーケット&lt;/a&gt; のクラフトビールが美味しいことに気づきました。一般にスーパーで売っているビールと比べるとかなり高いですが、香りも味もバリエーションが豊富で、値段に見合った価値があると感じます。リピートしています&lt;/li&gt;
+&lt;li&gt;ワインにもハマって、一時期&lt;a href=&#34;https://www.enoteca.co.jp/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;エノテカ&lt;/a&gt;でワインをよく買っていました。ワインセラー欲しいなあと思っていましたが、まだ買うには至っていません&lt;/li&gt;
+&lt;li&gt;VTuber の配信を見るのが割と当たり前のようになりました。面白いです。み俺誇&lt;/li&gt;
+&lt;li&gt;夫婦ともに美味しいものを食べるのが好きなので、ちょっといいイタリアンやお寿司を食べにいくことが増えました。色々行きましたが、ここ最近で特に美味しかったのは&lt;a href=&#34;https://tabelog.com/tokyo/A1318/A131810/13057629/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;参宮橋のRegalo&lt;/a&gt;です。シェフが&lt;a href=&#34;https://www.youtube.com/@regalo_ogura&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;YouTube&lt;/a&gt;でもやっている通り、本当に熱々のパスタが出てきました。どれも美味しかったので、また行きたい。名古屋でよく行くようになったお寿司屋さんは、&lt;a href=&#34;https://tabelog.com/aichi/A2301/A230101/23066474/dtlmenu/lunch/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;鮨かど&lt;/a&gt;、&lt;a href=&#34;https://tabelog.com/aichi/A2301/A230104/23044474/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;すし壱藤&lt;/a&gt;です。どっちも美味しい。高すぎないのも良いです&lt;/li&gt;
+&lt;li&gt;ハンドドリップコーヒーにハマりました。最近は、コーヒー豆は &lt;a href=&#34;https://philocoffea.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://philocoffea.com/&lt;/a&gt; で買っています。&lt;/li&gt;
+&lt;li&gt;夫婦仲はとてもよく、毎日楽しく過ごせています。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2024-年の抱負&#34;&gt;2024 年の抱負&lt;/h2&gt;
+&lt;p&gt;漠然としていますが、世界でも活躍できる人材になりたいなーと思っています（恐れ多いですが、言葉にして書き出してみる）。自分に十分な能力があるのかと考えると、まだ自信を持てない部分も多いですが、自己研鑽を続けて自信をつけていきたいと思っています。がんばるます。&lt;/p&gt;
+&lt;p&gt;2024年もよろしくお願いします。&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;論文n本通りましたというポストをたくさんtwitterで見ますが、論文を通すこと自体が目的になってしまっているような印象を受けてしまうので、苦手です…。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Hugo Academic を使ってウェブサイトをアップデートしました</title>
