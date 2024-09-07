@@ -345,7 +345,7 @@
   
   <meta property="og:site_name" content="LESS IS MORE" />
   <meta property="og:url" content="https://r9y9.github.io/projects/nansyttspp/" />
-  <meta property="og:title" content="Description-based Controllable Text-to-Speech with Cross-Lingual Control Transfer | LESS IS MORE" />
+  <meta property="og:title" content="Description-based Controllable Text-to-Speech with Cross-Lingual Voice Control | LESS IS MORE" />
   <meta property="og:description" content="Submitted to ICASSP 2025" /><meta property="og:image" content="https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
@@ -379,7 +379,7 @@
     "@type": "WebPage",
     "@id": "https://r9y9.github.io/projects/nansyttspp/"
   },
-  "headline": "Description-based Controllable Text-to-Speech with Cross-Lingual Control Transfer",
+  "headline": "Description-based Controllable Text-to-Speech with Cross-Lingual Voice Control",
   
   "datePublished": "2024-09-05T21:00:18+09:00",
   "dateModified": "2024-09-05T21:00:18+09:00",
@@ -413,7 +413,7 @@
 
 
 
-  <title>Description-based Controllable Text-to-Speech with Cross-Lingual Control Transfer | LESS IS MORE</title>
+  <title>Description-based Controllable Text-to-Speech with Cross-Lingual Voice Control | LESS IS MORE</title>
 </head>
 
 
@@ -702,7 +702,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Description-based Controllable Text-to-Speech with Cross-Lingual Control Transfer</h1>
+  <h1>Description-based Controllable Text-to-Speech with Cross-Lingual Voice Control</h1>
 
   
 
@@ -788,12 +788,12 @@
 </li>
 </ul>
 <h2 id="abstract">Abstract</h2>
-<p>We propose a novel controllable text-to-speech (TTS) method that controls voice characteristics via text descriptions, eliminating the need for audio-description pairs in the target language. Our method uses an unlabeled audio-only dataset to obtain disentangled timbre representations through self-supervised learning (SSL). We then use a dataset of the target language to train a TTS model, utilizing an SSL-based style encoder to extract style embeddings. Lastly, we train a model to map text descriptions to the timbre and style embeddings using an audio-description paired dataset of another language. Since SSL-based timbre and style representation extractors can be considered language-agnostic, they enable the transfer of description-based control across different languages. Experiments on English and Japanese TTS show that our method enables high naturalness and controllability for both languages, even without audio-description pairs for Japanese data.</p>
+<p>We propose a novel description-based controllable text-to-speech (TTS) method that eliminates the need for audio-description pairs in the target language. To address the lack of labeled paired data, we combine a TTS model trained on the target language with a description control model trained on another language. These models share disentangled timbre and style representations based on self-supervised learning (SSL), allowing for disentangled voice control, such as controlling speaking styles while retaining the original timbre. Furthermore, because the SSL-based timbre and style representations are language-agnostic, combining the TTS and control models while sharing the same embedding space effectively enables cross-lingual control of voice characteristics. Experiments on English and Japanese TTS demonstrate that our method achieves high naturalness and controllability for both languages, even though no audio-description pairs are used for Japanese.</p>
 <h2 id="figure">Figure</h2>
 <div align="center">
 <figure>
   <img src="/images/nansyttspp/nansyttspp.png" width="100%" /></div>
-  <figcaption>Figure 1: Overview of our proposed framework. A NANSY++ model (blue) is used as the backbone model to obtain disentangled representations and convert them back to the waveform. The TTS acoustic model (red) adopts a similar architecture as NANSY-TTS, which is capable of zero-shot TTS. It utilizes a style encoder and feature aggregators (aggr.) to extract style embeddings. The description control model (green) predicts style and timbre embeddings from the input text descriptions.</figcaption>
+  <figcaption>Figure 1: Overview of our proposed TTS framework. A NANSY++ model (blue) is used as the backbone model to obtain disentangled representations and convert them back to the waveform. The TTS acoustic model (red) converts text to NANSY++ features. It utilizes a style encoder and feature aggregators (aggr.) to extract style embeddings. The description control model (green) predicts style and timbre embeddings from the input text descriptions.</figcaption>
 </figure>
 <h2 id="comparison-of-different-systems">Comparison of different systems</h2>
 <h3 id="english-tts">English TTS</h3>
@@ -1117,7 +1117,7 @@
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/projects/nansyttspp/&amp;text=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Control%20Transfer" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://r9y9.github.io/projects/nansyttspp/&amp;text=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Voice%20Control" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -1130,7 +1130,7 @@
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/projects/nansyttspp/&amp;t=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Control%20Transfer" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://r9y9.github.io/projects/nansyttspp/&amp;t=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Voice%20Control" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -1143,7 +1143,7 @@
       
       
       <li>
-        <a href="mailto:?subject=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Control%20Transfer&amp;body=https://r9y9.github.io/projects/nansyttspp/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+        <a href="mailto:?subject=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Voice%20Control&amp;body=https://r9y9.github.io/projects/nansyttspp/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -1156,7 +1156,7 @@
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/projects/nansyttspp/&amp;title=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Control%20Transfer" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+        <a href="https://www.linkedin.com/shareArticle?url=https://r9y9.github.io/projects/nansyttspp/&amp;title=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Voice%20Control" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -1169,7 +1169,7 @@
       
       
       <li>
-        <a href="whatsapp://send?text=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Control%20Transfer%20https://r9y9.github.io/projects/nansyttspp/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+        <a href="whatsapp://send?text=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Voice%20Control%20https://r9y9.github.io/projects/nansyttspp/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -1182,7 +1182,7 @@
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/projects/nansyttspp/&amp;title=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Control%20Transfer" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://r9y9.github.io/projects/nansyttspp/&amp;title=Description-based%20Controllable%20Text-to-Speech%20with%20Cross-Lingual%20Voice%20Control" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>

@@ -13,7 +13,7 @@
     </image>
     
     <item>
-      <title>Description-based Controllable Text-to-Speech with Cross-Lingual Control Transfer</title>
+      <title>Description-based Controllable Text-to-Speech with Cross-Lingual Voice Control</title>
       <link>https://r9y9.github.io/projects/nansyttspp/</link>
       <pubDate>Thu, 05 Sep 2024 21:00:18 +0900</pubDate>
       <guid>https://r9y9.github.io/projects/nansyttspp/</guid>
@@ -37,12 +37,12 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
-&lt;p&gt;We propose a novel controllable text-to-speech (TTS) method that controls voice characteristics via text descriptions, eliminating the need for audio-description pairs in the target language. Our method uses an unlabeled audio-only dataset to obtain disentangled timbre representations through self-supervised learning (SSL). We then use a dataset of the target language to train a TTS model, utilizing an SSL-based style encoder to extract style embeddings. Lastly, we train a model to map text descriptions to the timbre and style embeddings using an audio-description paired dataset of another language. Since SSL-based timbre and style representation extractors can be considered language-agnostic, they enable the transfer of description-based control across different languages. Experiments on English and Japanese TTS show that our method enables high naturalness and controllability for both languages, even without audio-description pairs for Japanese data.&lt;/p&gt;
+&lt;p&gt;We propose a novel description-based controllable text-to-speech (TTS) method that eliminates the need for audio-description pairs in the target language. To address the lack of labeled paired data, we combine a TTS model trained on the target language with a description control model trained on another language. These models share disentangled timbre and style representations based on self-supervised learning (SSL), allowing for disentangled voice control, such as controlling speaking styles while retaining the original timbre. Furthermore, because the SSL-based timbre and style representations are language-agnostic, combining the TTS and control models while sharing the same embedding space effectively enables cross-lingual control of voice characteristics. Experiments on English and Japanese TTS demonstrate that our method achieves high naturalness and controllability for both languages, even though no audio-description pairs are used for Japanese.&lt;/p&gt;
 &lt;h2 id=&#34;figure&#34;&gt;Figure&lt;/h2&gt;
 &lt;div align=&#34;center&#34;&gt;
 &lt;figure&gt;
   &lt;img src=&#34;https://r9y9.github.io/images/nansyttspp/nansyttspp.png&#34; width=&#34;100%&#34; /&gt;&lt;/div&gt;
-  &lt;figcaption&gt;Figure 1: Overview of our proposed framework. A NANSY++ model (blue) is used as the backbone model to obtain disentangled representations and convert them back to the waveform. The TTS acoustic model (red) adopts a similar architecture as NANSY-TTS, which is capable of zero-shot TTS. It utilizes a style encoder and feature aggregators (aggr.) to extract style embeddings. The description control model (green) predicts style and timbre embeddings from the input text descriptions.&lt;/figcaption&gt;
+  &lt;figcaption&gt;Figure 1: Overview of our proposed TTS framework. A NANSY++ model (blue) is used as the backbone model to obtain disentangled representations and convert them back to the waveform. The TTS acoustic model (red) converts text to NANSY++ features. It utilizes a style encoder and feature aggregators (aggr.) to extract style embeddings. The description control model (green) predicts style and timbre embeddings from the input text descriptions.&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h2 id=&#34;comparison-of-different-systems&#34;&gt;Comparison of different systems&lt;/h2&gt;
 &lt;h3 id=&#34;english-tts&#34;&gt;English TTS&lt;/h3&gt;
