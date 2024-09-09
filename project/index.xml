@@ -5,7 +5,7 @@
     <link>https://r9y9.github.io/project/</link>
       <atom:link href="https://r9y9.github.io/project/index.xml" rel="self" type="application/rss+xml" />
     <description>Projects</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Thu, 05 Sep 2024 21:00:18 +0900</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Copyright © Ryuichi YAMAMOTO All rights reserved.</copyright><lastBuildDate>Mon, 09 Sep 2024 21:00:18 +0900</lastBuildDate>
     <image>
       <url>https://r9y9.github.io/media/icon_hu71488a41e9448d472219f1cc71ecc0ad_259818_512x512_fill_lanczos_center_3.png</url>
       <title>Projects</title>
@@ -15,7 +15,7 @@
     <item>
       <title>Description-based Controllable Text-to-Speech with Cross-Lingual Voice Control</title>
       <link>https://r9y9.github.io/projects/nansyttspp/</link>
-      <pubDate>Thu, 05 Sep 2024 21:00:18 +0900</pubDate>
+      <pubDate>Mon, 09 Sep 2024 21:00:18 +0900</pubDate>
       <guid>https://r9y9.github.io/projects/nansyttspp/</guid>
       <description>&lt;p&gt;Submitted to &lt;a href=&#34;https://2025.ieeeicassp.org/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ICASSP 2025&lt;/a&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -37,7 +37,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
-&lt;p&gt;We propose a novel description-based controllable text-to-speech (TTS) method that eliminates the need for audio-description pairs in the target language. To address the lack of labeled paired data, we combine a TTS model trained on the target language with a description control model trained on another language. These models share disentangled timbre and style representations based on self-supervised learning (SSL), allowing for disentangled voice control, such as controlling speaking styles while retaining the original timbre. Furthermore, because the SSL-based timbre and style representations are language-agnostic, combining the TTS and control models while sharing the same embedding space effectively enables cross-lingual control of voice characteristics. Experiments on English and Japanese TTS demonstrate that our method achieves high naturalness and controllability for both languages, even though no audio-description pairs are used for Japanese.&lt;/p&gt;
+&lt;p&gt;We propose a novel description-based controllable text-to-speech (TTS) method with cross-lingual control capability. To address the lack of labeled audio-description pairs in the target language, we combine a TTS model trained on the target language with a description control model trained on another language. These models share disentangled timbre and style representations based on self-supervised learning (SSL), allowing for disentangled voice control, such as controlling speaking styles while retaining the original timbre. Furthermore, because the SSL-based timbre and style representations are language-agnostic, combining the TTS and description control models while sharing the same embedding space effectively enables cross-lingual control of voice characteristics. Experiments on English and Japanese TTS demonstrate that our method achieves high naturalness and controllability for both languages, even though no audio-description pairs are used for Japanese.&lt;/p&gt;
 &lt;h2 id=&#34;figure&#34;&gt;Figure&lt;/h2&gt;
 &lt;div align=&#34;center&#34;&gt;
 &lt;figure&gt;
